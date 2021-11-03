@@ -8,28 +8,20 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for DiskCreateOptionTypes.
- */
+/** Defines values for DiskCreateOptionTypes. */
 public final class DiskCreateOptionTypes extends ExpandableStringEnum<DiskCreateOptionTypes> {
-    /**
-     * Static value FromImage for DiskCreateOptionTypes.
-     */
+    /** Static value FromImage for DiskCreateOptionTypes. */
     public static final DiskCreateOptionTypes FROM_IMAGE = fromString("FromImage");
 
-    /**
-     * Static value Empty for DiskCreateOptionTypes.
-     */
+    /** Static value Empty for DiskCreateOptionTypes. */
     public static final DiskCreateOptionTypes EMPTY = fromString("Empty");
 
-    /**
-     * Static value Attach for DiskCreateOptionTypes.
-     */
+    /** Static value Attach for DiskCreateOptionTypes. */
     public static final DiskCreateOptionTypes ATTACH = fromString("Attach");
 
     /**
      * Creates or finds a DiskCreateOptionTypes from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding DiskCreateOptionTypes.
      */
@@ -38,9 +30,7 @@ public final class DiskCreateOptionTypes extends ExpandableStringEnum<DiskCreate
         return fromString(name, DiskCreateOptionTypes.class);
     }
 
-    /**
-     * @return known DiskCreateOptionTypes values.
-     */
+    /** @return known DiskCreateOptionTypes values. */
     public static Collection<DiskCreateOptionTypes> values() {
         return values(DiskCreateOptionTypes.class);
     }

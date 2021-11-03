@@ -5,23 +5,17 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.fluent.models.KeyCredentialInner;
 import com.azure.resourcemanager.authorization.fluent.models.PasswordCredentialInner;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Active Directive Application common properties shared among GET, POST and
- * PATCH.
- */
+/** Active Directive Application common properties shared among GET, POST and PATCH. */
 @Fluent
 public class ApplicationBase {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ApplicationBase.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationBase.class);
 
     /*
      * A property on the application to indicate if the application accepts
@@ -218,10 +212,9 @@ public class ApplicationBase {
     private String wwwHomepage;
 
     /**
-     * Get the allowGuestsSignIn property: A property on the application to
-     * indicate if the application accepts other IDPs or not or partially
-     * accepts.
-     * 
+     * Get the allowGuestsSignIn property: A property on the application to indicate if the application accepts other
+     * IDPs or not or partially accepts.
+     *
      * @return the allowGuestsSignIn value.
      */
     public Boolean allowGuestsSignIn() {
@@ -229,10 +222,9 @@ public class ApplicationBase {
     }
 
     /**
-     * Set the allowGuestsSignIn property: A property on the application to
-     * indicate if the application accepts other IDPs or not or partially
-     * accepts.
-     * 
+     * Set the allowGuestsSignIn property: A property on the application to indicate if the application accepts other
+     * IDPs or not or partially accepts.
+     *
      * @param allowGuestsSignIn the allowGuestsSignIn value to set.
      * @return the ApplicationBase object itself.
      */
@@ -242,9 +234,9 @@ public class ApplicationBase {
     }
 
     /**
-     * Get the allowPassthroughUsers property: Indicates that the application
-     * supports pass through users who have no presence in the resource tenant.
-     * 
+     * Get the allowPassthroughUsers property: Indicates that the application supports pass through users who have no
+     * presence in the resource tenant.
+     *
      * @return the allowPassthroughUsers value.
      */
     public Boolean allowPassthroughUsers() {
@@ -252,9 +244,9 @@ public class ApplicationBase {
     }
 
     /**
-     * Set the allowPassthroughUsers property: Indicates that the application
-     * supports pass through users who have no presence in the resource tenant.
-     * 
+     * Set the allowPassthroughUsers property: Indicates that the application supports pass through users who have no
+     * presence in the resource tenant.
+     *
      * @param allowPassthroughUsers the allowPassthroughUsers value to set.
      * @return the ApplicationBase object itself.
      */
@@ -264,9 +256,8 @@ public class ApplicationBase {
     }
 
     /**
-     * Get the appLogoUrl property: The url for the application logo image
-     * stored in a CDN.
-     * 
+     * Get the appLogoUrl property: The url for the application logo image stored in a CDN.
+     *
      * @return the appLogoUrl value.
      */
     public String appLogoUrl() {
@@ -274,9 +265,8 @@ public class ApplicationBase {
     }
 
     /**
-     * Set the appLogoUrl property: The url for the application logo image
-     * stored in a CDN.
-     * 
+     * Set the appLogoUrl property: The url for the application logo image stored in a CDN.
+     *
      * @param appLogoUrl the appLogoUrl value to set.
      * @return the ApplicationBase object itself.
      */
@@ -286,10 +276,9 @@ public class ApplicationBase {
     }
 
     /**
-     * Get the appRoles property: The collection of application roles that an
-     * application may declare. These roles can be assigned to users, groups or
-     * service principals.
-     * 
+     * Get the appRoles property: The collection of application roles that an application may declare. These roles can
+     * be assigned to users, groups or service principals.
+     *
      * @return the appRoles value.
      */
     public List<AppRole> appRoles() {
@@ -297,10 +286,9 @@ public class ApplicationBase {
     }
 
     /**
-     * Set the appRoles property: The collection of application roles that an
-     * application may declare. These roles can be assigned to users, groups or
-     * service principals.
-     * 
+     * Set the appRoles property: The collection of application roles that an application may declare. These roles can
+     * be assigned to users, groups or service principals.
+     *
      * @param appRoles the appRoles value to set.
      * @return the ApplicationBase object itself.
      */
@@ -311,7 +299,7 @@ public class ApplicationBase {
 
     /**
      * Get the appPermissions property: The application permissions.
-     * 
+     *
      * @return the appPermissions value.
      */
     public List<String> appPermissions() {
@@ -320,7 +308,7 @@ public class ApplicationBase {
 
     /**
      * Set the appPermissions property: The application permissions.
-     * 
+     *
      * @param appPermissions the appPermissions value to set.
      * @return the ApplicationBase object itself.
      */
@@ -330,9 +318,8 @@ public class ApplicationBase {
     }
 
     /**
-     * Get the availableToOtherTenants property: Whether the application is
-     * available to other tenants.
-     * 
+     * Get the availableToOtherTenants property: Whether the application is available to other tenants.
+     *
      * @return the availableToOtherTenants value.
      */
     public Boolean availableToOtherTenants() {
@@ -340,9 +327,8 @@ public class ApplicationBase {
     }
 
     /**
-     * Set the availableToOtherTenants property: Whether the application is
-     * available to other tenants.
-     * 
+     * Set the availableToOtherTenants property: Whether the application is available to other tenants.
+     *
      * @param availableToOtherTenants the availableToOtherTenants value to set.
      * @return the ApplicationBase object itself.
      */
@@ -352,9 +338,9 @@ public class ApplicationBase {
     }
 
     /**
-     * Get the errorUrl property: A URL provided by the author of the
-     * application to report errors when using the application.
-     * 
+     * Get the errorUrl property: A URL provided by the author of the application to report errors when using the
+     * application.
+     *
      * @return the errorUrl value.
      */
     public String errorUrl() {
@@ -362,9 +348,9 @@ public class ApplicationBase {
     }
 
     /**
-     * Set the errorUrl property: A URL provided by the author of the
-     * application to report errors when using the application.
-     * 
+     * Set the errorUrl property: A URL provided by the author of the application to report errors when using the
+     * application.
+     *
      * @param errorUrl the errorUrl value to set.
      * @return the ApplicationBase object itself.
      */
@@ -374,9 +360,9 @@ public class ApplicationBase {
     }
 
     /**
-     * Get the groupMembershipClaims property: Configures the groups claim
-     * issued in a user or OAuth 2.0 access token that the app expects.
-     * 
+     * Get the groupMembershipClaims property: Configures the groups claim issued in a user or OAuth 2.0 access token
+     * that the app expects.
+     *
      * @return the groupMembershipClaims value.
      */
     public GroupMembershipClaimTypes groupMembershipClaims() {
@@ -384,9 +370,9 @@ public class ApplicationBase {
     }
 
     /**
-     * Set the groupMembershipClaims property: Configures the groups claim
-     * issued in a user or OAuth 2.0 access token that the app expects.
-     * 
+     * Set the groupMembershipClaims property: Configures the groups claim issued in a user or OAuth 2.0 access token
+     * that the app expects.
+     *
      * @param groupMembershipClaims the groupMembershipClaims value to set.
      * @return the ApplicationBase object itself.
      */
@@ -397,7 +383,7 @@ public class ApplicationBase {
 
     /**
      * Get the homepage property: The home page of the application.
-     * 
+     *
      * @return the homepage value.
      */
     public String homepage() {
@@ -406,7 +392,7 @@ public class ApplicationBase {
 
     /**
      * Set the homepage property: The home page of the application.
-     * 
+     *
      * @param homepage the homepage value to set.
      * @return the ApplicationBase object itself.
      */
@@ -416,9 +402,8 @@ public class ApplicationBase {
     }
 
     /**
-     * Get the informationalUrls property: URLs with more information about the
-     * application.
-     * 
+     * Get the informationalUrls property: URLs with more information about the application.
+     *
      * @return the informationalUrls value.
      */
     public InformationalUrl informationalUrls() {
@@ -426,9 +411,8 @@ public class ApplicationBase {
     }
 
     /**
-     * Set the informationalUrls property: URLs with more information about the
-     * application.
-     * 
+     * Set the informationalUrls property: URLs with more information about the application.
+     *
      * @param informationalUrls the informationalUrls value to set.
      * @return the ApplicationBase object itself.
      */
@@ -438,10 +422,9 @@ public class ApplicationBase {
     }
 
     /**
-     * Get the isDeviceOnlyAuthSupported property: Specifies whether this
-     * application supports device authentication without a user. The default
-     * is false.
-     * 
+     * Get the isDeviceOnlyAuthSupported property: Specifies whether this application supports device authentication
+     * without a user. The default is false.
+     *
      * @return the isDeviceOnlyAuthSupported value.
      */
     public Boolean isDeviceOnlyAuthSupported() {
@@ -449,12 +432,10 @@ public class ApplicationBase {
     }
 
     /**
-     * Set the isDeviceOnlyAuthSupported property: Specifies whether this
-     * application supports device authentication without a user. The default
-     * is false.
-     * 
-     * @param isDeviceOnlyAuthSupported the isDeviceOnlyAuthSupported value to
-     * set.
+     * Set the isDeviceOnlyAuthSupported property: Specifies whether this application supports device authentication
+     * without a user. The default is false.
+     *
+     * @param isDeviceOnlyAuthSupported the isDeviceOnlyAuthSupported value to set.
      * @return the ApplicationBase object itself.
      */
     public ApplicationBase withIsDeviceOnlyAuthSupported(Boolean isDeviceOnlyAuthSupported) {
@@ -464,7 +445,7 @@ public class ApplicationBase {
 
     /**
      * Get the keyCredentials property: A collection of KeyCredential objects.
-     * 
+     *
      * @return the keyCredentials value.
      */
     public List<KeyCredentialInner> keyCredentials() {
@@ -473,7 +454,7 @@ public class ApplicationBase {
 
     /**
      * Set the keyCredentials property: A collection of KeyCredential objects.
-     * 
+     *
      * @param keyCredentials the keyCredentials value to set.
      * @return the ApplicationBase object itself.
      */
@@ -483,12 +464,10 @@ public class ApplicationBase {
     }
 
     /**
-     * Get the knownClientApplications property: Client applications that are
-     * tied to this resource application. Consent to any of the known client
-     * applications will result in implicit consent to the resource application
-     * through a combined consent dialog (showing the OAuth permission scopes
-     * required by the client and the resource).
-     * 
+     * Get the knownClientApplications property: Client applications that are tied to this resource application. Consent
+     * to any of the known client applications will result in implicit consent to the resource application through a
+     * combined consent dialog (showing the OAuth permission scopes required by the client and the resource).
+     *
      * @return the knownClientApplications value.
      */
     public List<String> knownClientApplications() {
@@ -496,12 +475,10 @@ public class ApplicationBase {
     }
 
     /**
-     * Set the knownClientApplications property: Client applications that are
-     * tied to this resource application. Consent to any of the known client
-     * applications will result in implicit consent to the resource application
-     * through a combined consent dialog (showing the OAuth permission scopes
-     * required by the client and the resource).
-     * 
+     * Set the knownClientApplications property: Client applications that are tied to this resource application. Consent
+     * to any of the known client applications will result in implicit consent to the resource application through a
+     * combined consent dialog (showing the OAuth permission scopes required by the client and the resource).
+     *
      * @param knownClientApplications the knownClientApplications value to set.
      * @return the ApplicationBase object itself.
      */
@@ -512,7 +489,7 @@ public class ApplicationBase {
 
     /**
      * Get the logoutUrl property: the url of the logout page.
-     * 
+     *
      * @return the logoutUrl value.
      */
     public String logoutUrl() {
@@ -521,7 +498,7 @@ public class ApplicationBase {
 
     /**
      * Set the logoutUrl property: the url of the logout page.
-     * 
+     *
      * @param logoutUrl the logoutUrl value to set.
      * @return the ApplicationBase object itself.
      */
@@ -531,9 +508,8 @@ public class ApplicationBase {
     }
 
     /**
-     * Get the oauth2AllowImplicitFlow property: Whether to allow implicit
-     * grant flow for OAuth2.
-     * 
+     * Get the oauth2AllowImplicitFlow property: Whether to allow implicit grant flow for OAuth2.
+     *
      * @return the oauth2AllowImplicitFlow value.
      */
     public Boolean oauth2AllowImplicitFlow() {
@@ -541,9 +517,8 @@ public class ApplicationBase {
     }
 
     /**
-     * Set the oauth2AllowImplicitFlow property: Whether to allow implicit
-     * grant flow for OAuth2.
-     * 
+     * Set the oauth2AllowImplicitFlow property: Whether to allow implicit grant flow for OAuth2.
+     *
      * @param oauth2AllowImplicitFlow the oauth2AllowImplicitFlow value to set.
      * @return the ApplicationBase object itself.
      */
@@ -553,10 +528,9 @@ public class ApplicationBase {
     }
 
     /**
-     * Get the oauth2AllowUrlPathMatching property: Specifies whether during a
-     * token Request Azure AD will allow path matching of the redirect URI
-     * against the applications collection of replyURLs. The default is false.
-     * 
+     * Get the oauth2AllowUrlPathMatching property: Specifies whether during a token Request Azure AD will allow path
+     * matching of the redirect URI against the applications collection of replyURLs. The default is false.
+     *
      * @return the oauth2AllowUrlPathMatching value.
      */
     public Boolean oauth2AllowUrlPathMatching() {
@@ -564,12 +538,10 @@ public class ApplicationBase {
     }
 
     /**
-     * Set the oauth2AllowUrlPathMatching property: Specifies whether during a
-     * token Request Azure AD will allow path matching of the redirect URI
-     * against the applications collection of replyURLs. The default is false.
-     * 
-     * @param oauth2AllowUrlPathMatching the oauth2AllowUrlPathMatching value
-     * to set.
+     * Set the oauth2AllowUrlPathMatching property: Specifies whether during a token Request Azure AD will allow path
+     * matching of the redirect URI against the applications collection of replyURLs. The default is false.
+     *
+     * @param oauth2AllowUrlPathMatching the oauth2AllowUrlPathMatching value to set.
      * @return the ApplicationBase object itself.
      */
     public ApplicationBase withOauth2AllowUrlPathMatching(Boolean oauth2AllowUrlPathMatching) {
@@ -578,11 +550,10 @@ public class ApplicationBase {
     }
 
     /**
-     * Get the oauth2Permissions property: The collection of OAuth 2.0
-     * permission scopes that the web API (resource) application exposes to
-     * client applications. These permission scopes may be granted to client
-     * applications during consent.
-     * 
+     * Get the oauth2Permissions property: The collection of OAuth 2.0 permission scopes that the web API (resource)
+     * application exposes to client applications. These permission scopes may be granted to client applications during
+     * consent.
+     *
      * @return the oauth2Permissions value.
      */
     public List<OAuth2Permission> oauth2Permissions() {
@@ -590,11 +561,10 @@ public class ApplicationBase {
     }
 
     /**
-     * Set the oauth2Permissions property: The collection of OAuth 2.0
-     * permission scopes that the web API (resource) application exposes to
-     * client applications. These permission scopes may be granted to client
-     * applications during consent.
-     * 
+     * Set the oauth2Permissions property: The collection of OAuth 2.0 permission scopes that the web API (resource)
+     * application exposes to client applications. These permission scopes may be granted to client applications during
+     * consent.
+     *
      * @param oauth2Permissions the oauth2Permissions value to set.
      * @return the ApplicationBase object itself.
      */
@@ -604,11 +574,10 @@ public class ApplicationBase {
     }
 
     /**
-     * Get the oauth2RequirePostResponse property: Specifies whether, as part
-     * of OAuth 2.0 token requests, Azure AD will allow POST requests, as
-     * opposed to GET requests. The default is false, which specifies that only
-     * GET requests will be allowed.
-     * 
+     * Get the oauth2RequirePostResponse property: Specifies whether, as part of OAuth 2.0 token requests, Azure AD will
+     * allow POST requests, as opposed to GET requests. The default is false, which specifies that only GET requests
+     * will be allowed.
+     *
      * @return the oauth2RequirePostResponse value.
      */
     public Boolean oauth2RequirePostResponse() {
@@ -616,13 +585,11 @@ public class ApplicationBase {
     }
 
     /**
-     * Set the oauth2RequirePostResponse property: Specifies whether, as part
-     * of OAuth 2.0 token requests, Azure AD will allow POST requests, as
-     * opposed to GET requests. The default is false, which specifies that only
-     * GET requests will be allowed.
-     * 
-     * @param oauth2RequirePostResponse the oauth2RequirePostResponse value to
-     * set.
+     * Set the oauth2RequirePostResponse property: Specifies whether, as part of OAuth 2.0 token requests, Azure AD will
+     * allow POST requests, as opposed to GET requests. The default is false, which specifies that only GET requests
+     * will be allowed.
+     *
+     * @param oauth2RequirePostResponse the oauth2RequirePostResponse value to set.
      * @return the ApplicationBase object itself.
      */
     public ApplicationBase withOauth2RequirePostResponse(Boolean oauth2RequirePostResponse) {
@@ -631,9 +598,8 @@ public class ApplicationBase {
     }
 
     /**
-     * Get the orgRestrictions property: A list of tenants allowed to access
-     * application.
-     * 
+     * Get the orgRestrictions property: A list of tenants allowed to access application.
+     *
      * @return the orgRestrictions value.
      */
     public List<String> orgRestrictions() {
@@ -641,9 +607,8 @@ public class ApplicationBase {
     }
 
     /**
-     * Set the orgRestrictions property: A list of tenants allowed to access
-     * application.
-     * 
+     * Set the orgRestrictions property: A list of tenants allowed to access application.
+     *
      * @param orgRestrictions the orgRestrictions value to set.
      * @return the ApplicationBase object itself.
      */
@@ -653,9 +618,8 @@ public class ApplicationBase {
     }
 
     /**
-     * Get the optionalClaims property: Specifying the claims to be included in
-     * the token.
-     * 
+     * Get the optionalClaims property: Specifying the claims to be included in the token.
+     *
      * @return the optionalClaims value.
      */
     public OptionalClaims optionalClaims() {
@@ -663,9 +627,8 @@ public class ApplicationBase {
     }
 
     /**
-     * Set the optionalClaims property: Specifying the claims to be included in
-     * the token.
-     * 
+     * Set the optionalClaims property: Specifying the claims to be included in the token.
+     *
      * @param optionalClaims the optionalClaims value to set.
      * @return the ApplicationBase object itself.
      */
@@ -675,9 +638,8 @@ public class ApplicationBase {
     }
 
     /**
-     * Get the passwordCredentials property: A collection of PasswordCredential
-     * objects.
-     * 
+     * Get the passwordCredentials property: A collection of PasswordCredential objects.
+     *
      * @return the passwordCredentials value.
      */
     public List<PasswordCredentialInner> passwordCredentials() {
@@ -685,9 +647,8 @@ public class ApplicationBase {
     }
 
     /**
-     * Set the passwordCredentials property: A collection of PasswordCredential
-     * objects.
-     * 
+     * Set the passwordCredentials property: A collection of PasswordCredential objects.
+     *
      * @param passwordCredentials the passwordCredentials value to set.
      * @return the ApplicationBase object itself.
      */
@@ -697,9 +658,8 @@ public class ApplicationBase {
     }
 
     /**
-     * Get the preAuthorizedApplications property: list of pre-authorized
-     * applications.
-     * 
+     * Get the preAuthorizedApplications property: list of pre-authorized applications.
+     *
      * @return the preAuthorizedApplications value.
      */
     public List<PreAuthorizedApplication> preAuthorizedApplications() {
@@ -707,11 +667,9 @@ public class ApplicationBase {
     }
 
     /**
-     * Set the preAuthorizedApplications property: list of pre-authorized
-     * applications.
-     * 
-     * @param preAuthorizedApplications the preAuthorizedApplications value to
-     * set.
+     * Set the preAuthorizedApplications property: list of pre-authorized applications.
+     *
+     * @param preAuthorizedApplications the preAuthorizedApplications value to set.
      * @return the ApplicationBase object itself.
      */
     public ApplicationBase withPreAuthorizedApplications(List<PreAuthorizedApplication> preAuthorizedApplications) {
@@ -720,10 +678,9 @@ public class ApplicationBase {
     }
 
     /**
-     * Get the publicClient property: Specifies whether this application is a
-     * public client (such as an installed application running on a mobile
-     * device). Default is false.
-     * 
+     * Get the publicClient property: Specifies whether this application is a public client (such as an installed
+     * application running on a mobile device). Default is false.
+     *
      * @return the publicClient value.
      */
     public Boolean publicClient() {
@@ -731,10 +688,9 @@ public class ApplicationBase {
     }
 
     /**
-     * Set the publicClient property: Specifies whether this application is a
-     * public client (such as an installed application running on a mobile
-     * device). Default is false.
-     * 
+     * Set the publicClient property: Specifies whether this application is a public client (such as an installed
+     * application running on a mobile device). Default is false.
+     *
      * @param publicClient the publicClient value to set.
      * @return the ApplicationBase object itself.
      */
@@ -744,9 +700,8 @@ public class ApplicationBase {
     }
 
     /**
-     * Get the publisherDomain property: Reliable domain which can be used to
-     * identify an application.
-     * 
+     * Get the publisherDomain property: Reliable domain which can be used to identify an application.
+     *
      * @return the publisherDomain value.
      */
     public String publisherDomain() {
@@ -754,9 +709,8 @@ public class ApplicationBase {
     }
 
     /**
-     * Set the publisherDomain property: Reliable domain which can be used to
-     * identify an application.
-     * 
+     * Set the publisherDomain property: Reliable domain which can be used to identify an application.
+     *
      * @param publisherDomain the publisherDomain value to set.
      * @return the ApplicationBase object itself.
      */
@@ -766,9 +720,8 @@ public class ApplicationBase {
     }
 
     /**
-     * Get the replyUrls property: A collection of reply URLs for the
-     * application.
-     * 
+     * Get the replyUrls property: A collection of reply URLs for the application.
+     *
      * @return the replyUrls value.
      */
     public List<String> replyUrls() {
@@ -776,9 +729,8 @@ public class ApplicationBase {
     }
 
     /**
-     * Set the replyUrls property: A collection of reply URLs for the
-     * application.
-     * 
+     * Set the replyUrls property: A collection of reply URLs for the application.
+     *
      * @param replyUrls the replyUrls value to set.
      * @return the ApplicationBase object itself.
      */
@@ -788,12 +740,10 @@ public class ApplicationBase {
     }
 
     /**
-     * Get the requiredResourceAccess property: Specifies resources that this
-     * application requires access to and the set of OAuth permission scopes
-     * and application roles that it needs under each of those resources. This
-     * pre-configuration of required resource access drives the consent
-     * experience.
-     * 
+     * Get the requiredResourceAccess property: Specifies resources that this application requires access to and the set
+     * of OAuth permission scopes and application roles that it needs under each of those resources. This
+     * pre-configuration of required resource access drives the consent experience.
+     *
      * @return the requiredResourceAccess value.
      */
     public List<RequiredResourceAccess> requiredResourceAccess() {
@@ -801,12 +751,10 @@ public class ApplicationBase {
     }
 
     /**
-     * Set the requiredResourceAccess property: Specifies resources that this
-     * application requires access to and the set of OAuth permission scopes
-     * and application roles that it needs under each of those resources. This
-     * pre-configuration of required resource access drives the consent
-     * experience.
-     * 
+     * Set the requiredResourceAccess property: Specifies resources that this application requires access to and the set
+     * of OAuth permission scopes and application roles that it needs under each of those resources. This
+     * pre-configuration of required resource access drives the consent experience.
+     *
      * @param requiredResourceAccess the requiredResourceAccess value to set.
      * @return the ApplicationBase object itself.
      */
@@ -816,9 +764,8 @@ public class ApplicationBase {
     }
 
     /**
-     * Get the samlMetadataUrl property: The URL to the SAML metadata for the
-     * application.
-     * 
+     * Get the samlMetadataUrl property: The URL to the SAML metadata for the application.
+     *
      * @return the samlMetadataUrl value.
      */
     public String samlMetadataUrl() {
@@ -826,9 +773,8 @@ public class ApplicationBase {
     }
 
     /**
-     * Set the samlMetadataUrl property: The URL to the SAML metadata for the
-     * application.
-     * 
+     * Set the samlMetadataUrl property: The URL to the SAML metadata for the application.
+     *
      * @param samlMetadataUrl the samlMetadataUrl value to set.
      * @return the ApplicationBase object itself.
      */
@@ -838,10 +784,9 @@ public class ApplicationBase {
     }
 
     /**
-     * Get the signInAudience property: Audience for signing in to the
-     * application (AzureADMyOrganization, AzureADAllOrganizations,
-     * AzureADAndMicrosoftAccounts).
-     * 
+     * Get the signInAudience property: Audience for signing in to the application (AzureADMyOrganization,
+     * AzureADAllOrganizations, AzureADAndMicrosoftAccounts).
+     *
      * @return the signInAudience value.
      */
     public String signInAudience() {
@@ -849,10 +794,9 @@ public class ApplicationBase {
     }
 
     /**
-     * Set the signInAudience property: Audience for signing in to the
-     * application (AzureADMyOrganization, AzureADAllOrganizations,
-     * AzureADAndMicrosoftAccounts).
-     * 
+     * Set the signInAudience property: Audience for signing in to the application (AzureADMyOrganization,
+     * AzureADAllOrganizations, AzureADAndMicrosoftAccounts).
+     *
      * @param signInAudience the signInAudience value to set.
      * @return the ApplicationBase object itself.
      */
@@ -863,7 +807,7 @@ public class ApplicationBase {
 
     /**
      * Get the wwwHomepage property: The primary Web page.
-     * 
+     *
      * @return the wwwHomepage value.
      */
     public String wwwHomepage() {
@@ -872,7 +816,7 @@ public class ApplicationBase {
 
     /**
      * Set the wwwHomepage property: The primary Web page.
-     * 
+     *
      * @param wwwHomepage the wwwHomepage value to set.
      * @return the ApplicationBase object itself.
      */
@@ -883,7 +827,7 @@ public class ApplicationBase {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

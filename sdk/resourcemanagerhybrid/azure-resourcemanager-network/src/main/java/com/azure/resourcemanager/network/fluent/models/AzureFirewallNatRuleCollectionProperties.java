@@ -5,23 +5,18 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.AzureFirewallNatRCAction;
 import com.azure.resourcemanager.network.models.AzureFirewallNatRule;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Properties of the NAT rule collection.
- */
+/** Properties of the NAT rule collection. */
 @Fluent
 public final class AzureFirewallNatRuleCollectionProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(AzureFirewallNatRuleCollectionProperties.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFirewallNatRuleCollectionProperties.class);
 
     /*
      * Priority of the NAT rule collection resource.
@@ -49,7 +44,7 @@ public final class AzureFirewallNatRuleCollectionProperties {
 
     /**
      * Get the priority property: Priority of the NAT rule collection resource.
-     * 
+     *
      * @return the priority value.
      */
     public Integer priority() {
@@ -58,7 +53,7 @@ public final class AzureFirewallNatRuleCollectionProperties {
 
     /**
      * Set the priority property: Priority of the NAT rule collection resource.
-     * 
+     *
      * @param priority the priority value to set.
      * @return the AzureFirewallNatRuleCollectionProperties object itself.
      */
@@ -69,7 +64,7 @@ public final class AzureFirewallNatRuleCollectionProperties {
 
     /**
      * Get the action property: The action type of a NAT rule collection.
-     * 
+     *
      * @return the action value.
      */
     public AzureFirewallNatRCAction action() {
@@ -78,7 +73,7 @@ public final class AzureFirewallNatRuleCollectionProperties {
 
     /**
      * Set the action property: The action type of a NAT rule collection.
-     * 
+     *
      * @param action the action value to set.
      * @return the AzureFirewallNatRuleCollectionProperties object itself.
      */
@@ -88,9 +83,8 @@ public final class AzureFirewallNatRuleCollectionProperties {
     }
 
     /**
-     * Get the rules property: Collection of rules used by a NAT rule
-     * collection.
-     * 
+     * Get the rules property: Collection of rules used by a NAT rule collection.
+     *
      * @return the rules value.
      */
     public List<AzureFirewallNatRule> rules() {
@@ -98,9 +92,8 @@ public final class AzureFirewallNatRuleCollectionProperties {
     }
 
     /**
-     * Set the rules property: Collection of rules used by a NAT rule
-     * collection.
-     * 
+     * Set the rules property: Collection of rules used by a NAT rule collection.
+     *
      * @param rules the rules value to set.
      * @return the AzureFirewallNatRuleCollectionProperties object itself.
      */
@@ -110,9 +103,8 @@ public final class AzureFirewallNatRuleCollectionProperties {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the
-     * resource.
-     * 
+     * Get the provisioningState property: The provisioning state of the resource.
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -120,9 +112,8 @@ public final class AzureFirewallNatRuleCollectionProperties {
     }
 
     /**
-     * Set the provisioningState property: The provisioning state of the
-     * resource.
-     * 
+     * Set the provisioningState property: The provisioning state of the resource.
+     *
      * @param provisioningState the provisioningState value to set.
      * @return the AzureFirewallNatRuleCollectionProperties object itself.
      */
@@ -133,7 +124,7 @@ public final class AzureFirewallNatRuleCollectionProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,28 +7,18 @@ package com.azure.resourcemanager.containerservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for Count.
- */
+/** Defines values for Count. */
 public enum Count {
-    /**
-     * Enum value 1.
-     */
+    /** Enum value 1. */
     ONE(1),
 
-    /**
-     * Enum value 3.
-     */
+    /** Enum value 3. */
     THREE(3),
 
-    /**
-     * Enum value 5.
-     */
+    /** Enum value 5. */
     FIVE(5);
 
-    /**
-     * The actual serialized value for a Count instance.
-     */
+    /** The actual serialized value for a Count instance. */
     private final int value;
 
     Count(int value) {
@@ -37,7 +27,7 @@ public enum Count {
 
     /**
      * Parses a serialized value to a Count instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed Count object, or null if unable to parse.
      */
@@ -54,7 +44,7 @@ public enum Count {
 
     /**
      * De-serializes the instance to int value.
-     * 
+     *
      * @return the int value.
      */
     @JsonValue

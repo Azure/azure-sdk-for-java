@@ -5,22 +5,17 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.VirtualNetworkPeeringState;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Properties of the virtual network peering.
- */
+/** Properties of the virtual network peering. */
 @Fluent
 public final class VirtualNetworkPeeringPropertiesFormat {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(VirtualNetworkPeeringPropertiesFormat.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkPeeringPropertiesFormat.class);
 
     /*
      * Whether the VMs in the linked virtual network space would be able to
@@ -82,10 +77,9 @@ public final class VirtualNetworkPeeringPropertiesFormat {
     private String provisioningState;
 
     /**
-     * Get the allowVirtualNetworkAccess property: Whether the VMs in the
-     * linked virtual network space would be able to access all the VMs in
-     * local Virtual network space.
-     * 
+     * Get the allowVirtualNetworkAccess property: Whether the VMs in the linked virtual network space would be able to
+     * access all the VMs in local Virtual network space.
+     *
      * @return the allowVirtualNetworkAccess value.
      */
     public Boolean allowVirtualNetworkAccess() {
@@ -93,12 +87,10 @@ public final class VirtualNetworkPeeringPropertiesFormat {
     }
 
     /**
-     * Set the allowVirtualNetworkAccess property: Whether the VMs in the
-     * linked virtual network space would be able to access all the VMs in
-     * local Virtual network space.
-     * 
-     * @param allowVirtualNetworkAccess the allowVirtualNetworkAccess value to
-     * set.
+     * Set the allowVirtualNetworkAccess property: Whether the VMs in the linked virtual network space would be able to
+     * access all the VMs in local Virtual network space.
+     *
+     * @param allowVirtualNetworkAccess the allowVirtualNetworkAccess value to set.
      * @return the VirtualNetworkPeeringPropertiesFormat object itself.
      */
     public VirtualNetworkPeeringPropertiesFormat withAllowVirtualNetworkAccess(Boolean allowVirtualNetworkAccess) {
@@ -107,9 +99,9 @@ public final class VirtualNetworkPeeringPropertiesFormat {
     }
 
     /**
-     * Get the allowForwardedTraffic property: Whether the forwarded traffic
-     * from the VMs in the remote virtual network will be allowed/disallowed.
-     * 
+     * Get the allowForwardedTraffic property: Whether the forwarded traffic from the VMs in the remote virtual network
+     * will be allowed/disallowed.
+     *
      * @return the allowForwardedTraffic value.
      */
     public Boolean allowForwardedTraffic() {
@@ -117,9 +109,9 @@ public final class VirtualNetworkPeeringPropertiesFormat {
     }
 
     /**
-     * Set the allowForwardedTraffic property: Whether the forwarded traffic
-     * from the VMs in the remote virtual network will be allowed/disallowed.
-     * 
+     * Set the allowForwardedTraffic property: Whether the forwarded traffic from the VMs in the remote virtual network
+     * will be allowed/disallowed.
+     *
      * @param allowForwardedTraffic the allowForwardedTraffic value to set.
      * @return the VirtualNetworkPeeringPropertiesFormat object itself.
      */
@@ -129,9 +121,9 @@ public final class VirtualNetworkPeeringPropertiesFormat {
     }
 
     /**
-     * Get the allowGatewayTransit property: If gateway links can be used in
-     * remote virtual networking to link to this virtual network.
-     * 
+     * Get the allowGatewayTransit property: If gateway links can be used in remote virtual networking to link to this
+     * virtual network.
+     *
      * @return the allowGatewayTransit value.
      */
     public Boolean allowGatewayTransit() {
@@ -139,9 +131,9 @@ public final class VirtualNetworkPeeringPropertiesFormat {
     }
 
     /**
-     * Set the allowGatewayTransit property: If gateway links can be used in
-     * remote virtual networking to link to this virtual network.
-     * 
+     * Set the allowGatewayTransit property: If gateway links can be used in remote virtual networking to link to this
+     * virtual network.
+     *
      * @param allowGatewayTransit the allowGatewayTransit value to set.
      * @return the VirtualNetworkPeeringPropertiesFormat object itself.
      */
@@ -151,13 +143,11 @@ public final class VirtualNetworkPeeringPropertiesFormat {
     }
 
     /**
-     * Get the useRemoteGateways property: If remote gateways can be used on
-     * this virtual network. If the flag is set to true, and
-     * allowGatewayTransit on remote peering is also true, virtual network will
-     * use gateways of remote virtual network for transit. Only one peering can
-     * have this flag set to true. This flag cannot be set if virtual network
+     * Get the useRemoteGateways property: If remote gateways can be used on this virtual network. If the flag is set to
+     * true, and allowGatewayTransit on remote peering is also true, virtual network will use gateways of remote virtual
+     * network for transit. Only one peering can have this flag set to true. This flag cannot be set if virtual network
      * already has a gateway.
-     * 
+     *
      * @return the useRemoteGateways value.
      */
     public Boolean useRemoteGateways() {
@@ -165,13 +155,11 @@ public final class VirtualNetworkPeeringPropertiesFormat {
     }
 
     /**
-     * Set the useRemoteGateways property: If remote gateways can be used on
-     * this virtual network. If the flag is set to true, and
-     * allowGatewayTransit on remote peering is also true, virtual network will
-     * use gateways of remote virtual network for transit. Only one peering can
-     * have this flag set to true. This flag cannot be set if virtual network
+     * Set the useRemoteGateways property: If remote gateways can be used on this virtual network. If the flag is set to
+     * true, and allowGatewayTransit on remote peering is also true, virtual network will use gateways of remote virtual
+     * network for transit. Only one peering can have this flag set to true. This flag cannot be set if virtual network
      * already has a gateway.
-     * 
+     *
      * @param useRemoteGateways the useRemoteGateways value to set.
      * @return the VirtualNetworkPeeringPropertiesFormat object itself.
      */
@@ -181,12 +169,10 @@ public final class VirtualNetworkPeeringPropertiesFormat {
     }
 
     /**
-     * Get the remoteVirtualNetwork property: The reference of the remote
-     * virtual network. The remote virtual network can be in the same or
-     * different region (preview). See here to register for the preview and
-     * learn more
+     * Get the remoteVirtualNetwork property: The reference of the remote virtual network. The remote virtual network
+     * can be in the same or different region (preview). See here to register for the preview and learn more
      * (https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-create-peering).
-     * 
+     *
      * @return the remoteVirtualNetwork value.
      */
     public SubResource remoteVirtualNetwork() {
@@ -194,12 +180,10 @@ public final class VirtualNetworkPeeringPropertiesFormat {
     }
 
     /**
-     * Set the remoteVirtualNetwork property: The reference of the remote
-     * virtual network. The remote virtual network can be in the same or
-     * different region (preview). See here to register for the preview and
-     * learn more
+     * Set the remoteVirtualNetwork property: The reference of the remote virtual network. The remote virtual network
+     * can be in the same or different region (preview). See here to register for the preview and learn more
      * (https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-create-peering).
-     * 
+     *
      * @param remoteVirtualNetwork the remoteVirtualNetwork value to set.
      * @return the VirtualNetworkPeeringPropertiesFormat object itself.
      */
@@ -209,9 +193,8 @@ public final class VirtualNetworkPeeringPropertiesFormat {
     }
 
     /**
-     * Get the remoteAddressSpace property: The reference of the remote virtual
-     * network address space.
-     * 
+     * Get the remoteAddressSpace property: The reference of the remote virtual network address space.
+     *
      * @return the remoteAddressSpace value.
      */
     public AddressSpace remoteAddressSpace() {
@@ -219,9 +202,8 @@ public final class VirtualNetworkPeeringPropertiesFormat {
     }
 
     /**
-     * Set the remoteAddressSpace property: The reference of the remote virtual
-     * network address space.
-     * 
+     * Set the remoteAddressSpace property: The reference of the remote virtual network address space.
+     *
      * @param remoteAddressSpace the remoteAddressSpace value to set.
      * @return the VirtualNetworkPeeringPropertiesFormat object itself.
      */
@@ -231,10 +213,9 @@ public final class VirtualNetworkPeeringPropertiesFormat {
     }
 
     /**
-     * Get the peeringState property: The status of the virtual network
-     * peering. Possible values are 'Initiated', 'Connected', and
-     * 'Disconnected'.
-     * 
+     * Get the peeringState property: The status of the virtual network peering. Possible values are 'Initiated',
+     * 'Connected', and 'Disconnected'.
+     *
      * @return the peeringState value.
      */
     public VirtualNetworkPeeringState peeringState() {
@@ -242,10 +223,9 @@ public final class VirtualNetworkPeeringPropertiesFormat {
     }
 
     /**
-     * Set the peeringState property: The status of the virtual network
-     * peering. Possible values are 'Initiated', 'Connected', and
-     * 'Disconnected'.
-     * 
+     * Set the peeringState property: The status of the virtual network peering. Possible values are 'Initiated',
+     * 'Connected', and 'Disconnected'.
+     *
      * @param peeringState the peeringState value to set.
      * @return the VirtualNetworkPeeringPropertiesFormat object itself.
      */
@@ -255,9 +235,8 @@ public final class VirtualNetworkPeeringPropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the
-     * resource.
-     * 
+     * Get the provisioningState property: The provisioning state of the resource.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -265,9 +244,8 @@ public final class VirtualNetworkPeeringPropertiesFormat {
     }
 
     /**
-     * Set the provisioningState property: The provisioning state of the
-     * resource.
-     * 
+     * Set the provisioningState property: The provisioning state of the resource.
+     *
      * @param provisioningState the provisioningState value to set.
      * @return the VirtualNetworkPeeringPropertiesFormat object itself.
      */
@@ -278,7 +256,7 @@ public final class VirtualNetworkPeeringPropertiesFormat {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

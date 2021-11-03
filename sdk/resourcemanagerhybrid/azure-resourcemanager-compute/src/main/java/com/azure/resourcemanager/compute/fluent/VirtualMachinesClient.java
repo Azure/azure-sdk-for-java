@@ -8,8 +8,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
@@ -30,19 +28,18 @@ import com.azure.resourcemanager.compute.models.VirtualMachineReimageParameters;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
-import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * VirtualMachinesClient.
- */
-public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineInner>, InnerSupportsListing<VirtualMachineInner>, InnerSupportsDelete<Void> {
+/** An instance of this class provides access to all the operations defined in VirtualMachinesClient. */
+public interface VirtualMachinesClient
+    extends InnerSupportsGet<VirtualMachineInner>,
+        InnerSupportsListing<VirtualMachineInner>,
+        InnerSupportsDelete<Void> {
     /**
      * Gets all the virtual machines under the specified subscription for the specified location.
-     * 
+     *
      * @param location The location for which virtual machines under the subscription are queried.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -54,7 +51,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * Gets all the virtual machines under the specified subscription for the specified location.
-     * 
+     *
      * @param location The location for which virtual machines under the subscription are queried.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -66,7 +63,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * Gets all the virtual machines under the specified subscription for the specified location.
-     * 
+     *
      * @param location The location for which virtual machines under the subscription are queried.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -78,8 +75,9 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
     PagedIterable<VirtualMachineInner> listByLocation(String location, Context context);
 
     /**
-     * Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create similar VMs.
-     * 
+     * Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create similar
+     * VMs.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Capture Virtual Machine operation.
@@ -89,11 +87,13 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @return output of virtual machine capture operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> captureWithResponseAsync(String resourceGroupName, String vmName, VirtualMachineCaptureParameters parameters);
+    Mono<Response<Flux<ByteBuffer>>> captureWithResponseAsync(
+        String resourceGroupName, String vmName, VirtualMachineCaptureParameters parameters);
 
     /**
-     * Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create similar VMs.
-     * 
+     * Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create similar
+     * VMs.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Capture Virtual Machine operation.
@@ -103,11 +103,13 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @return output of virtual machine capture operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<VirtualMachineCaptureResultInner>, VirtualMachineCaptureResultInner> beginCaptureAsync(String resourceGroupName, String vmName, VirtualMachineCaptureParameters parameters);
+    PollerFlux<PollResult<VirtualMachineCaptureResultInner>, VirtualMachineCaptureResultInner> beginCaptureAsync(
+        String resourceGroupName, String vmName, VirtualMachineCaptureParameters parameters);
 
     /**
-     * Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create similar VMs.
-     * 
+     * Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create similar
+     * VMs.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Capture Virtual Machine operation.
@@ -117,54 +119,13 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @return output of virtual machine capture operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<VirtualMachineCaptureResultInner>, VirtualMachineCaptureResultInner> beginCapture(String resourceGroupName, String vmName, VirtualMachineCaptureParameters parameters);
+    SyncPoller<PollResult<VirtualMachineCaptureResultInner>, VirtualMachineCaptureResultInner> beginCapture(
+        String resourceGroupName, String vmName, VirtualMachineCaptureParameters parameters);
 
     /**
-     * Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create similar VMs.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the Capture Virtual Machine operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of virtual machine capture operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<VirtualMachineCaptureResultInner>, VirtualMachineCaptureResultInner> beginCapture(String resourceGroupName, String vmName, VirtualMachineCaptureParameters parameters, Context context);
-
-    /**
-     * Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create similar VMs.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the Capture Virtual Machine operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of virtual machine capture operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VirtualMachineCaptureResultInner> captureAsync(String resourceGroupName, String vmName, VirtualMachineCaptureParameters parameters);
-
-    /**
-     * Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create similar VMs.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmName The name of the virtual machine.
-     * @param parameters Parameters supplied to the Capture Virtual Machine operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return output of virtual machine capture operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualMachineCaptureResultInner capture(String resourceGroupName, String vmName, VirtualMachineCaptureParameters parameters);
-
-    /**
-     * Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create similar VMs.
-     * 
+     * Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create similar
+     * VMs.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Capture Virtual Machine operation.
@@ -175,11 +136,62 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @return output of virtual machine capture operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualMachineCaptureResultInner capture(String resourceGroupName, String vmName, VirtualMachineCaptureParameters parameters, Context context);
+    SyncPoller<PollResult<VirtualMachineCaptureResultInner>, VirtualMachineCaptureResultInner> beginCapture(
+        String resourceGroupName, String vmName, VirtualMachineCaptureParameters parameters, Context context);
 
     /**
-     * The operation to create or update a virtual machine. Please note some properties can be set only during virtual machine creation.
-     * 
+     * Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create similar
+     * VMs.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @param parameters Parameters supplied to the Capture Virtual Machine operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return output of virtual machine capture operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<VirtualMachineCaptureResultInner> captureAsync(
+        String resourceGroupName, String vmName, VirtualMachineCaptureParameters parameters);
+
+    /**
+     * Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create similar
+     * VMs.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @param parameters Parameters supplied to the Capture Virtual Machine operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return output of virtual machine capture operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VirtualMachineCaptureResultInner capture(
+        String resourceGroupName, String vmName, VirtualMachineCaptureParameters parameters);
+
+    /**
+     * Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create similar
+     * VMs.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @param parameters Parameters supplied to the Capture Virtual Machine operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return output of virtual machine capture operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VirtualMachineCaptureResultInner capture(
+        String resourceGroupName, String vmName, VirtualMachineCaptureParameters parameters, Context context);
+
+    /**
+     * The operation to create or update a virtual machine. Please note some properties can be set only during virtual
+     * machine creation.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Create Virtual Machine operation.
@@ -189,11 +201,13 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @return describes a Virtual Machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String vmName, VirtualMachineInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String vmName, VirtualMachineInner parameters);
 
     /**
-     * The operation to create or update a virtual machine. Please note some properties can be set only during virtual machine creation.
-     * 
+     * The operation to create or update a virtual machine. Please note some properties can be set only during virtual
+     * machine creation.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Create Virtual Machine operation.
@@ -203,11 +217,13 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @return describes a Virtual Machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<VirtualMachineInner>, VirtualMachineInner> beginCreateOrUpdateAsync(String resourceGroupName, String vmName, VirtualMachineInner parameters);
+    PollerFlux<PollResult<VirtualMachineInner>, VirtualMachineInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String vmName, VirtualMachineInner parameters);
 
     /**
-     * The operation to create or update a virtual machine. Please note some properties can be set only during virtual machine creation.
-     * 
+     * The operation to create or update a virtual machine. Please note some properties can be set only during virtual
+     * machine creation.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Create Virtual Machine operation.
@@ -217,11 +233,13 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @return describes a Virtual Machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginCreateOrUpdate(String resourceGroupName, String vmName, VirtualMachineInner parameters);
+    SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginCreateOrUpdate(
+        String resourceGroupName, String vmName, VirtualMachineInner parameters);
 
     /**
-     * The operation to create or update a virtual machine. Please note some properties can be set only during virtual machine creation.
-     * 
+     * The operation to create or update a virtual machine. Please note some properties can be set only during virtual
+     * machine creation.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Create Virtual Machine operation.
@@ -232,11 +250,13 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @return describes a Virtual Machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginCreateOrUpdate(String resourceGroupName, String vmName, VirtualMachineInner parameters, Context context);
+    SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginCreateOrUpdate(
+        String resourceGroupName, String vmName, VirtualMachineInner parameters, Context context);
 
     /**
-     * The operation to create or update a virtual machine. Please note some properties can be set only during virtual machine creation.
-     * 
+     * The operation to create or update a virtual machine. Please note some properties can be set only during virtual
+     * machine creation.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Create Virtual Machine operation.
@@ -246,11 +266,13 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @return describes a Virtual Machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VirtualMachineInner> createOrUpdateAsync(String resourceGroupName, String vmName, VirtualMachineInner parameters);
+    Mono<VirtualMachineInner> createOrUpdateAsync(
+        String resourceGroupName, String vmName, VirtualMachineInner parameters);
 
     /**
-     * The operation to create or update a virtual machine. Please note some properties can be set only during virtual machine creation.
-     * 
+     * The operation to create or update a virtual machine. Please note some properties can be set only during virtual
+     * machine creation.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Create Virtual Machine operation.
@@ -263,8 +285,9 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
     VirtualMachineInner createOrUpdate(String resourceGroupName, String vmName, VirtualMachineInner parameters);
 
     /**
-     * The operation to create or update a virtual machine. Please note some properties can be set only during virtual machine creation.
-     * 
+     * The operation to create or update a virtual machine. Please note some properties can be set only during virtual
+     * machine creation.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Create Virtual Machine operation.
@@ -275,11 +298,12 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @return describes a Virtual Machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualMachineInner createOrUpdate(String resourceGroupName, String vmName, VirtualMachineInner parameters, Context context);
+    VirtualMachineInner createOrUpdate(
+        String resourceGroupName, String vmName, VirtualMachineInner parameters, Context context);
 
     /**
      * The operation to update a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Update Virtual Machine operation.
@@ -289,11 +313,12 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @return describes a Virtual Machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String vmName, VirtualMachineUpdateInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
+        String resourceGroupName, String vmName, VirtualMachineUpdateInner parameters);
 
     /**
      * The operation to update a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Update Virtual Machine operation.
@@ -303,11 +328,12 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @return describes a Virtual Machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<VirtualMachineInner>, VirtualMachineInner> beginUpdateAsync(String resourceGroupName, String vmName, VirtualMachineUpdateInner parameters);
+    PollerFlux<PollResult<VirtualMachineInner>, VirtualMachineInner> beginUpdateAsync(
+        String resourceGroupName, String vmName, VirtualMachineUpdateInner parameters);
 
     /**
      * The operation to update a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Update Virtual Machine operation.
@@ -317,11 +343,12 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @return describes a Virtual Machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginUpdate(String resourceGroupName, String vmName, VirtualMachineUpdateInner parameters);
+    SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginUpdate(
+        String resourceGroupName, String vmName, VirtualMachineUpdateInner parameters);
 
     /**
      * The operation to update a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Update Virtual Machine operation.
@@ -332,11 +359,12 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @return describes a Virtual Machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginUpdate(String resourceGroupName, String vmName, VirtualMachineUpdateInner parameters, Context context);
+    SyncPoller<PollResult<VirtualMachineInner>, VirtualMachineInner> beginUpdate(
+        String resourceGroupName, String vmName, VirtualMachineUpdateInner parameters, Context context);
 
     /**
      * The operation to update a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Update Virtual Machine operation.
@@ -346,11 +374,12 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @return describes a Virtual Machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VirtualMachineInner> updateAsync(String resourceGroupName, String vmName, VirtualMachineUpdateInner parameters);
+    Mono<VirtualMachineInner> updateAsync(
+        String resourceGroupName, String vmName, VirtualMachineUpdateInner parameters);
 
     /**
      * The operation to update a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Update Virtual Machine operation.
@@ -364,7 +393,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to update a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Update Virtual Machine operation.
@@ -375,11 +404,12 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @return describes a Virtual Machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualMachineInner update(String resourceGroupName, String vmName, VirtualMachineUpdateInner parameters, Context context);
+    VirtualMachineInner update(
+        String resourceGroupName, String vmName, VirtualMachineUpdateInner parameters, Context context);
 
     /**
      * The operation to delete a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param forceDeletion Optional parameter to force delete virtual machines.(Feature in Preview).
@@ -389,11 +419,12 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String vmName, Boolean forceDeletion);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String vmName, Boolean forceDeletion);
 
     /**
      * The operation to delete a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param forceDeletion Optional parameter to force delete virtual machines.(Feature in Preview).
@@ -407,7 +438,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to delete a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param forceDeletion Optional parameter to force delete virtual machines.(Feature in Preview).
@@ -421,7 +452,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to delete a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param forceDeletion Optional parameter to force delete virtual machines.(Feature in Preview).
@@ -432,11 +463,12 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vmName, Boolean forceDeletion, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String vmName, Boolean forceDeletion, Context context);
 
     /**
      * The operation to delete a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param forceDeletion Optional parameter to force delete virtual machines.(Feature in Preview).
@@ -450,7 +482,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to delete a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -463,7 +495,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to delete a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param forceDeletion Optional parameter to force delete virtual machines.(Feature in Preview).
@@ -476,7 +508,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to delete a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -488,7 +520,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to delete a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param forceDeletion Optional parameter to force delete virtual machines.(Feature in Preview).
@@ -502,7 +534,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * Retrieves information about the model view or the instance view of a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param expand The expand expression to apply on the operation.
@@ -512,11 +544,12 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @return describes a Virtual Machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<VirtualMachineInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String vmName, InstanceViewTypes expand);
+    Mono<Response<VirtualMachineInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String vmName, InstanceViewTypes expand);
 
     /**
      * Retrieves information about the model view or the instance view of a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param expand The expand expression to apply on the operation.
@@ -526,11 +559,12 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @return describes a Virtual Machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VirtualMachineInner> getByResourceGroupAsync(String resourceGroupName, String vmName, InstanceViewTypes expand);
+    Mono<VirtualMachineInner> getByResourceGroupAsync(
+        String resourceGroupName, String vmName, InstanceViewTypes expand);
 
     /**
      * Retrieves information about the model view or the instance view of a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -543,7 +577,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * Retrieves information about the model view or the instance view of a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -556,7 +590,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * Retrieves information about the model view or the instance view of a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param expand The expand expression to apply on the operation.
@@ -567,11 +601,12 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @return describes a Virtual Machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VirtualMachineInner> getByResourceGroupWithResponse(String resourceGroupName, String vmName, InstanceViewTypes expand, Context context);
+    Response<VirtualMachineInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String vmName, InstanceViewTypes expand, Context context);
 
     /**
      * Retrieves information about the run-time state of a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -580,11 +615,12 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @return the instance view of a virtual machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<VirtualMachineInstanceViewInner>> instanceViewWithResponseAsync(String resourceGroupName, String vmName);
+    Mono<Response<VirtualMachineInstanceViewInner>> instanceViewWithResponseAsync(
+        String resourceGroupName, String vmName);
 
     /**
      * Retrieves information about the run-time state of a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -597,7 +633,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * Retrieves information about the run-time state of a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -610,7 +646,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * Retrieves information about the run-time state of a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -620,11 +656,13 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @return the instance view of a virtual machine.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VirtualMachineInstanceViewInner> instanceViewWithResponse(String resourceGroupName, String vmName, Context context);
+    Response<VirtualMachineInstanceViewInner> instanceViewWithResponse(
+        String resourceGroupName, String vmName, Context context);
 
     /**
-     * Converts virtual machine disks from blob-based to managed disks. Virtual machine must be stop-deallocated before invoking this operation.
-     * 
+     * Converts virtual machine disks from blob-based to managed disks. Virtual machine must be stop-deallocated before
+     * invoking this operation.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -636,8 +674,9 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
     Mono<Response<Flux<ByteBuffer>>> convertToManagedDisksWithResponseAsync(String resourceGroupName, String vmName);
 
     /**
-     * Converts virtual machine disks from blob-based to managed disks. Virtual machine must be stop-deallocated before invoking this operation.
-     * 
+     * Converts virtual machine disks from blob-based to managed disks. Virtual machine must be stop-deallocated before
+     * invoking this operation.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -649,8 +688,9 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
     PollerFlux<PollResult<Void>, Void> beginConvertToManagedDisksAsync(String resourceGroupName, String vmName);
 
     /**
-     * Converts virtual machine disks from blob-based to managed disks. Virtual machine must be stop-deallocated before invoking this operation.
-     * 
+     * Converts virtual machine disks from blob-based to managed disks. Virtual machine must be stop-deallocated before
+     * invoking this operation.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -662,8 +702,9 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
     SyncPoller<PollResult<Void>, Void> beginConvertToManagedDisks(String resourceGroupName, String vmName);
 
     /**
-     * Converts virtual machine disks from blob-based to managed disks. Virtual machine must be stop-deallocated before invoking this operation.
-     * 
+     * Converts virtual machine disks from blob-based to managed disks. Virtual machine must be stop-deallocated before
+     * invoking this operation.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -673,11 +714,13 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginConvertToManagedDisks(String resourceGroupName, String vmName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginConvertToManagedDisks(
+        String resourceGroupName, String vmName, Context context);
 
     /**
-     * Converts virtual machine disks from blob-based to managed disks. Virtual machine must be stop-deallocated before invoking this operation.
-     * 
+     * Converts virtual machine disks from blob-based to managed disks. Virtual machine must be stop-deallocated before
+     * invoking this operation.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -689,8 +732,9 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
     Mono<Void> convertToManagedDisksAsync(String resourceGroupName, String vmName);
 
     /**
-     * Converts virtual machine disks from blob-based to managed disks. Virtual machine must be stop-deallocated before invoking this operation.
-     * 
+     * Converts virtual machine disks from blob-based to managed disks. Virtual machine must be stop-deallocated before
+     * invoking this operation.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -701,8 +745,9 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
     void convertToManagedDisks(String resourceGroupName, String vmName);
 
     /**
-     * Converts virtual machine disks from blob-based to managed disks. Virtual machine must be stop-deallocated before invoking this operation.
-     * 
+     * Converts virtual machine disks from blob-based to managed disks. Virtual machine must be stop-deallocated before
+     * invoking this operation.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -714,8 +759,9 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
     void convertToManagedDisks(String resourceGroupName, String vmName, Context context);
 
     /**
-     * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources that this virtual machine uses.
-     * 
+     * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
+     * that this virtual machine uses.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -727,8 +773,9 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
     Mono<Response<Flux<ByteBuffer>>> deallocateWithResponseAsync(String resourceGroupName, String vmName);
 
     /**
-     * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources that this virtual machine uses.
-     * 
+     * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
+     * that this virtual machine uses.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -740,8 +787,9 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
     PollerFlux<PollResult<Void>, Void> beginDeallocateAsync(String resourceGroupName, String vmName);
 
     /**
-     * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources that this virtual machine uses.
-     * 
+     * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
+     * that this virtual machine uses.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -753,8 +801,9 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
     SyncPoller<PollResult<Void>, Void> beginDeallocate(String resourceGroupName, String vmName);
 
     /**
-     * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources that this virtual machine uses.
-     * 
+     * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
+     * that this virtual machine uses.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -767,8 +816,9 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
     SyncPoller<PollResult<Void>, Void> beginDeallocate(String resourceGroupName, String vmName, Context context);
 
     /**
-     * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources that this virtual machine uses.
-     * 
+     * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
+     * that this virtual machine uses.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -780,8 +830,9 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
     Mono<Void> deallocateAsync(String resourceGroupName, String vmName);
 
     /**
-     * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources that this virtual machine uses.
-     * 
+     * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
+     * that this virtual machine uses.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -792,8 +843,9 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
     void deallocate(String resourceGroupName, String vmName);
 
     /**
-     * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources that this virtual machine uses.
-     * 
+     * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources
+     * that this virtual machine uses.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -805,8 +857,12 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
     void deallocate(String resourceGroupName, String vmName, Context context);
 
     /**
-     * Sets the OS state of the virtual machine to generalized. It is recommended to sysprep the virtual machine before performing this operation. &lt;br&gt;For Windows, please refer to [Create a managed image of a generalized VM in Azure](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/capture-image-resource).&lt;br&gt;For Linux, please refer to [How to create an image of a virtual machine or VHD](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/capture-image).
-     * 
+     * Sets the OS state of the virtual machine to generalized. It is recommended to sysprep the virtual machine before
+     * performing this operation. &lt;br&gt;For Windows, please refer to [Create a managed image of a generalized VM in
+     * Azure](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/capture-image-resource).&lt;br&gt;For
+     * Linux, please refer to [How to create an image of a virtual machine or
+     * VHD](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/capture-image).
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -818,8 +874,12 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
     Mono<Response<Void>> generalizeWithResponseAsync(String resourceGroupName, String vmName);
 
     /**
-     * Sets the OS state of the virtual machine to generalized. It is recommended to sysprep the virtual machine before performing this operation. &lt;br&gt;For Windows, please refer to [Create a managed image of a generalized VM in Azure](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/capture-image-resource).&lt;br&gt;For Linux, please refer to [How to create an image of a virtual machine or VHD](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/capture-image).
-     * 
+     * Sets the OS state of the virtual machine to generalized. It is recommended to sysprep the virtual machine before
+     * performing this operation. &lt;br&gt;For Windows, please refer to [Create a managed image of a generalized VM in
+     * Azure](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/capture-image-resource).&lt;br&gt;For
+     * Linux, please refer to [How to create an image of a virtual machine or
+     * VHD](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/capture-image).
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -831,8 +891,12 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
     Mono<Void> generalizeAsync(String resourceGroupName, String vmName);
 
     /**
-     * Sets the OS state of the virtual machine to generalized. It is recommended to sysprep the virtual machine before performing this operation. &lt;br&gt;For Windows, please refer to [Create a managed image of a generalized VM in Azure](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/capture-image-resource).&lt;br&gt;For Linux, please refer to [How to create an image of a virtual machine or VHD](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/capture-image).
-     * 
+     * Sets the OS state of the virtual machine to generalized. It is recommended to sysprep the virtual machine before
+     * performing this operation. &lt;br&gt;For Windows, please refer to [Create a managed image of a generalized VM in
+     * Azure](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/capture-image-resource).&lt;br&gt;For
+     * Linux, please refer to [How to create an image of a virtual machine or
+     * VHD](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/capture-image).
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -843,8 +907,12 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
     void generalize(String resourceGroupName, String vmName);
 
     /**
-     * Sets the OS state of the virtual machine to generalized. It is recommended to sysprep the virtual machine before performing this operation. &lt;br&gt;For Windows, please refer to [Create a managed image of a generalized VM in Azure](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/capture-image-resource).&lt;br&gt;For Linux, please refer to [How to create an image of a virtual machine or VHD](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/capture-image).
-     * 
+     * Sets the OS state of the virtual machine to generalized. It is recommended to sysprep the virtual machine before
+     * performing this operation. &lt;br&gt;For Windows, please refer to [Create a managed image of a generalized VM in
+     * Azure](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/capture-image-resource).&lt;br&gt;For
+     * Linux, please refer to [How to create an image of a virtual machine or
+     * VHD](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/capture-image).
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -857,8 +925,9 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
     Response<Void> generalizeWithResponse(String resourceGroupName, String vmName, Context context);
 
     /**
-     * Lists all of the virtual machines in the specified resource group. Use the nextLink property in the response to get the next page of virtual machines.
-     * 
+     * Lists all of the virtual machines in the specified resource group. Use the nextLink property in the response to
+     * get the next page of virtual machines.
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -869,8 +938,9 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
     PagedFlux<VirtualMachineInner> listByResourceGroupAsync(String resourceGroupName);
 
     /**
-     * Lists all of the virtual machines in the specified resource group. Use the nextLink property in the response to get the next page of virtual machines.
-     * 
+     * Lists all of the virtual machines in the specified resource group. Use the nextLink property in the response to
+     * get the next page of virtual machines.
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -881,8 +951,9 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
     PagedIterable<VirtualMachineInner> listByResourceGroup(String resourceGroupName);
 
     /**
-     * Lists all of the virtual machines in the specified resource group. Use the nextLink property in the response to get the next page of virtual machines.
-     * 
+     * Lists all of the virtual machines in the specified resource group. Use the nextLink property in the response to
+     * get the next page of virtual machines.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -894,8 +965,9 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
     PagedIterable<VirtualMachineInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get the next page of virtual machines.
-     * 
+     * Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get
+     * the next page of virtual machines.
+     *
      * @param statusOnly statusOnly=true enables fetching run time status of all Virtual Machines in the subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -906,8 +978,9 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
     PagedFlux<VirtualMachineInner> listAsync(String statusOnly);
 
     /**
-     * Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get the next page of virtual machines.
-     * 
+     * Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get
+     * the next page of virtual machines.
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Virtual Machine operation response.
@@ -916,8 +989,9 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
     PagedFlux<VirtualMachineInner> listAsync();
 
     /**
-     * Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get the next page of virtual machines.
-     * 
+     * Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get
+     * the next page of virtual machines.
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Virtual Machine operation response.
@@ -926,8 +1000,9 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
     PagedIterable<VirtualMachineInner> list();
 
     /**
-     * Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get the next page of virtual machines.
-     * 
+     * Lists all of the virtual machines in the specified subscription. Use the nextLink property in the response to get
+     * the next page of virtual machines.
+     *
      * @param statusOnly statusOnly=true enables fetching run time status of all Virtual Machines in the subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -940,7 +1015,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * Lists all available virtual machine sizes to which the specified virtual machine can be resized.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -953,7 +1028,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * Lists all available virtual machine sizes to which the specified virtual machine can be resized.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -966,7 +1041,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * Lists all available virtual machine sizes to which the specified virtual machine can be resized.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -979,39 +1054,50 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
     PagedIterable<VirtualMachineSizeInner> listAvailableSizes(String resourceGroupName, String vmName, Context context);
 
     /**
-     * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same provisioned resources. You are still charged for this virtual machine.
-     * 
+     * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same
+     * provisioned resources. You are still charged for this virtual machine.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param skipShutdown The parameter to request non-graceful VM shutdown. True value for this flag indicates non-graceful shutdown whereas false indicates otherwise. Default value for this flag is false if not specified.
+     * @param skipShutdown The parameter to request non-graceful VM shutdown. True value for this flag indicates
+     *     non-graceful shutdown whereas false indicates otherwise. Default value for this flag is false if not
+     *     specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> powerOffWithResponseAsync(String resourceGroupName, String vmName, Boolean skipShutdown);
+    Mono<Response<Flux<ByteBuffer>>> powerOffWithResponseAsync(
+        String resourceGroupName, String vmName, Boolean skipShutdown);
 
     /**
-     * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same provisioned resources. You are still charged for this virtual machine.
-     * 
+     * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same
+     * provisioned resources. You are still charged for this virtual machine.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param skipShutdown The parameter to request non-graceful VM shutdown. True value for this flag indicates non-graceful shutdown whereas false indicates otherwise. Default value for this flag is false if not specified.
+     * @param skipShutdown The parameter to request non-graceful VM shutdown. True value for this flag indicates
+     *     non-graceful shutdown whereas false indicates otherwise. Default value for this flag is false if not
+     *     specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<Void>, Void> beginPowerOffAsync(String resourceGroupName, String vmName, Boolean skipShutdown);
+    PollerFlux<PollResult<Void>, Void> beginPowerOffAsync(
+        String resourceGroupName, String vmName, Boolean skipShutdown);
 
     /**
-     * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same provisioned resources. You are still charged for this virtual machine.
-     * 
+     * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same
+     * provisioned resources. You are still charged for this virtual machine.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param skipShutdown The parameter to request non-graceful VM shutdown. True value for this flag indicates non-graceful shutdown whereas false indicates otherwise. Default value for this flag is false if not specified.
+     * @param skipShutdown The parameter to request non-graceful VM shutdown. True value for this flag indicates
+     *     non-graceful shutdown whereas false indicates otherwise. Default value for this flag is false if not
+     *     specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1021,11 +1107,14 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
     SyncPoller<PollResult<Void>, Void> beginPowerOff(String resourceGroupName, String vmName, Boolean skipShutdown);
 
     /**
-     * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same provisioned resources. You are still charged for this virtual machine.
-     * 
+     * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same
+     * provisioned resources. You are still charged for this virtual machine.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param skipShutdown The parameter to request non-graceful VM shutdown. True value for this flag indicates non-graceful shutdown whereas false indicates otherwise. Default value for this flag is false if not specified.
+     * @param skipShutdown The parameter to request non-graceful VM shutdown. True value for this flag indicates
+     *     non-graceful shutdown whereas false indicates otherwise. Default value for this flag is false if not
+     *     specified.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1033,14 +1122,18 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginPowerOff(String resourceGroupName, String vmName, Boolean skipShutdown, Context context);
+    SyncPoller<PollResult<Void>, Void> beginPowerOff(
+        String resourceGroupName, String vmName, Boolean skipShutdown, Context context);
 
     /**
-     * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same provisioned resources. You are still charged for this virtual machine.
-     * 
+     * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same
+     * provisioned resources. You are still charged for this virtual machine.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param skipShutdown The parameter to request non-graceful VM shutdown. True value for this flag indicates non-graceful shutdown whereas false indicates otherwise. Default value for this flag is false if not specified.
+     * @param skipShutdown The parameter to request non-graceful VM shutdown. True value for this flag indicates
+     *     non-graceful shutdown whereas false indicates otherwise. Default value for this flag is false if not
+     *     specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1050,8 +1143,9 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
     Mono<Void> powerOffAsync(String resourceGroupName, String vmName, Boolean skipShutdown);
 
     /**
-     * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same provisioned resources. You are still charged for this virtual machine.
-     * 
+     * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same
+     * provisioned resources. You are still charged for this virtual machine.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1063,11 +1157,14 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
     Mono<Void> powerOffAsync(String resourceGroupName, String vmName);
 
     /**
-     * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same provisioned resources. You are still charged for this virtual machine.
-     * 
+     * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same
+     * provisioned resources. You are still charged for this virtual machine.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param skipShutdown The parameter to request non-graceful VM shutdown. True value for this flag indicates non-graceful shutdown whereas false indicates otherwise. Default value for this flag is false if not specified.
+     * @param skipShutdown The parameter to request non-graceful VM shutdown. True value for this flag indicates
+     *     non-graceful shutdown whereas false indicates otherwise. Default value for this flag is false if not
+     *     specified.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1076,8 +1173,9 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
     void powerOff(String resourceGroupName, String vmName, Boolean skipShutdown);
 
     /**
-     * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same provisioned resources. You are still charged for this virtual machine.
-     * 
+     * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same
+     * provisioned resources. You are still charged for this virtual machine.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1088,11 +1186,14 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
     void powerOff(String resourceGroupName, String vmName);
 
     /**
-     * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same provisioned resources. You are still charged for this virtual machine.
-     * 
+     * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same
+     * provisioned resources. You are still charged for this virtual machine.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param skipShutdown The parameter to request non-graceful VM shutdown. True value for this flag indicates non-graceful shutdown whereas false indicates otherwise. Default value for this flag is false if not specified.
+     * @param skipShutdown The parameter to request non-graceful VM shutdown. True value for this flag indicates
+     *     non-graceful shutdown whereas false indicates otherwise. Default value for this flag is false if not
+     *     specified.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1103,7 +1204,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to reapply a virtual machine's state.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1116,7 +1217,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to reapply a virtual machine's state.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1129,7 +1230,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to reapply a virtual machine's state.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1142,7 +1243,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to reapply a virtual machine's state.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -1156,7 +1257,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to reapply a virtual machine's state.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1169,7 +1270,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to reapply a virtual machine's state.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1181,7 +1282,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to reapply a virtual machine's state.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -1194,7 +1295,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to restart a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1207,7 +1308,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to restart a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1220,7 +1321,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to restart a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1233,7 +1334,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to restart a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -1247,7 +1348,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to restart a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1260,7 +1361,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to restart a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1272,7 +1373,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to restart a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -1285,7 +1386,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to start a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1298,7 +1399,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to start a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1311,7 +1412,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to start a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1324,7 +1425,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to start a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -1338,7 +1439,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to start a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1351,7 +1452,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to start a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1363,7 +1464,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to start a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -1376,7 +1477,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * Shuts down the virtual machine, moves it to a new node, and powers it back on.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1389,7 +1490,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * Shuts down the virtual machine, moves it to a new node, and powers it back on.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1402,7 +1503,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * Shuts down the virtual machine, moves it to a new node, and powers it back on.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1415,7 +1516,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * Shuts down the virtual machine, moves it to a new node, and powers it back on.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -1429,7 +1530,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * Shuts down the virtual machine, moves it to a new node, and powers it back on.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1442,7 +1543,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * Shuts down the virtual machine, moves it to a new node, and powers it back on.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1454,7 +1555,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * Shuts down the virtual machine, moves it to a new node, and powers it back on.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -1467,7 +1568,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * Reimages the virtual machine which has an ephemeral OS disk back to its initial state.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
@@ -1477,11 +1578,12 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> reimageWithResponseAsync(String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters);
+    Mono<Response<Flux<ByteBuffer>>> reimageWithResponseAsync(
+        String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters);
 
     /**
      * Reimages the virtual machine which has an ephemeral OS disk back to its initial state.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
@@ -1491,11 +1593,12 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<Void>, Void> beginReimageAsync(String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters);
+    PollerFlux<PollResult<Void>, Void> beginReimageAsync(
+        String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters);
 
     /**
      * Reimages the virtual machine which has an ephemeral OS disk back to its initial state.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
@@ -1505,11 +1608,12 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginReimage(String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters);
+    SyncPoller<PollResult<Void>, Void> beginReimage(
+        String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters);
 
     /**
      * Reimages the virtual machine which has an ephemeral OS disk back to its initial state.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
@@ -1520,11 +1624,12 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginReimage(String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters, Context context);
+    SyncPoller<PollResult<Void>, Void> beginReimage(
+        String resourceGroupName, String vmName, VirtualMachineReimageParameters parameters, Context context);
 
     /**
      * Reimages the virtual machine which has an ephemeral OS disk back to its initial state.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
@@ -1538,7 +1643,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * Reimages the virtual machine which has an ephemeral OS disk back to its initial state.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1551,7 +1656,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * Reimages the virtual machine which has an ephemeral OS disk back to its initial state.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
@@ -1564,7 +1669,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * Reimages the virtual machine which has an ephemeral OS disk back to its initial state.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1576,7 +1681,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * Reimages the virtual machine which has an ephemeral OS disk back to its initial state.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Reimage Virtual Machine operation.
@@ -1590,35 +1695,41 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to retrieve SAS URIs for a virtual machine's boot diagnostic logs.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param sasUriExpirationTimeInMinutes Expiration duration in minutes for the SAS URIs with a value between 1 to 1440 minutes. &lt;br&gt;&lt;br&gt;NOTE: If not specified, SAS URIs will be generated with a default expiration duration of 120 minutes.
+     * @param sasUriExpirationTimeInMinutes Expiration duration in minutes for the SAS URIs with a value between 1 to
+     *     1440 minutes. &lt;br&gt;&lt;br&gt;NOTE: If not specified, SAS URIs will be generated with a default
+     *     expiration duration of 120 minutes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the SAS URIs of the console screenshot and serial log blobs.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<RetrieveBootDiagnosticsDataResultInner>> retrieveBootDiagnosticsDataWithResponseAsync(String resourceGroupName, String vmName, Integer sasUriExpirationTimeInMinutes);
+    Mono<Response<RetrieveBootDiagnosticsDataResultInner>> retrieveBootDiagnosticsDataWithResponseAsync(
+        String resourceGroupName, String vmName, Integer sasUriExpirationTimeInMinutes);
 
     /**
      * The operation to retrieve SAS URIs for a virtual machine's boot diagnostic logs.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param sasUriExpirationTimeInMinutes Expiration duration in minutes for the SAS URIs with a value between 1 to 1440 minutes. &lt;br&gt;&lt;br&gt;NOTE: If not specified, SAS URIs will be generated with a default expiration duration of 120 minutes.
+     * @param sasUriExpirationTimeInMinutes Expiration duration in minutes for the SAS URIs with a value between 1 to
+     *     1440 minutes. &lt;br&gt;&lt;br&gt;NOTE: If not specified, SAS URIs will be generated with a default
+     *     expiration duration of 120 minutes.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the SAS URIs of the console screenshot and serial log blobs.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RetrieveBootDiagnosticsDataResultInner> retrieveBootDiagnosticsDataAsync(String resourceGroupName, String vmName, Integer sasUriExpirationTimeInMinutes);
+    Mono<RetrieveBootDiagnosticsDataResultInner> retrieveBootDiagnosticsDataAsync(
+        String resourceGroupName, String vmName, Integer sasUriExpirationTimeInMinutes);
 
     /**
      * The operation to retrieve SAS URIs for a virtual machine's boot diagnostic logs.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1627,11 +1738,12 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @return the SAS URIs of the console screenshot and serial log blobs.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RetrieveBootDiagnosticsDataResultInner> retrieveBootDiagnosticsDataAsync(String resourceGroupName, String vmName);
+    Mono<RetrieveBootDiagnosticsDataResultInner> retrieveBootDiagnosticsDataAsync(
+        String resourceGroupName, String vmName);
 
     /**
      * The operation to retrieve SAS URIs for a virtual machine's boot diagnostic logs.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1644,10 +1756,12 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to retrieve SAS URIs for a virtual machine's boot diagnostic logs.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
-     * @param sasUriExpirationTimeInMinutes Expiration duration in minutes for the SAS URIs with a value between 1 to 1440 minutes. &lt;br&gt;&lt;br&gt;NOTE: If not specified, SAS URIs will be generated with a default expiration duration of 120 minutes.
+     * @param sasUriExpirationTimeInMinutes Expiration duration in minutes for the SAS URIs with a value between 1 to
+     *     1440 minutes. &lt;br&gt;&lt;br&gt;NOTE: If not specified, SAS URIs will be generated with a default
+     *     expiration duration of 120 minutes.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -1655,11 +1769,12 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @return the SAS URIs of the console screenshot and serial log blobs.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RetrieveBootDiagnosticsDataResultInner> retrieveBootDiagnosticsDataWithResponse(String resourceGroupName, String vmName, Integer sasUriExpirationTimeInMinutes, Context context);
+    Response<RetrieveBootDiagnosticsDataResultInner> retrieveBootDiagnosticsDataWithResponse(
+        String resourceGroupName, String vmName, Integer sasUriExpirationTimeInMinutes, Context context);
 
     /**
      * The operation to perform maintenance on a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1672,7 +1787,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to perform maintenance on a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1685,7 +1800,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to perform maintenance on a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1698,7 +1813,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to perform maintenance on a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -1708,11 +1823,12 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginPerformMaintenance(String resourceGroupName, String vmName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginPerformMaintenance(
+        String resourceGroupName, String vmName, Context context);
 
     /**
      * The operation to perform maintenance on a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1725,7 +1841,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to perform maintenance on a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1737,7 +1853,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to perform maintenance on a virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -1750,7 +1866,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to simulate the eviction of spot virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1763,7 +1879,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to simulate the eviction of spot virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1776,7 +1892,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to simulate the eviction of spot virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1788,7 +1904,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * The operation to simulate the eviction of spot virtual machine.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -1802,7 +1918,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * Assess patches on the VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1815,7 +1931,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * Assess patches on the VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1824,11 +1940,12 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @return describes the properties of an AssessPatches result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<VirtualMachineAssessPatchesResultInner>, VirtualMachineAssessPatchesResultInner> beginAssessPatchesAsync(String resourceGroupName, String vmName);
+    PollerFlux<PollResult<VirtualMachineAssessPatchesResultInner>, VirtualMachineAssessPatchesResultInner>
+        beginAssessPatchesAsync(String resourceGroupName, String vmName);
 
     /**
      * Assess patches on the VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1837,11 +1954,12 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @return describes the properties of an AssessPatches result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<VirtualMachineAssessPatchesResultInner>, VirtualMachineAssessPatchesResultInner> beginAssessPatches(String resourceGroupName, String vmName);
+    SyncPoller<PollResult<VirtualMachineAssessPatchesResultInner>, VirtualMachineAssessPatchesResultInner>
+        beginAssessPatches(String resourceGroupName, String vmName);
 
     /**
      * Assess patches on the VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -1851,11 +1969,12 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @return describes the properties of an AssessPatches result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<VirtualMachineAssessPatchesResultInner>, VirtualMachineAssessPatchesResultInner> beginAssessPatches(String resourceGroupName, String vmName, Context context);
+    SyncPoller<PollResult<VirtualMachineAssessPatchesResultInner>, VirtualMachineAssessPatchesResultInner>
+        beginAssessPatches(String resourceGroupName, String vmName, Context context);
 
     /**
      * Assess patches on the VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1868,7 +1987,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * Assess patches on the VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1881,7 +2000,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * Assess patches on the VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param context The context to associate with this operation.
@@ -1895,7 +2014,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * Run command on the VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Run command operation.
@@ -1905,11 +2024,12 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> runCommandWithResponseAsync(String resourceGroupName, String vmName, RunCommandInput parameters);
+    Mono<Response<Flux<ByteBuffer>>> runCommandWithResponseAsync(
+        String resourceGroupName, String vmName, RunCommandInput parameters);
 
     /**
      * Run command on the VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Run command operation.
@@ -1919,11 +2039,12 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<RunCommandResultInner>, RunCommandResultInner> beginRunCommandAsync(String resourceGroupName, String vmName, RunCommandInput parameters);
+    PollerFlux<PollResult<RunCommandResultInner>, RunCommandResultInner> beginRunCommandAsync(
+        String resourceGroupName, String vmName, RunCommandInput parameters);
 
     /**
      * Run command on the VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Run command operation.
@@ -1933,11 +2054,12 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<RunCommandResultInner>, RunCommandResultInner> beginRunCommand(String resourceGroupName, String vmName, RunCommandInput parameters);
+    SyncPoller<PollResult<RunCommandResultInner>, RunCommandResultInner> beginRunCommand(
+        String resourceGroupName, String vmName, RunCommandInput parameters);
 
     /**
      * Run command on the VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Run command operation.
@@ -1948,11 +2070,12 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<RunCommandResultInner>, RunCommandResultInner> beginRunCommand(String resourceGroupName, String vmName, RunCommandInput parameters, Context context);
+    SyncPoller<PollResult<RunCommandResultInner>, RunCommandResultInner> beginRunCommand(
+        String resourceGroupName, String vmName, RunCommandInput parameters, Context context);
 
     /**
      * Run command on the VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Run command operation.
@@ -1966,7 +2089,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * Run command on the VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Run command operation.
@@ -1980,7 +2103,7 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
 
     /**
      * Run command on the VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine.
      * @param parameters Parameters supplied to the Run command operation.
@@ -1991,5 +2114,6 @@ public interface VirtualMachinesClient extends InnerSupportsGet<VirtualMachineIn
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RunCommandResultInner runCommand(String resourceGroupName, String vmName, RunCommandInput parameters, Context context);
+    RunCommandResultInner runCommand(
+        String resourceGroupName, String vmName, RunCommandInput parameters, Context context);
 }

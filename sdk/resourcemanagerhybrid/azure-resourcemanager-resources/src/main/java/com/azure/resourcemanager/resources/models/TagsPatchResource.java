@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Wrapper resource for tags patch API request only.
- */
+/** Wrapper resource for tags patch API request only. */
 @Fluent
 public final class TagsPatchResource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(TagsPatchResource.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(TagsPatchResource.class);
 
     /*
      * The operation type for the patch API.
@@ -33,7 +28,7 @@ public final class TagsPatchResource {
 
     /**
      * Get the operation property: The operation type for the patch API.
-     * 
+     *
      * @return the operation value.
      */
     public TagsPatchOperation operation() {
@@ -42,7 +37,7 @@ public final class TagsPatchResource {
 
     /**
      * Set the operation property: The operation type for the patch API.
-     * 
+     *
      * @param operation the operation value to set.
      * @return the TagsPatchResource object itself.
      */
@@ -53,7 +48,7 @@ public final class TagsPatchResource {
 
     /**
      * Get the properties property: The set of tags.
-     * 
+     *
      * @return the properties value.
      */
     public Tags properties() {
@@ -62,7 +57,7 @@ public final class TagsPatchResource {
 
     /**
      * Set the properties property: The set of tags.
-     * 
+     *
      * @param properties the properties value to set.
      * @return the TagsPatchResource object itself.
      */
@@ -73,7 +68,7 @@ public final class TagsPatchResource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,23 +5,17 @@
 package com.azure.resourcemanager.eventhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.models.ClusterSku;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * Single Event Hubs Cluster resource in List or Get operations.
- */
+/** Single Event Hubs Cluster resource in List or Get operations. */
 @Fluent
 public final class ClusterInner extends Resource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ClusterInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterInner.class);
 
     /*
      * Properties of the cluster SKU.
@@ -38,7 +32,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the sku property: Properties of the cluster SKU.
-     * 
+     *
      * @return the sku value.
      */
     public ClusterSku sku() {
@@ -47,7 +41,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Set the sku property: Properties of the cluster SKU.
-     * 
+     *
      * @param sku the sku value to set.
      * @return the ClusterInner object itself.
      */
@@ -57,27 +51,22 @@ public final class ClusterInner extends Resource {
     }
 
     /**
-     * Get the innerProperties property: Event Hubs Cluster properties supplied
-     * in responses in List or Get operations.
-     * 
+     * Get the innerProperties property: Event Hubs Cluster properties supplied in responses in List or Get operations.
+     *
      * @return the innerProperties value.
      */
     private ClusterProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ClusterInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ClusterInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -85,9 +74,8 @@ public final class ClusterInner extends Resource {
     }
 
     /**
-     * Get the createdAt property: The UTC time when the Event Hubs Cluster was
-     * created.
-     * 
+     * Get the createdAt property: The UTC time when the Event Hubs Cluster was created.
+     *
      * @return the createdAt value.
      */
     public String createdAt() {
@@ -95,9 +83,8 @@ public final class ClusterInner extends Resource {
     }
 
     /**
-     * Get the updatedAt property: The UTC time when the Event Hubs Cluster was
-     * last updated.
-     * 
+     * Get the updatedAt property: The UTC time when the Event Hubs Cluster was last updated.
+     *
      * @return the updatedAt value.
      */
     public String updatedAt() {
@@ -105,9 +92,9 @@ public final class ClusterInner extends Resource {
     }
 
     /**
-     * Get the metricId property: The metric ID of the cluster resource.
-     * Provided by the service and not modifiable by the user.
-     * 
+     * Get the metricId property: The metric ID of the cluster resource. Provided by the service and not modifiable by
+     * the user.
+     *
      * @return the metricId value.
      */
     public String metricId() {
@@ -116,7 +103,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Get the status property: Status of the Cluster resource.
-     * 
+     *
      * @return the status value.
      */
     public String status() {
@@ -125,7 +112,7 @@ public final class ClusterInner extends Resource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

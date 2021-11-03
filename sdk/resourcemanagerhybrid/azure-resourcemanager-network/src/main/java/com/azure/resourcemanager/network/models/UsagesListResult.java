@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.UsageInner;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The list usages operation response.
- */
+/** The list usages operation response. */
 @Fluent
 public final class UsagesListResult {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(UsagesListResult.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsagesListResult.class);
 
     /*
      * The list network resource usages.
@@ -35,7 +30,7 @@ public final class UsagesListResult {
 
     /**
      * Get the value property: The list network resource usages.
-     * 
+     *
      * @return the value value.
      */
     public List<UsageInner> value() {
@@ -44,7 +39,7 @@ public final class UsagesListResult {
 
     /**
      * Set the value property: The list network resource usages.
-     * 
+     *
      * @param value the value value to set.
      * @return the UsagesListResult object itself.
      */
@@ -55,7 +50,7 @@ public final class UsagesListResult {
 
     /**
      * Get the nextLink property: URL to get the next set of results.
-     * 
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -64,7 +59,7 @@ public final class UsagesListResult {
 
     /**
      * Set the nextLink property: URL to get the next set of results.
-     * 
+     *
      * @param nextLink the nextLink value to set.
      * @return the UsagesListResult object itself.
      */
@@ -75,7 +70,7 @@ public final class UsagesListResult {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

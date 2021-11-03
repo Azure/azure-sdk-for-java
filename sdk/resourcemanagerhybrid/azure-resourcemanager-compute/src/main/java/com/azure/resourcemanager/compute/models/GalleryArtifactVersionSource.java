@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The gallery artifact version source.
- */
+/** The gallery artifact version source. */
 @Fluent
 public final class GalleryArtifactVersionSource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(GalleryArtifactVersionSource.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryArtifactVersionSource.class);
 
     /*
      * The id of the gallery artifact version source. Can specify a disk uri,
@@ -27,9 +22,9 @@ public final class GalleryArtifactVersionSource {
     private String id;
 
     /**
-     * Get the id property: The id of the gallery artifact version source. Can
-     * specify a disk uri, snapshot uri, or user image.
-     * 
+     * Get the id property: The id of the gallery artifact version source. Can specify a disk uri, snapshot uri, or user
+     * image.
+     *
      * @return the id value.
      */
     public String id() {
@@ -37,9 +32,9 @@ public final class GalleryArtifactVersionSource {
     }
 
     /**
-     * Set the id property: The id of the gallery artifact version source. Can
-     * specify a disk uri, snapshot uri, or user image.
-     * 
+     * Set the id property: The id of the gallery artifact version source. Can specify a disk uri, snapshot uri, or user
+     * image.
+     *
      * @param id the id value to set.
      * @return the GalleryArtifactVersionSource object itself.
      */
@@ -50,7 +45,7 @@ public final class GalleryArtifactVersionSource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

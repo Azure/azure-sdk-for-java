@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceLinuxProfile;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceNetworkProfile;
@@ -20,20 +19,16 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertie
 import com.azure.resourcemanager.containerservice.models.ManagedClusterServicePrincipalProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterWindowsProfile;
 import com.azure.resourcemanager.containerservice.models.PowerState;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Properties of the managed cluster.
- */
+/** Properties of the managed cluster. */
 @Fluent
 public final class ManagedClusterProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ManagedClusterProperties.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterProperties.class);
 
     /*
      * The current deployment or provisioning state, which only appears in the
@@ -181,9 +176,9 @@ public final class ManagedClusterProperties {
     private Map<String, ManagedClusterPropertiesIdentityProfile> identityProfile;
 
     /**
-     * Get the provisioningState property: The current deployment or
-     * provisioning state, which only appears in the response.
-     * 
+     * Get the provisioningState property: The current deployment or provisioning state, which only appears in the
+     * response.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -192,7 +187,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Get the powerState property: Represents the Power State of the cluster.
-     * 
+     *
      * @return the powerState value.
      */
     public PowerState powerState() {
@@ -200,9 +195,8 @@ public final class ManagedClusterProperties {
     }
 
     /**
-     * Get the maxAgentPools property: The max number of agent pools for the
-     * managed cluster.
-     * 
+     * Get the maxAgentPools property: The max number of agent pools for the managed cluster.
+     *
      * @return the maxAgentPools value.
      */
     public Integer maxAgentPools() {
@@ -210,9 +204,8 @@ public final class ManagedClusterProperties {
     }
 
     /**
-     * Get the kubernetesVersion property: Version of Kubernetes specified when
-     * creating the managed cluster.
-     * 
+     * Get the kubernetesVersion property: Version of Kubernetes specified when creating the managed cluster.
+     *
      * @return the kubernetesVersion value.
      */
     public String kubernetesVersion() {
@@ -220,9 +213,8 @@ public final class ManagedClusterProperties {
     }
 
     /**
-     * Set the kubernetesVersion property: Version of Kubernetes specified when
-     * creating the managed cluster.
-     * 
+     * Set the kubernetesVersion property: Version of Kubernetes specified when creating the managed cluster.
+     *
      * @param kubernetesVersion the kubernetesVersion value to set.
      * @return the ManagedClusterProperties object itself.
      */
@@ -232,9 +224,8 @@ public final class ManagedClusterProperties {
     }
 
     /**
-     * Get the dnsPrefix property: DNS prefix specified when creating the
-     * managed cluster.
-     * 
+     * Get the dnsPrefix property: DNS prefix specified when creating the managed cluster.
+     *
      * @return the dnsPrefix value.
      */
     public String dnsPrefix() {
@@ -242,9 +233,8 @@ public final class ManagedClusterProperties {
     }
 
     /**
-     * Set the dnsPrefix property: DNS prefix specified when creating the
-     * managed cluster.
-     * 
+     * Set the dnsPrefix property: DNS prefix specified when creating the managed cluster.
+     *
      * @param dnsPrefix the dnsPrefix value to set.
      * @return the ManagedClusterProperties object itself.
      */
@@ -255,7 +245,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Get the fqdn property: FQDN for the master pool.
-     * 
+     *
      * @return the fqdn value.
      */
     public String fqdn() {
@@ -264,7 +254,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Get the privateFqdn property: FQDN of private cluster.
-     * 
+     *
      * @return the privateFqdn value.
      */
     public String privateFqdn() {
@@ -273,7 +263,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Get the agentPoolProfiles property: Properties of the agent pool.
-     * 
+     *
      * @return the agentPoolProfiles value.
      */
     public List<ManagedClusterAgentPoolProfile> agentPoolProfiles() {
@@ -282,7 +272,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Set the agentPoolProfiles property: Properties of the agent pool.
-     * 
+     *
      * @param agentPoolProfiles the agentPoolProfiles value to set.
      * @return the ManagedClusterProperties object itself.
      */
@@ -292,9 +282,8 @@ public final class ManagedClusterProperties {
     }
 
     /**
-     * Get the linuxProfile property: Profile for Linux VMs in the container
-     * service cluster.
-     * 
+     * Get the linuxProfile property: Profile for Linux VMs in the container service cluster.
+     *
      * @return the linuxProfile value.
      */
     public ContainerServiceLinuxProfile linuxProfile() {
@@ -302,9 +291,8 @@ public final class ManagedClusterProperties {
     }
 
     /**
-     * Set the linuxProfile property: Profile for Linux VMs in the container
-     * service cluster.
-     * 
+     * Set the linuxProfile property: Profile for Linux VMs in the container service cluster.
+     *
      * @param linuxProfile the linuxProfile value to set.
      * @return the ManagedClusterProperties object itself.
      */
@@ -314,9 +302,8 @@ public final class ManagedClusterProperties {
     }
 
     /**
-     * Get the windowsProfile property: Profile for Windows VMs in the
-     * container service cluster.
-     * 
+     * Get the windowsProfile property: Profile for Windows VMs in the container service cluster.
+     *
      * @return the windowsProfile value.
      */
     public ManagedClusterWindowsProfile windowsProfile() {
@@ -324,9 +311,8 @@ public final class ManagedClusterProperties {
     }
 
     /**
-     * Set the windowsProfile property: Profile for Windows VMs in the
-     * container service cluster.
-     * 
+     * Set the windowsProfile property: Profile for Windows VMs in the container service cluster.
+     *
      * @param windowsProfile the windowsProfile value to set.
      * @return the ManagedClusterProperties object itself.
      */
@@ -336,9 +322,9 @@ public final class ManagedClusterProperties {
     }
 
     /**
-     * Get the servicePrincipalProfile property: Information about a service
-     * principal identity for the cluster to use for manipulating Azure APIs.
-     * 
+     * Get the servicePrincipalProfile property: Information about a service principal identity for the cluster to use
+     * for manipulating Azure APIs.
+     *
      * @return the servicePrincipalProfile value.
      */
     public ManagedClusterServicePrincipalProfile servicePrincipalProfile() {
@@ -346,20 +332,21 @@ public final class ManagedClusterProperties {
     }
 
     /**
-     * Set the servicePrincipalProfile property: Information about a service
-     * principal identity for the cluster to use for manipulating Azure APIs.
-     * 
+     * Set the servicePrincipalProfile property: Information about a service principal identity for the cluster to use
+     * for manipulating Azure APIs.
+     *
      * @param servicePrincipalProfile the servicePrincipalProfile value to set.
      * @return the ManagedClusterProperties object itself.
      */
-    public ManagedClusterProperties withServicePrincipalProfile(ManagedClusterServicePrincipalProfile servicePrincipalProfile) {
+    public ManagedClusterProperties withServicePrincipalProfile(
+        ManagedClusterServicePrincipalProfile servicePrincipalProfile) {
         this.servicePrincipalProfile = servicePrincipalProfile;
         return this;
     }
 
     /**
      * Get the addonProfiles property: Profile of managed cluster add-on.
-     * 
+     *
      * @return the addonProfiles value.
      */
     public Map<String, ManagedClusterAddonProfile> addonProfiles() {
@@ -368,7 +355,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Set the addonProfiles property: Profile of managed cluster add-on.
-     * 
+     *
      * @param addonProfiles the addonProfiles value to set.
      * @return the ManagedClusterProperties object itself.
      */
@@ -378,9 +365,8 @@ public final class ManagedClusterProperties {
     }
 
     /**
-     * Get the podIdentityProfile property: Profile of managed cluster pod
-     * identity.
-     * 
+     * Get the podIdentityProfile property: Profile of managed cluster pod identity.
+     *
      * @return the podIdentityProfile value.
      */
     public ManagedClusterPodIdentityProfile podIdentityProfile() {
@@ -388,9 +374,8 @@ public final class ManagedClusterProperties {
     }
 
     /**
-     * Set the podIdentityProfile property: Profile of managed cluster pod
-     * identity.
-     * 
+     * Set the podIdentityProfile property: Profile of managed cluster pod identity.
+     *
      * @param podIdentityProfile the podIdentityProfile value to set.
      * @return the ManagedClusterProperties object itself.
      */
@@ -400,9 +385,8 @@ public final class ManagedClusterProperties {
     }
 
     /**
-     * Get the nodeResourceGroup property: Name of the resource group
-     * containing agent pool nodes.
-     * 
+     * Get the nodeResourceGroup property: Name of the resource group containing agent pool nodes.
+     *
      * @return the nodeResourceGroup value.
      */
     public String nodeResourceGroup() {
@@ -410,9 +394,8 @@ public final class ManagedClusterProperties {
     }
 
     /**
-     * Set the nodeResourceGroup property: Name of the resource group
-     * containing agent pool nodes.
-     * 
+     * Set the nodeResourceGroup property: Name of the resource group containing agent pool nodes.
+     *
      * @param nodeResourceGroup the nodeResourceGroup value to set.
      * @return the ManagedClusterProperties object itself.
      */
@@ -422,9 +405,8 @@ public final class ManagedClusterProperties {
     }
 
     /**
-     * Get the enableRbac property: Whether to enable Kubernetes Role-Based
-     * Access Control.
-     * 
+     * Get the enableRbac property: Whether to enable Kubernetes Role-Based Access Control.
+     *
      * @return the enableRbac value.
      */
     public Boolean enableRbac() {
@@ -432,9 +414,8 @@ public final class ManagedClusterProperties {
     }
 
     /**
-     * Set the enableRbac property: Whether to enable Kubernetes Role-Based
-     * Access Control.
-     * 
+     * Set the enableRbac property: Whether to enable Kubernetes Role-Based Access Control.
+     *
      * @param enableRbac the enableRbac value to set.
      * @return the ManagedClusterProperties object itself.
      */
@@ -444,10 +425,9 @@ public final class ManagedClusterProperties {
     }
 
     /**
-     * Get the enablePodSecurityPolicy property: (DEPRECATING) Whether to
-     * enable Kubernetes pod security policy (preview). This feature is set for
-     * removal on October 15th, 2020. Learn more at aka.ms/aks/azpodpolicy.
-     * 
+     * Get the enablePodSecurityPolicy property: (DEPRECATING) Whether to enable Kubernetes pod security policy
+     * (preview). This feature is set for removal on October 15th, 2020. Learn more at aka.ms/aks/azpodpolicy.
+     *
      * @return the enablePodSecurityPolicy value.
      */
     public Boolean enablePodSecurityPolicy() {
@@ -455,10 +435,9 @@ public final class ManagedClusterProperties {
     }
 
     /**
-     * Set the enablePodSecurityPolicy property: (DEPRECATING) Whether to
-     * enable Kubernetes pod security policy (preview). This feature is set for
-     * removal on October 15th, 2020. Learn more at aka.ms/aks/azpodpolicy.
-     * 
+     * Set the enablePodSecurityPolicy property: (DEPRECATING) Whether to enable Kubernetes pod security policy
+     * (preview). This feature is set for removal on October 15th, 2020. Learn more at aka.ms/aks/azpodpolicy.
+     *
      * @param enablePodSecurityPolicy the enablePodSecurityPolicy value to set.
      * @return the ManagedClusterProperties object itself.
      */
@@ -469,7 +448,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Get the networkProfile property: Profile of network configuration.
-     * 
+     *
      * @return the networkProfile value.
      */
     public ContainerServiceNetworkProfile networkProfile() {
@@ -478,7 +457,7 @@ public final class ManagedClusterProperties {
 
     /**
      * Set the networkProfile property: Profile of network configuration.
-     * 
+     *
      * @param networkProfile the networkProfile value to set.
      * @return the ManagedClusterProperties object itself.
      */
@@ -488,9 +467,8 @@ public final class ManagedClusterProperties {
     }
 
     /**
-     * Get the aadProfile property: Profile of Azure Active Directory
-     * configuration.
-     * 
+     * Get the aadProfile property: Profile of Azure Active Directory configuration.
+     *
      * @return the aadProfile value.
      */
     public ManagedClusterAadProfile aadProfile() {
@@ -498,9 +476,8 @@ public final class ManagedClusterProperties {
     }
 
     /**
-     * Set the aadProfile property: Profile of Azure Active Directory
-     * configuration.
-     * 
+     * Set the aadProfile property: Profile of Azure Active Directory configuration.
+     *
      * @param aadProfile the aadProfile value to set.
      * @return the ManagedClusterProperties object itself.
      */
@@ -510,9 +487,8 @@ public final class ManagedClusterProperties {
     }
 
     /**
-     * Get the autoUpgradeProfile property: Profile of auto upgrade
-     * configuration.
-     * 
+     * Get the autoUpgradeProfile property: Profile of auto upgrade configuration.
+     *
      * @return the autoUpgradeProfile value.
      */
     public ManagedClusterAutoUpgradeProfile autoUpgradeProfile() {
@@ -520,9 +496,8 @@ public final class ManagedClusterProperties {
     }
 
     /**
-     * Set the autoUpgradeProfile property: Profile of auto upgrade
-     * configuration.
-     * 
+     * Set the autoUpgradeProfile property: Profile of auto upgrade configuration.
+     *
      * @param autoUpgradeProfile the autoUpgradeProfile value to set.
      * @return the ManagedClusterProperties object itself.
      */
@@ -532,9 +507,8 @@ public final class ManagedClusterProperties {
     }
 
     /**
-     * Get the autoScalerProfile property: Parameters to be applied to the
-     * cluster-autoscaler when enabled.
-     * 
+     * Get the autoScalerProfile property: Parameters to be applied to the cluster-autoscaler when enabled.
+     *
      * @return the autoScalerProfile value.
      */
     public ManagedClusterPropertiesAutoScalerProfile autoScalerProfile() {
@@ -542,9 +516,8 @@ public final class ManagedClusterProperties {
     }
 
     /**
-     * Set the autoScalerProfile property: Parameters to be applied to the
-     * cluster-autoscaler when enabled.
-     * 
+     * Set the autoScalerProfile property: Parameters to be applied to the cluster-autoscaler when enabled.
+     *
      * @param autoScalerProfile the autoScalerProfile value to set.
      * @return the ManagedClusterProperties object itself.
      */
@@ -554,9 +527,8 @@ public final class ManagedClusterProperties {
     }
 
     /**
-     * Get the apiServerAccessProfile property: Access profile for managed
-     * cluster API server.
-     * 
+     * Get the apiServerAccessProfile property: Access profile for managed cluster API server.
+     *
      * @return the apiServerAccessProfile value.
      */
     public ManagedClusterApiServerAccessProfile apiServerAccessProfile() {
@@ -564,21 +536,21 @@ public final class ManagedClusterProperties {
     }
 
     /**
-     * Set the apiServerAccessProfile property: Access profile for managed
-     * cluster API server.
-     * 
+     * Set the apiServerAccessProfile property: Access profile for managed cluster API server.
+     *
      * @param apiServerAccessProfile the apiServerAccessProfile value to set.
      * @return the ManagedClusterProperties object itself.
      */
-    public ManagedClusterProperties withApiServerAccessProfile(ManagedClusterApiServerAccessProfile apiServerAccessProfile) {
+    public ManagedClusterProperties withApiServerAccessProfile(
+        ManagedClusterApiServerAccessProfile apiServerAccessProfile) {
         this.apiServerAccessProfile = apiServerAccessProfile;
         return this;
     }
 
     /**
-     * Get the diskEncryptionSetId property: ResourceId of the disk encryption
-     * set to use for enabling encryption at rest.
-     * 
+     * Get the diskEncryptionSetId property: ResourceId of the disk encryption set to use for enabling encryption at
+     * rest.
+     *
      * @return the diskEncryptionSetId value.
      */
     public String diskEncryptionSetId() {
@@ -586,9 +558,9 @@ public final class ManagedClusterProperties {
     }
 
     /**
-     * Set the diskEncryptionSetId property: ResourceId of the disk encryption
-     * set to use for enabling encryption at rest.
-     * 
+     * Set the diskEncryptionSetId property: ResourceId of the disk encryption set to use for enabling encryption at
+     * rest.
+     *
      * @param diskEncryptionSetId the diskEncryptionSetId value to set.
      * @return the ManagedClusterProperties object itself.
      */
@@ -598,9 +570,8 @@ public final class ManagedClusterProperties {
     }
 
     /**
-     * Get the identityProfile property: Identities associated with the
-     * cluster.
-     * 
+     * Get the identityProfile property: Identities associated with the cluster.
+     *
      * @return the identityProfile value.
      */
     public Map<String, ManagedClusterPropertiesIdentityProfile> identityProfile() {
@@ -608,20 +579,20 @@ public final class ManagedClusterProperties {
     }
 
     /**
-     * Set the identityProfile property: Identities associated with the
-     * cluster.
-     * 
+     * Set the identityProfile property: Identities associated with the cluster.
+     *
      * @param identityProfile the identityProfile value to set.
      * @return the ManagedClusterProperties object itself.
      */
-    public ManagedClusterProperties withIdentityProfile(Map<String, ManagedClusterPropertiesIdentityProfile> identityProfile) {
+    public ManagedClusterProperties withIdentityProfile(
+        Map<String, ManagedClusterPropertiesIdentityProfile> identityProfile) {
         this.identityProfile = identityProfile;
         return this;
     }
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -641,7 +612,14 @@ public final class ManagedClusterProperties {
             servicePrincipalProfile().validate();
         }
         if (addonProfiles() != null) {
-            addonProfiles().values().forEach(e -> { if (e != null) { e.validate(); } });
+            addonProfiles()
+                .values()
+                .forEach(
+                    e -> {
+                        if (e != null) {
+                            e.validate();
+                        }
+                    });
         }
         if (podIdentityProfile() != null) {
             podIdentityProfile().validate();
@@ -662,7 +640,14 @@ public final class ManagedClusterProperties {
             apiServerAccessProfile().validate();
         }
         if (identityProfile() != null) {
-            identityProfile().values().forEach(e -> { if (e != null) { e.validate(); } });
+            identityProfile()
+                .values()
+                .forEach(
+                    e -> {
+                        if (e != null) {
+                            e.validate();
+                        }
+                    });
         }
     }
 }

@@ -4,22 +4,17 @@
 
 package com.azure.resourcemanager.storage.fluent.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.StorageAccountKey;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The response from the ListKeys operation.
- */
+/** The response from the ListKeys operation. */
 @Immutable
 public final class StorageAccountListKeysResultInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(StorageAccountListKeysResultInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageAccountListKeysResultInner.class);
 
     /*
      * Gets the list of storage account keys and their properties for the
@@ -29,9 +24,9 @@ public final class StorageAccountListKeysResultInner {
     private List<StorageAccountKey> keys;
 
     /**
-     * Get the keys property: Gets the list of storage account keys and their
-     * properties for the specified storage account.
-     * 
+     * Get the keys property: Gets the list of storage account keys and their properties for the specified storage
+     * account.
+     *
      * @return the keys value.
      */
     public List<StorageAccountKey> keys() {
@@ -40,7 +35,7 @@ public final class StorageAccountListKeysResultInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

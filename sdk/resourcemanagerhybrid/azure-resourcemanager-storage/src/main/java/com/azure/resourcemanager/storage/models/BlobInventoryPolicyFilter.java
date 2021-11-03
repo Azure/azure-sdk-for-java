@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * An object that defines the blob inventory rule filter conditions.
- */
+/** An object that defines the blob inventory rule filter conditions. */
 @Fluent
 public final class BlobInventoryPolicyFilter {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(BlobInventoryPolicyFilter.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(BlobInventoryPolicyFilter.class);
 
     /*
      * An array of strings for blob prefixes to be matched.
@@ -46,9 +41,8 @@ public final class BlobInventoryPolicyFilter {
     private Boolean includeSnapshots;
 
     /**
-     * Get the prefixMatch property: An array of strings for blob prefixes to
-     * be matched.
-     * 
+     * Get the prefixMatch property: An array of strings for blob prefixes to be matched.
+     *
      * @return the prefixMatch value.
      */
     public List<String> prefixMatch() {
@@ -56,9 +50,8 @@ public final class BlobInventoryPolicyFilter {
     }
 
     /**
-     * Set the prefixMatch property: An array of strings for blob prefixes to
-     * be matched.
-     * 
+     * Set the prefixMatch property: An array of strings for blob prefixes to be matched.
+     *
      * @param prefixMatch the prefixMatch value to set.
      * @return the BlobInventoryPolicyFilter object itself.
      */
@@ -68,10 +61,9 @@ public final class BlobInventoryPolicyFilter {
     }
 
     /**
-     * Get the blobTypes property: An array of predefined enum values. Valid
-     * values include blockBlob, appendBlob, pageBlob. Hns accounts does not
-     * support pageBlobs.
-     * 
+     * Get the blobTypes property: An array of predefined enum values. Valid values include blockBlob, appendBlob,
+     * pageBlob. Hns accounts does not support pageBlobs.
+     *
      * @return the blobTypes value.
      */
     public List<String> blobTypes() {
@@ -79,10 +71,9 @@ public final class BlobInventoryPolicyFilter {
     }
 
     /**
-     * Set the blobTypes property: An array of predefined enum values. Valid
-     * values include blockBlob, appendBlob, pageBlob. Hns accounts does not
-     * support pageBlobs.
-     * 
+     * Set the blobTypes property: An array of predefined enum values. Valid values include blockBlob, appendBlob,
+     * pageBlob. Hns accounts does not support pageBlobs.
+     *
      * @param blobTypes the blobTypes value to set.
      * @return the BlobInventoryPolicyFilter object itself.
      */
@@ -92,9 +83,8 @@ public final class BlobInventoryPolicyFilter {
     }
 
     /**
-     * Get the includeBlobVersions property: Includes blob versions in blob
-     * inventory when value set to true.
-     * 
+     * Get the includeBlobVersions property: Includes blob versions in blob inventory when value set to true.
+     *
      * @return the includeBlobVersions value.
      */
     public Boolean includeBlobVersions() {
@@ -102,9 +92,8 @@ public final class BlobInventoryPolicyFilter {
     }
 
     /**
-     * Set the includeBlobVersions property: Includes blob versions in blob
-     * inventory when value set to true.
-     * 
+     * Set the includeBlobVersions property: Includes blob versions in blob inventory when value set to true.
+     *
      * @param includeBlobVersions the includeBlobVersions value to set.
      * @return the BlobInventoryPolicyFilter object itself.
      */
@@ -114,9 +103,8 @@ public final class BlobInventoryPolicyFilter {
     }
 
     /**
-     * Get the includeSnapshots property: Includes blob snapshots in blob
-     * inventory when value set to true.
-     * 
+     * Get the includeSnapshots property: Includes blob snapshots in blob inventory when value set to true.
+     *
      * @return the includeSnapshots value.
      */
     public Boolean includeSnapshots() {
@@ -124,9 +112,8 @@ public final class BlobInventoryPolicyFilter {
     }
 
     /**
-     * Set the includeSnapshots property: Includes blob snapshots in blob
-     * inventory when value set to true.
-     * 
+     * Set the includeSnapshots property: Includes blob snapshots in blob inventory when value set to true.
+     *
      * @param includeSnapshots the includeSnapshots value to set.
      * @return the BlobInventoryPolicyFilter object itself.
      */
@@ -137,12 +124,15 @@ public final class BlobInventoryPolicyFilter {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (blobTypes() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property blobTypes in model BlobInventoryPolicyFilter"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property blobTypes in model BlobInventoryPolicyFilter"));
         }
     }
 }

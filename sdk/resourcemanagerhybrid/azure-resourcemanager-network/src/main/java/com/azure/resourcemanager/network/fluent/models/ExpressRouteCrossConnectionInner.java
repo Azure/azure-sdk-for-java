@@ -5,25 +5,19 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitReference;
 import com.azure.resourcemanager.network.models.ServiceProviderProvisioningState;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/**
- * ExpressRouteCrossConnection resource.
- */
+/** ExpressRouteCrossConnection resource. */
 @Fluent
 public final class ExpressRouteCrossConnectionInner extends Resource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ExpressRouteCrossConnectionInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCrossConnectionInner.class);
 
     /*
      * Properties of ExpressRouteCrossConnection.
@@ -45,9 +39,8 @@ public final class ExpressRouteCrossConnectionInner extends Resource {
     private String id;
 
     /**
-     * Get the innerProperties property: Properties of
-     * ExpressRouteCrossConnection.
-     * 
+     * Get the innerProperties property: Properties of ExpressRouteCrossConnection.
+     *
      * @return the innerProperties value.
      */
     private ExpressRouteCrossConnectionProperties innerProperties() {
@@ -55,9 +48,8 @@ public final class ExpressRouteCrossConnectionInner extends Resource {
     }
 
     /**
-     * Get the etag property: Gets a unique read-only string that changes
-     * whenever the resource is updated.
-     * 
+     * Get the etag property: Gets a unique read-only string that changes whenever the resource is updated.
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -66,7 +58,7 @@ public final class ExpressRouteCrossConnectionInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -75,7 +67,7 @@ public final class ExpressRouteCrossConnectionInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     * 
+     *
      * @param id the id value to set.
      * @return the ExpressRouteCrossConnectionInner object itself.
      */
@@ -84,18 +76,14 @@ public final class ExpressRouteCrossConnectionInner extends Resource {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ExpressRouteCrossConnectionInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ExpressRouteCrossConnectionInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -103,8 +91,8 @@ public final class ExpressRouteCrossConnectionInner extends Resource {
     }
 
     /**
-     * Get the primaryAzurePort property: The name of the primary  port.
-     * 
+     * Get the primaryAzurePort property: The name of the primary port.
+     *
      * @return the primaryAzurePort value.
      */
     public String primaryAzurePort() {
@@ -112,8 +100,8 @@ public final class ExpressRouteCrossConnectionInner extends Resource {
     }
 
     /**
-     * Get the secondaryAzurePort property: The name of the secondary  port.
-     * 
+     * Get the secondaryAzurePort property: The name of the secondary port.
+     *
      * @return the secondaryAzurePort value.
      */
     public String secondaryAzurePort() {
@@ -122,7 +110,7 @@ public final class ExpressRouteCrossConnectionInner extends Resource {
 
     /**
      * Get the stag property: The identifier of the circuit traffic.
-     * 
+     *
      * @return the stag value.
      */
     public Integer stag() {
@@ -130,9 +118,8 @@ public final class ExpressRouteCrossConnectionInner extends Resource {
     }
 
     /**
-     * Get the peeringLocation property: The peering location of the
-     * ExpressRoute circuit.
-     * 
+     * Get the peeringLocation property: The peering location of the ExpressRoute circuit.
+     *
      * @return the peeringLocation value.
      */
     public String peeringLocation() {
@@ -140,9 +127,8 @@ public final class ExpressRouteCrossConnectionInner extends Resource {
     }
 
     /**
-     * Set the peeringLocation property: The peering location of the
-     * ExpressRoute circuit.
-     * 
+     * Set the peeringLocation property: The peering location of the ExpressRoute circuit.
+     *
      * @param peeringLocation the peeringLocation value to set.
      * @return the ExpressRouteCrossConnectionInner object itself.
      */
@@ -156,7 +142,7 @@ public final class ExpressRouteCrossConnectionInner extends Resource {
 
     /**
      * Get the bandwidthInMbps property: The circuit bandwidth In Mbps.
-     * 
+     *
      * @return the bandwidthInMbps value.
      */
     public Integer bandwidthInMbps() {
@@ -165,7 +151,7 @@ public final class ExpressRouteCrossConnectionInner extends Resource {
 
     /**
      * Set the bandwidthInMbps property: The circuit bandwidth In Mbps.
-     * 
+     *
      * @param bandwidthInMbps the bandwidthInMbps value to set.
      * @return the ExpressRouteCrossConnectionInner object itself.
      */
@@ -179,7 +165,7 @@ public final class ExpressRouteCrossConnectionInner extends Resource {
 
     /**
      * Get the expressRouteCircuit property: The ExpressRouteCircuit.
-     * 
+     *
      * @return the expressRouteCircuit value.
      */
     public ExpressRouteCircuitReference expressRouteCircuit() {
@@ -188,7 +174,7 @@ public final class ExpressRouteCrossConnectionInner extends Resource {
 
     /**
      * Set the expressRouteCircuit property: The ExpressRouteCircuit.
-     * 
+     *
      * @param expressRouteCircuit the expressRouteCircuit value to set.
      * @return the ExpressRouteCrossConnectionInner object itself.
      */
@@ -201,10 +187,9 @@ public final class ExpressRouteCrossConnectionInner extends Resource {
     }
 
     /**
-     * Get the serviceProviderProvisioningState property: The provisioning
-     * state of the circuit in the connectivity provider system. Possible
-     * values are 'NotProvisioned', 'Provisioning', 'Provisioned'.
-     * 
+     * Get the serviceProviderProvisioningState property: The provisioning state of the circuit in the connectivity
+     * provider system. Possible values are 'NotProvisioned', 'Provisioning', 'Provisioned'.
+     *
      * @return the serviceProviderProvisioningState value.
      */
     public ServiceProviderProvisioningState serviceProviderProvisioningState() {
@@ -212,15 +197,14 @@ public final class ExpressRouteCrossConnectionInner extends Resource {
     }
 
     /**
-     * Set the serviceProviderProvisioningState property: The provisioning
-     * state of the circuit in the connectivity provider system. Possible
-     * values are 'NotProvisioned', 'Provisioning', 'Provisioned'.
-     * 
-     * @param serviceProviderProvisioningState the
-     * serviceProviderProvisioningState value to set.
+     * Set the serviceProviderProvisioningState property: The provisioning state of the circuit in the connectivity
+     * provider system. Possible values are 'NotProvisioned', 'Provisioning', 'Provisioned'.
+     *
+     * @param serviceProviderProvisioningState the serviceProviderProvisioningState value to set.
      * @return the ExpressRouteCrossConnectionInner object itself.
      */
-    public ExpressRouteCrossConnectionInner withServiceProviderProvisioningState(ServiceProviderProvisioningState serviceProviderProvisioningState) {
+    public ExpressRouteCrossConnectionInner withServiceProviderProvisioningState(
+        ServiceProviderProvisioningState serviceProviderProvisioningState) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ExpressRouteCrossConnectionProperties();
         }
@@ -229,9 +213,8 @@ public final class ExpressRouteCrossConnectionInner extends Resource {
     }
 
     /**
-     * Get the serviceProviderNotes property: Additional read only notes set by
-     * the connectivity provider.
-     * 
+     * Get the serviceProviderNotes property: Additional read only notes set by the connectivity provider.
+     *
      * @return the serviceProviderNotes value.
      */
     public String serviceProviderNotes() {
@@ -239,9 +222,8 @@ public final class ExpressRouteCrossConnectionInner extends Resource {
     }
 
     /**
-     * Set the serviceProviderNotes property: Additional read only notes set by
-     * the connectivity provider.
-     * 
+     * Set the serviceProviderNotes property: Additional read only notes set by the connectivity provider.
+     *
      * @param serviceProviderNotes the serviceProviderNotes value to set.
      * @return the ExpressRouteCrossConnectionInner object itself.
      */
@@ -254,10 +236,9 @@ public final class ExpressRouteCrossConnectionInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: Gets the provisioning state of the
-     * public IP resource. Possible values are: 'Updating', 'Deleting', and
-     * 'Failed'.
-     * 
+     * Get the provisioningState property: Gets the provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -266,7 +247,7 @@ public final class ExpressRouteCrossConnectionInner extends Resource {
 
     /**
      * Get the peerings property: The list of peerings.
-     * 
+     *
      * @return the peerings value.
      */
     public List<ExpressRouteCrossConnectionPeeringInner> peerings() {
@@ -275,7 +256,7 @@ public final class ExpressRouteCrossConnectionInner extends Resource {
 
     /**
      * Set the peerings property: The list of peerings.
-     * 
+     *
      * @param peerings the peerings value to set.
      * @return the ExpressRouteCrossConnectionInner object itself.
      */
@@ -289,7 +270,7 @@ public final class ExpressRouteCrossConnectionInner extends Resource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

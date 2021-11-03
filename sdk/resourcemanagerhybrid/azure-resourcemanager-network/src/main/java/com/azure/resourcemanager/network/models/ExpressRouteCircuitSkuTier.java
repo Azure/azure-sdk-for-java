@@ -8,28 +8,20 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for ExpressRouteCircuitSkuTier.
- */
+/** Defines values for ExpressRouteCircuitSkuTier. */
 public final class ExpressRouteCircuitSkuTier extends ExpandableStringEnum<ExpressRouteCircuitSkuTier> {
-    /**
-     * Static value Standard for ExpressRouteCircuitSkuTier.
-     */
+    /** Static value Standard for ExpressRouteCircuitSkuTier. */
     public static final ExpressRouteCircuitSkuTier STANDARD = fromString("Standard");
 
-    /**
-     * Static value Premium for ExpressRouteCircuitSkuTier.
-     */
+    /** Static value Premium for ExpressRouteCircuitSkuTier. */
     public static final ExpressRouteCircuitSkuTier PREMIUM = fromString("Premium");
 
-    /**
-     * Static value Basic for ExpressRouteCircuitSkuTier.
-     */
+    /** Static value Basic for ExpressRouteCircuitSkuTier. */
     public static final ExpressRouteCircuitSkuTier BASIC = fromString("Basic");
 
     /**
      * Creates or finds a ExpressRouteCircuitSkuTier from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding ExpressRouteCircuitSkuTier.
      */
@@ -38,9 +30,7 @@ public final class ExpressRouteCircuitSkuTier extends ExpandableStringEnum<Expre
         return fromString(name, ExpressRouteCircuitSkuTier.class);
     }
 
-    /**
-     * @return known ExpressRouteCircuitSkuTier values.
-     */
+    /** @return known ExpressRouteCircuitSkuTier values. */
     public static Collection<ExpressRouteCircuitSkuTier> values() {
         return values(ExpressRouteCircuitSkuTier.class);
     }

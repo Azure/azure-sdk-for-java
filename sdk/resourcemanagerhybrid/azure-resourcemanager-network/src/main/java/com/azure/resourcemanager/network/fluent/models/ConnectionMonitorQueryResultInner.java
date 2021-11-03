@@ -5,22 +5,17 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ConnectionMonitorSourceStatus;
 import com.azure.resourcemanager.network.models.ConnectionStateSnapshot;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * List of connection states snapshots.
- */
+/** List of connection states snapshots. */
 @Fluent
 public final class ConnectionMonitorQueryResultInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ConnectionMonitorQueryResultInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionMonitorQueryResultInner.class);
 
     /*
      * Status of connection monitor source.
@@ -36,7 +31,7 @@ public final class ConnectionMonitorQueryResultInner {
 
     /**
      * Get the sourceStatus property: Status of connection monitor source.
-     * 
+     *
      * @return the sourceStatus value.
      */
     public ConnectionMonitorSourceStatus sourceStatus() {
@@ -45,7 +40,7 @@ public final class ConnectionMonitorQueryResultInner {
 
     /**
      * Set the sourceStatus property: Status of connection monitor source.
-     * 
+     *
      * @param sourceStatus the sourceStatus value to set.
      * @return the ConnectionMonitorQueryResultInner object itself.
      */
@@ -56,7 +51,7 @@ public final class ConnectionMonitorQueryResultInner {
 
     /**
      * Get the states property: Information about connection states.
-     * 
+     *
      * @return the states value.
      */
     public List<ConnectionStateSnapshot> states() {
@@ -65,7 +60,7 @@ public final class ConnectionMonitorQueryResultInner {
 
     /**
      * Set the states property: Information about connection states.
-     * 
+     *
      * @param states the states value to set.
      * @return the ConnectionMonitorQueryResultInner object itself.
      */
@@ -76,7 +71,7 @@ public final class ConnectionMonitorQueryResultInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

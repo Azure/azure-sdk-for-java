@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The full ARM ID of an Event Hubs Namespace.
- */
+/** The full ARM ID of an Event Hubs Namespace. */
 @Fluent
 public final class EHNamespaceIdContainer {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(EHNamespaceIdContainer.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(EHNamespaceIdContainer.class);
 
     /*
      * id parameter
@@ -27,7 +22,7 @@ public final class EHNamespaceIdContainer {
 
     /**
      * Get the id property: id parameter.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -36,7 +31,7 @@ public final class EHNamespaceIdContainer {
 
     /**
      * Set the id property: id parameter.
-     * 
+     *
      * @param id the id value to set.
      * @return the EHNamespaceIdContainer object itself.
      */
@@ -47,7 +42,7 @@ public final class EHNamespaceIdContainer {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

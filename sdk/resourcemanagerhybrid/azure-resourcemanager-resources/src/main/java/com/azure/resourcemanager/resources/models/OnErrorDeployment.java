@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Deployment on error behavior.
- */
+/** Deployment on error behavior. */
 @Fluent
 public final class OnErrorDeployment {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(OnErrorDeployment.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(OnErrorDeployment.class);
 
     /*
      * The deployment on error behavior type. Possible values are
@@ -33,9 +28,9 @@ public final class OnErrorDeployment {
     private String deploymentName;
 
     /**
-     * Get the type property: The deployment on error behavior type. Possible
-     * values are LastSuccessful and SpecificDeployment.
-     * 
+     * Get the type property: The deployment on error behavior type. Possible values are LastSuccessful and
+     * SpecificDeployment.
+     *
      * @return the type value.
      */
     public OnErrorDeploymentType type() {
@@ -43,9 +38,9 @@ public final class OnErrorDeployment {
     }
 
     /**
-     * Set the type property: The deployment on error behavior type. Possible
-     * values are LastSuccessful and SpecificDeployment.
-     * 
+     * Set the type property: The deployment on error behavior type. Possible values are LastSuccessful and
+     * SpecificDeployment.
+     *
      * @param type the type value to set.
      * @return the OnErrorDeployment object itself.
      */
@@ -55,9 +50,8 @@ public final class OnErrorDeployment {
     }
 
     /**
-     * Get the deploymentName property: The deployment to be used on error
-     * case.
-     * 
+     * Get the deploymentName property: The deployment to be used on error case.
+     *
      * @return the deploymentName value.
      */
     public String deploymentName() {
@@ -65,9 +59,8 @@ public final class OnErrorDeployment {
     }
 
     /**
-     * Set the deploymentName property: The deployment to be used on error
-     * case.
-     * 
+     * Set the deploymentName property: The deployment to be used on error case.
+     *
      * @param deploymentName the deploymentName value to set.
      * @return the OnErrorDeployment object itself.
      */
@@ -78,7 +71,7 @@ public final class OnErrorDeployment {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,41 +5,29 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Information of user assigned identity used by this add-on.
- */
+/** Information of user assigned identity used by this add-on. */
 @Fluent
 public class ManagedClusterAddonProfileIdentity extends UserAssignedIdentity {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ManagedClusterAddonProfileIdentity.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterAddonProfileIdentity.class);
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ManagedClusterAddonProfileIdentity withResourceId(String resourceId) {
         super.withResourceId(resourceId);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ManagedClusterAddonProfileIdentity withClientId(String clientId) {
         super.withClientId(clientId);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ManagedClusterAddonProfileIdentity withObjectId(String objectId) {
         super.withObjectId(objectId);
@@ -48,7 +36,7 @@ public class ManagedClusterAddonProfileIdentity extends UserAssignedIdentity {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

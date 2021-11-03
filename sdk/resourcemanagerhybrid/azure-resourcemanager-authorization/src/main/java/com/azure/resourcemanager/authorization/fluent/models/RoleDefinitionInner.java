@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Role definition.
- */
+/** Role definition. */
 @Fluent
 public final class RoleDefinitionInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(RoleDefinitionInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoleDefinitionInner.class);
 
     /*
      * The role definition ID.
@@ -46,7 +41,7 @@ public final class RoleDefinitionInner {
 
     /**
      * Get the id property: The role definition ID.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -55,7 +50,7 @@ public final class RoleDefinitionInner {
 
     /**
      * Get the name property: The role definition name.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -64,7 +59,7 @@ public final class RoleDefinitionInner {
 
     /**
      * Get the type property: The role definition type.
-     * 
+     *
      * @return the type value.
      */
     public String type() {
@@ -73,7 +68,7 @@ public final class RoleDefinitionInner {
 
     /**
      * Get the innerProperties property: Role definition properties.
-     * 
+     *
      * @return the innerProperties value.
      */
     private RoleDefinitionProperties innerProperties() {
@@ -82,7 +77,7 @@ public final class RoleDefinitionInner {
 
     /**
      * Get the roleName property: The role name.
-     * 
+     *
      * @return the roleName value.
      */
     public String roleName() {
@@ -91,7 +86,7 @@ public final class RoleDefinitionInner {
 
     /**
      * Set the roleName property: The role name.
-     * 
+     *
      * @param roleName the roleName value to set.
      * @return the RoleDefinitionInner object itself.
      */
@@ -105,7 +100,7 @@ public final class RoleDefinitionInner {
 
     /**
      * Get the description property: The role definition description.
-     * 
+     *
      * @return the description value.
      */
     public String description() {
@@ -114,7 +109,7 @@ public final class RoleDefinitionInner {
 
     /**
      * Set the description property: The role definition description.
-     * 
+     *
      * @param description the description value to set.
      * @return the RoleDefinitionInner object itself.
      */
@@ -128,7 +123,7 @@ public final class RoleDefinitionInner {
 
     /**
      * Get the roleType property: The role type.
-     * 
+     *
      * @return the roleType value.
      */
     public String roleType() {
@@ -137,7 +132,7 @@ public final class RoleDefinitionInner {
 
     /**
      * Set the roleType property: The role type.
-     * 
+     *
      * @param roleType the roleType value to set.
      * @return the RoleDefinitionInner object itself.
      */
@@ -151,7 +146,7 @@ public final class RoleDefinitionInner {
 
     /**
      * Get the permissions property: Role definition permissions.
-     * 
+     *
      * @return the permissions value.
      */
     public List<PermissionInner> permissions() {
@@ -160,7 +155,7 @@ public final class RoleDefinitionInner {
 
     /**
      * Set the permissions property: Role definition permissions.
-     * 
+     *
      * @param permissions the permissions value to set.
      * @return the RoleDefinitionInner object itself.
      */
@@ -174,7 +169,7 @@ public final class RoleDefinitionInner {
 
     /**
      * Get the assignableScopes property: Role definition assignable scopes.
-     * 
+     *
      * @return the assignableScopes value.
      */
     public List<String> assignableScopes() {
@@ -183,7 +178,7 @@ public final class RoleDefinitionInner {
 
     /**
      * Set the assignableScopes property: Role definition assignable scopes.
-     * 
+     *
      * @param assignableScopes the assignableScopes value to set.
      * @return the RoleDefinitionInner object itself.
      */
@@ -197,7 +192,7 @@ public final class RoleDefinitionInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -4,21 +4,16 @@
 
 package com.azure.resourcemanager.network.fluent.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The network watcher properties.
- */
+/** The network watcher properties. */
 @Immutable
 public final class NetworkWatcherPropertiesFormat {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(NetworkWatcherPropertiesFormat.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkWatcherPropertiesFormat.class);
 
     /*
      * The provisioning state of the resource.
@@ -27,9 +22,8 @@ public final class NetworkWatcherPropertiesFormat {
     private ProvisioningState provisioningState;
 
     /**
-     * Get the provisioningState property: The provisioning state of the
-     * resource.
-     * 
+     * Get the provisioningState property: The provisioning state of the resource.
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -38,7 +32,7 @@ public final class NetworkWatcherPropertiesFormat {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

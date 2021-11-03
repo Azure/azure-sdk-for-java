@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Describes a virtual machine scale set network profile.
- */
+/** Describes a virtual machine scale set network profile. */
 @Fluent
 public final class VirtualMachineScaleSetUpdateNetworkProfile {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetUpdateNetworkProfile.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetUpdateNetworkProfile.class);
 
     /*
      * A reference to a load balancer probe used to determine the health of an
@@ -36,11 +31,10 @@ public final class VirtualMachineScaleSetUpdateNetworkProfile {
     private List<VirtualMachineScaleSetUpdateNetworkConfiguration> networkInterfaceConfigurations;
 
     /**
-     * Get the healthProbe property: A reference to a load balancer probe used
-     * to determine the health of an instance in the virtual machine scale set.
-     * The reference will be in the form:
+     * Get the healthProbe property: A reference to a load balancer probe used to determine the health of an instance in
+     * the virtual machine scale set. The reference will be in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/probes/{probeName}'.
-     * 
+     *
      * @return the healthProbe value.
      */
     public ApiEntityReference healthProbe() {
@@ -48,11 +42,10 @@ public final class VirtualMachineScaleSetUpdateNetworkProfile {
     }
 
     /**
-     * Set the healthProbe property: A reference to a load balancer probe used
-     * to determine the health of an instance in the virtual machine scale set.
-     * The reference will be in the form:
+     * Set the healthProbe property: A reference to a load balancer probe used to determine the health of an instance in
+     * the virtual machine scale set. The reference will be in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/loadBalancers/{loadBalancerName}/probes/{probeName}'.
-     * 
+     *
      * @param healthProbe the healthProbe value to set.
      * @return the VirtualMachineScaleSetUpdateNetworkProfile object itself.
      */
@@ -62,9 +55,8 @@ public final class VirtualMachineScaleSetUpdateNetworkProfile {
     }
 
     /**
-     * Get the networkInterfaceConfigurations property: The list of network
-     * configurations.
-     * 
+     * Get the networkInterfaceConfigurations property: The list of network configurations.
+     *
      * @return the networkInterfaceConfigurations value.
      */
     public List<VirtualMachineScaleSetUpdateNetworkConfiguration> networkInterfaceConfigurations() {
@@ -72,21 +64,20 @@ public final class VirtualMachineScaleSetUpdateNetworkProfile {
     }
 
     /**
-     * Set the networkInterfaceConfigurations property: The list of network
-     * configurations.
-     * 
-     * @param networkInterfaceConfigurations the networkInterfaceConfigurations
-     * value to set.
+     * Set the networkInterfaceConfigurations property: The list of network configurations.
+     *
+     * @param networkInterfaceConfigurations the networkInterfaceConfigurations value to set.
      * @return the VirtualMachineScaleSetUpdateNetworkProfile object itself.
      */
-    public VirtualMachineScaleSetUpdateNetworkProfile withNetworkInterfaceConfigurations(List<VirtualMachineScaleSetUpdateNetworkConfiguration> networkInterfaceConfigurations) {
+    public VirtualMachineScaleSetUpdateNetworkProfile withNetworkInterfaceConfigurations(
+        List<VirtualMachineScaleSetUpdateNetworkConfiguration> networkInterfaceConfigurations) {
         this.networkInterfaceConfigurations = networkInterfaceConfigurations;
         return this;
     }
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

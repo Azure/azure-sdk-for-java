@@ -5,24 +5,18 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.BgpCommunity;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Service Community Properties.
- */
+/** Service Community Properties. */
 @Fluent
 public final class BgpServiceCommunityInner extends Resource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(BgpServiceCommunityInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(BgpServiceCommunityInner.class);
 
     /*
      * Properties of Service Community.
@@ -38,7 +32,7 @@ public final class BgpServiceCommunityInner extends Resource {
 
     /**
      * Get the innerProperties property: Properties of Service Community.
-     * 
+     *
      * @return the innerProperties value.
      */
     private BgpServiceCommunityPropertiesFormat innerProperties() {
@@ -47,7 +41,7 @@ public final class BgpServiceCommunityInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -56,7 +50,7 @@ public final class BgpServiceCommunityInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     * 
+     *
      * @param id the id value to set.
      * @return the BgpServiceCommunityInner object itself.
      */
@@ -65,18 +59,14 @@ public final class BgpServiceCommunityInner extends Resource {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public BgpServiceCommunityInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public BgpServiceCommunityInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -85,7 +75,7 @@ public final class BgpServiceCommunityInner extends Resource {
 
     /**
      * Get the serviceName property: The name of the bgp community. e.g. Skype.
-     * 
+     *
      * @return the serviceName value.
      */
     public String serviceName() {
@@ -94,7 +84,7 @@ public final class BgpServiceCommunityInner extends Resource {
 
     /**
      * Set the serviceName property: The name of the bgp community. e.g. Skype.
-     * 
+     *
      * @param serviceName the serviceName value to set.
      * @return the BgpServiceCommunityInner object itself.
      */
@@ -108,7 +98,7 @@ public final class BgpServiceCommunityInner extends Resource {
 
     /**
      * Get the bgpCommunities property: Get a list of bgp communities.
-     * 
+     *
      * @return the bgpCommunities value.
      */
     public List<BgpCommunity> bgpCommunities() {
@@ -117,7 +107,7 @@ public final class BgpServiceCommunityInner extends Resource {
 
     /**
      * Set the bgpCommunities property: Get a list of bgp communities.
-     * 
+     *
      * @param bgpCommunities the bgpCommunities value to set.
      * @return the BgpServiceCommunityInner object itself.
      */
@@ -131,7 +121,7 @@ public final class BgpServiceCommunityInner extends Resource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

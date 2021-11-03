@@ -5,24 +5,19 @@
 package com.azure.resourcemanager.dns.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dns.models.ZoneType;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Represents the properties of the zone.
- */
+/** Represents the properties of the zone. */
 @Fluent
 public final class ZoneProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ZoneProperties.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ZoneProperties.class);
 
     /*
-     * The maximum number of record sets that can be created in this DNS zone. 
+     * The maximum number of record sets that can be created in this DNS zone.
      * This is a read-only property and any attempt to set this value will be
      * ignored.
      */
@@ -58,10 +53,9 @@ public final class ZoneProperties {
     private ZoneType zoneType;
 
     /**
-     * Get the maxNumberOfRecordSets property: The maximum number of record
-     * sets that can be created in this DNS zone.  This is a read-only property
-     * and any attempt to set this value will be ignored.
-     * 
+     * Get the maxNumberOfRecordSets property: The maximum number of record sets that can be created in this DNS zone.
+     * This is a read-only property and any attempt to set this value will be ignored.
+     *
      * @return the maxNumberOfRecordSets value.
      */
     public Long maxNumberOfRecordSets() {
@@ -69,10 +63,9 @@ public final class ZoneProperties {
     }
 
     /**
-     * Set the maxNumberOfRecordSets property: The maximum number of record
-     * sets that can be created in this DNS zone.  This is a read-only property
-     * and any attempt to set this value will be ignored.
-     * 
+     * Set the maxNumberOfRecordSets property: The maximum number of record sets that can be created in this DNS zone.
+     * This is a read-only property and any attempt to set this value will be ignored.
+     *
      * @param maxNumberOfRecordSets the maxNumberOfRecordSets value to set.
      * @return the ZoneProperties object itself.
      */
@@ -82,10 +75,9 @@ public final class ZoneProperties {
     }
 
     /**
-     * Get the maxNumberOfRecordsPerRecordSet property: The maximum number of
-     * records per record set that can be created in this DNS zone.  This is a
-     * read-only property and any attempt to set this value will be ignored.
-     * 
+     * Get the maxNumberOfRecordsPerRecordSet property: The maximum number of records per record set that can be created
+     * in this DNS zone. This is a read-only property and any attempt to set this value will be ignored.
+     *
      * @return the maxNumberOfRecordsPerRecordSet value.
      */
     public Long maxNumberOfRecordsPerRecordSet() {
@@ -93,10 +85,9 @@ public final class ZoneProperties {
     }
 
     /**
-     * Get the numberOfRecordSets property: The current number of record sets
-     * in this DNS zone.  This is a read-only property and any attempt to set
-     * this value will be ignored.
-     * 
+     * Get the numberOfRecordSets property: The current number of record sets in this DNS zone. This is a read-only
+     * property and any attempt to set this value will be ignored.
+     *
      * @return the numberOfRecordSets value.
      */
     public Long numberOfRecordSets() {
@@ -104,10 +95,9 @@ public final class ZoneProperties {
     }
 
     /**
-     * Set the numberOfRecordSets property: The current number of record sets
-     * in this DNS zone.  This is a read-only property and any attempt to set
-     * this value will be ignored.
-     * 
+     * Set the numberOfRecordSets property: The current number of record sets in this DNS zone. This is a read-only
+     * property and any attempt to set this value will be ignored.
+     *
      * @param numberOfRecordSets the numberOfRecordSets value to set.
      * @return the ZoneProperties object itself.
      */
@@ -117,10 +107,9 @@ public final class ZoneProperties {
     }
 
     /**
-     * Get the nameServers property: The name servers for this DNS zone. This
-     * is a read-only property and any attempt to set this value will be
-     * ignored.
-     * 
+     * Get the nameServers property: The name servers for this DNS zone. This is a read-only property and any attempt to
+     * set this value will be ignored.
+     *
      * @return the nameServers value.
      */
     public List<String> nameServers() {
@@ -128,9 +117,8 @@ public final class ZoneProperties {
     }
 
     /**
-     * Get the zoneType property: The type of this DNS zone (Public or
-     * Private).
-     * 
+     * Get the zoneType property: The type of this DNS zone (Public or Private).
+     *
      * @return the zoneType value.
      */
     public ZoneType zoneType() {
@@ -138,9 +126,8 @@ public final class ZoneProperties {
     }
 
     /**
-     * Set the zoneType property: The type of this DNS zone (Public or
-     * Private).
-     * 
+     * Set the zoneType property: The type of this DNS zone (Public or Private).
+     *
      * @param zoneType the zoneType value to set.
      * @return the ZoneProperties object itself.
      */
@@ -151,7 +138,7 @@ public final class ZoneProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

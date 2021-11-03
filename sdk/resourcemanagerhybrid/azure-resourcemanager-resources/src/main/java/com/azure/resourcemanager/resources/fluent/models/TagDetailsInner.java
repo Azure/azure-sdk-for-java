@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.models.TagCount;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Tag details.
- */
+/** Tag details. */
 @Fluent
 public final class TagDetailsInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(TagDetailsInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(TagDetailsInner.class);
 
     /*
      * The tag name ID.
@@ -48,7 +43,7 @@ public final class TagDetailsInner {
 
     /**
      * Get the id property: The tag name ID.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -57,7 +52,7 @@ public final class TagDetailsInner {
 
     /**
      * Get the tagName property: The tag name.
-     * 
+     *
      * @return the tagName value.
      */
     public String tagName() {
@@ -66,7 +61,7 @@ public final class TagDetailsInner {
 
     /**
      * Set the tagName property: The tag name.
-     * 
+     *
      * @param tagName the tagName value to set.
      * @return the TagDetailsInner object itself.
      */
@@ -76,10 +71,9 @@ public final class TagDetailsInner {
     }
 
     /**
-     * Get the count property: The total number of resources that use the
-     * resource tag. When a tag is initially created and has no associated
-     * resources, the value is 0.
-     * 
+     * Get the count property: The total number of resources that use the resource tag. When a tag is initially created
+     * and has no associated resources, the value is 0.
+     *
      * @return the count value.
      */
     public TagCount count() {
@@ -87,10 +81,9 @@ public final class TagDetailsInner {
     }
 
     /**
-     * Set the count property: The total number of resources that use the
-     * resource tag. When a tag is initially created and has no associated
-     * resources, the value is 0.
-     * 
+     * Set the count property: The total number of resources that use the resource tag. When a tag is initially created
+     * and has no associated resources, the value is 0.
+     *
      * @param count the count value to set.
      * @return the TagDetailsInner object itself.
      */
@@ -101,7 +94,7 @@ public final class TagDetailsInner {
 
     /**
      * Get the values property: The list of tag values.
-     * 
+     *
      * @return the values value.
      */
     public List<TagValueInner> values() {
@@ -110,7 +103,7 @@ public final class TagDetailsInner {
 
     /**
      * Set the values property: The list of tag values.
-     * 
+     *
      * @param values the values value to set.
      * @return the TagDetailsInner object itself.
      */
@@ -121,7 +114,7 @@ public final class TagDetailsInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

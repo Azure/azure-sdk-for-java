@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Role definition properties.
- */
+/** Role definition properties. */
 @Fluent
 public final class RoleDefinitionProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(RoleDefinitionProperties.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoleDefinitionProperties.class);
 
     /*
      * The role name.
@@ -52,7 +47,7 @@ public final class RoleDefinitionProperties {
 
     /**
      * Get the roleName property: The role name.
-     * 
+     *
      * @return the roleName value.
      */
     public String roleName() {
@@ -61,7 +56,7 @@ public final class RoleDefinitionProperties {
 
     /**
      * Set the roleName property: The role name.
-     * 
+     *
      * @param roleName the roleName value to set.
      * @return the RoleDefinitionProperties object itself.
      */
@@ -72,7 +67,7 @@ public final class RoleDefinitionProperties {
 
     /**
      * Get the description property: The role definition description.
-     * 
+     *
      * @return the description value.
      */
     public String description() {
@@ -81,7 +76,7 @@ public final class RoleDefinitionProperties {
 
     /**
      * Set the description property: The role definition description.
-     * 
+     *
      * @param description the description value to set.
      * @return the RoleDefinitionProperties object itself.
      */
@@ -92,7 +87,7 @@ public final class RoleDefinitionProperties {
 
     /**
      * Get the roleType property: The role type.
-     * 
+     *
      * @return the roleType value.
      */
     public String roleType() {
@@ -101,7 +96,7 @@ public final class RoleDefinitionProperties {
 
     /**
      * Set the roleType property: The role type.
-     * 
+     *
      * @param roleType the roleType value to set.
      * @return the RoleDefinitionProperties object itself.
      */
@@ -112,7 +107,7 @@ public final class RoleDefinitionProperties {
 
     /**
      * Get the permissions property: Role definition permissions.
-     * 
+     *
      * @return the permissions value.
      */
     public List<PermissionInner> permissions() {
@@ -121,7 +116,7 @@ public final class RoleDefinitionProperties {
 
     /**
      * Set the permissions property: Role definition permissions.
-     * 
+     *
      * @param permissions the permissions value to set.
      * @return the RoleDefinitionProperties object itself.
      */
@@ -132,7 +127,7 @@ public final class RoleDefinitionProperties {
 
     /**
      * Get the assignableScopes property: Role definition assignable scopes.
-     * 
+     *
      * @return the assignableScopes value.
      */
     public List<String> assignableScopes() {
@@ -141,7 +136,7 @@ public final class RoleDefinitionProperties {
 
     /**
      * Set the assignableScopes property: Role definition assignable scopes.
-     * 
+     *
      * @param assignableScopes the assignableScopes value to set.
      * @return the RoleDefinitionProperties object itself.
      */
@@ -152,7 +147,7 @@ public final class RoleDefinitionProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

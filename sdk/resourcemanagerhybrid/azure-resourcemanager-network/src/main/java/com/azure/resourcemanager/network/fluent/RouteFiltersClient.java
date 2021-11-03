@@ -8,8 +8,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
@@ -20,19 +18,16 @@ import com.azure.resourcemanager.network.models.PatchRouteFilter;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
-import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * RouteFiltersClient.
- */
-public interface RouteFiltersClient extends InnerSupportsGet<RouteFilterInner>, InnerSupportsListing<RouteFilterInner>, InnerSupportsDelete<Void> {
+/** An instance of this class provides access to all the operations defined in RouteFiltersClient. */
+public interface RouteFiltersClient
+    extends InnerSupportsGet<RouteFilterInner>, InnerSupportsListing<RouteFilterInner>, InnerSupportsDelete<Void> {
     /**
      * Deletes the specified route filter.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -45,7 +40,7 @@ public interface RouteFiltersClient extends InnerSupportsGet<RouteFilterInner>, 
 
     /**
      * Deletes the specified route filter.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -58,7 +53,7 @@ public interface RouteFiltersClient extends InnerSupportsGet<RouteFilterInner>, 
 
     /**
      * Deletes the specified route filter.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -71,7 +66,7 @@ public interface RouteFiltersClient extends InnerSupportsGet<RouteFilterInner>, 
 
     /**
      * Deletes the specified route filter.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param context The context to associate with this operation.
@@ -85,7 +80,7 @@ public interface RouteFiltersClient extends InnerSupportsGet<RouteFilterInner>, 
 
     /**
      * Deletes the specified route filter.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -98,7 +93,7 @@ public interface RouteFiltersClient extends InnerSupportsGet<RouteFilterInner>, 
 
     /**
      * Deletes the specified route filter.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -110,7 +105,7 @@ public interface RouteFiltersClient extends InnerSupportsGet<RouteFilterInner>, 
 
     /**
      * Deletes the specified route filter.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param context The context to associate with this operation.
@@ -123,7 +118,7 @@ public interface RouteFiltersClient extends InnerSupportsGet<RouteFilterInner>, 
 
     /**
      * Gets the specified route filter.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param expand Expands referenced express route bgp peering resources.
@@ -133,11 +128,12 @@ public interface RouteFiltersClient extends InnerSupportsGet<RouteFilterInner>, 
      * @return the specified route filter.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<RouteFilterInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String routeFilterName, String expand);
+    Mono<Response<RouteFilterInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String routeFilterName, String expand);
 
     /**
      * Gets the specified route filter.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param expand Expands referenced express route bgp peering resources.
@@ -151,7 +147,7 @@ public interface RouteFiltersClient extends InnerSupportsGet<RouteFilterInner>, 
 
     /**
      * Gets the specified route filter.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -164,7 +160,7 @@ public interface RouteFiltersClient extends InnerSupportsGet<RouteFilterInner>, 
 
     /**
      * Gets the specified route filter.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -177,7 +173,7 @@ public interface RouteFiltersClient extends InnerSupportsGet<RouteFilterInner>, 
 
     /**
      * Gets the specified route filter.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param expand Expands referenced express route bgp peering resources.
@@ -188,11 +184,12 @@ public interface RouteFiltersClient extends InnerSupportsGet<RouteFilterInner>, 
      * @return the specified route filter.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RouteFilterInner> getByResourceGroupWithResponse(String resourceGroupName, String routeFilterName, String expand, Context context);
+    Response<RouteFilterInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String routeFilterName, String expand, Context context);
 
     /**
      * Creates or updates a route filter in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param routeFilterParameters Parameters supplied to the create or update route filter operation.
@@ -202,11 +199,12 @@ public interface RouteFiltersClient extends InnerSupportsGet<RouteFilterInner>, 
      * @return route Filter Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String routeFilterName, RouteFilterInner routeFilterParameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String routeFilterName, RouteFilterInner routeFilterParameters);
 
     /**
      * Creates or updates a route filter in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param routeFilterParameters Parameters supplied to the create or update route filter operation.
@@ -216,11 +214,12 @@ public interface RouteFiltersClient extends InnerSupportsGet<RouteFilterInner>, 
      * @return route Filter Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<RouteFilterInner>, RouteFilterInner> beginCreateOrUpdateAsync(String resourceGroupName, String routeFilterName, RouteFilterInner routeFilterParameters);
+    PollerFlux<PollResult<RouteFilterInner>, RouteFilterInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String routeFilterName, RouteFilterInner routeFilterParameters);
 
     /**
      * Creates or updates a route filter in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param routeFilterParameters Parameters supplied to the create or update route filter operation.
@@ -230,54 +229,12 @@ public interface RouteFiltersClient extends InnerSupportsGet<RouteFilterInner>, 
      * @return route Filter Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<RouteFilterInner>, RouteFilterInner> beginCreateOrUpdate(String resourceGroupName, String routeFilterName, RouteFilterInner routeFilterParameters);
+    SyncPoller<PollResult<RouteFilterInner>, RouteFilterInner> beginCreateOrUpdate(
+        String resourceGroupName, String routeFilterName, RouteFilterInner routeFilterParameters);
 
     /**
      * Creates or updates a route filter in a specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param routeFilterName The name of the route filter.
-     * @param routeFilterParameters Parameters supplied to the create or update route filter operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return route Filter Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<RouteFilterInner>, RouteFilterInner> beginCreateOrUpdate(String resourceGroupName, String routeFilterName, RouteFilterInner routeFilterParameters, Context context);
-
-    /**
-     * Creates or updates a route filter in a specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param routeFilterName The name of the route filter.
-     * @param routeFilterParameters Parameters supplied to the create or update route filter operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return route Filter Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RouteFilterInner> createOrUpdateAsync(String resourceGroupName, String routeFilterName, RouteFilterInner routeFilterParameters);
-
-    /**
-     * Creates or updates a route filter in a specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param routeFilterName The name of the route filter.
-     * @param routeFilterParameters Parameters supplied to the create or update route filter operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return route Filter Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    RouteFilterInner createOrUpdate(String resourceGroupName, String routeFilterName, RouteFilterInner routeFilterParameters);
-
-    /**
-     * Creates or updates a route filter in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param routeFilterParameters Parameters supplied to the create or update route filter operation.
@@ -288,11 +245,58 @@ public interface RouteFiltersClient extends InnerSupportsGet<RouteFilterInner>, 
      * @return route Filter Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RouteFilterInner createOrUpdate(String resourceGroupName, String routeFilterName, RouteFilterInner routeFilterParameters, Context context);
+    SyncPoller<PollResult<RouteFilterInner>, RouteFilterInner> beginCreateOrUpdate(
+        String resourceGroupName, String routeFilterName, RouteFilterInner routeFilterParameters, Context context);
+
+    /**
+     * Creates or updates a route filter in a specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param routeFilterName The name of the route filter.
+     * @param routeFilterParameters Parameters supplied to the create or update route filter operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return route Filter Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<RouteFilterInner> createOrUpdateAsync(
+        String resourceGroupName, String routeFilterName, RouteFilterInner routeFilterParameters);
+
+    /**
+     * Creates or updates a route filter in a specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param routeFilterName The name of the route filter.
+     * @param routeFilterParameters Parameters supplied to the create or update route filter operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return route Filter Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RouteFilterInner createOrUpdate(
+        String resourceGroupName, String routeFilterName, RouteFilterInner routeFilterParameters);
+
+    /**
+     * Creates or updates a route filter in a specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param routeFilterName The name of the route filter.
+     * @param routeFilterParameters Parameters supplied to the create or update route filter operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return route Filter Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    RouteFilterInner createOrUpdate(
+        String resourceGroupName, String routeFilterName, RouteFilterInner routeFilterParameters, Context context);
 
     /**
      * Updates a route filter in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param routeFilterParameters Parameters supplied to the update route filter operation.
@@ -302,11 +306,12 @@ public interface RouteFiltersClient extends InnerSupportsGet<RouteFilterInner>, 
      * @return route Filter Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String routeFilterName, PatchRouteFilter routeFilterParameters);
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
+        String resourceGroupName, String routeFilterName, PatchRouteFilter routeFilterParameters);
 
     /**
      * Updates a route filter in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param routeFilterParameters Parameters supplied to the update route filter operation.
@@ -316,11 +321,12 @@ public interface RouteFiltersClient extends InnerSupportsGet<RouteFilterInner>, 
      * @return route Filter Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<RouteFilterInner>, RouteFilterInner> beginUpdateAsync(String resourceGroupName, String routeFilterName, PatchRouteFilter routeFilterParameters);
+    PollerFlux<PollResult<RouteFilterInner>, RouteFilterInner> beginUpdateAsync(
+        String resourceGroupName, String routeFilterName, PatchRouteFilter routeFilterParameters);
 
     /**
      * Updates a route filter in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param routeFilterParameters Parameters supplied to the update route filter operation.
@@ -330,11 +336,12 @@ public interface RouteFiltersClient extends InnerSupportsGet<RouteFilterInner>, 
      * @return route Filter Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<RouteFilterInner>, RouteFilterInner> beginUpdate(String resourceGroupName, String routeFilterName, PatchRouteFilter routeFilterParameters);
+    SyncPoller<PollResult<RouteFilterInner>, RouteFilterInner> beginUpdate(
+        String resourceGroupName, String routeFilterName, PatchRouteFilter routeFilterParameters);
 
     /**
      * Updates a route filter in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param routeFilterParameters Parameters supplied to the update route filter operation.
@@ -345,11 +352,12 @@ public interface RouteFiltersClient extends InnerSupportsGet<RouteFilterInner>, 
      * @return route Filter Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<RouteFilterInner>, RouteFilterInner> beginUpdate(String resourceGroupName, String routeFilterName, PatchRouteFilter routeFilterParameters, Context context);
+    SyncPoller<PollResult<RouteFilterInner>, RouteFilterInner> beginUpdate(
+        String resourceGroupName, String routeFilterName, PatchRouteFilter routeFilterParameters, Context context);
 
     /**
      * Updates a route filter in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param routeFilterParameters Parameters supplied to the update route filter operation.
@@ -359,11 +367,12 @@ public interface RouteFiltersClient extends InnerSupportsGet<RouteFilterInner>, 
      * @return route Filter Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RouteFilterInner> updateAsync(String resourceGroupName, String routeFilterName, PatchRouteFilter routeFilterParameters);
+    Mono<RouteFilterInner> updateAsync(
+        String resourceGroupName, String routeFilterName, PatchRouteFilter routeFilterParameters);
 
     /**
      * Updates a route filter in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param routeFilterParameters Parameters supplied to the update route filter operation.
@@ -377,7 +386,7 @@ public interface RouteFiltersClient extends InnerSupportsGet<RouteFilterInner>, 
 
     /**
      * Updates a route filter in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param routeFilterName The name of the route filter.
      * @param routeFilterParameters Parameters supplied to the update route filter operation.
@@ -388,11 +397,12 @@ public interface RouteFiltersClient extends InnerSupportsGet<RouteFilterInner>, 
      * @return route Filter Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RouteFilterInner update(String resourceGroupName, String routeFilterName, PatchRouteFilter routeFilterParameters, Context context);
+    RouteFilterInner update(
+        String resourceGroupName, String routeFilterName, PatchRouteFilter routeFilterParameters, Context context);
 
     /**
      * Gets all route filters in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -404,7 +414,7 @@ public interface RouteFiltersClient extends InnerSupportsGet<RouteFilterInner>, 
 
     /**
      * Gets all route filters in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -416,7 +426,7 @@ public interface RouteFiltersClient extends InnerSupportsGet<RouteFilterInner>, 
 
     /**
      * Gets all route filters in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -429,7 +439,7 @@ public interface RouteFiltersClient extends InnerSupportsGet<RouteFilterInner>, 
 
     /**
      * Gets all route filters in a subscription.
-     * 
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all route filters in a subscription.
@@ -439,7 +449,7 @@ public interface RouteFiltersClient extends InnerSupportsGet<RouteFilterInner>, 
 
     /**
      * Gets all route filters in a subscription.
-     * 
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all route filters in a subscription.
@@ -449,7 +459,7 @@ public interface RouteFiltersClient extends InnerSupportsGet<RouteFilterInner>, 
 
     /**
      * Gets all route filters in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

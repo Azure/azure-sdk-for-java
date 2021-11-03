@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.ConnectionMonitorResultInner;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * List of connection monitors.
- */
+/** List of connection monitors. */
 @Fluent
 public final class ConnectionMonitorListResult {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ConnectionMonitorListResult.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionMonitorListResult.class);
 
     /*
      * Information about connection monitors.
@@ -29,7 +24,7 @@ public final class ConnectionMonitorListResult {
 
     /**
      * Get the value property: Information about connection monitors.
-     * 
+     *
      * @return the value value.
      */
     public List<ConnectionMonitorResultInner> value() {
@@ -38,7 +33,7 @@ public final class ConnectionMonitorListResult {
 
     /**
      * Set the value property: Information about connection monitors.
-     * 
+     *
      * @param value the value value to set.
      * @return the ConnectionMonitorListResult object itself.
      */
@@ -49,7 +44,7 @@ public final class ConnectionMonitorListResult {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

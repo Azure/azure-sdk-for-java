@@ -4,20 +4,15 @@
 
 package com.azure.resourcemanager.network.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * VirtualNetworkGatewayConnection properties.
- */
+/** VirtualNetworkGatewayConnection properties. */
 @Immutable
 public final class TunnelConnectionHealth {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(TunnelConnectionHealth.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(TunnelConnectionHealth.class);
 
     /*
      * Tunnel name.
@@ -51,7 +46,7 @@ public final class TunnelConnectionHealth {
 
     /**
      * Get the tunnel property: Tunnel name.
-     * 
+     *
      * @return the tunnel value.
      */
     public String tunnel() {
@@ -59,9 +54,8 @@ public final class TunnelConnectionHealth {
     }
 
     /**
-     * Get the connectionStatus property: Virtual network Gateway connection
-     * status.
-     * 
+     * Get the connectionStatus property: Virtual network Gateway connection status.
+     *
      * @return the connectionStatus value.
      */
     public VirtualNetworkGatewayConnectionStatus connectionStatus() {
@@ -69,9 +63,8 @@ public final class TunnelConnectionHealth {
     }
 
     /**
-     * Get the ingressBytesTransferred property: The Ingress Bytes Transferred
-     * in this connection.
-     * 
+     * Get the ingressBytesTransferred property: The Ingress Bytes Transferred in this connection.
+     *
      * @return the ingressBytesTransferred value.
      */
     public Long ingressBytesTransferred() {
@@ -79,9 +72,8 @@ public final class TunnelConnectionHealth {
     }
 
     /**
-     * Get the egressBytesTransferred property: The Egress Bytes Transferred in
-     * this connection.
-     * 
+     * Get the egressBytesTransferred property: The Egress Bytes Transferred in this connection.
+     *
      * @return the egressBytesTransferred value.
      */
     public Long egressBytesTransferred() {
@@ -89,9 +81,8 @@ public final class TunnelConnectionHealth {
     }
 
     /**
-     * Get the lastConnectionEstablishedUtcTime property: The time at which
-     * connection was established in Utc format.
-     * 
+     * Get the lastConnectionEstablishedUtcTime property: The time at which connection was established in Utc format.
+     *
      * @return the lastConnectionEstablishedUtcTime value.
      */
     public String lastConnectionEstablishedUtcTime() {
@@ -100,7 +91,7 @@ public final class TunnelConnectionHealth {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

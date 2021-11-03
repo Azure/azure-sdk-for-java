@@ -5,23 +5,18 @@
 package com.azure.resourcemanager.eventhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.models.ConnectionState;
 import com.azure.resourcemanager.eventhubs.models.EndPointProvisioningState;
 import com.azure.resourcemanager.eventhubs.models.PrivateEndpoint;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Properties of the PrivateEndpointConnection.
- */
+/** Properties of the PrivateEndpointConnection. */
 @Fluent
 public final class PrivateEndpointConnectionInner extends ProxyResource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionInner.class);
 
     /*
      * Properties of the PrivateEndpointConnection.
@@ -30,9 +25,8 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
     private PrivateEndpointConnectionProperties innerProperties;
 
     /**
-     * Get the innerProperties property: Properties of the
-     * PrivateEndpointConnection.
-     * 
+     * Get the innerProperties property: Properties of the PrivateEndpointConnection.
+     *
      * @return the innerProperties value.
      */
     private PrivateEndpointConnectionProperties innerProperties() {
@@ -40,9 +34,8 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
     }
 
     /**
-     * Get the privateEndpoint property: The Private Endpoint resource for this
-     * Connection.
-     * 
+     * Get the privateEndpoint property: The Private Endpoint resource for this Connection.
+     *
      * @return the privateEndpoint value.
      */
     public PrivateEndpoint privateEndpoint() {
@@ -50,9 +43,8 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
     }
 
     /**
-     * Set the privateEndpoint property: The Private Endpoint resource for this
-     * Connection.
-     * 
+     * Set the privateEndpoint property: The Private Endpoint resource for this Connection.
+     *
      * @param privateEndpoint the privateEndpoint value to set.
      * @return the PrivateEndpointConnectionInner object itself.
      */
@@ -65,9 +57,8 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
     }
 
     /**
-     * Get the privateLinkServiceConnectionState property: Details about the
-     * state of the connection.
-     * 
+     * Get the privateLinkServiceConnectionState property: Details about the state of the connection.
+     *
      * @return the privateLinkServiceConnectionState value.
      */
     public ConnectionState privateLinkServiceConnectionState() {
@@ -75,14 +66,13 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
     }
 
     /**
-     * Set the privateLinkServiceConnectionState property: Details about the
-     * state of the connection.
-     * 
-     * @param privateLinkServiceConnectionState the
-     * privateLinkServiceConnectionState value to set.
+     * Set the privateLinkServiceConnectionState property: Details about the state of the connection.
+     *
+     * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set.
      * @return the PrivateEndpointConnectionInner object itself.
      */
-    public PrivateEndpointConnectionInner withPrivateLinkServiceConnectionState(ConnectionState privateLinkServiceConnectionState) {
+    public PrivateEndpointConnectionInner withPrivateLinkServiceConnectionState(
+        ConnectionState privateLinkServiceConnectionState) {
         if (this.innerProperties() == null) {
             this.innerProperties = new PrivateEndpointConnectionProperties();
         }
@@ -91,9 +81,8 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
     }
 
     /**
-     * Get the provisioningState property: Provisioning state of the Private
-     * Endpoint Connection.
-     * 
+     * Get the provisioningState property: Provisioning state of the Private Endpoint Connection.
+     *
      * @return the provisioningState value.
      */
     public EndPointProvisioningState provisioningState() {
@@ -101,9 +90,8 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
     }
 
     /**
-     * Set the provisioningState property: Provisioning state of the Private
-     * Endpoint Connection.
-     * 
+     * Set the provisioningState property: Provisioning state of the Private Endpoint Connection.
+     *
      * @param provisioningState the provisioningState value to set.
      * @return the PrivateEndpointConnectionInner object itself.
      */
@@ -117,7 +105,7 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

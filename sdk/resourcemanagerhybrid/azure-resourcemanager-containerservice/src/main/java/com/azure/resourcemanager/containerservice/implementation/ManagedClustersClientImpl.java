@@ -46,158 +46,307 @@ import com.azure.resourcemanager.containerservice.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
-import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * ManagedClustersClient.
- */
-public final class ManagedClustersClientImpl implements InnerSupportsGet<ManagedClusterInner>, InnerSupportsListing<ManagedClusterInner>, InnerSupportsDelete<Void>, ManagedClustersClient {
+/** An instance of this class provides access to all the operations defined in ManagedClustersClient. */
+public final class ManagedClustersClientImpl
+    implements InnerSupportsGet<ManagedClusterInner>,
+        InnerSupportsListing<ManagedClusterInner>,
+        InnerSupportsDelete<Void>,
+        ManagedClustersClient {
     private final ClientLogger logger = new ClientLogger(ManagedClustersClientImpl.class);
 
-    /**
-     * The proxy service used to perform REST calls.
-     */
+    /** The proxy service used to perform REST calls. */
     private final ManagedClustersService service;
 
-    /**
-     * The service client containing this operation class.
-     */
+    /** The service client containing this operation class. */
     private final ContainerServiceManagementClientImpl client;
 
     /**
      * Initializes an instance of ManagedClustersClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     ManagedClustersClientImpl(ContainerServiceManagementClientImpl client) {
-        this.service = RestProxy.create(ManagedClustersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+            RestProxy.create(ManagedClustersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for
-     * ContainerServiceManagementClientManagedClusters to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for ContainerServiceManagementClientManagedClusters to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "ContainerServiceMana")
     private interface ManagedClustersService {
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.ContainerService/managedClusters")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagedClusterListResult>> list(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<ManagedClusterListResult>> list(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters")
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
+                + "/managedClusters")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagedClusterListResult>> listByResourceGroup(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<ManagedClusterListResult>> listByResourceGroup(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/upgradeProfiles/default")
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
+                + "/managedClusters/{resourceName}/upgradeProfiles/default")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagedClusterUpgradeProfileInner>> getUpgradeProfile(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<ManagedClusterUpgradeProfileInner>> getUpgradeProfile(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/accessProfiles/{roleName}/listCredential")
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
+                + "/managedClusters/{resourceName}/accessProfiles/{roleName}/listCredential")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagedClusterAccessProfileInner>> getAccessProfile(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @PathParam("roleName") String roleName, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<ManagedClusterAccessProfileInner>> getAccessProfile(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @PathParam("roleName") String roleName,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/listClusterAdminCredential")
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
+                + "/managedClusters/{resourceName}/listClusterAdminCredential")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CredentialResultsInner>> listClusterAdminCredentials(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<CredentialResultsInner>> listClusterAdminCredentials(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/listClusterUserCredential")
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
+                + "/managedClusters/{resourceName}/listClusterUserCredential")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CredentialResultsInner>> listClusterUserCredentials(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<CredentialResultsInner>> listClusterUserCredentials(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/listClusterMonitoringUserCredential")
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
+                + "/managedClusters/{resourceName}/listClusterMonitoringUserCredential")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CredentialResultsInner>> listClusterMonitoringUserCredentials(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<CredentialResultsInner>> listClusterMonitoringUserCredentials(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}")
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
+                + "/managedClusters/{resourceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagedClusterInner>> getByResourceGroup(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<ManagedClusterInner>> getByResourceGroup(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}")
+        @Headers({"Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
+                + "/managedClusters/{resourceName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @BodyParam("application/json") ManagedClusterInner parameters, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @BodyParam("application/json") ManagedClusterInner parameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}")
+        @Headers({"Content-Type: application/json"})
+        @Patch(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
+                + "/managedClusters/{resourceName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> updateTags(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @BodyParam("application/json") TagsObject parameters, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Flux<ByteBuffer>>> updateTags(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @BodyParam("application/json") TagsObject parameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}")
+        @Headers({"Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
+                + "/managedClusters/{resourceName}")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/resetServicePrincipalProfile")
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
+                + "/managedClusters/{resourceName}/resetServicePrincipalProfile")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> resetServicePrincipalProfile(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @BodyParam("application/json") ManagedClusterServicePrincipalProfile parameters, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Flux<ByteBuffer>>> resetServicePrincipalProfile(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @BodyParam("application/json") ManagedClusterServicePrincipalProfile parameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/resetAADProfile")
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
+                + "/managedClusters/{resourceName}/resetAADProfile")
         @ExpectedResponses({200, 202})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> resetAadProfile(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @BodyParam("application/json") ManagedClusterAadProfile parameters, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Flux<ByteBuffer>>> resetAadProfile(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @BodyParam("application/json") ManagedClusterAadProfile parameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/rotateClusterCertificates")
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
+                + "/managedClusters/{resourceName}/rotateClusterCertificates")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> rotateClusterCertificates(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Flux<ByteBuffer>>> rotateClusterCertificates(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/stop")
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
+                + "/managedClusters/{resourceName}/stop")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> stop(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Flux<ByteBuffer>>> stop(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService/managedClusters/{resourceName}/start")
+        @Headers({"Content-Type: application/json"})
+        @Post(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerService"
+                + "/managedClusters/{resourceName}/start")
         @ExpectedResponses({202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> start(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceName") String resourceName, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Flux<ByteBuffer>>> start(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("resourceName") String resourceName,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagedClusterListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<ManagedClusterListResult>> listNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ManagedClusterListResult>> listByResourceGroupNext(@PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<ManagedClusterListResult>> listByResourceGroupNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
-     * Gets a list of managed clusters in the specified subscription. The operation returns properties of each managed cluster.
-     * 
+     * Gets a list of managed clusters in the specified subscription. The operation returns properties of each managed
+     * cluster.
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of managed clusters in the specified subscription.
@@ -205,27 +354,40 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagedClusterInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-11-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context))
-            .<PagedResponse<ManagedClusterInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<ManagedClusterInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Gets a list of managed clusters in the specified subscription. The operation returns properties of each managed cluster.
-     * 
+     * Gets a list of managed clusters in the specified subscription. The operation returns properties of each managed
+     * cluster.
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -235,41 +397,50 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagedClusterInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return service
+            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 
     /**
-     * Gets a list of managed clusters in the specified subscription. The operation returns properties of each managed cluster.
-     * 
+     * Gets a list of managed clusters in the specified subscription. The operation returns properties of each managed
+     * cluster.
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of managed clusters in the specified subscription.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ManagedClusterInner> listAsync() {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(),
-            nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
-     * Gets a list of managed clusters in the specified subscription. The operation returns properties of each managed cluster.
-     * 
+     * Gets a list of managed clusters in the specified subscription. The operation returns properties of each managed
+     * cluster.
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -279,13 +450,13 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<ManagedClusterInner> listAsync(Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+            () -> listSinglePageAsync(context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
-     * Gets a list of managed clusters in the specified subscription. The operation returns properties of each managed cluster.
-     * 
+     * Gets a list of managed clusters in the specified subscription. The operation returns properties of each managed
+     * cluster.
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of managed clusters in the specified subscription.
@@ -296,8 +467,9 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
     }
 
     /**
-     * Gets a list of managed clusters in the specified subscription. The operation returns properties of each managed cluster.
-     * 
+     * Gets a list of managed clusters in the specified subscription. The operation returns properties of each managed
+     * cluster.
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -310,8 +482,9 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
     }
 
     /**
-     * Lists managed clusters in the specified subscription and resource group. The operation returns properties of each managed cluster.
-     * 
+     * Lists managed clusters in the specified subscription and resource group. The operation returns properties of each
+     * managed cluster.
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -321,30 +494,50 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ManagedClusterInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         final String apiVersion = "2020-11-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, accept, context))
-            .<PagedResponse<ManagedClusterInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByResourceGroup(
+                            this.client.getEndpoint(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            accept,
+                            context))
+            .<PagedResponse<ManagedClusterInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Lists managed clusters in the specified subscription and resource group. The operation returns properties of each managed cluster.
-     * 
+     * Lists managed clusters in the specified subscription and resource group. The operation returns properties of each
+     * managed cluster.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -353,32 +546,50 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return the response from the List Managed Clusters operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedClusterInner>> listByResourceGroupSinglePageAsync(String resourceGroupName, Context context) {
+    private Mono<PagedResponse<ManagedClusterInner>> listByResourceGroupSinglePageAsync(
+        String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         final String apiVersion = "2020-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return service
+            .listByResourceGroup(
+                this.client.getEndpoint(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 
     /**
-     * Lists managed clusters in the specified subscription and resource group. The operation returns properties of each managed cluster.
-     * 
+     * Lists managed clusters in the specified subscription and resource group. The operation returns properties of each
+     * managed cluster.
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -393,8 +604,9 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
     }
 
     /**
-     * Lists managed clusters in the specified subscription and resource group. The operation returns properties of each managed cluster.
-     * 
+     * Lists managed clusters in the specified subscription and resource group. The operation returns properties of each
+     * managed cluster.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -410,8 +622,9 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
     }
 
     /**
-     * Lists managed clusters in the specified subscription and resource group. The operation returns properties of each managed cluster.
-     * 
+     * Lists managed clusters in the specified subscription and resource group. The operation returns properties of each
+     * managed cluster.
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -424,8 +637,9 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
     }
 
     /**
-     * Lists managed clusters in the specified subscription and resource group. The operation returns properties of each managed cluster.
-     * 
+     * Lists managed clusters in the specified subscription and resource group. The operation returns properties of each
+     * managed cluster.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -440,7 +654,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Gets the details of the upgrade profile for a managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -449,28 +663,47 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return the details of the upgrade profile for a managed cluster with a specified resource group and name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ManagedClusterUpgradeProfileInner>> getUpgradeProfileWithResponseAsync(String resourceGroupName, String resourceName) {
+    public Mono<Response<ManagedClusterUpgradeProfileInner>> getUpgradeProfileWithResponseAsync(
+        String resourceGroupName, String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         final String apiVersion = "2020-11-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getUpgradeProfile(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getUpgradeProfile(
+                            this.client.getEndpoint(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the details of the upgrade profile for a managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -480,15 +713,23 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return the details of the upgrade profile for a managed cluster with a specified resource group and name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagedClusterUpgradeProfileInner>> getUpgradeProfileWithResponseAsync(String resourceGroupName, String resourceName, Context context) {
+    private Mono<Response<ManagedClusterUpgradeProfileInner>> getUpgradeProfileWithResponseAsync(
+        String resourceGroupName, String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -496,12 +737,20 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         final String apiVersion = "2020-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getUpgradeProfile(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context);
+        return service
+            .getUpgradeProfile(
+                this.client.getEndpoint(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                accept,
+                context);
     }
 
     /**
      * Gets the details of the upgrade profile for a managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -510,20 +759,22 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return the details of the upgrade profile for a managed cluster with a specified resource group and name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedClusterUpgradeProfileInner> getUpgradeProfileAsync(String resourceGroupName, String resourceName) {
+    public Mono<ManagedClusterUpgradeProfileInner> getUpgradeProfileAsync(
+        String resourceGroupName, String resourceName) {
         return getUpgradeProfileWithResponseAsync(resourceGroupName, resourceName)
-            .flatMap((Response<ManagedClusterUpgradeProfileInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (Response<ManagedClusterUpgradeProfileInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets the details of the upgrade profile for a managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -538,7 +789,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Gets the details of the upgrade profile for a managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -548,31 +799,46 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return the details of the upgrade profile for a managed cluster with a specified resource group and name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ManagedClusterUpgradeProfileInner> getUpgradeProfileWithResponse(String resourceGroupName, String resourceName, Context context) {
+    public Response<ManagedClusterUpgradeProfileInner> getUpgradeProfileWithResponse(
+        String resourceGroupName, String resourceName, Context context) {
         return getUpgradeProfileWithResponseAsync(resourceGroupName, resourceName, context).block();
     }
 
     /**
-     * Gets the accessProfile for the specified role name of the managed cluster with a specified resource group and name. **WARNING**: This API will be deprecated. Instead use [ListClusterUserCredentials](https://docs.microsoft.com/en-us/rest/api/aks/managedclusters/listclusterusercredentials) or [ListClusterAdminCredentials](https://docs.microsoft.com/en-us/rest/api/aks/managedclusters/listclusteradmincredentials) .
-     * 
+     * Gets the accessProfile for the specified role name of the managed cluster with a specified resource group and
+     * name. **WARNING**: This API will be deprecated. Instead use
+     * [ListClusterUserCredentials](https://docs.microsoft.com/en-us/rest/api/aks/managedclusters/listclusterusercredentials)
+     * or
+     * [ListClusterAdminCredentials](https://docs.microsoft.com/en-us/rest/api/aks/managedclusters/listclusteradmincredentials)
+     * .
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param roleName The name of the role for managed cluster accessProfile resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the accessProfile for the specified role name of the managed cluster with a specified resource group and name.
+     * @return the accessProfile for the specified role name of the managed cluster with a specified resource group and
+     *     name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ManagedClusterAccessProfileInner>> getAccessProfileWithResponseAsync(String resourceGroupName, String resourceName, String roleName) {
+    public Mono<Response<ManagedClusterAccessProfileInner>> getAccessProfileWithResponseAsync(
+        String resourceGroupName, String resourceName, String roleName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -582,13 +848,30 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         }
         final String apiVersion = "2020-11-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getAccessProfile(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, roleName, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getAccessProfile(
+                            this.client.getEndpoint(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            roleName,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Gets the accessProfile for the specified role name of the managed cluster with a specified resource group and name. **WARNING**: This API will be deprecated. Instead use [ListClusterUserCredentials](https://docs.microsoft.com/en-us/rest/api/aks/managedclusters/listclusterusercredentials) or [ListClusterAdminCredentials](https://docs.microsoft.com/en-us/rest/api/aks/managedclusters/listclusteradmincredentials) .
-     * 
+     * Gets the accessProfile for the specified role name of the managed cluster with a specified resource group and
+     * name. **WARNING**: This API will be deprecated. Instead use
+     * [ListClusterUserCredentials](https://docs.microsoft.com/en-us/rest/api/aks/managedclusters/listclusterusercredentials)
+     * or
+     * [ListClusterAdminCredentials](https://docs.microsoft.com/en-us/rest/api/aks/managedclusters/listclusteradmincredentials)
+     * .
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param roleName The name of the role for managed cluster accessProfile resource.
@@ -596,18 +879,27 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the accessProfile for the specified role name of the managed cluster with a specified resource group and name.
+     * @return the accessProfile for the specified role name of the managed cluster with a specified resource group and
+     *     name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagedClusterAccessProfileInner>> getAccessProfileWithResponseAsync(String resourceGroupName, String resourceName, String roleName, Context context) {
+    private Mono<Response<ManagedClusterAccessProfileInner>> getAccessProfileWithResponseAsync(
+        String resourceGroupName, String resourceName, String roleName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -618,51 +910,80 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         final String apiVersion = "2020-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getAccessProfile(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, roleName, accept, context);
+        return service
+            .getAccessProfile(
+                this.client.getEndpoint(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                roleName,
+                accept,
+                context);
     }
 
     /**
-     * Gets the accessProfile for the specified role name of the managed cluster with a specified resource group and name. **WARNING**: This API will be deprecated. Instead use [ListClusterUserCredentials](https://docs.microsoft.com/en-us/rest/api/aks/managedclusters/listclusterusercredentials) or [ListClusterAdminCredentials](https://docs.microsoft.com/en-us/rest/api/aks/managedclusters/listclusteradmincredentials) .
-     * 
+     * Gets the accessProfile for the specified role name of the managed cluster with a specified resource group and
+     * name. **WARNING**: This API will be deprecated. Instead use
+     * [ListClusterUserCredentials](https://docs.microsoft.com/en-us/rest/api/aks/managedclusters/listclusterusercredentials)
+     * or
+     * [ListClusterAdminCredentials](https://docs.microsoft.com/en-us/rest/api/aks/managedclusters/listclusteradmincredentials)
+     * .
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param roleName The name of the role for managed cluster accessProfile resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the accessProfile for the specified role name of the managed cluster with a specified resource group and name.
+     * @return the accessProfile for the specified role name of the managed cluster with a specified resource group and
+     *     name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedClusterAccessProfileInner> getAccessProfileAsync(String resourceGroupName, String resourceName, String roleName) {
+    public Mono<ManagedClusterAccessProfileInner> getAccessProfileAsync(
+        String resourceGroupName, String resourceName, String roleName) {
         return getAccessProfileWithResponseAsync(resourceGroupName, resourceName, roleName)
-            .flatMap((Response<ManagedClusterAccessProfileInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (Response<ManagedClusterAccessProfileInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
-     * Gets the accessProfile for the specified role name of the managed cluster with a specified resource group and name. **WARNING**: This API will be deprecated. Instead use [ListClusterUserCredentials](https://docs.microsoft.com/en-us/rest/api/aks/managedclusters/listclusterusercredentials) or [ListClusterAdminCredentials](https://docs.microsoft.com/en-us/rest/api/aks/managedclusters/listclusteradmincredentials) .
-     * 
+     * Gets the accessProfile for the specified role name of the managed cluster with a specified resource group and
+     * name. **WARNING**: This API will be deprecated. Instead use
+     * [ListClusterUserCredentials](https://docs.microsoft.com/en-us/rest/api/aks/managedclusters/listclusterusercredentials)
+     * or
+     * [ListClusterAdminCredentials](https://docs.microsoft.com/en-us/rest/api/aks/managedclusters/listclusteradmincredentials)
+     * .
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param roleName The name of the role for managed cluster accessProfile resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the accessProfile for the specified role name of the managed cluster with a specified resource group and name.
+     * @return the accessProfile for the specified role name of the managed cluster with a specified resource group and
+     *     name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedClusterAccessProfileInner getAccessProfile(String resourceGroupName, String resourceName, String roleName) {
+    public ManagedClusterAccessProfileInner getAccessProfile(
+        String resourceGroupName, String resourceName, String roleName) {
         return getAccessProfileAsync(resourceGroupName, resourceName, roleName).block();
     }
 
     /**
-     * Gets the accessProfile for the specified role name of the managed cluster with a specified resource group and name. **WARNING**: This API will be deprecated. Instead use [ListClusterUserCredentials](https://docs.microsoft.com/en-us/rest/api/aks/managedclusters/listclusterusercredentials) or [ListClusterAdminCredentials](https://docs.microsoft.com/en-us/rest/api/aks/managedclusters/listclusteradmincredentials) .
-     * 
+     * Gets the accessProfile for the specified role name of the managed cluster with a specified resource group and
+     * name. **WARNING**: This API will be deprecated. Instead use
+     * [ListClusterUserCredentials](https://docs.microsoft.com/en-us/rest/api/aks/managedclusters/listclusterusercredentials)
+     * or
+     * [ListClusterAdminCredentials](https://docs.microsoft.com/en-us/rest/api/aks/managedclusters/listclusteradmincredentials)
+     * .
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param roleName The name of the role for managed cluster accessProfile resource.
@@ -670,16 +991,18 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the accessProfile for the specified role name of the managed cluster with a specified resource group and name.
+     * @return the accessProfile for the specified role name of the managed cluster with a specified resource group and
+     *     name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ManagedClusterAccessProfileInner> getAccessProfileWithResponse(String resourceGroupName, String resourceName, String roleName, Context context) {
+    public Response<ManagedClusterAccessProfileInner> getAccessProfileWithResponse(
+        String resourceGroupName, String resourceName, String roleName, Context context) {
         return getAccessProfileWithResponseAsync(resourceGroupName, resourceName, roleName, context).block();
     }
 
     /**
      * Gets cluster admin credential of the managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -688,28 +1011,47 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return cluster admin credential of the managed cluster with a specified resource group and name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CredentialResultsInner>> listClusterAdminCredentialsWithResponseAsync(String resourceGroupName, String resourceName) {
+    public Mono<Response<CredentialResultsInner>> listClusterAdminCredentialsWithResponseAsync(
+        String resourceGroupName, String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         final String apiVersion = "2020-11-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listClusterAdminCredentials(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listClusterAdminCredentials(
+                            this.client.getEndpoint(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets cluster admin credential of the managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -719,15 +1061,23 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return cluster admin credential of the managed cluster with a specified resource group and name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CredentialResultsInner>> listClusterAdminCredentialsWithResponseAsync(String resourceGroupName, String resourceName, Context context) {
+    private Mono<Response<CredentialResultsInner>> listClusterAdminCredentialsWithResponseAsync(
+        String resourceGroupName, String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -735,12 +1085,20 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         final String apiVersion = "2020-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listClusterAdminCredentials(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context);
+        return service
+            .listClusterAdminCredentials(
+                this.client.getEndpoint(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                accept,
+                context);
     }
 
     /**
      * Gets cluster admin credential of the managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -749,20 +1107,22 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return cluster admin credential of the managed cluster with a specified resource group and name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CredentialResultsInner> listClusterAdminCredentialsAsync(String resourceGroupName, String resourceName) {
+    public Mono<CredentialResultsInner> listClusterAdminCredentialsAsync(
+        String resourceGroupName, String resourceName) {
         return listClusterAdminCredentialsWithResponseAsync(resourceGroupName, resourceName)
-            .flatMap((Response<CredentialResultsInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (Response<CredentialResultsInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets cluster admin credential of the managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -777,7 +1137,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Gets cluster admin credential of the managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -787,13 +1147,14 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return cluster admin credential of the managed cluster with a specified resource group and name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CredentialResultsInner> listClusterAdminCredentialsWithResponse(String resourceGroupName, String resourceName, Context context) {
+    public Response<CredentialResultsInner> listClusterAdminCredentialsWithResponse(
+        String resourceGroupName, String resourceName, Context context) {
         return listClusterAdminCredentialsWithResponseAsync(resourceGroupName, resourceName, context).block();
     }
 
     /**
      * Gets cluster user credential of the managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -802,28 +1163,47 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return cluster user credential of the managed cluster with a specified resource group and name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CredentialResultsInner>> listClusterUserCredentialsWithResponseAsync(String resourceGroupName, String resourceName) {
+    public Mono<Response<CredentialResultsInner>> listClusterUserCredentialsWithResponseAsync(
+        String resourceGroupName, String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         final String apiVersion = "2020-11-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listClusterUserCredentials(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listClusterUserCredentials(
+                            this.client.getEndpoint(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets cluster user credential of the managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -833,15 +1213,23 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return cluster user credential of the managed cluster with a specified resource group and name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CredentialResultsInner>> listClusterUserCredentialsWithResponseAsync(String resourceGroupName, String resourceName, Context context) {
+    private Mono<Response<CredentialResultsInner>> listClusterUserCredentialsWithResponseAsync(
+        String resourceGroupName, String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -849,12 +1237,20 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         final String apiVersion = "2020-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listClusterUserCredentials(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context);
+        return service
+            .listClusterUserCredentials(
+                this.client.getEndpoint(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                accept,
+                context);
     }
 
     /**
      * Gets cluster user credential of the managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -865,18 +1261,19 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CredentialResultsInner> listClusterUserCredentialsAsync(String resourceGroupName, String resourceName) {
         return listClusterUserCredentialsWithResponseAsync(resourceGroupName, resourceName)
-            .flatMap((Response<CredentialResultsInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (Response<CredentialResultsInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets cluster user credential of the managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -891,7 +1288,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Gets cluster user credential of the managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -901,13 +1298,14 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return cluster user credential of the managed cluster with a specified resource group and name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CredentialResultsInner> listClusterUserCredentialsWithResponse(String resourceGroupName, String resourceName, Context context) {
+    public Response<CredentialResultsInner> listClusterUserCredentialsWithResponse(
+        String resourceGroupName, String resourceName, Context context) {
         return listClusterUserCredentialsWithResponseAsync(resourceGroupName, resourceName, context).block();
     }
 
     /**
      * Gets cluster monitoring user credential of the managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -916,28 +1314,47 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return cluster monitoring user credential of the managed cluster with a specified resource group and name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CredentialResultsInner>> listClusterMonitoringUserCredentialsWithResponseAsync(String resourceGroupName, String resourceName) {
+    public Mono<Response<CredentialResultsInner>> listClusterMonitoringUserCredentialsWithResponseAsync(
+        String resourceGroupName, String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         final String apiVersion = "2020-11-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listClusterMonitoringUserCredentials(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listClusterMonitoringUserCredentials(
+                            this.client.getEndpoint(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets cluster monitoring user credential of the managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -947,15 +1364,23 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return cluster monitoring user credential of the managed cluster with a specified resource group and name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CredentialResultsInner>> listClusterMonitoringUserCredentialsWithResponseAsync(String resourceGroupName, String resourceName, Context context) {
+    private Mono<Response<CredentialResultsInner>> listClusterMonitoringUserCredentialsWithResponseAsync(
+        String resourceGroupName, String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -963,12 +1388,20 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         final String apiVersion = "2020-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listClusterMonitoringUserCredentials(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context);
+        return service
+            .listClusterMonitoringUserCredentials(
+                this.client.getEndpoint(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                accept,
+                context);
     }
 
     /**
      * Gets cluster monitoring user credential of the managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -977,20 +1410,22 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return cluster monitoring user credential of the managed cluster with a specified resource group and name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CredentialResultsInner> listClusterMonitoringUserCredentialsAsync(String resourceGroupName, String resourceName) {
+    public Mono<CredentialResultsInner> listClusterMonitoringUserCredentialsAsync(
+        String resourceGroupName, String resourceName) {
         return listClusterMonitoringUserCredentialsWithResponseAsync(resourceGroupName, resourceName)
-            .flatMap((Response<CredentialResultsInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (Response<CredentialResultsInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets cluster monitoring user credential of the managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1005,7 +1440,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Gets cluster monitoring user credential of the managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -1015,13 +1450,14 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return cluster monitoring user credential of the managed cluster with a specified resource group and name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CredentialResultsInner> listClusterMonitoringUserCredentialsWithResponse(String resourceGroupName, String resourceName, Context context) {
+    public Response<CredentialResultsInner> listClusterMonitoringUserCredentialsWithResponse(
+        String resourceGroupName, String resourceName, Context context) {
         return listClusterMonitoringUserCredentialsWithResponseAsync(resourceGroupName, resourceName, context).block();
     }
 
     /**
      * Gets the details of the managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1030,28 +1466,47 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return the details of the managed cluster with a specified resource group and name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ManagedClusterInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String resourceName) {
+    public Mono<Response<ManagedClusterInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         final String apiVersion = "2020-11-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getByResourceGroup(
+                            this.client.getEndpoint(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the details of the managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -1061,15 +1516,23 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return the details of the managed cluster with a specified resource group and name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ManagedClusterInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String resourceName, Context context) {
+    private Mono<Response<ManagedClusterInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -1077,12 +1540,20 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         final String apiVersion = "2020-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getByResourceGroup(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context);
+        return service
+            .getByResourceGroup(
+                this.client.getEndpoint(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                accept,
+                context);
     }
 
     /**
      * Gets the details of the managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1093,18 +1564,19 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ManagedClusterInner> getByResourceGroupAsync(String resourceGroupName, String resourceName) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, resourceName)
-            .flatMap((Response<ManagedClusterInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (Response<ManagedClusterInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets the details of the managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1119,7 +1591,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Gets the details of the managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -1129,13 +1601,14 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return the details of the managed cluster with a specified resource group and name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ManagedClusterInner> getByResourceGroupWithResponse(String resourceGroupName, String resourceName, Context context) {
+    public Response<ManagedClusterInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String resourceName, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, resourceName, context).block();
     }
 
     /**
      * Creates or updates a managed cluster with the specified configuration for agents and Kubernetes version.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Create or Update a Managed Cluster operation.
@@ -1145,15 +1618,23 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String resourceName, ManagedClusterInner parameters) {
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String resourceName, ManagedClusterInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -1165,13 +1646,25 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         }
         final String apiVersion = "2020-11-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, parameters, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .createOrUpdate(
+                            this.client.getEndpoint(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            parameters,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a managed cluster with the specified configuration for agents and Kubernetes version.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Create or Update a Managed Cluster operation.
@@ -1182,15 +1675,23 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String resourceName, ManagedClusterInner parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String resourceName, ManagedClusterInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -1203,12 +1704,21 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         final String apiVersion = "2020-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, parameters, accept, context);
+        return service
+            .createOrUpdate(
+                this.client.getEndpoint(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                parameters,
+                accept,
+                context);
     }
 
     /**
      * Creates or updates a managed cluster with the specified configuration for agents and Kubernetes version.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Create or Update a Managed Cluster operation.
@@ -1218,14 +1728,23 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<ManagedClusterInner>, ManagedClusterInner> beginCreateOrUpdateAsync(String resourceGroupName, String resourceName, ManagedClusterInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, resourceName, parameters);
-        return this.client.<ManagedClusterInner, ManagedClusterInner>getLroResult(mono, this.client.getHttpPipeline(), ManagedClusterInner.class, ManagedClusterInner.class, Context.NONE);
+    public PollerFlux<PollResult<ManagedClusterInner>, ManagedClusterInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String resourceName, ManagedClusterInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, resourceName, parameters);
+        return this
+            .client
+            .<ManagedClusterInner, ManagedClusterInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ManagedClusterInner.class,
+                ManagedClusterInner.class,
+                Context.NONE);
     }
 
     /**
      * Creates or updates a managed cluster with the specified configuration for agents and Kubernetes version.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Create or Update a Managed Cluster operation.
@@ -1236,15 +1755,20 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<ManagedClusterInner>, ManagedClusterInner> beginCreateOrUpdateAsync(String resourceGroupName, String resourceName, ManagedClusterInner parameters, Context context) {
+    private PollerFlux<PollResult<ManagedClusterInner>, ManagedClusterInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String resourceName, ManagedClusterInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, resourceName, parameters, context);
-        return this.client.<ManagedClusterInner, ManagedClusterInner>getLroResult(mono, this.client.getHttpPipeline(), ManagedClusterInner.class, ManagedClusterInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, resourceName, parameters, context);
+        return this
+            .client
+            .<ManagedClusterInner, ManagedClusterInner>getLroResult(
+                mono, this.client.getHttpPipeline(), ManagedClusterInner.class, ManagedClusterInner.class, context);
     }
 
     /**
      * Creates or updates a managed cluster with the specified configuration for agents and Kubernetes version.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Create or Update a Managed Cluster operation.
@@ -1254,13 +1778,14 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<ManagedClusterInner>, ManagedClusterInner> beginCreateOrUpdate(String resourceGroupName, String resourceName, ManagedClusterInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, resourceName, parameters)
-            .getSyncPoller();}
+    public SyncPoller<PollResult<ManagedClusterInner>, ManagedClusterInner> beginCreateOrUpdate(
+        String resourceGroupName, String resourceName, ManagedClusterInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, resourceName, parameters).getSyncPoller();
+    }
 
     /**
      * Creates or updates a managed cluster with the specified configuration for agents and Kubernetes version.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Create or Update a Managed Cluster operation.
@@ -1271,13 +1796,14 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<ManagedClusterInner>, ManagedClusterInner> beginCreateOrUpdate(String resourceGroupName, String resourceName, ManagedClusterInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, resourceName, parameters, context)
-            .getSyncPoller();}
+    public SyncPoller<PollResult<ManagedClusterInner>, ManagedClusterInner> beginCreateOrUpdate(
+        String resourceGroupName, String resourceName, ManagedClusterInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, resourceName, parameters, context).getSyncPoller();
+    }
 
     /**
      * Creates or updates a managed cluster with the specified configuration for agents and Kubernetes version.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Create or Update a Managed Cluster operation.
@@ -1287,7 +1813,8 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedClusterInner> createOrUpdateAsync(String resourceGroupName, String resourceName, ManagedClusterInner parameters) {
+    public Mono<ManagedClusterInner> createOrUpdateAsync(
+        String resourceGroupName, String resourceName, ManagedClusterInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, resourceName, parameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1295,7 +1822,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Creates or updates a managed cluster with the specified configuration for agents and Kubernetes version.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Create or Update a Managed Cluster operation.
@@ -1306,7 +1833,8 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagedClusterInner> createOrUpdateAsync(String resourceGroupName, String resourceName, ManagedClusterInner parameters, Context context) {
+    private Mono<ManagedClusterInner> createOrUpdateAsync(
+        String resourceGroupName, String resourceName, ManagedClusterInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, resourceName, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1314,7 +1842,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Creates or updates a managed cluster with the specified configuration for agents and Kubernetes version.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Create or Update a Managed Cluster operation.
@@ -1324,13 +1852,14 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedClusterInner createOrUpdate(String resourceGroupName, String resourceName, ManagedClusterInner parameters) {
+    public ManagedClusterInner createOrUpdate(
+        String resourceGroupName, String resourceName, ManagedClusterInner parameters) {
         return createOrUpdateAsync(resourceGroupName, resourceName, parameters).block();
     }
 
     /**
      * Creates or updates a managed cluster with the specified configuration for agents and Kubernetes version.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Create or Update a Managed Cluster operation.
@@ -1341,13 +1870,14 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedClusterInner createOrUpdate(String resourceGroupName, String resourceName, ManagedClusterInner parameters, Context context) {
+    public ManagedClusterInner createOrUpdate(
+        String resourceGroupName, String resourceName, ManagedClusterInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, resourceName, parameters, context).block();
     }
 
     /**
      * Updates a managed cluster with the specified tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update Managed Cluster Tags operation.
@@ -1357,15 +1887,23 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(String resourceGroupName, String resourceName, TagsObject parameters) {
+    public Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
+        String resourceGroupName, String resourceName, TagsObject parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -1377,13 +1915,25 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         }
         final String apiVersion = "2020-11-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.updateTags(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, parameters, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .updateTags(
+                            this.client.getEndpoint(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            parameters,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates a managed cluster with the specified tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update Managed Cluster Tags operation.
@@ -1394,15 +1944,23 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(String resourceGroupName, String resourceName, TagsObject parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
+        String resourceGroupName, String resourceName, TagsObject parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -1415,12 +1973,21 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         final String apiVersion = "2020-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.updateTags(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, parameters, accept, context);
+        return service
+            .updateTags(
+                this.client.getEndpoint(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                parameters,
+                accept,
+                context);
     }
 
     /**
      * Updates a managed cluster with the specified tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update Managed Cluster Tags operation.
@@ -1430,14 +1997,23 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<ManagedClusterInner>, ManagedClusterInner> beginUpdateTagsAsync(String resourceGroupName, String resourceName, TagsObject parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono = updateTagsWithResponseAsync(resourceGroupName, resourceName, parameters);
-        return this.client.<ManagedClusterInner, ManagedClusterInner>getLroResult(mono, this.client.getHttpPipeline(), ManagedClusterInner.class, ManagedClusterInner.class, Context.NONE);
+    public PollerFlux<PollResult<ManagedClusterInner>, ManagedClusterInner> beginUpdateTagsAsync(
+        String resourceGroupName, String resourceName, TagsObject parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateTagsWithResponseAsync(resourceGroupName, resourceName, parameters);
+        return this
+            .client
+            .<ManagedClusterInner, ManagedClusterInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                ManagedClusterInner.class,
+                ManagedClusterInner.class,
+                Context.NONE);
     }
 
     /**
      * Updates a managed cluster with the specified tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update Managed Cluster Tags operation.
@@ -1448,15 +2024,20 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<ManagedClusterInner>, ManagedClusterInner> beginUpdateTagsAsync(String resourceGroupName, String resourceName, TagsObject parameters, Context context) {
+    private PollerFlux<PollResult<ManagedClusterInner>, ManagedClusterInner> beginUpdateTagsAsync(
+        String resourceGroupName, String resourceName, TagsObject parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = updateTagsWithResponseAsync(resourceGroupName, resourceName, parameters, context);
-        return this.client.<ManagedClusterInner, ManagedClusterInner>getLroResult(mono, this.client.getHttpPipeline(), ManagedClusterInner.class, ManagedClusterInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateTagsWithResponseAsync(resourceGroupName, resourceName, parameters, context);
+        return this
+            .client
+            .<ManagedClusterInner, ManagedClusterInner>getLroResult(
+                mono, this.client.getHttpPipeline(), ManagedClusterInner.class, ManagedClusterInner.class, context);
     }
 
     /**
      * Updates a managed cluster with the specified tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update Managed Cluster Tags operation.
@@ -1466,13 +2047,14 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<ManagedClusterInner>, ManagedClusterInner> beginUpdateTags(String resourceGroupName, String resourceName, TagsObject parameters) {
-        return beginUpdateTagsAsync(resourceGroupName, resourceName, parameters)
-            .getSyncPoller();}
+    public SyncPoller<PollResult<ManagedClusterInner>, ManagedClusterInner> beginUpdateTags(
+        String resourceGroupName, String resourceName, TagsObject parameters) {
+        return beginUpdateTagsAsync(resourceGroupName, resourceName, parameters).getSyncPoller();
+    }
 
     /**
      * Updates a managed cluster with the specified tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update Managed Cluster Tags operation.
@@ -1483,13 +2065,14 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<ManagedClusterInner>, ManagedClusterInner> beginUpdateTags(String resourceGroupName, String resourceName, TagsObject parameters, Context context) {
-        return beginUpdateTagsAsync(resourceGroupName, resourceName, parameters, context)
-            .getSyncPoller();}
+    public SyncPoller<PollResult<ManagedClusterInner>, ManagedClusterInner> beginUpdateTags(
+        String resourceGroupName, String resourceName, TagsObject parameters, Context context) {
+        return beginUpdateTagsAsync(resourceGroupName, resourceName, parameters, context).getSyncPoller();
+    }
 
     /**
      * Updates a managed cluster with the specified tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update Managed Cluster Tags operation.
@@ -1499,7 +2082,8 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ManagedClusterInner> updateTagsAsync(String resourceGroupName, String resourceName, TagsObject parameters) {
+    public Mono<ManagedClusterInner> updateTagsAsync(
+        String resourceGroupName, String resourceName, TagsObject parameters) {
         return beginUpdateTagsAsync(resourceGroupName, resourceName, parameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1507,7 +2091,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Updates a managed cluster with the specified tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update Managed Cluster Tags operation.
@@ -1518,7 +2102,8 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ManagedClusterInner> updateTagsAsync(String resourceGroupName, String resourceName, TagsObject parameters, Context context) {
+    private Mono<ManagedClusterInner> updateTagsAsync(
+        String resourceGroupName, String resourceName, TagsObject parameters, Context context) {
         return beginUpdateTagsAsync(resourceGroupName, resourceName, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1526,7 +2111,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Updates a managed cluster with the specified tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update Managed Cluster Tags operation.
@@ -1542,7 +2127,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Updates a managed cluster with the specified tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Update Managed Cluster Tags operation.
@@ -1553,13 +2138,14 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ManagedClusterInner updateTags(String resourceGroupName, String resourceName, TagsObject parameters, Context context) {
+    public ManagedClusterInner updateTags(
+        String resourceGroupName, String resourceName, TagsObject parameters, Context context) {
         return updateTagsAsync(resourceGroupName, resourceName, parameters, context).block();
     }
 
     /**
      * Deletes the managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1570,26 +2156,44 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         final String apiVersion = "2020-11-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .delete(
+                            this.client.getEndpoint(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -1599,15 +2203,23 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -1615,12 +2227,20 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         final String apiVersion = "2020-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context);
+        return service
+            .delete(
+                this.client.getEndpoint(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                accept,
+                context);
     }
 
     /**
      * Deletes the managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1631,12 +2251,14 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, resourceName);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
      * Deletes the managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -1646,15 +2268,18 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String resourceName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, resourceName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
      * Deletes the managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1664,12 +2289,12 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName) {
-        return beginDeleteAsync(resourceGroupName, resourceName)
-            .getSyncPoller();}
+        return beginDeleteAsync(resourceGroupName, resourceName).getSyncPoller();
+    }
 
     /**
      * Deletes the managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -1679,13 +2304,14 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, resourceName, context)
-            .getSyncPoller();}
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String resourceName, Context context) {
+        return beginDeleteAsync(resourceGroupName, resourceName, context).getSyncPoller();
+    }
 
     /**
      * Deletes the managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1695,14 +2321,12 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String resourceGroupName, String resourceName) {
-        return beginDeleteAsync(resourceGroupName, resourceName)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginDeleteAsync(resourceGroupName, resourceName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -1720,7 +2344,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Deletes the managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1734,7 +2358,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Deletes the managed cluster with a specified resource group and name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -1749,7 +2373,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Update the service principal Profile for a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Reset Service Principal Profile operation for a Managed Cluster.
@@ -1759,15 +2383,23 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> resetServicePrincipalProfileWithResponseAsync(String resourceGroupName, String resourceName, ManagedClusterServicePrincipalProfile parameters) {
+    public Mono<Response<Flux<ByteBuffer>>> resetServicePrincipalProfileWithResponseAsync(
+        String resourceGroupName, String resourceName, ManagedClusterServicePrincipalProfile parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -1779,13 +2411,25 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         }
         final String apiVersion = "2020-11-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.resetServicePrincipalProfile(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, parameters, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .resetServicePrincipalProfile(
+                            this.client.getEndpoint(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            parameters,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update the service principal Profile for a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Reset Service Principal Profile operation for a Managed Cluster.
@@ -1796,15 +2440,26 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> resetServicePrincipalProfileWithResponseAsync(String resourceGroupName, String resourceName, ManagedClusterServicePrincipalProfile parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> resetServicePrincipalProfileWithResponseAsync(
+        String resourceGroupName,
+        String resourceName,
+        ManagedClusterServicePrincipalProfile parameters,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -1817,12 +2472,21 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         final String apiVersion = "2020-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.resetServicePrincipalProfile(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, parameters, accept, context);
+        return service
+            .resetServicePrincipalProfile(
+                this.client.getEndpoint(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                parameters,
+                accept,
+                context);
     }
 
     /**
      * Update the service principal Profile for a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Reset Service Principal Profile operation for a Managed Cluster.
@@ -1832,14 +2496,18 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginResetServicePrincipalProfileAsync(String resourceGroupName, String resourceName, ManagedClusterServicePrincipalProfile parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono = resetServicePrincipalProfileWithResponseAsync(resourceGroupName, resourceName, parameters);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+    public PollerFlux<PollResult<Void>, Void> beginResetServicePrincipalProfileAsync(
+        String resourceGroupName, String resourceName, ManagedClusterServicePrincipalProfile parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            resetServicePrincipalProfileWithResponseAsync(resourceGroupName, resourceName, parameters);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
      * Update the service principal Profile for a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Reset Service Principal Profile operation for a Managed Cluster.
@@ -1850,15 +2518,22 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<Void>, Void> beginResetServicePrincipalProfileAsync(String resourceGroupName, String resourceName, ManagedClusterServicePrincipalProfile parameters, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginResetServicePrincipalProfileAsync(
+        String resourceGroupName,
+        String resourceName,
+        ManagedClusterServicePrincipalProfile parameters,
+        Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = resetServicePrincipalProfileWithResponseAsync(resourceGroupName, resourceName, parameters, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            resetServicePrincipalProfileWithResponseAsync(resourceGroupName, resourceName, parameters, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
      * Update the service principal Profile for a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Reset Service Principal Profile operation for a Managed Cluster.
@@ -1868,13 +2543,14 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginResetServicePrincipalProfile(String resourceGroupName, String resourceName, ManagedClusterServicePrincipalProfile parameters) {
-        return beginResetServicePrincipalProfileAsync(resourceGroupName, resourceName, parameters)
-            .getSyncPoller();}
+    public SyncPoller<PollResult<Void>, Void> beginResetServicePrincipalProfile(
+        String resourceGroupName, String resourceName, ManagedClusterServicePrincipalProfile parameters) {
+        return beginResetServicePrincipalProfileAsync(resourceGroupName, resourceName, parameters).getSyncPoller();
+    }
 
     /**
      * Update the service principal Profile for a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Reset Service Principal Profile operation for a Managed Cluster.
@@ -1885,13 +2561,18 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginResetServicePrincipalProfile(String resourceGroupName, String resourceName, ManagedClusterServicePrincipalProfile parameters, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginResetServicePrincipalProfile(
+        String resourceGroupName,
+        String resourceName,
+        ManagedClusterServicePrincipalProfile parameters,
+        Context context) {
         return beginResetServicePrincipalProfileAsync(resourceGroupName, resourceName, parameters, context)
-            .getSyncPoller();}
+            .getSyncPoller();
+    }
 
     /**
      * Update the service principal Profile for a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Reset Service Principal Profile operation for a Managed Cluster.
@@ -1901,7 +2582,8 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> resetServicePrincipalProfileAsync(String resourceGroupName, String resourceName, ManagedClusterServicePrincipalProfile parameters) {
+    public Mono<Void> resetServicePrincipalProfileAsync(
+        String resourceGroupName, String resourceName, ManagedClusterServicePrincipalProfile parameters) {
         return beginResetServicePrincipalProfileAsync(resourceGroupName, resourceName, parameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1909,7 +2591,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Update the service principal Profile for a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Reset Service Principal Profile operation for a Managed Cluster.
@@ -1920,7 +2602,11 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> resetServicePrincipalProfileAsync(String resourceGroupName, String resourceName, ManagedClusterServicePrincipalProfile parameters, Context context) {
+    private Mono<Void> resetServicePrincipalProfileAsync(
+        String resourceGroupName,
+        String resourceName,
+        ManagedClusterServicePrincipalProfile parameters,
+        Context context) {
         return beginResetServicePrincipalProfileAsync(resourceGroupName, resourceName, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -1928,7 +2614,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Update the service principal Profile for a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Reset Service Principal Profile operation for a Managed Cluster.
@@ -1937,13 +2623,14 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void resetServicePrincipalProfile(String resourceGroupName, String resourceName, ManagedClusterServicePrincipalProfile parameters) {
+    public void resetServicePrincipalProfile(
+        String resourceGroupName, String resourceName, ManagedClusterServicePrincipalProfile parameters) {
         resetServicePrincipalProfileAsync(resourceGroupName, resourceName, parameters).block();
     }
 
     /**
      * Update the service principal Profile for a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Reset Service Principal Profile operation for a Managed Cluster.
@@ -1953,13 +2640,17 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void resetServicePrincipalProfile(String resourceGroupName, String resourceName, ManagedClusterServicePrincipalProfile parameters, Context context) {
+    public void resetServicePrincipalProfile(
+        String resourceGroupName,
+        String resourceName,
+        ManagedClusterServicePrincipalProfile parameters,
+        Context context) {
         resetServicePrincipalProfileAsync(resourceGroupName, resourceName, parameters, context).block();
     }
 
     /**
      * Update the AAD Profile for a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Reset AAD Profile operation for a Managed Cluster.
@@ -1969,15 +2660,23 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> resetAadProfileWithResponseAsync(String resourceGroupName, String resourceName, ManagedClusterAadProfile parameters) {
+    public Mono<Response<Flux<ByteBuffer>>> resetAadProfileWithResponseAsync(
+        String resourceGroupName, String resourceName, ManagedClusterAadProfile parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -1989,13 +2688,25 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         }
         final String apiVersion = "2020-11-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.resetAadProfile(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, parameters, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .resetAadProfile(
+                            this.client.getEndpoint(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            parameters,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update the AAD Profile for a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Reset AAD Profile operation for a Managed Cluster.
@@ -2006,15 +2717,23 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> resetAadProfileWithResponseAsync(String resourceGroupName, String resourceName, ManagedClusterAadProfile parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> resetAadProfileWithResponseAsync(
+        String resourceGroupName, String resourceName, ManagedClusterAadProfile parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -2027,12 +2746,21 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         final String apiVersion = "2020-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.resetAadProfile(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, parameters, accept, context);
+        return service
+            .resetAadProfile(
+                this.client.getEndpoint(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                parameters,
+                accept,
+                context);
     }
 
     /**
      * Update the AAD Profile for a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Reset AAD Profile operation for a Managed Cluster.
@@ -2042,14 +2770,18 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginResetAadProfileAsync(String resourceGroupName, String resourceName, ManagedClusterAadProfile parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono = resetAadProfileWithResponseAsync(resourceGroupName, resourceName, parameters);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+    public PollerFlux<PollResult<Void>, Void> beginResetAadProfileAsync(
+        String resourceGroupName, String resourceName, ManagedClusterAadProfile parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            resetAadProfileWithResponseAsync(resourceGroupName, resourceName, parameters);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
      * Update the AAD Profile for a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Reset AAD Profile operation for a Managed Cluster.
@@ -2060,15 +2792,19 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<Void>, Void> beginResetAadProfileAsync(String resourceGroupName, String resourceName, ManagedClusterAadProfile parameters, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginResetAadProfileAsync(
+        String resourceGroupName, String resourceName, ManagedClusterAadProfile parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = resetAadProfileWithResponseAsync(resourceGroupName, resourceName, parameters, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            resetAadProfileWithResponseAsync(resourceGroupName, resourceName, parameters, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
      * Update the AAD Profile for a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Reset AAD Profile operation for a Managed Cluster.
@@ -2078,13 +2814,14 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginResetAadProfile(String resourceGroupName, String resourceName, ManagedClusterAadProfile parameters) {
-        return beginResetAadProfileAsync(resourceGroupName, resourceName, parameters)
-            .getSyncPoller();}
+    public SyncPoller<PollResult<Void>, Void> beginResetAadProfile(
+        String resourceGroupName, String resourceName, ManagedClusterAadProfile parameters) {
+        return beginResetAadProfileAsync(resourceGroupName, resourceName, parameters).getSyncPoller();
+    }
 
     /**
      * Update the AAD Profile for a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Reset AAD Profile operation for a Managed Cluster.
@@ -2095,13 +2832,14 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginResetAadProfile(String resourceGroupName, String resourceName, ManagedClusterAadProfile parameters, Context context) {
-        return beginResetAadProfileAsync(resourceGroupName, resourceName, parameters, context)
-            .getSyncPoller();}
+    public SyncPoller<PollResult<Void>, Void> beginResetAadProfile(
+        String resourceGroupName, String resourceName, ManagedClusterAadProfile parameters, Context context) {
+        return beginResetAadProfileAsync(resourceGroupName, resourceName, parameters, context).getSyncPoller();
+    }
 
     /**
      * Update the AAD Profile for a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Reset AAD Profile operation for a Managed Cluster.
@@ -2111,7 +2849,8 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> resetAadProfileAsync(String resourceGroupName, String resourceName, ManagedClusterAadProfile parameters) {
+    public Mono<Void> resetAadProfileAsync(
+        String resourceGroupName, String resourceName, ManagedClusterAadProfile parameters) {
         return beginResetAadProfileAsync(resourceGroupName, resourceName, parameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -2119,7 +2858,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Update the AAD Profile for a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Reset AAD Profile operation for a Managed Cluster.
@@ -2130,7 +2869,8 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> resetAadProfileAsync(String resourceGroupName, String resourceName, ManagedClusterAadProfile parameters, Context context) {
+    private Mono<Void> resetAadProfileAsync(
+        String resourceGroupName, String resourceName, ManagedClusterAadProfile parameters, Context context) {
         return beginResetAadProfileAsync(resourceGroupName, resourceName, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -2138,7 +2878,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Update the AAD Profile for a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Reset AAD Profile operation for a Managed Cluster.
@@ -2153,7 +2893,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Update the AAD Profile for a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters supplied to the Reset AAD Profile operation for a Managed Cluster.
@@ -2163,13 +2903,14 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void resetAadProfile(String resourceGroupName, String resourceName, ManagedClusterAadProfile parameters, Context context) {
+    public void resetAadProfile(
+        String resourceGroupName, String resourceName, ManagedClusterAadProfile parameters, Context context) {
         resetAadProfileAsync(resourceGroupName, resourceName, parameters, context).block();
     }
 
     /**
      * Rotate certificates of a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2178,28 +2919,47 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> rotateClusterCertificatesWithResponseAsync(String resourceGroupName, String resourceName) {
+    public Mono<Response<Flux<ByteBuffer>>> rotateClusterCertificatesWithResponseAsync(
+        String resourceGroupName, String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         final String apiVersion = "2020-11-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.rotateClusterCertificates(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .rotateClusterCertificates(
+                            this.client.getEndpoint(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Rotate certificates of a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -2209,15 +2969,23 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> rotateClusterCertificatesWithResponseAsync(String resourceGroupName, String resourceName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> rotateClusterCertificatesWithResponseAsync(
+        String resourceGroupName, String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -2225,12 +2993,20 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         final String apiVersion = "2020-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.rotateClusterCertificates(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context);
+        return service
+            .rotateClusterCertificates(
+                this.client.getEndpoint(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                accept,
+                context);
     }
 
     /**
      * Rotate certificates of a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2239,14 +3015,18 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginRotateClusterCertificatesAsync(String resourceGroupName, String resourceName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = rotateClusterCertificatesWithResponseAsync(resourceGroupName, resourceName);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+    public PollerFlux<PollResult<Void>, Void> beginRotateClusterCertificatesAsync(
+        String resourceGroupName, String resourceName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            rotateClusterCertificatesWithResponseAsync(resourceGroupName, resourceName);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
      * Rotate certificates of a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -2256,15 +3036,19 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<Void>, Void> beginRotateClusterCertificatesAsync(String resourceGroupName, String resourceName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginRotateClusterCertificatesAsync(
+        String resourceGroupName, String resourceName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = rotateClusterCertificatesWithResponseAsync(resourceGroupName, resourceName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            rotateClusterCertificatesWithResponseAsync(resourceGroupName, resourceName, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
      * Rotate certificates of a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2273,13 +3057,14 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginRotateClusterCertificates(String resourceGroupName, String resourceName) {
-        return beginRotateClusterCertificatesAsync(resourceGroupName, resourceName)
-            .getSyncPoller();}
+    public SyncPoller<PollResult<Void>, Void> beginRotateClusterCertificates(
+        String resourceGroupName, String resourceName) {
+        return beginRotateClusterCertificatesAsync(resourceGroupName, resourceName).getSyncPoller();
+    }
 
     /**
      * Rotate certificates of a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -2289,13 +3074,14 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginRotateClusterCertificates(String resourceGroupName, String resourceName, Context context) {
-        return beginRotateClusterCertificatesAsync(resourceGroupName, resourceName, context)
-            .getSyncPoller();}
+    public SyncPoller<PollResult<Void>, Void> beginRotateClusterCertificates(
+        String resourceGroupName, String resourceName, Context context) {
+        return beginRotateClusterCertificatesAsync(resourceGroupName, resourceName, context).getSyncPoller();
+    }
 
     /**
      * Rotate certificates of a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2312,7 +3098,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Rotate certificates of a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -2330,7 +3116,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Rotate certificates of a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2344,7 +3130,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Rotate certificates of a managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -2359,7 +3145,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Stops a Running Managed Cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2370,26 +3156,44 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(String resourceGroupName, String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         final String apiVersion = "2020-11-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.stop(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .stop(
+                            this.client.getEndpoint(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Stops a Running Managed Cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -2399,15 +3203,23 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(String resourceGroupName, String resourceName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(
+        String resourceGroupName, String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -2415,12 +3227,20 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         final String apiVersion = "2020-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.stop(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context);
+        return service
+            .stop(
+                this.client.getEndpoint(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                accept,
+                context);
     }
 
     /**
      * Stops a Running Managed Cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2431,12 +3251,14 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginStopAsync(String resourceGroupName, String resourceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = stopWithResponseAsync(resourceGroupName, resourceName);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
      * Stops a Running Managed Cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -2446,15 +3268,18 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<Void>, Void> beginStopAsync(String resourceGroupName, String resourceName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginStopAsync(
+        String resourceGroupName, String resourceName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = stopWithResponseAsync(resourceGroupName, resourceName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
      * Stops a Running Managed Cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2464,12 +3289,12 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String resourceName) {
-        return beginStopAsync(resourceGroupName, resourceName)
-            .getSyncPoller();}
+        return beginStopAsync(resourceGroupName, resourceName).getSyncPoller();
+    }
 
     /**
      * Stops a Running Managed Cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -2479,13 +3304,14 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String resourceName, Context context) {
-        return beginStopAsync(resourceGroupName, resourceName, context)
-            .getSyncPoller();}
+    public SyncPoller<PollResult<Void>, Void> beginStop(
+        String resourceGroupName, String resourceName, Context context) {
+        return beginStopAsync(resourceGroupName, resourceName, context).getSyncPoller();
+    }
 
     /**
      * Stops a Running Managed Cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2495,14 +3321,12 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stopAsync(String resourceGroupName, String resourceName) {
-        return beginStopAsync(resourceGroupName, resourceName)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginStopAsync(resourceGroupName, resourceName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Stops a Running Managed Cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -2520,7 +3344,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Stops a Running Managed Cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2534,7 +3358,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Stops a Running Managed Cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -2549,7 +3373,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Starts a Stopped Managed Cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2560,26 +3384,44 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName, String resourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
         }
         final String apiVersion = "2020-11-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.start(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .start(
+                            this.client.getEndpoint(),
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            resourceName,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Starts a Stopped Managed Cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -2589,15 +3431,23 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName, String resourceName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(
+        String resourceGroupName, String resourceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -2605,12 +3455,20 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
         final String apiVersion = "2020-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.start(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), resourceGroupName, resourceName, accept, context);
+        return service
+            .start(
+                this.client.getEndpoint(),
+                apiVersion,
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                resourceName,
+                accept,
+                context);
     }
 
     /**
      * Starts a Stopped Managed Cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2621,12 +3479,14 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String resourceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, resourceName);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
      * Starts a Stopped Managed Cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -2636,15 +3496,18 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String resourceName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginStartAsync(
+        String resourceGroupName, String resourceName, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = startWithResponseAsync(resourceGroupName, resourceName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
      * Starts a Stopped Managed Cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2654,12 +3517,12 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String resourceName) {
-        return beginStartAsync(resourceGroupName, resourceName)
-            .getSyncPoller();}
+        return beginStartAsync(resourceGroupName, resourceName).getSyncPoller();
+    }
 
     /**
      * Starts a Stopped Managed Cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -2669,13 +3532,14 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String resourceName, Context context) {
-        return beginStartAsync(resourceGroupName, resourceName, context)
-            .getSyncPoller();}
+    public SyncPoller<PollResult<Void>, Void> beginStart(
+        String resourceGroupName, String resourceName, Context context) {
+        return beginStartAsync(resourceGroupName, resourceName, context).getSyncPoller();
+    }
 
     /**
      * Starts a Stopped Managed Cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2685,14 +3549,12 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> startAsync(String resourceGroupName, String resourceName) {
-        return beginStartAsync(resourceGroupName, resourceName)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginStartAsync(resourceGroupName, resourceName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Starts a Stopped Managed Cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -2710,7 +3572,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Starts a Stopped Managed Cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2724,7 +3586,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Starts a Stopped Managed Cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -2739,7 +3601,7 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2752,23 +3614,29 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ManagedClusterInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ManagedClusterInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2782,23 +3650,29 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return service
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2811,23 +3685,30 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<ManagedClusterInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(
+                context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ManagedClusterInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2836,22 +3717,29 @@ public final class ManagedClustersClientImpl implements InnerSupportsGet<Managed
      * @return the response from the List Managed Clusters operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ManagedClusterInner>> listByResourceGroupNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<ManagedClusterInner>> listByResourceGroupNextSinglePageAsync(
+        String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return service
+            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 }

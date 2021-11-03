@@ -8,8 +8,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.resources.fluent.models.PolicyAssignmentInner;
@@ -17,14 +15,12 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * PolicyAssignmentsClient.
- */
-public interface PolicyAssignmentsClient extends InnerSupportsListing<PolicyAssignmentInner>, InnerSupportsDelete<PolicyAssignmentInner> {
+/** An instance of this class provides access to all the operations defined in PolicyAssignmentsClient. */
+public interface PolicyAssignmentsClient
+    extends InnerSupportsListing<PolicyAssignmentInner>, InnerSupportsDelete<PolicyAssignmentInner> {
     /**
      * Deletes a policy assignment.
-     * 
+     *
      * @param scope The scope of the policy assignment.
      * @param policyAssignmentName The name of the policy assignment to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -37,7 +33,7 @@ public interface PolicyAssignmentsClient extends InnerSupportsListing<PolicyAssi
 
     /**
      * Deletes a policy assignment.
-     * 
+     *
      * @param scope The scope of the policy assignment.
      * @param policyAssignmentName The name of the policy assignment to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -50,7 +46,7 @@ public interface PolicyAssignmentsClient extends InnerSupportsListing<PolicyAssi
 
     /**
      * Deletes a policy assignment.
-     * 
+     *
      * @param scope The scope of the policy assignment.
      * @param policyAssignmentName The name of the policy assignment to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -63,7 +59,7 @@ public interface PolicyAssignmentsClient extends InnerSupportsListing<PolicyAssi
 
     /**
      * Deletes a policy assignment.
-     * 
+     *
      * @param scope The scope of the policy assignment.
      * @param policyAssignmentName The name of the policy assignment to delete.
      * @param context The context to associate with this operation.
@@ -76,8 +72,9 @@ public interface PolicyAssignmentsClient extends InnerSupportsListing<PolicyAssi
     Response<PolicyAssignmentInner> deleteWithResponse(String scope, String policyAssignmentName, Context context);
 
     /**
-     * Policy assignments are inherited by child resources. For example, when you apply a policy to a resource group that policy is assigned to all resources in the group.
-     * 
+     * Policy assignments are inherited by child resources. For example, when you apply a policy to a resource group
+     * that policy is assigned to all resources in the group.
+     *
      * @param scope The scope of the policy assignment.
      * @param policyAssignmentName The name of the policy assignment.
      * @param parameters Parameters for the policy assignment.
@@ -87,11 +84,13 @@ public interface PolicyAssignmentsClient extends InnerSupportsListing<PolicyAssi
      * @return the policy assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<PolicyAssignmentInner>> createWithResponseAsync(String scope, String policyAssignmentName, PolicyAssignmentInner parameters);
+    Mono<Response<PolicyAssignmentInner>> createWithResponseAsync(
+        String scope, String policyAssignmentName, PolicyAssignmentInner parameters);
 
     /**
-     * Policy assignments are inherited by child resources. For example, when you apply a policy to a resource group that policy is assigned to all resources in the group.
-     * 
+     * Policy assignments are inherited by child resources. For example, when you apply a policy to a resource group
+     * that policy is assigned to all resources in the group.
+     *
      * @param scope The scope of the policy assignment.
      * @param policyAssignmentName The name of the policy assignment.
      * @param parameters Parameters for the policy assignment.
@@ -101,11 +100,13 @@ public interface PolicyAssignmentsClient extends InnerSupportsListing<PolicyAssi
      * @return the policy assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PolicyAssignmentInner> createAsync(String scope, String policyAssignmentName, PolicyAssignmentInner parameters);
+    Mono<PolicyAssignmentInner> createAsync(
+        String scope, String policyAssignmentName, PolicyAssignmentInner parameters);
 
     /**
-     * Policy assignments are inherited by child resources. For example, when you apply a policy to a resource group that policy is assigned to all resources in the group.
-     * 
+     * Policy assignments are inherited by child resources. For example, when you apply a policy to a resource group
+     * that policy is assigned to all resources in the group.
+     *
      * @param scope The scope of the policy assignment.
      * @param policyAssignmentName The name of the policy assignment.
      * @param parameters Parameters for the policy assignment.
@@ -118,8 +119,9 @@ public interface PolicyAssignmentsClient extends InnerSupportsListing<PolicyAssi
     PolicyAssignmentInner create(String scope, String policyAssignmentName, PolicyAssignmentInner parameters);
 
     /**
-     * Policy assignments are inherited by child resources. For example, when you apply a policy to a resource group that policy is assigned to all resources in the group.
-     * 
+     * Policy assignments are inherited by child resources. For example, when you apply a policy to a resource group
+     * that policy is assigned to all resources in the group.
+     *
      * @param scope The scope of the policy assignment.
      * @param policyAssignmentName The name of the policy assignment.
      * @param parameters Parameters for the policy assignment.
@@ -130,11 +132,12 @@ public interface PolicyAssignmentsClient extends InnerSupportsListing<PolicyAssi
      * @return the policy assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PolicyAssignmentInner> createWithResponse(String scope, String policyAssignmentName, PolicyAssignmentInner parameters, Context context);
+    Response<PolicyAssignmentInner> createWithResponse(
+        String scope, String policyAssignmentName, PolicyAssignmentInner parameters, Context context);
 
     /**
      * Gets a policy assignment.
-     * 
+     *
      * @param scope The scope of the policy assignment.
      * @param policyAssignmentName The name of the policy assignment to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -147,7 +150,7 @@ public interface PolicyAssignmentsClient extends InnerSupportsListing<PolicyAssi
 
     /**
      * Gets a policy assignment.
-     * 
+     *
      * @param scope The scope of the policy assignment.
      * @param policyAssignmentName The name of the policy assignment to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -160,7 +163,7 @@ public interface PolicyAssignmentsClient extends InnerSupportsListing<PolicyAssi
 
     /**
      * Gets a policy assignment.
-     * 
+     *
      * @param scope The scope of the policy assignment.
      * @param policyAssignmentName The name of the policy assignment to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -173,7 +176,7 @@ public interface PolicyAssignmentsClient extends InnerSupportsListing<PolicyAssi
 
     /**
      * Gets a policy assignment.
-     * 
+     *
      * @param scope The scope of the policy assignment.
      * @param policyAssignmentName The name of the policy assignment to get.
      * @param context The context to associate with this operation.
@@ -187,7 +190,7 @@ public interface PolicyAssignmentsClient extends InnerSupportsListing<PolicyAssi
 
     /**
      * Gets policy assignments for the resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains policy assignments.
      * @param filter The filter to apply on the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -200,7 +203,7 @@ public interface PolicyAssignmentsClient extends InnerSupportsListing<PolicyAssi
 
     /**
      * Gets policy assignments for the resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains policy assignments.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -212,7 +215,7 @@ public interface PolicyAssignmentsClient extends InnerSupportsListing<PolicyAssi
 
     /**
      * Gets policy assignments for the resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains policy assignments.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -224,7 +227,7 @@ public interface PolicyAssignmentsClient extends InnerSupportsListing<PolicyAssi
 
     /**
      * Gets policy assignments for the resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group that contains policy assignments.
      * @param filter The filter to apply on the operation.
      * @param context The context to associate with this operation.
@@ -238,7 +241,7 @@ public interface PolicyAssignmentsClient extends InnerSupportsListing<PolicyAssi
 
     /**
      * Gets policy assignments for a resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing the resource. The name is case insensitive.
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param parentResourcePath The parent resource path.
@@ -251,11 +254,17 @@ public interface PolicyAssignmentsClient extends InnerSupportsListing<PolicyAssi
      * @return policy assignments for a resource.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<PolicyAssignmentInner> listForResourceAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String filter);
+    PagedFlux<PolicyAssignmentInner> listForResourceAsync(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String filter);
 
     /**
      * Gets policy assignments for a resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing the resource. The name is case insensitive.
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param parentResourcePath The parent resource path.
@@ -267,11 +276,16 @@ public interface PolicyAssignmentsClient extends InnerSupportsListing<PolicyAssi
      * @return policy assignments for a resource.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<PolicyAssignmentInner> listForResourceAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName);
+    PagedFlux<PolicyAssignmentInner> listForResourceAsync(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName);
 
     /**
      * Gets policy assignments for a resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing the resource. The name is case insensitive.
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param parentResourcePath The parent resource path.
@@ -283,11 +297,16 @@ public interface PolicyAssignmentsClient extends InnerSupportsListing<PolicyAssi
      * @return policy assignments for a resource.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PolicyAssignmentInner> listForResource(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName);
+    PagedIterable<PolicyAssignmentInner> listForResource(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName);
 
     /**
      * Gets policy assignments for a resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing the resource. The name is case insensitive.
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param parentResourcePath The parent resource path.
@@ -301,11 +320,18 @@ public interface PolicyAssignmentsClient extends InnerSupportsListing<PolicyAssi
      * @return policy assignments for a resource.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<PolicyAssignmentInner> listForResource(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String filter, Context context);
+    PagedIterable<PolicyAssignmentInner> listForResource(
+        String resourceGroupName,
+        String resourceProviderNamespace,
+        String parentResourcePath,
+        String resourceType,
+        String resourceName,
+        String filter,
+        Context context);
 
     /**
      * Gets all the policy assignments for a subscription.
-     * 
+     *
      * @param filter The filter to apply on the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -317,7 +343,7 @@ public interface PolicyAssignmentsClient extends InnerSupportsListing<PolicyAssi
 
     /**
      * Gets all the policy assignments for a subscription.
-     * 
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the policy assignments for a subscription.
@@ -327,7 +353,7 @@ public interface PolicyAssignmentsClient extends InnerSupportsListing<PolicyAssi
 
     /**
      * Gets all the policy assignments for a subscription.
-     * 
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the policy assignments for a subscription.
@@ -337,7 +363,7 @@ public interface PolicyAssignmentsClient extends InnerSupportsListing<PolicyAssi
 
     /**
      * Gets all the policy assignments for a subscription.
-     * 
+     *
      * @param filter The filter to apply on the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -349,9 +375,13 @@ public interface PolicyAssignmentsClient extends InnerSupportsListing<PolicyAssi
     PagedIterable<PolicyAssignmentInner> list(String filter, Context context);
 
     /**
-     * When providing a scope for the assignment, use '/subscriptions/{subscription-id}/' for subscriptions, '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for resource groups, and '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider-namespace}/{resource-type}/{resource-name}' for resources.
-     * 
-     * @param policyAssignmentId The ID of the policy assignment to delete. Use the format '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
+     * When providing a scope for the assignment, use '/subscriptions/{subscription-id}/' for subscriptions,
+     * '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for resource groups, and
+     * '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider-namespace}/{resource-type}/{resource-name}'
+     * for resources.
+     *
+     * @param policyAssignmentId The ID of the policy assignment to delete. Use the format
+     *     '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -361,9 +391,13 @@ public interface PolicyAssignmentsClient extends InnerSupportsListing<PolicyAssi
     Mono<Response<PolicyAssignmentInner>> deleteByIdWithResponseAsync(String policyAssignmentId);
 
     /**
-     * When providing a scope for the assignment, use '/subscriptions/{subscription-id}/' for subscriptions, '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for resource groups, and '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider-namespace}/{resource-type}/{resource-name}' for resources.
-     * 
-     * @param policyAssignmentId The ID of the policy assignment to delete. Use the format '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
+     * When providing a scope for the assignment, use '/subscriptions/{subscription-id}/' for subscriptions,
+     * '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for resource groups, and
+     * '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider-namespace}/{resource-type}/{resource-name}'
+     * for resources.
+     *
+     * @param policyAssignmentId The ID of the policy assignment to delete. Use the format
+     *     '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -373,9 +407,13 @@ public interface PolicyAssignmentsClient extends InnerSupportsListing<PolicyAssi
     Mono<PolicyAssignmentInner> deleteByIdAsync(String policyAssignmentId);
 
     /**
-     * When providing a scope for the assignment, use '/subscriptions/{subscription-id}/' for subscriptions, '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for resource groups, and '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider-namespace}/{resource-type}/{resource-name}' for resources.
-     * 
-     * @param policyAssignmentId The ID of the policy assignment to delete. Use the format '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
+     * When providing a scope for the assignment, use '/subscriptions/{subscription-id}/' for subscriptions,
+     * '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for resource groups, and
+     * '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider-namespace}/{resource-type}/{resource-name}'
+     * for resources.
+     *
+     * @param policyAssignmentId The ID of the policy assignment to delete. Use the format
+     *     '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -385,9 +423,13 @@ public interface PolicyAssignmentsClient extends InnerSupportsListing<PolicyAssi
     PolicyAssignmentInner deleteById(String policyAssignmentId);
 
     /**
-     * When providing a scope for the assignment, use '/subscriptions/{subscription-id}/' for subscriptions, '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for resource groups, and '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider-namespace}/{resource-type}/{resource-name}' for resources.
-     * 
-     * @param policyAssignmentId The ID of the policy assignment to delete. Use the format '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
+     * When providing a scope for the assignment, use '/subscriptions/{subscription-id}/' for subscriptions,
+     * '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for resource groups, and
+     * '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider-namespace}/{resource-type}/{resource-name}'
+     * for resources.
+     *
+     * @param policyAssignmentId The ID of the policy assignment to delete. Use the format
+     *     '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -398,9 +440,15 @@ public interface PolicyAssignmentsClient extends InnerSupportsListing<PolicyAssi
     Response<PolicyAssignmentInner> deleteByIdWithResponse(String policyAssignmentId, Context context);
 
     /**
-     * Policy assignments are inherited by child resources. For example, when you apply a policy to a resource group that policy is assigned to all resources in the group. When providing a scope for the assignment, use '/subscriptions/{subscription-id}/' for subscriptions, '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for resource groups, and '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider-namespace}/{resource-type}/{resource-name}' for resources.
-     * 
-     * @param policyAssignmentId The ID of the policy assignment to create. Use the format '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
+     * Policy assignments are inherited by child resources. For example, when you apply a policy to a resource group
+     * that policy is assigned to all resources in the group. When providing a scope for the assignment, use
+     * '/subscriptions/{subscription-id}/' for subscriptions,
+     * '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for resource groups, and
+     * '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider-namespace}/{resource-type}/{resource-name}'
+     * for resources.
+     *
+     * @param policyAssignmentId The ID of the policy assignment to create. Use the format
+     *     '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
      * @param parameters Parameters for policy assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -408,12 +456,19 @@ public interface PolicyAssignmentsClient extends InnerSupportsListing<PolicyAssi
      * @return the policy assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<PolicyAssignmentInner>> createByIdWithResponseAsync(String policyAssignmentId, PolicyAssignmentInner parameters);
+    Mono<Response<PolicyAssignmentInner>> createByIdWithResponseAsync(
+        String policyAssignmentId, PolicyAssignmentInner parameters);
 
     /**
-     * Policy assignments are inherited by child resources. For example, when you apply a policy to a resource group that policy is assigned to all resources in the group. When providing a scope for the assignment, use '/subscriptions/{subscription-id}/' for subscriptions, '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for resource groups, and '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider-namespace}/{resource-type}/{resource-name}' for resources.
-     * 
-     * @param policyAssignmentId The ID of the policy assignment to create. Use the format '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
+     * Policy assignments are inherited by child resources. For example, when you apply a policy to a resource group
+     * that policy is assigned to all resources in the group. When providing a scope for the assignment, use
+     * '/subscriptions/{subscription-id}/' for subscriptions,
+     * '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for resource groups, and
+     * '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider-namespace}/{resource-type}/{resource-name}'
+     * for resources.
+     *
+     * @param policyAssignmentId The ID of the policy assignment to create. Use the format
+     *     '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
      * @param parameters Parameters for policy assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -424,9 +479,15 @@ public interface PolicyAssignmentsClient extends InnerSupportsListing<PolicyAssi
     Mono<PolicyAssignmentInner> createByIdAsync(String policyAssignmentId, PolicyAssignmentInner parameters);
 
     /**
-     * Policy assignments are inherited by child resources. For example, when you apply a policy to a resource group that policy is assigned to all resources in the group. When providing a scope for the assignment, use '/subscriptions/{subscription-id}/' for subscriptions, '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for resource groups, and '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider-namespace}/{resource-type}/{resource-name}' for resources.
-     * 
-     * @param policyAssignmentId The ID of the policy assignment to create. Use the format '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
+     * Policy assignments are inherited by child resources. For example, when you apply a policy to a resource group
+     * that policy is assigned to all resources in the group. When providing a scope for the assignment, use
+     * '/subscriptions/{subscription-id}/' for subscriptions,
+     * '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for resource groups, and
+     * '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider-namespace}/{resource-type}/{resource-name}'
+     * for resources.
+     *
+     * @param policyAssignmentId The ID of the policy assignment to create. Use the format
+     *     '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
      * @param parameters Parameters for policy assignment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -437,9 +498,15 @@ public interface PolicyAssignmentsClient extends InnerSupportsListing<PolicyAssi
     PolicyAssignmentInner createById(String policyAssignmentId, PolicyAssignmentInner parameters);
 
     /**
-     * Policy assignments are inherited by child resources. For example, when you apply a policy to a resource group that policy is assigned to all resources in the group. When providing a scope for the assignment, use '/subscriptions/{subscription-id}/' for subscriptions, '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for resource groups, and '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider-namespace}/{resource-type}/{resource-name}' for resources.
-     * 
-     * @param policyAssignmentId The ID of the policy assignment to create. Use the format '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
+     * Policy assignments are inherited by child resources. For example, when you apply a policy to a resource group
+     * that policy is assigned to all resources in the group. When providing a scope for the assignment, use
+     * '/subscriptions/{subscription-id}/' for subscriptions,
+     * '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for resource groups, and
+     * '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider-namespace}/{resource-type}/{resource-name}'
+     * for resources.
+     *
+     * @param policyAssignmentId The ID of the policy assignment to create. Use the format
+     *     '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
      * @param parameters Parameters for policy assignment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -448,12 +515,17 @@ public interface PolicyAssignmentsClient extends InnerSupportsListing<PolicyAssi
      * @return the policy assignment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PolicyAssignmentInner> createByIdWithResponse(String policyAssignmentId, PolicyAssignmentInner parameters, Context context);
+    Response<PolicyAssignmentInner> createByIdWithResponse(
+        String policyAssignmentId, PolicyAssignmentInner parameters, Context context);
 
     /**
-     * When providing a scope for the assignment, use '/subscriptions/{subscription-id}/' for subscriptions, '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for resource groups, and '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider-namespace}/{resource-type}/{resource-name}' for resources.
-     * 
-     * @param policyAssignmentId The ID of the policy assignment to get. Use the format '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
+     * When providing a scope for the assignment, use '/subscriptions/{subscription-id}/' for subscriptions,
+     * '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for resource groups, and
+     * '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider-namespace}/{resource-type}/{resource-name}'
+     * for resources.
+     *
+     * @param policyAssignmentId The ID of the policy assignment to get. Use the format
+     *     '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -463,9 +535,13 @@ public interface PolicyAssignmentsClient extends InnerSupportsListing<PolicyAssi
     Mono<Response<PolicyAssignmentInner>> getByIdWithResponseAsync(String policyAssignmentId);
 
     /**
-     * When providing a scope for the assignment, use '/subscriptions/{subscription-id}/' for subscriptions, '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for resource groups, and '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider-namespace}/{resource-type}/{resource-name}' for resources.
-     * 
-     * @param policyAssignmentId The ID of the policy assignment to get. Use the format '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
+     * When providing a scope for the assignment, use '/subscriptions/{subscription-id}/' for subscriptions,
+     * '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for resource groups, and
+     * '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider-namespace}/{resource-type}/{resource-name}'
+     * for resources.
+     *
+     * @param policyAssignmentId The ID of the policy assignment to get. Use the format
+     *     '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -475,9 +551,13 @@ public interface PolicyAssignmentsClient extends InnerSupportsListing<PolicyAssi
     Mono<PolicyAssignmentInner> getByIdAsync(String policyAssignmentId);
 
     /**
-     * When providing a scope for the assignment, use '/subscriptions/{subscription-id}/' for subscriptions, '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for resource groups, and '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider-namespace}/{resource-type}/{resource-name}' for resources.
-     * 
-     * @param policyAssignmentId The ID of the policy assignment to get. Use the format '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
+     * When providing a scope for the assignment, use '/subscriptions/{subscription-id}/' for subscriptions,
+     * '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for resource groups, and
+     * '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider-namespace}/{resource-type}/{resource-name}'
+     * for resources.
+     *
+     * @param policyAssignmentId The ID of the policy assignment to get. Use the format
+     *     '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -487,9 +567,13 @@ public interface PolicyAssignmentsClient extends InnerSupportsListing<PolicyAssi
     PolicyAssignmentInner getById(String policyAssignmentId);
 
     /**
-     * When providing a scope for the assignment, use '/subscriptions/{subscription-id}/' for subscriptions, '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for resource groups, and '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider-namespace}/{resource-type}/{resource-name}' for resources.
-     * 
-     * @param policyAssignmentId The ID of the policy assignment to get. Use the format '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
+     * When providing a scope for the assignment, use '/subscriptions/{subscription-id}/' for subscriptions,
+     * '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for resource groups, and
+     * '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider-namespace}/{resource-type}/{resource-name}'
+     * for resources.
+     *
+     * @param policyAssignmentId The ID of the policy assignment to get. Use the format
+     *     '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

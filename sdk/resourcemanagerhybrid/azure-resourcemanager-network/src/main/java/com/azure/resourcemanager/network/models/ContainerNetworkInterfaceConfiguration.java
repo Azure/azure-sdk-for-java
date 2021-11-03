@@ -5,23 +5,18 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.ContainerNetworkInterfaceConfigurationPropertiesFormat;
 import com.azure.resourcemanager.network.fluent.models.IpConfigurationProfileInner;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Container network interface configuration child resource.
- */
+/** Container network interface configuration child resource. */
 @Fluent
 public final class ContainerNetworkInterfaceConfiguration extends SubResource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ContainerNetworkInterfaceConfiguration.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerNetworkInterfaceConfiguration.class);
 
     /*
      * Container network interface configuration properties.
@@ -48,9 +43,8 @@ public final class ContainerNetworkInterfaceConfiguration extends SubResource {
     private String etag;
 
     /**
-     * Get the innerProperties property: Container network interface
-     * configuration properties.
-     * 
+     * Get the innerProperties property: Container network interface configuration properties.
+     *
      * @return the innerProperties value.
      */
     private ContainerNetworkInterfaceConfigurationPropertiesFormat innerProperties() {
@@ -58,9 +52,8 @@ public final class ContainerNetworkInterfaceConfiguration extends SubResource {
     }
 
     /**
-     * Get the name property: The name of the resource. This name can be used
-     * to access the resource.
-     * 
+     * Get the name property: The name of the resource. This name can be used to access the resource.
+     *
      * @return the name value.
      */
     public String name() {
@@ -68,9 +61,8 @@ public final class ContainerNetworkInterfaceConfiguration extends SubResource {
     }
 
     /**
-     * Set the name property: The name of the resource. This name can be used
-     * to access the resource.
-     * 
+     * Set the name property: The name of the resource. This name can be used to access the resource.
+     *
      * @param name the name value to set.
      * @return the ContainerNetworkInterfaceConfiguration object itself.
      */
@@ -81,7 +73,7 @@ public final class ContainerNetworkInterfaceConfiguration extends SubResource {
 
     /**
      * Get the type property: Sub Resource type.
-     * 
+     *
      * @return the type value.
      */
     public String type() {
@@ -89,9 +81,8 @@ public final class ContainerNetworkInterfaceConfiguration extends SubResource {
     }
 
     /**
-     * Get the etag property: A unique read-only string that changes whenever
-     * the resource is updated.
-     * 
+     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -99,9 +90,8 @@ public final class ContainerNetworkInterfaceConfiguration extends SubResource {
     }
 
     /**
-     * Set the etag property: A unique read-only string that changes whenever
-     * the resource is updated.
-     * 
+     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
      * @param etag the etag value to set.
      * @return the ContainerNetworkInterfaceConfiguration object itself.
      */
@@ -110,9 +100,7 @@ public final class ContainerNetworkInterfaceConfiguration extends SubResource {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ContainerNetworkInterfaceConfiguration withId(String id) {
         super.withId(id);
@@ -120,9 +108,8 @@ public final class ContainerNetworkInterfaceConfiguration extends SubResource {
     }
 
     /**
-     * Get the ipConfigurations property: A list of ip configurations of the
-     * container network interface configuration.
-     * 
+     * Get the ipConfigurations property: A list of ip configurations of the container network interface configuration.
+     *
      * @return the ipConfigurations value.
      */
     public List<IpConfigurationProfileInner> ipConfigurations() {
@@ -130,13 +117,13 @@ public final class ContainerNetworkInterfaceConfiguration extends SubResource {
     }
 
     /**
-     * Set the ipConfigurations property: A list of ip configurations of the
-     * container network interface configuration.
-     * 
+     * Set the ipConfigurations property: A list of ip configurations of the container network interface configuration.
+     *
      * @param ipConfigurations the ipConfigurations value to set.
      * @return the ContainerNetworkInterfaceConfiguration object itself.
      */
-    public ContainerNetworkInterfaceConfiguration withIpConfigurations(List<IpConfigurationProfileInner> ipConfigurations) {
+    public ContainerNetworkInterfaceConfiguration withIpConfigurations(
+        List<IpConfigurationProfileInner> ipConfigurations) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ContainerNetworkInterfaceConfigurationPropertiesFormat();
         }
@@ -145,9 +132,9 @@ public final class ContainerNetworkInterfaceConfiguration extends SubResource {
     }
 
     /**
-     * Get the containerNetworkInterfaces property: A list of container network
-     * interfaces created from this container network interface configuration.
-     * 
+     * Get the containerNetworkInterfaces property: A list of container network interfaces created from this container
+     * network interface configuration.
+     *
      * @return the containerNetworkInterfaces value.
      */
     public List<SubResource> containerNetworkInterfaces() {
@@ -155,14 +142,14 @@ public final class ContainerNetworkInterfaceConfiguration extends SubResource {
     }
 
     /**
-     * Set the containerNetworkInterfaces property: A list of container network
-     * interfaces created from this container network interface configuration.
-     * 
-     * @param containerNetworkInterfaces the containerNetworkInterfaces value
-     * to set.
+     * Set the containerNetworkInterfaces property: A list of container network interfaces created from this container
+     * network interface configuration.
+     *
+     * @param containerNetworkInterfaces the containerNetworkInterfaces value to set.
      * @return the ContainerNetworkInterfaceConfiguration object itself.
      */
-    public ContainerNetworkInterfaceConfiguration withContainerNetworkInterfaces(List<SubResource> containerNetworkInterfaces) {
+    public ContainerNetworkInterfaceConfiguration withContainerNetworkInterfaces(
+        List<SubResource> containerNetworkInterfaces) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ContainerNetworkInterfaceConfigurationPropertiesFormat();
         }
@@ -171,9 +158,8 @@ public final class ContainerNetworkInterfaceConfiguration extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the
-     * resource.
-     * 
+     * Get the provisioningState property: The provisioning state of the resource.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -182,7 +168,7 @@ public final class ContainerNetworkInterfaceConfiguration extends SubResource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

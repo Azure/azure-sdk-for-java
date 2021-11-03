@@ -5,23 +5,18 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * The UserBase model.
- */
+/** The UserBase model. */
 @Fluent
 public class UserBase {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(UserBase.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserBase.class);
 
     /*
      * This must be specified if you are using a federated domain for the
@@ -63,15 +58,13 @@ public class UserBase {
     /*
      * Dictionary of <AnyObject>
      */
-    @JsonIgnore
-    private Map<String, Object> additionalProperties;
+    @JsonIgnore private Map<String, Object> additionalProperties;
 
     /**
-     * Get the immutableId property: This must be specified if you are using a
-     * federated domain for the user's userPrincipalName (UPN) property when
-     * creating a new user account. It is used to associate an on-premises
-     * Active Directory user account with their Azure AD user object.
-     * 
+     * Get the immutableId property: This must be specified if you are using a federated domain for the user's
+     * userPrincipalName (UPN) property when creating a new user account. It is used to associate an on-premises Active
+     * Directory user account with their Azure AD user object.
+     *
      * @return the immutableId value.
      */
     public String immutableId() {
@@ -79,11 +72,10 @@ public class UserBase {
     }
 
     /**
-     * Set the immutableId property: This must be specified if you are using a
-     * federated domain for the user's userPrincipalName (UPN) property when
-     * creating a new user account. It is used to associate an on-premises
-     * Active Directory user account with their Azure AD user object.
-     * 
+     * Set the immutableId property: This must be specified if you are using a federated domain for the user's
+     * userPrincipalName (UPN) property when creating a new user account. It is used to associate an on-premises Active
+     * Directory user account with their Azure AD user object.
+     *
      * @param immutableId the immutableId value to set.
      * @return the UserBase object itself.
      */
@@ -93,11 +85,10 @@ public class UserBase {
     }
 
     /**
-     * Get the usageLocation property: A two letter country code (ISO standard
-     * 3166). Required for users that will be assigned licenses due to legal
-     * requirement to check for availability of services in countries. Examples
-     * include: "US", "JP", and "GB".
-     * 
+     * Get the usageLocation property: A two letter country code (ISO standard 3166). Required for users that will be
+     * assigned licenses due to legal requirement to check for availability of services in countries. Examples include:
+     * "US", "JP", and "GB".
+     *
      * @return the usageLocation value.
      */
     public String usageLocation() {
@@ -105,11 +96,10 @@ public class UserBase {
     }
 
     /**
-     * Set the usageLocation property: A two letter country code (ISO standard
-     * 3166). Required for users that will be assigned licenses due to legal
-     * requirement to check for availability of services in countries. Examples
-     * include: "US", "JP", and "GB".
-     * 
+     * Set the usageLocation property: A two letter country code (ISO standard 3166). Required for users that will be
+     * assigned licenses due to legal requirement to check for availability of services in countries. Examples include:
+     * "US", "JP", and "GB".
+     *
      * @param usageLocation the usageLocation value to set.
      * @return the UserBase object itself.
      */
@@ -120,7 +110,7 @@ public class UserBase {
 
     /**
      * Get the givenName property: The given name for the user.
-     * 
+     *
      * @return the givenName value.
      */
     public String givenName() {
@@ -129,7 +119,7 @@ public class UserBase {
 
     /**
      * Set the givenName property: The given name for the user.
-     * 
+     *
      * @param givenName the givenName value to set.
      * @return the UserBase object itself.
      */
@@ -140,7 +130,7 @@ public class UserBase {
 
     /**
      * Get the surname property: The user's surname (family name or last name).
-     * 
+     *
      * @return the surname value.
      */
     public String surname() {
@@ -149,7 +139,7 @@ public class UserBase {
 
     /**
      * Set the surname property: The user's surname (family name or last name).
-     * 
+     *
      * @param surname the surname value to set.
      * @return the UserBase object itself.
      */
@@ -159,9 +149,9 @@ public class UserBase {
     }
 
     /**
-     * Get the userType property: A string value that can be used to classify
-     * user types in your directory, such as 'Member' and 'Guest'.
-     * 
+     * Get the userType property: A string value that can be used to classify user types in your directory, such as
+     * 'Member' and 'Guest'.
+     *
      * @return the userType value.
      */
     public UserType userType() {
@@ -169,9 +159,9 @@ public class UserBase {
     }
 
     /**
-     * Set the userType property: A string value that can be used to classify
-     * user types in your directory, such as 'Member' and 'Guest'.
-     * 
+     * Set the userType property: A string value that can be used to classify user types in your directory, such as
+     * 'Member' and 'Guest'.
+     *
      * @param userType the userType value to set.
      * @return the UserBase object itself.
      */
@@ -182,7 +172,7 @@ public class UserBase {
 
     /**
      * Get the additionalProperties property: Dictionary of &lt;AnyObject&gt;.
-     * 
+     *
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -192,7 +182,7 @@ public class UserBase {
 
     /**
      * Set the additionalProperties property: Dictionary of &lt;AnyObject&gt;.
-     * 
+     *
      * @param additionalProperties the additionalProperties value to set.
      * @return the UserBase object itself.
      */
@@ -211,7 +201,7 @@ public class UserBase {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

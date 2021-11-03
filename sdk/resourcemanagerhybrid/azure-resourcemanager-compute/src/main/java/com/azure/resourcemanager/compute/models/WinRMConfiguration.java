@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Describes Windows Remote Management configuration of the VM.
- */
+/** Describes Windows Remote Management configuration of the VM. */
 @Fluent
 public final class WinRMConfiguration {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(WinRMConfiguration.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(WinRMConfiguration.class);
 
     /*
      * The list of Windows Remote Management listeners
@@ -27,9 +22,8 @@ public final class WinRMConfiguration {
     private List<WinRMListener> listeners;
 
     /**
-     * Get the listeners property: The list of Windows Remote Management
-     * listeners.
-     * 
+     * Get the listeners property: The list of Windows Remote Management listeners.
+     *
      * @return the listeners value.
      */
     public List<WinRMListener> listeners() {
@@ -37,9 +31,8 @@ public final class WinRMConfiguration {
     }
 
     /**
-     * Set the listeners property: The list of Windows Remote Management
-     * listeners.
-     * 
+     * Set the listeners property: The list of Windows Remote Management listeners.
+     *
      * @param listeners the listeners value to set.
      * @return the WinRMConfiguration object itself.
      */
@@ -50,7 +43,7 @@ public final class WinRMConfiguration {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

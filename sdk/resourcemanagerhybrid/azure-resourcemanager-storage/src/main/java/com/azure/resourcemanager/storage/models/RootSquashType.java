@@ -8,28 +8,20 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for RootSquashType.
- */
+/** Defines values for RootSquashType. */
 public final class RootSquashType extends ExpandableStringEnum<RootSquashType> {
-    /**
-     * Static value NoRootSquash for RootSquashType.
-     */
+    /** Static value NoRootSquash for RootSquashType. */
     public static final RootSquashType NO_ROOT_SQUASH = fromString("NoRootSquash");
 
-    /**
-     * Static value RootSquash for RootSquashType.
-     */
+    /** Static value RootSquash for RootSquashType. */
     public static final RootSquashType ROOT_SQUASH = fromString("RootSquash");
 
-    /**
-     * Static value AllSquash for RootSquashType.
-     */
+    /** Static value AllSquash for RootSquashType. */
     public static final RootSquashType ALL_SQUASH = fromString("AllSquash");
 
     /**
      * Creates or finds a RootSquashType from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding RootSquashType.
      */
@@ -38,9 +30,7 @@ public final class RootSquashType extends ExpandableStringEnum<RootSquashType> {
         return fromString(name, RootSquashType.class);
     }
 
-    /**
-     * @return known RootSquashType values.
-     */
+    /** @return known RootSquashType values. */
     public static Collection<RootSquashType> values() {
         return values(RootSquashType.class);
     }

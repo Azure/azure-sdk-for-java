@@ -5,23 +5,17 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Route Filter Resource.
- */
+/** Route Filter Resource. */
 @Fluent
 public final class RouteFilterInner extends Resource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(RouteFilterInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RouteFilterInner.class);
 
     /*
      * Route Filter Resource
@@ -44,7 +38,7 @@ public final class RouteFilterInner extends Resource {
 
     /**
      * Get the innerProperties property: Route Filter Resource.
-     * 
+     *
      * @return the innerProperties value.
      */
     private RouteFilterPropertiesFormat innerProperties() {
@@ -52,9 +46,8 @@ public final class RouteFilterInner extends Resource {
     }
 
     /**
-     * Get the etag property: Gets a unique read-only string that changes
-     * whenever the resource is updated.
-     * 
+     * Get the etag property: Gets a unique read-only string that changes whenever the resource is updated.
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -63,7 +56,7 @@ public final class RouteFilterInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -72,7 +65,7 @@ public final class RouteFilterInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     * 
+     *
      * @param id the id value to set.
      * @return the RouteFilterInner object itself.
      */
@@ -81,18 +74,14 @@ public final class RouteFilterInner extends Resource {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public RouteFilterInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public RouteFilterInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -100,9 +89,8 @@ public final class RouteFilterInner extends Resource {
     }
 
     /**
-     * Get the rules property: Collection of RouteFilterRules contained within
-     * a route filter.
-     * 
+     * Get the rules property: Collection of RouteFilterRules contained within a route filter.
+     *
      * @return the rules value.
      */
     public List<RouteFilterRuleInner> rules() {
@@ -110,9 +98,8 @@ public final class RouteFilterInner extends Resource {
     }
 
     /**
-     * Set the rules property: Collection of RouteFilterRules contained within
-     * a route filter.
-     * 
+     * Set the rules property: Collection of RouteFilterRules contained within a route filter.
+     *
      * @param rules the rules value to set.
      * @return the RouteFilterInner object itself.
      */
@@ -125,9 +112,8 @@ public final class RouteFilterInner extends Resource {
     }
 
     /**
-     * Get the peerings property: A collection of references to express route
-     * circuit peerings.
-     * 
+     * Get the peerings property: A collection of references to express route circuit peerings.
+     *
      * @return the peerings value.
      */
     public List<ExpressRouteCircuitPeeringInner> peerings() {
@@ -135,9 +121,8 @@ public final class RouteFilterInner extends Resource {
     }
 
     /**
-     * Set the peerings property: A collection of references to express route
-     * circuit peerings.
-     * 
+     * Set the peerings property: A collection of references to express route circuit peerings.
+     *
      * @param peerings the peerings value to set.
      * @return the RouteFilterInner object itself.
      */
@@ -150,10 +135,9 @@ public final class RouteFilterInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the
-     * resource. Possible values are: 'Updating', 'Deleting', 'Succeeded' and
-     * 'Failed'.
-     * 
+     * Get the provisioningState property: The provisioning state of the resource. Possible values are: 'Updating',
+     * 'Deleting', 'Succeeded' and 'Failed'.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -162,7 +146,7 @@ public final class RouteFilterInner extends Resource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -4,20 +4,15 @@
 
 package com.azure.resourcemanager.compute.fluent.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Response after calling a manual recovery walk.
- */
+/** Response after calling a manual recovery walk. */
 @Immutable
 public final class RecoveryWalkResponseInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(RecoveryWalkResponseInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RecoveryWalkResponseInner.class);
 
     /*
      * Whether the recovery walk was performed
@@ -34,7 +29,7 @@ public final class RecoveryWalkResponseInner {
 
     /**
      * Get the walkPerformed property: Whether the recovery walk was performed.
-     * 
+     *
      * @return the walkPerformed value.
      */
     public Boolean walkPerformed() {
@@ -42,10 +37,9 @@ public final class RecoveryWalkResponseInner {
     }
 
     /**
-     * Get the nextPlatformUpdateDomain property: The next update domain that
-     * needs to be walked. Null means walk spanning all update domains has been
-     * completed.
-     * 
+     * Get the nextPlatformUpdateDomain property: The next update domain that needs to be walked. Null means walk
+     * spanning all update domains has been completed.
+     *
      * @return the nextPlatformUpdateDomain value.
      */
     public Integer nextPlatformUpdateDomain() {
@@ -54,7 +48,7 @@ public final class RecoveryWalkResponseInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

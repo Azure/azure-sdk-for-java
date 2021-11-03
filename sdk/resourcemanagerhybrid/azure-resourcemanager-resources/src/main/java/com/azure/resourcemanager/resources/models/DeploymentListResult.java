@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluent.models.DeploymentExtendedInner;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * List of deployments.
- */
+/** List of deployments. */
 @Fluent
 public final class DeploymentListResult {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(DeploymentListResult.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentListResult.class);
 
     /*
      * An array of deployments.
@@ -35,7 +30,7 @@ public final class DeploymentListResult {
 
     /**
      * Get the value property: An array of deployments.
-     * 
+     *
      * @return the value value.
      */
     public List<DeploymentExtendedInner> value() {
@@ -44,7 +39,7 @@ public final class DeploymentListResult {
 
     /**
      * Set the value property: An array of deployments.
-     * 
+     *
      * @param value the value value to set.
      * @return the DeploymentListResult object itself.
      */
@@ -54,9 +49,8 @@ public final class DeploymentListResult {
     }
 
     /**
-     * Get the nextLink property: The URL to use for getting the next set of
-     * results.
-     * 
+     * Get the nextLink property: The URL to use for getting the next set of results.
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -65,7 +59,7 @@ public final class DeploymentListResult {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

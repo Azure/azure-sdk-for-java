@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The instance view of a virtual machine extension handler.
- */
+/** The instance view of a virtual machine extension handler. */
 @Fluent
 public final class VirtualMachineExtensionHandlerInstanceView {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(VirtualMachineExtensionHandlerInstanceView.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineExtensionHandlerInstanceView.class);
 
     /*
      * Specifies the type of the extension; an example is
@@ -39,9 +34,8 @@ public final class VirtualMachineExtensionHandlerInstanceView {
     private InstanceViewStatus status;
 
     /**
-     * Get the type property: Specifies the type of the extension; an example
-     * is "CustomScriptExtension".
-     * 
+     * Get the type property: Specifies the type of the extension; an example is "CustomScriptExtension".
+     *
      * @return the type value.
      */
     public String type() {
@@ -49,9 +43,8 @@ public final class VirtualMachineExtensionHandlerInstanceView {
     }
 
     /**
-     * Set the type property: Specifies the type of the extension; an example
-     * is "CustomScriptExtension".
-     * 
+     * Set the type property: Specifies the type of the extension; an example is "CustomScriptExtension".
+     *
      * @param type the type value to set.
      * @return the VirtualMachineExtensionHandlerInstanceView object itself.
      */
@@ -61,9 +54,8 @@ public final class VirtualMachineExtensionHandlerInstanceView {
     }
 
     /**
-     * Get the typeHandlerVersion property: Specifies the version of the script
-     * handler.
-     * 
+     * Get the typeHandlerVersion property: Specifies the version of the script handler.
+     *
      * @return the typeHandlerVersion value.
      */
     public String typeHandlerVersion() {
@@ -71,9 +63,8 @@ public final class VirtualMachineExtensionHandlerInstanceView {
     }
 
     /**
-     * Set the typeHandlerVersion property: Specifies the version of the script
-     * handler.
-     * 
+     * Set the typeHandlerVersion property: Specifies the version of the script handler.
+     *
      * @param typeHandlerVersion the typeHandlerVersion value to set.
      * @return the VirtualMachineExtensionHandlerInstanceView object itself.
      */
@@ -84,7 +75,7 @@ public final class VirtualMachineExtensionHandlerInstanceView {
 
     /**
      * Get the status property: The extension handler status.
-     * 
+     *
      * @return the status value.
      */
     public InstanceViewStatus status() {
@@ -93,7 +84,7 @@ public final class VirtualMachineExtensionHandlerInstanceView {
 
     /**
      * Set the status property: The extension handler status.
-     * 
+     *
      * @param status the status value to set.
      * @return the VirtualMachineExtensionHandlerInstanceView object itself.
      */
@@ -104,7 +95,7 @@ public final class VirtualMachineExtensionHandlerInstanceView {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Properties of Frontend port of an application gateway.
- */
+/** Properties of Frontend port of an application gateway. */
 @Fluent
 public final class ApplicationGatewayFrontendPortPropertiesFormat {
     @JsonIgnore
@@ -34,7 +30,7 @@ public final class ApplicationGatewayFrontendPortPropertiesFormat {
 
     /**
      * Get the port property: Frontend port.
-     * 
+     *
      * @return the port value.
      */
     public Integer port() {
@@ -43,10 +39,9 @@ public final class ApplicationGatewayFrontendPortPropertiesFormat {
 
     /**
      * Set the port property: Frontend port.
-     * 
+     *
      * @param port the port value to set.
-     * @return the ApplicationGatewayFrontendPortPropertiesFormat object
-     * itself.
+     * @return the ApplicationGatewayFrontendPortPropertiesFormat object itself.
      */
     public ApplicationGatewayFrontendPortPropertiesFormat withPort(Integer port) {
         this.port = port;
@@ -54,10 +49,9 @@ public final class ApplicationGatewayFrontendPortPropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: Provisioning state of the frontend
-     * port resource. Possible values are: 'Updating', 'Deleting', and
-     * 'Failed'.
-     * 
+     * Get the provisioningState property: Provisioning state of the frontend port resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -65,13 +59,11 @@ public final class ApplicationGatewayFrontendPortPropertiesFormat {
     }
 
     /**
-     * Set the provisioningState property: Provisioning state of the frontend
-     * port resource. Possible values are: 'Updating', 'Deleting', and
-     * 'Failed'.
-     * 
+     * Set the provisioningState property: Provisioning state of the frontend port resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
      * @param provisioningState the provisioningState value to set.
-     * @return the ApplicationGatewayFrontendPortPropertiesFormat object
-     * itself.
+     * @return the ApplicationGatewayFrontendPortPropertiesFormat object itself.
      */
     public ApplicationGatewayFrontendPortPropertiesFormat withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
@@ -80,7 +72,7 @@ public final class ApplicationGatewayFrontendPortPropertiesFormat {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

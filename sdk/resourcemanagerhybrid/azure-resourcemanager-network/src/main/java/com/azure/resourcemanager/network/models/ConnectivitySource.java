@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Parameters that define the source of the connection.
- */
+/** Parameters that define the source of the connection. */
 @Fluent
 public final class ConnectivitySource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ConnectivitySource.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectivitySource.class);
 
     /*
      * The ID of the resource from which a connectivity check will be
@@ -33,9 +28,8 @@ public final class ConnectivitySource {
     private Integer port;
 
     /**
-     * Get the resourceId property: The ID of the resource from which a
-     * connectivity check will be initiated.
-     * 
+     * Get the resourceId property: The ID of the resource from which a connectivity check will be initiated.
+     *
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -43,9 +37,8 @@ public final class ConnectivitySource {
     }
 
     /**
-     * Set the resourceId property: The ID of the resource from which a
-     * connectivity check will be initiated.
-     * 
+     * Set the resourceId property: The ID of the resource from which a connectivity check will be initiated.
+     *
      * @param resourceId the resourceId value to set.
      * @return the ConnectivitySource object itself.
      */
@@ -55,9 +48,8 @@ public final class ConnectivitySource {
     }
 
     /**
-     * Get the port property: The source port from which a connectivity check
-     * will be performed.
-     * 
+     * Get the port property: The source port from which a connectivity check will be performed.
+     *
      * @return the port value.
      */
     public Integer port() {
@@ -65,9 +57,8 @@ public final class ConnectivitySource {
     }
 
     /**
-     * Set the port property: The source port from which a connectivity check
-     * will be performed.
-     * 
+     * Set the port property: The source port from which a connectivity check will be performed.
+     *
      * @param port the port value to set.
      * @return the ConnectivitySource object itself.
      */
@@ -78,12 +69,14 @@ public final class ConnectivitySource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (resourceId() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property resourceId in model ConnectivitySource"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property resourceId in model ConnectivitySource"));
         }
     }
 }

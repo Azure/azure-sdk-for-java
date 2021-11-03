@@ -5,27 +5,23 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.P2SVpnServerConfigVpnClientRootCertificatePropertiesFormat;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * VPN client root certificate of P2SVpnServerConfiguration.
- */
+/** VPN client root certificate of P2SVpnServerConfiguration. */
 @Fluent
 public final class P2SVpnServerConfigVpnClientRootCertificate extends SubResource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(P2SVpnServerConfigVpnClientRootCertificate.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(P2SVpnServerConfigVpnClientRootCertificate.class);
 
     /*
      * Properties of the P2SVpnServerConfiguration VPN client root certificate.
      */
     @JsonProperty(value = "properties", required = true)
-    private P2SVpnServerConfigVpnClientRootCertificatePropertiesFormat innerProperties = new P2SVpnServerConfigVpnClientRootCertificatePropertiesFormat();
+    private P2SVpnServerConfigVpnClientRootCertificatePropertiesFormat innerProperties =
+        new P2SVpnServerConfigVpnClientRootCertificatePropertiesFormat();
 
     /*
      * The name of the resource that is unique within a resource group. This
@@ -41,9 +37,8 @@ public final class P2SVpnServerConfigVpnClientRootCertificate extends SubResourc
     private String etag;
 
     /**
-     * Get the innerProperties property: Properties of the
-     * P2SVpnServerConfiguration VPN client root certificate.
-     * 
+     * Get the innerProperties property: Properties of the P2SVpnServerConfiguration VPN client root certificate.
+     *
      * @return the innerProperties value.
      */
     private P2SVpnServerConfigVpnClientRootCertificatePropertiesFormat innerProperties() {
@@ -51,9 +46,9 @@ public final class P2SVpnServerConfigVpnClientRootCertificate extends SubResourc
     }
 
     /**
-     * Get the name property: The name of the resource that is unique within a
-     * resource group. This name can be used to access the resource.
-     * 
+     * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
+     * access the resource.
+     *
      * @return the name value.
      */
     public String name() {
@@ -61,9 +56,9 @@ public final class P2SVpnServerConfigVpnClientRootCertificate extends SubResourc
     }
 
     /**
-     * Set the name property: The name of the resource that is unique within a
-     * resource group. This name can be used to access the resource.
-     * 
+     * Set the name property: The name of the resource that is unique within a resource group. This name can be used to
+     * access the resource.
+     *
      * @param name the name value to set.
      * @return the P2SVpnServerConfigVpnClientRootCertificate object itself.
      */
@@ -73,9 +68,8 @@ public final class P2SVpnServerConfigVpnClientRootCertificate extends SubResourc
     }
 
     /**
-     * Get the etag property: A unique read-only string that changes whenever
-     * the resource is updated.
-     * 
+     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -83,9 +77,8 @@ public final class P2SVpnServerConfigVpnClientRootCertificate extends SubResourc
     }
 
     /**
-     * Set the etag property: A unique read-only string that changes whenever
-     * the resource is updated.
-     * 
+     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
      * @param etag the etag value to set.
      * @return the P2SVpnServerConfigVpnClientRootCertificate object itself.
      */
@@ -94,9 +87,7 @@ public final class P2SVpnServerConfigVpnClientRootCertificate extends SubResourc
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public P2SVpnServerConfigVpnClientRootCertificate withId(String id) {
         super.withId(id);
@@ -105,7 +96,7 @@ public final class P2SVpnServerConfigVpnClientRootCertificate extends SubResourc
 
     /**
      * Get the publicCertData property: The certificate public data.
-     * 
+     *
      * @return the publicCertData value.
      */
     public String publicCertData() {
@@ -114,7 +105,7 @@ public final class P2SVpnServerConfigVpnClientRootCertificate extends SubResourc
 
     /**
      * Set the publicCertData property: The certificate public data.
-     * 
+     *
      * @param publicCertData the publicCertData value to set.
      * @return the P2SVpnServerConfigVpnClientRootCertificate object itself.
      */
@@ -127,10 +118,9 @@ public final class P2SVpnServerConfigVpnClientRootCertificate extends SubResourc
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the
-     * P2SVpnServerConfiguration VPN client root certificate resource. Possible
-     * values are: 'Updating', 'Deleting', and 'Failed'.
-     * 
+     * Get the provisioningState property: The provisioning state of the P2SVpnServerConfiguration VPN client root
+     * certificate resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -139,12 +129,16 @@ public final class P2SVpnServerConfigVpnClientRootCertificate extends SubResourc
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property innerProperties in model P2SVpnServerConfigVpnClientRootCertificate"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model"
+                            + " P2SVpnServerConfigVpnClientRootCertificate"));
         } else {
             innerProperties().validate();
         }

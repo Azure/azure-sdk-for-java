@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.PacketCaptureResultInner;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * List of packet capture sessions.
- */
+/** List of packet capture sessions. */
 @Fluent
 public final class PacketCaptureListResult {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(PacketCaptureListResult.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PacketCaptureListResult.class);
 
     /*
      * Information about packet capture sessions.
@@ -29,7 +24,7 @@ public final class PacketCaptureListResult {
 
     /**
      * Get the value property: Information about packet capture sessions.
-     * 
+     *
      * @return the value value.
      */
     public List<PacketCaptureResultInner> value() {
@@ -38,7 +33,7 @@ public final class PacketCaptureListResult {
 
     /**
      * Set the value property: Information about packet capture sessions.
-     * 
+     *
      * @param value the value value to set.
      * @return the PacketCaptureListResult object itself.
      */
@@ -49,7 +44,7 @@ public final class PacketCaptureListResult {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

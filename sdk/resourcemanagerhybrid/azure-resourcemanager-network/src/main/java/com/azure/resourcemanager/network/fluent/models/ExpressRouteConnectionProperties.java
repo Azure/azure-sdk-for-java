@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRouteCircuitPeeringId;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Properties of the ExpressRouteConnection subresource.
- */
+/** Properties of the ExpressRouteConnection subresource. */
 @Fluent
 public final class ExpressRouteConnectionProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ExpressRouteConnectionProperties.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteConnectionProperties.class);
 
     /*
      * The provisioning state of the resource.
@@ -46,9 +41,8 @@ public final class ExpressRouteConnectionProperties {
     private Integer routingWeight;
 
     /**
-     * Get the provisioningState property: The provisioning state of the
-     * resource.
-     * 
+     * Get the provisioningState property: The provisioning state of the resource.
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -56,9 +50,8 @@ public final class ExpressRouteConnectionProperties {
     }
 
     /**
-     * Get the expressRouteCircuitPeering property: The ExpressRoute circuit
-     * peering.
-     * 
+     * Get the expressRouteCircuitPeering property: The ExpressRoute circuit peering.
+     *
      * @return the expressRouteCircuitPeering value.
      */
     public ExpressRouteCircuitPeeringId expressRouteCircuitPeering() {
@@ -66,22 +59,20 @@ public final class ExpressRouteConnectionProperties {
     }
 
     /**
-     * Set the expressRouteCircuitPeering property: The ExpressRoute circuit
-     * peering.
-     * 
-     * @param expressRouteCircuitPeering the expressRouteCircuitPeering value
-     * to set.
+     * Set the expressRouteCircuitPeering property: The ExpressRoute circuit peering.
+     *
+     * @param expressRouteCircuitPeering the expressRouteCircuitPeering value to set.
      * @return the ExpressRouteConnectionProperties object itself.
      */
-    public ExpressRouteConnectionProperties withExpressRouteCircuitPeering(ExpressRouteCircuitPeeringId expressRouteCircuitPeering) {
+    public ExpressRouteConnectionProperties withExpressRouteCircuitPeering(
+        ExpressRouteCircuitPeeringId expressRouteCircuitPeering) {
         this.expressRouteCircuitPeering = expressRouteCircuitPeering;
         return this;
     }
 
     /**
-     * Get the authorizationKey property: Authorization key to establish the
-     * connection.
-     * 
+     * Get the authorizationKey property: Authorization key to establish the connection.
+     *
      * @return the authorizationKey value.
      */
     public String authorizationKey() {
@@ -89,9 +80,8 @@ public final class ExpressRouteConnectionProperties {
     }
 
     /**
-     * Set the authorizationKey property: Authorization key to establish the
-     * connection.
-     * 
+     * Set the authorizationKey property: Authorization key to establish the connection.
+     *
      * @param authorizationKey the authorizationKey value to set.
      * @return the ExpressRouteConnectionProperties object itself.
      */
@@ -101,9 +91,8 @@ public final class ExpressRouteConnectionProperties {
     }
 
     /**
-     * Get the routingWeight property: The routing weight associated to the
-     * connection.
-     * 
+     * Get the routingWeight property: The routing weight associated to the connection.
+     *
      * @return the routingWeight value.
      */
     public Integer routingWeight() {
@@ -111,9 +100,8 @@ public final class ExpressRouteConnectionProperties {
     }
 
     /**
-     * Set the routingWeight property: The routing weight associated to the
-     * connection.
-     * 
+     * Set the routingWeight property: The routing weight associated to the connection.
+     *
      * @param routingWeight the routingWeight value to set.
      * @return the ExpressRouteConnectionProperties object itself.
      */
@@ -124,12 +112,16 @@ public final class ExpressRouteConnectionProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (expressRouteCircuitPeering() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property expressRouteCircuitPeering in model ExpressRouteConnectionProperties"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property expressRouteCircuitPeering in model"
+                            + " ExpressRouteConnectionProperties"));
         } else {
             expressRouteCircuitPeering().validate();
         }

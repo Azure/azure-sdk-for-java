@@ -5,21 +5,17 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Represents a group of URIs that provide terms of service, marketing, support
- * and privacy policy information about an application. The default value for
- * each string is null.
+ * Represents a group of URIs that provide terms of service, marketing, support and privacy policy information about an
+ * application. The default value for each string is null.
  */
 @Fluent
 public final class InformationalUrl {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(InformationalUrl.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(InformationalUrl.class);
 
     /*
      * The terms of service URI
@@ -47,7 +43,7 @@ public final class InformationalUrl {
 
     /**
      * Get the termsOfService property: The terms of service URI.
-     * 
+     *
      * @return the termsOfService value.
      */
     public String termsOfService() {
@@ -56,7 +52,7 @@ public final class InformationalUrl {
 
     /**
      * Set the termsOfService property: The terms of service URI.
-     * 
+     *
      * @param termsOfService the termsOfService value to set.
      * @return the InformationalUrl object itself.
      */
@@ -67,7 +63,7 @@ public final class InformationalUrl {
 
     /**
      * Get the marketing property: The marketing URI.
-     * 
+     *
      * @return the marketing value.
      */
     public String marketing() {
@@ -76,7 +72,7 @@ public final class InformationalUrl {
 
     /**
      * Set the marketing property: The marketing URI.
-     * 
+     *
      * @param marketing the marketing value to set.
      * @return the InformationalUrl object itself.
      */
@@ -87,7 +83,7 @@ public final class InformationalUrl {
 
     /**
      * Get the privacy property: The privacy policy URI.
-     * 
+     *
      * @return the privacy value.
      */
     public String privacy() {
@@ -96,7 +92,7 @@ public final class InformationalUrl {
 
     /**
      * Set the privacy property: The privacy policy URI.
-     * 
+     *
      * @param privacy the privacy value to set.
      * @return the InformationalUrl object itself.
      */
@@ -107,7 +103,7 @@ public final class InformationalUrl {
 
     /**
      * Get the support property: The support URI.
-     * 
+     *
      * @return the support value.
      */
     public String support() {
@@ -116,7 +112,7 @@ public final class InformationalUrl {
 
     /**
      * Set the support property: The support URI.
-     * 
+     *
      * @param support the support value to set.
      * @return the InformationalUrl object itself.
      */
@@ -127,7 +123,7 @@ public final class InformationalUrl {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

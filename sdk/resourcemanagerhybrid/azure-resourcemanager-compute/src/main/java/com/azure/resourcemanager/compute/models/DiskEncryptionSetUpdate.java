@@ -5,22 +5,17 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.DiskEncryptionSetUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * disk encryption set update resource.
- */
+/** disk encryption set update resource. */
 @Fluent
 public final class DiskEncryptionSetUpdate {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(DiskEncryptionSetUpdate.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiskEncryptionSetUpdate.class);
 
     /*
      * disk encryption set resource update properties.
@@ -36,9 +31,8 @@ public final class DiskEncryptionSetUpdate {
     private Map<String, String> tags;
 
     /**
-     * Get the innerProperties property: disk encryption set resource update
-     * properties.
-     * 
+     * Get the innerProperties property: disk encryption set resource update properties.
+     *
      * @return the innerProperties value.
      */
     private DiskEncryptionSetUpdateProperties innerProperties() {
@@ -47,7 +41,7 @@ public final class DiskEncryptionSetUpdate {
 
     /**
      * Get the tags property: Resource tags.
-     * 
+     *
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -56,7 +50,7 @@ public final class DiskEncryptionSetUpdate {
 
     /**
      * Set the tags property: Resource tags.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the DiskEncryptionSetUpdate object itself.
      */
@@ -66,9 +60,9 @@ public final class DiskEncryptionSetUpdate {
     }
 
     /**
-     * Get the activeKey property: Key Vault Key Url and vault id of KeK, KeK
-     * is optional and when provided is used to unwrap the encryptionKey.
-     * 
+     * Get the activeKey property: Key Vault Key Url and vault id of KeK, KeK is optional and when provided is used to
+     * unwrap the encryptionKey.
+     *
      * @return the activeKey value.
      */
     public KeyVaultAndKeyReference activeKey() {
@@ -76,9 +70,9 @@ public final class DiskEncryptionSetUpdate {
     }
 
     /**
-     * Set the activeKey property: Key Vault Key Url and vault id of KeK, KeK
-     * is optional and when provided is used to unwrap the encryptionKey.
-     * 
+     * Set the activeKey property: Key Vault Key Url and vault id of KeK, KeK is optional and when provided is used to
+     * unwrap the encryptionKey.
+     *
      * @param activeKey the activeKey value to set.
      * @return the DiskEncryptionSetUpdate object itself.
      */
@@ -92,7 +86,7 @@ public final class DiskEncryptionSetUpdate {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

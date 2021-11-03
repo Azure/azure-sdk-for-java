@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ApplicationGatewayFirewallRuleSet;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Response for ApplicationGatewayAvailableWafRuleSets API service call.
- */
+/** Response for ApplicationGatewayAvailableWafRuleSets API service call. */
 @Fluent
 public final class ApplicationGatewayAvailableWafRuleSetsResultInner {
     @JsonIgnore
@@ -29,7 +25,7 @@ public final class ApplicationGatewayAvailableWafRuleSetsResultInner {
 
     /**
      * Get the value property: The list of application gateway rule sets.
-     * 
+     *
      * @return the value value.
      */
     public List<ApplicationGatewayFirewallRuleSet> value() {
@@ -38,10 +34,9 @@ public final class ApplicationGatewayAvailableWafRuleSetsResultInner {
 
     /**
      * Set the value property: The list of application gateway rule sets.
-     * 
+     *
      * @param value the value value to set.
-     * @return the ApplicationGatewayAvailableWafRuleSetsResultInner object
-     * itself.
+     * @return the ApplicationGatewayAvailableWafRuleSetsResultInner object itself.
      */
     public ApplicationGatewayAvailableWafRuleSetsResultInner withValue(List<ApplicationGatewayFirewallRuleSet> value) {
         this.value = value;
@@ -50,7 +45,7 @@ public final class ApplicationGatewayAvailableWafRuleSetsResultInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

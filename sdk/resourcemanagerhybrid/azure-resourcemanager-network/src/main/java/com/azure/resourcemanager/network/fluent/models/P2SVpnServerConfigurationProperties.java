@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.IpsecPolicy;
@@ -14,18 +13,14 @@ import com.azure.resourcemanager.network.models.P2SVpnServerConfigRadiusServerRo
 import com.azure.resourcemanager.network.models.P2SVpnServerConfigVpnClientRevokedCertificate;
 import com.azure.resourcemanager.network.models.P2SVpnServerConfigVpnClientRootCertificate;
 import com.azure.resourcemanager.network.models.VpnGatewayTunnelingProtocol;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Parameters for P2SVpnServerConfiguration.
- */
+/** Parameters for P2SVpnServerConfiguration. */
 @Fluent
 public final class P2SVpnServerConfigurationProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(P2SVpnServerConfigurationProperties.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(P2SVpnServerConfigurationProperties.class);
 
     /*
      * The name of the P2SVpnServerConfiguration that is unique within a
@@ -105,10 +100,9 @@ public final class P2SVpnServerConfigurationProperties {
     private String etag;
 
     /**
-     * Get the name property: The name of the P2SVpnServerConfiguration that is
-     * unique within a VirtualWan in a resource group. This name can be used to
-     * access the resource along with Paren VirtualWan resource name.
-     * 
+     * Get the name property: The name of the P2SVpnServerConfiguration that is unique within a VirtualWan in a resource
+     * group. This name can be used to access the resource along with Paren VirtualWan resource name.
+     *
      * @return the name value.
      */
     public String name() {
@@ -116,10 +110,9 @@ public final class P2SVpnServerConfigurationProperties {
     }
 
     /**
-     * Set the name property: The name of the P2SVpnServerConfiguration that is
-     * unique within a VirtualWan in a resource group. This name can be used to
-     * access the resource along with Paren VirtualWan resource name.
-     * 
+     * Set the name property: The name of the P2SVpnServerConfiguration that is unique within a VirtualWan in a resource
+     * group. This name can be used to access the resource along with Paren VirtualWan resource name.
+     *
      * @param name the name value to set.
      * @return the P2SVpnServerConfigurationProperties object itself.
      */
@@ -129,9 +122,8 @@ public final class P2SVpnServerConfigurationProperties {
     }
 
     /**
-     * Get the vpnProtocols property: vpnProtocols for the
-     * P2SVpnServerConfiguration.
-     * 
+     * Get the vpnProtocols property: vpnProtocols for the P2SVpnServerConfiguration.
+     *
      * @return the vpnProtocols value.
      */
     public List<VpnGatewayTunnelingProtocol> vpnProtocols() {
@@ -139,9 +131,8 @@ public final class P2SVpnServerConfigurationProperties {
     }
 
     /**
-     * Set the vpnProtocols property: vpnProtocols for the
-     * P2SVpnServerConfiguration.
-     * 
+     * Set the vpnProtocols property: vpnProtocols for the P2SVpnServerConfiguration.
+     *
      * @param vpnProtocols the vpnProtocols value to set.
      * @return the P2SVpnServerConfigurationProperties object itself.
      */
@@ -151,9 +142,9 @@ public final class P2SVpnServerConfigurationProperties {
     }
 
     /**
-     * Get the p2SVpnServerConfigVpnClientRootCertificates property: VPN client
-     * root certificate of P2SVpnServerConfiguration.
-     * 
+     * Get the p2SVpnServerConfigVpnClientRootCertificates property: VPN client root certificate of
+     * P2SVpnServerConfiguration.
+     *
      * @return the p2SVpnServerConfigVpnClientRootCertificates value.
      */
     public List<P2SVpnServerConfigVpnClientRootCertificate> p2SVpnServerConfigVpnClientRootCertificates() {
@@ -161,22 +152,22 @@ public final class P2SVpnServerConfigurationProperties {
     }
 
     /**
-     * Set the p2SVpnServerConfigVpnClientRootCertificates property: VPN client
-     * root certificate of P2SVpnServerConfiguration.
-     * 
-     * @param p2SVpnServerConfigVpnClientRootCertificates the
-     * p2SVpnServerConfigVpnClientRootCertificates value to set.
+     * Set the p2SVpnServerConfigVpnClientRootCertificates property: VPN client root certificate of
+     * P2SVpnServerConfiguration.
+     *
+     * @param p2SVpnServerConfigVpnClientRootCertificates the p2SVpnServerConfigVpnClientRootCertificates value to set.
      * @return the P2SVpnServerConfigurationProperties object itself.
      */
-    public P2SVpnServerConfigurationProperties withP2SVpnServerConfigVpnClientRootCertificates(List<P2SVpnServerConfigVpnClientRootCertificate> p2SVpnServerConfigVpnClientRootCertificates) {
+    public P2SVpnServerConfigurationProperties withP2SVpnServerConfigVpnClientRootCertificates(
+        List<P2SVpnServerConfigVpnClientRootCertificate> p2SVpnServerConfigVpnClientRootCertificates) {
         this.p2SVpnServerConfigVpnClientRootCertificates = p2SVpnServerConfigVpnClientRootCertificates;
         return this;
     }
 
     /**
-     * Get the p2SVpnServerConfigVpnClientRevokedCertificates property: VPN
-     * client revoked certificate of P2SVpnServerConfiguration.
-     * 
+     * Get the p2SVpnServerConfigVpnClientRevokedCertificates property: VPN client revoked certificate of
+     * P2SVpnServerConfiguration.
+     *
      * @return the p2SVpnServerConfigVpnClientRevokedCertificates value.
      */
     public List<P2SVpnServerConfigVpnClientRevokedCertificate> p2SVpnServerConfigVpnClientRevokedCertificates() {
@@ -184,22 +175,23 @@ public final class P2SVpnServerConfigurationProperties {
     }
 
     /**
-     * Set the p2SVpnServerConfigVpnClientRevokedCertificates property: VPN
-     * client revoked certificate of P2SVpnServerConfiguration.
-     * 
-     * @param p2SVpnServerConfigVpnClientRevokedCertificates the
-     * p2SVpnServerConfigVpnClientRevokedCertificates value to set.
+     * Set the p2SVpnServerConfigVpnClientRevokedCertificates property: VPN client revoked certificate of
+     * P2SVpnServerConfiguration.
+     *
+     * @param p2SVpnServerConfigVpnClientRevokedCertificates the p2SVpnServerConfigVpnClientRevokedCertificates value to
+     *     set.
      * @return the P2SVpnServerConfigurationProperties object itself.
      */
-    public P2SVpnServerConfigurationProperties withP2SVpnServerConfigVpnClientRevokedCertificates(List<P2SVpnServerConfigVpnClientRevokedCertificate> p2SVpnServerConfigVpnClientRevokedCertificates) {
+    public P2SVpnServerConfigurationProperties withP2SVpnServerConfigVpnClientRevokedCertificates(
+        List<P2SVpnServerConfigVpnClientRevokedCertificate> p2SVpnServerConfigVpnClientRevokedCertificates) {
         this.p2SVpnServerConfigVpnClientRevokedCertificates = p2SVpnServerConfigVpnClientRevokedCertificates;
         return this;
     }
 
     /**
-     * Get the p2SVpnServerConfigRadiusServerRootCertificates property: Radius
-     * Server root certificate of P2SVpnServerConfiguration.
-     * 
+     * Get the p2SVpnServerConfigRadiusServerRootCertificates property: Radius Server root certificate of
+     * P2SVpnServerConfiguration.
+     *
      * @return the p2SVpnServerConfigRadiusServerRootCertificates value.
      */
     public List<P2SVpnServerConfigRadiusServerRootCertificate> p2SVpnServerConfigRadiusServerRootCertificates() {
@@ -207,22 +199,23 @@ public final class P2SVpnServerConfigurationProperties {
     }
 
     /**
-     * Set the p2SVpnServerConfigRadiusServerRootCertificates property: Radius
-     * Server root certificate of P2SVpnServerConfiguration.
-     * 
-     * @param p2SVpnServerConfigRadiusServerRootCertificates the
-     * p2SVpnServerConfigRadiusServerRootCertificates value to set.
+     * Set the p2SVpnServerConfigRadiusServerRootCertificates property: Radius Server root certificate of
+     * P2SVpnServerConfiguration.
+     *
+     * @param p2SVpnServerConfigRadiusServerRootCertificates the p2SVpnServerConfigRadiusServerRootCertificates value to
+     *     set.
      * @return the P2SVpnServerConfigurationProperties object itself.
      */
-    public P2SVpnServerConfigurationProperties withP2SVpnServerConfigRadiusServerRootCertificates(List<P2SVpnServerConfigRadiusServerRootCertificate> p2SVpnServerConfigRadiusServerRootCertificates) {
+    public P2SVpnServerConfigurationProperties withP2SVpnServerConfigRadiusServerRootCertificates(
+        List<P2SVpnServerConfigRadiusServerRootCertificate> p2SVpnServerConfigRadiusServerRootCertificates) {
         this.p2SVpnServerConfigRadiusServerRootCertificates = p2SVpnServerConfigRadiusServerRootCertificates;
         return this;
     }
 
     /**
-     * Get the p2SVpnServerConfigRadiusClientRootCertificates property: Radius
-     * client root certificate of P2SVpnServerConfiguration.
-     * 
+     * Get the p2SVpnServerConfigRadiusClientRootCertificates property: Radius client root certificate of
+     * P2SVpnServerConfiguration.
+     *
      * @return the p2SVpnServerConfigRadiusClientRootCertificates value.
      */
     public List<P2SVpnServerConfigRadiusClientRootCertificate> p2SVpnServerConfigRadiusClientRootCertificates() {
@@ -230,22 +223,22 @@ public final class P2SVpnServerConfigurationProperties {
     }
 
     /**
-     * Set the p2SVpnServerConfigRadiusClientRootCertificates property: Radius
-     * client root certificate of P2SVpnServerConfiguration.
-     * 
-     * @param p2SVpnServerConfigRadiusClientRootCertificates the
-     * p2SVpnServerConfigRadiusClientRootCertificates value to set.
+     * Set the p2SVpnServerConfigRadiusClientRootCertificates property: Radius client root certificate of
+     * P2SVpnServerConfiguration.
+     *
+     * @param p2SVpnServerConfigRadiusClientRootCertificates the p2SVpnServerConfigRadiusClientRootCertificates value to
+     *     set.
      * @return the P2SVpnServerConfigurationProperties object itself.
      */
-    public P2SVpnServerConfigurationProperties withP2SVpnServerConfigRadiusClientRootCertificates(List<P2SVpnServerConfigRadiusClientRootCertificate> p2SVpnServerConfigRadiusClientRootCertificates) {
+    public P2SVpnServerConfigurationProperties withP2SVpnServerConfigRadiusClientRootCertificates(
+        List<P2SVpnServerConfigRadiusClientRootCertificate> p2SVpnServerConfigRadiusClientRootCertificates) {
         this.p2SVpnServerConfigRadiusClientRootCertificates = p2SVpnServerConfigRadiusClientRootCertificates;
         return this;
     }
 
     /**
-     * Get the vpnClientIpsecPolicies property: VpnClientIpsecPolicies for
-     * P2SVpnServerConfiguration.
-     * 
+     * Get the vpnClientIpsecPolicies property: VpnClientIpsecPolicies for P2SVpnServerConfiguration.
+     *
      * @return the vpnClientIpsecPolicies value.
      */
     public List<IpsecPolicy> vpnClientIpsecPolicies() {
@@ -253,9 +246,8 @@ public final class P2SVpnServerConfigurationProperties {
     }
 
     /**
-     * Set the vpnClientIpsecPolicies property: VpnClientIpsecPolicies for
-     * P2SVpnServerConfiguration.
-     * 
+     * Set the vpnClientIpsecPolicies property: VpnClientIpsecPolicies for P2SVpnServerConfiguration.
+     *
      * @param vpnClientIpsecPolicies the vpnClientIpsecPolicies value to set.
      * @return the P2SVpnServerConfigurationProperties object itself.
      */
@@ -265,10 +257,9 @@ public final class P2SVpnServerConfigurationProperties {
     }
 
     /**
-     * Get the radiusServerAddress property: The radius server address property
-     * of the P2SVpnServerConfiguration resource for point to site client
-     * connection.
-     * 
+     * Get the radiusServerAddress property: The radius server address property of the P2SVpnServerConfiguration
+     * resource for point to site client connection.
+     *
      * @return the radiusServerAddress value.
      */
     public String radiusServerAddress() {
@@ -276,10 +267,9 @@ public final class P2SVpnServerConfigurationProperties {
     }
 
     /**
-     * Set the radiusServerAddress property: The radius server address property
-     * of the P2SVpnServerConfiguration resource for point to site client
-     * connection.
-     * 
+     * Set the radiusServerAddress property: The radius server address property of the P2SVpnServerConfiguration
+     * resource for point to site client connection.
+     *
      * @param radiusServerAddress the radiusServerAddress value to set.
      * @return the P2SVpnServerConfigurationProperties object itself.
      */
@@ -289,9 +279,9 @@ public final class P2SVpnServerConfigurationProperties {
     }
 
     /**
-     * Get the radiusServerSecret property: The radius secret property of the
-     * P2SVpnServerConfiguration resource for point to site client connection.
-     * 
+     * Get the radiusServerSecret property: The radius secret property of the P2SVpnServerConfiguration resource for
+     * point to site client connection.
+     *
      * @return the radiusServerSecret value.
      */
     public String radiusServerSecret() {
@@ -299,9 +289,9 @@ public final class P2SVpnServerConfigurationProperties {
     }
 
     /**
-     * Set the radiusServerSecret property: The radius secret property of the
-     * P2SVpnServerConfiguration resource for point to site client connection.
-     * 
+     * Set the radiusServerSecret property: The radius secret property of the P2SVpnServerConfiguration resource for
+     * point to site client connection.
+     *
      * @param radiusServerSecret the radiusServerSecret value to set.
      * @return the P2SVpnServerConfigurationProperties object itself.
      */
@@ -311,10 +301,9 @@ public final class P2SVpnServerConfigurationProperties {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the
-     * P2SVpnServerConfiguration resource. Possible values are: 'Updating',
-     * 'Deleting', and 'Failed'.
-     * 
+     * Get the provisioningState property: The provisioning state of the P2SVpnServerConfiguration resource. Possible
+     * values are: 'Updating', 'Deleting', and 'Failed'.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -323,7 +312,7 @@ public final class P2SVpnServerConfigurationProperties {
 
     /**
      * Get the p2SVpnGateways property: The p2SVpnGateways property.
-     * 
+     *
      * @return the p2SVpnGateways value.
      */
     public List<SubResource> p2SVpnGateways() {
@@ -331,9 +320,8 @@ public final class P2SVpnServerConfigurationProperties {
     }
 
     /**
-     * Get the etag property: A unique read-only string that changes whenever
-     * the resource is updated.
-     * 
+     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -341,9 +329,8 @@ public final class P2SVpnServerConfigurationProperties {
     }
 
     /**
-     * Set the etag property: A unique read-only string that changes whenever
-     * the resource is updated.
-     * 
+     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
      * @param etag the etag value to set.
      * @return the P2SVpnServerConfigurationProperties object itself.
      */
@@ -354,7 +341,7 @@ public final class P2SVpnServerConfigurationProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

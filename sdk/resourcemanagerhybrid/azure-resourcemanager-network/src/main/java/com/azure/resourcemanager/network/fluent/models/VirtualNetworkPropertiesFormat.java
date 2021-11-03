@@ -5,23 +5,18 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.DhcpOptions;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Properties of the virtual network.
- */
+/** Properties of the virtual network. */
 @Fluent
 public final class VirtualNetworkPropertiesFormat {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(VirtualNetworkPropertiesFormat.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkPropertiesFormat.class);
 
     /*
      * The AddressSpace that contains an array of IP address ranges that can be
@@ -84,9 +79,9 @@ public final class VirtualNetworkPropertiesFormat {
     private SubResource ddosProtectionPlan;
 
     /**
-     * Get the addressSpace property: The AddressSpace that contains an array
-     * of IP address ranges that can be used by subnets.
-     * 
+     * Get the addressSpace property: The AddressSpace that contains an array of IP address ranges that can be used by
+     * subnets.
+     *
      * @return the addressSpace value.
      */
     public AddressSpace addressSpace() {
@@ -94,9 +89,9 @@ public final class VirtualNetworkPropertiesFormat {
     }
 
     /**
-     * Set the addressSpace property: The AddressSpace that contains an array
-     * of IP address ranges that can be used by subnets.
-     * 
+     * Set the addressSpace property: The AddressSpace that contains an array of IP address ranges that can be used by
+     * subnets.
+     *
      * @param addressSpace the addressSpace value to set.
      * @return the VirtualNetworkPropertiesFormat object itself.
      */
@@ -106,9 +101,9 @@ public final class VirtualNetworkPropertiesFormat {
     }
 
     /**
-     * Get the dhcpOptions property: The dhcpOptions that contains an array of
-     * DNS servers available to VMs deployed in the virtual network.
-     * 
+     * Get the dhcpOptions property: The dhcpOptions that contains an array of DNS servers available to VMs deployed in
+     * the virtual network.
+     *
      * @return the dhcpOptions value.
      */
     public DhcpOptions dhcpOptions() {
@@ -116,9 +111,9 @@ public final class VirtualNetworkPropertiesFormat {
     }
 
     /**
-     * Set the dhcpOptions property: The dhcpOptions that contains an array of
-     * DNS servers available to VMs deployed in the virtual network.
-     * 
+     * Set the dhcpOptions property: The dhcpOptions that contains an array of DNS servers available to VMs deployed in
+     * the virtual network.
+     *
      * @param dhcpOptions the dhcpOptions value to set.
      * @return the VirtualNetworkPropertiesFormat object itself.
      */
@@ -129,7 +124,7 @@ public final class VirtualNetworkPropertiesFormat {
 
     /**
      * Get the subnets property: A list of subnets in a Virtual Network.
-     * 
+     *
      * @return the subnets value.
      */
     public List<SubnetInner> subnets() {
@@ -138,7 +133,7 @@ public final class VirtualNetworkPropertiesFormat {
 
     /**
      * Set the subnets property: A list of subnets in a Virtual Network.
-     * 
+     *
      * @param subnets the subnets value to set.
      * @return the VirtualNetworkPropertiesFormat object itself.
      */
@@ -148,9 +143,8 @@ public final class VirtualNetworkPropertiesFormat {
     }
 
     /**
-     * Get the virtualNetworkPeerings property: A list of peerings in a Virtual
-     * Network.
-     * 
+     * Get the virtualNetworkPeerings property: A list of peerings in a Virtual Network.
+     *
      * @return the virtualNetworkPeerings value.
      */
     public List<VirtualNetworkPeeringInner> virtualNetworkPeerings() {
@@ -158,21 +152,20 @@ public final class VirtualNetworkPropertiesFormat {
     }
 
     /**
-     * Set the virtualNetworkPeerings property: A list of peerings in a Virtual
-     * Network.
-     * 
+     * Set the virtualNetworkPeerings property: A list of peerings in a Virtual Network.
+     *
      * @param virtualNetworkPeerings the virtualNetworkPeerings value to set.
      * @return the VirtualNetworkPropertiesFormat object itself.
      */
-    public VirtualNetworkPropertiesFormat withVirtualNetworkPeerings(List<VirtualNetworkPeeringInner> virtualNetworkPeerings) {
+    public VirtualNetworkPropertiesFormat withVirtualNetworkPeerings(
+        List<VirtualNetworkPeeringInner> virtualNetworkPeerings) {
         this.virtualNetworkPeerings = virtualNetworkPeerings;
         return this;
     }
 
     /**
-     * Get the resourceGuid property: The resourceGuid property of the Virtual
-     * Network resource.
-     * 
+     * Get the resourceGuid property: The resourceGuid property of the Virtual Network resource.
+     *
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -180,9 +173,8 @@ public final class VirtualNetworkPropertiesFormat {
     }
 
     /**
-     * Set the resourceGuid property: The resourceGuid property of the Virtual
-     * Network resource.
-     * 
+     * Set the resourceGuid property: The resourceGuid property of the Virtual Network resource.
+     *
      * @param resourceGuid the resourceGuid value to set.
      * @return the VirtualNetworkPropertiesFormat object itself.
      */
@@ -192,10 +184,9 @@ public final class VirtualNetworkPropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the
-     * PublicIP resource. Possible values are: 'Updating', 'Deleting', and
-     * 'Failed'.
-     * 
+     * Get the provisioningState property: The provisioning state of the PublicIP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -203,10 +194,9 @@ public final class VirtualNetworkPropertiesFormat {
     }
 
     /**
-     * Set the provisioningState property: The provisioning state of the
-     * PublicIP resource. Possible values are: 'Updating', 'Deleting', and
-     * 'Failed'.
-     * 
+     * Set the provisioningState property: The provisioning state of the PublicIP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
      * @param provisioningState the provisioningState value to set.
      * @return the VirtualNetworkPropertiesFormat object itself.
      */
@@ -216,10 +206,9 @@ public final class VirtualNetworkPropertiesFormat {
     }
 
     /**
-     * Get the enableDdosProtection property: Indicates if DDoS protection is
-     * enabled for all the protected resources in the virtual network. It
-     * requires a DDoS protection plan associated with the resource.
-     * 
+     * Get the enableDdosProtection property: Indicates if DDoS protection is enabled for all the protected resources in
+     * the virtual network. It requires a DDoS protection plan associated with the resource.
+     *
      * @return the enableDdosProtection value.
      */
     public Boolean enableDdosProtection() {
@@ -227,10 +216,9 @@ public final class VirtualNetworkPropertiesFormat {
     }
 
     /**
-     * Set the enableDdosProtection property: Indicates if DDoS protection is
-     * enabled for all the protected resources in the virtual network. It
-     * requires a DDoS protection plan associated with the resource.
-     * 
+     * Set the enableDdosProtection property: Indicates if DDoS protection is enabled for all the protected resources in
+     * the virtual network. It requires a DDoS protection plan associated with the resource.
+     *
      * @param enableDdosProtection the enableDdosProtection value to set.
      * @return the VirtualNetworkPropertiesFormat object itself.
      */
@@ -240,9 +228,9 @@ public final class VirtualNetworkPropertiesFormat {
     }
 
     /**
-     * Get the enableVmProtection property: Indicates if VM protection is
-     * enabled for all the subnets in the virtual network.
-     * 
+     * Get the enableVmProtection property: Indicates if VM protection is enabled for all the subnets in the virtual
+     * network.
+     *
      * @return the enableVmProtection value.
      */
     public Boolean enableVmProtection() {
@@ -250,9 +238,9 @@ public final class VirtualNetworkPropertiesFormat {
     }
 
     /**
-     * Set the enableVmProtection property: Indicates if VM protection is
-     * enabled for all the subnets in the virtual network.
-     * 
+     * Set the enableVmProtection property: Indicates if VM protection is enabled for all the subnets in the virtual
+     * network.
+     *
      * @param enableVmProtection the enableVmProtection value to set.
      * @return the VirtualNetworkPropertiesFormat object itself.
      */
@@ -262,9 +250,8 @@ public final class VirtualNetworkPropertiesFormat {
     }
 
     /**
-     * Get the ddosProtectionPlan property: The DDoS protection plan associated
-     * with the virtual network.
-     * 
+     * Get the ddosProtectionPlan property: The DDoS protection plan associated with the virtual network.
+     *
      * @return the ddosProtectionPlan value.
      */
     public SubResource ddosProtectionPlan() {
@@ -272,9 +259,8 @@ public final class VirtualNetworkPropertiesFormat {
     }
 
     /**
-     * Set the ddosProtectionPlan property: The DDoS protection plan associated
-     * with the virtual network.
-     * 
+     * Set the ddosProtectionPlan property: The DDoS protection plan associated with the virtual network.
+     *
      * @param ddosProtectionPlan the ddosProtectionPlan value to set.
      * @return the VirtualNetworkPropertiesFormat object itself.
      */
@@ -285,7 +271,7 @@ public final class VirtualNetworkPropertiesFormat {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

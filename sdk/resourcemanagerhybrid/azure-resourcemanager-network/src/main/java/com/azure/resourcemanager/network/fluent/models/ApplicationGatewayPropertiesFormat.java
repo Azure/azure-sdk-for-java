@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ApplicationGatewayAutoscaleConfiguration;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendAddressPool;
@@ -20,18 +19,14 @@ import com.azure.resourcemanager.network.models.ApplicationGatewaySku;
 import com.azure.resourcemanager.network.models.ApplicationGatewaySslPolicy;
 import com.azure.resourcemanager.network.models.ApplicationGatewayTrustedRootCertificate;
 import com.azure.resourcemanager.network.models.ApplicationGatewayWebApplicationFirewallConfiguration;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Properties of the application gateway.
- */
+/** Properties of the application gateway. */
 @Fluent
 public final class ApplicationGatewayPropertiesFormat {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ApplicationGatewayPropertiesFormat.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayPropertiesFormat.class);
 
     /*
      * SKU of the application gateway resource.
@@ -180,7 +175,7 @@ public final class ApplicationGatewayPropertiesFormat {
 
     /**
      * Get the sku property: SKU of the application gateway resource.
-     * 
+     *
      * @return the sku value.
      */
     public ApplicationGatewaySku sku() {
@@ -189,7 +184,7 @@ public final class ApplicationGatewayPropertiesFormat {
 
     /**
      * Set the sku property: SKU of the application gateway resource.
-     * 
+     *
      * @param sku the sku value to set.
      * @return the ApplicationGatewayPropertiesFormat object itself.
      */
@@ -199,9 +194,8 @@ public final class ApplicationGatewayPropertiesFormat {
     }
 
     /**
-     * Get the sslPolicy property: SSL policy of the application gateway
-     * resource.
-     * 
+     * Get the sslPolicy property: SSL policy of the application gateway resource.
+     *
      * @return the sslPolicy value.
      */
     public ApplicationGatewaySslPolicy sslPolicy() {
@@ -209,9 +203,8 @@ public final class ApplicationGatewayPropertiesFormat {
     }
 
     /**
-     * Set the sslPolicy property: SSL policy of the application gateway
-     * resource.
-     * 
+     * Set the sslPolicy property: SSL policy of the application gateway resource.
+     *
      * @param sslPolicy the sslPolicy value to set.
      * @return the ApplicationGatewayPropertiesFormat object itself.
      */
@@ -221,9 +214,8 @@ public final class ApplicationGatewayPropertiesFormat {
     }
 
     /**
-     * Get the operationalState property: Operational state of the application
-     * gateway resource.
-     * 
+     * Get the operationalState property: Operational state of the application gateway resource.
+     *
      * @return the operationalState value.
      */
     public ApplicationGatewayOperationalState operationalState() {
@@ -231,9 +223,8 @@ public final class ApplicationGatewayPropertiesFormat {
     }
 
     /**
-     * Get the gatewayIpConfigurations property: Subnets of application the
-     * gateway resource.
-     * 
+     * Get the gatewayIpConfigurations property: Subnets of application the gateway resource.
+     *
      * @return the gatewayIpConfigurations value.
      */
     public List<ApplicationGatewayIpConfigurationInner> gatewayIpConfigurations() {
@@ -241,21 +232,20 @@ public final class ApplicationGatewayPropertiesFormat {
     }
 
     /**
-     * Set the gatewayIpConfigurations property: Subnets of application the
-     * gateway resource.
-     * 
+     * Set the gatewayIpConfigurations property: Subnets of application the gateway resource.
+     *
      * @param gatewayIpConfigurations the gatewayIpConfigurations value to set.
      * @return the ApplicationGatewayPropertiesFormat object itself.
      */
-    public ApplicationGatewayPropertiesFormat withGatewayIpConfigurations(List<ApplicationGatewayIpConfigurationInner> gatewayIpConfigurations) {
+    public ApplicationGatewayPropertiesFormat withGatewayIpConfigurations(
+        List<ApplicationGatewayIpConfigurationInner> gatewayIpConfigurations) {
         this.gatewayIpConfigurations = gatewayIpConfigurations;
         return this;
     }
 
     /**
-     * Get the authenticationCertificates property: Authentication certificates
-     * of the application gateway resource.
-     * 
+     * Get the authenticationCertificates property: Authentication certificates of the application gateway resource.
+     *
      * @return the authenticationCertificates value.
      */
     public List<ApplicationGatewayAuthenticationCertificateInner> authenticationCertificates() {
@@ -263,22 +253,20 @@ public final class ApplicationGatewayPropertiesFormat {
     }
 
     /**
-     * Set the authenticationCertificates property: Authentication certificates
-     * of the application gateway resource.
-     * 
-     * @param authenticationCertificates the authenticationCertificates value
-     * to set.
+     * Set the authenticationCertificates property: Authentication certificates of the application gateway resource.
+     *
+     * @param authenticationCertificates the authenticationCertificates value to set.
      * @return the ApplicationGatewayPropertiesFormat object itself.
      */
-    public ApplicationGatewayPropertiesFormat withAuthenticationCertificates(List<ApplicationGatewayAuthenticationCertificateInner> authenticationCertificates) {
+    public ApplicationGatewayPropertiesFormat withAuthenticationCertificates(
+        List<ApplicationGatewayAuthenticationCertificateInner> authenticationCertificates) {
         this.authenticationCertificates = authenticationCertificates;
         return this;
     }
 
     /**
-     * Get the trustedRootCertificates property: Trusted Root certificates of
-     * the application gateway resource.
-     * 
+     * Get the trustedRootCertificates property: Trusted Root certificates of the application gateway resource.
+     *
      * @return the trustedRootCertificates value.
      */
     public List<ApplicationGatewayTrustedRootCertificate> trustedRootCertificates() {
@@ -286,21 +274,20 @@ public final class ApplicationGatewayPropertiesFormat {
     }
 
     /**
-     * Set the trustedRootCertificates property: Trusted Root certificates of
-     * the application gateway resource.
-     * 
+     * Set the trustedRootCertificates property: Trusted Root certificates of the application gateway resource.
+     *
      * @param trustedRootCertificates the trustedRootCertificates value to set.
      * @return the ApplicationGatewayPropertiesFormat object itself.
      */
-    public ApplicationGatewayPropertiesFormat withTrustedRootCertificates(List<ApplicationGatewayTrustedRootCertificate> trustedRootCertificates) {
+    public ApplicationGatewayPropertiesFormat withTrustedRootCertificates(
+        List<ApplicationGatewayTrustedRootCertificate> trustedRootCertificates) {
         this.trustedRootCertificates = trustedRootCertificates;
         return this;
     }
 
     /**
-     * Get the sslCertificates property: SSL certificates of the application
-     * gateway resource.
-     * 
+     * Get the sslCertificates property: SSL certificates of the application gateway resource.
+     *
      * @return the sslCertificates value.
      */
     public List<ApplicationGatewaySslCertificateInner> sslCertificates() {
@@ -308,21 +295,20 @@ public final class ApplicationGatewayPropertiesFormat {
     }
 
     /**
-     * Set the sslCertificates property: SSL certificates of the application
-     * gateway resource.
-     * 
+     * Set the sslCertificates property: SSL certificates of the application gateway resource.
+     *
      * @param sslCertificates the sslCertificates value to set.
      * @return the ApplicationGatewayPropertiesFormat object itself.
      */
-    public ApplicationGatewayPropertiesFormat withSslCertificates(List<ApplicationGatewaySslCertificateInner> sslCertificates) {
+    public ApplicationGatewayPropertiesFormat withSslCertificates(
+        List<ApplicationGatewaySslCertificateInner> sslCertificates) {
         this.sslCertificates = sslCertificates;
         return this;
     }
 
     /**
-     * Get the frontendIpConfigurations property: Frontend IP addresses of the
-     * application gateway resource.
-     * 
+     * Get the frontendIpConfigurations property: Frontend IP addresses of the application gateway resource.
+     *
      * @return the frontendIpConfigurations value.
      */
     public List<ApplicationGatewayFrontendIpConfiguration> frontendIpConfigurations() {
@@ -330,22 +316,20 @@ public final class ApplicationGatewayPropertiesFormat {
     }
 
     /**
-     * Set the frontendIpConfigurations property: Frontend IP addresses of the
-     * application gateway resource.
-     * 
-     * @param frontendIpConfigurations the frontendIpConfigurations value to
-     * set.
+     * Set the frontendIpConfigurations property: Frontend IP addresses of the application gateway resource.
+     *
+     * @param frontendIpConfigurations the frontendIpConfigurations value to set.
      * @return the ApplicationGatewayPropertiesFormat object itself.
      */
-    public ApplicationGatewayPropertiesFormat withFrontendIpConfigurations(List<ApplicationGatewayFrontendIpConfiguration> frontendIpConfigurations) {
+    public ApplicationGatewayPropertiesFormat withFrontendIpConfigurations(
+        List<ApplicationGatewayFrontendIpConfiguration> frontendIpConfigurations) {
         this.frontendIpConfigurations = frontendIpConfigurations;
         return this;
     }
 
     /**
-     * Get the frontendPorts property: Frontend ports of the application
-     * gateway resource.
-     * 
+     * Get the frontendPorts property: Frontend ports of the application gateway resource.
+     *
      * @return the frontendPorts value.
      */
     public List<ApplicationGatewayFrontendPort> frontendPorts() {
@@ -353,9 +337,8 @@ public final class ApplicationGatewayPropertiesFormat {
     }
 
     /**
-     * Set the frontendPorts property: Frontend ports of the application
-     * gateway resource.
-     * 
+     * Set the frontendPorts property: Frontend ports of the application gateway resource.
+     *
      * @param frontendPorts the frontendPorts value to set.
      * @return the ApplicationGatewayPropertiesFormat object itself.
      */
@@ -366,7 +349,7 @@ public final class ApplicationGatewayPropertiesFormat {
 
     /**
      * Get the probes property: Probes of the application gateway resource.
-     * 
+     *
      * @return the probes value.
      */
     public List<ApplicationGatewayProbeInner> probes() {
@@ -375,7 +358,7 @@ public final class ApplicationGatewayPropertiesFormat {
 
     /**
      * Set the probes property: Probes of the application gateway resource.
-     * 
+     *
      * @param probes the probes value to set.
      * @return the ApplicationGatewayPropertiesFormat object itself.
      */
@@ -385,9 +368,8 @@ public final class ApplicationGatewayPropertiesFormat {
     }
 
     /**
-     * Get the backendAddressPools property: Backend address pool of the
-     * application gateway resource.
-     * 
+     * Get the backendAddressPools property: Backend address pool of the application gateway resource.
+     *
      * @return the backendAddressPools value.
      */
     public List<ApplicationGatewayBackendAddressPool> backendAddressPools() {
@@ -395,21 +377,20 @@ public final class ApplicationGatewayPropertiesFormat {
     }
 
     /**
-     * Set the backendAddressPools property: Backend address pool of the
-     * application gateway resource.
-     * 
+     * Set the backendAddressPools property: Backend address pool of the application gateway resource.
+     *
      * @param backendAddressPools the backendAddressPools value to set.
      * @return the ApplicationGatewayPropertiesFormat object itself.
      */
-    public ApplicationGatewayPropertiesFormat withBackendAddressPools(List<ApplicationGatewayBackendAddressPool> backendAddressPools) {
+    public ApplicationGatewayPropertiesFormat withBackendAddressPools(
+        List<ApplicationGatewayBackendAddressPool> backendAddressPools) {
         this.backendAddressPools = backendAddressPools;
         return this;
     }
 
     /**
-     * Get the backendHttpSettingsCollection property: Backend http settings of
-     * the application gateway resource.
-     * 
+     * Get the backendHttpSettingsCollection property: Backend http settings of the application gateway resource.
+     *
      * @return the backendHttpSettingsCollection value.
      */
     public List<ApplicationGatewayBackendHttpSettings> backendHttpSettingsCollection() {
@@ -417,22 +398,20 @@ public final class ApplicationGatewayPropertiesFormat {
     }
 
     /**
-     * Set the backendHttpSettingsCollection property: Backend http settings of
-     * the application gateway resource.
-     * 
-     * @param backendHttpSettingsCollection the backendHttpSettingsCollection
-     * value to set.
+     * Set the backendHttpSettingsCollection property: Backend http settings of the application gateway resource.
+     *
+     * @param backendHttpSettingsCollection the backendHttpSettingsCollection value to set.
      * @return the ApplicationGatewayPropertiesFormat object itself.
      */
-    public ApplicationGatewayPropertiesFormat withBackendHttpSettingsCollection(List<ApplicationGatewayBackendHttpSettings> backendHttpSettingsCollection) {
+    public ApplicationGatewayPropertiesFormat withBackendHttpSettingsCollection(
+        List<ApplicationGatewayBackendHttpSettings> backendHttpSettingsCollection) {
         this.backendHttpSettingsCollection = backendHttpSettingsCollection;
         return this;
     }
 
     /**
-     * Get the httpListeners property: Http listeners of the application
-     * gateway resource.
-     * 
+     * Get the httpListeners property: Http listeners of the application gateway resource.
+     *
      * @return the httpListeners value.
      */
     public List<ApplicationGatewayHttpListener> httpListeners() {
@@ -440,9 +419,8 @@ public final class ApplicationGatewayPropertiesFormat {
     }
 
     /**
-     * Set the httpListeners property: Http listeners of the application
-     * gateway resource.
-     * 
+     * Set the httpListeners property: Http listeners of the application gateway resource.
+     *
      * @param httpListeners the httpListeners value to set.
      * @return the ApplicationGatewayPropertiesFormat object itself.
      */
@@ -452,9 +430,8 @@ public final class ApplicationGatewayPropertiesFormat {
     }
 
     /**
-     * Get the urlPathMaps property: URL path map of the application gateway
-     * resource.
-     * 
+     * Get the urlPathMaps property: URL path map of the application gateway resource.
+     *
      * @return the urlPathMaps value.
      */
     public List<ApplicationGatewayUrlPathMapInner> urlPathMaps() {
@@ -462,9 +439,8 @@ public final class ApplicationGatewayPropertiesFormat {
     }
 
     /**
-     * Set the urlPathMaps property: URL path map of the application gateway
-     * resource.
-     * 
+     * Set the urlPathMaps property: URL path map of the application gateway resource.
+     *
      * @param urlPathMaps the urlPathMaps value to set.
      * @return the ApplicationGatewayPropertiesFormat object itself.
      */
@@ -474,9 +450,8 @@ public final class ApplicationGatewayPropertiesFormat {
     }
 
     /**
-     * Get the requestRoutingRules property: Request routing rules of the
-     * application gateway resource.
-     * 
+     * Get the requestRoutingRules property: Request routing rules of the application gateway resource.
+     *
      * @return the requestRoutingRules value.
      */
     public List<ApplicationGatewayRequestRoutingRuleInner> requestRoutingRules() {
@@ -484,21 +459,20 @@ public final class ApplicationGatewayPropertiesFormat {
     }
 
     /**
-     * Set the requestRoutingRules property: Request routing rules of the
-     * application gateway resource.
-     * 
+     * Set the requestRoutingRules property: Request routing rules of the application gateway resource.
+     *
      * @param requestRoutingRules the requestRoutingRules value to set.
      * @return the ApplicationGatewayPropertiesFormat object itself.
      */
-    public ApplicationGatewayPropertiesFormat withRequestRoutingRules(List<ApplicationGatewayRequestRoutingRuleInner> requestRoutingRules) {
+    public ApplicationGatewayPropertiesFormat withRequestRoutingRules(
+        List<ApplicationGatewayRequestRoutingRuleInner> requestRoutingRules) {
         this.requestRoutingRules = requestRoutingRules;
         return this;
     }
 
     /**
-     * Get the rewriteRuleSets property: Rewrite rules for the application
-     * gateway resource.
-     * 
+     * Get the rewriteRuleSets property: Rewrite rules for the application gateway resource.
+     *
      * @return the rewriteRuleSets value.
      */
     public List<ApplicationGatewayRewriteRuleSet> rewriteRuleSets() {
@@ -506,21 +480,20 @@ public final class ApplicationGatewayPropertiesFormat {
     }
 
     /**
-     * Set the rewriteRuleSets property: Rewrite rules for the application
-     * gateway resource.
-     * 
+     * Set the rewriteRuleSets property: Rewrite rules for the application gateway resource.
+     *
      * @param rewriteRuleSets the rewriteRuleSets value to set.
      * @return the ApplicationGatewayPropertiesFormat object itself.
      */
-    public ApplicationGatewayPropertiesFormat withRewriteRuleSets(List<ApplicationGatewayRewriteRuleSet> rewriteRuleSets) {
+    public ApplicationGatewayPropertiesFormat withRewriteRuleSets(
+        List<ApplicationGatewayRewriteRuleSet> rewriteRuleSets) {
         this.rewriteRuleSets = rewriteRuleSets;
         return this;
     }
 
     /**
-     * Get the redirectConfigurations property: Redirect configurations of the
-     * application gateway resource.
-     * 
+     * Get the redirectConfigurations property: Redirect configurations of the application gateway resource.
+     *
      * @return the redirectConfigurations value.
      */
     public List<ApplicationGatewayRedirectConfigurationInner> redirectConfigurations() {
@@ -528,21 +501,20 @@ public final class ApplicationGatewayPropertiesFormat {
     }
 
     /**
-     * Set the redirectConfigurations property: Redirect configurations of the
-     * application gateway resource.
-     * 
+     * Set the redirectConfigurations property: Redirect configurations of the application gateway resource.
+     *
      * @param redirectConfigurations the redirectConfigurations value to set.
      * @return the ApplicationGatewayPropertiesFormat object itself.
      */
-    public ApplicationGatewayPropertiesFormat withRedirectConfigurations(List<ApplicationGatewayRedirectConfigurationInner> redirectConfigurations) {
+    public ApplicationGatewayPropertiesFormat withRedirectConfigurations(
+        List<ApplicationGatewayRedirectConfigurationInner> redirectConfigurations) {
         this.redirectConfigurations = redirectConfigurations;
         return this;
     }
 
     /**
-     * Get the webApplicationFirewallConfiguration property: Web application
-     * firewall configuration.
-     * 
+     * Get the webApplicationFirewallConfiguration property: Web application firewall configuration.
+     *
      * @return the webApplicationFirewallConfiguration value.
      */
     public ApplicationGatewayWebApplicationFirewallConfiguration webApplicationFirewallConfiguration() {
@@ -550,22 +522,20 @@ public final class ApplicationGatewayPropertiesFormat {
     }
 
     /**
-     * Set the webApplicationFirewallConfiguration property: Web application
-     * firewall configuration.
-     * 
-     * @param webApplicationFirewallConfiguration the
-     * webApplicationFirewallConfiguration value to set.
+     * Set the webApplicationFirewallConfiguration property: Web application firewall configuration.
+     *
+     * @param webApplicationFirewallConfiguration the webApplicationFirewallConfiguration value to set.
      * @return the ApplicationGatewayPropertiesFormat object itself.
      */
-    public ApplicationGatewayPropertiesFormat withWebApplicationFirewallConfiguration(ApplicationGatewayWebApplicationFirewallConfiguration webApplicationFirewallConfiguration) {
+    public ApplicationGatewayPropertiesFormat withWebApplicationFirewallConfiguration(
+        ApplicationGatewayWebApplicationFirewallConfiguration webApplicationFirewallConfiguration) {
         this.webApplicationFirewallConfiguration = webApplicationFirewallConfiguration;
         return this;
     }
 
     /**
-     * Get the enableHttp2 property: Whether HTTP2 is enabled on the
-     * application gateway resource.
-     * 
+     * Get the enableHttp2 property: Whether HTTP2 is enabled on the application gateway resource.
+     *
      * @return the enableHttp2 value.
      */
     public Boolean enableHttp2() {
@@ -573,9 +543,8 @@ public final class ApplicationGatewayPropertiesFormat {
     }
 
     /**
-     * Set the enableHttp2 property: Whether HTTP2 is enabled on the
-     * application gateway resource.
-     * 
+     * Set the enableHttp2 property: Whether HTTP2 is enabled on the application gateway resource.
+     *
      * @param enableHttp2 the enableHttp2 value to set.
      * @return the ApplicationGatewayPropertiesFormat object itself.
      */
@@ -585,9 +554,8 @@ public final class ApplicationGatewayPropertiesFormat {
     }
 
     /**
-     * Get the enableFips property: Whether FIPS is enabled on the application
-     * gateway resource.
-     * 
+     * Get the enableFips property: Whether FIPS is enabled on the application gateway resource.
+     *
      * @return the enableFips value.
      */
     public Boolean enableFips() {
@@ -595,9 +563,8 @@ public final class ApplicationGatewayPropertiesFormat {
     }
 
     /**
-     * Set the enableFips property: Whether FIPS is enabled on the application
-     * gateway resource.
-     * 
+     * Set the enableFips property: Whether FIPS is enabled on the application gateway resource.
+     *
      * @param enableFips the enableFips value to set.
      * @return the ApplicationGatewayPropertiesFormat object itself.
      */
@@ -608,7 +575,7 @@ public final class ApplicationGatewayPropertiesFormat {
 
     /**
      * Get the autoscaleConfiguration property: Autoscale Configuration.
-     * 
+     *
      * @return the autoscaleConfiguration value.
      */
     public ApplicationGatewayAutoscaleConfiguration autoscaleConfiguration() {
@@ -617,19 +584,19 @@ public final class ApplicationGatewayPropertiesFormat {
 
     /**
      * Set the autoscaleConfiguration property: Autoscale Configuration.
-     * 
+     *
      * @param autoscaleConfiguration the autoscaleConfiguration value to set.
      * @return the ApplicationGatewayPropertiesFormat object itself.
      */
-    public ApplicationGatewayPropertiesFormat withAutoscaleConfiguration(ApplicationGatewayAutoscaleConfiguration autoscaleConfiguration) {
+    public ApplicationGatewayPropertiesFormat withAutoscaleConfiguration(
+        ApplicationGatewayAutoscaleConfiguration autoscaleConfiguration) {
         this.autoscaleConfiguration = autoscaleConfiguration;
         return this;
     }
 
     /**
-     * Get the resourceGuid property: Resource GUID property of the application
-     * gateway resource.
-     * 
+     * Get the resourceGuid property: Resource GUID property of the application gateway resource.
+     *
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -637,9 +604,8 @@ public final class ApplicationGatewayPropertiesFormat {
     }
 
     /**
-     * Set the resourceGuid property: Resource GUID property of the application
-     * gateway resource.
-     * 
+     * Set the resourceGuid property: Resource GUID property of the application gateway resource.
+     *
      * @param resourceGuid the resourceGuid value to set.
      * @return the ApplicationGatewayPropertiesFormat object itself.
      */
@@ -649,10 +615,9 @@ public final class ApplicationGatewayPropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: Provisioning state of the
-     * application gateway resource. Possible values are: 'Updating',
-     * 'Deleting', and 'Failed'.
-     * 
+     * Get the provisioningState property: Provisioning state of the application gateway resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -660,10 +625,9 @@ public final class ApplicationGatewayPropertiesFormat {
     }
 
     /**
-     * Set the provisioningState property: Provisioning state of the
-     * application gateway resource. Possible values are: 'Updating',
-     * 'Deleting', and 'Failed'.
-     * 
+     * Set the provisioningState property: Provisioning state of the application gateway resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
      * @param provisioningState the provisioningState value to set.
      * @return the ApplicationGatewayPropertiesFormat object itself.
      */
@@ -673,9 +637,8 @@ public final class ApplicationGatewayPropertiesFormat {
     }
 
     /**
-     * Get the customErrorConfigurations property: Custom error configurations
-     * of the application gateway resource.
-     * 
+     * Get the customErrorConfigurations property: Custom error configurations of the application gateway resource.
+     *
      * @return the customErrorConfigurations value.
      */
     public List<ApplicationGatewayCustomError> customErrorConfigurations() {
@@ -683,21 +646,20 @@ public final class ApplicationGatewayPropertiesFormat {
     }
 
     /**
-     * Set the customErrorConfigurations property: Custom error configurations
-     * of the application gateway resource.
-     * 
-     * @param customErrorConfigurations the customErrorConfigurations value to
-     * set.
+     * Set the customErrorConfigurations property: Custom error configurations of the application gateway resource.
+     *
+     * @param customErrorConfigurations the customErrorConfigurations value to set.
      * @return the ApplicationGatewayPropertiesFormat object itself.
      */
-    public ApplicationGatewayPropertiesFormat withCustomErrorConfigurations(List<ApplicationGatewayCustomError> customErrorConfigurations) {
+    public ApplicationGatewayPropertiesFormat withCustomErrorConfigurations(
+        List<ApplicationGatewayCustomError> customErrorConfigurations) {
         this.customErrorConfigurations = customErrorConfigurations;
         return this;
     }
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

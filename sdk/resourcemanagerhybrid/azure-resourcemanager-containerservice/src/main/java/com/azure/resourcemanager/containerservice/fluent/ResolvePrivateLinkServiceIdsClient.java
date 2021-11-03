@@ -11,14 +11,11 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerservice.fluent.models.PrivateLinkResourceInner;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * ResolvePrivateLinkServiceIdsClient.
- */
+/** An instance of this class provides access to all the operations defined in ResolvePrivateLinkServiceIdsClient. */
 public interface ResolvePrivateLinkServiceIdsClient {
     /**
      * Gets the private link service ID the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters (name, groupId) supplied in order to resolve a private link service ID.
@@ -28,11 +25,12 @@ public interface ResolvePrivateLinkServiceIdsClient {
      * @return the private link service ID the specified managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<PrivateLinkResourceInner>> postWithResponseAsync(String resourceGroupName, String resourceName, PrivateLinkResourceInner parameters);
+    Mono<Response<PrivateLinkResourceInner>> postWithResponseAsync(
+        String resourceGroupName, String resourceName, PrivateLinkResourceInner parameters);
 
     /**
      * Gets the private link service ID the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters (name, groupId) supplied in order to resolve a private link service ID.
@@ -42,11 +40,12 @@ public interface ResolvePrivateLinkServiceIdsClient {
      * @return the private link service ID the specified managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PrivateLinkResourceInner> postAsync(String resourceGroupName, String resourceName, PrivateLinkResourceInner parameters);
+    Mono<PrivateLinkResourceInner> postAsync(
+        String resourceGroupName, String resourceName, PrivateLinkResourceInner parameters);
 
     /**
      * Gets the private link service ID the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters (name, groupId) supplied in order to resolve a private link service ID.
@@ -60,7 +59,7 @@ public interface ResolvePrivateLinkServiceIdsClient {
 
     /**
      * Gets the private link service ID the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters (name, groupId) supplied in order to resolve a private link service ID.
@@ -71,5 +70,6 @@ public interface ResolvePrivateLinkServiceIdsClient {
      * @return the private link service ID the specified managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateLinkResourceInner> postWithResponse(String resourceGroupName, String resourceName, PrivateLinkResourceInner parameters, Context context);
+    Response<PrivateLinkResourceInner> postWithResponse(
+        String resourceGroupName, String resourceName, PrivateLinkResourceInner parameters, Context context);
 }

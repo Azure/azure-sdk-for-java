@@ -12,19 +12,15 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.models.GetVpnSitesConfigurationRequest;
-import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * VpnSitesConfigurationsClient.
- */
+/** An instance of this class provides access to all the operations defined in VpnSitesConfigurationsClient. */
 public interface VpnSitesConfigurationsClient {
     /**
      * Gives the sas-url to download the configurations for vpn-sites in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
      * @param request Parameters supplied to download vpn-sites configuration.
@@ -34,11 +30,12 @@ public interface VpnSitesConfigurationsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> downloadWithResponseAsync(String resourceGroupName, String virtualWanName, GetVpnSitesConfigurationRequest request);
+    Mono<Response<Flux<ByteBuffer>>> downloadWithResponseAsync(
+        String resourceGroupName, String virtualWanName, GetVpnSitesConfigurationRequest request);
 
     /**
      * Gives the sas-url to download the configurations for vpn-sites in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
      * @param request Parameters supplied to download vpn-sites configuration.
@@ -48,11 +45,12 @@ public interface VpnSitesConfigurationsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<Void>, Void> beginDownloadAsync(String resourceGroupName, String virtualWanName, GetVpnSitesConfigurationRequest request);
+    PollerFlux<PollResult<Void>, Void> beginDownloadAsync(
+        String resourceGroupName, String virtualWanName, GetVpnSitesConfigurationRequest request);
 
     /**
      * Gives the sas-url to download the configurations for vpn-sites in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
      * @param request Parameters supplied to download vpn-sites configuration.
@@ -62,11 +60,12 @@ public interface VpnSitesConfigurationsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDownload(String resourceGroupName, String virtualWanName, GetVpnSitesConfigurationRequest request);
+    SyncPoller<PollResult<Void>, Void> beginDownload(
+        String resourceGroupName, String virtualWanName, GetVpnSitesConfigurationRequest request);
 
     /**
      * Gives the sas-url to download the configurations for vpn-sites in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
      * @param request Parameters supplied to download vpn-sites configuration.
@@ -77,11 +76,12 @@ public interface VpnSitesConfigurationsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDownload(String resourceGroupName, String virtualWanName, GetVpnSitesConfigurationRequest request, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDownload(
+        String resourceGroupName, String virtualWanName, GetVpnSitesConfigurationRequest request, Context context);
 
     /**
      * Gives the sas-url to download the configurations for vpn-sites in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
      * @param request Parameters supplied to download vpn-sites configuration.
@@ -95,7 +95,7 @@ public interface VpnSitesConfigurationsClient {
 
     /**
      * Gives the sas-url to download the configurations for vpn-sites in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
      * @param request Parameters supplied to download vpn-sites configuration.
@@ -108,7 +108,7 @@ public interface VpnSitesConfigurationsClient {
 
     /**
      * Gives the sas-url to download the configurations for vpn-sites in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name.
      * @param virtualWanName The name of the VirtualWAN for which configuration of all vpn-sites is needed.
      * @param request Parameters supplied to download vpn-sites configuration.
@@ -118,5 +118,6 @@ public interface VpnSitesConfigurationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void download(String resourceGroupName, String virtualWanName, GetVpnSitesConfigurationRequest request, Context context);
+    void download(
+        String resourceGroupName, String virtualWanName, GetVpnSitesConfigurationRequest request, Context context);
 }

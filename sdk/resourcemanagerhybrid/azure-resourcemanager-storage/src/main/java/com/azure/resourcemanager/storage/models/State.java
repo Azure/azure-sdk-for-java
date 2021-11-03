@@ -7,38 +7,24 @@ package com.azure.resourcemanager.storage.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for State.
- */
+/** Defines values for State. */
 public enum State {
-    /**
-     * Enum value provisioning.
-     */
+    /** Enum value provisioning. */
     PROVISIONING("provisioning"),
 
-    /**
-     * Enum value deprovisioning.
-     */
+    /** Enum value deprovisioning. */
     DEPROVISIONING("deprovisioning"),
 
-    /**
-     * Enum value succeeded.
-     */
+    /** Enum value succeeded. */
     SUCCEEDED("succeeded"),
 
-    /**
-     * Enum value failed.
-     */
+    /** Enum value failed. */
     FAILED("failed"),
 
-    /**
-     * Enum value networkSourceDeleted.
-     */
+    /** Enum value networkSourceDeleted. */
     NETWORK_SOURCE_DELETED("networkSourceDeleted");
 
-    /**
-     * The actual serialized value for a State instance.
-     */
+    /** The actual serialized value for a State instance. */
     private final String value;
 
     State(String value) {
@@ -47,7 +33,7 @@ public enum State {
 
     /**
      * Parses a serialized value to a State instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed State object, or null if unable to parse.
      */

@@ -8,8 +8,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
@@ -20,19 +18,16 @@ import com.azure.resourcemanager.compute.models.ImageUpdate;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
-import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * ImagesClient.
- */
-public interface ImagesClient extends InnerSupportsGet<ImageInner>, InnerSupportsListing<ImageInner>, InnerSupportsDelete<Void> {
+/** An instance of this class provides access to all the operations defined in ImagesClient. */
+public interface ImagesClient
+    extends InnerSupportsGet<ImageInner>, InnerSupportsListing<ImageInner>, InnerSupportsDelete<Void> {
     /**
      * Create or update an image.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @param parameters Parameters supplied to the Create Image operation.
@@ -42,11 +37,12 @@ public interface ImagesClient extends InnerSupportsGet<ImageInner>, InnerSupport
      * @return the source user image virtual hard disk.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String imageName, ImageInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String imageName, ImageInner parameters);
 
     /**
      * Create or update an image.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @param parameters Parameters supplied to the Create Image operation.
@@ -56,11 +52,12 @@ public interface ImagesClient extends InnerSupportsGet<ImageInner>, InnerSupport
      * @return the source user image virtual hard disk.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<ImageInner>, ImageInner> beginCreateOrUpdateAsync(String resourceGroupName, String imageName, ImageInner parameters);
+    PollerFlux<PollResult<ImageInner>, ImageInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String imageName, ImageInner parameters);
 
     /**
      * Create or update an image.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @param parameters Parameters supplied to the Create Image operation.
@@ -70,11 +67,12 @@ public interface ImagesClient extends InnerSupportsGet<ImageInner>, InnerSupport
      * @return the source user image virtual hard disk.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ImageInner>, ImageInner> beginCreateOrUpdate(String resourceGroupName, String imageName, ImageInner parameters);
+    SyncPoller<PollResult<ImageInner>, ImageInner> beginCreateOrUpdate(
+        String resourceGroupName, String imageName, ImageInner parameters);
 
     /**
      * Create or update an image.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @param parameters Parameters supplied to the Create Image operation.
@@ -85,11 +83,12 @@ public interface ImagesClient extends InnerSupportsGet<ImageInner>, InnerSupport
      * @return the source user image virtual hard disk.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ImageInner>, ImageInner> beginCreateOrUpdate(String resourceGroupName, String imageName, ImageInner parameters, Context context);
+    SyncPoller<PollResult<ImageInner>, ImageInner> beginCreateOrUpdate(
+        String resourceGroupName, String imageName, ImageInner parameters, Context context);
 
     /**
      * Create or update an image.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @param parameters Parameters supplied to the Create Image operation.
@@ -103,7 +102,7 @@ public interface ImagesClient extends InnerSupportsGet<ImageInner>, InnerSupport
 
     /**
      * Create or update an image.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @param parameters Parameters supplied to the Create Image operation.
@@ -117,7 +116,7 @@ public interface ImagesClient extends InnerSupportsGet<ImageInner>, InnerSupport
 
     /**
      * Create or update an image.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @param parameters Parameters supplied to the Create Image operation.
@@ -132,7 +131,7 @@ public interface ImagesClient extends InnerSupportsGet<ImageInner>, InnerSupport
 
     /**
      * Update an image.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @param parameters Parameters supplied to the Update Image operation.
@@ -142,11 +141,12 @@ public interface ImagesClient extends InnerSupportsGet<ImageInner>, InnerSupport
      * @return the source user image virtual hard disk.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String imageName, ImageUpdate parameters);
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
+        String resourceGroupName, String imageName, ImageUpdate parameters);
 
     /**
      * Update an image.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @param parameters Parameters supplied to the Update Image operation.
@@ -156,11 +156,12 @@ public interface ImagesClient extends InnerSupportsGet<ImageInner>, InnerSupport
      * @return the source user image virtual hard disk.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<ImageInner>, ImageInner> beginUpdateAsync(String resourceGroupName, String imageName, ImageUpdate parameters);
+    PollerFlux<PollResult<ImageInner>, ImageInner> beginUpdateAsync(
+        String resourceGroupName, String imageName, ImageUpdate parameters);
 
     /**
      * Update an image.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @param parameters Parameters supplied to the Update Image operation.
@@ -170,11 +171,12 @@ public interface ImagesClient extends InnerSupportsGet<ImageInner>, InnerSupport
      * @return the source user image virtual hard disk.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ImageInner>, ImageInner> beginUpdate(String resourceGroupName, String imageName, ImageUpdate parameters);
+    SyncPoller<PollResult<ImageInner>, ImageInner> beginUpdate(
+        String resourceGroupName, String imageName, ImageUpdate parameters);
 
     /**
      * Update an image.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @param parameters Parameters supplied to the Update Image operation.
@@ -185,11 +187,12 @@ public interface ImagesClient extends InnerSupportsGet<ImageInner>, InnerSupport
      * @return the source user image virtual hard disk.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ImageInner>, ImageInner> beginUpdate(String resourceGroupName, String imageName, ImageUpdate parameters, Context context);
+    SyncPoller<PollResult<ImageInner>, ImageInner> beginUpdate(
+        String resourceGroupName, String imageName, ImageUpdate parameters, Context context);
 
     /**
      * Update an image.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @param parameters Parameters supplied to the Update Image operation.
@@ -203,7 +206,7 @@ public interface ImagesClient extends InnerSupportsGet<ImageInner>, InnerSupport
 
     /**
      * Update an image.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @param parameters Parameters supplied to the Update Image operation.
@@ -217,7 +220,7 @@ public interface ImagesClient extends InnerSupportsGet<ImageInner>, InnerSupport
 
     /**
      * Update an image.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @param parameters Parameters supplied to the Update Image operation.
@@ -232,7 +235,7 @@ public interface ImagesClient extends InnerSupportsGet<ImageInner>, InnerSupport
 
     /**
      * Deletes an Image.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -245,7 +248,7 @@ public interface ImagesClient extends InnerSupportsGet<ImageInner>, InnerSupport
 
     /**
      * Deletes an Image.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -258,7 +261,7 @@ public interface ImagesClient extends InnerSupportsGet<ImageInner>, InnerSupport
 
     /**
      * Deletes an Image.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -271,7 +274,7 @@ public interface ImagesClient extends InnerSupportsGet<ImageInner>, InnerSupport
 
     /**
      * Deletes an Image.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @param context The context to associate with this operation.
@@ -285,7 +288,7 @@ public interface ImagesClient extends InnerSupportsGet<ImageInner>, InnerSupport
 
     /**
      * Deletes an Image.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -298,7 +301,7 @@ public interface ImagesClient extends InnerSupportsGet<ImageInner>, InnerSupport
 
     /**
      * Deletes an Image.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -310,7 +313,7 @@ public interface ImagesClient extends InnerSupportsGet<ImageInner>, InnerSupport
 
     /**
      * Deletes an Image.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @param context The context to associate with this operation.
@@ -323,7 +326,7 @@ public interface ImagesClient extends InnerSupportsGet<ImageInner>, InnerSupport
 
     /**
      * Gets an image.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @param expand The expand expression to apply on the operation.
@@ -333,11 +336,12 @@ public interface ImagesClient extends InnerSupportsGet<ImageInner>, InnerSupport
      * @return an image.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ImageInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String imageName, String expand);
+    Mono<Response<ImageInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String imageName, String expand);
 
     /**
      * Gets an image.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @param expand The expand expression to apply on the operation.
@@ -351,7 +355,7 @@ public interface ImagesClient extends InnerSupportsGet<ImageInner>, InnerSupport
 
     /**
      * Gets an image.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -364,7 +368,7 @@ public interface ImagesClient extends InnerSupportsGet<ImageInner>, InnerSupport
 
     /**
      * Gets an image.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -377,7 +381,7 @@ public interface ImagesClient extends InnerSupportsGet<ImageInner>, InnerSupport
 
     /**
      * Gets an image.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param imageName The name of the image.
      * @param expand The expand expression to apply on the operation.
@@ -388,11 +392,12 @@ public interface ImagesClient extends InnerSupportsGet<ImageInner>, InnerSupport
      * @return an image.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ImageInner> getByResourceGroupWithResponse(String resourceGroupName, String imageName, String expand, Context context);
+    Response<ImageInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String imageName, String expand, Context context);
 
     /**
      * Gets the list of images under a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -404,7 +409,7 @@ public interface ImagesClient extends InnerSupportsGet<ImageInner>, InnerSupport
 
     /**
      * Gets the list of images under a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -416,7 +421,7 @@ public interface ImagesClient extends InnerSupportsGet<ImageInner>, InnerSupport
 
     /**
      * Gets the list of images under a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -428,8 +433,9 @@ public interface ImagesClient extends InnerSupportsGet<ImageInner>, InnerSupport
     PagedIterable<ImageInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * Gets the list of Images in the subscription. Use nextLink property in the response to get the next page of Images. Do this till nextLink is null to fetch all the Images.
-     * 
+     * Gets the list of Images in the subscription. Use nextLink property in the response to get the next page of
+     * Images. Do this till nextLink is null to fetch all the Images.
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of Images in the subscription.
@@ -438,8 +444,9 @@ public interface ImagesClient extends InnerSupportsGet<ImageInner>, InnerSupport
     PagedFlux<ImageInner> listAsync();
 
     /**
-     * Gets the list of Images in the subscription. Use nextLink property in the response to get the next page of Images. Do this till nextLink is null to fetch all the Images.
-     * 
+     * Gets the list of Images in the subscription. Use nextLink property in the response to get the next page of
+     * Images. Do this till nextLink is null to fetch all the Images.
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of Images in the subscription.
@@ -448,8 +455,9 @@ public interface ImagesClient extends InnerSupportsGet<ImageInner>, InnerSupport
     PagedIterable<ImageInner> list();
 
     /**
-     * Gets the list of Images in the subscription. Use nextLink property in the response to get the next page of Images. Do this till nextLink is null to fetch all the Images.
-     * 
+     * Gets the list of Images in the subscription. Use nextLink property in the response to get the next page of
+     * Images. Do this till nextLink is null to fetch all the Images.
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

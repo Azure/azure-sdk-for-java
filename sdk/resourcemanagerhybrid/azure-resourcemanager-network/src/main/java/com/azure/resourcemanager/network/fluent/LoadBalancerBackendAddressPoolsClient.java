@@ -8,21 +8,16 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.BackendAddressPoolInner;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * LoadBalancerBackendAddressPoolsClient.
- */
+/** An instance of this class provides access to all the operations defined in LoadBalancerBackendAddressPoolsClient. */
 public interface LoadBalancerBackendAddressPoolsClient {
     /**
      * Gets all the load balancer backed address pools.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -35,7 +30,7 @@ public interface LoadBalancerBackendAddressPoolsClient {
 
     /**
      * Gets all the load balancer backed address pools.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -48,7 +43,7 @@ public interface LoadBalancerBackendAddressPoolsClient {
 
     /**
      * Gets all the load balancer backed address pools.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param context The context to associate with this operation.
@@ -62,7 +57,7 @@ public interface LoadBalancerBackendAddressPoolsClient {
 
     /**
      * Gets load balancer backend address pool.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param backendAddressPoolName The name of the backend address pool.
@@ -72,11 +67,12 @@ public interface LoadBalancerBackendAddressPoolsClient {
      * @return load balancer backend address pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BackendAddressPoolInner>> getWithResponseAsync(String resourceGroupName, String loadBalancerName, String backendAddressPoolName);
+    Mono<Response<BackendAddressPoolInner>> getWithResponseAsync(
+        String resourceGroupName, String loadBalancerName, String backendAddressPoolName);
 
     /**
      * Gets load balancer backend address pool.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param backendAddressPoolName The name of the backend address pool.
@@ -86,11 +82,12 @@ public interface LoadBalancerBackendAddressPoolsClient {
      * @return load balancer backend address pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<BackendAddressPoolInner> getAsync(String resourceGroupName, String loadBalancerName, String backendAddressPoolName);
+    Mono<BackendAddressPoolInner> getAsync(
+        String resourceGroupName, String loadBalancerName, String backendAddressPoolName);
 
     /**
      * Gets load balancer backend address pool.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param backendAddressPoolName The name of the backend address pool.
@@ -104,7 +101,7 @@ public interface LoadBalancerBackendAddressPoolsClient {
 
     /**
      * Gets load balancer backend address pool.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param backendAddressPoolName The name of the backend address pool.
@@ -115,5 +112,6 @@ public interface LoadBalancerBackendAddressPoolsClient {
      * @return load balancer backend address pool.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BackendAddressPoolInner> getWithResponse(String resourceGroupName, String loadBalancerName, String backendAddressPoolName, Context context);
+    Response<BackendAddressPoolInner> getWithResponse(
+        String resourceGroupName, String loadBalancerName, String backendAddressPoolName, Context context);
 }

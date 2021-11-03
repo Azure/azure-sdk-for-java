@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The service endpoint properties.
- */
+/** The service endpoint properties. */
 @Fluent
 public final class ServiceEndpointPropertiesFormat {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ServiceEndpointPropertiesFormat.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceEndpointPropertiesFormat.class);
 
     /*
      * The type of the endpoint service.
@@ -40,7 +35,7 @@ public final class ServiceEndpointPropertiesFormat {
 
     /**
      * Get the service property: The type of the endpoint service.
-     * 
+     *
      * @return the service value.
      */
     public String service() {
@@ -49,7 +44,7 @@ public final class ServiceEndpointPropertiesFormat {
 
     /**
      * Set the service property: The type of the endpoint service.
-     * 
+     *
      * @param service the service value to set.
      * @return the ServiceEndpointPropertiesFormat object itself.
      */
@@ -60,7 +55,7 @@ public final class ServiceEndpointPropertiesFormat {
 
     /**
      * Get the locations property: A list of locations.
-     * 
+     *
      * @return the locations value.
      */
     public List<String> locations() {
@@ -69,7 +64,7 @@ public final class ServiceEndpointPropertiesFormat {
 
     /**
      * Set the locations property: A list of locations.
-     * 
+     *
      * @param locations the locations value to set.
      * @return the ServiceEndpointPropertiesFormat object itself.
      */
@@ -79,9 +74,8 @@ public final class ServiceEndpointPropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the
-     * resource.
-     * 
+     * Get the provisioningState property: The provisioning state of the resource.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -89,9 +83,8 @@ public final class ServiceEndpointPropertiesFormat {
     }
 
     /**
-     * Set the provisioningState property: The provisioning state of the
-     * resource.
-     * 
+     * Set the provisioningState property: The provisioning state of the resource.
+     *
      * @param provisioningState the provisioningState value to set.
      * @return the ServiceEndpointPropertiesFormat object itself.
      */
@@ -102,7 +95,7 @@ public final class ServiceEndpointPropertiesFormat {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

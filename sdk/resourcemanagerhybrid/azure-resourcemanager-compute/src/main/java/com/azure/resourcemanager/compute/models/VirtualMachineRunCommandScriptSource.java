@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Describes the script sources for run command.
- */
+/** Describes the script sources for run command. */
 @Fluent
 public final class VirtualMachineRunCommandScriptSource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(VirtualMachineRunCommandScriptSource.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineRunCommandScriptSource.class);
 
     /*
      * Specifies the script content to be executed on the VM.
@@ -38,9 +33,8 @@ public final class VirtualMachineRunCommandScriptSource {
     private String commandId;
 
     /**
-     * Get the script property: Specifies the script content to be executed on
-     * the VM.
-     * 
+     * Get the script property: Specifies the script content to be executed on the VM.
+     *
      * @return the script value.
      */
     public String script() {
@@ -48,9 +42,8 @@ public final class VirtualMachineRunCommandScriptSource {
     }
 
     /**
-     * Set the script property: Specifies the script content to be executed on
-     * the VM.
-     * 
+     * Set the script property: Specifies the script content to be executed on the VM.
+     *
      * @param script the script value to set.
      * @return the VirtualMachineRunCommandScriptSource object itself.
      */
@@ -61,7 +54,7 @@ public final class VirtualMachineRunCommandScriptSource {
 
     /**
      * Get the scriptUri property: Specifies the script download location.
-     * 
+     *
      * @return the scriptUri value.
      */
     public String scriptUri() {
@@ -70,7 +63,7 @@ public final class VirtualMachineRunCommandScriptSource {
 
     /**
      * Set the scriptUri property: Specifies the script download location.
-     * 
+     *
      * @param scriptUri the scriptUri value to set.
      * @return the VirtualMachineRunCommandScriptSource object itself.
      */
@@ -80,9 +73,8 @@ public final class VirtualMachineRunCommandScriptSource {
     }
 
     /**
-     * Get the commandId property: Specifies a commandId of predefined built-in
-     * script.
-     * 
+     * Get the commandId property: Specifies a commandId of predefined built-in script.
+     *
      * @return the commandId value.
      */
     public String commandId() {
@@ -90,9 +82,8 @@ public final class VirtualMachineRunCommandScriptSource {
     }
 
     /**
-     * Set the commandId property: Specifies a commandId of predefined built-in
-     * script.
-     * 
+     * Set the commandId property: Specifies a commandId of predefined built-in script.
+     *
      * @param commandId the commandId value to set.
      * @return the VirtualMachineRunCommandScriptSource object itself.
      */
@@ -103,7 +94,7 @@ public final class VirtualMachineRunCommandScriptSource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

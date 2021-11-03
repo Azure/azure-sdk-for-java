@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Target resource.
- */
+/** Target resource. */
 @Fluent
 public final class TargetResource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(TargetResource.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(TargetResource.class);
 
     /*
      * The ID of the resource.
@@ -39,7 +34,7 @@ public final class TargetResource {
 
     /**
      * Get the id property: The ID of the resource.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -48,7 +43,7 @@ public final class TargetResource {
 
     /**
      * Set the id property: The ID of the resource.
-     * 
+     *
      * @param id the id value to set.
      * @return the TargetResource object itself.
      */
@@ -59,7 +54,7 @@ public final class TargetResource {
 
     /**
      * Get the resourceName property: The name of the resource.
-     * 
+     *
      * @return the resourceName value.
      */
     public String resourceName() {
@@ -68,7 +63,7 @@ public final class TargetResource {
 
     /**
      * Set the resourceName property: The name of the resource.
-     * 
+     *
      * @param resourceName the resourceName value to set.
      * @return the TargetResource object itself.
      */
@@ -79,7 +74,7 @@ public final class TargetResource {
 
     /**
      * Get the resourceType property: The type of the resource.
-     * 
+     *
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -88,7 +83,7 @@ public final class TargetResource {
 
     /**
      * Set the resourceType property: The type of the resource.
-     * 
+     *
      * @param resourceType the resourceType value to set.
      * @return the TargetResource object itself.
      */
@@ -99,7 +94,7 @@ public final class TargetResource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

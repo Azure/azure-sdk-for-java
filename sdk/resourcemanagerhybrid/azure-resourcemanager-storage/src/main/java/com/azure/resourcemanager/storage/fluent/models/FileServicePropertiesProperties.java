@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.CorsRules;
 import com.azure.resourcemanager.storage.models.DeleteRetentionPolicy;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The properties of File services in storage account.
- */
+/** The properties of File services in storage account. */
 @Fluent
 public final class FileServicePropertiesProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(FileServicePropertiesProperties.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(FileServicePropertiesProperties.class);
 
     /*
      * Specifies CORS rules for the File service. You can include up to five
@@ -37,11 +32,10 @@ public final class FileServicePropertiesProperties {
     private DeleteRetentionPolicy shareDeleteRetentionPolicy;
 
     /**
-     * Get the cors property: Specifies CORS rules for the File service. You
-     * can include up to five CorsRule elements in the request. If no CorsRule
-     * elements are included in the request body, all CORS rules will be
-     * deleted, and CORS will be disabled for the File service.
-     * 
+     * Get the cors property: Specifies CORS rules for the File service. You can include up to five CorsRule elements in
+     * the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS
+     * will be disabled for the File service.
+     *
      * @return the cors value.
      */
     public CorsRules cors() {
@@ -49,11 +43,10 @@ public final class FileServicePropertiesProperties {
     }
 
     /**
-     * Set the cors property: Specifies CORS rules for the File service. You
-     * can include up to five CorsRule elements in the request. If no CorsRule
-     * elements are included in the request body, all CORS rules will be
-     * deleted, and CORS will be disabled for the File service.
-     * 
+     * Set the cors property: Specifies CORS rules for the File service. You can include up to five CorsRule elements in
+     * the request. If no CorsRule elements are included in the request body, all CORS rules will be deleted, and CORS
+     * will be disabled for the File service.
+     *
      * @param cors the cors value to set.
      * @return the FileServicePropertiesProperties object itself.
      */
@@ -63,9 +56,8 @@ public final class FileServicePropertiesProperties {
     }
 
     /**
-     * Get the shareDeleteRetentionPolicy property: The file service properties
-     * for share soft delete.
-     * 
+     * Get the shareDeleteRetentionPolicy property: The file service properties for share soft delete.
+     *
      * @return the shareDeleteRetentionPolicy value.
      */
     public DeleteRetentionPolicy shareDeleteRetentionPolicy() {
@@ -73,21 +65,20 @@ public final class FileServicePropertiesProperties {
     }
 
     /**
-     * Set the shareDeleteRetentionPolicy property: The file service properties
-     * for share soft delete.
-     * 
-     * @param shareDeleteRetentionPolicy the shareDeleteRetentionPolicy value
-     * to set.
+     * Set the shareDeleteRetentionPolicy property: The file service properties for share soft delete.
+     *
+     * @param shareDeleteRetentionPolicy the shareDeleteRetentionPolicy value to set.
      * @return the FileServicePropertiesProperties object itself.
      */
-    public FileServicePropertiesProperties withShareDeleteRetentionPolicy(DeleteRetentionPolicy shareDeleteRetentionPolicy) {
+    public FileServicePropertiesProperties withShareDeleteRetentionPolicy(
+        DeleteRetentionPolicy shareDeleteRetentionPolicy) {
         this.shareDeleteRetentionPolicy = shareDeleteRetentionPolicy;
         return this;
     }
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,18 +7,12 @@ package com.azure.resourcemanager.storage.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for ListSharesExpand.
- */
+/** Defines values for ListSharesExpand. */
 public enum ListSharesExpand {
-    /**
-     * Enum value deleted.
-     */
+    /** Enum value deleted. */
     DELETED("deleted");
 
-    /**
-     * The actual serialized value for a ListSharesExpand instance.
-     */
+    /** The actual serialized value for a ListSharesExpand instance. */
     private final String value;
 
     ListSharesExpand(String value) {
@@ -27,7 +21,7 @@ public enum ListSharesExpand {
 
     /**
      * Parses a serialized value to a ListSharesExpand instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed ListSharesExpand object, or null if unable to parse.
      */

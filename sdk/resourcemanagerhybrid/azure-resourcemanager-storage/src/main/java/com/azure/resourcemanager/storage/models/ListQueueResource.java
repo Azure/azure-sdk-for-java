@@ -4,22 +4,17 @@
 
 package com.azure.resourcemanager.storage.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.fluent.models.ListQueueInner;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Response schema. Contains list of queues returned.
- */
+/** Response schema. Contains list of queues returned. */
 @Immutable
 public final class ListQueueResource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ListQueueResource.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListQueueResource.class);
 
     /*
      * List of queues returned.
@@ -35,7 +30,7 @@ public final class ListQueueResource {
 
     /**
      * Get the value property: List of queues returned.
-     * 
+     *
      * @return the value value.
      */
     public List<ListQueueInner> value() {
@@ -43,9 +38,8 @@ public final class ListQueueResource {
     }
 
     /**
-     * Get the nextLink property: Request URL that can be used to list next
-     * page of queues.
-     * 
+     * Get the nextLink property: Request URL that can be used to list next page of queues.
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -54,7 +48,7 @@ public final class ListQueueResource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

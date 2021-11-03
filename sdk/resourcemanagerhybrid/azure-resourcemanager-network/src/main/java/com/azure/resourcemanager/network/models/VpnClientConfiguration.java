@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * VpnClientConfiguration for P2S client.
- */
+/** VpnClientConfiguration for P2S client. */
 @Fluent
 public final class VpnClientConfiguration {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(VpnClientConfiguration.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnClientConfiguration.class);
 
     /*
      * The reference of the address space resource which represents Address
@@ -66,9 +61,9 @@ public final class VpnClientConfiguration {
     private String radiusServerSecret;
 
     /**
-     * Get the vpnClientAddressPool property: The reference of the address
-     * space resource which represents Address space for P2S VpnClient.
-     * 
+     * Get the vpnClientAddressPool property: The reference of the address space resource which represents Address space
+     * for P2S VpnClient.
+     *
      * @return the vpnClientAddressPool value.
      */
     public AddressSpace vpnClientAddressPool() {
@@ -76,9 +71,9 @@ public final class VpnClientConfiguration {
     }
 
     /**
-     * Set the vpnClientAddressPool property: The reference of the address
-     * space resource which represents Address space for P2S VpnClient.
-     * 
+     * Set the vpnClientAddressPool property: The reference of the address space resource which represents Address space
+     * for P2S VpnClient.
+     *
      * @param vpnClientAddressPool the vpnClientAddressPool value to set.
      * @return the VpnClientConfiguration object itself.
      */
@@ -88,9 +83,8 @@ public final class VpnClientConfiguration {
     }
 
     /**
-     * Get the vpnClientRootCertificates property: VpnClientRootCertificate for
-     * virtual network gateway.
-     * 
+     * Get the vpnClientRootCertificates property: VpnClientRootCertificate for virtual network gateway.
+     *
      * @return the vpnClientRootCertificates value.
      */
     public List<VpnClientRootCertificate> vpnClientRootCertificates() {
@@ -98,22 +92,20 @@ public final class VpnClientConfiguration {
     }
 
     /**
-     * Set the vpnClientRootCertificates property: VpnClientRootCertificate for
-     * virtual network gateway.
-     * 
-     * @param vpnClientRootCertificates the vpnClientRootCertificates value to
-     * set.
+     * Set the vpnClientRootCertificates property: VpnClientRootCertificate for virtual network gateway.
+     *
+     * @param vpnClientRootCertificates the vpnClientRootCertificates value to set.
      * @return the VpnClientConfiguration object itself.
      */
-    public VpnClientConfiguration withVpnClientRootCertificates(List<VpnClientRootCertificate> vpnClientRootCertificates) {
+    public VpnClientConfiguration withVpnClientRootCertificates(
+        List<VpnClientRootCertificate> vpnClientRootCertificates) {
         this.vpnClientRootCertificates = vpnClientRootCertificates;
         return this;
     }
 
     /**
-     * Get the vpnClientRevokedCertificates property:
-     * VpnClientRevokedCertificate for Virtual network gateway.
-     * 
+     * Get the vpnClientRevokedCertificates property: VpnClientRevokedCertificate for Virtual network gateway.
+     *
      * @return the vpnClientRevokedCertificates value.
      */
     public List<VpnClientRevokedCertificate> vpnClientRevokedCertificates() {
@@ -121,22 +113,20 @@ public final class VpnClientConfiguration {
     }
 
     /**
-     * Set the vpnClientRevokedCertificates property:
-     * VpnClientRevokedCertificate for Virtual network gateway.
-     * 
-     * @param vpnClientRevokedCertificates the vpnClientRevokedCertificates
-     * value to set.
+     * Set the vpnClientRevokedCertificates property: VpnClientRevokedCertificate for Virtual network gateway.
+     *
+     * @param vpnClientRevokedCertificates the vpnClientRevokedCertificates value to set.
      * @return the VpnClientConfiguration object itself.
      */
-    public VpnClientConfiguration withVpnClientRevokedCertificates(List<VpnClientRevokedCertificate> vpnClientRevokedCertificates) {
+    public VpnClientConfiguration withVpnClientRevokedCertificates(
+        List<VpnClientRevokedCertificate> vpnClientRevokedCertificates) {
         this.vpnClientRevokedCertificates = vpnClientRevokedCertificates;
         return this;
     }
 
     /**
-     * Get the vpnClientProtocols property: VpnClientProtocols for Virtual
-     * network gateway.
-     * 
+     * Get the vpnClientProtocols property: VpnClientProtocols for Virtual network gateway.
+     *
      * @return the vpnClientProtocols value.
      */
     public List<VpnClientProtocol> vpnClientProtocols() {
@@ -144,9 +134,8 @@ public final class VpnClientConfiguration {
     }
 
     /**
-     * Set the vpnClientProtocols property: VpnClientProtocols for Virtual
-     * network gateway.
-     * 
+     * Set the vpnClientProtocols property: VpnClientProtocols for Virtual network gateway.
+     *
      * @param vpnClientProtocols the vpnClientProtocols value to set.
      * @return the VpnClientConfiguration object itself.
      */
@@ -156,9 +145,8 @@ public final class VpnClientConfiguration {
     }
 
     /**
-     * Get the vpnClientIpsecPolicies property: VpnClientIpsecPolicies for
-     * virtual network gateway P2S client.
-     * 
+     * Get the vpnClientIpsecPolicies property: VpnClientIpsecPolicies for virtual network gateway P2S client.
+     *
      * @return the vpnClientIpsecPolicies value.
      */
     public List<IpsecPolicy> vpnClientIpsecPolicies() {
@@ -166,9 +154,8 @@ public final class VpnClientConfiguration {
     }
 
     /**
-     * Set the vpnClientIpsecPolicies property: VpnClientIpsecPolicies for
-     * virtual network gateway P2S client.
-     * 
+     * Set the vpnClientIpsecPolicies property: VpnClientIpsecPolicies for virtual network gateway P2S client.
+     *
      * @param vpnClientIpsecPolicies the vpnClientIpsecPolicies value to set.
      * @return the VpnClientConfiguration object itself.
      */
@@ -178,9 +165,9 @@ public final class VpnClientConfiguration {
     }
 
     /**
-     * Get the radiusServerAddress property: The radius server address property
-     * of the VirtualNetworkGateway resource for vpn client connection.
-     * 
+     * Get the radiusServerAddress property: The radius server address property of the VirtualNetworkGateway resource
+     * for vpn client connection.
+     *
      * @return the radiusServerAddress value.
      */
     public String radiusServerAddress() {
@@ -188,9 +175,9 @@ public final class VpnClientConfiguration {
     }
 
     /**
-     * Set the radiusServerAddress property: The radius server address property
-     * of the VirtualNetworkGateway resource for vpn client connection.
-     * 
+     * Set the radiusServerAddress property: The radius server address property of the VirtualNetworkGateway resource
+     * for vpn client connection.
+     *
      * @param radiusServerAddress the radiusServerAddress value to set.
      * @return the VpnClientConfiguration object itself.
      */
@@ -200,9 +187,9 @@ public final class VpnClientConfiguration {
     }
 
     /**
-     * Get the radiusServerSecret property: The radius secret property of the
-     * VirtualNetworkGateway resource for vpn client connection.
-     * 
+     * Get the radiusServerSecret property: The radius secret property of the VirtualNetworkGateway resource for vpn
+     * client connection.
+     *
      * @return the radiusServerSecret value.
      */
     public String radiusServerSecret() {
@@ -210,9 +197,9 @@ public final class VpnClientConfiguration {
     }
 
     /**
-     * Set the radiusServerSecret property: The radius secret property of the
-     * VirtualNetworkGateway resource for vpn client connection.
-     * 
+     * Set the radiusServerSecret property: The radius secret property of the VirtualNetworkGateway resource for vpn
+     * client connection.
+     *
      * @param radiusServerSecret the radiusServerSecret value to set.
      * @return the VpnClientConfiguration object itself.
      */
@@ -223,7 +210,7 @@ public final class VpnClientConfiguration {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

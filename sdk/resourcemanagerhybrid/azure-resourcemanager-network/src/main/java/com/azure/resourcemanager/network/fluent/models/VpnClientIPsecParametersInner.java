@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.DhGroup;
 import com.azure.resourcemanager.network.models.IkeEncryption;
@@ -13,17 +12,13 @@ import com.azure.resourcemanager.network.models.IkeIntegrity;
 import com.azure.resourcemanager.network.models.IpsecEncryption;
 import com.azure.resourcemanager.network.models.IpsecIntegrity;
 import com.azure.resourcemanager.network.models.PfsGroup;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * An IPSec parameters for a virtual network gateway P2S connection.
- */
+/** An IPSec parameters for a virtual network gateway P2S connection. */
 @Fluent
 public final class VpnClientIPsecParametersInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(VpnClientIPsecParametersInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnClientIPsecParametersInner.class);
 
     /*
      * The IPSec Security Association (also called Quick Mode or Phase 2 SA)
@@ -76,9 +71,9 @@ public final class VpnClientIPsecParametersInner {
     private PfsGroup pfsGroup;
 
     /**
-     * Get the saLifeTimeSeconds property: The IPSec Security Association (also
-     * called Quick Mode or Phase 2 SA) lifetime in seconds for P2S client.
-     * 
+     * Get the saLifeTimeSeconds property: The IPSec Security Association (also called Quick Mode or Phase 2 SA)
+     * lifetime in seconds for P2S client.
+     *
      * @return the saLifeTimeSeconds value.
      */
     public int saLifeTimeSeconds() {
@@ -86,9 +81,9 @@ public final class VpnClientIPsecParametersInner {
     }
 
     /**
-     * Set the saLifeTimeSeconds property: The IPSec Security Association (also
-     * called Quick Mode or Phase 2 SA) lifetime in seconds for P2S client.
-     * 
+     * Set the saLifeTimeSeconds property: The IPSec Security Association (also called Quick Mode or Phase 2 SA)
+     * lifetime in seconds for P2S client.
+     *
      * @param saLifeTimeSeconds the saLifeTimeSeconds value to set.
      * @return the VpnClientIPsecParametersInner object itself.
      */
@@ -98,10 +93,9 @@ public final class VpnClientIPsecParametersInner {
     }
 
     /**
-     * Get the saDataSizeKilobytes property: The IPSec Security Association
-     * (also called Quick Mode or Phase 2 SA) payload size in KB for P2S
-     * client..
-     * 
+     * Get the saDataSizeKilobytes property: The IPSec Security Association (also called Quick Mode or Phase 2 SA)
+     * payload size in KB for P2S client..
+     *
      * @return the saDataSizeKilobytes value.
      */
     public int saDataSizeKilobytes() {
@@ -109,10 +103,9 @@ public final class VpnClientIPsecParametersInner {
     }
 
     /**
-     * Set the saDataSizeKilobytes property: The IPSec Security Association
-     * (also called Quick Mode or Phase 2 SA) payload size in KB for P2S
-     * client..
-     * 
+     * Set the saDataSizeKilobytes property: The IPSec Security Association (also called Quick Mode or Phase 2 SA)
+     * payload size in KB for P2S client..
+     *
      * @param saDataSizeKilobytes the saDataSizeKilobytes value to set.
      * @return the VpnClientIPsecParametersInner object itself.
      */
@@ -122,9 +115,8 @@ public final class VpnClientIPsecParametersInner {
     }
 
     /**
-     * Get the ipsecEncryption property: The IPSec encryption algorithm (IKE
-     * phase 1).
-     * 
+     * Get the ipsecEncryption property: The IPSec encryption algorithm (IKE phase 1).
+     *
      * @return the ipsecEncryption value.
      */
     public IpsecEncryption ipsecEncryption() {
@@ -132,9 +124,8 @@ public final class VpnClientIPsecParametersInner {
     }
 
     /**
-     * Set the ipsecEncryption property: The IPSec encryption algorithm (IKE
-     * phase 1).
-     * 
+     * Set the ipsecEncryption property: The IPSec encryption algorithm (IKE phase 1).
+     *
      * @param ipsecEncryption the ipsecEncryption value to set.
      * @return the VpnClientIPsecParametersInner object itself.
      */
@@ -144,9 +135,8 @@ public final class VpnClientIPsecParametersInner {
     }
 
     /**
-     * Get the ipsecIntegrity property: The IPSec integrity algorithm (IKE
-     * phase 1).
-     * 
+     * Get the ipsecIntegrity property: The IPSec integrity algorithm (IKE phase 1).
+     *
      * @return the ipsecIntegrity value.
      */
     public IpsecIntegrity ipsecIntegrity() {
@@ -154,9 +144,8 @@ public final class VpnClientIPsecParametersInner {
     }
 
     /**
-     * Set the ipsecIntegrity property: The IPSec integrity algorithm (IKE
-     * phase 1).
-     * 
+     * Set the ipsecIntegrity property: The IPSec integrity algorithm (IKE phase 1).
+     *
      * @param ipsecIntegrity the ipsecIntegrity value to set.
      * @return the VpnClientIPsecParametersInner object itself.
      */
@@ -166,9 +155,8 @@ public final class VpnClientIPsecParametersInner {
     }
 
     /**
-     * Get the ikeEncryption property: The IKE encryption algorithm (IKE phase
-     * 2).
-     * 
+     * Get the ikeEncryption property: The IKE encryption algorithm (IKE phase 2).
+     *
      * @return the ikeEncryption value.
      */
     public IkeEncryption ikeEncryption() {
@@ -176,9 +164,8 @@ public final class VpnClientIPsecParametersInner {
     }
 
     /**
-     * Set the ikeEncryption property: The IKE encryption algorithm (IKE phase
-     * 2).
-     * 
+     * Set the ikeEncryption property: The IKE encryption algorithm (IKE phase 2).
+     *
      * @param ikeEncryption the ikeEncryption value to set.
      * @return the VpnClientIPsecParametersInner object itself.
      */
@@ -188,9 +175,8 @@ public final class VpnClientIPsecParametersInner {
     }
 
     /**
-     * Get the ikeIntegrity property: The IKE integrity algorithm (IKE phase
-     * 2).
-     * 
+     * Get the ikeIntegrity property: The IKE integrity algorithm (IKE phase 2).
+     *
      * @return the ikeIntegrity value.
      */
     public IkeIntegrity ikeIntegrity() {
@@ -198,9 +184,8 @@ public final class VpnClientIPsecParametersInner {
     }
 
     /**
-     * Set the ikeIntegrity property: The IKE integrity algorithm (IKE phase
-     * 2).
-     * 
+     * Set the ikeIntegrity property: The IKE integrity algorithm (IKE phase 2).
+     *
      * @param ikeIntegrity the ikeIntegrity value to set.
      * @return the VpnClientIPsecParametersInner object itself.
      */
@@ -210,9 +195,8 @@ public final class VpnClientIPsecParametersInner {
     }
 
     /**
-     * Get the dhGroup property: The DH Groups used in IKE Phase 1 for initial
-     * SA.
-     * 
+     * Get the dhGroup property: The DH Groups used in IKE Phase 1 for initial SA.
+     *
      * @return the dhGroup value.
      */
     public DhGroup dhGroup() {
@@ -220,9 +204,8 @@ public final class VpnClientIPsecParametersInner {
     }
 
     /**
-     * Set the dhGroup property: The DH Groups used in IKE Phase 1 for initial
-     * SA.
-     * 
+     * Set the dhGroup property: The DH Groups used in IKE Phase 1 for initial SA.
+     *
      * @param dhGroup the dhGroup value to set.
      * @return the VpnClientIPsecParametersInner object itself.
      */
@@ -232,9 +215,8 @@ public final class VpnClientIPsecParametersInner {
     }
 
     /**
-     * Get the pfsGroup property: The Pfs Groups used in IKE Phase 2 for new
-     * child SA.
-     * 
+     * Get the pfsGroup property: The Pfs Groups used in IKE Phase 2 for new child SA.
+     *
      * @return the pfsGroup value.
      */
     public PfsGroup pfsGroup() {
@@ -242,9 +224,8 @@ public final class VpnClientIPsecParametersInner {
     }
 
     /**
-     * Set the pfsGroup property: The Pfs Groups used in IKE Phase 2 for new
-     * child SA.
-     * 
+     * Set the pfsGroup property: The Pfs Groups used in IKE Phase 2 for new child SA.
+     *
      * @param pfsGroup the pfsGroup value to set.
      * @return the VpnClientIPsecParametersInner object itself.
      */
@@ -255,27 +236,45 @@ public final class VpnClientIPsecParametersInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (ipsecEncryption() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property ipsecEncryption in model VpnClientIPsecParametersInner"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property ipsecEncryption in model VpnClientIPsecParametersInner"));
         }
         if (ipsecIntegrity() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property ipsecIntegrity in model VpnClientIPsecParametersInner"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property ipsecIntegrity in model VpnClientIPsecParametersInner"));
         }
         if (ikeEncryption() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property ikeEncryption in model VpnClientIPsecParametersInner"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property ikeEncryption in model VpnClientIPsecParametersInner"));
         }
         if (ikeIntegrity() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property ikeIntegrity in model VpnClientIPsecParametersInner"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property ikeIntegrity in model VpnClientIPsecParametersInner"));
         }
         if (dhGroup() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property dhGroup in model VpnClientIPsecParametersInner"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property dhGroup in model VpnClientIPsecParametersInner"));
         }
         if (pfsGroup() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property pfsGroup in model VpnClientIPsecParametersInner"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property pfsGroup in model VpnClientIPsecParametersInner"));
         }
     }
 }

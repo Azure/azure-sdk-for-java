@@ -8,27 +8,21 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.SecurityRuleInner;
-import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * SecurityRulesClient.
- */
+/** An instance of this class provides access to all the operations defined in SecurityRulesClient. */
 public interface SecurityRulesClient {
     /**
      * Deletes the specified network security rule.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
@@ -38,11 +32,12 @@ public interface SecurityRulesClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String networkSecurityGroupName, String securityRuleName);
 
     /**
      * Deletes the specified network security rule.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
@@ -52,11 +47,12 @@ public interface SecurityRulesClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String networkSecurityGroupName, String securityRuleName);
 
     /**
      * Deletes the specified network security rule.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
@@ -66,11 +62,12 @@ public interface SecurityRulesClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkSecurityGroupName, String securityRuleName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String networkSecurityGroupName, String securityRuleName);
 
     /**
      * Deletes the specified network security rule.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
@@ -81,11 +78,12 @@ public interface SecurityRulesClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String networkSecurityGroupName, String securityRuleName, Context context);
 
     /**
      * Deletes the specified network security rule.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
@@ -99,7 +97,7 @@ public interface SecurityRulesClient {
 
     /**
      * Deletes the specified network security rule.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
@@ -112,7 +110,7 @@ public interface SecurityRulesClient {
 
     /**
      * Deletes the specified network security rule.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
@@ -126,7 +124,7 @@ public interface SecurityRulesClient {
 
     /**
      * Get the specified network security rule.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
@@ -136,11 +134,12 @@ public interface SecurityRulesClient {
      * @return the specified network security rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<SecurityRuleInner>> getWithResponseAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName);
+    Mono<Response<SecurityRuleInner>> getWithResponseAsync(
+        String resourceGroupName, String networkSecurityGroupName, String securityRuleName);
 
     /**
      * Get the specified network security rule.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
@@ -150,11 +149,12 @@ public interface SecurityRulesClient {
      * @return the specified network security rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SecurityRuleInner> getAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName);
+    Mono<SecurityRuleInner> getAsync(
+        String resourceGroupName, String networkSecurityGroupName, String securityRuleName);
 
     /**
      * Get the specified network security rule.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
@@ -168,7 +168,7 @@ public interface SecurityRulesClient {
 
     /**
      * Get the specified network security rule.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
@@ -179,11 +179,12 @@ public interface SecurityRulesClient {
      * @return the specified network security rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SecurityRuleInner> getWithResponse(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, Context context);
+    Response<SecurityRuleInner> getWithResponse(
+        String resourceGroupName, String networkSecurityGroupName, String securityRuleName, Context context);
 
     /**
      * Creates or updates a security rule in the specified network security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
@@ -194,11 +195,15 @@ public interface SecurityRulesClient {
      * @return network security rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, SecurityRuleInner securityRuleParameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName,
+        String networkSecurityGroupName,
+        String securityRuleName,
+        SecurityRuleInner securityRuleParameters);
 
     /**
      * Creates or updates a security rule in the specified network security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
@@ -209,11 +214,15 @@ public interface SecurityRulesClient {
      * @return network security rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<SecurityRuleInner>, SecurityRuleInner> beginCreateOrUpdateAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, SecurityRuleInner securityRuleParameters);
+    PollerFlux<PollResult<SecurityRuleInner>, SecurityRuleInner> beginCreateOrUpdateAsync(
+        String resourceGroupName,
+        String networkSecurityGroupName,
+        String securityRuleName,
+        SecurityRuleInner securityRuleParameters);
 
     /**
      * Creates or updates a security rule in the specified network security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
@@ -224,57 +233,15 @@ public interface SecurityRulesClient {
      * @return network security rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<SecurityRuleInner>, SecurityRuleInner> beginCreateOrUpdate(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, SecurityRuleInner securityRuleParameters);
+    SyncPoller<PollResult<SecurityRuleInner>, SecurityRuleInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String networkSecurityGroupName,
+        String securityRuleName,
+        SecurityRuleInner securityRuleParameters);
 
     /**
      * Creates or updates a security rule in the specified network security group.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param networkSecurityGroupName The name of the network security group.
-     * @param securityRuleName The name of the security rule.
-     * @param securityRuleParameters Parameters supplied to the create or update network security rule operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network security rule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<SecurityRuleInner>, SecurityRuleInner> beginCreateOrUpdate(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, SecurityRuleInner securityRuleParameters, Context context);
-
-    /**
-     * Creates or updates a security rule in the specified network security group.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param networkSecurityGroupName The name of the network security group.
-     * @param securityRuleName The name of the security rule.
-     * @param securityRuleParameters Parameters supplied to the create or update network security rule operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network security rule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SecurityRuleInner> createOrUpdateAsync(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, SecurityRuleInner securityRuleParameters);
-
-    /**
-     * Creates or updates a security rule in the specified network security group.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param networkSecurityGroupName The name of the network security group.
-     * @param securityRuleName The name of the security rule.
-     * @param securityRuleParameters Parameters supplied to the create or update network security rule operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return network security rule.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SecurityRuleInner createOrUpdate(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, SecurityRuleInner securityRuleParameters);
-
-    /**
-     * Creates or updates a security rule in the specified network security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param securityRuleName The name of the security rule.
@@ -286,11 +253,75 @@ public interface SecurityRulesClient {
      * @return network security rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SecurityRuleInner createOrUpdate(String resourceGroupName, String networkSecurityGroupName, String securityRuleName, SecurityRuleInner securityRuleParameters, Context context);
+    SyncPoller<PollResult<SecurityRuleInner>, SecurityRuleInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String networkSecurityGroupName,
+        String securityRuleName,
+        SecurityRuleInner securityRuleParameters,
+        Context context);
+
+    /**
+     * Creates or updates a security rule in the specified network security group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkSecurityGroupName The name of the network security group.
+     * @param securityRuleName The name of the security rule.
+     * @param securityRuleParameters Parameters supplied to the create or update network security rule operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return network security rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<SecurityRuleInner> createOrUpdateAsync(
+        String resourceGroupName,
+        String networkSecurityGroupName,
+        String securityRuleName,
+        SecurityRuleInner securityRuleParameters);
+
+    /**
+     * Creates or updates a security rule in the specified network security group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkSecurityGroupName The name of the network security group.
+     * @param securityRuleName The name of the security rule.
+     * @param securityRuleParameters Parameters supplied to the create or update network security rule operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return network security rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SecurityRuleInner createOrUpdate(
+        String resourceGroupName,
+        String networkSecurityGroupName,
+        String securityRuleName,
+        SecurityRuleInner securityRuleParameters);
+
+    /**
+     * Creates or updates a security rule in the specified network security group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkSecurityGroupName The name of the network security group.
+     * @param securityRuleName The name of the security rule.
+     * @param securityRuleParameters Parameters supplied to the create or update network security rule operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return network security rule.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SecurityRuleInner createOrUpdate(
+        String resourceGroupName,
+        String networkSecurityGroupName,
+        String securityRuleName,
+        SecurityRuleInner securityRuleParameters,
+        Context context);
 
     /**
      * Gets all security rules in a network security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -303,7 +334,7 @@ public interface SecurityRulesClient {
 
     /**
      * Gets all security rules in a network security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -316,7 +347,7 @@ public interface SecurityRulesClient {
 
     /**
      * Gets all security rules in a network security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param context The context to associate with this operation.

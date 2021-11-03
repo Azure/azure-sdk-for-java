@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Kubelet configurations of agent nodes.
- */
+/** Kubelet configurations of agent nodes. */
 @Fluent
 public final class KubeletConfig {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(KubeletConfig.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(KubeletConfig.class);
 
     /*
      * CPU Manager policy to use.
@@ -73,7 +68,7 @@ public final class KubeletConfig {
 
     /**
      * Get the cpuManagerPolicy property: CPU Manager policy to use.
-     * 
+     *
      * @return the cpuManagerPolicy value.
      */
     public String cpuManagerPolicy() {
@@ -82,7 +77,7 @@ public final class KubeletConfig {
 
     /**
      * Set the cpuManagerPolicy property: CPU Manager policy to use.
-     * 
+     *
      * @param cpuManagerPolicy the cpuManagerPolicy value to set.
      * @return the KubeletConfig object itself.
      */
@@ -92,9 +87,8 @@ public final class KubeletConfig {
     }
 
     /**
-     * Get the cpuCfsQuota property: Enable CPU CFS quota enforcement for
-     * containers that specify CPU limits.
-     * 
+     * Get the cpuCfsQuota property: Enable CPU CFS quota enforcement for containers that specify CPU limits.
+     *
      * @return the cpuCfsQuota value.
      */
     public Boolean cpuCfsQuota() {
@@ -102,9 +96,8 @@ public final class KubeletConfig {
     }
 
     /**
-     * Set the cpuCfsQuota property: Enable CPU CFS quota enforcement for
-     * containers that specify CPU limits.
-     * 
+     * Set the cpuCfsQuota property: Enable CPU CFS quota enforcement for containers that specify CPU limits.
+     *
      * @param cpuCfsQuota the cpuCfsQuota value to set.
      * @return the KubeletConfig object itself.
      */
@@ -115,7 +108,7 @@ public final class KubeletConfig {
 
     /**
      * Get the cpuCfsQuotaPeriod property: Sets CPU CFS quota period value.
-     * 
+     *
      * @return the cpuCfsQuotaPeriod value.
      */
     public String cpuCfsQuotaPeriod() {
@@ -124,7 +117,7 @@ public final class KubeletConfig {
 
     /**
      * Set the cpuCfsQuotaPeriod property: Sets CPU CFS quota period value.
-     * 
+     *
      * @param cpuCfsQuotaPeriod the cpuCfsQuotaPeriod value to set.
      * @return the KubeletConfig object itself.
      */
@@ -134,9 +127,9 @@ public final class KubeletConfig {
     }
 
     /**
-     * Get the imageGcHighThreshold property: The percent of disk usage after
-     * which image garbage collection is always run.
-     * 
+     * Get the imageGcHighThreshold property: The percent of disk usage after which image garbage collection is always
+     * run.
+     *
      * @return the imageGcHighThreshold value.
      */
     public Integer imageGcHighThreshold() {
@@ -144,9 +137,9 @@ public final class KubeletConfig {
     }
 
     /**
-     * Set the imageGcHighThreshold property: The percent of disk usage after
-     * which image garbage collection is always run.
-     * 
+     * Set the imageGcHighThreshold property: The percent of disk usage after which image garbage collection is always
+     * run.
+     *
      * @param imageGcHighThreshold the imageGcHighThreshold value to set.
      * @return the KubeletConfig object itself.
      */
@@ -156,9 +149,9 @@ public final class KubeletConfig {
     }
 
     /**
-     * Get the imageGcLowThreshold property: The percent of disk usage before
-     * which image garbage collection is never run.
-     * 
+     * Get the imageGcLowThreshold property: The percent of disk usage before which image garbage collection is never
+     * run.
+     *
      * @return the imageGcLowThreshold value.
      */
     public Integer imageGcLowThreshold() {
@@ -166,9 +159,9 @@ public final class KubeletConfig {
     }
 
     /**
-     * Set the imageGcLowThreshold property: The percent of disk usage before
-     * which image garbage collection is never run.
-     * 
+     * Set the imageGcLowThreshold property: The percent of disk usage before which image garbage collection is never
+     * run.
+     *
      * @param imageGcLowThreshold the imageGcLowThreshold value to set.
      * @return the KubeletConfig object itself.
      */
@@ -179,7 +172,7 @@ public final class KubeletConfig {
 
     /**
      * Get the topologyManagerPolicy property: Topology Manager policy to use.
-     * 
+     *
      * @return the topologyManagerPolicy value.
      */
     public String topologyManagerPolicy() {
@@ -188,7 +181,7 @@ public final class KubeletConfig {
 
     /**
      * Set the topologyManagerPolicy property: Topology Manager policy to use.
-     * 
+     *
      * @param topologyManagerPolicy the topologyManagerPolicy value to set.
      * @return the KubeletConfig object itself.
      */
@@ -198,9 +191,8 @@ public final class KubeletConfig {
     }
 
     /**
-     * Get the allowedUnsafeSysctls property: Allowlist of unsafe sysctls or
-     * unsafe sysctl patterns (ending in `*`).
-     * 
+     * Get the allowedUnsafeSysctls property: Allowlist of unsafe sysctls or unsafe sysctl patterns (ending in `*`).
+     *
      * @return the allowedUnsafeSysctls value.
      */
     public List<String> allowedUnsafeSysctls() {
@@ -208,9 +200,8 @@ public final class KubeletConfig {
     }
 
     /**
-     * Set the allowedUnsafeSysctls property: Allowlist of unsafe sysctls or
-     * unsafe sysctl patterns (ending in `*`).
-     * 
+     * Set the allowedUnsafeSysctls property: Allowlist of unsafe sysctls or unsafe sysctl patterns (ending in `*`).
+     *
      * @param allowedUnsafeSysctls the allowedUnsafeSysctls value to set.
      * @return the KubeletConfig object itself.
      */
@@ -220,9 +211,9 @@ public final class KubeletConfig {
     }
 
     /**
-     * Get the failSwapOn property: If set to true it will make the Kubelet
-     * fail to start if swap is enabled on the node.
-     * 
+     * Get the failSwapOn property: If set to true it will make the Kubelet fail to start if swap is enabled on the
+     * node.
+     *
      * @return the failSwapOn value.
      */
     public Boolean failSwapOn() {
@@ -230,9 +221,9 @@ public final class KubeletConfig {
     }
 
     /**
-     * Set the failSwapOn property: If set to true it will make the Kubelet
-     * fail to start if swap is enabled on the node.
-     * 
+     * Set the failSwapOn property: If set to true it will make the Kubelet fail to start if swap is enabled on the
+     * node.
+     *
      * @param failSwapOn the failSwapOn value to set.
      * @return the KubeletConfig object itself.
      */
@@ -243,7 +234,7 @@ public final class KubeletConfig {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

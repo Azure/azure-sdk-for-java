@@ -5,20 +5,14 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * An object that defines the blob inventory rule. Each definition consists of
- * a set of filters.
- */
+/** An object that defines the blob inventory rule. Each definition consists of a set of filters. */
 @Fluent
 public final class BlobInventoryPolicyDefinition {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(BlobInventoryPolicyDefinition.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(BlobInventoryPolicyDefinition.class);
 
     /*
      * An object that defines the filter set.
@@ -28,7 +22,7 @@ public final class BlobInventoryPolicyDefinition {
 
     /**
      * Get the filters property: An object that defines the filter set.
-     * 
+     *
      * @return the filters value.
      */
     public BlobInventoryPolicyFilter filters() {
@@ -37,7 +31,7 @@ public final class BlobInventoryPolicyDefinition {
 
     /**
      * Set the filters property: An object that defines the filter set.
-     * 
+     *
      * @param filters the filters value to set.
      * @return the BlobInventoryPolicyDefinition object itself.
      */
@@ -48,12 +42,15 @@ public final class BlobInventoryPolicyDefinition {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (filters() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property filters in model BlobInventoryPolicyDefinition"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property filters in model BlobInventoryPolicyDefinition"));
         } else {
             filters().validate();
         }

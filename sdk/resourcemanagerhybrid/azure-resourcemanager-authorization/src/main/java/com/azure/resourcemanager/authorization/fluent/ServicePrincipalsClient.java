@@ -8,8 +8,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.authorization.fluent.models.AppRoleAssignmentInner;
@@ -25,31 +23,31 @@ import com.azure.resourcemanager.authorization.models.ServicePrincipalUpdatePara
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * ServicePrincipalsClient.
- */
+/** An instance of this class provides access to all the operations defined in ServicePrincipalsClient. */
 public interface ServicePrincipalsClient extends InnerSupportsDelete<Void> {
     /**
      * Creates a service principal in the directory.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param parameters Parameters to create a service principal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return active Directory service principal information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ServicePrincipalInner>> createWithResponseAsync(String tenantId, ServicePrincipalCreateParameters parameters);
+    Mono<Response<ServicePrincipalInner>> createWithResponseAsync(
+        String tenantId, ServicePrincipalCreateParameters parameters);
 
     /**
      * Creates a service principal in the directory.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param parameters Parameters to create a service principal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return active Directory service principal information.
      */
@@ -58,11 +56,12 @@ public interface ServicePrincipalsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Creates a service principal in the directory.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param parameters Parameters to create a service principal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return active Directory service principal information.
      */
@@ -71,25 +70,28 @@ public interface ServicePrincipalsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Creates a service principal in the directory.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param parameters Parameters to create a service principal.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return active Directory service principal information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ServicePrincipalInner> createWithResponse(String tenantId, ServicePrincipalCreateParameters parameters, Context context);
+    Response<ServicePrincipalInner> createWithResponse(
+        String tenantId, ServicePrincipalCreateParameters parameters, Context context);
 
     /**
      * Gets a list of service principals from the current tenant.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param filter The filter to apply to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of service principals from the current tenant.
      */
@@ -98,10 +100,11 @@ public interface ServicePrincipalsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Gets a list of service principals from the current tenant.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of service principals from the current tenant.
      */
@@ -110,10 +113,11 @@ public interface ServicePrincipalsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Gets a list of service principals from the current tenant.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of service principals from the current tenant.
      */
@@ -122,12 +126,13 @@ public interface ServicePrincipalsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Gets a list of service principals from the current tenant.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param filter The filter to apply to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of service principals from the current tenant.
      */
@@ -136,26 +141,29 @@ public interface ServicePrincipalsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Updates a service principal in the directory.
-     * 
+     *
      * @param objectId The object ID of the service principal to delete.
      * @param tenantId The tenant ID.
      * @param parameters Parameters to update a service principal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> updateWithResponseAsync(String objectId, String tenantId, ServicePrincipalUpdateParameters parameters);
+    Mono<Response<Void>> updateWithResponseAsync(
+        String objectId, String tenantId, ServicePrincipalUpdateParameters parameters);
 
     /**
      * Updates a service principal in the directory.
-     * 
+     *
      * @param objectId The object ID of the service principal to delete.
      * @param tenantId The tenant ID.
      * @param parameters Parameters to update a service principal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -164,12 +172,13 @@ public interface ServicePrincipalsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Updates a service principal in the directory.
-     * 
+     *
      * @param objectId The object ID of the service principal to delete.
      * @param tenantId The tenant ID.
      * @param parameters Parameters to update a service principal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -177,26 +186,29 @@ public interface ServicePrincipalsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Updates a service principal in the directory.
-     * 
+     *
      * @param objectId The object ID of the service principal to delete.
      * @param tenantId The tenant ID.
      * @param parameters Parameters to update a service principal.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> updateWithResponse(String objectId, String tenantId, ServicePrincipalUpdateParameters parameters, Context context);
+    Response<Void> updateWithResponse(
+        String objectId, String tenantId, ServicePrincipalUpdateParameters parameters, Context context);
 
     /**
      * Deletes a service principal from the directory.
-     * 
+     *
      * @param objectId The object ID of the service principal to delete.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -205,11 +217,12 @@ public interface ServicePrincipalsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Deletes a service principal from the directory.
-     * 
+     *
      * @param objectId The object ID of the service principal to delete.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -218,11 +231,12 @@ public interface ServicePrincipalsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Deletes a service principal from the directory.
-     * 
+     *
      * @param objectId The object ID of the service principal to delete.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -230,12 +244,13 @@ public interface ServicePrincipalsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Deletes a service principal from the directory.
-     * 
+     *
      * @param objectId The object ID of the service principal to delete.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -244,11 +259,12 @@ public interface ServicePrincipalsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Gets service principal information from the directory. Query by objectId or pass a filter to query by appId.
-     * 
+     *
      * @param objectId The object ID of the service principal to get.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return service principal information from the directory.
      */
@@ -257,11 +273,12 @@ public interface ServicePrincipalsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Gets service principal information from the directory. Query by objectId or pass a filter to query by appId.
-     * 
+     *
      * @param objectId The object ID of the service principal to get.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return service principal information from the directory.
      */
@@ -270,11 +287,12 @@ public interface ServicePrincipalsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Gets service principal information from the directory. Query by objectId or pass a filter to query by appId.
-     * 
+     *
      * @param objectId The object ID of the service principal to get.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return service principal information from the directory.
      */
@@ -283,12 +301,13 @@ public interface ServicePrincipalsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Gets service principal information from the directory. Query by objectId or pass a filter to query by appId.
-     * 
+     *
      * @param objectId The object ID of the service principal to get.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return service principal information from the directory.
      */
@@ -297,11 +316,12 @@ public interface ServicePrincipalsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Principals (users, groups, and service principals) that are assigned to this service principal.
-     * 
+     *
      * @param objectId The object ID of the service principal for which to get owners.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return appRoleAssignment list operation result.
      */
@@ -310,11 +330,12 @@ public interface ServicePrincipalsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Principals (users, groups, and service principals) that are assigned to this service principal.
-     * 
+     *
      * @param objectId The object ID of the service principal for which to get owners.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return appRoleAssignment list operation result.
      */
@@ -323,12 +344,13 @@ public interface ServicePrincipalsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Principals (users, groups, and service principals) that are assigned to this service principal.
-     * 
+     *
      * @param objectId The object ID of the service principal for which to get owners.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return appRoleAssignment list operation result.
      */
@@ -337,11 +359,12 @@ public interface ServicePrincipalsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Applications that the service principal is assigned to.
-     * 
+     *
      * @param objectId The object ID of the service principal for which to get owners.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return appRoleAssignment list operation result.
      */
@@ -350,11 +373,12 @@ public interface ServicePrincipalsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Applications that the service principal is assigned to.
-     * 
+     *
      * @param objectId The object ID of the service principal for which to get owners.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return appRoleAssignment list operation result.
      */
@@ -363,12 +387,13 @@ public interface ServicePrincipalsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Applications that the service principal is assigned to.
-     * 
+     *
      * @param objectId The object ID of the service principal for which to get owners.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return appRoleAssignment list operation result.
      */
@@ -377,11 +402,12 @@ public interface ServicePrincipalsClient extends InnerSupportsDelete<Void> {
 
     /**
      * The owners are a set of non-admin users who are allowed to modify this object.
-     * 
+     *
      * @param objectId The object ID of the service principal for which to get owners.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return directoryObject list operation result.
      */
@@ -390,11 +416,12 @@ public interface ServicePrincipalsClient extends InnerSupportsDelete<Void> {
 
     /**
      * The owners are a set of non-admin users who are allowed to modify this object.
-     * 
+     *
      * @param objectId The object ID of the service principal for which to get owners.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return directoryObject list operation result.
      */
@@ -403,12 +430,13 @@ public interface ServicePrincipalsClient extends InnerSupportsDelete<Void> {
 
     /**
      * The owners are a set of non-admin users who are allowed to modify this object.
-     * 
+     *
      * @param objectId The object ID of the service principal for which to get owners.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return directoryObject list operation result.
      */
@@ -417,12 +445,14 @@ public interface ServicePrincipalsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Add an owner to a service principal.
-     * 
+     *
      * @param objectId The object ID of the service principal to which to add the owner.
      * @param tenantId The tenant ID.
-     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
+     * @param parameters The URL of the owner object, such as
+     *     https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -431,12 +461,14 @@ public interface ServicePrincipalsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Add an owner to a service principal.
-     * 
+     *
      * @param objectId The object ID of the service principal to which to add the owner.
      * @param tenantId The tenant ID.
-     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
+     * @param parameters The URL of the owner object, such as
+     *     https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -445,12 +477,14 @@ public interface ServicePrincipalsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Add an owner to a service principal.
-     * 
+     *
      * @param objectId The object ID of the service principal to which to add the owner.
      * @param tenantId The tenant ID.
-     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
+     * @param parameters The URL of the owner object, such as
+     *     https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -458,27 +492,31 @@ public interface ServicePrincipalsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Add an owner to a service principal.
-     * 
+     *
      * @param objectId The object ID of the service principal to which to add the owner.
      * @param tenantId The tenant ID.
-     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
+     * @param parameters The URL of the owner object, such as
+     *     https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> addOwnerWithResponse(String objectId, String tenantId, AddOwnerParameters parameters, Context context);
+    Response<Void> addOwnerWithResponse(
+        String objectId, String tenantId, AddOwnerParameters parameters, Context context);
 
     /**
      * Remove a member from owners.
-     * 
+     *
      * @param objectId The object ID of the service principal from which to remove the owner.
      * @param ownerObjectId Owner object id.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -487,12 +525,13 @@ public interface ServicePrincipalsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Remove a member from owners.
-     * 
+     *
      * @param objectId The object ID of the service principal from which to remove the owner.
      * @param ownerObjectId Owner object id.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -501,12 +540,13 @@ public interface ServicePrincipalsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Remove a member from owners.
-     * 
+     *
      * @param objectId The object ID of the service principal from which to remove the owner.
      * @param ownerObjectId Owner object id.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -514,13 +554,14 @@ public interface ServicePrincipalsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Remove a member from owners.
-     * 
+     *
      * @param objectId The object ID of the service principal from which to remove the owner.
      * @param ownerObjectId Owner object id.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -529,11 +570,12 @@ public interface ServicePrincipalsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Get the keyCredentials associated with the specified service principal.
-     * 
+     *
      * @param objectId The object ID of the service principal for which to get keyCredentials.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the keyCredentials associated with the specified service principal.
      */
@@ -542,11 +584,12 @@ public interface ServicePrincipalsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Get the keyCredentials associated with the specified service principal.
-     * 
+     *
      * @param objectId The object ID of the service principal for which to get keyCredentials.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the keyCredentials associated with the specified service principal.
      */
@@ -555,12 +598,13 @@ public interface ServicePrincipalsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Get the keyCredentials associated with the specified service principal.
-     * 
+     *
      * @param objectId The object ID of the service principal for which to get keyCredentials.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the keyCredentials associated with the specified service principal.
      */
@@ -569,26 +613,29 @@ public interface ServicePrincipalsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Update the keyCredentials associated with a service principal.
-     * 
+     *
      * @param objectId The object ID for which to get service principal information.
      * @param tenantId The tenant ID.
      * @param parameters Parameters to update the keyCredentials of an existing service principal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> updateKeyCredentialsWithResponseAsync(String objectId, String tenantId, KeyCredentialsUpdateParameters parameters);
+    Mono<Response<Void>> updateKeyCredentialsWithResponseAsync(
+        String objectId, String tenantId, KeyCredentialsUpdateParameters parameters);
 
     /**
      * Update the keyCredentials associated with a service principal.
-     * 
+     *
      * @param objectId The object ID for which to get service principal information.
      * @param tenantId The tenant ID.
      * @param parameters Parameters to update the keyCredentials of an existing service principal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -597,12 +644,13 @@ public interface ServicePrincipalsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Update the keyCredentials associated with a service principal.
-     * 
+     *
      * @param objectId The object ID for which to get service principal information.
      * @param tenantId The tenant ID.
      * @param parameters Parameters to update the keyCredentials of an existing service principal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -610,26 +658,29 @@ public interface ServicePrincipalsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Update the keyCredentials associated with a service principal.
-     * 
+     *
      * @param objectId The object ID for which to get service principal information.
      * @param tenantId The tenant ID.
      * @param parameters Parameters to update the keyCredentials of an existing service principal.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> updateKeyCredentialsWithResponse(String objectId, String tenantId, KeyCredentialsUpdateParameters parameters, Context context);
+    Response<Void> updateKeyCredentialsWithResponse(
+        String objectId, String tenantId, KeyCredentialsUpdateParameters parameters, Context context);
 
     /**
      * Gets the passwordCredentials associated with a service principal.
-     * 
+     *
      * @param objectId The object ID of the service principal.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the passwordCredentials associated with a service principal.
      */
@@ -638,11 +689,12 @@ public interface ServicePrincipalsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Gets the passwordCredentials associated with a service principal.
-     * 
+     *
      * @param objectId The object ID of the service principal.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the passwordCredentials associated with a service principal.
      */
@@ -651,12 +703,13 @@ public interface ServicePrincipalsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Gets the passwordCredentials associated with a service principal.
-     * 
+     *
      * @param objectId The object ID of the service principal.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the passwordCredentials associated with a service principal.
      */
@@ -665,40 +718,45 @@ public interface ServicePrincipalsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Updates the passwordCredentials associated with a service principal.
-     * 
+     *
      * @param objectId The object ID of the service principal.
      * @param tenantId The tenant ID.
      * @param parameters Parameters to update the passwordCredentials of an existing service principal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> updatePasswordCredentialsWithResponseAsync(String objectId, String tenantId, PasswordCredentialsUpdateParameters parameters);
+    Mono<Response<Void>> updatePasswordCredentialsWithResponseAsync(
+        String objectId, String tenantId, PasswordCredentialsUpdateParameters parameters);
 
     /**
      * Updates the passwordCredentials associated with a service principal.
-     * 
+     *
      * @param objectId The object ID of the service principal.
      * @param tenantId The tenant ID.
      * @param parameters Parameters to update the passwordCredentials of an existing service principal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> updatePasswordCredentialsAsync(String objectId, String tenantId, PasswordCredentialsUpdateParameters parameters);
+    Mono<Void> updatePasswordCredentialsAsync(
+        String objectId, String tenantId, PasswordCredentialsUpdateParameters parameters);
 
     /**
      * Updates the passwordCredentials associated with a service principal.
-     * 
+     *
      * @param objectId The object ID of the service principal.
      * @param tenantId The tenant ID.
      * @param parameters Parameters to update the passwordCredentials of an existing service principal.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -706,16 +764,18 @@ public interface ServicePrincipalsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Updates the passwordCredentials associated with a service principal.
-     * 
+     *
      * @param objectId The object ID of the service principal.
      * @param tenantId The tenant ID.
      * @param parameters Parameters to update the passwordCredentials of an existing service principal.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> updatePasswordCredentialsWithResponse(String objectId, String tenantId, PasswordCredentialsUpdateParameters parameters, Context context);
+    Response<Void> updatePasswordCredentialsWithResponse(
+        String objectId, String tenantId, PasswordCredentialsUpdateParameters parameters, Context context);
 }

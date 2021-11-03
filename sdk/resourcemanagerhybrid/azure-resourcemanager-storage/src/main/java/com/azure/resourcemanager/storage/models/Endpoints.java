@@ -5,20 +5,14 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The URIs that are used to perform a retrieval of a public blob, queue,
- * table, web or dfs object.
- */
+/** The URIs that are used to perform a retrieval of a public blob, queue, table, web or dfs object. */
 @Fluent
 public final class Endpoints {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(Endpoints.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(Endpoints.class);
 
     /*
      * Gets the blob endpoint.
@@ -70,7 +64,7 @@ public final class Endpoints {
 
     /**
      * Get the blob property: Gets the blob endpoint.
-     * 
+     *
      * @return the blob value.
      */
     public String blob() {
@@ -79,7 +73,7 @@ public final class Endpoints {
 
     /**
      * Get the queue property: Gets the queue endpoint.
-     * 
+     *
      * @return the queue value.
      */
     public String queue() {
@@ -88,7 +82,7 @@ public final class Endpoints {
 
     /**
      * Get the table property: Gets the table endpoint.
-     * 
+     *
      * @return the table value.
      */
     public String table() {
@@ -97,7 +91,7 @@ public final class Endpoints {
 
     /**
      * Get the file property: Gets the file endpoint.
-     * 
+     *
      * @return the file value.
      */
     public String file() {
@@ -106,7 +100,7 @@ public final class Endpoints {
 
     /**
      * Get the web property: Gets the web endpoint.
-     * 
+     *
      * @return the web value.
      */
     public String web() {
@@ -115,7 +109,7 @@ public final class Endpoints {
 
     /**
      * Get the dfs property: Gets the dfs endpoint.
-     * 
+     *
      * @return the dfs value.
      */
     public String dfs() {
@@ -123,9 +117,8 @@ public final class Endpoints {
     }
 
     /**
-     * Get the microsoftEndpoints property: Gets the microsoft routing storage
-     * endpoints.
-     * 
+     * Get the microsoftEndpoints property: Gets the microsoft routing storage endpoints.
+     *
      * @return the microsoftEndpoints value.
      */
     public StorageAccountMicrosoftEndpoints microsoftEndpoints() {
@@ -133,9 +126,8 @@ public final class Endpoints {
     }
 
     /**
-     * Set the microsoftEndpoints property: Gets the microsoft routing storage
-     * endpoints.
-     * 
+     * Set the microsoftEndpoints property: Gets the microsoft routing storage endpoints.
+     *
      * @param microsoftEndpoints the microsoftEndpoints value to set.
      * @return the Endpoints object itself.
      */
@@ -145,9 +137,8 @@ public final class Endpoints {
     }
 
     /**
-     * Get the internetEndpoints property: Gets the internet routing storage
-     * endpoints.
-     * 
+     * Get the internetEndpoints property: Gets the internet routing storage endpoints.
+     *
      * @return the internetEndpoints value.
      */
     public StorageAccountInternetEndpoints internetEndpoints() {
@@ -155,9 +146,8 @@ public final class Endpoints {
     }
 
     /**
-     * Set the internetEndpoints property: Gets the internet routing storage
-     * endpoints.
-     * 
+     * Set the internetEndpoints property: Gets the internet routing storage endpoints.
+     *
      * @param internetEndpoints the internetEndpoints value to set.
      * @return the Endpoints object itself.
      */
@@ -168,7 +158,7 @@ public final class Endpoints {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

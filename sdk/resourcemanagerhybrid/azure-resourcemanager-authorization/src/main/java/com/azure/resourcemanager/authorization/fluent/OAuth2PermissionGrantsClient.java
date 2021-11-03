@@ -8,22 +8,17 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.authorization.fluent.models.OAuth2PermissionGrantInner;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * OAuth2PermissionGrantsClient.
- */
+/** An instance of this class provides access to all the operations defined in OAuth2PermissionGrantsClient. */
 public interface OAuth2PermissionGrantsClient extends InnerSupportsDelete<Void> {
     /**
      * Queries OAuth2 permissions grants for the relevant SP ObjectId of an app.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param filter This is the Service Principal ObjectId associated with the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -36,7 +31,7 @@ public interface OAuth2PermissionGrantsClient extends InnerSupportsDelete<Void> 
 
     /**
      * Queries OAuth2 permissions grants for the relevant SP ObjectId of an app.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -48,7 +43,7 @@ public interface OAuth2PermissionGrantsClient extends InnerSupportsDelete<Void> 
 
     /**
      * Queries OAuth2 permissions grants for the relevant SP ObjectId of an app.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -60,7 +55,7 @@ public interface OAuth2PermissionGrantsClient extends InnerSupportsDelete<Void> 
 
     /**
      * Queries OAuth2 permissions grants for the relevant SP ObjectId of an app.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param filter This is the Service Principal ObjectId associated with the app.
      * @param context The context to associate with this operation.
@@ -74,7 +69,7 @@ public interface OAuth2PermissionGrantsClient extends InnerSupportsDelete<Void> 
 
     /**
      * Grants OAuth2 permissions for the relevant resource Ids of an app.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param body The relevant app Service Principal Object Id and the Service Principal Object Id you want to grant.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -83,11 +78,12 @@ public interface OAuth2PermissionGrantsClient extends InnerSupportsDelete<Void> 
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<OAuth2PermissionGrantInner>> createWithResponseAsync(String tenantId, OAuth2PermissionGrantInner body);
+    Mono<Response<OAuth2PermissionGrantInner>> createWithResponseAsync(
+        String tenantId, OAuth2PermissionGrantInner body);
 
     /**
      * Grants OAuth2 permissions for the relevant resource Ids of an app.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param body The relevant app Service Principal Object Id and the Service Principal Object Id you want to grant.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -100,7 +96,7 @@ public interface OAuth2PermissionGrantsClient extends InnerSupportsDelete<Void> 
 
     /**
      * Grants OAuth2 permissions for the relevant resource Ids of an app.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -112,7 +108,7 @@ public interface OAuth2PermissionGrantsClient extends InnerSupportsDelete<Void> 
 
     /**
      * Grants OAuth2 permissions for the relevant resource Ids of an app.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -124,7 +120,7 @@ public interface OAuth2PermissionGrantsClient extends InnerSupportsDelete<Void> 
 
     /**
      * Grants OAuth2 permissions for the relevant resource Ids of an app.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param body The relevant app Service Principal Object Id and the Service Principal Object Id you want to grant.
      * @param context The context to associate with this operation.
@@ -134,15 +130,17 @@ public interface OAuth2PermissionGrantsClient extends InnerSupportsDelete<Void> 
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<OAuth2PermissionGrantInner> createWithResponse(String tenantId, OAuth2PermissionGrantInner body, Context context);
+    Response<OAuth2PermissionGrantInner> createWithResponse(
+        String tenantId, OAuth2PermissionGrantInner body, Context context);
 
     /**
      * Delete a OAuth2 permission grant for the relevant resource Ids of an app.
-     * 
+     *
      * @param objectId The object ID of a permission grant.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -151,11 +149,12 @@ public interface OAuth2PermissionGrantsClient extends InnerSupportsDelete<Void> 
 
     /**
      * Delete a OAuth2 permission grant for the relevant resource Ids of an app.
-     * 
+     *
      * @param objectId The object ID of a permission grant.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -164,11 +163,12 @@ public interface OAuth2PermissionGrantsClient extends InnerSupportsDelete<Void> 
 
     /**
      * Delete a OAuth2 permission grant for the relevant resource Ids of an app.
-     * 
+     *
      * @param objectId The object ID of a permission grant.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -176,12 +176,13 @@ public interface OAuth2PermissionGrantsClient extends InnerSupportsDelete<Void> 
 
     /**
      * Delete a OAuth2 permission grant for the relevant resource Ids of an app.
-     * 
+     *
      * @param objectId The object ID of a permission grant.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */

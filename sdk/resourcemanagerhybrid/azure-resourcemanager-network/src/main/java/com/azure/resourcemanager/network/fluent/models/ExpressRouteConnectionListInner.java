@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * ExpressRouteConnection list.
- */
+/** ExpressRouteConnection list. */
 @Fluent
 public final class ExpressRouteConnectionListInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ExpressRouteConnectionListInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteConnectionListInner.class);
 
     /*
      * The list of ExpressRoute connections
@@ -28,7 +23,7 @@ public final class ExpressRouteConnectionListInner {
 
     /**
      * Get the value property: The list of ExpressRoute connections.
-     * 
+     *
      * @return the value value.
      */
     public List<ExpressRouteConnectionInner> value() {
@@ -37,7 +32,7 @@ public final class ExpressRouteConnectionListInner {
 
     /**
      * Set the value property: The list of ExpressRoute connections.
-     * 
+     *
      * @param value the value value to set.
      * @return the ExpressRouteConnectionListInner object itself.
      */
@@ -48,7 +43,7 @@ public final class ExpressRouteConnectionListInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

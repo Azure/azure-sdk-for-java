@@ -8,8 +8,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.fluent.models.ProximityPlacementGroupInner;
@@ -19,14 +17,14 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * ProximityPlacementGroupsClient.
- */
-public interface ProximityPlacementGroupsClient extends InnerSupportsGet<ProximityPlacementGroupInner>, InnerSupportsListing<ProximityPlacementGroupInner>, InnerSupportsDelete<Void> {
+/** An instance of this class provides access to all the operations defined in ProximityPlacementGroupsClient. */
+public interface ProximityPlacementGroupsClient
+    extends InnerSupportsGet<ProximityPlacementGroupInner>,
+        InnerSupportsListing<ProximityPlacementGroupInner>,
+        InnerSupportsDelete<Void> {
     /**
      * Create or update a proximity placement group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
      * @param parameters Parameters supplied to the Create Proximity Placement Group operation.
@@ -36,11 +34,12 @@ public interface ProximityPlacementGroupsClient extends InnerSupportsGet<Proximi
      * @return specifies information about the proximity placement group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ProximityPlacementGroupInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String proximityPlacementGroupName, ProximityPlacementGroupInner parameters);
+    Mono<Response<ProximityPlacementGroupInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String proximityPlacementGroupName, ProximityPlacementGroupInner parameters);
 
     /**
      * Create or update a proximity placement group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
      * @param parameters Parameters supplied to the Create Proximity Placement Group operation.
@@ -50,11 +49,12 @@ public interface ProximityPlacementGroupsClient extends InnerSupportsGet<Proximi
      * @return specifies information about the proximity placement group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ProximityPlacementGroupInner> createOrUpdateAsync(String resourceGroupName, String proximityPlacementGroupName, ProximityPlacementGroupInner parameters);
+    Mono<ProximityPlacementGroupInner> createOrUpdateAsync(
+        String resourceGroupName, String proximityPlacementGroupName, ProximityPlacementGroupInner parameters);
 
     /**
      * Create or update a proximity placement group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
      * @param parameters Parameters supplied to the Create Proximity Placement Group operation.
@@ -64,11 +64,12 @@ public interface ProximityPlacementGroupsClient extends InnerSupportsGet<Proximi
      * @return specifies information about the proximity placement group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProximityPlacementGroupInner createOrUpdate(String resourceGroupName, String proximityPlacementGroupName, ProximityPlacementGroupInner parameters);
+    ProximityPlacementGroupInner createOrUpdate(
+        String resourceGroupName, String proximityPlacementGroupName, ProximityPlacementGroupInner parameters);
 
     /**
      * Create or update a proximity placement group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
      * @param parameters Parameters supplied to the Create Proximity Placement Group operation.
@@ -79,11 +80,15 @@ public interface ProximityPlacementGroupsClient extends InnerSupportsGet<Proximi
      * @return specifies information about the proximity placement group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProximityPlacementGroupInner> createOrUpdateWithResponse(String resourceGroupName, String proximityPlacementGroupName, ProximityPlacementGroupInner parameters, Context context);
+    Response<ProximityPlacementGroupInner> createOrUpdateWithResponse(
+        String resourceGroupName,
+        String proximityPlacementGroupName,
+        ProximityPlacementGroupInner parameters,
+        Context context);
 
     /**
      * Update a proximity placement group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
      * @param parameters Parameters supplied to the Update Proximity Placement Group operation.
@@ -93,11 +98,12 @@ public interface ProximityPlacementGroupsClient extends InnerSupportsGet<Proximi
      * @return specifies information about the proximity placement group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ProximityPlacementGroupInner>> updateWithResponseAsync(String resourceGroupName, String proximityPlacementGroupName, ProximityPlacementGroupUpdate parameters);
+    Mono<Response<ProximityPlacementGroupInner>> updateWithResponseAsync(
+        String resourceGroupName, String proximityPlacementGroupName, ProximityPlacementGroupUpdate parameters);
 
     /**
      * Update a proximity placement group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
      * @param parameters Parameters supplied to the Update Proximity Placement Group operation.
@@ -107,11 +113,12 @@ public interface ProximityPlacementGroupsClient extends InnerSupportsGet<Proximi
      * @return specifies information about the proximity placement group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ProximityPlacementGroupInner> updateAsync(String resourceGroupName, String proximityPlacementGroupName, ProximityPlacementGroupUpdate parameters);
+    Mono<ProximityPlacementGroupInner> updateAsync(
+        String resourceGroupName, String proximityPlacementGroupName, ProximityPlacementGroupUpdate parameters);
 
     /**
      * Update a proximity placement group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
      * @param parameters Parameters supplied to the Update Proximity Placement Group operation.
@@ -121,11 +128,12 @@ public interface ProximityPlacementGroupsClient extends InnerSupportsGet<Proximi
      * @return specifies information about the proximity placement group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ProximityPlacementGroupInner update(String resourceGroupName, String proximityPlacementGroupName, ProximityPlacementGroupUpdate parameters);
+    ProximityPlacementGroupInner update(
+        String resourceGroupName, String proximityPlacementGroupName, ProximityPlacementGroupUpdate parameters);
 
     /**
      * Update a proximity placement group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
      * @param parameters Parameters supplied to the Update Proximity Placement Group operation.
@@ -136,11 +144,15 @@ public interface ProximityPlacementGroupsClient extends InnerSupportsGet<Proximi
      * @return specifies information about the proximity placement group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProximityPlacementGroupInner> updateWithResponse(String resourceGroupName, String proximityPlacementGroupName, ProximityPlacementGroupUpdate parameters, Context context);
+    Response<ProximityPlacementGroupInner> updateWithResponse(
+        String resourceGroupName,
+        String proximityPlacementGroupName,
+        ProximityPlacementGroupUpdate parameters,
+        Context context);
 
     /**
      * Delete a proximity placement group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -153,7 +165,7 @@ public interface ProximityPlacementGroupsClient extends InnerSupportsGet<Proximi
 
     /**
      * Delete a proximity placement group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -166,7 +178,7 @@ public interface ProximityPlacementGroupsClient extends InnerSupportsGet<Proximi
 
     /**
      * Delete a proximity placement group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -178,7 +190,7 @@ public interface ProximityPlacementGroupsClient extends InnerSupportsGet<Proximi
 
     /**
      * Delete a proximity placement group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
      * @param context The context to associate with this operation.
@@ -192,35 +204,39 @@ public interface ProximityPlacementGroupsClient extends InnerSupportsGet<Proximi
 
     /**
      * Retrieves information about a proximity placement group .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
-     * @param includeColocationStatus includeColocationStatus=true enables fetching the colocation status of all the resources in the proximity placement group.
+     * @param includeColocationStatus includeColocationStatus=true enables fetching the colocation status of all the
+     *     resources in the proximity placement group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the proximity placement group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ProximityPlacementGroupInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String proximityPlacementGroupName, String includeColocationStatus);
+    Mono<Response<ProximityPlacementGroupInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String proximityPlacementGroupName, String includeColocationStatus);
 
     /**
      * Retrieves information about a proximity placement group .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
-     * @param includeColocationStatus includeColocationStatus=true enables fetching the colocation status of all the resources in the proximity placement group.
+     * @param includeColocationStatus includeColocationStatus=true enables fetching the colocation status of all the
+     *     resources in the proximity placement group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the proximity placement group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ProximityPlacementGroupInner> getByResourceGroupAsync(String resourceGroupName, String proximityPlacementGroupName, String includeColocationStatus);
+    Mono<ProximityPlacementGroupInner> getByResourceGroupAsync(
+        String resourceGroupName, String proximityPlacementGroupName, String includeColocationStatus);
 
     /**
      * Retrieves information about a proximity placement group .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -229,11 +245,12 @@ public interface ProximityPlacementGroupsClient extends InnerSupportsGet<Proximi
      * @return specifies information about the proximity placement group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ProximityPlacementGroupInner> getByResourceGroupAsync(String resourceGroupName, String proximityPlacementGroupName);
+    Mono<ProximityPlacementGroupInner> getByResourceGroupAsync(
+        String resourceGroupName, String proximityPlacementGroupName);
 
     /**
      * Retrieves information about a proximity placement group .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -246,10 +263,11 @@ public interface ProximityPlacementGroupsClient extends InnerSupportsGet<Proximi
 
     /**
      * Retrieves information about a proximity placement group .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param proximityPlacementGroupName The name of the proximity placement group.
-     * @param includeColocationStatus includeColocationStatus=true enables fetching the colocation status of all the resources in the proximity placement group.
+     * @param includeColocationStatus includeColocationStatus=true enables fetching the colocation status of all the
+     *     resources in the proximity placement group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -257,11 +275,12 @@ public interface ProximityPlacementGroupsClient extends InnerSupportsGet<Proximi
      * @return specifies information about the proximity placement group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ProximityPlacementGroupInner> getByResourceGroupWithResponse(String resourceGroupName, String proximityPlacementGroupName, String includeColocationStatus, Context context);
+    Response<ProximityPlacementGroupInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String proximityPlacementGroupName, String includeColocationStatus, Context context);
 
     /**
      * Lists all proximity placement groups in a subscription.
-     * 
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Proximity Placement Group operation response.
@@ -271,7 +290,7 @@ public interface ProximityPlacementGroupsClient extends InnerSupportsGet<Proximi
 
     /**
      * Lists all proximity placement groups in a subscription.
-     * 
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Proximity Placement Group operation response.
@@ -281,7 +300,7 @@ public interface ProximityPlacementGroupsClient extends InnerSupportsGet<Proximi
 
     /**
      * Lists all proximity placement groups in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -293,7 +312,7 @@ public interface ProximityPlacementGroupsClient extends InnerSupportsGet<Proximi
 
     /**
      * Lists all proximity placement groups in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -305,7 +324,7 @@ public interface ProximityPlacementGroupsClient extends InnerSupportsGet<Proximi
 
     /**
      * Lists all proximity placement groups in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -317,7 +336,7 @@ public interface ProximityPlacementGroupsClient extends InnerSupportsGet<Proximi
 
     /**
      * Lists all proximity placement groups in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

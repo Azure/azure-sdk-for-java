@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The instance view of the VM Agent running on the virtual machine.
- */
+/** The instance view of the VM Agent running on the virtual machine. */
 @Fluent
 public final class VirtualMachineAgentInstanceView {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(VirtualMachineAgentInstanceView.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineAgentInstanceView.class);
 
     /*
      * The VM Agent full version.
@@ -40,7 +35,7 @@ public final class VirtualMachineAgentInstanceView {
 
     /**
      * Get the vmAgentVersion property: The VM Agent full version.
-     * 
+     *
      * @return the vmAgentVersion value.
      */
     public String vmAgentVersion() {
@@ -49,7 +44,7 @@ public final class VirtualMachineAgentInstanceView {
 
     /**
      * Set the vmAgentVersion property: The VM Agent full version.
-     * 
+     *
      * @param vmAgentVersion the vmAgentVersion value to set.
      * @return the VirtualMachineAgentInstanceView object itself.
      */
@@ -59,9 +54,8 @@ public final class VirtualMachineAgentInstanceView {
     }
 
     /**
-     * Get the extensionHandlers property: The virtual machine extension
-     * handler instance view.
-     * 
+     * Get the extensionHandlers property: The virtual machine extension handler instance view.
+     *
      * @return the extensionHandlers value.
      */
     public List<VirtualMachineExtensionHandlerInstanceView> extensionHandlers() {
@@ -69,20 +63,20 @@ public final class VirtualMachineAgentInstanceView {
     }
 
     /**
-     * Set the extensionHandlers property: The virtual machine extension
-     * handler instance view.
-     * 
+     * Set the extensionHandlers property: The virtual machine extension handler instance view.
+     *
      * @param extensionHandlers the extensionHandlers value to set.
      * @return the VirtualMachineAgentInstanceView object itself.
      */
-    public VirtualMachineAgentInstanceView withExtensionHandlers(List<VirtualMachineExtensionHandlerInstanceView> extensionHandlers) {
+    public VirtualMachineAgentInstanceView withExtensionHandlers(
+        List<VirtualMachineExtensionHandlerInstanceView> extensionHandlers) {
         this.extensionHandlers = extensionHandlers;
         return this;
     }
 
     /**
      * Get the statuses property: The resource status information.
-     * 
+     *
      * @return the statuses value.
      */
     public List<InstanceViewStatus> statuses() {
@@ -91,7 +85,7 @@ public final class VirtualMachineAgentInstanceView {
 
     /**
      * Set the statuses property: The resource status information.
-     * 
+     *
      * @param statuses the statuses value to set.
      * @return the VirtualMachineAgentInstanceView object itself.
      */
@@ -102,7 +96,7 @@ public final class VirtualMachineAgentInstanceView {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

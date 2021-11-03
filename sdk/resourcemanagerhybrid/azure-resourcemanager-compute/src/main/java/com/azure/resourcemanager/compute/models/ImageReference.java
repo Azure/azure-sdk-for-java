@@ -5,25 +5,20 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Specifies information about the image to use. You can specify information
- * about platform images, marketplace images, or virtual machine images. This
- * element is required when you want to use a platform image, marketplace
- * image, or virtual machine image, but is not used in other creation
- * operations. NOTE: Image reference publisher and offer can only be set when
- * you create the scale set.
+ * Specifies information about the image to use. You can specify information about platform images, marketplace images,
+ * or virtual machine images. This element is required when you want to use a platform image, marketplace image, or
+ * virtual machine image, but is not used in other creation operations. NOTE: Image reference publisher and offer can
+ * only be set when you create the scale set.
  */
 @Fluent
 public final class ImageReference extends SubResource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ImageReference.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageReference.class);
 
     /*
      * The image publisher.
@@ -66,7 +61,7 @@ public final class ImageReference extends SubResource {
 
     /**
      * Get the publisher property: The image publisher.
-     * 
+     *
      * @return the publisher value.
      */
     public String publisher() {
@@ -75,7 +70,7 @@ public final class ImageReference extends SubResource {
 
     /**
      * Set the publisher property: The image publisher.
-     * 
+     *
      * @param publisher the publisher value to set.
      * @return the ImageReference object itself.
      */
@@ -85,9 +80,9 @@ public final class ImageReference extends SubResource {
     }
 
     /**
-     * Get the offer property: Specifies the offer of the platform image or
-     * marketplace image used to create the virtual machine.
-     * 
+     * Get the offer property: Specifies the offer of the platform image or marketplace image used to create the virtual
+     * machine.
+     *
      * @return the offer value.
      */
     public String offer() {
@@ -95,9 +90,9 @@ public final class ImageReference extends SubResource {
     }
 
     /**
-     * Set the offer property: Specifies the offer of the platform image or
-     * marketplace image used to create the virtual machine.
-     * 
+     * Set the offer property: Specifies the offer of the platform image or marketplace image used to create the virtual
+     * machine.
+     *
      * @param offer the offer value to set.
      * @return the ImageReference object itself.
      */
@@ -108,7 +103,7 @@ public final class ImageReference extends SubResource {
 
     /**
      * Get the sku property: The image SKU.
-     * 
+     *
      * @return the sku value.
      */
     public String sku() {
@@ -117,7 +112,7 @@ public final class ImageReference extends SubResource {
 
     /**
      * Set the sku property: The image SKU.
-     * 
+     *
      * @param sku the sku value to set.
      * @return the ImageReference object itself.
      */
@@ -127,14 +122,11 @@ public final class ImageReference extends SubResource {
     }
 
     /**
-     * Get the version property: Specifies the version of the platform image or
-     * marketplace image used to create the virtual machine. The allowed
-     * formats are Major.Minor.Build or 'latest'. Major, Minor, and Build are
-     * decimal numbers. Specify 'latest' to use the latest version of an image
-     * available at deploy time. Even if you use 'latest', the VM image will
-     * not automatically update after deploy time even if a new version becomes
-     * available.
-     * 
+     * Get the version property: Specifies the version of the platform image or marketplace image used to create the
+     * virtual machine. The allowed formats are Major.Minor.Build or 'latest'. Major, Minor, and Build are decimal
+     * numbers. Specify 'latest' to use the latest version of an image available at deploy time. Even if you use
+     * 'latest', the VM image will not automatically update after deploy time even if a new version becomes available.
+     *
      * @return the version value.
      */
     public String version() {
@@ -142,14 +134,11 @@ public final class ImageReference extends SubResource {
     }
 
     /**
-     * Set the version property: Specifies the version of the platform image or
-     * marketplace image used to create the virtual machine. The allowed
-     * formats are Major.Minor.Build or 'latest'. Major, Minor, and Build are
-     * decimal numbers. Specify 'latest' to use the latest version of an image
-     * available at deploy time. Even if you use 'latest', the VM image will
-     * not automatically update after deploy time even if a new version becomes
-     * available.
-     * 
+     * Set the version property: Specifies the version of the platform image or marketplace image used to create the
+     * virtual machine. The allowed formats are Major.Minor.Build or 'latest'. Major, Minor, and Build are decimal
+     * numbers. Specify 'latest' to use the latest version of an image available at deploy time. Even if you use
+     * 'latest', the VM image will not automatically update after deploy time even if a new version becomes available.
+     *
      * @param version the version value to set.
      * @return the ImageReference object itself.
      */
@@ -159,20 +148,17 @@ public final class ImageReference extends SubResource {
     }
 
     /**
-     * Get the exactVersion property: Specifies in decimal numbers, the version
-     * of platform image or marketplace image used to create the virtual
-     * machine. This readonly field differs from 'version', only if the value
-     * specified in 'version' field is 'latest'.
-     * 
+     * Get the exactVersion property: Specifies in decimal numbers, the version of platform image or marketplace image
+     * used to create the virtual machine. This readonly field differs from 'version', only if the value specified in
+     * 'version' field is 'latest'.
+     *
      * @return the exactVersion value.
      */
     public String exactVersion() {
         return this.exactVersion;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ImageReference withId(String id) {
         super.withId(id);
@@ -181,7 +167,7 @@ public final class ImageReference extends SubResource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

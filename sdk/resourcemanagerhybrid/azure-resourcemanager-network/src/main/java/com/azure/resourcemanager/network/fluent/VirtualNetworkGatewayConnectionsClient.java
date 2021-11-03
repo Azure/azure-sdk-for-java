@@ -8,8 +8,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
@@ -21,19 +19,18 @@ import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayConn
 import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
-import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in
- * VirtualNetworkGatewayConnectionsClient.
+ * An instance of this class provides access to all the operations defined in VirtualNetworkGatewayConnectionsClient.
  */
-public interface VirtualNetworkGatewayConnectionsClient extends InnerSupportsGet<VirtualNetworkGatewayConnectionInner>, InnerSupportsDelete<Void> {
+public interface VirtualNetworkGatewayConnectionsClient
+    extends InnerSupportsGet<VirtualNetworkGatewayConnectionInner>, InnerSupportsDelete<Void> {
     /**
      * Creates or updates a virtual network gateway connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param parameters Parameters supplied to the create or update virtual network gateway connection operation.
@@ -43,11 +40,14 @@ public interface VirtualNetworkGatewayConnectionsClient extends InnerSupportsGet
      * @return a common class for general resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName, VirtualNetworkGatewayConnectionInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName,
+        String virtualNetworkGatewayConnectionName,
+        VirtualNetworkGatewayConnectionInner parameters);
 
     /**
      * Creates or updates a virtual network gateway connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param parameters Parameters supplied to the create or update virtual network gateway connection operation.
@@ -57,11 +57,15 @@ public interface VirtualNetworkGatewayConnectionsClient extends InnerSupportsGet
      * @return a common class for general resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<VirtualNetworkGatewayConnectionInner>, VirtualNetworkGatewayConnectionInner> beginCreateOrUpdateAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName, VirtualNetworkGatewayConnectionInner parameters);
+    PollerFlux<PollResult<VirtualNetworkGatewayConnectionInner>, VirtualNetworkGatewayConnectionInner>
+        beginCreateOrUpdateAsync(
+            String resourceGroupName,
+            String virtualNetworkGatewayConnectionName,
+            VirtualNetworkGatewayConnectionInner parameters);
 
     /**
      * Creates or updates a virtual network gateway connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param parameters Parameters supplied to the create or update virtual network gateway connection operation.
@@ -71,54 +75,15 @@ public interface VirtualNetworkGatewayConnectionsClient extends InnerSupportsGet
      * @return a common class for general resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<VirtualNetworkGatewayConnectionInner>, VirtualNetworkGatewayConnectionInner> beginCreateOrUpdate(String resourceGroupName, String virtualNetworkGatewayConnectionName, VirtualNetworkGatewayConnectionInner parameters);
+    SyncPoller<PollResult<VirtualNetworkGatewayConnectionInner>, VirtualNetworkGatewayConnectionInner>
+        beginCreateOrUpdate(
+            String resourceGroupName,
+            String virtualNetworkGatewayConnectionName,
+            VirtualNetworkGatewayConnectionInner parameters);
 
     /**
      * Creates or updates a virtual network gateway connection in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
-     * @param parameters Parameters supplied to the create or update virtual network gateway connection operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a common class for general resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<VirtualNetworkGatewayConnectionInner>, VirtualNetworkGatewayConnectionInner> beginCreateOrUpdate(String resourceGroupName, String virtualNetworkGatewayConnectionName, VirtualNetworkGatewayConnectionInner parameters, Context context);
-
-    /**
-     * Creates or updates a virtual network gateway connection in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
-     * @param parameters Parameters supplied to the create or update virtual network gateway connection operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a common class for general resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VirtualNetworkGatewayConnectionInner> createOrUpdateAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName, VirtualNetworkGatewayConnectionInner parameters);
-
-    /**
-     * Creates or updates a virtual network gateway connection in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
-     * @param parameters Parameters supplied to the create or update virtual network gateway connection operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a common class for general resource information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualNetworkGatewayConnectionInner createOrUpdate(String resourceGroupName, String virtualNetworkGatewayConnectionName, VirtualNetworkGatewayConnectionInner parameters);
-
-    /**
-     * Creates or updates a virtual network gateway connection in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param parameters Parameters supplied to the create or update virtual network gateway connection operation.
@@ -129,11 +94,69 @@ public interface VirtualNetworkGatewayConnectionsClient extends InnerSupportsGet
      * @return a common class for general resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualNetworkGatewayConnectionInner createOrUpdate(String resourceGroupName, String virtualNetworkGatewayConnectionName, VirtualNetworkGatewayConnectionInner parameters, Context context);
+    SyncPoller<PollResult<VirtualNetworkGatewayConnectionInner>, VirtualNetworkGatewayConnectionInner>
+        beginCreateOrUpdate(
+            String resourceGroupName,
+            String virtualNetworkGatewayConnectionName,
+            VirtualNetworkGatewayConnectionInner parameters,
+            Context context);
+
+    /**
+     * Creates or updates a virtual network gateway connection in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
+     * @param parameters Parameters supplied to the create or update virtual network gateway connection operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a common class for general resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<VirtualNetworkGatewayConnectionInner> createOrUpdateAsync(
+        String resourceGroupName,
+        String virtualNetworkGatewayConnectionName,
+        VirtualNetworkGatewayConnectionInner parameters);
+
+    /**
+     * Creates or updates a virtual network gateway connection in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
+     * @param parameters Parameters supplied to the create or update virtual network gateway connection operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a common class for general resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VirtualNetworkGatewayConnectionInner createOrUpdate(
+        String resourceGroupName,
+        String virtualNetworkGatewayConnectionName,
+        VirtualNetworkGatewayConnectionInner parameters);
+
+    /**
+     * Creates or updates a virtual network gateway connection in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
+     * @param parameters Parameters supplied to the create or update virtual network gateway connection operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a common class for general resource information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VirtualNetworkGatewayConnectionInner createOrUpdate(
+        String resourceGroupName,
+        String virtualNetworkGatewayConnectionName,
+        VirtualNetworkGatewayConnectionInner parameters,
+        Context context);
 
     /**
      * Gets the specified virtual network gateway connection by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -142,11 +165,12 @@ public interface VirtualNetworkGatewayConnectionsClient extends InnerSupportsGet
      * @return the specified virtual network gateway connection by resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<VirtualNetworkGatewayConnectionInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName);
+    Mono<Response<VirtualNetworkGatewayConnectionInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String virtualNetworkGatewayConnectionName);
 
     /**
      * Gets the specified virtual network gateway connection by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -155,11 +179,12 @@ public interface VirtualNetworkGatewayConnectionsClient extends InnerSupportsGet
      * @return the specified virtual network gateway connection by resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VirtualNetworkGatewayConnectionInner> getByResourceGroupAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName);
+    Mono<VirtualNetworkGatewayConnectionInner> getByResourceGroupAsync(
+        String resourceGroupName, String virtualNetworkGatewayConnectionName);
 
     /**
      * Gets the specified virtual network gateway connection by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -168,11 +193,12 @@ public interface VirtualNetworkGatewayConnectionsClient extends InnerSupportsGet
      * @return the specified virtual network gateway connection by resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualNetworkGatewayConnectionInner getByResourceGroup(String resourceGroupName, String virtualNetworkGatewayConnectionName);
+    VirtualNetworkGatewayConnectionInner getByResourceGroup(
+        String resourceGroupName, String virtualNetworkGatewayConnectionName);
 
     /**
      * Gets the specified virtual network gateway connection by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param context The context to associate with this operation.
@@ -182,11 +208,12 @@ public interface VirtualNetworkGatewayConnectionsClient extends InnerSupportsGet
      * @return the specified virtual network gateway connection by resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VirtualNetworkGatewayConnectionInner> getByResourceGroupWithResponse(String resourceGroupName, String virtualNetworkGatewayConnectionName, Context context);
+    Response<VirtualNetworkGatewayConnectionInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String virtualNetworkGatewayConnectionName, Context context);
 
     /**
      * Deletes the specified virtual network Gateway connection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -195,11 +222,12 @@ public interface VirtualNetworkGatewayConnectionsClient extends InnerSupportsGet
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String virtualNetworkGatewayConnectionName);
 
     /**
      * Deletes the specified virtual network Gateway connection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -208,11 +236,12 @@ public interface VirtualNetworkGatewayConnectionsClient extends InnerSupportsGet
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String virtualNetworkGatewayConnectionName);
 
     /**
      * Deletes the specified virtual network Gateway connection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -221,11 +250,12 @@ public interface VirtualNetworkGatewayConnectionsClient extends InnerSupportsGet
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualNetworkGatewayConnectionName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String virtualNetworkGatewayConnectionName);
 
     /**
      * Deletes the specified virtual network Gateway connection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param context The context to associate with this operation.
@@ -235,11 +265,12 @@ public interface VirtualNetworkGatewayConnectionsClient extends InnerSupportsGet
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualNetworkGatewayConnectionName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String virtualNetworkGatewayConnectionName, Context context);
 
     /**
      * Deletes the specified virtual network Gateway connection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -252,7 +283,7 @@ public interface VirtualNetworkGatewayConnectionsClient extends InnerSupportsGet
 
     /**
      * Deletes the specified virtual network Gateway connection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -264,7 +295,7 @@ public interface VirtualNetworkGatewayConnectionsClient extends InnerSupportsGet
 
     /**
      * Deletes the specified virtual network Gateway connection.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param context The context to associate with this operation.
@@ -277,7 +308,7 @@ public interface VirtualNetworkGatewayConnectionsClient extends InnerSupportsGet
 
     /**
      * Updates a virtual network gateway connection tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param parameters Parameters supplied to update virtual network gateway connection tags.
@@ -287,11 +318,12 @@ public interface VirtualNetworkGatewayConnectionsClient extends InnerSupportsGet
      * @return a common class for general resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName, TagsObject parameters);
+    Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
+        String resourceGroupName, String virtualNetworkGatewayConnectionName, TagsObject parameters);
 
     /**
      * Updates a virtual network gateway connection tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param parameters Parameters supplied to update virtual network gateway connection tags.
@@ -301,11 +333,13 @@ public interface VirtualNetworkGatewayConnectionsClient extends InnerSupportsGet
      * @return a common class for general resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<VirtualNetworkGatewayConnectionInner>, VirtualNetworkGatewayConnectionInner> beginUpdateTagsAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName, TagsObject parameters);
+    PollerFlux<PollResult<VirtualNetworkGatewayConnectionInner>, VirtualNetworkGatewayConnectionInner>
+        beginUpdateTagsAsync(
+            String resourceGroupName, String virtualNetworkGatewayConnectionName, TagsObject parameters);
 
     /**
      * Updates a virtual network gateway connection tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param parameters Parameters supplied to update virtual network gateway connection tags.
@@ -315,11 +349,12 @@ public interface VirtualNetworkGatewayConnectionsClient extends InnerSupportsGet
      * @return a common class for general resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<VirtualNetworkGatewayConnectionInner>, VirtualNetworkGatewayConnectionInner> beginUpdateTags(String resourceGroupName, String virtualNetworkGatewayConnectionName, TagsObject parameters);
+    SyncPoller<PollResult<VirtualNetworkGatewayConnectionInner>, VirtualNetworkGatewayConnectionInner> beginUpdateTags(
+        String resourceGroupName, String virtualNetworkGatewayConnectionName, TagsObject parameters);
 
     /**
      * Updates a virtual network gateway connection tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param parameters Parameters supplied to update virtual network gateway connection tags.
@@ -330,11 +365,12 @@ public interface VirtualNetworkGatewayConnectionsClient extends InnerSupportsGet
      * @return a common class for general resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<VirtualNetworkGatewayConnectionInner>, VirtualNetworkGatewayConnectionInner> beginUpdateTags(String resourceGroupName, String virtualNetworkGatewayConnectionName, TagsObject parameters, Context context);
+    SyncPoller<PollResult<VirtualNetworkGatewayConnectionInner>, VirtualNetworkGatewayConnectionInner> beginUpdateTags(
+        String resourceGroupName, String virtualNetworkGatewayConnectionName, TagsObject parameters, Context context);
 
     /**
      * Updates a virtual network gateway connection tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param parameters Parameters supplied to update virtual network gateway connection tags.
@@ -344,11 +380,12 @@ public interface VirtualNetworkGatewayConnectionsClient extends InnerSupportsGet
      * @return a common class for general resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VirtualNetworkGatewayConnectionInner> updateTagsAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName, TagsObject parameters);
+    Mono<VirtualNetworkGatewayConnectionInner> updateTagsAsync(
+        String resourceGroupName, String virtualNetworkGatewayConnectionName, TagsObject parameters);
 
     /**
      * Updates a virtual network gateway connection tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param parameters Parameters supplied to update virtual network gateway connection tags.
@@ -358,11 +395,12 @@ public interface VirtualNetworkGatewayConnectionsClient extends InnerSupportsGet
      * @return a common class for general resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualNetworkGatewayConnectionInner updateTags(String resourceGroupName, String virtualNetworkGatewayConnectionName, TagsObject parameters);
+    VirtualNetworkGatewayConnectionInner updateTags(
+        String resourceGroupName, String virtualNetworkGatewayConnectionName, TagsObject parameters);
 
     /**
      * Updates a virtual network gateway connection tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The name of the virtual network gateway connection.
      * @param parameters Parameters supplied to update virtual network gateway connection tags.
@@ -373,56 +411,68 @@ public interface VirtualNetworkGatewayConnectionsClient extends InnerSupportsGet
      * @return a common class for general resource information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualNetworkGatewayConnectionInner updateTags(String resourceGroupName, String virtualNetworkGatewayConnectionName, TagsObject parameters, Context context);
+    VirtualNetworkGatewayConnectionInner updateTags(
+        String resourceGroupName, String virtualNetworkGatewayConnectionName, TagsObject parameters, Context context);
 
     /**
-     * The Put VirtualNetworkGatewayConnectionSharedKey operation sets the virtual network gateway connection shared key for passed virtual network gateway connection in the specified resource group through Network resource provider.
-     * 
+     * The Put VirtualNetworkGatewayConnectionSharedKey operation sets the virtual network gateway connection shared key
+     * for passed virtual network gateway connection in the specified resource group through Network resource provider.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection name.
-     * @param parameters Parameters supplied to the Begin Set Virtual Network Gateway connection Shared key operation throughNetwork resource provider.
+     * @param parameters Parameters supplied to the Begin Set Virtual Network Gateway connection Shared key operation
+     *     throughNetwork resource provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for GetConnectionSharedKey API service call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> setSharedKeyWithResponseAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName, ConnectionSharedKeyInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> setSharedKeyWithResponseAsync(
+        String resourceGroupName, String virtualNetworkGatewayConnectionName, ConnectionSharedKeyInner parameters);
 
     /**
-     * The Put VirtualNetworkGatewayConnectionSharedKey operation sets the virtual network gateway connection shared key for passed virtual network gateway connection in the specified resource group through Network resource provider.
-     * 
+     * The Put VirtualNetworkGatewayConnectionSharedKey operation sets the virtual network gateway connection shared key
+     * for passed virtual network gateway connection in the specified resource group through Network resource provider.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection name.
-     * @param parameters Parameters supplied to the Begin Set Virtual Network Gateway connection Shared key operation throughNetwork resource provider.
+     * @param parameters Parameters supplied to the Begin Set Virtual Network Gateway connection Shared key operation
+     *     throughNetwork resource provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for GetConnectionSharedKey API service call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<ConnectionSharedKeyInner>, ConnectionSharedKeyInner> beginSetSharedKeyAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName, ConnectionSharedKeyInner parameters);
+    PollerFlux<PollResult<ConnectionSharedKeyInner>, ConnectionSharedKeyInner> beginSetSharedKeyAsync(
+        String resourceGroupName, String virtualNetworkGatewayConnectionName, ConnectionSharedKeyInner parameters);
 
     /**
-     * The Put VirtualNetworkGatewayConnectionSharedKey operation sets the virtual network gateway connection shared key for passed virtual network gateway connection in the specified resource group through Network resource provider.
-     * 
+     * The Put VirtualNetworkGatewayConnectionSharedKey operation sets the virtual network gateway connection shared key
+     * for passed virtual network gateway connection in the specified resource group through Network resource provider.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection name.
-     * @param parameters Parameters supplied to the Begin Set Virtual Network Gateway connection Shared key operation throughNetwork resource provider.
+     * @param parameters Parameters supplied to the Begin Set Virtual Network Gateway connection Shared key operation
+     *     throughNetwork resource provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for GetConnectionSharedKey API service call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ConnectionSharedKeyInner>, ConnectionSharedKeyInner> beginSetSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName, ConnectionSharedKeyInner parameters);
+    SyncPoller<PollResult<ConnectionSharedKeyInner>, ConnectionSharedKeyInner> beginSetSharedKey(
+        String resourceGroupName, String virtualNetworkGatewayConnectionName, ConnectionSharedKeyInner parameters);
 
     /**
-     * The Put VirtualNetworkGatewayConnectionSharedKey operation sets the virtual network gateway connection shared key for passed virtual network gateway connection in the specified resource group through Network resource provider.
-     * 
+     * The Put VirtualNetworkGatewayConnectionSharedKey operation sets the virtual network gateway connection shared key
+     * for passed virtual network gateway connection in the specified resource group through Network resource provider.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection name.
-     * @param parameters Parameters supplied to the Begin Set Virtual Network Gateway connection Shared key operation throughNetwork resource provider.
+     * @param parameters Parameters supplied to the Begin Set Virtual Network Gateway connection Shared key operation
+     *     throughNetwork resource provider.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -430,42 +480,54 @@ public interface VirtualNetworkGatewayConnectionsClient extends InnerSupportsGet
      * @return response for GetConnectionSharedKey API service call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ConnectionSharedKeyInner>, ConnectionSharedKeyInner> beginSetSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName, ConnectionSharedKeyInner parameters, Context context);
+    SyncPoller<PollResult<ConnectionSharedKeyInner>, ConnectionSharedKeyInner> beginSetSharedKey(
+        String resourceGroupName,
+        String virtualNetworkGatewayConnectionName,
+        ConnectionSharedKeyInner parameters,
+        Context context);
 
     /**
-     * The Put VirtualNetworkGatewayConnectionSharedKey operation sets the virtual network gateway connection shared key for passed virtual network gateway connection in the specified resource group through Network resource provider.
-     * 
+     * The Put VirtualNetworkGatewayConnectionSharedKey operation sets the virtual network gateway connection shared key
+     * for passed virtual network gateway connection in the specified resource group through Network resource provider.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection name.
-     * @param parameters Parameters supplied to the Begin Set Virtual Network Gateway connection Shared key operation throughNetwork resource provider.
+     * @param parameters Parameters supplied to the Begin Set Virtual Network Gateway connection Shared key operation
+     *     throughNetwork resource provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for GetConnectionSharedKey API service call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ConnectionSharedKeyInner> setSharedKeyAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName, ConnectionSharedKeyInner parameters);
+    Mono<ConnectionSharedKeyInner> setSharedKeyAsync(
+        String resourceGroupName, String virtualNetworkGatewayConnectionName, ConnectionSharedKeyInner parameters);
 
     /**
-     * The Put VirtualNetworkGatewayConnectionSharedKey operation sets the virtual network gateway connection shared key for passed virtual network gateway connection in the specified resource group through Network resource provider.
-     * 
+     * The Put VirtualNetworkGatewayConnectionSharedKey operation sets the virtual network gateway connection shared key
+     * for passed virtual network gateway connection in the specified resource group through Network resource provider.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection name.
-     * @param parameters Parameters supplied to the Begin Set Virtual Network Gateway connection Shared key operation throughNetwork resource provider.
+     * @param parameters Parameters supplied to the Begin Set Virtual Network Gateway connection Shared key operation
+     *     throughNetwork resource provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response for GetConnectionSharedKey API service call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConnectionSharedKeyInner setSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName, ConnectionSharedKeyInner parameters);
+    ConnectionSharedKeyInner setSharedKey(
+        String resourceGroupName, String virtualNetworkGatewayConnectionName, ConnectionSharedKeyInner parameters);
 
     /**
-     * The Put VirtualNetworkGatewayConnectionSharedKey operation sets the virtual network gateway connection shared key for passed virtual network gateway connection in the specified resource group through Network resource provider.
-     * 
+     * The Put VirtualNetworkGatewayConnectionSharedKey operation sets the virtual network gateway connection shared key
+     * for passed virtual network gateway connection in the specified resource group through Network resource provider.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection name.
-     * @param parameters Parameters supplied to the Begin Set Virtual Network Gateway connection Shared key operation throughNetwork resource provider.
+     * @param parameters Parameters supplied to the Begin Set Virtual Network Gateway connection Shared key operation
+     *     throughNetwork resource provider.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -473,11 +535,16 @@ public interface VirtualNetworkGatewayConnectionsClient extends InnerSupportsGet
      * @return response for GetConnectionSharedKey API service call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConnectionSharedKeyInner setSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName, ConnectionSharedKeyInner parameters, Context context);
+    ConnectionSharedKeyInner setSharedKey(
+        String resourceGroupName,
+        String virtualNetworkGatewayConnectionName,
+        ConnectionSharedKeyInner parameters,
+        Context context);
 
     /**
-     * The Get VirtualNetworkGatewayConnectionSharedKey operation retrieves information about the specified virtual network gateway connection shared key through Network resource provider.
-     * 
+     * The Get VirtualNetworkGatewayConnectionSharedKey operation retrieves information about the specified virtual
+     * network gateway connection shared key through Network resource provider.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection shared key name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -486,11 +553,13 @@ public interface VirtualNetworkGatewayConnectionsClient extends InnerSupportsGet
      * @return response for GetConnectionSharedKey API service call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ConnectionSharedKeyInner>> getSharedKeyWithResponseAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName);
+    Mono<Response<ConnectionSharedKeyInner>> getSharedKeyWithResponseAsync(
+        String resourceGroupName, String virtualNetworkGatewayConnectionName);
 
     /**
-     * The Get VirtualNetworkGatewayConnectionSharedKey operation retrieves information about the specified virtual network gateway connection shared key through Network resource provider.
-     * 
+     * The Get VirtualNetworkGatewayConnectionSharedKey operation retrieves information about the specified virtual
+     * network gateway connection shared key through Network resource provider.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection shared key name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -499,11 +568,13 @@ public interface VirtualNetworkGatewayConnectionsClient extends InnerSupportsGet
      * @return response for GetConnectionSharedKey API service call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ConnectionSharedKeyInner> getSharedKeyAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName);
+    Mono<ConnectionSharedKeyInner> getSharedKeyAsync(
+        String resourceGroupName, String virtualNetworkGatewayConnectionName);
 
     /**
-     * The Get VirtualNetworkGatewayConnectionSharedKey operation retrieves information about the specified virtual network gateway connection shared key through Network resource provider.
-     * 
+     * The Get VirtualNetworkGatewayConnectionSharedKey operation retrieves information about the specified virtual
+     * network gateway connection shared key through Network resource provider.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection shared key name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -515,8 +586,9 @@ public interface VirtualNetworkGatewayConnectionsClient extends InnerSupportsGet
     ConnectionSharedKeyInner getSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName);
 
     /**
-     * The Get VirtualNetworkGatewayConnectionSharedKey operation retrieves information about the specified virtual network gateway connection shared key through Network resource provider.
-     * 
+     * The Get VirtualNetworkGatewayConnectionSharedKey operation retrieves information about the specified virtual
+     * network gateway connection shared key through Network resource provider.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection shared key name.
      * @param context The context to associate with this operation.
@@ -526,11 +598,13 @@ public interface VirtualNetworkGatewayConnectionsClient extends InnerSupportsGet
      * @return response for GetConnectionSharedKey API service call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ConnectionSharedKeyInner> getSharedKeyWithResponse(String resourceGroupName, String virtualNetworkGatewayConnectionName, Context context);
+    Response<ConnectionSharedKeyInner> getSharedKeyWithResponse(
+        String resourceGroupName, String virtualNetworkGatewayConnectionName, Context context);
 
     /**
-     * The List VirtualNetworkGatewayConnections operation retrieves all the virtual network gateways connections created.
-     * 
+     * The List VirtualNetworkGatewayConnections operation retrieves all the virtual network gateways connections
+     * created.
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -541,8 +615,9 @@ public interface VirtualNetworkGatewayConnectionsClient extends InnerSupportsGet
     PagedFlux<VirtualNetworkGatewayConnectionInner> listByResourceGroupAsync(String resourceGroupName);
 
     /**
-     * The List VirtualNetworkGatewayConnections operation retrieves all the virtual network gateways connections created.
-     * 
+     * The List VirtualNetworkGatewayConnections operation retrieves all the virtual network gateways connections
+     * created.
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -553,8 +628,9 @@ public interface VirtualNetworkGatewayConnectionsClient extends InnerSupportsGet
     PagedIterable<VirtualNetworkGatewayConnectionInner> listByResourceGroup(String resourceGroupName);
 
     /**
-     * The List VirtualNetworkGatewayConnections operation retrieves all the virtual network gateways connections created.
-     * 
+     * The List VirtualNetworkGatewayConnections operation retrieves all the virtual network gateways connections
+     * created.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -566,53 +642,68 @@ public interface VirtualNetworkGatewayConnectionsClient extends InnerSupportsGet
     PagedIterable<VirtualNetworkGatewayConnectionInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
-     * The VirtualNetworkGatewayConnectionResetSharedKey operation resets the virtual network gateway connection shared key for passed virtual network gateway connection in the specified resource group through Network resource provider.
-     * 
+     * The VirtualNetworkGatewayConnectionResetSharedKey operation resets the virtual network gateway connection shared
+     * key for passed virtual network gateway connection in the specified resource group through Network resource
+     * provider.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection reset shared key Name.
-     * @param parameters Parameters supplied to the begin reset virtual network gateway connection shared key operation through network resource provider.
+     * @param parameters Parameters supplied to the begin reset virtual network gateway connection shared key operation
+     *     through network resource provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the virtual network connection reset shared key.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> resetSharedKeyWithResponseAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName, ConnectionResetSharedKeyInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> resetSharedKeyWithResponseAsync(
+        String resourceGroupName, String virtualNetworkGatewayConnectionName, ConnectionResetSharedKeyInner parameters);
 
     /**
-     * The VirtualNetworkGatewayConnectionResetSharedKey operation resets the virtual network gateway connection shared key for passed virtual network gateway connection in the specified resource group through Network resource provider.
-     * 
+     * The VirtualNetworkGatewayConnectionResetSharedKey operation resets the virtual network gateway connection shared
+     * key for passed virtual network gateway connection in the specified resource group through Network resource
+     * provider.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection reset shared key Name.
-     * @param parameters Parameters supplied to the begin reset virtual network gateway connection shared key operation through network resource provider.
+     * @param parameters Parameters supplied to the begin reset virtual network gateway connection shared key operation
+     *     through network resource provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the virtual network connection reset shared key.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<ConnectionResetSharedKeyInner>, ConnectionResetSharedKeyInner> beginResetSharedKeyAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName, ConnectionResetSharedKeyInner parameters);
+    PollerFlux<PollResult<ConnectionResetSharedKeyInner>, ConnectionResetSharedKeyInner> beginResetSharedKeyAsync(
+        String resourceGroupName, String virtualNetworkGatewayConnectionName, ConnectionResetSharedKeyInner parameters);
 
     /**
-     * The VirtualNetworkGatewayConnectionResetSharedKey operation resets the virtual network gateway connection shared key for passed virtual network gateway connection in the specified resource group through Network resource provider.
-     * 
+     * The VirtualNetworkGatewayConnectionResetSharedKey operation resets the virtual network gateway connection shared
+     * key for passed virtual network gateway connection in the specified resource group through Network resource
+     * provider.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection reset shared key Name.
-     * @param parameters Parameters supplied to the begin reset virtual network gateway connection shared key operation through network resource provider.
+     * @param parameters Parameters supplied to the begin reset virtual network gateway connection shared key operation
+     *     through network resource provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the virtual network connection reset shared key.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ConnectionResetSharedKeyInner>, ConnectionResetSharedKeyInner> beginResetSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName, ConnectionResetSharedKeyInner parameters);
+    SyncPoller<PollResult<ConnectionResetSharedKeyInner>, ConnectionResetSharedKeyInner> beginResetSharedKey(
+        String resourceGroupName, String virtualNetworkGatewayConnectionName, ConnectionResetSharedKeyInner parameters);
 
     /**
-     * The VirtualNetworkGatewayConnectionResetSharedKey operation resets the virtual network gateway connection shared key for passed virtual network gateway connection in the specified resource group through Network resource provider.
-     * 
+     * The VirtualNetworkGatewayConnectionResetSharedKey operation resets the virtual network gateway connection shared
+     * key for passed virtual network gateway connection in the specified resource group through Network resource
+     * provider.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection reset shared key Name.
-     * @param parameters Parameters supplied to the begin reset virtual network gateway connection shared key operation through network resource provider.
+     * @param parameters Parameters supplied to the begin reset virtual network gateway connection shared key operation
+     *     through network resource provider.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -620,42 +711,57 @@ public interface VirtualNetworkGatewayConnectionsClient extends InnerSupportsGet
      * @return the virtual network connection reset shared key.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ConnectionResetSharedKeyInner>, ConnectionResetSharedKeyInner> beginResetSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName, ConnectionResetSharedKeyInner parameters, Context context);
+    SyncPoller<PollResult<ConnectionResetSharedKeyInner>, ConnectionResetSharedKeyInner> beginResetSharedKey(
+        String resourceGroupName,
+        String virtualNetworkGatewayConnectionName,
+        ConnectionResetSharedKeyInner parameters,
+        Context context);
 
     /**
-     * The VirtualNetworkGatewayConnectionResetSharedKey operation resets the virtual network gateway connection shared key for passed virtual network gateway connection in the specified resource group through Network resource provider.
-     * 
+     * The VirtualNetworkGatewayConnectionResetSharedKey operation resets the virtual network gateway connection shared
+     * key for passed virtual network gateway connection in the specified resource group through Network resource
+     * provider.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection reset shared key Name.
-     * @param parameters Parameters supplied to the begin reset virtual network gateway connection shared key operation through network resource provider.
+     * @param parameters Parameters supplied to the begin reset virtual network gateway connection shared key operation
+     *     through network resource provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the virtual network connection reset shared key.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ConnectionResetSharedKeyInner> resetSharedKeyAsync(String resourceGroupName, String virtualNetworkGatewayConnectionName, ConnectionResetSharedKeyInner parameters);
+    Mono<ConnectionResetSharedKeyInner> resetSharedKeyAsync(
+        String resourceGroupName, String virtualNetworkGatewayConnectionName, ConnectionResetSharedKeyInner parameters);
 
     /**
-     * The VirtualNetworkGatewayConnectionResetSharedKey operation resets the virtual network gateway connection shared key for passed virtual network gateway connection in the specified resource group through Network resource provider.
-     * 
+     * The VirtualNetworkGatewayConnectionResetSharedKey operation resets the virtual network gateway connection shared
+     * key for passed virtual network gateway connection in the specified resource group through Network resource
+     * provider.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection reset shared key Name.
-     * @param parameters Parameters supplied to the begin reset virtual network gateway connection shared key operation through network resource provider.
+     * @param parameters Parameters supplied to the begin reset virtual network gateway connection shared key operation
+     *     through network resource provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the virtual network connection reset shared key.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConnectionResetSharedKeyInner resetSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName, ConnectionResetSharedKeyInner parameters);
+    ConnectionResetSharedKeyInner resetSharedKey(
+        String resourceGroupName, String virtualNetworkGatewayConnectionName, ConnectionResetSharedKeyInner parameters);
 
     /**
-     * The VirtualNetworkGatewayConnectionResetSharedKey operation resets the virtual network gateway connection shared key for passed virtual network gateway connection in the specified resource group through Network resource provider.
-     * 
+     * The VirtualNetworkGatewayConnectionResetSharedKey operation resets the virtual network gateway connection shared
+     * key for passed virtual network gateway connection in the specified resource group through Network resource
+     * provider.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkGatewayConnectionName The virtual network gateway connection reset shared key Name.
-     * @param parameters Parameters supplied to the begin reset virtual network gateway connection shared key operation through network resource provider.
+     * @param parameters Parameters supplied to the begin reset virtual network gateway connection shared key operation
+     *     through network resource provider.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -663,5 +769,9 @@ public interface VirtualNetworkGatewayConnectionsClient extends InnerSupportsGet
      * @return the virtual network connection reset shared key.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConnectionResetSharedKeyInner resetSharedKey(String resourceGroupName, String virtualNetworkGatewayConnectionName, ConnectionResetSharedKeyInner parameters, Context context);
+    ConnectionResetSharedKeyInner resetSharedKey(
+        String resourceGroupName,
+        String virtualNetworkGatewayConnectionName,
+        ConnectionResetSharedKeyInner parameters,
+        Context context);
 }

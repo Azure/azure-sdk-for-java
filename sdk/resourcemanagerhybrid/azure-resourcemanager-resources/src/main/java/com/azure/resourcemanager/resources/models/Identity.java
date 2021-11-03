@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * Identity for the resource.
- */
+/** Identity for the resource. */
 @Fluent
 public class Identity {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(Identity.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(Identity.class);
 
     /*
      * The principal ID of resource identity.
@@ -50,7 +45,7 @@ public class Identity {
 
     /**
      * Get the principalId property: The principal ID of resource identity.
-     * 
+     *
      * @return the principalId value.
      */
     public String principalId() {
@@ -59,7 +54,7 @@ public class Identity {
 
     /**
      * Get the tenantId property: The tenant ID of resource.
-     * 
+     *
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -68,7 +63,7 @@ public class Identity {
 
     /**
      * Get the type property: The identity type.
-     * 
+     *
      * @return the type value.
      */
     public ResourceIdentityType type() {
@@ -77,7 +72,7 @@ public class Identity {
 
     /**
      * Set the type property: The identity type.
-     * 
+     *
      * @param type the type value to set.
      * @return the Identity object itself.
      */
@@ -87,11 +82,10 @@ public class Identity {
     }
 
     /**
-     * Get the userAssignedIdentities property: The list of user identities
-     * associated with the resource. The user identity dictionary key
-     * references will be ARM resource ids in the form:
+     * Get the userAssignedIdentities property: The list of user identities associated with the resource. The user
+     * identity dictionary key references will be ARM resource ids in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-     * 
+     *
      * @return the userAssignedIdentities value.
      */
     public Map<String, IdentityUserAssignedIdentitiesValue> userAssignedIdentities() {
@@ -99,27 +93,34 @@ public class Identity {
     }
 
     /**
-     * Set the userAssignedIdentities property: The list of user identities
-     * associated with the resource. The user identity dictionary key
-     * references will be ARM resource ids in the form:
+     * Set the userAssignedIdentities property: The list of user identities associated with the resource. The user
+     * identity dictionary key references will be ARM resource ids in the form:
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedIdentity/userAssignedIdentities/{identityName}'.
-     * 
+     *
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the Identity object itself.
      */
-    public Identity withUserAssignedIdentities(Map<String, IdentityUserAssignedIdentitiesValue> userAssignedIdentities) {
+    public Identity withUserAssignedIdentities(
+        Map<String, IdentityUserAssignedIdentitiesValue> userAssignedIdentities) {
         this.userAssignedIdentities = userAssignedIdentities;
         return this;
     }
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (userAssignedIdentities() != null) {
-            userAssignedIdentities().values().forEach(e -> { if (e != null) { e.validate(); } });
+            userAssignedIdentities()
+                .values()
+                .forEach(
+                    e -> {
+                        if (e != null) {
+                            e.validate();
+                        }
+                    });
         }
     }
 }

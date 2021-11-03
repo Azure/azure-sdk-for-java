@@ -8,28 +8,20 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for LoadBalancerOutboundRuleProtocol.
- */
+/** Defines values for LoadBalancerOutboundRuleProtocol. */
 public final class LoadBalancerOutboundRuleProtocol extends ExpandableStringEnum<LoadBalancerOutboundRuleProtocol> {
-    /**
-     * Static value Tcp for LoadBalancerOutboundRuleProtocol.
-     */
+    /** Static value Tcp for LoadBalancerOutboundRuleProtocol. */
     public static final LoadBalancerOutboundRuleProtocol TCP = fromString("Tcp");
 
-    /**
-     * Static value Udp for LoadBalancerOutboundRuleProtocol.
-     */
+    /** Static value Udp for LoadBalancerOutboundRuleProtocol. */
     public static final LoadBalancerOutboundRuleProtocol UDP = fromString("Udp");
 
-    /**
-     * Static value All for LoadBalancerOutboundRuleProtocol.
-     */
+    /** Static value All for LoadBalancerOutboundRuleProtocol. */
     public static final LoadBalancerOutboundRuleProtocol ALL = fromString("All");
 
     /**
      * Creates or finds a LoadBalancerOutboundRuleProtocol from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding LoadBalancerOutboundRuleProtocol.
      */
@@ -38,9 +30,7 @@ public final class LoadBalancerOutboundRuleProtocol extends ExpandableStringEnum
         return fromString(name, LoadBalancerOutboundRuleProtocol.class);
     }
 
-    /**
-     * @return known LoadBalancerOutboundRuleProtocol values.
-     */
+    /** @return known LoadBalancerOutboundRuleProtocol values. */
     public static Collection<LoadBalancerOutboundRuleProtocol> values() {
         return values(LoadBalancerOutboundRuleProtocol.class);
     }

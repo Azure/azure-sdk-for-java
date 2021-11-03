@@ -8,8 +8,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
@@ -20,19 +18,16 @@ import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
-import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * VpnGatewaysClient.
- */
-public interface VpnGatewaysClient extends InnerSupportsGet<VpnGatewayInner>, InnerSupportsListing<VpnGatewayInner>, InnerSupportsDelete<Void> {
+/** An instance of this class provides access to all the operations defined in VpnGatewaysClient. */
+public interface VpnGatewaysClient
+    extends InnerSupportsGet<VpnGatewayInner>, InnerSupportsListing<VpnGatewayInner>, InnerSupportsDelete<Void> {
     /**
      * Retrieves the details of a virtual wan vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -45,7 +40,7 @@ public interface VpnGatewaysClient extends InnerSupportsGet<VpnGatewayInner>, In
 
     /**
      * Retrieves the details of a virtual wan vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -58,7 +53,7 @@ public interface VpnGatewaysClient extends InnerSupportsGet<VpnGatewayInner>, In
 
     /**
      * Retrieves the details of a virtual wan vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -71,7 +66,7 @@ public interface VpnGatewaysClient extends InnerSupportsGet<VpnGatewayInner>, In
 
     /**
      * Retrieves the details of a virtual wan vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param context The context to associate with this operation.
@@ -81,11 +76,12 @@ public interface VpnGatewaysClient extends InnerSupportsGet<VpnGatewayInner>, In
      * @return vpnGateway Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VpnGatewayInner> getByResourceGroupWithResponse(String resourceGroupName, String gatewayName, Context context);
+    Response<VpnGatewayInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String gatewayName, Context context);
 
     /**
      * Creates a virtual wan vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param vpnGatewayParameters Parameters supplied to create or Update a virtual wan vpn gateway.
@@ -95,11 +91,12 @@ public interface VpnGatewaysClient extends InnerSupportsGet<VpnGatewayInner>, In
      * @return vpnGateway Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String gatewayName, VpnGatewayInner vpnGatewayParameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String gatewayName, VpnGatewayInner vpnGatewayParameters);
 
     /**
      * Creates a virtual wan vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param vpnGatewayParameters Parameters supplied to create or Update a virtual wan vpn gateway.
@@ -109,11 +106,12 @@ public interface VpnGatewaysClient extends InnerSupportsGet<VpnGatewayInner>, In
      * @return vpnGateway Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<VpnGatewayInner>, VpnGatewayInner> beginCreateOrUpdateAsync(String resourceGroupName, String gatewayName, VpnGatewayInner vpnGatewayParameters);
+    PollerFlux<PollResult<VpnGatewayInner>, VpnGatewayInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String gatewayName, VpnGatewayInner vpnGatewayParameters);
 
     /**
      * Creates a virtual wan vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param vpnGatewayParameters Parameters supplied to create or Update a virtual wan vpn gateway.
@@ -123,11 +121,12 @@ public interface VpnGatewaysClient extends InnerSupportsGet<VpnGatewayInner>, In
      * @return vpnGateway Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<VpnGatewayInner>, VpnGatewayInner> beginCreateOrUpdate(String resourceGroupName, String gatewayName, VpnGatewayInner vpnGatewayParameters);
+    SyncPoller<PollResult<VpnGatewayInner>, VpnGatewayInner> beginCreateOrUpdate(
+        String resourceGroupName, String gatewayName, VpnGatewayInner vpnGatewayParameters);
 
     /**
      * Creates a virtual wan vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param vpnGatewayParameters Parameters supplied to create or Update a virtual wan vpn gateway.
@@ -138,11 +137,12 @@ public interface VpnGatewaysClient extends InnerSupportsGet<VpnGatewayInner>, In
      * @return vpnGateway Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<VpnGatewayInner>, VpnGatewayInner> beginCreateOrUpdate(String resourceGroupName, String gatewayName, VpnGatewayInner vpnGatewayParameters, Context context);
+    SyncPoller<PollResult<VpnGatewayInner>, VpnGatewayInner> beginCreateOrUpdate(
+        String resourceGroupName, String gatewayName, VpnGatewayInner vpnGatewayParameters, Context context);
 
     /**
      * Creates a virtual wan vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param vpnGatewayParameters Parameters supplied to create or Update a virtual wan vpn gateway.
@@ -152,11 +152,12 @@ public interface VpnGatewaysClient extends InnerSupportsGet<VpnGatewayInner>, In
      * @return vpnGateway Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VpnGatewayInner> createOrUpdateAsync(String resourceGroupName, String gatewayName, VpnGatewayInner vpnGatewayParameters);
+    Mono<VpnGatewayInner> createOrUpdateAsync(
+        String resourceGroupName, String gatewayName, VpnGatewayInner vpnGatewayParameters);
 
     /**
      * Creates a virtual wan vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param vpnGatewayParameters Parameters supplied to create or Update a virtual wan vpn gateway.
@@ -170,7 +171,7 @@ public interface VpnGatewaysClient extends InnerSupportsGet<VpnGatewayInner>, In
 
     /**
      * Creates a virtual wan vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param vpnGatewayParameters Parameters supplied to create or Update a virtual wan vpn gateway.
@@ -181,11 +182,12 @@ public interface VpnGatewaysClient extends InnerSupportsGet<VpnGatewayInner>, In
      * @return vpnGateway Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VpnGatewayInner createOrUpdate(String resourceGroupName, String gatewayName, VpnGatewayInner vpnGatewayParameters, Context context);
+    VpnGatewayInner createOrUpdate(
+        String resourceGroupName, String gatewayName, VpnGatewayInner vpnGatewayParameters, Context context);
 
     /**
      * Updates virtual wan vpn gateway tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param vpnGatewayParameters Parameters supplied to update a virtual wan vpn gateway tags.
@@ -195,11 +197,12 @@ public interface VpnGatewaysClient extends InnerSupportsGet<VpnGatewayInner>, In
      * @return vpnGateway Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(String resourceGroupName, String gatewayName, TagsObject vpnGatewayParameters);
+    Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
+        String resourceGroupName, String gatewayName, TagsObject vpnGatewayParameters);
 
     /**
      * Updates virtual wan vpn gateway tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param vpnGatewayParameters Parameters supplied to update a virtual wan vpn gateway tags.
@@ -209,11 +212,12 @@ public interface VpnGatewaysClient extends InnerSupportsGet<VpnGatewayInner>, In
      * @return vpnGateway Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<VpnGatewayInner>, VpnGatewayInner> beginUpdateTagsAsync(String resourceGroupName, String gatewayName, TagsObject vpnGatewayParameters);
+    PollerFlux<PollResult<VpnGatewayInner>, VpnGatewayInner> beginUpdateTagsAsync(
+        String resourceGroupName, String gatewayName, TagsObject vpnGatewayParameters);
 
     /**
      * Updates virtual wan vpn gateway tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param vpnGatewayParameters Parameters supplied to update a virtual wan vpn gateway tags.
@@ -223,11 +227,12 @@ public interface VpnGatewaysClient extends InnerSupportsGet<VpnGatewayInner>, In
      * @return vpnGateway Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<VpnGatewayInner>, VpnGatewayInner> beginUpdateTags(String resourceGroupName, String gatewayName, TagsObject vpnGatewayParameters);
+    SyncPoller<PollResult<VpnGatewayInner>, VpnGatewayInner> beginUpdateTags(
+        String resourceGroupName, String gatewayName, TagsObject vpnGatewayParameters);
 
     /**
      * Updates virtual wan vpn gateway tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param vpnGatewayParameters Parameters supplied to update a virtual wan vpn gateway tags.
@@ -238,11 +243,12 @@ public interface VpnGatewaysClient extends InnerSupportsGet<VpnGatewayInner>, In
      * @return vpnGateway Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<VpnGatewayInner>, VpnGatewayInner> beginUpdateTags(String resourceGroupName, String gatewayName, TagsObject vpnGatewayParameters, Context context);
+    SyncPoller<PollResult<VpnGatewayInner>, VpnGatewayInner> beginUpdateTags(
+        String resourceGroupName, String gatewayName, TagsObject vpnGatewayParameters, Context context);
 
     /**
      * Updates virtual wan vpn gateway tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param vpnGatewayParameters Parameters supplied to update a virtual wan vpn gateway tags.
@@ -252,11 +258,12 @@ public interface VpnGatewaysClient extends InnerSupportsGet<VpnGatewayInner>, In
      * @return vpnGateway Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VpnGatewayInner> updateTagsAsync(String resourceGroupName, String gatewayName, TagsObject vpnGatewayParameters);
+    Mono<VpnGatewayInner> updateTagsAsync(
+        String resourceGroupName, String gatewayName, TagsObject vpnGatewayParameters);
 
     /**
      * Updates virtual wan vpn gateway tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param vpnGatewayParameters Parameters supplied to update a virtual wan vpn gateway tags.
@@ -270,7 +277,7 @@ public interface VpnGatewaysClient extends InnerSupportsGet<VpnGatewayInner>, In
 
     /**
      * Updates virtual wan vpn gateway tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param vpnGatewayParameters Parameters supplied to update a virtual wan vpn gateway tags.
@@ -281,11 +288,12 @@ public interface VpnGatewaysClient extends InnerSupportsGet<VpnGatewayInner>, In
      * @return vpnGateway Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VpnGatewayInner updateTags(String resourceGroupName, String gatewayName, TagsObject vpnGatewayParameters, Context context);
+    VpnGatewayInner updateTags(
+        String resourceGroupName, String gatewayName, TagsObject vpnGatewayParameters, Context context);
 
     /**
      * Deletes a virtual wan vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -298,7 +306,7 @@ public interface VpnGatewaysClient extends InnerSupportsGet<VpnGatewayInner>, In
 
     /**
      * Deletes a virtual wan vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -311,7 +319,7 @@ public interface VpnGatewaysClient extends InnerSupportsGet<VpnGatewayInner>, In
 
     /**
      * Deletes a virtual wan vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -324,7 +332,7 @@ public interface VpnGatewaysClient extends InnerSupportsGet<VpnGatewayInner>, In
 
     /**
      * Deletes a virtual wan vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param context The context to associate with this operation.
@@ -338,7 +346,7 @@ public interface VpnGatewaysClient extends InnerSupportsGet<VpnGatewayInner>, In
 
     /**
      * Deletes a virtual wan vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -351,7 +359,7 @@ public interface VpnGatewaysClient extends InnerSupportsGet<VpnGatewayInner>, In
 
     /**
      * Deletes a virtual wan vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -363,7 +371,7 @@ public interface VpnGatewaysClient extends InnerSupportsGet<VpnGatewayInner>, In
 
     /**
      * Deletes a virtual wan vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
      * @param context The context to associate with this operation.
@@ -376,7 +384,7 @@ public interface VpnGatewaysClient extends InnerSupportsGet<VpnGatewayInner>, In
 
     /**
      * Lists all the VpnGateways in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
@@ -388,7 +396,7 @@ public interface VpnGatewaysClient extends InnerSupportsGet<VpnGatewayInner>, In
 
     /**
      * Lists all the VpnGateways in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
@@ -400,7 +408,7 @@ public interface VpnGatewaysClient extends InnerSupportsGet<VpnGatewayInner>, In
 
     /**
      * Lists all the VpnGateways in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -413,7 +421,7 @@ public interface VpnGatewaysClient extends InnerSupportsGet<VpnGatewayInner>, In
 
     /**
      * Lists all the VpnGateways in a subscription.
-     * 
+     *
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VpnGateways.
@@ -423,7 +431,7 @@ public interface VpnGatewaysClient extends InnerSupportsGet<VpnGatewayInner>, In
 
     /**
      * Lists all the VpnGateways in a subscription.
-     * 
+     *
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list VpnGateways.
@@ -433,7 +441,7 @@ public interface VpnGatewaysClient extends InnerSupportsGet<VpnGatewayInner>, In
 
     /**
      * Lists all the VpnGateways in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.

@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Classic Administrator properties.
- */
+/** Classic Administrator properties. */
 @Fluent
 public final class ClassicAdministratorProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ClassicAdministratorProperties.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClassicAdministratorProperties.class);
 
     /*
      * The email address of the administrator.
@@ -33,7 +28,7 @@ public final class ClassicAdministratorProperties {
 
     /**
      * Get the emailAddress property: The email address of the administrator.
-     * 
+     *
      * @return the emailAddress value.
      */
     public String emailAddress() {
@@ -42,7 +37,7 @@ public final class ClassicAdministratorProperties {
 
     /**
      * Set the emailAddress property: The email address of the administrator.
-     * 
+     *
      * @param emailAddress the emailAddress value to set.
      * @return the ClassicAdministratorProperties object itself.
      */
@@ -53,7 +48,7 @@ public final class ClassicAdministratorProperties {
 
     /**
      * Get the role property: The role of the administrator.
-     * 
+     *
      * @return the role value.
      */
     public String role() {
@@ -62,7 +57,7 @@ public final class ClassicAdministratorProperties {
 
     /**
      * Set the role property: The role of the administrator.
-     * 
+     *
      * @param role the role value to set.
      * @return the ClassicAdministratorProperties object itself.
      */
@@ -73,7 +68,7 @@ public final class ClassicAdministratorProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

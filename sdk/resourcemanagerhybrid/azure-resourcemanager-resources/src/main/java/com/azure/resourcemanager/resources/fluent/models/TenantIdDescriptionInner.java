@@ -4,20 +4,15 @@
 
 package com.azure.resourcemanager.resources.fluent.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Tenant Id information.
- */
+/** Tenant Id information. */
 @Immutable
 public final class TenantIdDescriptionInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(TenantIdDescriptionInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(TenantIdDescriptionInner.class);
 
     /*
      * The fully qualified ID of the tenant. For example,
@@ -35,7 +30,7 @@ public final class TenantIdDescriptionInner {
     /**
      * Get the id property: The fully qualified ID of the tenant. For example,
      * /tenants/00000000-0000-0000-0000-000000000000.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -43,9 +38,8 @@ public final class TenantIdDescriptionInner {
     }
 
     /**
-     * Get the tenantId property: The tenant ID. For example,
-     * 00000000-0000-0000-0000-000000000000.
-     * 
+     * Get the tenantId property: The tenant ID. For example, 00000000-0000-0000-0000-000000000000.
+     *
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -54,7 +48,7 @@ public final class TenantIdDescriptionInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

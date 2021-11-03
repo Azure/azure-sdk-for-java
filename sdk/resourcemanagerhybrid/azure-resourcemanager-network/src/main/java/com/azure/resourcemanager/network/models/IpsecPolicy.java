@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * An IPSec Policy configuration for a virtual network gateway connection.
- */
+/** An IPSec Policy configuration for a virtual network gateway connection. */
 @Fluent
 public final class IpsecPolicy {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(IpsecPolicy.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(IpsecPolicy.class);
 
     /*
      * The IPSec Security Association (also called Quick Mode or Phase 2 SA)
@@ -70,10 +65,9 @@ public final class IpsecPolicy {
     private PfsGroup pfsGroup;
 
     /**
-     * Get the saLifeTimeSeconds property: The IPSec Security Association (also
-     * called Quick Mode or Phase 2 SA) lifetime in seconds for a site to site
-     * VPN tunnel.
-     * 
+     * Get the saLifeTimeSeconds property: The IPSec Security Association (also called Quick Mode or Phase 2 SA)
+     * lifetime in seconds for a site to site VPN tunnel.
+     *
      * @return the saLifeTimeSeconds value.
      */
     public int saLifeTimeSeconds() {
@@ -81,10 +75,9 @@ public final class IpsecPolicy {
     }
 
     /**
-     * Set the saLifeTimeSeconds property: The IPSec Security Association (also
-     * called Quick Mode or Phase 2 SA) lifetime in seconds for a site to site
-     * VPN tunnel.
-     * 
+     * Set the saLifeTimeSeconds property: The IPSec Security Association (also called Quick Mode or Phase 2 SA)
+     * lifetime in seconds for a site to site VPN tunnel.
+     *
      * @param saLifeTimeSeconds the saLifeTimeSeconds value to set.
      * @return the IpsecPolicy object itself.
      */
@@ -94,10 +87,9 @@ public final class IpsecPolicy {
     }
 
     /**
-     * Get the saDataSizeKilobytes property: The IPSec Security Association
-     * (also called Quick Mode or Phase 2 SA) payload size in KB for a site to
-     * site VPN tunnel.
-     * 
+     * Get the saDataSizeKilobytes property: The IPSec Security Association (also called Quick Mode or Phase 2 SA)
+     * payload size in KB for a site to site VPN tunnel.
+     *
      * @return the saDataSizeKilobytes value.
      */
     public int saDataSizeKilobytes() {
@@ -105,10 +97,9 @@ public final class IpsecPolicy {
     }
 
     /**
-     * Set the saDataSizeKilobytes property: The IPSec Security Association
-     * (also called Quick Mode or Phase 2 SA) payload size in KB for a site to
-     * site VPN tunnel.
-     * 
+     * Set the saDataSizeKilobytes property: The IPSec Security Association (also called Quick Mode or Phase 2 SA)
+     * payload size in KB for a site to site VPN tunnel.
+     *
      * @param saDataSizeKilobytes the saDataSizeKilobytes value to set.
      * @return the IpsecPolicy object itself.
      */
@@ -118,9 +109,8 @@ public final class IpsecPolicy {
     }
 
     /**
-     * Get the ipsecEncryption property: The IPSec encryption algorithm (IKE
-     * phase 1).
-     * 
+     * Get the ipsecEncryption property: The IPSec encryption algorithm (IKE phase 1).
+     *
      * @return the ipsecEncryption value.
      */
     public IpsecEncryption ipsecEncryption() {
@@ -128,9 +118,8 @@ public final class IpsecPolicy {
     }
 
     /**
-     * Set the ipsecEncryption property: The IPSec encryption algorithm (IKE
-     * phase 1).
-     * 
+     * Set the ipsecEncryption property: The IPSec encryption algorithm (IKE phase 1).
+     *
      * @param ipsecEncryption the ipsecEncryption value to set.
      * @return the IpsecPolicy object itself.
      */
@@ -140,9 +129,8 @@ public final class IpsecPolicy {
     }
 
     /**
-     * Get the ipsecIntegrity property: The IPSec integrity algorithm (IKE
-     * phase 1).
-     * 
+     * Get the ipsecIntegrity property: The IPSec integrity algorithm (IKE phase 1).
+     *
      * @return the ipsecIntegrity value.
      */
     public IpsecIntegrity ipsecIntegrity() {
@@ -150,9 +138,8 @@ public final class IpsecPolicy {
     }
 
     /**
-     * Set the ipsecIntegrity property: The IPSec integrity algorithm (IKE
-     * phase 1).
-     * 
+     * Set the ipsecIntegrity property: The IPSec integrity algorithm (IKE phase 1).
+     *
      * @param ipsecIntegrity the ipsecIntegrity value to set.
      * @return the IpsecPolicy object itself.
      */
@@ -162,9 +149,8 @@ public final class IpsecPolicy {
     }
 
     /**
-     * Get the ikeEncryption property: The IKE encryption algorithm (IKE phase
-     * 2).
-     * 
+     * Get the ikeEncryption property: The IKE encryption algorithm (IKE phase 2).
+     *
      * @return the ikeEncryption value.
      */
     public IkeEncryption ikeEncryption() {
@@ -172,9 +158,8 @@ public final class IpsecPolicy {
     }
 
     /**
-     * Set the ikeEncryption property: The IKE encryption algorithm (IKE phase
-     * 2).
-     * 
+     * Set the ikeEncryption property: The IKE encryption algorithm (IKE phase 2).
+     *
      * @param ikeEncryption the ikeEncryption value to set.
      * @return the IpsecPolicy object itself.
      */
@@ -184,9 +169,8 @@ public final class IpsecPolicy {
     }
 
     /**
-     * Get the ikeIntegrity property: The IKE integrity algorithm (IKE phase
-     * 2).
-     * 
+     * Get the ikeIntegrity property: The IKE integrity algorithm (IKE phase 2).
+     *
      * @return the ikeIntegrity value.
      */
     public IkeIntegrity ikeIntegrity() {
@@ -194,9 +178,8 @@ public final class IpsecPolicy {
     }
 
     /**
-     * Set the ikeIntegrity property: The IKE integrity algorithm (IKE phase
-     * 2).
-     * 
+     * Set the ikeIntegrity property: The IKE integrity algorithm (IKE phase 2).
+     *
      * @param ikeIntegrity the ikeIntegrity value to set.
      * @return the IpsecPolicy object itself.
      */
@@ -206,9 +189,8 @@ public final class IpsecPolicy {
     }
 
     /**
-     * Get the dhGroup property: The DH Groups used in IKE Phase 1 for initial
-     * SA.
-     * 
+     * Get the dhGroup property: The DH Groups used in IKE Phase 1 for initial SA.
+     *
      * @return the dhGroup value.
      */
     public DhGroup dhGroup() {
@@ -216,9 +198,8 @@ public final class IpsecPolicy {
     }
 
     /**
-     * Set the dhGroup property: The DH Groups used in IKE Phase 1 for initial
-     * SA.
-     * 
+     * Set the dhGroup property: The DH Groups used in IKE Phase 1 for initial SA.
+     *
      * @param dhGroup the dhGroup value to set.
      * @return the IpsecPolicy object itself.
      */
@@ -228,9 +209,8 @@ public final class IpsecPolicy {
     }
 
     /**
-     * Get the pfsGroup property: The Pfs Groups used in IKE Phase 2 for new
-     * child SA.
-     * 
+     * Get the pfsGroup property: The Pfs Groups used in IKE Phase 2 for new child SA.
+     *
      * @return the pfsGroup value.
      */
     public PfsGroup pfsGroup() {
@@ -238,9 +218,8 @@ public final class IpsecPolicy {
     }
 
     /**
-     * Set the pfsGroup property: The Pfs Groups used in IKE Phase 2 for new
-     * child SA.
-     * 
+     * Set the pfsGroup property: The Pfs Groups used in IKE Phase 2 for new child SA.
+     *
      * @param pfsGroup the pfsGroup value to set.
      * @return the IpsecPolicy object itself.
      */
@@ -251,27 +230,39 @@ public final class IpsecPolicy {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (ipsecEncryption() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property ipsecEncryption in model IpsecPolicy"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property ipsecEncryption in model IpsecPolicy"));
         }
         if (ipsecIntegrity() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property ipsecIntegrity in model IpsecPolicy"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property ipsecIntegrity in model IpsecPolicy"));
         }
         if (ikeEncryption() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property ikeEncryption in model IpsecPolicy"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property ikeEncryption in model IpsecPolicy"));
         }
         if (ikeIntegrity() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property ikeIntegrity in model IpsecPolicy"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property ikeIntegrity in model IpsecPolicy"));
         }
         if (dhGroup() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property dhGroup in model IpsecPolicy"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property dhGroup in model IpsecPolicy"));
         }
         if (pfsGroup() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property pfsGroup in model IpsecPolicy"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property pfsGroup in model IpsecPolicy"));
         }
     }
 }

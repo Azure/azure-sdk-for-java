@@ -5,25 +5,20 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Active Directory Password Credential information.
- */
+/** Active Directory Password Credential information. */
 @Fluent
 public final class PasswordCredentialInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(PasswordCredentialInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PasswordCredentialInner.class);
 
     /*
      * Start date.
@@ -58,12 +53,11 @@ public final class PasswordCredentialInner {
     /*
      * Active Directory Password Credential information.
      */
-    @JsonIgnore
-    private Map<String, Object> additionalProperties;
+    @JsonIgnore private Map<String, Object> additionalProperties;
 
     /**
      * Get the startDate property: Start date.
-     * 
+     *
      * @return the startDate value.
      */
     public OffsetDateTime startDate() {
@@ -72,7 +66,7 @@ public final class PasswordCredentialInner {
 
     /**
      * Set the startDate property: Start date.
-     * 
+     *
      * @param startDate the startDate value to set.
      * @return the PasswordCredentialInner object itself.
      */
@@ -83,7 +77,7 @@ public final class PasswordCredentialInner {
 
     /**
      * Get the endDate property: End date.
-     * 
+     *
      * @return the endDate value.
      */
     public OffsetDateTime endDate() {
@@ -92,7 +86,7 @@ public final class PasswordCredentialInner {
 
     /**
      * Set the endDate property: End date.
-     * 
+     *
      * @param endDate the endDate value to set.
      * @return the PasswordCredentialInner object itself.
      */
@@ -103,7 +97,7 @@ public final class PasswordCredentialInner {
 
     /**
      * Get the keyId property: Key ID.
-     * 
+     *
      * @return the keyId value.
      */
     public String keyId() {
@@ -112,7 +106,7 @@ public final class PasswordCredentialInner {
 
     /**
      * Set the keyId property: Key ID.
-     * 
+     *
      * @param keyId the keyId value to set.
      * @return the PasswordCredentialInner object itself.
      */
@@ -123,7 +117,7 @@ public final class PasswordCredentialInner {
 
     /**
      * Get the value property: Key value.
-     * 
+     *
      * @return the value value.
      */
     public String value() {
@@ -132,7 +126,7 @@ public final class PasswordCredentialInner {
 
     /**
      * Set the value property: Key value.
-     * 
+     *
      * @param value the value value to set.
      * @return the PasswordCredentialInner object itself.
      */
@@ -143,7 +137,7 @@ public final class PasswordCredentialInner {
 
     /**
      * Get the customKeyIdentifier property: Custom Key Identifier.
-     * 
+     *
      * @return the customKeyIdentifier value.
      */
     public byte[] customKeyIdentifier() {
@@ -152,7 +146,7 @@ public final class PasswordCredentialInner {
 
     /**
      * Set the customKeyIdentifier property: Custom Key Identifier.
-     * 
+     *
      * @param customKeyIdentifier the customKeyIdentifier value to set.
      * @return the PasswordCredentialInner object itself.
      */
@@ -162,9 +156,8 @@ public final class PasswordCredentialInner {
     }
 
     /**
-     * Get the additionalProperties property: Active Directory Password
-     * Credential information.
-     * 
+     * Get the additionalProperties property: Active Directory Password Credential information.
+     *
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -173,9 +166,8 @@ public final class PasswordCredentialInner {
     }
 
     /**
-     * Set the additionalProperties property: Active Directory Password
-     * Credential information.
-     * 
+     * Set the additionalProperties property: Active Directory Password Credential information.
+     *
      * @param additionalProperties the additionalProperties value to set.
      * @return the PasswordCredentialInner object itself.
      */
@@ -194,7 +186,7 @@ public final class PasswordCredentialInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

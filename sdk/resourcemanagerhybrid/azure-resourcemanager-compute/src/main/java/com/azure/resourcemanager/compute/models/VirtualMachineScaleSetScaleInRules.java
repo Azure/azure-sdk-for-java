@@ -8,28 +8,20 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for VirtualMachineScaleSetScaleInRules.
- */
+/** Defines values for VirtualMachineScaleSetScaleInRules. */
 public final class VirtualMachineScaleSetScaleInRules extends ExpandableStringEnum<VirtualMachineScaleSetScaleInRules> {
-    /**
-     * Static value Default for VirtualMachineScaleSetScaleInRules.
-     */
+    /** Static value Default for VirtualMachineScaleSetScaleInRules. */
     public static final VirtualMachineScaleSetScaleInRules DEFAULT = fromString("Default");
 
-    /**
-     * Static value OldestVM for VirtualMachineScaleSetScaleInRules.
-     */
+    /** Static value OldestVM for VirtualMachineScaleSetScaleInRules. */
     public static final VirtualMachineScaleSetScaleInRules OLDEST_VM = fromString("OldestVM");
 
-    /**
-     * Static value NewestVM for VirtualMachineScaleSetScaleInRules.
-     */
+    /** Static value NewestVM for VirtualMachineScaleSetScaleInRules. */
     public static final VirtualMachineScaleSetScaleInRules NEWEST_VM = fromString("NewestVM");
 
     /**
      * Creates or finds a VirtualMachineScaleSetScaleInRules from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding VirtualMachineScaleSetScaleInRules.
      */
@@ -38,9 +30,7 @@ public final class VirtualMachineScaleSetScaleInRules extends ExpandableStringEn
         return fromString(name, VirtualMachineScaleSetScaleInRules.class);
     }
 
-    /**
-     * @return known VirtualMachineScaleSetScaleInRules values.
-     */
+    /** @return known VirtualMachineScaleSetScaleInRules values. */
     public static Collection<VirtualMachineScaleSetScaleInRules> values() {
         return values(VirtualMachineScaleSetScaleInRules.class);
     }

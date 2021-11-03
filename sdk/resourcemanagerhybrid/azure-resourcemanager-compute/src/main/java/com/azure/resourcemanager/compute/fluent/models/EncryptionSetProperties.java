@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.KeyVaultAndKeyReference;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The EncryptionSetProperties model.
- */
+/** The EncryptionSetProperties model. */
 @Fluent
 public final class EncryptionSetProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(EncryptionSetProperties.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionSetProperties.class);
 
     /*
      * The key vault key which is currently used by this disk encryption set.
@@ -42,9 +37,8 @@ public final class EncryptionSetProperties {
     private String provisioningState;
 
     /**
-     * Get the activeKey property: The key vault key which is currently used by
-     * this disk encryption set.
-     * 
+     * Get the activeKey property: The key vault key which is currently used by this disk encryption set.
+     *
      * @return the activeKey value.
      */
     public KeyVaultAndKeyReference activeKey() {
@@ -52,9 +46,8 @@ public final class EncryptionSetProperties {
     }
 
     /**
-     * Set the activeKey property: The key vault key which is currently used by
-     * this disk encryption set.
-     * 
+     * Set the activeKey property: The key vault key which is currently used by this disk encryption set.
+     *
      * @param activeKey the activeKey value to set.
      * @return the EncryptionSetProperties object itself.
      */
@@ -64,10 +57,9 @@ public final class EncryptionSetProperties {
     }
 
     /**
-     * Get the previousKeys property: A readonly collection of key vault keys
-     * previously used by this disk encryption set while a key rotation is in
-     * progress. It will be empty if there is no ongoing key rotation.
-     * 
+     * Get the previousKeys property: A readonly collection of key vault keys previously used by this disk encryption
+     * set while a key rotation is in progress. It will be empty if there is no ongoing key rotation.
+     *
      * @return the previousKeys value.
      */
     public List<KeyVaultAndKeyReference> previousKeys() {
@@ -75,9 +67,8 @@ public final class EncryptionSetProperties {
     }
 
     /**
-     * Get the provisioningState property: The disk encryption set provisioning
-     * state.
-     * 
+     * Get the provisioningState property: The disk encryption set provisioning state.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -86,7 +77,7 @@ public final class EncryptionSetProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,22 +5,16 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRouteLinkAdminState;
 import com.azure.resourcemanager.network.models.ExpressRouteLinkConnectorType;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * ExpressRouteLink Resource Properties Properties specific to ExpressRouteLink
- * resources.
- */
+/** ExpressRouteLink Resource Properties Properties specific to ExpressRouteLink resources. */
 @Fluent
 public final class ExpressRouteLinkPropertiesFormat {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ExpressRouteLinkPropertiesFormat.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteLinkPropertiesFormat.class);
 
     /*
      * Name of Azure router associated with physical port.
@@ -66,9 +60,8 @@ public final class ExpressRouteLinkPropertiesFormat {
     private String provisioningState;
 
     /**
-     * Get the routerName property: Name of Azure router associated with
-     * physical port.
-     * 
+     * Get the routerName property: Name of Azure router associated with physical port.
+     *
      * @return the routerName value.
      */
     public String routerName() {
@@ -77,7 +70,7 @@ public final class ExpressRouteLinkPropertiesFormat {
 
     /**
      * Get the interfaceName property: Name of Azure router interface.
-     * 
+     *
      * @return the interfaceName value.
      */
     public String interfaceName() {
@@ -85,9 +78,8 @@ public final class ExpressRouteLinkPropertiesFormat {
     }
 
     /**
-     * Get the patchPanelId property: Mapping between physical port to patch
-     * panel port.
-     * 
+     * Get the patchPanelId property: Mapping between physical port to patch panel port.
+     *
      * @return the patchPanelId value.
      */
     public String patchPanelId() {
@@ -96,7 +88,7 @@ public final class ExpressRouteLinkPropertiesFormat {
 
     /**
      * Get the rackId property: Mapping of physical patch panel to rack.
-     * 
+     *
      * @return the rackId value.
      */
     public String rackId() {
@@ -105,7 +97,7 @@ public final class ExpressRouteLinkPropertiesFormat {
 
     /**
      * Get the connectorType property: Physical fiber port type.
-     * 
+     *
      * @return the connectorType value.
      */
     public ExpressRouteLinkConnectorType connectorType() {
@@ -114,7 +106,7 @@ public final class ExpressRouteLinkPropertiesFormat {
 
     /**
      * Get the adminState property: Administrative state of the physical port.
-     * 
+     *
      * @return the adminState value.
      */
     public ExpressRouteLinkAdminState adminState() {
@@ -123,7 +115,7 @@ public final class ExpressRouteLinkPropertiesFormat {
 
     /**
      * Set the adminState property: Administrative state of the physical port.
-     * 
+     *
      * @param adminState the adminState value to set.
      * @return the ExpressRouteLinkPropertiesFormat object itself.
      */
@@ -133,10 +125,9 @@ public final class ExpressRouteLinkPropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the
-     * ExpressRouteLink resource. Possible values are: 'Succeeded', 'Updating',
-     * 'Deleting', and 'Failed'.
-     * 
+     * Get the provisioningState property: The provisioning state of the ExpressRouteLink resource. Possible values are:
+     * 'Succeeded', 'Updating', 'Deleting', and 'Failed'.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -145,7 +136,7 @@ public final class ExpressRouteLinkPropertiesFormat {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.models.WhatIfChange;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Deployment operation properties.
- */
+/** Deployment operation properties. */
 @Fluent
 public final class WhatIfOperationProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(WhatIfOperationProperties.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(WhatIfOperationProperties.class);
 
     /*
      * List of resource changes predicted by What-If operation.
@@ -28,9 +23,8 @@ public final class WhatIfOperationProperties {
     private List<WhatIfChange> changes;
 
     /**
-     * Get the changes property: List of resource changes predicted by What-If
-     * operation.
-     * 
+     * Get the changes property: List of resource changes predicted by What-If operation.
+     *
      * @return the changes value.
      */
     public List<WhatIfChange> changes() {
@@ -38,9 +32,8 @@ public final class WhatIfOperationProperties {
     }
 
     /**
-     * Set the changes property: List of resource changes predicted by What-If
-     * operation.
-     * 
+     * Set the changes property: List of resource changes predicted by What-If operation.
+     *
      * @param changes the changes value to set.
      * @return the WhatIfOperationProperties object itself.
      */
@@ -51,7 +44,7 @@ public final class WhatIfOperationProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

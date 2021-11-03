@@ -5,19 +5,16 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Minimum and maximum number of scale units to deploy.
- */
+/** Minimum and maximum number of scale units to deploy. */
 @Fluent
 public final class ExpressRouteGatewayPropertiesAutoScaleConfigurationBounds {
     @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ExpressRouteGatewayPropertiesAutoScaleConfigurationBounds.class);
+    private final ClientLogger logger =
+        new ClientLogger(ExpressRouteGatewayPropertiesAutoScaleConfigurationBounds.class);
 
     /*
      * Minimum number of scale units deployed for ExpressRoute gateway.
@@ -32,9 +29,8 @@ public final class ExpressRouteGatewayPropertiesAutoScaleConfigurationBounds {
     private Integer max;
 
     /**
-     * Get the min property: Minimum number of scale units deployed for
-     * ExpressRoute gateway.
-     * 
+     * Get the min property: Minimum number of scale units deployed for ExpressRoute gateway.
+     *
      * @return the min value.
      */
     public Integer min() {
@@ -42,12 +38,10 @@ public final class ExpressRouteGatewayPropertiesAutoScaleConfigurationBounds {
     }
 
     /**
-     * Set the min property: Minimum number of scale units deployed for
-     * ExpressRoute gateway.
-     * 
+     * Set the min property: Minimum number of scale units deployed for ExpressRoute gateway.
+     *
      * @param min the min value to set.
-     * @return the ExpressRouteGatewayPropertiesAutoScaleConfigurationBounds
-     * object itself.
+     * @return the ExpressRouteGatewayPropertiesAutoScaleConfigurationBounds object itself.
      */
     public ExpressRouteGatewayPropertiesAutoScaleConfigurationBounds withMin(Integer min) {
         this.min = min;
@@ -55,9 +49,8 @@ public final class ExpressRouteGatewayPropertiesAutoScaleConfigurationBounds {
     }
 
     /**
-     * Get the max property: Maximum number of scale units deployed for
-     * ExpressRoute gateway.
-     * 
+     * Get the max property: Maximum number of scale units deployed for ExpressRoute gateway.
+     *
      * @return the max value.
      */
     public Integer max() {
@@ -65,12 +58,10 @@ public final class ExpressRouteGatewayPropertiesAutoScaleConfigurationBounds {
     }
 
     /**
-     * Set the max property: Maximum number of scale units deployed for
-     * ExpressRoute gateway.
-     * 
+     * Set the max property: Maximum number of scale units deployed for ExpressRoute gateway.
+     *
      * @param max the max value to set.
-     * @return the ExpressRouteGatewayPropertiesAutoScaleConfigurationBounds
-     * object itself.
+     * @return the ExpressRouteGatewayPropertiesAutoScaleConfigurationBounds object itself.
      */
     public ExpressRouteGatewayPropertiesAutoScaleConfigurationBounds withMax(Integer max) {
         this.max = max;
@@ -79,7 +70,7 @@ public final class ExpressRouteGatewayPropertiesAutoScaleConfigurationBounds {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

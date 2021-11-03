@@ -13,19 +13,16 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.containerservice.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.containerservice.fluent.models.PrivateEndpointConnectionListResultInner;
-import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * PrivateEndpointConnectionsClient.
- */
+/** An instance of this class provides access to all the operations defined in PrivateEndpointConnectionsClient. */
 public interface PrivateEndpointConnectionsClient {
     /**
-     * Gets a list of private endpoint connections in the specified managed cluster. The operation returns properties of each private endpoint connection.
-     * 
+     * Gets a list of private endpoint connections in the specified managed cluster. The operation returns properties of
+     * each private endpoint connection.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -34,11 +31,13 @@ public interface PrivateEndpointConnectionsClient {
      * @return a list of private endpoint connections in the specified managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<PrivateEndpointConnectionListResultInner>> listWithResponseAsync(String resourceGroupName, String resourceName);
+    Mono<Response<PrivateEndpointConnectionListResultInner>> listWithResponseAsync(
+        String resourceGroupName, String resourceName);
 
     /**
-     * Gets a list of private endpoint connections in the specified managed cluster. The operation returns properties of each private endpoint connection.
-     * 
+     * Gets a list of private endpoint connections in the specified managed cluster. The operation returns properties of
+     * each private endpoint connection.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -50,8 +49,9 @@ public interface PrivateEndpointConnectionsClient {
     Mono<PrivateEndpointConnectionListResultInner> listAsync(String resourceGroupName, String resourceName);
 
     /**
-     * Gets a list of private endpoint connections in the specified managed cluster. The operation returns properties of each private endpoint connection.
-     * 
+     * Gets a list of private endpoint connections in the specified managed cluster. The operation returns properties of
+     * each private endpoint connection.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -63,8 +63,9 @@ public interface PrivateEndpointConnectionsClient {
     PrivateEndpointConnectionListResultInner list(String resourceGroupName, String resourceName);
 
     /**
-     * Gets a list of private endpoint connections in the specified managed cluster. The operation returns properties of each private endpoint connection.
-     * 
+     * Gets a list of private endpoint connections in the specified managed cluster. The operation returns properties of
+     * each private endpoint connection.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -74,11 +75,12 @@ public interface PrivateEndpointConnectionsClient {
      * @return a list of private endpoint connections in the specified managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateEndpointConnectionListResultInner> listWithResponse(String resourceGroupName, String resourceName, Context context);
+    Response<PrivateEndpointConnectionListResultInner> listWithResponse(
+        String resourceGroupName, String resourceName, Context context);
 
     /**
      * Gets the details of the private endpoint connection by managed cluster and resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -88,11 +90,12 @@ public interface PrivateEndpointConnectionsClient {
      * @return the details of the private endpoint connection by managed cluster and resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(String resourceGroupName, String resourceName, String privateEndpointConnectionName);
+    Mono<Response<PrivateEndpointConnectionInner>> getWithResponseAsync(
+        String resourceGroupName, String resourceName, String privateEndpointConnectionName);
 
     /**
      * Gets the details of the private endpoint connection by managed cluster and resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -102,11 +105,12 @@ public interface PrivateEndpointConnectionsClient {
      * @return the details of the private endpoint connection by managed cluster and resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PrivateEndpointConnectionInner> getAsync(String resourceGroupName, String resourceName, String privateEndpointConnectionName);
+    Mono<PrivateEndpointConnectionInner> getAsync(
+        String resourceGroupName, String resourceName, String privateEndpointConnectionName);
 
     /**
      * Gets the details of the private endpoint connection by managed cluster and resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -116,11 +120,12 @@ public interface PrivateEndpointConnectionsClient {
      * @return the details of the private endpoint connection by managed cluster and resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner get(String resourceGroupName, String resourceName, String privateEndpointConnectionName);
+    PrivateEndpointConnectionInner get(
+        String resourceGroupName, String resourceName, String privateEndpointConnectionName);
 
     /**
      * Gets the details of the private endpoint connection by managed cluster and resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -131,11 +136,12 @@ public interface PrivateEndpointConnectionsClient {
      * @return the details of the private endpoint connection by managed cluster and resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateEndpointConnectionInner> getWithResponse(String resourceGroupName, String resourceName, String privateEndpointConnectionName, Context context);
+    Response<PrivateEndpointConnectionInner> getWithResponse(
+        String resourceGroupName, String resourceName, String privateEndpointConnectionName, Context context);
 
     /**
      * Updates a private endpoint connection in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -146,11 +152,15 @@ public interface PrivateEndpointConnectionsClient {
      * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<PrivateEndpointConnectionInner>> updateWithResponseAsync(String resourceGroupName, String resourceName, String privateEndpointConnectionName, PrivateEndpointConnectionInner parameters);
+    Mono<Response<PrivateEndpointConnectionInner>> updateWithResponseAsync(
+        String resourceGroupName,
+        String resourceName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner parameters);
 
     /**
      * Updates a private endpoint connection in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -161,11 +171,15 @@ public interface PrivateEndpointConnectionsClient {
      * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<PrivateEndpointConnectionInner> updateAsync(String resourceGroupName, String resourceName, String privateEndpointConnectionName, PrivateEndpointConnectionInner parameters);
+    Mono<PrivateEndpointConnectionInner> updateAsync(
+        String resourceGroupName,
+        String resourceName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner parameters);
 
     /**
      * Updates a private endpoint connection in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -176,11 +190,15 @@ public interface PrivateEndpointConnectionsClient {
      * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PrivateEndpointConnectionInner update(String resourceGroupName, String resourceName, String privateEndpointConnectionName, PrivateEndpointConnectionInner parameters);
+    PrivateEndpointConnectionInner update(
+        String resourceGroupName,
+        String resourceName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner parameters);
 
     /**
      * Updates a private endpoint connection in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -192,11 +210,16 @@ public interface PrivateEndpointConnectionsClient {
      * @return a private endpoint connection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateEndpointConnectionInner> updateWithResponse(String resourceGroupName, String resourceName, String privateEndpointConnectionName, PrivateEndpointConnectionInner parameters, Context context);
+    Response<PrivateEndpointConnectionInner> updateWithResponse(
+        String resourceGroupName,
+        String resourceName,
+        String privateEndpointConnectionName,
+        PrivateEndpointConnectionInner parameters,
+        Context context);
 
     /**
      * Deletes the private endpoint connection in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -206,11 +229,12 @@ public interface PrivateEndpointConnectionsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String resourceName, String privateEndpointConnectionName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String resourceName, String privateEndpointConnectionName);
 
     /**
      * Deletes the private endpoint connection in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -220,11 +244,12 @@ public interface PrivateEndpointConnectionsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String resourceName, String privateEndpointConnectionName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String resourceName, String privateEndpointConnectionName);
 
     /**
      * Deletes the private endpoint connection in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -234,11 +259,12 @@ public interface PrivateEndpointConnectionsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName, String privateEndpointConnectionName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String resourceName, String privateEndpointConnectionName);
 
     /**
      * Deletes the private endpoint connection in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -249,11 +275,12 @@ public interface PrivateEndpointConnectionsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String resourceName, String privateEndpointConnectionName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String resourceName, String privateEndpointConnectionName, Context context);
 
     /**
      * Deletes the private endpoint connection in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -267,7 +294,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Deletes the private endpoint connection in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.
@@ -280,7 +307,7 @@ public interface PrivateEndpointConnectionsClient {
 
     /**
      * Deletes the private endpoint connection in the specified managed cluster.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param privateEndpointConnectionName The name of the private endpoint connection.

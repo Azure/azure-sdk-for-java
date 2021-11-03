@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.RouteNextHopType;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Route resource.
- */
+/** Route resource. */
 @Fluent
 public final class RouteInner extends SubResource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(RouteInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RouteInner.class);
 
     /*
      * Properties of the route.
@@ -42,7 +37,7 @@ public final class RouteInner extends SubResource {
 
     /**
      * Get the innerProperties property: Properties of the route.
-     * 
+     *
      * @return the innerProperties value.
      */
     private RoutePropertiesFormat innerProperties() {
@@ -50,9 +45,9 @@ public final class RouteInner extends SubResource {
     }
 
     /**
-     * Get the name property: The name of the resource that is unique within a
-     * resource group. This name can be used to access the resource.
-     * 
+     * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
+     * access the resource.
+     *
      * @return the name value.
      */
     public String name() {
@@ -60,9 +55,9 @@ public final class RouteInner extends SubResource {
     }
 
     /**
-     * Set the name property: The name of the resource that is unique within a
-     * resource group. This name can be used to access the resource.
-     * 
+     * Set the name property: The name of the resource that is unique within a resource group. This name can be used to
+     * access the resource.
+     *
      * @param name the name value to set.
      * @return the RouteInner object itself.
      */
@@ -72,9 +67,8 @@ public final class RouteInner extends SubResource {
     }
 
     /**
-     * Get the etag property: A unique read-only string that changes whenever
-     * the resource is updated.
-     * 
+     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -82,9 +76,8 @@ public final class RouteInner extends SubResource {
     }
 
     /**
-     * Set the etag property: A unique read-only string that changes whenever
-     * the resource is updated.
-     * 
+     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
      * @param etag the etag value to set.
      * @return the RouteInner object itself.
      */
@@ -93,9 +86,7 @@ public final class RouteInner extends SubResource {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public RouteInner withId(String id) {
         super.withId(id);
@@ -103,9 +94,8 @@ public final class RouteInner extends SubResource {
     }
 
     /**
-     * Get the addressPrefix property: The destination CIDR to which the route
-     * applies.
-     * 
+     * Get the addressPrefix property: The destination CIDR to which the route applies.
+     *
      * @return the addressPrefix value.
      */
     public String addressPrefix() {
@@ -113,9 +103,8 @@ public final class RouteInner extends SubResource {
     }
 
     /**
-     * Set the addressPrefix property: The destination CIDR to which the route
-     * applies.
-     * 
+     * Set the addressPrefix property: The destination CIDR to which the route applies.
+     *
      * @param addressPrefix the addressPrefix value to set.
      * @return the RouteInner object itself.
      */
@@ -128,10 +117,9 @@ public final class RouteInner extends SubResource {
     }
 
     /**
-     * Get the nextHopType property: The type of Azure hop the packet should be
-     * sent to. Possible values are: 'VirtualNetworkGateway', 'VnetLocal',
-     * 'Internet', 'VirtualAppliance', and 'None'.
-     * 
+     * Get the nextHopType property: The type of Azure hop the packet should be sent to. Possible values are:
+     * 'VirtualNetworkGateway', 'VnetLocal', 'Internet', 'VirtualAppliance', and 'None'.
+     *
      * @return the nextHopType value.
      */
     public RouteNextHopType nextHopType() {
@@ -139,10 +127,9 @@ public final class RouteInner extends SubResource {
     }
 
     /**
-     * Set the nextHopType property: The type of Azure hop the packet should be
-     * sent to. Possible values are: 'VirtualNetworkGateway', 'VnetLocal',
-     * 'Internet', 'VirtualAppliance', and 'None'.
-     * 
+     * Set the nextHopType property: The type of Azure hop the packet should be sent to. Possible values are:
+     * 'VirtualNetworkGateway', 'VnetLocal', 'Internet', 'VirtualAppliance', and 'None'.
+     *
      * @param nextHopType the nextHopType value to set.
      * @return the RouteInner object itself.
      */
@@ -155,10 +142,9 @@ public final class RouteInner extends SubResource {
     }
 
     /**
-     * Get the nextHopIpAddress property: The IP address packets should be
-     * forwarded to. Next hop values are only allowed in routes where the next
-     * hop type is VirtualAppliance.
-     * 
+     * Get the nextHopIpAddress property: The IP address packets should be forwarded to. Next hop values are only
+     * allowed in routes where the next hop type is VirtualAppliance.
+     *
      * @return the nextHopIpAddress value.
      */
     public String nextHopIpAddress() {
@@ -166,10 +152,9 @@ public final class RouteInner extends SubResource {
     }
 
     /**
-     * Set the nextHopIpAddress property: The IP address packets should be
-     * forwarded to. Next hop values are only allowed in routes where the next
-     * hop type is VirtualAppliance.
-     * 
+     * Set the nextHopIpAddress property: The IP address packets should be forwarded to. Next hop values are only
+     * allowed in routes where the next hop type is VirtualAppliance.
+     *
      * @param nextHopIpAddress the nextHopIpAddress value to set.
      * @return the RouteInner object itself.
      */
@@ -182,9 +167,9 @@ public final class RouteInner extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the
-     * resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
-     * 
+     * Get the provisioningState property: The provisioning state of the resource. Possible values are: 'Updating',
+     * 'Deleting', and 'Failed'.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -192,9 +177,9 @@ public final class RouteInner extends SubResource {
     }
 
     /**
-     * Set the provisioningState property: The provisioning state of the
-     * resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
-     * 
+     * Set the provisioningState property: The provisioning state of the resource. Possible values are: 'Updating',
+     * 'Deleting', and 'Failed'.
+     *
      * @param provisioningState the provisioningState value to set.
      * @return the RouteInner object itself.
      */
@@ -208,7 +193,7 @@ public final class RouteInner extends SubResource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

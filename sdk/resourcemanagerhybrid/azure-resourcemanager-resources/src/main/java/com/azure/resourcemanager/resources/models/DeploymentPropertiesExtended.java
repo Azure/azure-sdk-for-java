@@ -4,24 +4,19 @@
 
 package com.azure.resourcemanager.resources.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluent.models.ProviderInner;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/**
- * Deployment properties with additional details.
- */
+/** Deployment properties with additional details. */
 @Immutable
 public final class DeploymentPropertiesExtended {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(DeploymentPropertiesExtended.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentPropertiesExtended.class);
 
     /*
      * The state of the provisioning.
@@ -127,7 +122,7 @@ public final class DeploymentPropertiesExtended {
 
     /**
      * Get the provisioningState property: The state of the provisioning.
-     * 
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -136,7 +131,7 @@ public final class DeploymentPropertiesExtended {
 
     /**
      * Get the correlationId property: The correlation ID of the deployment.
-     * 
+     *
      * @return the correlationId value.
      */
     public String correlationId() {
@@ -145,7 +140,7 @@ public final class DeploymentPropertiesExtended {
 
     /**
      * Get the timestamp property: The timestamp of the template deployment.
-     * 
+     *
      * @return the timestamp value.
      */
     public OffsetDateTime timestamp() {
@@ -154,7 +149,7 @@ public final class DeploymentPropertiesExtended {
 
     /**
      * Get the duration property: The duration of the template deployment.
-     * 
+     *
      * @return the duration value.
      */
     public String duration() {
@@ -162,9 +157,8 @@ public final class DeploymentPropertiesExtended {
     }
 
     /**
-     * Get the outputs property: Key/value pairs that represent deployment
-     * output.
-     * 
+     * Get the outputs property: Key/value pairs that represent deployment output.
+     *
      * @return the outputs value.
      */
     public Object outputs() {
@@ -172,9 +166,8 @@ public final class DeploymentPropertiesExtended {
     }
 
     /**
-     * Get the providers property: The list of resource providers needed for
-     * the deployment.
-     * 
+     * Get the providers property: The list of resource providers needed for the deployment.
+     *
      * @return the providers value.
      */
     public List<ProviderInner> providers() {
@@ -183,7 +176,7 @@ public final class DeploymentPropertiesExtended {
 
     /**
      * Get the dependencies property: The list of deployment dependencies.
-     * 
+     *
      * @return the dependencies value.
      */
     public List<Dependency> dependencies() {
@@ -192,7 +185,7 @@ public final class DeploymentPropertiesExtended {
 
     /**
      * Get the templateLink property: The URI referencing the template.
-     * 
+     *
      * @return the templateLink value.
      */
     public TemplateLink templateLink() {
@@ -201,7 +194,7 @@ public final class DeploymentPropertiesExtended {
 
     /**
      * Get the parameters property: Deployment parameters.
-     * 
+     *
      * @return the parameters value.
      */
     public Object parameters() {
@@ -210,7 +203,7 @@ public final class DeploymentPropertiesExtended {
 
     /**
      * Get the parametersLink property: The URI referencing the parameters.
-     * 
+     *
      * @return the parametersLink value.
      */
     public ParametersLink parametersLink() {
@@ -218,9 +211,8 @@ public final class DeploymentPropertiesExtended {
     }
 
     /**
-     * Get the mode property: The deployment mode. Possible values are
-     * Incremental and Complete.
-     * 
+     * Get the mode property: The deployment mode. Possible values are Incremental and Complete.
+     *
      * @return the mode value.
      */
     public DeploymentMode mode() {
@@ -229,7 +221,7 @@ public final class DeploymentPropertiesExtended {
 
     /**
      * Get the debugSetting property: The debug setting of the deployment.
-     * 
+     *
      * @return the debugSetting value.
      */
     public DebugSetting debugSetting() {
@@ -238,7 +230,7 @@ public final class DeploymentPropertiesExtended {
 
     /**
      * Get the onErrorDeployment property: The deployment on error behavior.
-     * 
+     *
      * @return the onErrorDeployment value.
      */
     public OnErrorDeploymentExtended onErrorDeployment() {
@@ -247,7 +239,7 @@ public final class DeploymentPropertiesExtended {
 
     /**
      * Get the templateHash property: The hash produced for the template.
-     * 
+     *
      * @return the templateHash value.
      */
     public String templateHash() {
@@ -256,7 +248,7 @@ public final class DeploymentPropertiesExtended {
 
     /**
      * Get the outputResources property: Array of provisioned resources.
-     * 
+     *
      * @return the outputResources value.
      */
     public List<ResourceReference> outputResources() {
@@ -265,7 +257,7 @@ public final class DeploymentPropertiesExtended {
 
     /**
      * Get the validatedResources property: Array of validated resources.
-     * 
+     *
      * @return the validatedResources value.
      */
     public List<ResourceReference> validatedResources() {
@@ -274,7 +266,7 @@ public final class DeploymentPropertiesExtended {
 
     /**
      * Get the error property: Error Response The deployment error.
-     * 
+     *
      * @return the error value.
      */
     public ManagementError error() {
@@ -283,7 +275,7 @@ public final class DeploymentPropertiesExtended {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

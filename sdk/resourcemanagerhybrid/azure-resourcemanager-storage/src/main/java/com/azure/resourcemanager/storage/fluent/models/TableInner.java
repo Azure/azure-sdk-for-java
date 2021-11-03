@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Properties of the table, including Id, resource name, resource type.
- */
+/** Properties of the table, including Id, resource name, resource type. */
 @Fluent
 public final class TableInner extends ProxyResource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(TableInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(TableInner.class);
 
     /*
      * Table resource properties.
@@ -28,7 +23,7 @@ public final class TableInner extends ProxyResource {
 
     /**
      * Get the innerTableProperties property: Table resource properties.
-     * 
+     *
      * @return the innerTableProperties value.
      */
     private TableProperties innerTableProperties() {
@@ -37,7 +32,7 @@ public final class TableInner extends ProxyResource {
 
     /**
      * Get the tableName property: Table name under the specified account.
-     * 
+     *
      * @return the tableName value.
      */
     public String tableName() {
@@ -46,7 +41,7 @@ public final class TableInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

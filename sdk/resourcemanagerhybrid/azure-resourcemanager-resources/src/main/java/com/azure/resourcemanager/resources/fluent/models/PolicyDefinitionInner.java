@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.models.PolicyMode;
 import com.azure.resourcemanager.resources.models.PolicyType;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The policy definition.
- */
+/** The policy definition. */
 @Fluent
 public final class PolicyDefinitionInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(PolicyDefinitionInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicyDefinitionInner.class);
 
     /*
      * The policy definition properties.
@@ -41,7 +36,7 @@ public final class PolicyDefinitionInner {
 
     /**
      * Get the innerProperties property: The policy definition properties.
-     * 
+     *
      * @return the innerProperties value.
      */
     private PolicyDefinitionProperties innerProperties() {
@@ -50,7 +45,7 @@ public final class PolicyDefinitionInner {
 
     /**
      * Get the id property: The ID of the policy definition.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -59,7 +54,7 @@ public final class PolicyDefinitionInner {
 
     /**
      * Get the name property: The name of the policy definition.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -67,9 +62,9 @@ public final class PolicyDefinitionInner {
     }
 
     /**
-     * Get the policyType property: The type of policy definition. Possible
-     * values are NotSpecified, BuiltIn, and Custom.
-     * 
+     * Get the policyType property: The type of policy definition. Possible values are NotSpecified, BuiltIn, and
+     * Custom.
+     *
      * @return the policyType value.
      */
     public PolicyType policyType() {
@@ -77,9 +72,9 @@ public final class PolicyDefinitionInner {
     }
 
     /**
-     * Set the policyType property: The type of policy definition. Possible
-     * values are NotSpecified, BuiltIn, and Custom.
-     * 
+     * Set the policyType property: The type of policy definition. Possible values are NotSpecified, BuiltIn, and
+     * Custom.
+     *
      * @param policyType the policyType value to set.
      * @return the PolicyDefinitionInner object itself.
      */
@@ -92,9 +87,8 @@ public final class PolicyDefinitionInner {
     }
 
     /**
-     * Get the mode property: The policy definition mode. Possible values are
-     * NotSpecified, Indexed, and All.
-     * 
+     * Get the mode property: The policy definition mode. Possible values are NotSpecified, Indexed, and All.
+     *
      * @return the mode value.
      */
     public PolicyMode mode() {
@@ -102,9 +96,8 @@ public final class PolicyDefinitionInner {
     }
 
     /**
-     * Set the mode property: The policy definition mode. Possible values are
-     * NotSpecified, Indexed, and All.
-     * 
+     * Set the mode property: The policy definition mode. Possible values are NotSpecified, Indexed, and All.
+     *
      * @param mode the mode value to set.
      * @return the PolicyDefinitionInner object itself.
      */
@@ -118,7 +111,7 @@ public final class PolicyDefinitionInner {
 
     /**
      * Get the displayName property: The display name of the policy definition.
-     * 
+     *
      * @return the displayName value.
      */
     public String displayName() {
@@ -127,7 +120,7 @@ public final class PolicyDefinitionInner {
 
     /**
      * Set the displayName property: The display name of the policy definition.
-     * 
+     *
      * @param displayName the displayName value to set.
      * @return the PolicyDefinitionInner object itself.
      */
@@ -141,7 +134,7 @@ public final class PolicyDefinitionInner {
 
     /**
      * Get the description property: The policy definition description.
-     * 
+     *
      * @return the description value.
      */
     public String description() {
@@ -150,7 +143,7 @@ public final class PolicyDefinitionInner {
 
     /**
      * Set the description property: The policy definition description.
-     * 
+     *
      * @param description the description value to set.
      * @return the PolicyDefinitionInner object itself.
      */
@@ -164,7 +157,7 @@ public final class PolicyDefinitionInner {
 
     /**
      * Get the policyRule property: The policy rule.
-     * 
+     *
      * @return the policyRule value.
      */
     public Object policyRule() {
@@ -173,7 +166,7 @@ public final class PolicyDefinitionInner {
 
     /**
      * Set the policyRule property: The policy rule.
-     * 
+     *
      * @param policyRule the policyRule value to set.
      * @return the PolicyDefinitionInner object itself.
      */
@@ -187,7 +180,7 @@ public final class PolicyDefinitionInner {
 
     /**
      * Get the metadata property: The policy definition metadata.
-     * 
+     *
      * @return the metadata value.
      */
     public Object metadata() {
@@ -196,7 +189,7 @@ public final class PolicyDefinitionInner {
 
     /**
      * Set the metadata property: The policy definition metadata.
-     * 
+     *
      * @param metadata the metadata value to set.
      * @return the PolicyDefinitionInner object itself.
      */
@@ -209,9 +202,8 @@ public final class PolicyDefinitionInner {
     }
 
     /**
-     * Get the parameters property: Required if a parameter is used in policy
-     * rule.
-     * 
+     * Get the parameters property: Required if a parameter is used in policy rule.
+     *
      * @return the parameters value.
      */
     public Object parameters() {
@@ -219,9 +211,8 @@ public final class PolicyDefinitionInner {
     }
 
     /**
-     * Set the parameters property: Required if a parameter is used in policy
-     * rule.
-     * 
+     * Set the parameters property: Required if a parameter is used in policy rule.
+     *
      * @param parameters the parameters value to set.
      * @return the PolicyDefinitionInner object itself.
      */
@@ -235,7 +226,7 @@ public final class PolicyDefinitionInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

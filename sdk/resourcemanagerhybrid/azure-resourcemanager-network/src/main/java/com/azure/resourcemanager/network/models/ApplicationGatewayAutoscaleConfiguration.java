@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Application Gateway autoscale configuration.
- */
+/** Application Gateway autoscale configuration. */
 @Fluent
 public final class ApplicationGatewayAutoscaleConfiguration {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ApplicationGatewayAutoscaleConfiguration.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayAutoscaleConfiguration.class);
 
     /*
      * Lower bound on number of Application Gateway capacity
@@ -32,9 +27,8 @@ public final class ApplicationGatewayAutoscaleConfiguration {
     private Integer maxCapacity;
 
     /**
-     * Get the minCapacity property: Lower bound on number of Application
-     * Gateway capacity.
-     * 
+     * Get the minCapacity property: Lower bound on number of Application Gateway capacity.
+     *
      * @return the minCapacity value.
      */
     public int minCapacity() {
@@ -42,9 +36,8 @@ public final class ApplicationGatewayAutoscaleConfiguration {
     }
 
     /**
-     * Set the minCapacity property: Lower bound on number of Application
-     * Gateway capacity.
-     * 
+     * Set the minCapacity property: Lower bound on number of Application Gateway capacity.
+     *
      * @param minCapacity the minCapacity value to set.
      * @return the ApplicationGatewayAutoscaleConfiguration object itself.
      */
@@ -54,9 +47,8 @@ public final class ApplicationGatewayAutoscaleConfiguration {
     }
 
     /**
-     * Get the maxCapacity property: Upper bound on number of Application
-     * Gateway capacity.
-     * 
+     * Get the maxCapacity property: Upper bound on number of Application Gateway capacity.
+     *
      * @return the maxCapacity value.
      */
     public Integer maxCapacity() {
@@ -64,9 +56,8 @@ public final class ApplicationGatewayAutoscaleConfiguration {
     }
 
     /**
-     * Set the maxCapacity property: Upper bound on number of Application
-     * Gateway capacity.
-     * 
+     * Set the maxCapacity property: Upper bound on number of Application Gateway capacity.
+     *
      * @param maxCapacity the maxCapacity value to set.
      * @return the ApplicationGatewayAutoscaleConfiguration object itself.
      */
@@ -77,7 +68,7 @@ public final class ApplicationGatewayAutoscaleConfiguration {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

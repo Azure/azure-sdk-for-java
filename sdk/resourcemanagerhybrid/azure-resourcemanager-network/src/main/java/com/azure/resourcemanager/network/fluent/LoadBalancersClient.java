@@ -8,8 +8,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
@@ -20,19 +18,16 @@ import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
-import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * LoadBalancersClient.
- */
-public interface LoadBalancersClient extends InnerSupportsGet<LoadBalancerInner>, InnerSupportsListing<LoadBalancerInner>, InnerSupportsDelete<Void> {
+/** An instance of this class provides access to all the operations defined in LoadBalancersClient. */
+public interface LoadBalancersClient
+    extends InnerSupportsGet<LoadBalancerInner>, InnerSupportsListing<LoadBalancerInner>, InnerSupportsDelete<Void> {
     /**
      * Deletes the specified load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -45,7 +40,7 @@ public interface LoadBalancersClient extends InnerSupportsGet<LoadBalancerInner>
 
     /**
      * Deletes the specified load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -58,7 +53,7 @@ public interface LoadBalancersClient extends InnerSupportsGet<LoadBalancerInner>
 
     /**
      * Deletes the specified load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -71,7 +66,7 @@ public interface LoadBalancersClient extends InnerSupportsGet<LoadBalancerInner>
 
     /**
      * Deletes the specified load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param context The context to associate with this operation.
@@ -85,7 +80,7 @@ public interface LoadBalancersClient extends InnerSupportsGet<LoadBalancerInner>
 
     /**
      * Deletes the specified load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -98,7 +93,7 @@ public interface LoadBalancersClient extends InnerSupportsGet<LoadBalancerInner>
 
     /**
      * Deletes the specified load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -110,7 +105,7 @@ public interface LoadBalancersClient extends InnerSupportsGet<LoadBalancerInner>
 
     /**
      * Deletes the specified load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param context The context to associate with this operation.
@@ -123,7 +118,7 @@ public interface LoadBalancersClient extends InnerSupportsGet<LoadBalancerInner>
 
     /**
      * Gets the specified load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param expand Expands referenced resources.
@@ -133,11 +128,12 @@ public interface LoadBalancersClient extends InnerSupportsGet<LoadBalancerInner>
      * @return the specified load balancer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<LoadBalancerInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String loadBalancerName, String expand);
+    Mono<Response<LoadBalancerInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String loadBalancerName, String expand);
 
     /**
      * Gets the specified load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param expand Expands referenced resources.
@@ -151,7 +147,7 @@ public interface LoadBalancersClient extends InnerSupportsGet<LoadBalancerInner>
 
     /**
      * Gets the specified load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -164,7 +160,7 @@ public interface LoadBalancersClient extends InnerSupportsGet<LoadBalancerInner>
 
     /**
      * Gets the specified load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -177,7 +173,7 @@ public interface LoadBalancersClient extends InnerSupportsGet<LoadBalancerInner>
 
     /**
      * Gets the specified load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param expand Expands referenced resources.
@@ -188,11 +184,12 @@ public interface LoadBalancersClient extends InnerSupportsGet<LoadBalancerInner>
      * @return the specified load balancer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<LoadBalancerInner> getByResourceGroupWithResponse(String resourceGroupName, String loadBalancerName, String expand, Context context);
+    Response<LoadBalancerInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String loadBalancerName, String expand, Context context);
 
     /**
      * Creates or updates a load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to the create or update load balancer operation.
@@ -202,11 +199,12 @@ public interface LoadBalancersClient extends InnerSupportsGet<LoadBalancerInner>
      * @return loadBalancer resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters);
 
     /**
      * Creates or updates a load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to the create or update load balancer operation.
@@ -216,11 +214,12 @@ public interface LoadBalancersClient extends InnerSupportsGet<LoadBalancerInner>
      * @return loadBalancer resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<LoadBalancerInner>, LoadBalancerInner> beginCreateOrUpdateAsync(String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters);
+    PollerFlux<PollResult<LoadBalancerInner>, LoadBalancerInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters);
 
     /**
      * Creates or updates a load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to the create or update load balancer operation.
@@ -230,11 +229,12 @@ public interface LoadBalancersClient extends InnerSupportsGet<LoadBalancerInner>
      * @return loadBalancer resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<LoadBalancerInner>, LoadBalancerInner> beginCreateOrUpdate(String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters);
+    SyncPoller<PollResult<LoadBalancerInner>, LoadBalancerInner> beginCreateOrUpdate(
+        String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters);
 
     /**
      * Creates or updates a load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to the create or update load balancer operation.
@@ -245,11 +245,12 @@ public interface LoadBalancersClient extends InnerSupportsGet<LoadBalancerInner>
      * @return loadBalancer resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<LoadBalancerInner>, LoadBalancerInner> beginCreateOrUpdate(String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters, Context context);
+    SyncPoller<PollResult<LoadBalancerInner>, LoadBalancerInner> beginCreateOrUpdate(
+        String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters, Context context);
 
     /**
      * Creates or updates a load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to the create or update load balancer operation.
@@ -259,11 +260,12 @@ public interface LoadBalancersClient extends InnerSupportsGet<LoadBalancerInner>
      * @return loadBalancer resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<LoadBalancerInner> createOrUpdateAsync(String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters);
+    Mono<LoadBalancerInner> createOrUpdateAsync(
+        String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters);
 
     /**
      * Creates or updates a load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to the create or update load balancer operation.
@@ -277,7 +279,7 @@ public interface LoadBalancersClient extends InnerSupportsGet<LoadBalancerInner>
 
     /**
      * Creates or updates a load balancer.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to the create or update load balancer operation.
@@ -288,11 +290,12 @@ public interface LoadBalancersClient extends InnerSupportsGet<LoadBalancerInner>
      * @return loadBalancer resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LoadBalancerInner createOrUpdate(String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters, Context context);
+    LoadBalancerInner createOrUpdate(
+        String resourceGroupName, String loadBalancerName, LoadBalancerInner parameters, Context context);
 
     /**
      * Updates a load balancer tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to update load balancer tags.
@@ -302,11 +305,12 @@ public interface LoadBalancersClient extends InnerSupportsGet<LoadBalancerInner>
      * @return loadBalancer resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(String resourceGroupName, String loadBalancerName, TagsObject parameters);
+    Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
+        String resourceGroupName, String loadBalancerName, TagsObject parameters);
 
     /**
      * Updates a load balancer tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to update load balancer tags.
@@ -316,11 +320,12 @@ public interface LoadBalancersClient extends InnerSupportsGet<LoadBalancerInner>
      * @return loadBalancer resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<LoadBalancerInner>, LoadBalancerInner> beginUpdateTagsAsync(String resourceGroupName, String loadBalancerName, TagsObject parameters);
+    PollerFlux<PollResult<LoadBalancerInner>, LoadBalancerInner> beginUpdateTagsAsync(
+        String resourceGroupName, String loadBalancerName, TagsObject parameters);
 
     /**
      * Updates a load balancer tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to update load balancer tags.
@@ -330,11 +335,12 @@ public interface LoadBalancersClient extends InnerSupportsGet<LoadBalancerInner>
      * @return loadBalancer resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<LoadBalancerInner>, LoadBalancerInner> beginUpdateTags(String resourceGroupName, String loadBalancerName, TagsObject parameters);
+    SyncPoller<PollResult<LoadBalancerInner>, LoadBalancerInner> beginUpdateTags(
+        String resourceGroupName, String loadBalancerName, TagsObject parameters);
 
     /**
      * Updates a load balancer tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to update load balancer tags.
@@ -345,11 +351,12 @@ public interface LoadBalancersClient extends InnerSupportsGet<LoadBalancerInner>
      * @return loadBalancer resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<LoadBalancerInner>, LoadBalancerInner> beginUpdateTags(String resourceGroupName, String loadBalancerName, TagsObject parameters, Context context);
+    SyncPoller<PollResult<LoadBalancerInner>, LoadBalancerInner> beginUpdateTags(
+        String resourceGroupName, String loadBalancerName, TagsObject parameters, Context context);
 
     /**
      * Updates a load balancer tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to update load balancer tags.
@@ -363,7 +370,7 @@ public interface LoadBalancersClient extends InnerSupportsGet<LoadBalancerInner>
 
     /**
      * Updates a load balancer tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to update load balancer tags.
@@ -377,7 +384,7 @@ public interface LoadBalancersClient extends InnerSupportsGet<LoadBalancerInner>
 
     /**
      * Updates a load balancer tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param parameters Parameters supplied to update load balancer tags.
@@ -388,11 +395,12 @@ public interface LoadBalancersClient extends InnerSupportsGet<LoadBalancerInner>
      * @return loadBalancer resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    LoadBalancerInner updateTags(String resourceGroupName, String loadBalancerName, TagsObject parameters, Context context);
+    LoadBalancerInner updateTags(
+        String resourceGroupName, String loadBalancerName, TagsObject parameters, Context context);
 
     /**
      * Gets all the load balancers in a subscription.
-     * 
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the load balancers in a subscription.
@@ -402,7 +410,7 @@ public interface LoadBalancersClient extends InnerSupportsGet<LoadBalancerInner>
 
     /**
      * Gets all the load balancers in a subscription.
-     * 
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the load balancers in a subscription.
@@ -412,7 +420,7 @@ public interface LoadBalancersClient extends InnerSupportsGet<LoadBalancerInner>
 
     /**
      * Gets all the load balancers in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -424,7 +432,7 @@ public interface LoadBalancersClient extends InnerSupportsGet<LoadBalancerInner>
 
     /**
      * Gets all the load balancers in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -436,7 +444,7 @@ public interface LoadBalancersClient extends InnerSupportsGet<LoadBalancerInner>
 
     /**
      * Gets all the load balancers in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -448,7 +456,7 @@ public interface LoadBalancersClient extends InnerSupportsGet<LoadBalancerInner>
 
     /**
      * Gets all the load balancers in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

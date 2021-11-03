@@ -8,8 +8,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
@@ -18,19 +16,15 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.ConnectionMonitorInner;
 import com.azure.resourcemanager.network.fluent.models.ConnectionMonitorQueryResultInner;
 import com.azure.resourcemanager.network.fluent.models.ConnectionMonitorResultInner;
-import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * ConnectionMonitorsClient.
- */
+/** An instance of this class provides access to all the operations defined in ConnectionMonitorsClient. */
 public interface ConnectionMonitorsClient {
     /**
      * Create or update a connection monitor.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -41,11 +35,15 @@ public interface ConnectionMonitorsClient {
      * @return information about the connection monitor.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String networkWatcherName, String connectionMonitorName, ConnectionMonitorInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName,
+        String networkWatcherName,
+        String connectionMonitorName,
+        ConnectionMonitorInner parameters);
 
     /**
      * Create or update a connection monitor.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -56,11 +54,15 @@ public interface ConnectionMonitorsClient {
      * @return information about the connection monitor.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<ConnectionMonitorResultInner>, ConnectionMonitorResultInner> beginCreateOrUpdateAsync(String resourceGroupName, String networkWatcherName, String connectionMonitorName, ConnectionMonitorInner parameters);
+    PollerFlux<PollResult<ConnectionMonitorResultInner>, ConnectionMonitorResultInner> beginCreateOrUpdateAsync(
+        String resourceGroupName,
+        String networkWatcherName,
+        String connectionMonitorName,
+        ConnectionMonitorInner parameters);
 
     /**
      * Create or update a connection monitor.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -71,11 +73,15 @@ public interface ConnectionMonitorsClient {
      * @return information about the connection monitor.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ConnectionMonitorResultInner>, ConnectionMonitorResultInner> beginCreateOrUpdate(String resourceGroupName, String networkWatcherName, String connectionMonitorName, ConnectionMonitorInner parameters);
+    SyncPoller<PollResult<ConnectionMonitorResultInner>, ConnectionMonitorResultInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String networkWatcherName,
+        String connectionMonitorName,
+        ConnectionMonitorInner parameters);
 
     /**
      * Create or update a connection monitor.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -87,11 +93,16 @@ public interface ConnectionMonitorsClient {
      * @return information about the connection monitor.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ConnectionMonitorResultInner>, ConnectionMonitorResultInner> beginCreateOrUpdate(String resourceGroupName, String networkWatcherName, String connectionMonitorName, ConnectionMonitorInner parameters, Context context);
+    SyncPoller<PollResult<ConnectionMonitorResultInner>, ConnectionMonitorResultInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String networkWatcherName,
+        String connectionMonitorName,
+        ConnectionMonitorInner parameters,
+        Context context);
 
     /**
      * Create or update a connection monitor.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -102,11 +113,15 @@ public interface ConnectionMonitorsClient {
      * @return information about the connection monitor.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ConnectionMonitorResultInner> createOrUpdateAsync(String resourceGroupName, String networkWatcherName, String connectionMonitorName, ConnectionMonitorInner parameters);
+    Mono<ConnectionMonitorResultInner> createOrUpdateAsync(
+        String resourceGroupName,
+        String networkWatcherName,
+        String connectionMonitorName,
+        ConnectionMonitorInner parameters);
 
     /**
      * Create or update a connection monitor.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -117,11 +132,15 @@ public interface ConnectionMonitorsClient {
      * @return information about the connection monitor.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConnectionMonitorResultInner createOrUpdate(String resourceGroupName, String networkWatcherName, String connectionMonitorName, ConnectionMonitorInner parameters);
+    ConnectionMonitorResultInner createOrUpdate(
+        String resourceGroupName,
+        String networkWatcherName,
+        String connectionMonitorName,
+        ConnectionMonitorInner parameters);
 
     /**
      * Create or update a connection monitor.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -133,11 +152,16 @@ public interface ConnectionMonitorsClient {
      * @return information about the connection monitor.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConnectionMonitorResultInner createOrUpdate(String resourceGroupName, String networkWatcherName, String connectionMonitorName, ConnectionMonitorInner parameters, Context context);
+    ConnectionMonitorResultInner createOrUpdate(
+        String resourceGroupName,
+        String networkWatcherName,
+        String connectionMonitorName,
+        ConnectionMonitorInner parameters,
+        Context context);
 
     /**
      * Gets a connection monitor by name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -147,11 +171,12 @@ public interface ConnectionMonitorsClient {
      * @return a connection monitor by name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ConnectionMonitorResultInner>> getWithResponseAsync(String resourceGroupName, String networkWatcherName, String connectionMonitorName);
+    Mono<Response<ConnectionMonitorResultInner>> getWithResponseAsync(
+        String resourceGroupName, String networkWatcherName, String connectionMonitorName);
 
     /**
      * Gets a connection monitor by name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -161,11 +186,12 @@ public interface ConnectionMonitorsClient {
      * @return a connection monitor by name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ConnectionMonitorResultInner> getAsync(String resourceGroupName, String networkWatcherName, String connectionMonitorName);
+    Mono<ConnectionMonitorResultInner> getAsync(
+        String resourceGroupName, String networkWatcherName, String connectionMonitorName);
 
     /**
      * Gets a connection monitor by name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -179,7 +205,7 @@ public interface ConnectionMonitorsClient {
 
     /**
      * Gets a connection monitor by name.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -190,11 +216,12 @@ public interface ConnectionMonitorsClient {
      * @return a connection monitor by name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ConnectionMonitorResultInner> getWithResponse(String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context);
+    Response<ConnectionMonitorResultInner> getWithResponse(
+        String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context);
 
     /**
      * Deletes the specified connection monitor.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -204,11 +231,12 @@ public interface ConnectionMonitorsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String networkWatcherName, String connectionMonitorName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String networkWatcherName, String connectionMonitorName);
 
     /**
      * Deletes the specified connection monitor.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -218,11 +246,12 @@ public interface ConnectionMonitorsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkWatcherName, String connectionMonitorName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String networkWatcherName, String connectionMonitorName);
 
     /**
      * Deletes the specified connection monitor.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -232,11 +261,12 @@ public interface ConnectionMonitorsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkWatcherName, String connectionMonitorName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String networkWatcherName, String connectionMonitorName);
 
     /**
      * Deletes the specified connection monitor.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -247,11 +277,12 @@ public interface ConnectionMonitorsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context);
 
     /**
      * Deletes the specified connection monitor.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -265,7 +296,7 @@ public interface ConnectionMonitorsClient {
 
     /**
      * Deletes the specified connection monitor.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -278,7 +309,7 @@ public interface ConnectionMonitorsClient {
 
     /**
      * Deletes the specified connection monitor.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -292,7 +323,7 @@ public interface ConnectionMonitorsClient {
 
     /**
      * Stops the specified connection monitor.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -302,11 +333,12 @@ public interface ConnectionMonitorsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(String resourceGroupName, String networkWatcherName, String connectionMonitorName);
+    Mono<Response<Flux<ByteBuffer>>> stopWithResponseAsync(
+        String resourceGroupName, String networkWatcherName, String connectionMonitorName);
 
     /**
      * Stops the specified connection monitor.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -316,11 +348,12 @@ public interface ConnectionMonitorsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<Void>, Void> beginStopAsync(String resourceGroupName, String networkWatcherName, String connectionMonitorName);
+    PollerFlux<PollResult<Void>, Void> beginStopAsync(
+        String resourceGroupName, String networkWatcherName, String connectionMonitorName);
 
     /**
      * Stops the specified connection monitor.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -330,11 +363,12 @@ public interface ConnectionMonitorsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String networkWatcherName, String connectionMonitorName);
+    SyncPoller<PollResult<Void>, Void> beginStop(
+        String resourceGroupName, String networkWatcherName, String connectionMonitorName);
 
     /**
      * Stops the specified connection monitor.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -345,11 +379,12 @@ public interface ConnectionMonitorsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginStop(String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginStop(
+        String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context);
 
     /**
      * Stops the specified connection monitor.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -363,7 +398,7 @@ public interface ConnectionMonitorsClient {
 
     /**
      * Stops the specified connection monitor.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -376,7 +411,7 @@ public interface ConnectionMonitorsClient {
 
     /**
      * Stops the specified connection monitor.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -390,7 +425,7 @@ public interface ConnectionMonitorsClient {
 
     /**
      * Starts the specified connection monitor.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -400,11 +435,12 @@ public interface ConnectionMonitorsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(String resourceGroupName, String networkWatcherName, String connectionMonitorName);
+    Mono<Response<Flux<ByteBuffer>>> startWithResponseAsync(
+        String resourceGroupName, String networkWatcherName, String connectionMonitorName);
 
     /**
      * Starts the specified connection monitor.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -414,11 +450,12 @@ public interface ConnectionMonitorsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<Void>, Void> beginStartAsync(String resourceGroupName, String networkWatcherName, String connectionMonitorName);
+    PollerFlux<PollResult<Void>, Void> beginStartAsync(
+        String resourceGroupName, String networkWatcherName, String connectionMonitorName);
 
     /**
      * Starts the specified connection monitor.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -428,11 +465,12 @@ public interface ConnectionMonitorsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String networkWatcherName, String connectionMonitorName);
+    SyncPoller<PollResult<Void>, Void> beginStart(
+        String resourceGroupName, String networkWatcherName, String connectionMonitorName);
 
     /**
      * Starts the specified connection monitor.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -443,11 +481,12 @@ public interface ConnectionMonitorsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginStart(String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginStart(
+        String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context);
 
     /**
      * Starts the specified connection monitor.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -461,7 +500,7 @@ public interface ConnectionMonitorsClient {
 
     /**
      * Starts the specified connection monitor.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -474,7 +513,7 @@ public interface ConnectionMonitorsClient {
 
     /**
      * Starts the specified connection monitor.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name of the connection monitor.
@@ -488,7 +527,7 @@ public interface ConnectionMonitorsClient {
 
     /**
      * Query a snapshot of the most recent connection states.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name given to the connection monitor.
@@ -498,11 +537,12 @@ public interface ConnectionMonitorsClient {
      * @return list of connection states snapshots.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> queryWithResponseAsync(String resourceGroupName, String networkWatcherName, String connectionMonitorName);
+    Mono<Response<Flux<ByteBuffer>>> queryWithResponseAsync(
+        String resourceGroupName, String networkWatcherName, String connectionMonitorName);
 
     /**
      * Query a snapshot of the most recent connection states.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name given to the connection monitor.
@@ -512,11 +552,12 @@ public interface ConnectionMonitorsClient {
      * @return list of connection states snapshots.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<ConnectionMonitorQueryResultInner>, ConnectionMonitorQueryResultInner> beginQueryAsync(String resourceGroupName, String networkWatcherName, String connectionMonitorName);
+    PollerFlux<PollResult<ConnectionMonitorQueryResultInner>, ConnectionMonitorQueryResultInner> beginQueryAsync(
+        String resourceGroupName, String networkWatcherName, String connectionMonitorName);
 
     /**
      * Query a snapshot of the most recent connection states.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name given to the connection monitor.
@@ -526,11 +567,12 @@ public interface ConnectionMonitorsClient {
      * @return list of connection states snapshots.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ConnectionMonitorQueryResultInner>, ConnectionMonitorQueryResultInner> beginQuery(String resourceGroupName, String networkWatcherName, String connectionMonitorName);
+    SyncPoller<PollResult<ConnectionMonitorQueryResultInner>, ConnectionMonitorQueryResultInner> beginQuery(
+        String resourceGroupName, String networkWatcherName, String connectionMonitorName);
 
     /**
      * Query a snapshot of the most recent connection states.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name given to the connection monitor.
@@ -541,11 +583,12 @@ public interface ConnectionMonitorsClient {
      * @return list of connection states snapshots.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ConnectionMonitorQueryResultInner>, ConnectionMonitorQueryResultInner> beginQuery(String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context);
+    SyncPoller<PollResult<ConnectionMonitorQueryResultInner>, ConnectionMonitorQueryResultInner> beginQuery(
+        String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context);
 
     /**
      * Query a snapshot of the most recent connection states.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name given to the connection monitor.
@@ -555,11 +598,12 @@ public interface ConnectionMonitorsClient {
      * @return list of connection states snapshots.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ConnectionMonitorQueryResultInner> queryAsync(String resourceGroupName, String networkWatcherName, String connectionMonitorName);
+    Mono<ConnectionMonitorQueryResultInner> queryAsync(
+        String resourceGroupName, String networkWatcherName, String connectionMonitorName);
 
     /**
      * Query a snapshot of the most recent connection states.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name given to the connection monitor.
@@ -569,11 +613,12 @@ public interface ConnectionMonitorsClient {
      * @return list of connection states snapshots.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConnectionMonitorQueryResultInner query(String resourceGroupName, String networkWatcherName, String connectionMonitorName);
+    ConnectionMonitorQueryResultInner query(
+        String resourceGroupName, String networkWatcherName, String connectionMonitorName);
 
     /**
      * Query a snapshot of the most recent connection states.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param connectionMonitorName The name given to the connection monitor.
@@ -584,11 +629,12 @@ public interface ConnectionMonitorsClient {
      * @return list of connection states snapshots.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConnectionMonitorQueryResultInner query(String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context);
+    ConnectionMonitorQueryResultInner query(
+        String resourceGroupName, String networkWatcherName, String connectionMonitorName, Context context);
 
     /**
      * Lists all connection monitors for the specified Network Watcher.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -601,7 +647,7 @@ public interface ConnectionMonitorsClient {
 
     /**
      * Lists all connection monitors for the specified Network Watcher.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -614,7 +660,7 @@ public interface ConnectionMonitorsClient {
 
     /**
      * Lists all connection monitors for the specified Network Watcher.
-     * 
+     *
      * @param resourceGroupName The name of the resource group containing Network Watcher.
      * @param networkWatcherName The name of the Network Watcher resource.
      * @param context The context to associate with this operation.
@@ -624,5 +670,6 @@ public interface ConnectionMonitorsClient {
      * @return list of connection monitors.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ConnectionMonitorResultInner> list(String resourceGroupName, String networkWatcherName, Context context);
+    PagedIterable<ConnectionMonitorResultInner> list(
+        String resourceGroupName, String networkWatcherName, Context context);
 }

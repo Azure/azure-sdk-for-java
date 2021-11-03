@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Access profile for managed cluster API server.
- */
+/** Access profile for managed cluster API server. */
 @Fluent
 public final class ManagedClusterApiServerAccessProfile {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ManagedClusterApiServerAccessProfile.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterApiServerAccessProfile.class);
 
     /*
      * Authorized IP Ranges to kubernetes API server.
@@ -39,9 +34,8 @@ public final class ManagedClusterApiServerAccessProfile {
     private String privateDnsZone;
 
     /**
-     * Get the authorizedIpRanges property: Authorized IP Ranges to kubernetes
-     * API server.
-     * 
+     * Get the authorizedIpRanges property: Authorized IP Ranges to kubernetes API server.
+     *
      * @return the authorizedIpRanges value.
      */
     public List<String> authorizedIpRanges() {
@@ -49,9 +43,8 @@ public final class ManagedClusterApiServerAccessProfile {
     }
 
     /**
-     * Set the authorizedIpRanges property: Authorized IP Ranges to kubernetes
-     * API server.
-     * 
+     * Set the authorizedIpRanges property: Authorized IP Ranges to kubernetes API server.
+     *
      * @param authorizedIpRanges the authorizedIpRanges value to set.
      * @return the ManagedClusterApiServerAccessProfile object itself.
      */
@@ -61,9 +54,8 @@ public final class ManagedClusterApiServerAccessProfile {
     }
 
     /**
-     * Get the enablePrivateCluster property: Whether to create the cluster as
-     * a private cluster or not.
-     * 
+     * Get the enablePrivateCluster property: Whether to create the cluster as a private cluster or not.
+     *
      * @return the enablePrivateCluster value.
      */
     public Boolean enablePrivateCluster() {
@@ -71,9 +63,8 @@ public final class ManagedClusterApiServerAccessProfile {
     }
 
     /**
-     * Set the enablePrivateCluster property: Whether to create the cluster as
-     * a private cluster or not.
-     * 
+     * Set the enablePrivateCluster property: Whether to create the cluster as a private cluster or not.
+     *
      * @param enablePrivateCluster the enablePrivateCluster value to set.
      * @return the ManagedClusterApiServerAccessProfile object itself.
      */
@@ -83,9 +74,8 @@ public final class ManagedClusterApiServerAccessProfile {
     }
 
     /**
-     * Get the privateDnsZone property: Private dns zone mode for private
-     * cluster.
-     * 
+     * Get the privateDnsZone property: Private dns zone mode for private cluster.
+     *
      * @return the privateDnsZone value.
      */
     public String privateDnsZone() {
@@ -93,9 +83,8 @@ public final class ManagedClusterApiServerAccessProfile {
     }
 
     /**
-     * Set the privateDnsZone property: Private dns zone mode for private
-     * cluster.
-     * 
+     * Set the privateDnsZone property: Private dns zone mode for private cluster.
+     *
      * @param privateDnsZone the privateDnsZone value to set.
      * @return the ManagedClusterApiServerAccessProfile object itself.
      */
@@ -106,7 +95,7 @@ public final class ManagedClusterApiServerAccessProfile {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

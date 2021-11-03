@@ -5,24 +5,19 @@
 package com.azure.resourcemanager.eventhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.models.DefaultAction;
 import com.azure.resourcemanager.eventhubs.models.NWRuleSetIpRules;
 import com.azure.resourcemanager.eventhubs.models.NWRuleSetVirtualNetworkRules;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Description of NetworkRuleSet resource.
- */
+/** Description of NetworkRuleSet resource. */
 @Fluent
 public final class NetworkRuleSetInner extends ProxyResource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(NetworkRuleSetInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkRuleSetInner.class);
 
     /*
      * NetworkRuleSet properties
@@ -32,7 +27,7 @@ public final class NetworkRuleSetInner extends ProxyResource {
 
     /**
      * Get the innerProperties property: NetworkRuleSet properties.
-     * 
+     *
      * @return the innerProperties value.
      */
     private NetworkRuleSetProperties innerProperties() {
@@ -41,7 +36,7 @@ public final class NetworkRuleSetInner extends ProxyResource {
 
     /**
      * Get the defaultAction property: Default Action for Network Rule Set.
-     * 
+     *
      * @return the defaultAction value.
      */
     public DefaultAction defaultAction() {
@@ -50,7 +45,7 @@ public final class NetworkRuleSetInner extends ProxyResource {
 
     /**
      * Set the defaultAction property: Default Action for Network Rule Set.
-     * 
+     *
      * @param defaultAction the defaultAction value to set.
      * @return the NetworkRuleSetInner object itself.
      */
@@ -64,7 +59,7 @@ public final class NetworkRuleSetInner extends ProxyResource {
 
     /**
      * Get the virtualNetworkRules property: List VirtualNetwork Rules.
-     * 
+     *
      * @return the virtualNetworkRules value.
      */
     public List<NWRuleSetVirtualNetworkRules> virtualNetworkRules() {
@@ -73,7 +68,7 @@ public final class NetworkRuleSetInner extends ProxyResource {
 
     /**
      * Set the virtualNetworkRules property: List VirtualNetwork Rules.
-     * 
+     *
      * @param virtualNetworkRules the virtualNetworkRules value to set.
      * @return the NetworkRuleSetInner object itself.
      */
@@ -87,7 +82,7 @@ public final class NetworkRuleSetInner extends ProxyResource {
 
     /**
      * Get the ipRules property: List of IpRules.
-     * 
+     *
      * @return the ipRules value.
      */
     public List<NWRuleSetIpRules> ipRules() {
@@ -96,7 +91,7 @@ public final class NetworkRuleSetInner extends ProxyResource {
 
     /**
      * Set the ipRules property: List of IpRules.
-     * 
+     *
      * @param ipRules the ipRules value to set.
      * @return the NetworkRuleSetInner object itself.
      */
@@ -110,7 +105,7 @@ public final class NetworkRuleSetInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

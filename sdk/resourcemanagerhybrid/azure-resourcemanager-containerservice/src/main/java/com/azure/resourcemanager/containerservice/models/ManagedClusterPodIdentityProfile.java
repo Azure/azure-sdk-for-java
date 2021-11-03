@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ManagedClusterPodIdentityProfile model.
- */
+/** The ManagedClusterPodIdentityProfile model. */
 @Fluent
 public final class ManagedClusterPodIdentityProfile {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ManagedClusterPodIdentityProfile.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterPodIdentityProfile.class);
 
     /*
      * Whether the pod identity addon is enabled.
@@ -40,7 +35,7 @@ public final class ManagedClusterPodIdentityProfile {
 
     /**
      * Get the enabled property: Whether the pod identity addon is enabled.
-     * 
+     *
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -49,7 +44,7 @@ public final class ManagedClusterPodIdentityProfile {
 
     /**
      * Set the enabled property: Whether the pod identity addon is enabled.
-     * 
+     *
      * @param enabled the enabled value to set.
      * @return the ManagedClusterPodIdentityProfile object itself.
      */
@@ -59,9 +54,8 @@ public final class ManagedClusterPodIdentityProfile {
     }
 
     /**
-     * Get the userAssignedIdentities property: User assigned pod identity
-     * settings.
-     * 
+     * Get the userAssignedIdentities property: User assigned pod identity settings.
+     *
      * @return the userAssignedIdentities value.
      */
     public List<ManagedClusterPodIdentity> userAssignedIdentities() {
@@ -69,21 +63,20 @@ public final class ManagedClusterPodIdentityProfile {
     }
 
     /**
-     * Set the userAssignedIdentities property: User assigned pod identity
-     * settings.
-     * 
+     * Set the userAssignedIdentities property: User assigned pod identity settings.
+     *
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the ManagedClusterPodIdentityProfile object itself.
      */
-    public ManagedClusterPodIdentityProfile withUserAssignedIdentities(List<ManagedClusterPodIdentity> userAssignedIdentities) {
+    public ManagedClusterPodIdentityProfile withUserAssignedIdentities(
+        List<ManagedClusterPodIdentity> userAssignedIdentities) {
         this.userAssignedIdentities = userAssignedIdentities;
         return this;
     }
 
     /**
-     * Get the userAssignedIdentityExceptions property: User assigned pod
-     * identity exception settings.
-     * 
+     * Get the userAssignedIdentityExceptions property: User assigned pod identity exception settings.
+     *
      * @return the userAssignedIdentityExceptions value.
      */
     public List<ManagedClusterPodIdentityException> userAssignedIdentityExceptions() {
@@ -91,21 +84,20 @@ public final class ManagedClusterPodIdentityProfile {
     }
 
     /**
-     * Set the userAssignedIdentityExceptions property: User assigned pod
-     * identity exception settings.
-     * 
-     * @param userAssignedIdentityExceptions the userAssignedIdentityExceptions
-     * value to set.
+     * Set the userAssignedIdentityExceptions property: User assigned pod identity exception settings.
+     *
+     * @param userAssignedIdentityExceptions the userAssignedIdentityExceptions value to set.
      * @return the ManagedClusterPodIdentityProfile object itself.
      */
-    public ManagedClusterPodIdentityProfile withUserAssignedIdentityExceptions(List<ManagedClusterPodIdentityException> userAssignedIdentityExceptions) {
+    public ManagedClusterPodIdentityProfile withUserAssignedIdentityExceptions(
+        List<ManagedClusterPodIdentityException> userAssignedIdentityExceptions) {
         this.userAssignedIdentityExceptions = userAssignedIdentityExceptions;
         return this;
     }
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

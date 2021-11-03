@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * The ListQueueProperties model.
- */
+/** The ListQueueProperties model. */
 @Fluent
 public final class ListQueueProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ListQueueProperties.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListQueueProperties.class);
 
     /*
      * A name-value pair that represents queue metadata.
@@ -29,9 +24,8 @@ public final class ListQueueProperties {
     private Map<String, String> metadata;
 
     /**
-     * Get the metadata property: A name-value pair that represents queue
-     * metadata.
-     * 
+     * Get the metadata property: A name-value pair that represents queue metadata.
+     *
      * @return the metadata value.
      */
     public Map<String, String> metadata() {
@@ -39,9 +33,8 @@ public final class ListQueueProperties {
     }
 
     /**
-     * Set the metadata property: A name-value pair that represents queue
-     * metadata.
-     * 
+     * Set the metadata property: A name-value pair that represents queue metadata.
+     *
      * @param metadata the metadata value to set.
      * @return the ListQueueProperties object itself.
      */
@@ -52,7 +45,7 @@ public final class ListQueueProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

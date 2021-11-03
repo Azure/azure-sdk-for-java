@@ -8,23 +8,17 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for VirtualNetworkGatewayType.
- */
+/** Defines values for VirtualNetworkGatewayType. */
 public final class VirtualNetworkGatewayType extends ExpandableStringEnum<VirtualNetworkGatewayType> {
-    /**
-     * Static value Vpn for VirtualNetworkGatewayType.
-     */
+    /** Static value Vpn for VirtualNetworkGatewayType. */
     public static final VirtualNetworkGatewayType VPN = fromString("Vpn");
 
-    /**
-     * Static value ExpressRoute for VirtualNetworkGatewayType.
-     */
+    /** Static value ExpressRoute for VirtualNetworkGatewayType. */
     public static final VirtualNetworkGatewayType EXPRESS_ROUTE = fromString("ExpressRoute");
 
     /**
      * Creates or finds a VirtualNetworkGatewayType from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding VirtualNetworkGatewayType.
      */
@@ -33,9 +27,7 @@ public final class VirtualNetworkGatewayType extends ExpandableStringEnum<Virtua
         return fromString(name, VirtualNetworkGatewayType.class);
     }
 
-    /**
-     * @return known VirtualNetworkGatewayType values.
-     */
+    /** @return known VirtualNetworkGatewayType values. */
     public static Collection<VirtualNetworkGatewayType> values() {
         return values(VirtualNetworkGatewayType.class);
     }

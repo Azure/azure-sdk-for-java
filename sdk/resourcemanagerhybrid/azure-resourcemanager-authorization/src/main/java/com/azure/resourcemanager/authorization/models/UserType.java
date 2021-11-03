@@ -8,23 +8,17 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for UserType.
- */
+/** Defines values for UserType. */
 public final class UserType extends ExpandableStringEnum<UserType> {
-    /**
-     * Static value Member for UserType.
-     */
+    /** Static value Member for UserType. */
     public static final UserType MEMBER = fromString("Member");
 
-    /**
-     * Static value Guest for UserType.
-     */
+    /** Static value Guest for UserType. */
     public static final UserType GUEST = fromString("Guest");
 
     /**
      * Creates or finds a UserType from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding UserType.
      */
@@ -33,9 +27,7 @@ public final class UserType extends ExpandableStringEnum<UserType> {
         return fromString(name, UserType.class);
     }
 
-    /**
-     * @return known UserType values.
-     */
+    /** @return known UserType values. */
     public static Collection<UserType> values() {
         return values(UserType.class);
     }

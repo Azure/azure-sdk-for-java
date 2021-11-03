@@ -8,23 +8,17 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for OSDiskType.
- */
+/** Defines values for OSDiskType. */
 public final class OSDiskType extends ExpandableStringEnum<OSDiskType> {
-    /**
-     * Static value Managed for OSDiskType.
-     */
+    /** Static value Managed for OSDiskType. */
     public static final OSDiskType MANAGED = fromString("Managed");
 
-    /**
-     * Static value Ephemeral for OSDiskType.
-     */
+    /** Static value Ephemeral for OSDiskType. */
     public static final OSDiskType EPHEMERAL = fromString("Ephemeral");
 
     /**
      * Creates or finds a OSDiskType from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding OSDiskType.
      */
@@ -33,9 +27,7 @@ public final class OSDiskType extends ExpandableStringEnum<OSDiskType> {
         return fromString(name, OSDiskType.class);
     }
 
-    /**
-     * @return known OSDiskType values.
-     */
+    /** @return known OSDiskType values. */
     public static Collection<OSDiskType> values() {
         return values(OSDiskType.class);
     }

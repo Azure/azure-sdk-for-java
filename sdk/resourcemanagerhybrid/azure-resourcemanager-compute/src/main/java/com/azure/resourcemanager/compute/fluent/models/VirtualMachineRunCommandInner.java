@@ -5,26 +5,20 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.RunCommandInputParameter;
 import com.azure.resourcemanager.compute.models.VirtualMachineRunCommandInstanceView;
 import com.azure.resourcemanager.compute.models.VirtualMachineRunCommandScriptSource;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Describes a Virtual Machine run command.
- */
+/** Describes a Virtual Machine run command. */
 @Fluent
 public final class VirtualMachineRunCommandInner extends Resource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(VirtualMachineRunCommandInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineRunCommandInner.class);
 
     /*
      * Describes the properties of a Virtual Machine run command.
@@ -33,27 +27,22 @@ public final class VirtualMachineRunCommandInner extends Resource {
     private VirtualMachineRunCommandProperties innerProperties;
 
     /**
-     * Get the innerProperties property: Describes the properties of a Virtual
-     * Machine run command.
-     * 
+     * Get the innerProperties property: Describes the properties of a Virtual Machine run command.
+     *
      * @return the innerProperties value.
      */
     private VirtualMachineRunCommandProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public VirtualMachineRunCommandInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public VirtualMachineRunCommandInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -62,7 +51,7 @@ public final class VirtualMachineRunCommandInner extends Resource {
 
     /**
      * Get the source property: The source of the run command script.
-     * 
+     *
      * @return the source value.
      */
     public VirtualMachineRunCommandScriptSource source() {
@@ -71,7 +60,7 @@ public final class VirtualMachineRunCommandInner extends Resource {
 
     /**
      * Set the source property: The source of the run command script.
-     * 
+     *
      * @param source the source value to set.
      * @return the VirtualMachineRunCommandInner object itself.
      */
@@ -85,7 +74,7 @@ public final class VirtualMachineRunCommandInner extends Resource {
 
     /**
      * Get the parameters property: The parameters used by the script.
-     * 
+     *
      * @return the parameters value.
      */
     public List<RunCommandInputParameter> parameters() {
@@ -94,7 +83,7 @@ public final class VirtualMachineRunCommandInner extends Resource {
 
     /**
      * Set the parameters property: The parameters used by the script.
-     * 
+     *
      * @param parameters the parameters value to set.
      * @return the VirtualMachineRunCommandInner object itself.
      */
@@ -108,7 +97,7 @@ public final class VirtualMachineRunCommandInner extends Resource {
 
     /**
      * Get the protectedParameters property: The parameters used by the script.
-     * 
+     *
      * @return the protectedParameters value.
      */
     public List<RunCommandInputParameter> protectedParameters() {
@@ -117,7 +106,7 @@ public final class VirtualMachineRunCommandInner extends Resource {
 
     /**
      * Set the protectedParameters property: The parameters used by the script.
-     * 
+     *
      * @param protectedParameters the protectedParameters value to set.
      * @return the VirtualMachineRunCommandInner object itself.
      */
@@ -130,10 +119,9 @@ public final class VirtualMachineRunCommandInner extends Resource {
     }
 
     /**
-     * Get the asyncExecution property: Optional. If set to true, provisioning
-     * will complete as soon as the script starts and will not wait for script
-     * to complete.
-     * 
+     * Get the asyncExecution property: Optional. If set to true, provisioning will complete as soon as the script
+     * starts and will not wait for script to complete.
+     *
      * @return the asyncExecution value.
      */
     public Boolean asyncExecution() {
@@ -141,10 +129,9 @@ public final class VirtualMachineRunCommandInner extends Resource {
     }
 
     /**
-     * Set the asyncExecution property: Optional. If set to true, provisioning
-     * will complete as soon as the script starts and will not wait for script
-     * to complete.
-     * 
+     * Set the asyncExecution property: Optional. If set to true, provisioning will complete as soon as the script
+     * starts and will not wait for script to complete.
+     *
      * @param asyncExecution the asyncExecution value to set.
      * @return the VirtualMachineRunCommandInner object itself.
      */
@@ -157,9 +144,8 @@ public final class VirtualMachineRunCommandInner extends Resource {
     }
 
     /**
-     * Get the runAsUser property: Specifies the user account on the VM when
-     * executing the run command.
-     * 
+     * Get the runAsUser property: Specifies the user account on the VM when executing the run command.
+     *
      * @return the runAsUser value.
      */
     public String runAsUser() {
@@ -167,9 +153,8 @@ public final class VirtualMachineRunCommandInner extends Resource {
     }
 
     /**
-     * Set the runAsUser property: Specifies the user account on the VM when
-     * executing the run command.
-     * 
+     * Set the runAsUser property: Specifies the user account on the VM when executing the run command.
+     *
      * @param runAsUser the runAsUser value to set.
      * @return the VirtualMachineRunCommandInner object itself.
      */
@@ -182,9 +167,8 @@ public final class VirtualMachineRunCommandInner extends Resource {
     }
 
     /**
-     * Get the runAsPassword property: Specifies the user account password on
-     * the VM when executing the run command.
-     * 
+     * Get the runAsPassword property: Specifies the user account password on the VM when executing the run command.
+     *
      * @return the runAsPassword value.
      */
     public String runAsPassword() {
@@ -192,9 +176,8 @@ public final class VirtualMachineRunCommandInner extends Resource {
     }
 
     /**
-     * Set the runAsPassword property: Specifies the user account password on
-     * the VM when executing the run command.
-     * 
+     * Set the runAsPassword property: Specifies the user account password on the VM when executing the run command.
+     *
      * @param runAsPassword the runAsPassword value to set.
      * @return the VirtualMachineRunCommandInner object itself.
      */
@@ -207,9 +190,8 @@ public final class VirtualMachineRunCommandInner extends Resource {
     }
 
     /**
-     * Get the timeoutInSeconds property: The timeout in seconds to execute the
-     * run command.
-     * 
+     * Get the timeoutInSeconds property: The timeout in seconds to execute the run command.
+     *
      * @return the timeoutInSeconds value.
      */
     public Integer timeoutInSeconds() {
@@ -217,9 +199,8 @@ public final class VirtualMachineRunCommandInner extends Resource {
     }
 
     /**
-     * Set the timeoutInSeconds property: The timeout in seconds to execute the
-     * run command.
-     * 
+     * Set the timeoutInSeconds property: The timeout in seconds to execute the run command.
+     *
      * @param timeoutInSeconds the timeoutInSeconds value to set.
      * @return the VirtualMachineRunCommandInner object itself.
      */
@@ -232,9 +213,8 @@ public final class VirtualMachineRunCommandInner extends Resource {
     }
 
     /**
-     * Get the outputBlobUri property: Specifies the Azure storage blob where
-     * script output stream will be uploaded.
-     * 
+     * Get the outputBlobUri property: Specifies the Azure storage blob where script output stream will be uploaded.
+     *
      * @return the outputBlobUri value.
      */
     public String outputBlobUri() {
@@ -242,9 +222,8 @@ public final class VirtualMachineRunCommandInner extends Resource {
     }
 
     /**
-     * Set the outputBlobUri property: Specifies the Azure storage blob where
-     * script output stream will be uploaded.
-     * 
+     * Set the outputBlobUri property: Specifies the Azure storage blob where script output stream will be uploaded.
+     *
      * @param outputBlobUri the outputBlobUri value to set.
      * @return the VirtualMachineRunCommandInner object itself.
      */
@@ -257,9 +236,8 @@ public final class VirtualMachineRunCommandInner extends Resource {
     }
 
     /**
-     * Get the errorBlobUri property: Specifies the Azure storage blob where
-     * script error stream will be uploaded.
-     * 
+     * Get the errorBlobUri property: Specifies the Azure storage blob where script error stream will be uploaded.
+     *
      * @return the errorBlobUri value.
      */
     public String errorBlobUri() {
@@ -267,9 +245,8 @@ public final class VirtualMachineRunCommandInner extends Resource {
     }
 
     /**
-     * Set the errorBlobUri property: Specifies the Azure storage blob where
-     * script error stream will be uploaded.
-     * 
+     * Set the errorBlobUri property: Specifies the Azure storage blob where script error stream will be uploaded.
+     *
      * @param errorBlobUri the errorBlobUri value to set.
      * @return the VirtualMachineRunCommandInner object itself.
      */
@@ -282,9 +259,8 @@ public final class VirtualMachineRunCommandInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state, which only
-     * appears in the response.
-     * 
+     * Get the provisioningState property: The provisioning state, which only appears in the response.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -292,9 +268,8 @@ public final class VirtualMachineRunCommandInner extends Resource {
     }
 
     /**
-     * Get the instanceView property: The virtual machine run command instance
-     * view.
-     * 
+     * Get the instanceView property: The virtual machine run command instance view.
+     *
      * @return the instanceView value.
      */
     public VirtualMachineRunCommandInstanceView instanceView() {
@@ -303,7 +278,7 @@ public final class VirtualMachineRunCommandInner extends Resource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

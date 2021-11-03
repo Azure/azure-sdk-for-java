@@ -7,23 +7,15 @@ package com.azure.resourcemanager.dns.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for ZoneType.
- */
+/** Defines values for ZoneType. */
 public enum ZoneType {
-    /**
-     * Enum value Public.
-     */
+    /** Enum value Public. */
     PUBLIC("Public"),
 
-    /**
-     * Enum value Private.
-     */
+    /** Enum value Private. */
     PRIVATE("Private");
 
-    /**
-     * The actual serialized value for a ZoneType instance.
-     */
+    /** The actual serialized value for a ZoneType instance. */
     private final String value;
 
     ZoneType(String value) {
@@ -32,7 +24,7 @@ public enum ZoneType {
 
     /**
      * Parses a serialized value to a ZoneType instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed ZoneType object, or null if unable to parse.
      */

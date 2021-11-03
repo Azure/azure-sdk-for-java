@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ApplicationGatewayRequestRoutingRuleType;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Properties of request routing rule of the application gateway.
- */
+/** Properties of request routing rule of the application gateway. */
 @Fluent
 public final class ApplicationGatewayRequestRoutingRulePropertiesFormat {
     @JsonIgnore
@@ -72,7 +68,7 @@ public final class ApplicationGatewayRequestRoutingRulePropertiesFormat {
 
     /**
      * Get the ruleType property: Rule type.
-     * 
+     *
      * @return the ruleType value.
      */
     public ApplicationGatewayRequestRoutingRuleType ruleType() {
@@ -81,20 +77,19 @@ public final class ApplicationGatewayRequestRoutingRulePropertiesFormat {
 
     /**
      * Set the ruleType property: Rule type.
-     * 
+     *
      * @param ruleType the ruleType value to set.
-     * @return the ApplicationGatewayRequestRoutingRulePropertiesFormat object
-     * itself.
+     * @return the ApplicationGatewayRequestRoutingRulePropertiesFormat object itself.
      */
-    public ApplicationGatewayRequestRoutingRulePropertiesFormat withRuleType(ApplicationGatewayRequestRoutingRuleType ruleType) {
+    public ApplicationGatewayRequestRoutingRulePropertiesFormat withRuleType(
+        ApplicationGatewayRequestRoutingRuleType ruleType) {
         this.ruleType = ruleType;
         return this;
     }
 
     /**
-     * Get the backendAddressPool property: Backend address pool resource of
-     * the application gateway.
-     * 
+     * Get the backendAddressPool property: Backend address pool resource of the application gateway.
+     *
      * @return the backendAddressPool value.
      */
     public SubResource backendAddressPool() {
@@ -102,12 +97,10 @@ public final class ApplicationGatewayRequestRoutingRulePropertiesFormat {
     }
 
     /**
-     * Set the backendAddressPool property: Backend address pool resource of
-     * the application gateway.
-     * 
+     * Set the backendAddressPool property: Backend address pool resource of the application gateway.
+     *
      * @param backendAddressPool the backendAddressPool value to set.
-     * @return the ApplicationGatewayRequestRoutingRulePropertiesFormat object
-     * itself.
+     * @return the ApplicationGatewayRequestRoutingRulePropertiesFormat object itself.
      */
     public ApplicationGatewayRequestRoutingRulePropertiesFormat withBackendAddressPool(SubResource backendAddressPool) {
         this.backendAddressPool = backendAddressPool;
@@ -115,9 +108,8 @@ public final class ApplicationGatewayRequestRoutingRulePropertiesFormat {
     }
 
     /**
-     * Get the backendHttpSettings property: Backend http settings resource of
-     * the application gateway.
-     * 
+     * Get the backendHttpSettings property: Backend http settings resource of the application gateway.
+     *
      * @return the backendHttpSettings value.
      */
     public SubResource backendHttpSettings() {
@@ -125,22 +117,20 @@ public final class ApplicationGatewayRequestRoutingRulePropertiesFormat {
     }
 
     /**
-     * Set the backendHttpSettings property: Backend http settings resource of
-     * the application gateway.
-     * 
+     * Set the backendHttpSettings property: Backend http settings resource of the application gateway.
+     *
      * @param backendHttpSettings the backendHttpSettings value to set.
-     * @return the ApplicationGatewayRequestRoutingRulePropertiesFormat object
-     * itself.
+     * @return the ApplicationGatewayRequestRoutingRulePropertiesFormat object itself.
      */
-    public ApplicationGatewayRequestRoutingRulePropertiesFormat withBackendHttpSettings(SubResource backendHttpSettings) {
+    public ApplicationGatewayRequestRoutingRulePropertiesFormat withBackendHttpSettings(
+        SubResource backendHttpSettings) {
         this.backendHttpSettings = backendHttpSettings;
         return this;
     }
 
     /**
-     * Get the httpListener property: Http listener resource of the application
-     * gateway.
-     * 
+     * Get the httpListener property: Http listener resource of the application gateway.
+     *
      * @return the httpListener value.
      */
     public SubResource httpListener() {
@@ -148,12 +138,10 @@ public final class ApplicationGatewayRequestRoutingRulePropertiesFormat {
     }
 
     /**
-     * Set the httpListener property: Http listener resource of the application
-     * gateway.
-     * 
+     * Set the httpListener property: Http listener resource of the application gateway.
+     *
      * @param httpListener the httpListener value to set.
-     * @return the ApplicationGatewayRequestRoutingRulePropertiesFormat object
-     * itself.
+     * @return the ApplicationGatewayRequestRoutingRulePropertiesFormat object itself.
      */
     public ApplicationGatewayRequestRoutingRulePropertiesFormat withHttpListener(SubResource httpListener) {
         this.httpListener = httpListener;
@@ -161,9 +149,8 @@ public final class ApplicationGatewayRequestRoutingRulePropertiesFormat {
     }
 
     /**
-     * Get the urlPathMap property: URL path map resource of the application
-     * gateway.
-     * 
+     * Get the urlPathMap property: URL path map resource of the application gateway.
+     *
      * @return the urlPathMap value.
      */
     public SubResource urlPathMap() {
@@ -171,12 +158,10 @@ public final class ApplicationGatewayRequestRoutingRulePropertiesFormat {
     }
 
     /**
-     * Set the urlPathMap property: URL path map resource of the application
-     * gateway.
-     * 
+     * Set the urlPathMap property: URL path map resource of the application gateway.
+     *
      * @param urlPathMap the urlPathMap value to set.
-     * @return the ApplicationGatewayRequestRoutingRulePropertiesFormat object
-     * itself.
+     * @return the ApplicationGatewayRequestRoutingRulePropertiesFormat object itself.
      */
     public ApplicationGatewayRequestRoutingRulePropertiesFormat withUrlPathMap(SubResource urlPathMap) {
         this.urlPathMap = urlPathMap;
@@ -184,9 +169,8 @@ public final class ApplicationGatewayRequestRoutingRulePropertiesFormat {
     }
 
     /**
-     * Get the rewriteRuleSet property: Rewrite Rule Set resource in Basic rule
-     * of the application gateway.
-     * 
+     * Get the rewriteRuleSet property: Rewrite Rule Set resource in Basic rule of the application gateway.
+     *
      * @return the rewriteRuleSet value.
      */
     public SubResource rewriteRuleSet() {
@@ -194,12 +178,10 @@ public final class ApplicationGatewayRequestRoutingRulePropertiesFormat {
     }
 
     /**
-     * Set the rewriteRuleSet property: Rewrite Rule Set resource in Basic rule
-     * of the application gateway.
-     * 
+     * Set the rewriteRuleSet property: Rewrite Rule Set resource in Basic rule of the application gateway.
+     *
      * @param rewriteRuleSet the rewriteRuleSet value to set.
-     * @return the ApplicationGatewayRequestRoutingRulePropertiesFormat object
-     * itself.
+     * @return the ApplicationGatewayRequestRoutingRulePropertiesFormat object itself.
      */
     public ApplicationGatewayRequestRoutingRulePropertiesFormat withRewriteRuleSet(SubResource rewriteRuleSet) {
         this.rewriteRuleSet = rewriteRuleSet;
@@ -207,9 +189,8 @@ public final class ApplicationGatewayRequestRoutingRulePropertiesFormat {
     }
 
     /**
-     * Get the redirectConfiguration property: Redirect configuration resource
-     * of the application gateway.
-     * 
+     * Get the redirectConfiguration property: Redirect configuration resource of the application gateway.
+     *
      * @return the redirectConfiguration value.
      */
     public SubResource redirectConfiguration() {
@@ -217,23 +198,21 @@ public final class ApplicationGatewayRequestRoutingRulePropertiesFormat {
     }
 
     /**
-     * Set the redirectConfiguration property: Redirect configuration resource
-     * of the application gateway.
-     * 
+     * Set the redirectConfiguration property: Redirect configuration resource of the application gateway.
+     *
      * @param redirectConfiguration the redirectConfiguration value to set.
-     * @return the ApplicationGatewayRequestRoutingRulePropertiesFormat object
-     * itself.
+     * @return the ApplicationGatewayRequestRoutingRulePropertiesFormat object itself.
      */
-    public ApplicationGatewayRequestRoutingRulePropertiesFormat withRedirectConfiguration(SubResource redirectConfiguration) {
+    public ApplicationGatewayRequestRoutingRulePropertiesFormat withRedirectConfiguration(
+        SubResource redirectConfiguration) {
         this.redirectConfiguration = redirectConfiguration;
         return this;
     }
 
     /**
-     * Get the provisioningState property: Provisioning state of the request
-     * routing rule resource. Possible values are: 'Updating', 'Deleting', and
-     * 'Failed'.
-     * 
+     * Get the provisioningState property: Provisioning state of the request routing rule resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -241,13 +220,11 @@ public final class ApplicationGatewayRequestRoutingRulePropertiesFormat {
     }
 
     /**
-     * Set the provisioningState property: Provisioning state of the request
-     * routing rule resource. Possible values are: 'Updating', 'Deleting', and
-     * 'Failed'.
-     * 
+     * Set the provisioningState property: Provisioning state of the request routing rule resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
      * @param provisioningState the provisioningState value to set.
-     * @return the ApplicationGatewayRequestRoutingRulePropertiesFormat object
-     * itself.
+     * @return the ApplicationGatewayRequestRoutingRulePropertiesFormat object itself.
      */
     public ApplicationGatewayRequestRoutingRulePropertiesFormat withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
@@ -256,7 +233,7 @@ public final class ApplicationGatewayRequestRoutingRulePropertiesFormat {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,24 +5,19 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.Delegation;
 import com.azure.resourcemanager.network.models.ResourceNavigationLink;
 import com.azure.resourcemanager.network.models.ServiceAssociationLink;
 import com.azure.resourcemanager.network.models.ServiceEndpointPropertiesFormat;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Properties of the subnet.
- */
+/** Properties of the subnet. */
 @Fluent
 public final class SubnetPropertiesFormatInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(SubnetPropertiesFormatInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubnetPropertiesFormatInner.class);
 
     /*
      * The address prefix for the subnet.
@@ -112,7 +107,7 @@ public final class SubnetPropertiesFormatInner {
 
     /**
      * Get the addressPrefix property: The address prefix for the subnet.
-     * 
+     *
      * @return the addressPrefix value.
      */
     public String addressPrefix() {
@@ -121,7 +116,7 @@ public final class SubnetPropertiesFormatInner {
 
     /**
      * Set the addressPrefix property: The address prefix for the subnet.
-     * 
+     *
      * @param addressPrefix the addressPrefix value to set.
      * @return the SubnetPropertiesFormatInner object itself.
      */
@@ -131,9 +126,8 @@ public final class SubnetPropertiesFormatInner {
     }
 
     /**
-     * Get the addressPrefixes property: List of  address prefixes for the
-     * subnet.
-     * 
+     * Get the addressPrefixes property: List of address prefixes for the subnet.
+     *
      * @return the addressPrefixes value.
      */
     public List<String> addressPrefixes() {
@@ -141,9 +135,8 @@ public final class SubnetPropertiesFormatInner {
     }
 
     /**
-     * Set the addressPrefixes property: List of  address prefixes for the
-     * subnet.
-     * 
+     * Set the addressPrefixes property: List of address prefixes for the subnet.
+     *
      * @param addressPrefixes the addressPrefixes value to set.
      * @return the SubnetPropertiesFormatInner object itself.
      */
@@ -153,9 +146,8 @@ public final class SubnetPropertiesFormatInner {
     }
 
     /**
-     * Get the networkSecurityGroup property: The reference of the
-     * NetworkSecurityGroup resource.
-     * 
+     * Get the networkSecurityGroup property: The reference of the NetworkSecurityGroup resource.
+     *
      * @return the networkSecurityGroup value.
      */
     public NetworkSecurityGroupInner networkSecurityGroup() {
@@ -163,9 +155,8 @@ public final class SubnetPropertiesFormatInner {
     }
 
     /**
-     * Set the networkSecurityGroup property: The reference of the
-     * NetworkSecurityGroup resource.
-     * 
+     * Set the networkSecurityGroup property: The reference of the NetworkSecurityGroup resource.
+     *
      * @param networkSecurityGroup the networkSecurityGroup value to set.
      * @return the SubnetPropertiesFormatInner object itself.
      */
@@ -176,7 +167,7 @@ public final class SubnetPropertiesFormatInner {
 
     /**
      * Get the routeTable property: The reference of the RouteTable resource.
-     * 
+     *
      * @return the routeTable value.
      */
     public RouteTableInner routeTable() {
@@ -185,7 +176,7 @@ public final class SubnetPropertiesFormatInner {
 
     /**
      * Set the routeTable property: The reference of the RouteTable resource.
-     * 
+     *
      * @param routeTable the routeTable value to set.
      * @return the SubnetPropertiesFormatInner object itself.
      */
@@ -196,7 +187,7 @@ public final class SubnetPropertiesFormatInner {
 
     /**
      * Get the serviceEndpoints property: An array of service endpoints.
-     * 
+     *
      * @return the serviceEndpoints value.
      */
     public List<ServiceEndpointPropertiesFormat> serviceEndpoints() {
@@ -205,7 +196,7 @@ public final class SubnetPropertiesFormatInner {
 
     /**
      * Set the serviceEndpoints property: An array of service endpoints.
-     * 
+     *
      * @param serviceEndpoints the serviceEndpoints value to set.
      * @return the SubnetPropertiesFormatInner object itself.
      */
@@ -215,9 +206,8 @@ public final class SubnetPropertiesFormatInner {
     }
 
     /**
-     * Get the serviceEndpointPolicies property: An array of service endpoint
-     * policies.
-     * 
+     * Get the serviceEndpointPolicies property: An array of service endpoint policies.
+     *
      * @return the serviceEndpointPolicies value.
      */
     public List<ServiceEndpointPolicyInner> serviceEndpointPolicies() {
@@ -225,21 +215,20 @@ public final class SubnetPropertiesFormatInner {
     }
 
     /**
-     * Set the serviceEndpointPolicies property: An array of service endpoint
-     * policies.
-     * 
+     * Set the serviceEndpointPolicies property: An array of service endpoint policies.
+     *
      * @param serviceEndpointPolicies the serviceEndpointPolicies value to set.
      * @return the SubnetPropertiesFormatInner object itself.
      */
-    public SubnetPropertiesFormatInner withServiceEndpointPolicies(List<ServiceEndpointPolicyInner> serviceEndpointPolicies) {
+    public SubnetPropertiesFormatInner withServiceEndpointPolicies(
+        List<ServiceEndpointPolicyInner> serviceEndpointPolicies) {
         this.serviceEndpointPolicies = serviceEndpointPolicies;
         return this;
     }
 
     /**
-     * Get the interfaceEndpoints property: An array of references to interface
-     * endpoints.
-     * 
+     * Get the interfaceEndpoints property: An array of references to interface endpoints.
+     *
      * @return the interfaceEndpoints value.
      */
     public List<InterfaceEndpointInner> interfaceEndpoints() {
@@ -247,9 +236,9 @@ public final class SubnetPropertiesFormatInner {
     }
 
     /**
-     * Get the ipConfigurations property: Gets an array of references to the
-     * network interface IP configurations using subnet.
-     * 
+     * Get the ipConfigurations property: Gets an array of references to the network interface IP configurations using
+     * subnet.
+     *
      * @return the ipConfigurations value.
      */
     public List<IpConfigurationInner> ipConfigurations() {
@@ -257,9 +246,8 @@ public final class SubnetPropertiesFormatInner {
     }
 
     /**
-     * Get the ipConfigurationProfiles property: Array of IP configuration
-     * profiles which reference this subnet.
-     * 
+     * Get the ipConfigurationProfiles property: Array of IP configuration profiles which reference this subnet.
+     *
      * @return the ipConfigurationProfiles value.
      */
     public List<IpConfigurationProfileInner> ipConfigurationProfiles() {
@@ -267,9 +255,8 @@ public final class SubnetPropertiesFormatInner {
     }
 
     /**
-     * Get the resourceNavigationLinks property: Gets an array of references to
-     * the external resources using subnet.
-     * 
+     * Get the resourceNavigationLinks property: Gets an array of references to the external resources using subnet.
+     *
      * @return the resourceNavigationLinks value.
      */
     public List<ResourceNavigationLink> resourceNavigationLinks() {
@@ -277,21 +264,20 @@ public final class SubnetPropertiesFormatInner {
     }
 
     /**
-     * Set the resourceNavigationLinks property: Gets an array of references to
-     * the external resources using subnet.
-     * 
+     * Set the resourceNavigationLinks property: Gets an array of references to the external resources using subnet.
+     *
      * @param resourceNavigationLinks the resourceNavigationLinks value to set.
      * @return the SubnetPropertiesFormatInner object itself.
      */
-    public SubnetPropertiesFormatInner withResourceNavigationLinks(List<ResourceNavigationLink> resourceNavigationLinks) {
+    public SubnetPropertiesFormatInner withResourceNavigationLinks(
+        List<ResourceNavigationLink> resourceNavigationLinks) {
         this.resourceNavigationLinks = resourceNavigationLinks;
         return this;
     }
 
     /**
-     * Get the serviceAssociationLinks property: Gets an array of references to
-     * services injecting into this subnet.
-     * 
+     * Get the serviceAssociationLinks property: Gets an array of references to services injecting into this subnet.
+     *
      * @return the serviceAssociationLinks value.
      */
     public List<ServiceAssociationLink> serviceAssociationLinks() {
@@ -299,21 +285,20 @@ public final class SubnetPropertiesFormatInner {
     }
 
     /**
-     * Set the serviceAssociationLinks property: Gets an array of references to
-     * services injecting into this subnet.
-     * 
+     * Set the serviceAssociationLinks property: Gets an array of references to services injecting into this subnet.
+     *
      * @param serviceAssociationLinks the serviceAssociationLinks value to set.
      * @return the SubnetPropertiesFormatInner object itself.
      */
-    public SubnetPropertiesFormatInner withServiceAssociationLinks(List<ServiceAssociationLink> serviceAssociationLinks) {
+    public SubnetPropertiesFormatInner withServiceAssociationLinks(
+        List<ServiceAssociationLink> serviceAssociationLinks) {
         this.serviceAssociationLinks = serviceAssociationLinks;
         return this;
     }
 
     /**
-     * Get the delegations property: Gets an array of references to the
-     * delegations on the subnet.
-     * 
+     * Get the delegations property: Gets an array of references to the delegations on the subnet.
+     *
      * @return the delegations value.
      */
     public List<Delegation> delegations() {
@@ -321,9 +306,8 @@ public final class SubnetPropertiesFormatInner {
     }
 
     /**
-     * Set the delegations property: Gets an array of references to the
-     * delegations on the subnet.
-     * 
+     * Set the delegations property: Gets an array of references to the delegations on the subnet.
+     *
      * @param delegations the delegations value to set.
      * @return the SubnetPropertiesFormatInner object itself.
      */
@@ -333,10 +317,9 @@ public final class SubnetPropertiesFormatInner {
     }
 
     /**
-     * Get the purpose property: A read-only string identifying the intention
-     * of use for this subnet based on delegations and other user-defined
-     * properties.
-     * 
+     * Get the purpose property: A read-only string identifying the intention of use for this subnet based on
+     * delegations and other user-defined properties.
+     *
      * @return the purpose value.
      */
     public String purpose() {
@@ -344,9 +327,8 @@ public final class SubnetPropertiesFormatInner {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the
-     * resource.
-     * 
+     * Get the provisioningState property: The provisioning state of the resource.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -354,9 +336,8 @@ public final class SubnetPropertiesFormatInner {
     }
 
     /**
-     * Set the provisioningState property: The provisioning state of the
-     * resource.
-     * 
+     * Set the provisioningState property: The provisioning state of the resource.
+     *
      * @param provisioningState the provisioningState value to set.
      * @return the SubnetPropertiesFormatInner object itself.
      */
@@ -367,7 +348,7 @@ public final class SubnetPropertiesFormatInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

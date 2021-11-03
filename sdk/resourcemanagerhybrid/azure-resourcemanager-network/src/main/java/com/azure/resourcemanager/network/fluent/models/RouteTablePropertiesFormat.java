@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Route Table resource.
- */
+/** Route Table resource. */
 @Fluent
 public final class RouteTablePropertiesFormat {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(RouteTablePropertiesFormat.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RouteTablePropertiesFormat.class);
 
     /*
      * Collection of routes contained within a route table.
@@ -47,9 +42,8 @@ public final class RouteTablePropertiesFormat {
     private String provisioningState;
 
     /**
-     * Get the routes property: Collection of routes contained within a route
-     * table.
-     * 
+     * Get the routes property: Collection of routes contained within a route table.
+     *
      * @return the routes value.
      */
     public List<RouteInner> routes() {
@@ -57,9 +51,8 @@ public final class RouteTablePropertiesFormat {
     }
 
     /**
-     * Set the routes property: Collection of routes contained within a route
-     * table.
-     * 
+     * Set the routes property: Collection of routes contained within a route table.
+     *
      * @param routes the routes value to set.
      * @return the RouteTablePropertiesFormat object itself.
      */
@@ -70,7 +63,7 @@ public final class RouteTablePropertiesFormat {
 
     /**
      * Get the subnets property: A collection of references to subnets.
-     * 
+     *
      * @return the subnets value.
      */
     public List<SubnetInner> subnets() {
@@ -78,10 +71,9 @@ public final class RouteTablePropertiesFormat {
     }
 
     /**
-     * Get the disableBgpRoutePropagation property: Gets or sets whether to
-     * disable the routes learned by BGP on that route table. True means
-     * disable.
-     * 
+     * Get the disableBgpRoutePropagation property: Gets or sets whether to disable the routes learned by BGP on that
+     * route table. True means disable.
+     *
      * @return the disableBgpRoutePropagation value.
      */
     public Boolean disableBgpRoutePropagation() {
@@ -89,12 +81,10 @@ public final class RouteTablePropertiesFormat {
     }
 
     /**
-     * Set the disableBgpRoutePropagation property: Gets or sets whether to
-     * disable the routes learned by BGP on that route table. True means
-     * disable.
-     * 
-     * @param disableBgpRoutePropagation the disableBgpRoutePropagation value
-     * to set.
+     * Set the disableBgpRoutePropagation property: Gets or sets whether to disable the routes learned by BGP on that
+     * route table. True means disable.
+     *
+     * @param disableBgpRoutePropagation the disableBgpRoutePropagation value to set.
      * @return the RouteTablePropertiesFormat object itself.
      */
     public RouteTablePropertiesFormat withDisableBgpRoutePropagation(Boolean disableBgpRoutePropagation) {
@@ -103,9 +93,9 @@ public final class RouteTablePropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the
-     * resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
-     * 
+     * Get the provisioningState property: The provisioning state of the resource. Possible values are: 'Updating',
+     * 'Deleting', and 'Failed'.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -113,9 +103,9 @@ public final class RouteTablePropertiesFormat {
     }
 
     /**
-     * Set the provisioningState property: The provisioning state of the
-     * resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
-     * 
+     * Set the provisioningState property: The provisioning state of the resource. Possible values are: 'Updating',
+     * 'Deleting', and 'Failed'.
+     *
      * @param provisioningState the provisioningState value to set.
      * @return the RouteTablePropertiesFormat object itself.
      */
@@ -126,7 +116,7 @@ public final class RouteTablePropertiesFormat {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

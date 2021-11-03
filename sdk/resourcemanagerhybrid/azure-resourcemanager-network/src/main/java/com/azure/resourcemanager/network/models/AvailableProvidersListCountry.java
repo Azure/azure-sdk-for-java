@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Country details.
- */
+/** Country details. */
 @Fluent
 public final class AvailableProvidersListCountry {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(AvailableProvidersListCountry.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailableProvidersListCountry.class);
 
     /*
      * The country name.
@@ -40,7 +35,7 @@ public final class AvailableProvidersListCountry {
 
     /**
      * Get the countryName property: The country name.
-     * 
+     *
      * @return the countryName value.
      */
     public String countryName() {
@@ -49,7 +44,7 @@ public final class AvailableProvidersListCountry {
 
     /**
      * Set the countryName property: The country name.
-     * 
+     *
      * @param countryName the countryName value to set.
      * @return the AvailableProvidersListCountry object itself.
      */
@@ -60,7 +55,7 @@ public final class AvailableProvidersListCountry {
 
     /**
      * Get the providers property: A list of Internet service providers.
-     * 
+     *
      * @return the providers value.
      */
     public List<String> providers() {
@@ -69,7 +64,7 @@ public final class AvailableProvidersListCountry {
 
     /**
      * Set the providers property: A list of Internet service providers.
-     * 
+     *
      * @param providers the providers value to set.
      * @return the AvailableProvidersListCountry object itself.
      */
@@ -80,7 +75,7 @@ public final class AvailableProvidersListCountry {
 
     /**
      * Get the states property: List of available states in the country.
-     * 
+     *
      * @return the states value.
      */
     public List<AvailableProvidersListState> states() {
@@ -89,7 +84,7 @@ public final class AvailableProvidersListCountry {
 
     /**
      * Set the states property: List of available states in the country.
-     * 
+     *
      * @param states the states value to set.
      * @return the AvailableProvidersListCountry object itself.
      */
@@ -100,7 +95,7 @@ public final class AvailableProvidersListCountry {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

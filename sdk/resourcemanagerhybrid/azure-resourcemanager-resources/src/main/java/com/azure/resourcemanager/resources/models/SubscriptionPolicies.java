@@ -4,20 +4,15 @@
 
 package com.azure.resourcemanager.resources.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Subscription policies.
- */
+/** Subscription policies. */
 @Immutable
 public final class SubscriptionPolicies {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(SubscriptionPolicies.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubscriptionPolicies.class);
 
     /*
      * The subscription location placement ID. The ID indicates which regions
@@ -41,11 +36,10 @@ public final class SubscriptionPolicies {
     private SpendingLimit spendingLimit;
 
     /**
-     * Get the locationPlacementId property: The subscription location
-     * placement ID. The ID indicates which regions are visible for a
-     * subscription. For example, a subscription with a location placement Id
-     * of Public_2014-09-01 has access to Azure public regions.
-     * 
+     * Get the locationPlacementId property: The subscription location placement ID. The ID indicates which regions are
+     * visible for a subscription. For example, a subscription with a location placement Id of Public_2014-09-01 has
+     * access to Azure public regions.
+     *
      * @return the locationPlacementId value.
      */
     public String locationPlacementId() {
@@ -54,7 +48,7 @@ public final class SubscriptionPolicies {
 
     /**
      * Get the quotaId property: The subscription quota ID.
-     * 
+     *
      * @return the quotaId value.
      */
     public String quotaId() {
@@ -63,7 +57,7 @@ public final class SubscriptionPolicies {
 
     /**
      * Get the spendingLimit property: The subscription spending limit.
-     * 
+     *
      * @return the spendingLimit value.
      */
     public SpendingLimit spendingLimit() {
@@ -72,7 +66,7 @@ public final class SubscriptionPolicies {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

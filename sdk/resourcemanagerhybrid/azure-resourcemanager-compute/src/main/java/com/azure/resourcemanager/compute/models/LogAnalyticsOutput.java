@@ -4,20 +4,15 @@
 
 package com.azure.resourcemanager.compute.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * LogAnalytics output properties.
- */
+/** LogAnalytics output properties. */
 @Immutable
 public final class LogAnalyticsOutput {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(LogAnalyticsOutput.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(LogAnalyticsOutput.class);
 
     /*
      * Output file Uri path to blob container.
@@ -27,7 +22,7 @@ public final class LogAnalyticsOutput {
 
     /**
      * Get the output property: Output file Uri path to blob container.
-     * 
+     *
      * @return the output value.
      */
     public String output() {
@@ -36,7 +31,7 @@ public final class LogAnalyticsOutput {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

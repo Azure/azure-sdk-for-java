@@ -5,22 +5,17 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProtocolCustomSettingsFormat;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * DDoS custom policy properties.
- */
+/** DDoS custom policy properties. */
 @Fluent
 public final class DdosCustomPolicyPropertiesFormat {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(DdosCustomPolicyPropertiesFormat.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DdosCustomPolicyPropertiesFormat.class);
 
     /*
      * The resource GUID property of the DDoS custom policy resource. It
@@ -51,11 +46,10 @@ public final class DdosCustomPolicyPropertiesFormat {
     private List<ProtocolCustomSettingsFormat> protocolCustomSettings;
 
     /**
-     * Get the resourceGuid property: The resource GUID property of the DDoS
-     * custom policy resource. It uniquely identifies the resource, even if the
-     * user changes its name or migrate the resource across subscriptions or
+     * Get the resourceGuid property: The resource GUID property of the DDoS custom policy resource. It uniquely
+     * identifies the resource, even if the user changes its name or migrate the resource across subscriptions or
      * resource groups.
-     * 
+     *
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -63,10 +57,9 @@ public final class DdosCustomPolicyPropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the DDoS
-     * custom policy resource. Possible values are: 'Succeeded', 'Updating',
-     * 'Deleting', and 'Failed'.
-     * 
+     * Get the provisioningState property: The provisioning state of the DDoS custom policy resource. Possible values
+     * are: 'Succeeded', 'Updating', 'Deleting', and 'Failed'.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -74,9 +67,9 @@ public final class DdosCustomPolicyPropertiesFormat {
     }
 
     /**
-     * Get the publicIpAddresses property: The list of public IPs associated
-     * with the DDoS custom policy resource. This list is read-only.
-     * 
+     * Get the publicIpAddresses property: The list of public IPs associated with the DDoS custom policy resource. This
+     * list is read-only.
+     *
      * @return the publicIpAddresses value.
      */
     public List<SubResource> publicIpAddresses() {
@@ -84,9 +77,8 @@ public final class DdosCustomPolicyPropertiesFormat {
     }
 
     /**
-     * Get the protocolCustomSettings property: The protocol-specific DDoS
-     * policy customization parameters.
-     * 
+     * Get the protocolCustomSettings property: The protocol-specific DDoS policy customization parameters.
+     *
      * @return the protocolCustomSettings value.
      */
     public List<ProtocolCustomSettingsFormat> protocolCustomSettings() {
@@ -94,20 +86,20 @@ public final class DdosCustomPolicyPropertiesFormat {
     }
 
     /**
-     * Set the protocolCustomSettings property: The protocol-specific DDoS
-     * policy customization parameters.
-     * 
+     * Set the protocolCustomSettings property: The protocol-specific DDoS policy customization parameters.
+     *
      * @param protocolCustomSettings the protocolCustomSettings value to set.
      * @return the DdosCustomPolicyPropertiesFormat object itself.
      */
-    public DdosCustomPolicyPropertiesFormat withProtocolCustomSettings(List<ProtocolCustomSettingsFormat> protocolCustomSettings) {
+    public DdosCustomPolicyPropertiesFormat withProtocolCustomSettings(
+        List<ProtocolCustomSettingsFormat> protocolCustomSettings) {
         this.protocolCustomSettings = protocolCustomSettings;
         return this;
     }
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

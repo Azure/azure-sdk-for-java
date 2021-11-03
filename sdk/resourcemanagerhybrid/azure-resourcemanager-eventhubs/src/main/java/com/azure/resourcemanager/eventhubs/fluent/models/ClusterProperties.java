@@ -4,21 +4,15 @@
 
 package com.azure.resourcemanager.eventhubs.fluent.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Event Hubs Cluster properties supplied in responses in List or Get
- * operations.
- */
+/** Event Hubs Cluster properties supplied in responses in List or Get operations. */
 @Immutable
 public final class ClusterProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ClusterProperties.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterProperties.class);
 
     /*
      * The UTC time when the Event Hubs Cluster was created.
@@ -46,9 +40,8 @@ public final class ClusterProperties {
     private String status;
 
     /**
-     * Get the createdAt property: The UTC time when the Event Hubs Cluster was
-     * created.
-     * 
+     * Get the createdAt property: The UTC time when the Event Hubs Cluster was created.
+     *
      * @return the createdAt value.
      */
     public String createdAt() {
@@ -56,9 +49,8 @@ public final class ClusterProperties {
     }
 
     /**
-     * Get the updatedAt property: The UTC time when the Event Hubs Cluster was
-     * last updated.
-     * 
+     * Get the updatedAt property: The UTC time when the Event Hubs Cluster was last updated.
+     *
      * @return the updatedAt value.
      */
     public String updatedAt() {
@@ -66,9 +58,9 @@ public final class ClusterProperties {
     }
 
     /**
-     * Get the metricId property: The metric ID of the cluster resource.
-     * Provided by the service and not modifiable by the user.
-     * 
+     * Get the metricId property: The metric ID of the cluster resource. Provided by the service and not modifiable by
+     * the user.
+     *
      * @return the metricId value.
      */
     public String metricId() {
@@ -77,7 +69,7 @@ public final class ClusterProperties {
 
     /**
      * Get the status property: Status of the Cluster resource.
-     * 
+     *
      * @return the status value.
      */
     public String status() {
@@ -86,7 +78,7 @@ public final class ClusterProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

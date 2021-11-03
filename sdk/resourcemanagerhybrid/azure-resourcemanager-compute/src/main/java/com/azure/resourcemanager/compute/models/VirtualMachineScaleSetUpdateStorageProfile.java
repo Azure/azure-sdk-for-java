@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Describes a virtual machine scale set storage profile.
- */
+/** Describes a virtual machine scale set storage profile. */
 @Fluent
 public final class VirtualMachineScaleSetUpdateStorageProfile {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetUpdateStorageProfile.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetUpdateStorageProfile.class);
 
     /*
      * The image reference.
@@ -40,7 +35,7 @@ public final class VirtualMachineScaleSetUpdateStorageProfile {
 
     /**
      * Get the imageReference property: The image reference.
-     * 
+     *
      * @return the imageReference value.
      */
     public ImageReference imageReference() {
@@ -49,7 +44,7 @@ public final class VirtualMachineScaleSetUpdateStorageProfile {
 
     /**
      * Set the imageReference property: The image reference.
-     * 
+     *
      * @param imageReference the imageReference value to set.
      * @return the VirtualMachineScaleSetUpdateStorageProfile object itself.
      */
@@ -60,7 +55,7 @@ public final class VirtualMachineScaleSetUpdateStorageProfile {
 
     /**
      * Get the osDisk property: The OS disk.
-     * 
+     *
      * @return the osDisk value.
      */
     public VirtualMachineScaleSetUpdateOSDisk osDisk() {
@@ -69,7 +64,7 @@ public final class VirtualMachineScaleSetUpdateStorageProfile {
 
     /**
      * Set the osDisk property: The OS disk.
-     * 
+     *
      * @param osDisk the osDisk value to set.
      * @return the VirtualMachineScaleSetUpdateStorageProfile object itself.
      */
@@ -80,7 +75,7 @@ public final class VirtualMachineScaleSetUpdateStorageProfile {
 
     /**
      * Get the dataDisks property: The data disks.
-     * 
+     *
      * @return the dataDisks value.
      */
     public List<VirtualMachineScaleSetDataDisk> dataDisks() {
@@ -89,7 +84,7 @@ public final class VirtualMachineScaleSetUpdateStorageProfile {
 
     /**
      * Set the dataDisks property: The data disks.
-     * 
+     *
      * @param dataDisks the dataDisks value to set.
      * @return the VirtualMachineScaleSetUpdateStorageProfile object itself.
      */
@@ -100,7 +95,7 @@ public final class VirtualMachineScaleSetUpdateStorageProfile {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

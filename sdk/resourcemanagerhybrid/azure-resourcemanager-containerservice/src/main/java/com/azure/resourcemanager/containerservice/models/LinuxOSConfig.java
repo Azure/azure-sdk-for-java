@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * OS configurations of Linux agent nodes.
- */
+/** OS configurations of Linux agent nodes. */
 @Fluent
 public final class LinuxOSConfig {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(LinuxOSConfig.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(LinuxOSConfig.class);
 
     /*
      * Sysctl settings for Linux agent nodes.
@@ -46,7 +41,7 @@ public final class LinuxOSConfig {
 
     /**
      * Get the sysctls property: Sysctl settings for Linux agent nodes.
-     * 
+     *
      * @return the sysctls value.
      */
     public SysctlConfig sysctls() {
@@ -55,7 +50,7 @@ public final class LinuxOSConfig {
 
     /**
      * Set the sysctls property: Sysctl settings for Linux agent nodes.
-     * 
+     *
      * @param sysctls the sysctls value to set.
      * @return the LinuxOSConfig object itself.
      */
@@ -65,9 +60,8 @@ public final class LinuxOSConfig {
     }
 
     /**
-     * Get the transparentHugePageEnabled property: Transparent Huge Page
-     * enabled configuration.
-     * 
+     * Get the transparentHugePageEnabled property: Transparent Huge Page enabled configuration.
+     *
      * @return the transparentHugePageEnabled value.
      */
     public String transparentHugePageEnabled() {
@@ -75,11 +69,9 @@ public final class LinuxOSConfig {
     }
 
     /**
-     * Set the transparentHugePageEnabled property: Transparent Huge Page
-     * enabled configuration.
-     * 
-     * @param transparentHugePageEnabled the transparentHugePageEnabled value
-     * to set.
+     * Set the transparentHugePageEnabled property: Transparent Huge Page enabled configuration.
+     *
+     * @param transparentHugePageEnabled the transparentHugePageEnabled value to set.
      * @return the LinuxOSConfig object itself.
      */
     public LinuxOSConfig withTransparentHugePageEnabled(String transparentHugePageEnabled) {
@@ -88,9 +80,8 @@ public final class LinuxOSConfig {
     }
 
     /**
-     * Get the transparentHugePageDefrag property: Transparent Huge Page defrag
-     * configuration.
-     * 
+     * Get the transparentHugePageDefrag property: Transparent Huge Page defrag configuration.
+     *
      * @return the transparentHugePageDefrag value.
      */
     public String transparentHugePageDefrag() {
@@ -98,11 +89,9 @@ public final class LinuxOSConfig {
     }
 
     /**
-     * Set the transparentHugePageDefrag property: Transparent Huge Page defrag
-     * configuration.
-     * 
-     * @param transparentHugePageDefrag the transparentHugePageDefrag value to
-     * set.
+     * Set the transparentHugePageDefrag property: Transparent Huge Page defrag configuration.
+     *
+     * @param transparentHugePageDefrag the transparentHugePageDefrag value to set.
      * @return the LinuxOSConfig object itself.
      */
     public LinuxOSConfig withTransparentHugePageDefrag(String transparentHugePageDefrag) {
@@ -111,9 +100,8 @@ public final class LinuxOSConfig {
     }
 
     /**
-     * Get the swapFileSizeMB property: SwapFileSizeMB specifies size in MB of
-     * a swap file will be created on each node.
-     * 
+     * Get the swapFileSizeMB property: SwapFileSizeMB specifies size in MB of a swap file will be created on each node.
+     *
      * @return the swapFileSizeMB value.
      */
     public Integer swapFileSizeMB() {
@@ -121,9 +109,8 @@ public final class LinuxOSConfig {
     }
 
     /**
-     * Set the swapFileSizeMB property: SwapFileSizeMB specifies size in MB of
-     * a swap file will be created on each node.
-     * 
+     * Set the swapFileSizeMB property: SwapFileSizeMB specifies size in MB of a swap file will be created on each node.
+     *
      * @param swapFileSizeMB the swapFileSizeMB value to set.
      * @return the LinuxOSConfig object itself.
      */
@@ -134,7 +121,7 @@ public final class LinuxOSConfig {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

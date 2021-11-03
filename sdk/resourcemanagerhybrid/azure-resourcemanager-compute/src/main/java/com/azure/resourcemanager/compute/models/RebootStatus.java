@@ -8,38 +8,26 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for RebootStatus.
- */
+/** Defines values for RebootStatus. */
 public final class RebootStatus extends ExpandableStringEnum<RebootStatus> {
-    /**
-     * Static value NotNeeded for RebootStatus.
-     */
+    /** Static value NotNeeded for RebootStatus. */
     public static final RebootStatus NOT_NEEDED = fromString("NotNeeded");
 
-    /**
-     * Static value Required for RebootStatus.
-     */
+    /** Static value Required for RebootStatus. */
     public static final RebootStatus REQUIRED = fromString("Required");
 
-    /**
-     * Static value Started for RebootStatus.
-     */
+    /** Static value Started for RebootStatus. */
     public static final RebootStatus STARTED = fromString("Started");
 
-    /**
-     * Static value Failed for RebootStatus.
-     */
+    /** Static value Failed for RebootStatus. */
     public static final RebootStatus FAILED = fromString("Failed");
 
-    /**
-     * Static value Completed for RebootStatus.
-     */
+    /** Static value Completed for RebootStatus. */
     public static final RebootStatus COMPLETED = fromString("Completed");
 
     /**
      * Creates or finds a RebootStatus from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding RebootStatus.
      */
@@ -48,9 +36,7 @@ public final class RebootStatus extends ExpandableStringEnum<RebootStatus> {
         return fromString(name, RebootStatus.class);
     }
 
-    /**
-     * @return known RebootStatus values.
-     */
+    /** @return known RebootStatus values. */
     public static Collection<RebootStatus> values() {
         return values(RebootStatus.class);
     }

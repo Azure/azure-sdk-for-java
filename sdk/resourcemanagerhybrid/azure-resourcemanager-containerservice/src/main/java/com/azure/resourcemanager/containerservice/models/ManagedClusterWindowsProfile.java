@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Profile for Windows VMs in the container service cluster.
- */
+/** Profile for Windows VMs in the container service cluster. */
 @Fluent
 public final class ManagedClusterWindowsProfile {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ManagedClusterWindowsProfile.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterWindowsProfile.class);
 
     /*
      * Specifies the name of the administrator account. <br><br>
@@ -53,16 +48,13 @@ public final class ManagedClusterWindowsProfile {
     private LicenseType licenseType;
 
     /**
-     * Get the adminUsername property: Specifies the name of the administrator
-     * account. &lt;br&gt;&lt;br&gt; **restriction:** Cannot end in "."
-     * &lt;br&gt;&lt;br&gt; **Disallowed values:** "administrator", "admin",
-     * "user", "user1", "test", "user2", "test1", "user3", "admin1", "1",
-     * "123", "a", "actuser", "adm", "admin2", "aspnet", "backup", "console",
-     * "david", "guest", "john", "owner", "root", "server", "sql", "support",
-     * "support_388945a0", "sys", "test2", "test3", "user4", "user5".
-     * &lt;br&gt;&lt;br&gt; **Minimum-length:** 1 character
+     * Get the adminUsername property: Specifies the name of the administrator account. &lt;br&gt;&lt;br&gt;
+     * **restriction:** Cannot end in "." &lt;br&gt;&lt;br&gt; **Disallowed values:** "administrator", "admin", "user",
+     * "user1", "test", "user2", "test1", "user3", "admin1", "1", "123", "a", "actuser", "adm", "admin2", "aspnet",
+     * "backup", "console", "david", "guest", "john", "owner", "root", "server", "sql", "support", "support_388945a0",
+     * "sys", "test2", "test3", "user4", "user5". &lt;br&gt;&lt;br&gt; **Minimum-length:** 1 character
      * &lt;br&gt;&lt;br&gt; **Max-length:** 20 characters.
-     * 
+     *
      * @return the adminUsername value.
      */
     public String adminUsername() {
@@ -70,16 +62,13 @@ public final class ManagedClusterWindowsProfile {
     }
 
     /**
-     * Set the adminUsername property: Specifies the name of the administrator
-     * account. &lt;br&gt;&lt;br&gt; **restriction:** Cannot end in "."
-     * &lt;br&gt;&lt;br&gt; **Disallowed values:** "administrator", "admin",
-     * "user", "user1", "test", "user2", "test1", "user3", "admin1", "1",
-     * "123", "a", "actuser", "adm", "admin2", "aspnet", "backup", "console",
-     * "david", "guest", "john", "owner", "root", "server", "sql", "support",
-     * "support_388945a0", "sys", "test2", "test3", "user4", "user5".
-     * &lt;br&gt;&lt;br&gt; **Minimum-length:** 1 character
+     * Set the adminUsername property: Specifies the name of the administrator account. &lt;br&gt;&lt;br&gt;
+     * **restriction:** Cannot end in "." &lt;br&gt;&lt;br&gt; **Disallowed values:** "administrator", "admin", "user",
+     * "user1", "test", "user2", "test1", "user3", "admin1", "1", "123", "a", "actuser", "adm", "admin2", "aspnet",
+     * "backup", "console", "david", "guest", "john", "owner", "root", "server", "sql", "support", "support_388945a0",
+     * "sys", "test2", "test3", "user4", "user5". &lt;br&gt;&lt;br&gt; **Minimum-length:** 1 character
      * &lt;br&gt;&lt;br&gt; **Max-length:** 20 characters.
-     * 
+     *
      * @param adminUsername the adminUsername value to set.
      * @return the ManagedClusterWindowsProfile object itself.
      */
@@ -89,16 +78,13 @@ public final class ManagedClusterWindowsProfile {
     }
 
     /**
-     * Get the adminPassword property: Specifies the password of the
-     * administrator account. &lt;br&gt;&lt;br&gt; **Minimum-length:** 8
-     * characters &lt;br&gt;&lt;br&gt; **Max-length:** 123 characters
-     * &lt;br&gt;&lt;br&gt; **Complexity requirements:** 3 out of 4 conditions
-     * below need to be fulfilled &lt;br&gt; Has lower characters &lt;br&gt;Has
-     * upper characters &lt;br&gt; Has a digit &lt;br&gt; Has a special
-     * character (Regex match [\W_]) &lt;br&gt;&lt;br&gt; **Disallowed
-     * values:** "abc@123", "P@$$w0rd", "P@ssw0rd", "P@ssword123", "Pa$$word",
+     * Get the adminPassword property: Specifies the password of the administrator account. &lt;br&gt;&lt;br&gt;
+     * **Minimum-length:** 8 characters &lt;br&gt;&lt;br&gt; **Max-length:** 123 characters &lt;br&gt;&lt;br&gt;
+     * **Complexity requirements:** 3 out of 4 conditions below need to be fulfilled &lt;br&gt; Has lower characters
+     * &lt;br&gt;Has upper characters &lt;br&gt; Has a digit &lt;br&gt; Has a special character (Regex match [\W_])
+     * &lt;br&gt;&lt;br&gt; **Disallowed values:** "abc@123", "P@$$w0rd", "P@ssw0rd", "P@ssword123", "Pa$$word",
      * "pass@word1", "Password!", "Password1", "Password22", "iloveyou!".
-     * 
+     *
      * @return the adminPassword value.
      */
     public String adminPassword() {
@@ -106,16 +92,13 @@ public final class ManagedClusterWindowsProfile {
     }
 
     /**
-     * Set the adminPassword property: Specifies the password of the
-     * administrator account. &lt;br&gt;&lt;br&gt; **Minimum-length:** 8
-     * characters &lt;br&gt;&lt;br&gt; **Max-length:** 123 characters
-     * &lt;br&gt;&lt;br&gt; **Complexity requirements:** 3 out of 4 conditions
-     * below need to be fulfilled &lt;br&gt; Has lower characters &lt;br&gt;Has
-     * upper characters &lt;br&gt; Has a digit &lt;br&gt; Has a special
-     * character (Regex match [\W_]) &lt;br&gt;&lt;br&gt; **Disallowed
-     * values:** "abc@123", "P@$$w0rd", "P@ssw0rd", "P@ssword123", "Pa$$word",
+     * Set the adminPassword property: Specifies the password of the administrator account. &lt;br&gt;&lt;br&gt;
+     * **Minimum-length:** 8 characters &lt;br&gt;&lt;br&gt; **Max-length:** 123 characters &lt;br&gt;&lt;br&gt;
+     * **Complexity requirements:** 3 out of 4 conditions below need to be fulfilled &lt;br&gt; Has lower characters
+     * &lt;br&gt;Has upper characters &lt;br&gt; Has a digit &lt;br&gt; Has a special character (Regex match [\W_])
+     * &lt;br&gt;&lt;br&gt; **Disallowed values:** "abc@123", "P@$$w0rd", "P@ssw0rd", "P@ssword123", "Pa$$word",
      * "pass@word1", "Password!", "Password1", "Password22", "iloveyou!".
-     * 
+     *
      * @param adminPassword the adminPassword value to set.
      * @return the ManagedClusterWindowsProfile object itself.
      */
@@ -125,10 +108,9 @@ public final class ManagedClusterWindowsProfile {
     }
 
     /**
-     * Get the licenseType property: The licenseType to use for Windows VMs.
-     * Windows_Server is used to enable Azure Hybrid User Benefits for Windows
-     * VMs.
-     * 
+     * Get the licenseType property: The licenseType to use for Windows VMs. Windows_Server is used to enable Azure
+     * Hybrid User Benefits for Windows VMs.
+     *
      * @return the licenseType value.
      */
     public LicenseType licenseType() {
@@ -136,10 +118,9 @@ public final class ManagedClusterWindowsProfile {
     }
 
     /**
-     * Set the licenseType property: The licenseType to use for Windows VMs.
-     * Windows_Server is used to enable Azure Hybrid User Benefits for Windows
-     * VMs.
-     * 
+     * Set the licenseType property: The licenseType to use for Windows VMs. Windows_Server is used to enable Azure
+     * Hybrid User Benefits for Windows VMs.
+     *
      * @param licenseType the licenseType value to set.
      * @return the ManagedClusterWindowsProfile object itself.
      */
@@ -150,12 +131,15 @@ public final class ManagedClusterWindowsProfile {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (adminUsername() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property adminUsername in model ManagedClusterWindowsProfile"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property adminUsername in model ManagedClusterWindowsProfile"));
         }
     }
 }

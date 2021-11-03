@@ -8,23 +8,19 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for EncryptionType.
- */
+/** Defines values for EncryptionType. */
 public final class EncryptionType extends ExpandableStringEnum<EncryptionType> {
-    /**
-     * Static value EncryptionAtRestWithPlatformKey for EncryptionType.
-     */
-    public static final EncryptionType ENCRYPTION_AT_REST_WITH_PLATFORM_KEY = fromString("EncryptionAtRestWithPlatformKey");
+    /** Static value EncryptionAtRestWithPlatformKey for EncryptionType. */
+    public static final EncryptionType ENCRYPTION_AT_REST_WITH_PLATFORM_KEY =
+        fromString("EncryptionAtRestWithPlatformKey");
 
-    /**
-     * Static value EncryptionAtRestWithCustomerKey for EncryptionType.
-     */
-    public static final EncryptionType ENCRYPTION_AT_REST_WITH_CUSTOMER_KEY = fromString("EncryptionAtRestWithCustomerKey");
+    /** Static value EncryptionAtRestWithCustomerKey for EncryptionType. */
+    public static final EncryptionType ENCRYPTION_AT_REST_WITH_CUSTOMER_KEY =
+        fromString("EncryptionAtRestWithCustomerKey");
 
     /**
      * Creates or finds a EncryptionType from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding EncryptionType.
      */
@@ -33,9 +29,7 @@ public final class EncryptionType extends ExpandableStringEnum<EncryptionType> {
         return fromString(name, EncryptionType.class);
     }
 
-    /**
-     * @return known EncryptionType values.
-     */
+    /** @return known EncryptionType values. */
     public static Collection<EncryptionType> values() {
         return values(EncryptionType.class);
     }

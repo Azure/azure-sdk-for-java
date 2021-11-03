@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.CreationData;
 import com.azure.resourcemanager.compute.models.DiskState;
@@ -13,18 +12,14 @@ import com.azure.resourcemanager.compute.models.Encryption;
 import com.azure.resourcemanager.compute.models.EncryptionSettingsCollection;
 import com.azure.resourcemanager.compute.models.HyperVGeneration;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/**
- * Disk resource properties.
- */
+/** Disk resource properties. */
 @Fluent
 public final class DiskProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(DiskProperties.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiskProperties.class);
 
     /*
      * The time when the disk was created.
@@ -117,7 +112,7 @@ public final class DiskProperties {
 
     /**
      * Get the timeCreated property: The time when the disk was created.
-     * 
+     *
      * @return the timeCreated value.
      */
     public OffsetDateTime timeCreated() {
@@ -126,7 +121,7 @@ public final class DiskProperties {
 
     /**
      * Get the osType property: The Operating System type.
-     * 
+     *
      * @return the osType value.
      */
     public OperatingSystemTypes osType() {
@@ -135,7 +130,7 @@ public final class DiskProperties {
 
     /**
      * Set the osType property: The Operating System type.
-     * 
+     *
      * @param osType the osType value to set.
      * @return the DiskProperties object itself.
      */
@@ -145,9 +140,8 @@ public final class DiskProperties {
     }
 
     /**
-     * Get the hyperVGeneration property: The hypervisor generation of the
-     * Virtual Machine. Applicable to OS disks only.
-     * 
+     * Get the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks only.
+     *
      * @return the hyperVGeneration value.
      */
     public HyperVGeneration hyperVGeneration() {
@@ -155,9 +149,8 @@ public final class DiskProperties {
     }
 
     /**
-     * Set the hyperVGeneration property: The hypervisor generation of the
-     * Virtual Machine. Applicable to OS disks only.
-     * 
+     * Set the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks only.
+     *
      * @param hyperVGeneration the hyperVGeneration value to set.
      * @return the DiskProperties object itself.
      */
@@ -167,9 +160,9 @@ public final class DiskProperties {
     }
 
     /**
-     * Get the creationData property: Disk source information. CreationData
-     * information cannot be changed after the disk has been created.
-     * 
+     * Get the creationData property: Disk source information. CreationData information cannot be changed after the disk
+     * has been created.
+     *
      * @return the creationData value.
      */
     public CreationData creationData() {
@@ -177,9 +170,9 @@ public final class DiskProperties {
     }
 
     /**
-     * Set the creationData property: Disk source information. CreationData
-     * information cannot be changed after the disk has been created.
-     * 
+     * Set the creationData property: Disk source information. CreationData information cannot be changed after the disk
+     * has been created.
+     *
      * @param creationData the creationData value to set.
      * @return the DiskProperties object itself.
      */
@@ -189,12 +182,11 @@ public final class DiskProperties {
     }
 
     /**
-     * Get the diskSizeGB property: If creationData.createOption is Empty, this
-     * field is mandatory and it indicates the size of the disk to create. If
-     * this field is present for updates or creation with other options, it
-     * indicates a resize. Resizes are only allowed if the disk is not attached
-     * to a running VM, and can only increase the disk's size.
-     * 
+     * Get the diskSizeGB property: If creationData.createOption is Empty, this field is mandatory and it indicates the
+     * size of the disk to create. If this field is present for updates or creation with other options, it indicates a
+     * resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's
+     * size.
+     *
      * @return the diskSizeGB value.
      */
     public Integer diskSizeGB() {
@@ -202,12 +194,11 @@ public final class DiskProperties {
     }
 
     /**
-     * Set the diskSizeGB property: If creationData.createOption is Empty, this
-     * field is mandatory and it indicates the size of the disk to create. If
-     * this field is present for updates or creation with other options, it
-     * indicates a resize. Resizes are only allowed if the disk is not attached
-     * to a running VM, and can only increase the disk's size.
-     * 
+     * Set the diskSizeGB property: If creationData.createOption is Empty, this field is mandatory and it indicates the
+     * size of the disk to create. If this field is present for updates or creation with other options, it indicates a
+     * resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's
+     * size.
+     *
      * @param diskSizeGB the diskSizeGB value to set.
      * @return the DiskProperties object itself.
      */
@@ -217,9 +208,8 @@ public final class DiskProperties {
     }
 
     /**
-     * Get the diskSizeBytes property: The size of the disk in bytes. This
-     * field is read only.
-     * 
+     * Get the diskSizeBytes property: The size of the disk in bytes. This field is read only.
+     *
      * @return the diskSizeBytes value.
      */
     public Long diskSizeBytes() {
@@ -228,7 +218,7 @@ public final class DiskProperties {
 
     /**
      * Get the uniqueId property: Unique Guid identifying the resource.
-     * 
+     *
      * @return the uniqueId value.
      */
     public String uniqueId() {
@@ -236,10 +226,9 @@ public final class DiskProperties {
     }
 
     /**
-     * Get the encryptionSettingsCollection property: Encryption settings
-     * collection used for Azure Disk Encryption, can contain multiple
-     * encryption settings per disk or snapshot.
-     * 
+     * Get the encryptionSettingsCollection property: Encryption settings collection used for Azure Disk Encryption, can
+     * contain multiple encryption settings per disk or snapshot.
+     *
      * @return the encryptionSettingsCollection value.
      */
     public EncryptionSettingsCollection encryptionSettingsCollection() {
@@ -247,12 +236,10 @@ public final class DiskProperties {
     }
 
     /**
-     * Set the encryptionSettingsCollection property: Encryption settings
-     * collection used for Azure Disk Encryption, can contain multiple
-     * encryption settings per disk or snapshot.
-     * 
-     * @param encryptionSettingsCollection the encryptionSettingsCollection
-     * value to set.
+     * Set the encryptionSettingsCollection property: Encryption settings collection used for Azure Disk Encryption, can
+     * contain multiple encryption settings per disk or snapshot.
+     *
+     * @param encryptionSettingsCollection the encryptionSettingsCollection value to set.
      * @return the DiskProperties object itself.
      */
     public DiskProperties withEncryptionSettingsCollection(EncryptionSettingsCollection encryptionSettingsCollection) {
@@ -262,7 +249,7 @@ public final class DiskProperties {
 
     /**
      * Get the provisioningState property: The disk provisioning state.
-     * 
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -270,10 +257,9 @@ public final class DiskProperties {
     }
 
     /**
-     * Get the diskIopsReadWrite property: The number of IOPS allowed for this
-     * disk; only settable for UltraSSD disks. One operation can transfer
-     * between 4k and 256k bytes.
-     * 
+     * Get the diskIopsReadWrite property: The number of IOPS allowed for this disk; only settable for UltraSSD disks.
+     * One operation can transfer between 4k and 256k bytes.
+     *
      * @return the diskIopsReadWrite value.
      */
     public Long diskIopsReadWrite() {
@@ -281,10 +267,9 @@ public final class DiskProperties {
     }
 
     /**
-     * Set the diskIopsReadWrite property: The number of IOPS allowed for this
-     * disk; only settable for UltraSSD disks. One operation can transfer
-     * between 4k and 256k bytes.
-     * 
+     * Set the diskIopsReadWrite property: The number of IOPS allowed for this disk; only settable for UltraSSD disks.
+     * One operation can transfer between 4k and 256k bytes.
+     *
      * @param diskIopsReadWrite the diskIopsReadWrite value to set.
      * @return the DiskProperties object itself.
      */
@@ -294,10 +279,9 @@ public final class DiskProperties {
     }
 
     /**
-     * Get the diskMBpsReadWrite property: The bandwidth allowed for this disk;
-     * only settable for UltraSSD disks. MBps means millions of bytes per
-     * second - MB here uses the ISO notation, of powers of 10.
-     * 
+     * Get the diskMBpsReadWrite property: The bandwidth allowed for this disk; only settable for UltraSSD disks. MBps
+     * means millions of bytes per second - MB here uses the ISO notation, of powers of 10.
+     *
      * @return the diskMBpsReadWrite value.
      */
     public Integer diskMBpsReadWrite() {
@@ -305,10 +289,9 @@ public final class DiskProperties {
     }
 
     /**
-     * Set the diskMBpsReadWrite property: The bandwidth allowed for this disk;
-     * only settable for UltraSSD disks. MBps means millions of bytes per
-     * second - MB here uses the ISO notation, of powers of 10.
-     * 
+     * Set the diskMBpsReadWrite property: The bandwidth allowed for this disk; only settable for UltraSSD disks. MBps
+     * means millions of bytes per second - MB here uses the ISO notation, of powers of 10.
+     *
      * @param diskMBpsReadWrite the diskMBpsReadWrite value to set.
      * @return the DiskProperties object itself.
      */
@@ -319,7 +302,7 @@ public final class DiskProperties {
 
     /**
      * Get the diskState property: The state of the disk.
-     * 
+     *
      * @return the diskState value.
      */
     public DiskState diskState() {
@@ -327,9 +310,9 @@ public final class DiskProperties {
     }
 
     /**
-     * Get the encryption property: Encryption property can be used to encrypt
-     * data at rest with customer managed keys or platform managed keys.
-     * 
+     * Get the encryption property: Encryption property can be used to encrypt data at rest with customer managed keys
+     * or platform managed keys.
+     *
      * @return the encryption value.
      */
     public Encryption encryption() {
@@ -337,9 +320,9 @@ public final class DiskProperties {
     }
 
     /**
-     * Set the encryption property: Encryption property can be used to encrypt
-     * data at rest with customer managed keys or platform managed keys.
-     * 
+     * Set the encryption property: Encryption property can be used to encrypt data at rest with customer managed keys
+     * or platform managed keys.
+     *
      * @param encryption the encryption value to set.
      * @return the DiskProperties object itself.
      */
@@ -350,12 +333,14 @@ public final class DiskProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (creationData() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property creationData in model DiskProperties"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property creationData in model DiskProperties"));
         } else {
             creationData().validate();
         }

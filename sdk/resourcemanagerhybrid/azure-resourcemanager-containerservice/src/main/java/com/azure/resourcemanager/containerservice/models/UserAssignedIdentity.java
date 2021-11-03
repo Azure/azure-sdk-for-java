@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The UserAssignedIdentity model.
- */
+/** The UserAssignedIdentity model. */
 @Fluent
 public class UserAssignedIdentity {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(UserAssignedIdentity.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserAssignedIdentity.class);
 
     /*
      * The resource id of the user assigned identity.
@@ -38,9 +33,8 @@ public class UserAssignedIdentity {
     private String objectId;
 
     /**
-     * Get the resourceId property: The resource id of the user assigned
-     * identity.
-     * 
+     * Get the resourceId property: The resource id of the user assigned identity.
+     *
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -48,9 +42,8 @@ public class UserAssignedIdentity {
     }
 
     /**
-     * Set the resourceId property: The resource id of the user assigned
-     * identity.
-     * 
+     * Set the resourceId property: The resource id of the user assigned identity.
+     *
      * @param resourceId the resourceId value to set.
      * @return the UserAssignedIdentity object itself.
      */
@@ -61,7 +54,7 @@ public class UserAssignedIdentity {
 
     /**
      * Get the clientId property: The client id of the user assigned identity.
-     * 
+     *
      * @return the clientId value.
      */
     public String clientId() {
@@ -70,7 +63,7 @@ public class UserAssignedIdentity {
 
     /**
      * Set the clientId property: The client id of the user assigned identity.
-     * 
+     *
      * @param clientId the clientId value to set.
      * @return the UserAssignedIdentity object itself.
      */
@@ -81,7 +74,7 @@ public class UserAssignedIdentity {
 
     /**
      * Get the objectId property: The object id of the user assigned identity.
-     * 
+     *
      * @return the objectId value.
      */
     public String objectId() {
@@ -90,7 +83,7 @@ public class UserAssignedIdentity {
 
     /**
      * Set the objectId property: The object id of the user assigned identity.
-     * 
+     *
      * @param objectId the objectId value to set.
      * @return the UserAssignedIdentity object itself.
      */
@@ -101,7 +94,7 @@ public class UserAssignedIdentity {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

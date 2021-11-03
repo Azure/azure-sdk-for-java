@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.P2SVpnServerConfigRadiusServerRootCertificatePropertiesFormat;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Radius Server root certificate of P2SVpnServerConfiguration.
- */
+/** Radius Server root certificate of P2SVpnServerConfiguration. */
 @Fluent
 public final class P2SVpnServerConfigRadiusServerRootCertificate extends SubResource {
     @JsonIgnore
@@ -26,7 +22,8 @@ public final class P2SVpnServerConfigRadiusServerRootCertificate extends SubReso
      * certificate.
      */
     @JsonProperty(value = "properties", required = true)
-    private P2SVpnServerConfigRadiusServerRootCertificatePropertiesFormat innerProperties = new P2SVpnServerConfigRadiusServerRootCertificatePropertiesFormat();
+    private P2SVpnServerConfigRadiusServerRootCertificatePropertiesFormat innerProperties =
+        new P2SVpnServerConfigRadiusServerRootCertificatePropertiesFormat();
 
     /*
      * The name of the resource that is unique within a resource group. This
@@ -42,9 +39,8 @@ public final class P2SVpnServerConfigRadiusServerRootCertificate extends SubReso
     private String etag;
 
     /**
-     * Get the innerProperties property: Properties of the
-     * P2SVpnServerConfiguration Radius Server root certificate.
-     * 
+     * Get the innerProperties property: Properties of the P2SVpnServerConfiguration Radius Server root certificate.
+     *
      * @return the innerProperties value.
      */
     private P2SVpnServerConfigRadiusServerRootCertificatePropertiesFormat innerProperties() {
@@ -52,9 +48,9 @@ public final class P2SVpnServerConfigRadiusServerRootCertificate extends SubReso
     }
 
     /**
-     * Get the name property: The name of the resource that is unique within a
-     * resource group. This name can be used to access the resource.
-     * 
+     * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
+     * access the resource.
+     *
      * @return the name value.
      */
     public String name() {
@@ -62,9 +58,9 @@ public final class P2SVpnServerConfigRadiusServerRootCertificate extends SubReso
     }
 
     /**
-     * Set the name property: The name of the resource that is unique within a
-     * resource group. This name can be used to access the resource.
-     * 
+     * Set the name property: The name of the resource that is unique within a resource group. This name can be used to
+     * access the resource.
+     *
      * @param name the name value to set.
      * @return the P2SVpnServerConfigRadiusServerRootCertificate object itself.
      */
@@ -74,9 +70,8 @@ public final class P2SVpnServerConfigRadiusServerRootCertificate extends SubReso
     }
 
     /**
-     * Get the etag property: A unique read-only string that changes whenever
-     * the resource is updated.
-     * 
+     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -84,9 +79,8 @@ public final class P2SVpnServerConfigRadiusServerRootCertificate extends SubReso
     }
 
     /**
-     * Set the etag property: A unique read-only string that changes whenever
-     * the resource is updated.
-     * 
+     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
      * @param etag the etag value to set.
      * @return the P2SVpnServerConfigRadiusServerRootCertificate object itself.
      */
@@ -95,9 +89,7 @@ public final class P2SVpnServerConfigRadiusServerRootCertificate extends SubReso
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public P2SVpnServerConfigRadiusServerRootCertificate withId(String id) {
         super.withId(id);
@@ -106,7 +98,7 @@ public final class P2SVpnServerConfigRadiusServerRootCertificate extends SubReso
 
     /**
      * Get the publicCertData property: The certificate public data.
-     * 
+     *
      * @return the publicCertData value.
      */
     public String publicCertData() {
@@ -115,7 +107,7 @@ public final class P2SVpnServerConfigRadiusServerRootCertificate extends SubReso
 
     /**
      * Set the publicCertData property: The certificate public data.
-     * 
+     *
      * @param publicCertData the publicCertData value to set.
      * @return the P2SVpnServerConfigRadiusServerRootCertificate object itself.
      */
@@ -128,10 +120,9 @@ public final class P2SVpnServerConfigRadiusServerRootCertificate extends SubReso
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the
-     * P2SVpnServerConfiguration Radius Server root certificate resource.
-     * Possible values are: 'Updating', 'Deleting', and 'Failed'.
-     * 
+     * Get the provisioningState property: The provisioning state of the P2SVpnServerConfiguration Radius Server root
+     * certificate resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -140,12 +131,16 @@ public final class P2SVpnServerConfigRadiusServerRootCertificate extends SubReso
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property innerProperties in model P2SVpnServerConfigRadiusServerRootCertificate"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model"
+                            + " P2SVpnServerConfigRadiusServerRootCertificate"));
         } else {
             innerProperties().validate();
         }

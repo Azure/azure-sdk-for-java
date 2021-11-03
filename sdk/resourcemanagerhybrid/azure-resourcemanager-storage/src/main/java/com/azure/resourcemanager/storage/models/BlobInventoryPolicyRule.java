@@ -5,20 +5,14 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * An object that wraps the blob inventory rule. Each rule is uniquely defined
- * by name.
- */
+/** An object that wraps the blob inventory rule. Each rule is uniquely defined by name. */
 @Fluent
 public final class BlobInventoryPolicyRule {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(BlobInventoryPolicyRule.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(BlobInventoryPolicyRule.class);
 
     /*
      * Rule is enabled when set to true.
@@ -41,7 +35,7 @@ public final class BlobInventoryPolicyRule {
 
     /**
      * Get the enabled property: Rule is enabled when set to true.
-     * 
+     *
      * @return the enabled value.
      */
     public boolean enabled() {
@@ -50,7 +44,7 @@ public final class BlobInventoryPolicyRule {
 
     /**
      * Set the enabled property: Rule is enabled when set to true.
-     * 
+     *
      * @param enabled the enabled value to set.
      * @return the BlobInventoryPolicyRule object itself.
      */
@@ -60,10 +54,9 @@ public final class BlobInventoryPolicyRule {
     }
 
     /**
-     * Get the name property: A rule name can contain any combination of alpha
-     * numeric characters. Rule name is case-sensitive. It must be unique
-     * within a policy.
-     * 
+     * Get the name property: A rule name can contain any combination of alpha numeric characters. Rule name is
+     * case-sensitive. It must be unique within a policy.
+     *
      * @return the name value.
      */
     public String name() {
@@ -71,10 +64,9 @@ public final class BlobInventoryPolicyRule {
     }
 
     /**
-     * Set the name property: A rule name can contain any combination of alpha
-     * numeric characters. Rule name is case-sensitive. It must be unique
-     * within a policy.
-     * 
+     * Set the name property: A rule name can contain any combination of alpha numeric characters. Rule name is
+     * case-sensitive. It must be unique within a policy.
+     *
      * @param name the name value to set.
      * @return the BlobInventoryPolicyRule object itself.
      */
@@ -84,9 +76,8 @@ public final class BlobInventoryPolicyRule {
     }
 
     /**
-     * Get the definition property: An object that defines the blob inventory
-     * policy rule.
-     * 
+     * Get the definition property: An object that defines the blob inventory policy rule.
+     *
      * @return the definition value.
      */
     public BlobInventoryPolicyDefinition definition() {
@@ -94,9 +85,8 @@ public final class BlobInventoryPolicyRule {
     }
 
     /**
-     * Set the definition property: An object that defines the blob inventory
-     * policy rule.
-     * 
+     * Set the definition property: An object that defines the blob inventory policy rule.
+     *
      * @param definition the definition value to set.
      * @return the BlobInventoryPolicyRule object itself.
      */
@@ -107,15 +97,20 @@ public final class BlobInventoryPolicyRule {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property name in model BlobInventoryPolicyRule"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property name in model BlobInventoryPolicyRule"));
         }
         if (definition() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property definition in model BlobInventoryPolicyRule"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property definition in model BlobInventoryPolicyRule"));
         } else {
             definition().validate();
         }

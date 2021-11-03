@@ -5,22 +5,17 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * The Update Resource model definition.
- */
+/** The Update Resource model definition. */
 @Fluent
 public class UpdateResourceDefinition extends ProxyResource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(UpdateResourceDefinition.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(UpdateResourceDefinition.class);
 
     /*
      * Resource tags
@@ -31,7 +26,7 @@ public class UpdateResourceDefinition extends ProxyResource {
 
     /**
      * Get the tags property: Resource tags.
-     * 
+     *
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -40,7 +35,7 @@ public class UpdateResourceDefinition extends ProxyResource {
 
     /**
      * Set the tags property: Resource tags.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the UpdateResourceDefinition object itself.
      */
@@ -51,7 +46,7 @@ public class UpdateResourceDefinition extends ProxyResource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

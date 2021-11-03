@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Specifies a CORS rule for the Blob service.
- */
+/** Specifies a CORS rule for the Blob service. */
 @Fluent
 public final class CorsRule {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(CorsRule.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(CorsRule.class);
 
     /*
      * Required if CorsRule element is present. A list of origin domains that
@@ -56,10 +51,9 @@ public final class CorsRule {
     private List<String> allowedHeaders;
 
     /**
-     * Get the allowedOrigins property: Required if CorsRule element is
-     * present. A list of origin domains that will be allowed via CORS, or "*"
-     * to allow all domains.
-     * 
+     * Get the allowedOrigins property: Required if CorsRule element is present. A list of origin domains that will be
+     * allowed via CORS, or "*" to allow all domains.
+     *
      * @return the allowedOrigins value.
      */
     public List<String> allowedOrigins() {
@@ -67,10 +61,9 @@ public final class CorsRule {
     }
 
     /**
-     * Set the allowedOrigins property: Required if CorsRule element is
-     * present. A list of origin domains that will be allowed via CORS, or "*"
-     * to allow all domains.
-     * 
+     * Set the allowedOrigins property: Required if CorsRule element is present. A list of origin domains that will be
+     * allowed via CORS, or "*" to allow all domains.
+     *
      * @param allowedOrigins the allowedOrigins value to set.
      * @return the CorsRule object itself.
      */
@@ -80,10 +73,9 @@ public final class CorsRule {
     }
 
     /**
-     * Get the allowedMethods property: Required if CorsRule element is
-     * present. A list of HTTP methods that are allowed to be executed by the
-     * origin.
-     * 
+     * Get the allowedMethods property: Required if CorsRule element is present. A list of HTTP methods that are allowed
+     * to be executed by the origin.
+     *
      * @return the allowedMethods value.
      */
     public List<CorsRuleAllowedMethodsItem> allowedMethods() {
@@ -91,10 +83,9 @@ public final class CorsRule {
     }
 
     /**
-     * Set the allowedMethods property: Required if CorsRule element is
-     * present. A list of HTTP methods that are allowed to be executed by the
-     * origin.
-     * 
+     * Set the allowedMethods property: Required if CorsRule element is present. A list of HTTP methods that are allowed
+     * to be executed by the origin.
+     *
      * @param allowedMethods the allowedMethods value to set.
      * @return the CorsRule object itself.
      */
@@ -104,10 +95,9 @@ public final class CorsRule {
     }
 
     /**
-     * Get the maxAgeInSeconds property: Required if CorsRule element is
-     * present. The number of seconds that the client/browser should cache a
-     * preflight response.
-     * 
+     * Get the maxAgeInSeconds property: Required if CorsRule element is present. The number of seconds that the
+     * client/browser should cache a preflight response.
+     *
      * @return the maxAgeInSeconds value.
      */
     public int maxAgeInSeconds() {
@@ -115,10 +105,9 @@ public final class CorsRule {
     }
 
     /**
-     * Set the maxAgeInSeconds property: Required if CorsRule element is
-     * present. The number of seconds that the client/browser should cache a
-     * preflight response.
-     * 
+     * Set the maxAgeInSeconds property: Required if CorsRule element is present. The number of seconds that the
+     * client/browser should cache a preflight response.
+     *
      * @param maxAgeInSeconds the maxAgeInSeconds value to set.
      * @return the CorsRule object itself.
      */
@@ -128,9 +117,9 @@ public final class CorsRule {
     }
 
     /**
-     * Get the exposedHeaders property: Required if CorsRule element is
-     * present. A list of response headers to expose to CORS clients.
-     * 
+     * Get the exposedHeaders property: Required if CorsRule element is present. A list of response headers to expose to
+     * CORS clients.
+     *
      * @return the exposedHeaders value.
      */
     public List<String> exposedHeaders() {
@@ -138,9 +127,9 @@ public final class CorsRule {
     }
 
     /**
-     * Set the exposedHeaders property: Required if CorsRule element is
-     * present. A list of response headers to expose to CORS clients.
-     * 
+     * Set the exposedHeaders property: Required if CorsRule element is present. A list of response headers to expose to
+     * CORS clients.
+     *
      * @param exposedHeaders the exposedHeaders value to set.
      * @return the CorsRule object itself.
      */
@@ -150,10 +139,9 @@ public final class CorsRule {
     }
 
     /**
-     * Get the allowedHeaders property: Required if CorsRule element is
-     * present. A list of headers allowed to be part of the cross-origin
-     * request.
-     * 
+     * Get the allowedHeaders property: Required if CorsRule element is present. A list of headers allowed to be part of
+     * the cross-origin request.
+     *
      * @return the allowedHeaders value.
      */
     public List<String> allowedHeaders() {
@@ -161,10 +149,9 @@ public final class CorsRule {
     }
 
     /**
-     * Set the allowedHeaders property: Required if CorsRule element is
-     * present. A list of headers allowed to be part of the cross-origin
-     * request.
-     * 
+     * Set the allowedHeaders property: Required if CorsRule element is present. A list of headers allowed to be part of
+     * the cross-origin request.
+     *
      * @param allowedHeaders the allowedHeaders value to set.
      * @return the CorsRule object itself.
      */
@@ -175,21 +162,29 @@ public final class CorsRule {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (allowedOrigins() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property allowedOrigins in model CorsRule"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property allowedOrigins in model CorsRule"));
         }
         if (allowedMethods() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property allowedMethods in model CorsRule"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property allowedMethods in model CorsRule"));
         }
         if (exposedHeaders() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property exposedHeaders in model CorsRule"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property exposedHeaders in model CorsRule"));
         }
         if (allowedHeaders() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property allowedHeaders in model CorsRule"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property allowedHeaders in model CorsRule"));
         }
     }
 }

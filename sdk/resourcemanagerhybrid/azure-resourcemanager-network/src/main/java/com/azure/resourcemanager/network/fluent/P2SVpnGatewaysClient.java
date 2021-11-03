@@ -8,8 +8,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
@@ -22,19 +20,16 @@ import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
-import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * P2SVpnGatewaysClient.
- */
-public interface P2SVpnGatewaysClient extends InnerSupportsGet<P2SVpnGatewayInner>, InnerSupportsListing<P2SVpnGatewayInner>, InnerSupportsDelete<Void> {
+/** An instance of this class provides access to all the operations defined in P2SVpnGatewaysClient. */
+public interface P2SVpnGatewaysClient
+    extends InnerSupportsGet<P2SVpnGatewayInner>, InnerSupportsListing<P2SVpnGatewayInner>, InnerSupportsDelete<Void> {
     /**
      * Retrieves the details of a virtual wan p2s vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -43,11 +38,12 @@ public interface P2SVpnGatewaysClient extends InnerSupportsGet<P2SVpnGatewayInne
      * @return p2SVpnGateway Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<P2SVpnGatewayInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String gatewayName);
+    Mono<Response<P2SVpnGatewayInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String gatewayName);
 
     /**
      * Retrieves the details of a virtual wan p2s vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -60,7 +56,7 @@ public interface P2SVpnGatewaysClient extends InnerSupportsGet<P2SVpnGatewayInne
 
     /**
      * Retrieves the details of a virtual wan p2s vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -73,7 +69,7 @@ public interface P2SVpnGatewaysClient extends InnerSupportsGet<P2SVpnGatewayInne
 
     /**
      * Retrieves the details of a virtual wan p2s vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @param context The context to associate with this operation.
@@ -83,11 +79,12 @@ public interface P2SVpnGatewaysClient extends InnerSupportsGet<P2SVpnGatewayInne
      * @return p2SVpnGateway Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<P2SVpnGatewayInner> getByResourceGroupWithResponse(String resourceGroupName, String gatewayName, Context context);
+    Response<P2SVpnGatewayInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String gatewayName, Context context);
 
     /**
      * Creates a virtual wan p2s vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @param p2SVpnGatewayParameters Parameters supplied to create or Update a virtual wan p2s vpn gateway.
@@ -97,11 +94,12 @@ public interface P2SVpnGatewaysClient extends InnerSupportsGet<P2SVpnGatewayInne
      * @return p2SVpnGateway Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String gatewayName, P2SVpnGatewayInner p2SVpnGatewayParameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String gatewayName, P2SVpnGatewayInner p2SVpnGatewayParameters);
 
     /**
      * Creates a virtual wan p2s vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @param p2SVpnGatewayParameters Parameters supplied to create or Update a virtual wan p2s vpn gateway.
@@ -111,11 +109,12 @@ public interface P2SVpnGatewaysClient extends InnerSupportsGet<P2SVpnGatewayInne
      * @return p2SVpnGateway Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginCreateOrUpdateAsync(String resourceGroupName, String gatewayName, P2SVpnGatewayInner p2SVpnGatewayParameters);
+    PollerFlux<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String gatewayName, P2SVpnGatewayInner p2SVpnGatewayParameters);
 
     /**
      * Creates a virtual wan p2s vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @param p2SVpnGatewayParameters Parameters supplied to create or Update a virtual wan p2s vpn gateway.
@@ -125,54 +124,12 @@ public interface P2SVpnGatewaysClient extends InnerSupportsGet<P2SVpnGatewayInne
      * @return p2SVpnGateway Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginCreateOrUpdate(String resourceGroupName, String gatewayName, P2SVpnGatewayInner p2SVpnGatewayParameters);
+    SyncPoller<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginCreateOrUpdate(
+        String resourceGroupName, String gatewayName, P2SVpnGatewayInner p2SVpnGatewayParameters);
 
     /**
      * Creates a virtual wan p2s vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
-     * @param resourceGroupName The resource group name of the P2SVpnGateway.
-     * @param gatewayName The name of the gateway.
-     * @param p2SVpnGatewayParameters Parameters supplied to create or Update a virtual wan p2s vpn gateway.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnGateway Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginCreateOrUpdate(String resourceGroupName, String gatewayName, P2SVpnGatewayInner p2SVpnGatewayParameters, Context context);
-
-    /**
-     * Creates a virtual wan p2s vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
-     * @param resourceGroupName The resource group name of the P2SVpnGateway.
-     * @param gatewayName The name of the gateway.
-     * @param p2SVpnGatewayParameters Parameters supplied to create or Update a virtual wan p2s vpn gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnGateway Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<P2SVpnGatewayInner> createOrUpdateAsync(String resourceGroupName, String gatewayName, P2SVpnGatewayInner p2SVpnGatewayParameters);
-
-    /**
-     * Creates a virtual wan p2s vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
-     * @param resourceGroupName The resource group name of the P2SVpnGateway.
-     * @param gatewayName The name of the gateway.
-     * @param p2SVpnGatewayParameters Parameters supplied to create or Update a virtual wan p2s vpn gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnGateway Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    P2SVpnGatewayInner createOrUpdate(String resourceGroupName, String gatewayName, P2SVpnGatewayInner p2SVpnGatewayParameters);
-
-    /**
-     * Creates a virtual wan p2s vpn gateway if it doesn't exist else updates the existing gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @param p2SVpnGatewayParameters Parameters supplied to create or Update a virtual wan p2s vpn gateway.
@@ -183,11 +140,58 @@ public interface P2SVpnGatewaysClient extends InnerSupportsGet<P2SVpnGatewayInne
      * @return p2SVpnGateway Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    P2SVpnGatewayInner createOrUpdate(String resourceGroupName, String gatewayName, P2SVpnGatewayInner p2SVpnGatewayParameters, Context context);
+    SyncPoller<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginCreateOrUpdate(
+        String resourceGroupName, String gatewayName, P2SVpnGatewayInner p2SVpnGatewayParameters, Context context);
+
+    /**
+     * Creates a virtual wan p2s vpn gateway if it doesn't exist else updates the existing gateway.
+     *
+     * @param resourceGroupName The resource group name of the P2SVpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param p2SVpnGatewayParameters Parameters supplied to create or Update a virtual wan p2s vpn gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return p2SVpnGateway Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<P2SVpnGatewayInner> createOrUpdateAsync(
+        String resourceGroupName, String gatewayName, P2SVpnGatewayInner p2SVpnGatewayParameters);
+
+    /**
+     * Creates a virtual wan p2s vpn gateway if it doesn't exist else updates the existing gateway.
+     *
+     * @param resourceGroupName The resource group name of the P2SVpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param p2SVpnGatewayParameters Parameters supplied to create or Update a virtual wan p2s vpn gateway.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return p2SVpnGateway Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    P2SVpnGatewayInner createOrUpdate(
+        String resourceGroupName, String gatewayName, P2SVpnGatewayInner p2SVpnGatewayParameters);
+
+    /**
+     * Creates a virtual wan p2s vpn gateway if it doesn't exist else updates the existing gateway.
+     *
+     * @param resourceGroupName The resource group name of the P2SVpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param p2SVpnGatewayParameters Parameters supplied to create or Update a virtual wan p2s vpn gateway.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return p2SVpnGateway Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    P2SVpnGatewayInner createOrUpdate(
+        String resourceGroupName, String gatewayName, P2SVpnGatewayInner p2SVpnGatewayParameters, Context context);
 
     /**
      * Updates virtual wan p2s vpn gateway tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @param p2SVpnGatewayParameters Parameters supplied to update a virtual wan p2s vpn gateway tags.
@@ -197,11 +201,12 @@ public interface P2SVpnGatewaysClient extends InnerSupportsGet<P2SVpnGatewayInne
      * @return p2SVpnGateway Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(String resourceGroupName, String gatewayName, TagsObject p2SVpnGatewayParameters);
+    Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
+        String resourceGroupName, String gatewayName, TagsObject p2SVpnGatewayParameters);
 
     /**
      * Updates virtual wan p2s vpn gateway tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @param p2SVpnGatewayParameters Parameters supplied to update a virtual wan p2s vpn gateway tags.
@@ -211,11 +216,12 @@ public interface P2SVpnGatewaysClient extends InnerSupportsGet<P2SVpnGatewayInne
      * @return p2SVpnGateway Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginUpdateTagsAsync(String resourceGroupName, String gatewayName, TagsObject p2SVpnGatewayParameters);
+    PollerFlux<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginUpdateTagsAsync(
+        String resourceGroupName, String gatewayName, TagsObject p2SVpnGatewayParameters);
 
     /**
      * Updates virtual wan p2s vpn gateway tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @param p2SVpnGatewayParameters Parameters supplied to update a virtual wan p2s vpn gateway tags.
@@ -225,11 +231,12 @@ public interface P2SVpnGatewaysClient extends InnerSupportsGet<P2SVpnGatewayInne
      * @return p2SVpnGateway Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginUpdateTags(String resourceGroupName, String gatewayName, TagsObject p2SVpnGatewayParameters);
+    SyncPoller<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginUpdateTags(
+        String resourceGroupName, String gatewayName, TagsObject p2SVpnGatewayParameters);
 
     /**
      * Updates virtual wan p2s vpn gateway tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @param p2SVpnGatewayParameters Parameters supplied to update a virtual wan p2s vpn gateway tags.
@@ -240,11 +247,12 @@ public interface P2SVpnGatewaysClient extends InnerSupportsGet<P2SVpnGatewayInne
      * @return p2SVpnGateway Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginUpdateTags(String resourceGroupName, String gatewayName, TagsObject p2SVpnGatewayParameters, Context context);
+    SyncPoller<PollResult<P2SVpnGatewayInner>, P2SVpnGatewayInner> beginUpdateTags(
+        String resourceGroupName, String gatewayName, TagsObject p2SVpnGatewayParameters, Context context);
 
     /**
      * Updates virtual wan p2s vpn gateway tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @param p2SVpnGatewayParameters Parameters supplied to update a virtual wan p2s vpn gateway tags.
@@ -254,11 +262,12 @@ public interface P2SVpnGatewaysClient extends InnerSupportsGet<P2SVpnGatewayInne
      * @return p2SVpnGateway Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<P2SVpnGatewayInner> updateTagsAsync(String resourceGroupName, String gatewayName, TagsObject p2SVpnGatewayParameters);
+    Mono<P2SVpnGatewayInner> updateTagsAsync(
+        String resourceGroupName, String gatewayName, TagsObject p2SVpnGatewayParameters);
 
     /**
      * Updates virtual wan p2s vpn gateway tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @param p2SVpnGatewayParameters Parameters supplied to update a virtual wan p2s vpn gateway tags.
@@ -272,7 +281,7 @@ public interface P2SVpnGatewaysClient extends InnerSupportsGet<P2SVpnGatewayInne
 
     /**
      * Updates virtual wan p2s vpn gateway tags.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @param p2SVpnGatewayParameters Parameters supplied to update a virtual wan p2s vpn gateway tags.
@@ -283,11 +292,12 @@ public interface P2SVpnGatewaysClient extends InnerSupportsGet<P2SVpnGatewayInne
      * @return p2SVpnGateway Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    P2SVpnGatewayInner updateTags(String resourceGroupName, String gatewayName, TagsObject p2SVpnGatewayParameters, Context context);
+    P2SVpnGatewayInner updateTags(
+        String resourceGroupName, String gatewayName, TagsObject p2SVpnGatewayParameters, Context context);
 
     /**
      * Deletes a virtual wan p2s vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -300,7 +310,7 @@ public interface P2SVpnGatewaysClient extends InnerSupportsGet<P2SVpnGatewayInne
 
     /**
      * Deletes a virtual wan p2s vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -313,7 +323,7 @@ public interface P2SVpnGatewaysClient extends InnerSupportsGet<P2SVpnGatewayInne
 
     /**
      * Deletes a virtual wan p2s vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -326,7 +336,7 @@ public interface P2SVpnGatewaysClient extends InnerSupportsGet<P2SVpnGatewayInne
 
     /**
      * Deletes a virtual wan p2s vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @param context The context to associate with this operation.
@@ -340,7 +350,7 @@ public interface P2SVpnGatewaysClient extends InnerSupportsGet<P2SVpnGatewayInne
 
     /**
      * Deletes a virtual wan p2s vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -353,7 +363,7 @@ public interface P2SVpnGatewaysClient extends InnerSupportsGet<P2SVpnGatewayInne
 
     /**
      * Deletes a virtual wan p2s vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -365,7 +375,7 @@ public interface P2SVpnGatewaysClient extends InnerSupportsGet<P2SVpnGatewayInne
 
     /**
      * Deletes a virtual wan p2s vpn gateway.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param gatewayName The name of the gateway.
      * @param context The context to associate with this operation.
@@ -378,7 +388,7 @@ public interface P2SVpnGatewaysClient extends InnerSupportsGet<P2SVpnGatewayInne
 
     /**
      * Lists all the P2SVpnGateways in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
@@ -390,7 +400,7 @@ public interface P2SVpnGatewaysClient extends InnerSupportsGet<P2SVpnGatewayInne
 
     /**
      * Lists all the P2SVpnGateways in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
@@ -402,7 +412,7 @@ public interface P2SVpnGatewaysClient extends InnerSupportsGet<P2SVpnGatewayInne
 
     /**
      * Lists all the P2SVpnGateways in a resource group.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnGateway.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -415,7 +425,7 @@ public interface P2SVpnGatewaysClient extends InnerSupportsGet<P2SVpnGatewayInne
 
     /**
      * Lists all the P2SVpnGateways in a subscription.
-     * 
+     *
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list P2SVpnGateways.
@@ -425,7 +435,7 @@ public interface P2SVpnGatewaysClient extends InnerSupportsGet<P2SVpnGatewayInne
 
     /**
      * Lists all the P2SVpnGateways in a subscription.
-     * 
+     *
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list P2SVpnGateways.
@@ -435,7 +445,7 @@ public interface P2SVpnGatewaysClient extends InnerSupportsGet<P2SVpnGatewayInne
 
     /**
      * Lists all the P2SVpnGateways in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
@@ -447,7 +457,7 @@ public interface P2SVpnGatewaysClient extends InnerSupportsGet<P2SVpnGatewayInne
 
     /**
      * Generates VPN profile for P2S client of the P2SVpnGateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the P2SVpnGateway.
      * @param parameters Parameters supplied to the generate P2SVpnGateway VPN client package operation.
@@ -457,11 +467,12 @@ public interface P2SVpnGatewaysClient extends InnerSupportsGet<P2SVpnGatewayInne
      * @return vpn Profile Response for package generation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> generateVpnProfileWithResponseAsync(String resourceGroupName, String gatewayName, P2SVpnProfileParameters parameters);
+    Mono<Response<Flux<ByteBuffer>>> generateVpnProfileWithResponseAsync(
+        String resourceGroupName, String gatewayName, P2SVpnProfileParameters parameters);
 
     /**
      * Generates VPN profile for P2S client of the P2SVpnGateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the P2SVpnGateway.
      * @param parameters Parameters supplied to the generate P2SVpnGateway VPN client package operation.
@@ -471,11 +482,12 @@ public interface P2SVpnGatewaysClient extends InnerSupportsGet<P2SVpnGatewayInne
      * @return vpn Profile Response for package generation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<VpnProfileResponseInner>, VpnProfileResponseInner> beginGenerateVpnProfileAsync(String resourceGroupName, String gatewayName, P2SVpnProfileParameters parameters);
+    PollerFlux<PollResult<VpnProfileResponseInner>, VpnProfileResponseInner> beginGenerateVpnProfileAsync(
+        String resourceGroupName, String gatewayName, P2SVpnProfileParameters parameters);
 
     /**
      * Generates VPN profile for P2S client of the P2SVpnGateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the P2SVpnGateway.
      * @param parameters Parameters supplied to the generate P2SVpnGateway VPN client package operation.
@@ -485,11 +497,12 @@ public interface P2SVpnGatewaysClient extends InnerSupportsGet<P2SVpnGatewayInne
      * @return vpn Profile Response for package generation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<VpnProfileResponseInner>, VpnProfileResponseInner> beginGenerateVpnProfile(String resourceGroupName, String gatewayName, P2SVpnProfileParameters parameters);
+    SyncPoller<PollResult<VpnProfileResponseInner>, VpnProfileResponseInner> beginGenerateVpnProfile(
+        String resourceGroupName, String gatewayName, P2SVpnProfileParameters parameters);
 
     /**
      * Generates VPN profile for P2S client of the P2SVpnGateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the P2SVpnGateway.
      * @param parameters Parameters supplied to the generate P2SVpnGateway VPN client package operation.
@@ -500,11 +513,12 @@ public interface P2SVpnGatewaysClient extends InnerSupportsGet<P2SVpnGatewayInne
      * @return vpn Profile Response for package generation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<VpnProfileResponseInner>, VpnProfileResponseInner> beginGenerateVpnProfile(String resourceGroupName, String gatewayName, P2SVpnProfileParameters parameters, Context context);
+    SyncPoller<PollResult<VpnProfileResponseInner>, VpnProfileResponseInner> beginGenerateVpnProfile(
+        String resourceGroupName, String gatewayName, P2SVpnProfileParameters parameters, Context context);
 
     /**
      * Generates VPN profile for P2S client of the P2SVpnGateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the P2SVpnGateway.
      * @param parameters Parameters supplied to the generate P2SVpnGateway VPN client package operation.
@@ -514,11 +528,12 @@ public interface P2SVpnGatewaysClient extends InnerSupportsGet<P2SVpnGatewayInne
      * @return vpn Profile Response for package generation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VpnProfileResponseInner> generateVpnProfileAsync(String resourceGroupName, String gatewayName, P2SVpnProfileParameters parameters);
+    Mono<VpnProfileResponseInner> generateVpnProfileAsync(
+        String resourceGroupName, String gatewayName, P2SVpnProfileParameters parameters);
 
     /**
      * Generates VPN profile for P2S client of the P2SVpnGateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the P2SVpnGateway.
      * @param parameters Parameters supplied to the generate P2SVpnGateway VPN client package operation.
@@ -528,11 +543,12 @@ public interface P2SVpnGatewaysClient extends InnerSupportsGet<P2SVpnGatewayInne
      * @return vpn Profile Response for package generation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VpnProfileResponseInner generateVpnProfile(String resourceGroupName, String gatewayName, P2SVpnProfileParameters parameters);
+    VpnProfileResponseInner generateVpnProfile(
+        String resourceGroupName, String gatewayName, P2SVpnProfileParameters parameters);
 
     /**
      * Generates VPN profile for P2S client of the P2SVpnGateway in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param gatewayName The name of the P2SVpnGateway.
      * @param parameters Parameters supplied to the generate P2SVpnGateway VPN client package operation.
@@ -543,5 +559,6 @@ public interface P2SVpnGatewaysClient extends InnerSupportsGet<P2SVpnGatewayInne
      * @return vpn Profile Response for package generation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VpnProfileResponseInner generateVpnProfile(String resourceGroupName, String gatewayName, P2SVpnProfileParameters parameters, Context context);
+    VpnProfileResponseInner generateVpnProfile(
+        String resourceGroupName, String gatewayName, P2SVpnProfileParameters parameters, Context context);
 }

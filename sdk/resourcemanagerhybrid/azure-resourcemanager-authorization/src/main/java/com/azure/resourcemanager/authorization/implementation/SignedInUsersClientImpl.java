@@ -32,63 +32,72 @@ import com.azure.resourcemanager.authorization.models.DirectoryObjectListResult;
 import com.azure.resourcemanager.authorization.models.GraphErrorException;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * SignedInUsersClient.
- */
+/** An instance of this class provides access to all the operations defined in SignedInUsersClient. */
 public final class SignedInUsersClientImpl implements SignedInUsersClient {
     private final ClientLogger logger = new ClientLogger(SignedInUsersClientImpl.class);
 
-    /**
-     * The proxy service used to perform REST calls.
-     */
+    /** The proxy service used to perform REST calls. */
     private final SignedInUsersService service;
 
-    /**
-     * The service client containing this operation class.
-     */
+    /** The service client containing this operation class. */
     private final GraphRbacManagementClientImpl client;
 
     /**
      * Initializes an instance of SignedInUsersClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     SignedInUsersClientImpl(GraphRbacManagementClientImpl client) {
-        this.service = RestProxy.create(SignedInUsersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+            RestProxy.create(SignedInUsersService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for
-     * GraphRbacManagementClientSignedInUsers to be used by the proxy service
-     * to perform REST calls.
+     * The interface defining all the services for GraphRbacManagementClientSignedInUsers to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "GraphRbacManagementC")
     private interface SignedInUsersService {
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Get("/{tenantID}/me")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<UserInner>> get(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<UserInner>> get(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("tenantID") String tenantId,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Get("/{tenantID}/me/ownedObjects")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<DirectoryObjectListResult>> listOwnedObjects(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<DirectoryObjectListResult>> listOwnedObjects(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("tenantID") String tenantId,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Get("/{tenantID}/{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<DirectoryObjectListResult>> listOwnedObjectsNext(@HostParam("$host") String endpoint, @PathParam(value = "nextLink", encoded = true) String nextLink, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<DirectoryObjectListResult>> listOwnedObjectsNext(
+            @HostParam("$host") String endpoint,
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("tenantID") String tenantId,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
      * Gets the details for the currently logged-in user.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -98,19 +107,25 @@ public final class SignedInUsersClientImpl implements SignedInUsersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<UserInner>> getWithResponseAsync(String tenantId) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (tenantId == null) {
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
-        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), tenantId, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service.get(this.client.getEndpoint(), this.client.getApiVersion(), tenantId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the details for the currently logged-in user.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -121,7 +136,10 @@ public final class SignedInUsersClientImpl implements SignedInUsersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<UserInner>> getWithResponseAsync(String tenantId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (tenantId == null) {
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
@@ -133,7 +151,7 @@ public final class SignedInUsersClientImpl implements SignedInUsersClient {
 
     /**
      * Gets the details for the currently logged-in user.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -143,18 +161,19 @@ public final class SignedInUsersClientImpl implements SignedInUsersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UserInner> getAsync(String tenantId) {
         return getWithResponseAsync(tenantId)
-            .flatMap((Response<UserInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (Response<UserInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets the details for the currently logged-in user.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -168,7 +187,7 @@ public final class SignedInUsersClientImpl implements SignedInUsersClient {
 
     /**
      * Gets the details for the currently logged-in user.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -183,7 +202,7 @@ public final class SignedInUsersClientImpl implements SignedInUsersClient {
 
     /**
      * Get the list of directory objects that are owned by the user.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -193,26 +212,36 @@ public final class SignedInUsersClientImpl implements SignedInUsersClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DirectoryObjectInner>> listOwnedObjectsSinglePageAsync(String tenantId) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (tenantId == null) {
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
-        return FluxUtil.withContext(context -> service.listOwnedObjects(this.client.getEndpoint(), this.client.getApiVersion(), tenantId, accept, context))
-            .<PagedResponse<DirectoryObjectInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().odataNextLink(),
-                null))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listOwnedObjects(
+                            this.client.getEndpoint(), this.client.getApiVersion(), tenantId, accept, context))
+            .<PagedResponse<DirectoryObjectInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().odataNextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the list of directory objects that are owned by the user.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -221,28 +250,35 @@ public final class SignedInUsersClientImpl implements SignedInUsersClient {
      * @return the list of directory objects that are owned by the user.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DirectoryObjectInner>> listOwnedObjectsSinglePageAsync(String tenantId, Context context) {
+    private Mono<PagedResponse<DirectoryObjectInner>> listOwnedObjectsSinglePageAsync(
+        String tenantId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (tenantId == null) {
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service.listOwnedObjects(this.client.getEndpoint(), this.client.getApiVersion(), tenantId, accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().odataNextLink(),
-                null));
+        return service
+            .listOwnedObjects(this.client.getEndpoint(), this.client.getApiVersion(), tenantId, accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().odataNextLink(),
+                        null));
     }
 
     /**
      * Get the list of directory objects that are owned by the user.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -258,7 +294,7 @@ public final class SignedInUsersClientImpl implements SignedInUsersClient {
 
     /**
      * Get the list of directory objects that are owned by the user.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -275,7 +311,7 @@ public final class SignedInUsersClientImpl implements SignedInUsersClient {
 
     /**
      * Get the list of directory objects that are owned by the user.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -289,7 +325,7 @@ public final class SignedInUsersClientImpl implements SignedInUsersClient {
 
     /**
      * Get the list of directory objects that are owned by the user.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -304,7 +340,7 @@ public final class SignedInUsersClientImpl implements SignedInUsersClient {
 
     /**
      * Get the list of directory objects that are owned by the user.
-     * 
+     *
      * @param nextLink Next link for the list operation.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -313,9 +349,13 @@ public final class SignedInUsersClientImpl implements SignedInUsersClient {
      * @return the list of directory objects that are owned by the user.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DirectoryObjectInner>> listOwnedObjectsNextSinglePageAsync(String nextLink, String tenantId) {
+    private Mono<PagedResponse<DirectoryObjectInner>> listOwnedObjectsNextSinglePageAsync(
+        String nextLink, String tenantId) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
@@ -324,20 +364,32 @@ public final class SignedInUsersClientImpl implements SignedInUsersClient {
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
-        return FluxUtil.withContext(context -> service.listOwnedObjectsNext(this.client.getEndpoint(), nextLink, this.client.getApiVersion(), tenantId, accept, context))
-            .<PagedResponse<DirectoryObjectInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().odataNextLink(),
-                null))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listOwnedObjectsNext(
+                            this.client.getEndpoint(),
+                            nextLink,
+                            this.client.getApiVersion(),
+                            tenantId,
+                            accept,
+                            context))
+            .<PagedResponse<DirectoryObjectInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().odataNextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the list of directory objects that are owned by the user.
-     * 
+     *
      * @param nextLink Next link for the list operation.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
@@ -347,9 +399,13 @@ public final class SignedInUsersClientImpl implements SignedInUsersClient {
      * @return the list of directory objects that are owned by the user.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DirectoryObjectInner>> listOwnedObjectsNextSinglePageAsync(String nextLink, String tenantId, Context context) {
+    private Mono<PagedResponse<DirectoryObjectInner>> listOwnedObjectsNextSinglePageAsync(
+        String nextLink, String tenantId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
@@ -359,13 +415,17 @@ public final class SignedInUsersClientImpl implements SignedInUsersClient {
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service.listOwnedObjectsNext(this.client.getEndpoint(), nextLink, this.client.getApiVersion(), tenantId, accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().odataNextLink(),
-                null));
+        return service
+            .listOwnedObjectsNext(
+                this.client.getEndpoint(), nextLink, this.client.getApiVersion(), tenantId, accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().odataNextLink(),
+                        null));
     }
 }

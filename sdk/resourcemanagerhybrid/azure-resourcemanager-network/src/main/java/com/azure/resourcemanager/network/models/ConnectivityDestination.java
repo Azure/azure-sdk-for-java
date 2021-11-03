@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Parameters that define destination of connection.
- */
+/** Parameters that define destination of connection. */
 @Fluent
 public final class ConnectivityDestination {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ConnectivityDestination.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectivityDestination.class);
 
     /*
      * The ID of the resource to which a connection attempt will be made.
@@ -39,9 +34,8 @@ public final class ConnectivityDestination {
     private Integer port;
 
     /**
-     * Get the resourceId property: The ID of the resource to which a
-     * connection attempt will be made.
-     * 
+     * Get the resourceId property: The ID of the resource to which a connection attempt will be made.
+     *
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -49,9 +43,8 @@ public final class ConnectivityDestination {
     }
 
     /**
-     * Set the resourceId property: The ID of the resource to which a
-     * connection attempt will be made.
-     * 
+     * Set the resourceId property: The ID of the resource to which a connection attempt will be made.
+     *
      * @param resourceId the resourceId value to set.
      * @return the ConnectivityDestination object itself.
      */
@@ -61,9 +54,8 @@ public final class ConnectivityDestination {
     }
 
     /**
-     * Get the address property: The IP address or URI the resource to which a
-     * connection attempt will be made.
-     * 
+     * Get the address property: The IP address or URI the resource to which a connection attempt will be made.
+     *
      * @return the address value.
      */
     public String address() {
@@ -71,9 +63,8 @@ public final class ConnectivityDestination {
     }
 
     /**
-     * Set the address property: The IP address or URI the resource to which a
-     * connection attempt will be made.
-     * 
+     * Set the address property: The IP address or URI the resource to which a connection attempt will be made.
+     *
      * @param address the address value to set.
      * @return the ConnectivityDestination object itself.
      */
@@ -83,9 +74,8 @@ public final class ConnectivityDestination {
     }
 
     /**
-     * Get the port property: Port on which check connectivity will be
-     * performed.
-     * 
+     * Get the port property: Port on which check connectivity will be performed.
+     *
      * @return the port value.
      */
     public Integer port() {
@@ -93,9 +83,8 @@ public final class ConnectivityDestination {
     }
 
     /**
-     * Set the port property: Port on which check connectivity will be
-     * performed.
-     * 
+     * Set the port property: Port on which check connectivity will be performed.
+     *
      * @param port the port value to set.
      * @return the ConnectivityDestination object itself.
      */
@@ -106,7 +95,7 @@ public final class ConnectivityDestination {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Identity for the resource.
- */
+/** Identity for the resource. */
 @Fluent
 public class Identity {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(Identity.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(Identity.class);
 
     /*
      * The principal ID of resource identity.
@@ -39,7 +34,7 @@ public class Identity {
 
     /**
      * Get the principalId property: The principal ID of resource identity.
-     * 
+     *
      * @return the principalId value.
      */
     public String principalId() {
@@ -48,7 +43,7 @@ public class Identity {
 
     /**
      * Get the tenantId property: The tenant ID of resource.
-     * 
+     *
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -57,7 +52,7 @@ public class Identity {
 
     /**
      * Get the type property: The identity type.
-     * 
+     *
      * @return the type value.
      */
     public IdentityType type() {
@@ -66,7 +61,7 @@ public class Identity {
 
     /**
      * Set the type property: The identity type.
-     * 
+     *
      * @param type the type value to set.
      * @return the Identity object itself.
      */
@@ -77,12 +72,13 @@ public class Identity {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (type() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property type in model Identity"));
+            throw logger
+                .logExceptionAsError(new IllegalArgumentException("Missing required property type in model Identity"));
         }
     }
 }

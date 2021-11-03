@@ -5,27 +5,20 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
-import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.AzureEntityResource;
 import com.azure.resourcemanager.storage.models.EnabledProtocols;
 import com.azure.resourcemanager.storage.models.RootSquashType;
 import com.azure.resourcemanager.storage.models.ShareAccessTier;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/**
- * The file share properties be listed out.
- */
+/** The file share properties be listed out. */
 @Fluent
 public final class FileShareItemInner extends AzureEntityResource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(FileShareItemInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(FileShareItemInner.class);
 
     /*
      * The file share properties be listed out.
@@ -34,9 +27,8 @@ public final class FileShareItemInner extends AzureEntityResource {
     private FileShareProperties innerProperties;
 
     /**
-     * Get the innerProperties property: The file share properties be listed
-     * out.
-     * 
+     * Get the innerProperties property: The file share properties be listed out.
+     *
      * @return the innerProperties value.
      */
     private FileShareProperties innerProperties() {
@@ -44,9 +36,8 @@ public final class FileShareItemInner extends AzureEntityResource {
     }
 
     /**
-     * Get the lastModifiedTime property: Returns the date and time the share
-     * was last modified.
-     * 
+     * Get the lastModifiedTime property: Returns the date and time the share was last modified.
+     *
      * @return the lastModifiedTime value.
      */
     public OffsetDateTime lastModifiedTime() {
@@ -54,9 +45,8 @@ public final class FileShareItemInner extends AzureEntityResource {
     }
 
     /**
-     * Get the metadata property: A name-value pair to associate with the share
-     * as metadata.
-     * 
+     * Get the metadata property: A name-value pair to associate with the share as metadata.
+     *
      * @return the metadata value.
      */
     public Map<String, String> metadata() {
@@ -64,9 +54,8 @@ public final class FileShareItemInner extends AzureEntityResource {
     }
 
     /**
-     * Set the metadata property: A name-value pair to associate with the share
-     * as metadata.
-     * 
+     * Set the metadata property: A name-value pair to associate with the share as metadata.
+     *
      * @param metadata the metadata value to set.
      * @return the FileShareItemInner object itself.
      */
@@ -79,10 +68,9 @@ public final class FileShareItemInner extends AzureEntityResource {
     }
 
     /**
-     * Get the shareQuota property: The maximum size of the share, in
-     * gigabytes. Must be greater than 0, and less than or equal to 5TB (5120).
-     * For Large File Shares, the maximum size is 102400.
-     * 
+     * Get the shareQuota property: The maximum size of the share, in gigabytes. Must be greater than 0, and less than
+     * or equal to 5TB (5120). For Large File Shares, the maximum size is 102400.
+     *
      * @return the shareQuota value.
      */
     public Integer shareQuota() {
@@ -90,10 +78,9 @@ public final class FileShareItemInner extends AzureEntityResource {
     }
 
     /**
-     * Set the shareQuota property: The maximum size of the share, in
-     * gigabytes. Must be greater than 0, and less than or equal to 5TB (5120).
-     * For Large File Shares, the maximum size is 102400.
-     * 
+     * Set the shareQuota property: The maximum size of the share, in gigabytes. Must be greater than 0, and less than
+     * or equal to 5TB (5120). For Large File Shares, the maximum size is 102400.
+     *
      * @param shareQuota the shareQuota value to set.
      * @return the FileShareItemInner object itself.
      */
@@ -106,9 +93,9 @@ public final class FileShareItemInner extends AzureEntityResource {
     }
 
     /**
-     * Get the enabledProtocols property: The authentication protocol that is
-     * used for the file share. Can only be specified when creating a share.
-     * 
+     * Get the enabledProtocols property: The authentication protocol that is used for the file share. Can only be
+     * specified when creating a share.
+     *
      * @return the enabledProtocols value.
      */
     public EnabledProtocols enabledProtocols() {
@@ -116,9 +103,9 @@ public final class FileShareItemInner extends AzureEntityResource {
     }
 
     /**
-     * Set the enabledProtocols property: The authentication protocol that is
-     * used for the file share. Can only be specified when creating a share.
-     * 
+     * Set the enabledProtocols property: The authentication protocol that is used for the file share. Can only be
+     * specified when creating a share.
+     *
      * @param enabledProtocols the enabledProtocols value to set.
      * @return the FileShareItemInner object itself.
      */
@@ -131,9 +118,8 @@ public final class FileShareItemInner extends AzureEntityResource {
     }
 
     /**
-     * Get the rootSquash property: The property is for NFS share only. The
-     * default is NoRootSquash.
-     * 
+     * Get the rootSquash property: The property is for NFS share only. The default is NoRootSquash.
+     *
      * @return the rootSquash value.
      */
     public RootSquashType rootSquash() {
@@ -141,9 +127,8 @@ public final class FileShareItemInner extends AzureEntityResource {
     }
 
     /**
-     * Set the rootSquash property: The property is for NFS share only. The
-     * default is NoRootSquash.
-     * 
+     * Set the rootSquash property: The property is for NFS share only. The default is NoRootSquash.
+     *
      * @param rootSquash the rootSquash value to set.
      * @return the FileShareItemInner object itself.
      */
@@ -157,7 +142,7 @@ public final class FileShareItemInner extends AzureEntityResource {
 
     /**
      * Get the version property: The version of the share.
-     * 
+     *
      * @return the version value.
      */
     public String version() {
@@ -166,7 +151,7 @@ public final class FileShareItemInner extends AzureEntityResource {
 
     /**
      * Get the deleted property: Indicates whether the share was deleted.
-     * 
+     *
      * @return the deleted value.
      */
     public Boolean deleted() {
@@ -175,7 +160,7 @@ public final class FileShareItemInner extends AzureEntityResource {
 
     /**
      * Get the deletedTime property: The deleted time if the share was deleted.
-     * 
+     *
      * @return the deletedTime value.
      */
     public OffsetDateTime deletedTime() {
@@ -183,9 +168,8 @@ public final class FileShareItemInner extends AzureEntityResource {
     }
 
     /**
-     * Get the remainingRetentionDays property: Remaining retention days for
-     * share that was soft deleted.
-     * 
+     * Get the remainingRetentionDays property: Remaining retention days for share that was soft deleted.
+     *
      * @return the remainingRetentionDays value.
      */
     public Integer remainingRetentionDays() {
@@ -193,10 +177,9 @@ public final class FileShareItemInner extends AzureEntityResource {
     }
 
     /**
-     * Get the accessTier property: Access tier for specific share. GpV2
-     * account can choose between TransactionOptimized (default), Hot, and
-     * Cool. FileStorage account can choose Premium.
-     * 
+     * Get the accessTier property: Access tier for specific share. GpV2 account can choose between TransactionOptimized
+     * (default), Hot, and Cool. FileStorage account can choose Premium.
+     *
      * @return the accessTier value.
      */
     public ShareAccessTier accessTier() {
@@ -204,10 +187,9 @@ public final class FileShareItemInner extends AzureEntityResource {
     }
 
     /**
-     * Set the accessTier property: Access tier for specific share. GpV2
-     * account can choose between TransactionOptimized (default), Hot, and
-     * Cool. FileStorage account can choose Premium.
-     * 
+     * Set the accessTier property: Access tier for specific share. GpV2 account can choose between TransactionOptimized
+     * (default), Hot, and Cool. FileStorage account can choose Premium.
+     *
      * @param accessTier the accessTier value to set.
      * @return the FileShareItemInner object itself.
      */
@@ -220,9 +202,8 @@ public final class FileShareItemInner extends AzureEntityResource {
     }
 
     /**
-     * Get the accessTierChangeTime property: Indicates the last modification
-     * time for share access tier.
-     * 
+     * Get the accessTierChangeTime property: Indicates the last modification time for share access tier.
+     *
      * @return the accessTierChangeTime value.
      */
     public OffsetDateTime accessTierChangeTime() {
@@ -230,9 +211,8 @@ public final class FileShareItemInner extends AzureEntityResource {
     }
 
     /**
-     * Get the accessTierStatus property: Indicates if there is a pending
-     * transition for access tier.
-     * 
+     * Get the accessTierStatus property: Indicates if there is a pending transition for access tier.
+     *
      * @return the accessTierStatus value.
      */
     public String accessTierStatus() {
@@ -240,10 +220,9 @@ public final class FileShareItemInner extends AzureEntityResource {
     }
 
     /**
-     * Get the shareUsageBytes property: The approximate size of the data
-     * stored on the share. Note that this value may not include all recently
-     * created or recently resized files.
-     * 
+     * Get the shareUsageBytes property: The approximate size of the data stored on the share. Note that this value may
+     * not include all recently created or recently resized files.
+     *
      * @return the shareUsageBytes value.
      */
     public Long shareUsageBytes() {
@@ -252,7 +231,7 @@ public final class FileShareItemInner extends AzureEntityResource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

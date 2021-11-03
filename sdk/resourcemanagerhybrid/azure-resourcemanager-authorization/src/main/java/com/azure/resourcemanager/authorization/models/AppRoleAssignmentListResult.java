@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.fluent.models.AppRoleAssignmentInner;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * AppRoleAssignment list operation result.
- */
+/** AppRoleAssignment list operation result. */
 @Fluent
 public final class AppRoleAssignmentListResult {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(AppRoleAssignmentListResult.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AppRoleAssignmentListResult.class);
 
     /*
      * A collection of AppRoleAssignment.
@@ -35,7 +30,7 @@ public final class AppRoleAssignmentListResult {
 
     /**
      * Get the value property: A collection of AppRoleAssignment.
-     * 
+     *
      * @return the value value.
      */
     public List<AppRoleAssignmentInner> value() {
@@ -44,7 +39,7 @@ public final class AppRoleAssignmentListResult {
 
     /**
      * Set the value property: A collection of AppRoleAssignment.
-     * 
+     *
      * @param value the value value to set.
      * @return the AppRoleAssignmentListResult object itself.
      */
@@ -55,7 +50,7 @@ public final class AppRoleAssignmentListResult {
 
     /**
      * Get the odataNextLink property: The URL to get the next set of results.
-     * 
+     *
      * @return the odataNextLink value.
      */
     public String odataNextLink() {
@@ -64,7 +59,7 @@ public final class AppRoleAssignmentListResult {
 
     /**
      * Set the odataNextLink property: The URL to get the next set of results.
-     * 
+     *
      * @param odataNextLink the odataNextLink value to set.
      * @return the AppRoleAssignmentListResult object itself.
      */
@@ -75,7 +70,7 @@ public final class AppRoleAssignmentListResult {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

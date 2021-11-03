@@ -8,21 +8,16 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.HubVirtualNetworkConnectionInner;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * HubVirtualNetworkConnectionsClient.
- */
+/** An instance of this class provides access to all the operations defined in HubVirtualNetworkConnectionsClient. */
 public interface HubVirtualNetworkConnectionsClient {
     /**
      * Retrieves the details of a HubVirtualNetworkConnection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the vpn connection.
@@ -32,11 +27,12 @@ public interface HubVirtualNetworkConnectionsClient {
      * @return hubVirtualNetworkConnection Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<HubVirtualNetworkConnectionInner>> getWithResponseAsync(String resourceGroupName, String virtualHubName, String connectionName);
+    Mono<Response<HubVirtualNetworkConnectionInner>> getWithResponseAsync(
+        String resourceGroupName, String virtualHubName, String connectionName);
 
     /**
      * Retrieves the details of a HubVirtualNetworkConnection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the vpn connection.
@@ -46,11 +42,12 @@ public interface HubVirtualNetworkConnectionsClient {
      * @return hubVirtualNetworkConnection Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<HubVirtualNetworkConnectionInner> getAsync(String resourceGroupName, String virtualHubName, String connectionName);
+    Mono<HubVirtualNetworkConnectionInner> getAsync(
+        String resourceGroupName, String virtualHubName, String connectionName);
 
     /**
      * Retrieves the details of a HubVirtualNetworkConnection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the vpn connection.
@@ -64,7 +61,7 @@ public interface HubVirtualNetworkConnectionsClient {
 
     /**
      * Retrieves the details of a HubVirtualNetworkConnection.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param connectionName The name of the vpn connection.
@@ -75,11 +72,12 @@ public interface HubVirtualNetworkConnectionsClient {
      * @return hubVirtualNetworkConnection Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<HubVirtualNetworkConnectionInner> getWithResponse(String resourceGroupName, String virtualHubName, String connectionName, Context context);
+    Response<HubVirtualNetworkConnectionInner> getWithResponse(
+        String resourceGroupName, String virtualHubName, String connectionName, Context context);
 
     /**
      * Retrieves the details of all HubVirtualNetworkConnections.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -92,7 +90,7 @@ public interface HubVirtualNetworkConnectionsClient {
 
     /**
      * Retrieves the details of all HubVirtualNetworkConnections.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -105,7 +103,7 @@ public interface HubVirtualNetworkConnectionsClient {
 
     /**
      * Retrieves the details of all HubVirtualNetworkConnections.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param context The context to associate with this operation.
@@ -115,5 +113,6 @@ public interface HubVirtualNetworkConnectionsClient {
      * @return list of HubVirtualNetworkConnections and a URL nextLink to get the next set of results.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<HubVirtualNetworkConnectionInner> list(String resourceGroupName, String virtualHubName, Context context);
+    PagedIterable<HubVirtualNetworkConnectionInner> list(
+        String resourceGroupName, String virtualHubName, Context context);
 }

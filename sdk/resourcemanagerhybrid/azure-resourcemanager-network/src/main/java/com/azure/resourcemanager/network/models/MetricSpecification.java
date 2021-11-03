@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Description of metrics specification.
- */
+/** Description of metrics specification. */
 @Fluent
 public final class MetricSpecification {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(MetricSpecification.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MetricSpecification.class);
 
     /*
      * The name of the metric.
@@ -106,7 +101,7 @@ public final class MetricSpecification {
 
     /**
      * Get the name property: The name of the metric.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -115,7 +110,7 @@ public final class MetricSpecification {
 
     /**
      * Set the name property: The name of the metric.
-     * 
+     *
      * @param name the name value to set.
      * @return the MetricSpecification object itself.
      */
@@ -126,7 +121,7 @@ public final class MetricSpecification {
 
     /**
      * Get the displayName property: The display name of the metric.
-     * 
+     *
      * @return the displayName value.
      */
     public String displayName() {
@@ -135,7 +130,7 @@ public final class MetricSpecification {
 
     /**
      * Set the displayName property: The display name of the metric.
-     * 
+     *
      * @param displayName the displayName value to set.
      * @return the MetricSpecification object itself.
      */
@@ -146,7 +141,7 @@ public final class MetricSpecification {
 
     /**
      * Get the displayDescription property: The description of the metric.
-     * 
+     *
      * @return the displayDescription value.
      */
     public String displayDescription() {
@@ -155,7 +150,7 @@ public final class MetricSpecification {
 
     /**
      * Set the displayDescription property: The description of the metric.
-     * 
+     *
      * @param displayDescription the displayDescription value to set.
      * @return the MetricSpecification object itself.
      */
@@ -166,7 +161,7 @@ public final class MetricSpecification {
 
     /**
      * Get the unit property: Units the metric to be displayed in.
-     * 
+     *
      * @return the unit value.
      */
     public String unit() {
@@ -175,7 +170,7 @@ public final class MetricSpecification {
 
     /**
      * Set the unit property: Units the metric to be displayed in.
-     * 
+     *
      * @param unit the unit value to set.
      * @return the MetricSpecification object itself.
      */
@@ -186,7 +181,7 @@ public final class MetricSpecification {
 
     /**
      * Get the aggregationType property: The aggregation type.
-     * 
+     *
      * @return the aggregationType value.
      */
     public String aggregationType() {
@@ -195,7 +190,7 @@ public final class MetricSpecification {
 
     /**
      * Set the aggregationType property: The aggregation type.
-     * 
+     *
      * @param aggregationType the aggregationType value to set.
      * @return the MetricSpecification object itself.
      */
@@ -206,7 +201,7 @@ public final class MetricSpecification {
 
     /**
      * Get the availabilities property: List of availability.
-     * 
+     *
      * @return the availabilities value.
      */
     public List<Availability> availabilities() {
@@ -215,7 +210,7 @@ public final class MetricSpecification {
 
     /**
      * Set the availabilities property: List of availability.
-     * 
+     *
      * @param availabilities the availabilities value to set.
      * @return the MetricSpecification object itself.
      */
@@ -225,9 +220,8 @@ public final class MetricSpecification {
     }
 
     /**
-     * Get the enableRegionalMdmAccount property: Whether regional MDM account
-     * enabled.
-     * 
+     * Get the enableRegionalMdmAccount property: Whether regional MDM account enabled.
+     *
      * @return the enableRegionalMdmAccount value.
      */
     public Boolean enableRegionalMdmAccount() {
@@ -235,11 +229,9 @@ public final class MetricSpecification {
     }
 
     /**
-     * Set the enableRegionalMdmAccount property: Whether regional MDM account
-     * enabled.
-     * 
-     * @param enableRegionalMdmAccount the enableRegionalMdmAccount value to
-     * set.
+     * Set the enableRegionalMdmAccount property: Whether regional MDM account enabled.
+     *
+     * @param enableRegionalMdmAccount the enableRegionalMdmAccount value to set.
      * @return the MetricSpecification object itself.
      */
     public MetricSpecification withEnableRegionalMdmAccount(Boolean enableRegionalMdmAccount) {
@@ -248,9 +240,8 @@ public final class MetricSpecification {
     }
 
     /**
-     * Get the fillGapWithZero property: Whether gaps would be filled with
-     * zeros.
-     * 
+     * Get the fillGapWithZero property: Whether gaps would be filled with zeros.
+     *
      * @return the fillGapWithZero value.
      */
     public Boolean fillGapWithZero() {
@@ -258,9 +249,8 @@ public final class MetricSpecification {
     }
 
     /**
-     * Set the fillGapWithZero property: Whether gaps would be filled with
-     * zeros.
-     * 
+     * Set the fillGapWithZero property: Whether gaps would be filled with zeros.
+     *
      * @param fillGapWithZero the fillGapWithZero value to set.
      * @return the MetricSpecification object itself.
      */
@@ -270,9 +260,8 @@ public final class MetricSpecification {
     }
 
     /**
-     * Get the metricFilterPattern property: Pattern for the filter of the
-     * metric.
-     * 
+     * Get the metricFilterPattern property: Pattern for the filter of the metric.
+     *
      * @return the metricFilterPattern value.
      */
     public String metricFilterPattern() {
@@ -280,9 +269,8 @@ public final class MetricSpecification {
     }
 
     /**
-     * Set the metricFilterPattern property: Pattern for the filter of the
-     * metric.
-     * 
+     * Set the metricFilterPattern property: Pattern for the filter of the metric.
+     *
      * @param metricFilterPattern the metricFilterPattern value to set.
      * @return the MetricSpecification object itself.
      */
@@ -293,7 +281,7 @@ public final class MetricSpecification {
 
     /**
      * Get the dimensions property: List of dimensions.
-     * 
+     *
      * @return the dimensions value.
      */
     public List<Dimension> dimensions() {
@@ -302,7 +290,7 @@ public final class MetricSpecification {
 
     /**
      * Set the dimensions property: List of dimensions.
-     * 
+     *
      * @param dimensions the dimensions value to set.
      * @return the MetricSpecification object itself.
      */
@@ -313,7 +301,7 @@ public final class MetricSpecification {
 
     /**
      * Get the isInternal property: Whether the metric is internal.
-     * 
+     *
      * @return the isInternal value.
      */
     public Boolean isInternal() {
@@ -322,7 +310,7 @@ public final class MetricSpecification {
 
     /**
      * Set the isInternal property: Whether the metric is internal.
-     * 
+     *
      * @param isInternal the isInternal value to set.
      * @return the MetricSpecification object itself.
      */
@@ -333,7 +321,7 @@ public final class MetricSpecification {
 
     /**
      * Get the sourceMdmAccount property: The source MDM account.
-     * 
+     *
      * @return the sourceMdmAccount value.
      */
     public String sourceMdmAccount() {
@@ -342,7 +330,7 @@ public final class MetricSpecification {
 
     /**
      * Set the sourceMdmAccount property: The source MDM account.
-     * 
+     *
      * @param sourceMdmAccount the sourceMdmAccount value to set.
      * @return the MetricSpecification object itself.
      */
@@ -353,7 +341,7 @@ public final class MetricSpecification {
 
     /**
      * Get the sourceMdmNamespace property: The source MDM namespace.
-     * 
+     *
      * @return the sourceMdmNamespace value.
      */
     public String sourceMdmNamespace() {
@@ -362,7 +350,7 @@ public final class MetricSpecification {
 
     /**
      * Set the sourceMdmNamespace property: The source MDM namespace.
-     * 
+     *
      * @param sourceMdmNamespace the sourceMdmNamespace value to set.
      * @return the MetricSpecification object itself.
      */
@@ -372,9 +360,8 @@ public final class MetricSpecification {
     }
 
     /**
-     * Get the resourceIdDimensionNameOverride property: The resource Id
-     * dimension name override.
-     * 
+     * Get the resourceIdDimensionNameOverride property: The resource Id dimension name override.
+     *
      * @return the resourceIdDimensionNameOverride value.
      */
     public String resourceIdDimensionNameOverride() {
@@ -382,11 +369,9 @@ public final class MetricSpecification {
     }
 
     /**
-     * Set the resourceIdDimensionNameOverride property: The resource Id
-     * dimension name override.
-     * 
-     * @param resourceIdDimensionNameOverride the
-     * resourceIdDimensionNameOverride value to set.
+     * Set the resourceIdDimensionNameOverride property: The resource Id dimension name override.
+     *
+     * @param resourceIdDimensionNameOverride the resourceIdDimensionNameOverride value to set.
      * @return the MetricSpecification object itself.
      */
     public MetricSpecification withResourceIdDimensionNameOverride(String resourceIdDimensionNameOverride) {
@@ -396,7 +381,7 @@ public final class MetricSpecification {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

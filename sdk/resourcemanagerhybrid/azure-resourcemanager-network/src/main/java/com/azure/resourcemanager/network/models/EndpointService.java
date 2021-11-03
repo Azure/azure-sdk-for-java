@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Identifies the service being brought into the virtual network.
- */
+/** Identifies the service being brought into the virtual network. */
 @Fluent
 public final class EndpointService {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(EndpointService.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(EndpointService.class);
 
     /*
      * A unique identifier of the service being referenced by the interface
@@ -27,9 +22,8 @@ public final class EndpointService {
     private String id;
 
     /**
-     * Get the id property: A unique identifier of the service being referenced
-     * by the interface endpoint.
-     * 
+     * Get the id property: A unique identifier of the service being referenced by the interface endpoint.
+     *
      * @return the id value.
      */
     public String id() {
@@ -37,9 +31,8 @@ public final class EndpointService {
     }
 
     /**
-     * Set the id property: A unique identifier of the service being referenced
-     * by the interface endpoint.
-     * 
+     * Set the id property: A unique identifier of the service being referenced by the interface endpoint.
+     *
      * @param id the id value to set.
      * @return the EndpointService object itself.
      */
@@ -50,7 +43,7 @@ public final class EndpointService {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

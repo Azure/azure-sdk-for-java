@@ -5,26 +5,20 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VirtualHubRouteTable;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/**
- * VirtualHub Resource.
- */
+/** VirtualHub Resource. */
 @Fluent
 public final class VirtualHubInner extends Resource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(VirtualHubInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualHubInner.class);
 
     /*
      * Parameters for VirtualHub
@@ -47,7 +41,7 @@ public final class VirtualHubInner extends Resource {
 
     /**
      * Get the innerProperties property: Parameters for VirtualHub.
-     * 
+     *
      * @return the innerProperties value.
      */
     private VirtualHubProperties innerProperties() {
@@ -55,9 +49,8 @@ public final class VirtualHubInner extends Resource {
     }
 
     /**
-     * Get the etag property: Gets a unique read-only string that changes
-     * whenever the resource is updated.
-     * 
+     * Get the etag property: Gets a unique read-only string that changes whenever the resource is updated.
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -66,7 +59,7 @@ public final class VirtualHubInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -75,7 +68,7 @@ public final class VirtualHubInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     * 
+     *
      * @param id the id value to set.
      * @return the VirtualHubInner object itself.
      */
@@ -84,18 +77,14 @@ public final class VirtualHubInner extends Resource {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public VirtualHubInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public VirtualHubInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -103,9 +92,8 @@ public final class VirtualHubInner extends Resource {
     }
 
     /**
-     * Get the virtualWan property: The VirtualWAN to which the VirtualHub
-     * belongs.
-     * 
+     * Get the virtualWan property: The VirtualWAN to which the VirtualHub belongs.
+     *
      * @return the virtualWan value.
      */
     public SubResource virtualWan() {
@@ -113,9 +101,8 @@ public final class VirtualHubInner extends Resource {
     }
 
     /**
-     * Set the virtualWan property: The VirtualWAN to which the VirtualHub
-     * belongs.
-     * 
+     * Set the virtualWan property: The VirtualWAN to which the VirtualHub belongs.
+     *
      * @param virtualWan the virtualWan value to set.
      * @return the VirtualHubInner object itself.
      */
@@ -128,9 +115,8 @@ public final class VirtualHubInner extends Resource {
     }
 
     /**
-     * Get the vpnGateway property: The VpnGateway associated with this
-     * VirtualHub.
-     * 
+     * Get the vpnGateway property: The VpnGateway associated with this VirtualHub.
+     *
      * @return the vpnGateway value.
      */
     public SubResource vpnGateway() {
@@ -138,9 +124,8 @@ public final class VirtualHubInner extends Resource {
     }
 
     /**
-     * Set the vpnGateway property: The VpnGateway associated with this
-     * VirtualHub.
-     * 
+     * Set the vpnGateway property: The VpnGateway associated with this VirtualHub.
+     *
      * @param vpnGateway the vpnGateway value to set.
      * @return the VirtualHubInner object itself.
      */
@@ -153,9 +138,8 @@ public final class VirtualHubInner extends Resource {
     }
 
     /**
-     * Get the p2SVpnGateway property: The P2SVpnGateway associated with this
-     * VirtualHub.
-     * 
+     * Get the p2SVpnGateway property: The P2SVpnGateway associated with this VirtualHub.
+     *
      * @return the p2SVpnGateway value.
      */
     public SubResource p2SVpnGateway() {
@@ -163,9 +147,8 @@ public final class VirtualHubInner extends Resource {
     }
 
     /**
-     * Set the p2SVpnGateway property: The P2SVpnGateway associated with this
-     * VirtualHub.
-     * 
+     * Set the p2SVpnGateway property: The P2SVpnGateway associated with this VirtualHub.
+     *
      * @param p2SVpnGateway the p2SVpnGateway value to set.
      * @return the VirtualHubInner object itself.
      */
@@ -178,9 +161,8 @@ public final class VirtualHubInner extends Resource {
     }
 
     /**
-     * Get the expressRouteGateway property: The expressRouteGateway associated
-     * with this VirtualHub.
-     * 
+     * Get the expressRouteGateway property: The expressRouteGateway associated with this VirtualHub.
+     *
      * @return the expressRouteGateway value.
      */
     public SubResource expressRouteGateway() {
@@ -188,9 +170,8 @@ public final class VirtualHubInner extends Resource {
     }
 
     /**
-     * Set the expressRouteGateway property: The expressRouteGateway associated
-     * with this VirtualHub.
-     * 
+     * Set the expressRouteGateway property: The expressRouteGateway associated with this VirtualHub.
+     *
      * @param expressRouteGateway the expressRouteGateway value to set.
      * @return the VirtualHubInner object itself.
      */
@@ -203,9 +184,8 @@ public final class VirtualHubInner extends Resource {
     }
 
     /**
-     * Get the virtualNetworkConnections property: list of all vnet connections
-     * with this VirtualHub.
-     * 
+     * Get the virtualNetworkConnections property: list of all vnet connections with this VirtualHub.
+     *
      * @return the virtualNetworkConnections value.
      */
     public List<HubVirtualNetworkConnectionInner> virtualNetworkConnections() {
@@ -213,14 +193,13 @@ public final class VirtualHubInner extends Resource {
     }
 
     /**
-     * Set the virtualNetworkConnections property: list of all vnet connections
-     * with this VirtualHub.
-     * 
-     * @param virtualNetworkConnections the virtualNetworkConnections value to
-     * set.
+     * Set the virtualNetworkConnections property: list of all vnet connections with this VirtualHub.
+     *
+     * @param virtualNetworkConnections the virtualNetworkConnections value to set.
      * @return the VirtualHubInner object itself.
      */
-    public VirtualHubInner withVirtualNetworkConnections(List<HubVirtualNetworkConnectionInner> virtualNetworkConnections) {
+    public VirtualHubInner withVirtualNetworkConnections(
+        List<HubVirtualNetworkConnectionInner> virtualNetworkConnections) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualHubProperties();
         }
@@ -230,7 +209,7 @@ public final class VirtualHubInner extends Resource {
 
     /**
      * Get the addressPrefix property: Address-prefix for this VirtualHub.
-     * 
+     *
      * @return the addressPrefix value.
      */
     public String addressPrefix() {
@@ -239,7 +218,7 @@ public final class VirtualHubInner extends Resource {
 
     /**
      * Set the addressPrefix property: Address-prefix for this VirtualHub.
-     * 
+     *
      * @param addressPrefix the addressPrefix value to set.
      * @return the VirtualHubInner object itself.
      */
@@ -252,9 +231,8 @@ public final class VirtualHubInner extends Resource {
     }
 
     /**
-     * Get the routeTable property: The routeTable associated with this virtual
-     * hub.
-     * 
+     * Get the routeTable property: The routeTable associated with this virtual hub.
+     *
      * @return the routeTable value.
      */
     public VirtualHubRouteTable routeTable() {
@@ -262,9 +240,8 @@ public final class VirtualHubInner extends Resource {
     }
 
     /**
-     * Set the routeTable property: The routeTable associated with this virtual
-     * hub.
-     * 
+     * Set the routeTable property: The routeTable associated with this virtual hub.
+     *
      * @param routeTable the routeTable value to set.
      * @return the VirtualHubInner object itself.
      */
@@ -277,9 +254,8 @@ public final class VirtualHubInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the
-     * resource.
-     * 
+     * Get the provisioningState property: The provisioning state of the resource.
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -287,9 +263,8 @@ public final class VirtualHubInner extends Resource {
     }
 
     /**
-     * Set the provisioningState property: The provisioning state of the
-     * resource.
-     * 
+     * Set the provisioningState property: The provisioning state of the resource.
+     *
      * @param provisioningState the provisioningState value to set.
      * @return the VirtualHubInner object itself.
      */
@@ -303,7 +278,7 @@ public final class VirtualHubInner extends Resource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

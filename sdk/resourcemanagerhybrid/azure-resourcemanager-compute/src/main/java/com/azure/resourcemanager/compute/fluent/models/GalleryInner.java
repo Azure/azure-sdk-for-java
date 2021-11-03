@@ -5,25 +5,18 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.GalleryIdentifier;
 import com.azure.resourcemanager.compute.models.GalleryPropertiesProvisioningState;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * Specifies information about the Shared Image Gallery that you want to create
- * or update.
- */
+/** Specifies information about the Shared Image Gallery that you want to create or update. */
 @Fluent
 public final class GalleryInner extends Resource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(GalleryInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryInner.class);
 
     /*
      * Describes the properties of a Shared Image Gallery.
@@ -32,27 +25,22 @@ public final class GalleryInner extends Resource {
     private GalleryProperties innerProperties;
 
     /**
-     * Get the innerProperties property: Describes the properties of a Shared
-     * Image Gallery.
-     * 
+     * Get the innerProperties property: Describes the properties of a Shared Image Gallery.
+     *
      * @return the innerProperties value.
      */
     private GalleryProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public GalleryInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public GalleryInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -60,9 +48,8 @@ public final class GalleryInner extends Resource {
     }
 
     /**
-     * Get the description property: The description of this Shared Image
-     * Gallery resource. This property is updatable.
-     * 
+     * Get the description property: The description of this Shared Image Gallery resource. This property is updatable.
+     *
      * @return the description value.
      */
     public String description() {
@@ -70,9 +57,8 @@ public final class GalleryInner extends Resource {
     }
 
     /**
-     * Set the description property: The description of this Shared Image
-     * Gallery resource. This property is updatable.
-     * 
+     * Set the description property: The description of this Shared Image Gallery resource. This property is updatable.
+     *
      * @param description the description value to set.
      * @return the GalleryInner object itself.
      */
@@ -86,7 +72,7 @@ public final class GalleryInner extends Resource {
 
     /**
      * Get the identifier property: Describes the gallery unique name.
-     * 
+     *
      * @return the identifier value.
      */
     public GalleryIdentifier identifier() {
@@ -95,7 +81,7 @@ public final class GalleryInner extends Resource {
 
     /**
      * Set the identifier property: Describes the gallery unique name.
-     * 
+     *
      * @param identifier the identifier value to set.
      * @return the GalleryInner object itself.
      */
@@ -108,9 +94,9 @@ public final class GalleryInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The current state of the gallery.
-     * The provisioning state, which only appears in the response.
-     * 
+     * Get the provisioningState property: The current state of the gallery. The provisioning state, which only appears
+     * in the response.
+     *
      * @return the provisioningState value.
      */
     public GalleryPropertiesProvisioningState provisioningState() {
@@ -119,7 +105,7 @@ public final class GalleryInner extends Resource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

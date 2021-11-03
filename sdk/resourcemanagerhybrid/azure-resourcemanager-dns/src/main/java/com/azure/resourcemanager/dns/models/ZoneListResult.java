@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.dns.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dns.fluent.models.ZoneInner;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The response to a Zone List or ListAll operation.
- */
+/** The response to a Zone List or ListAll operation. */
 @Fluent
 public final class ZoneListResult {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ZoneListResult.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ZoneListResult.class);
 
     /*
      * Information about the DNS zones.
@@ -35,7 +30,7 @@ public final class ZoneListResult {
 
     /**
      * Get the value property: Information about the DNS zones.
-     * 
+     *
      * @return the value value.
      */
     public List<ZoneInner> value() {
@@ -44,7 +39,7 @@ public final class ZoneListResult {
 
     /**
      * Set the value property: Information about the DNS zones.
-     * 
+     *
      * @param value the value value to set.
      * @return the ZoneListResult object itself.
      */
@@ -54,9 +49,8 @@ public final class ZoneListResult {
     }
 
     /**
-     * Get the nextLink property: The continuation token for the next page of
-     * results.
-     * 
+     * Get the nextLink property: The continuation token for the next page of results.
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -64,9 +58,8 @@ public final class ZoneListResult {
     }
 
     /**
-     * Set the nextLink property: The continuation token for the next page of
-     * results.
-     * 
+     * Set the nextLink property: The continuation token for the next page of results.
+     *
      * @param nextLink the nextLink value to set.
      * @return the ZoneListResult object itself.
      */
@@ -77,7 +70,7 @@ public final class ZoneListResult {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

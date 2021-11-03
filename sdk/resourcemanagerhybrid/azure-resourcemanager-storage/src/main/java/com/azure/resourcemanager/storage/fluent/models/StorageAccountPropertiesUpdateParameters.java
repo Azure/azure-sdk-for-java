@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.storage.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.AccessTier;
 import com.azure.resourcemanager.storage.models.AzureFilesIdentityBasedAuthentication;
@@ -15,17 +14,13 @@ import com.azure.resourcemanager.storage.models.LargeFileSharesState;
 import com.azure.resourcemanager.storage.models.MinimumTlsVersion;
 import com.azure.resourcemanager.storage.models.NetworkRuleSet;
 import com.azure.resourcemanager.storage.models.RoutingPreference;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The parameters used when updating a storage account.
- */
+/** The parameters used when updating a storage account. */
 @Fluent
 public final class StorageAccountPropertiesUpdateParameters {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(StorageAccountPropertiesUpdateParameters.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageAccountPropertiesUpdateParameters.class);
 
     /*
      * Custom domain assigned to the storage account by the user. Name is the
@@ -107,11 +102,10 @@ public final class StorageAccountPropertiesUpdateParameters {
     private Boolean allowSharedKeyAccess;
 
     /**
-     * Get the customDomain property: Custom domain assigned to the storage
-     * account by the user. Name is the CNAME source. Only one custom domain is
-     * supported per storage account at this time. To clear the existing custom
+     * Get the customDomain property: Custom domain assigned to the storage account by the user. Name is the CNAME
+     * source. Only one custom domain is supported per storage account at this time. To clear the existing custom
      * domain, use an empty string for the custom domain name property.
-     * 
+     *
      * @return the customDomain value.
      */
     public CustomDomain customDomain() {
@@ -119,11 +113,10 @@ public final class StorageAccountPropertiesUpdateParameters {
     }
 
     /**
-     * Set the customDomain property: Custom domain assigned to the storage
-     * account by the user. Name is the CNAME source. Only one custom domain is
-     * supported per storage account at this time. To clear the existing custom
+     * Set the customDomain property: Custom domain assigned to the storage account by the user. Name is the CNAME
+     * source. Only one custom domain is supported per storage account at this time. To clear the existing custom
      * domain, use an empty string for the custom domain name property.
-     * 
+     *
      * @param customDomain the customDomain value to set.
      * @return the StorageAccountPropertiesUpdateParameters object itself.
      */
@@ -133,9 +126,8 @@ public final class StorageAccountPropertiesUpdateParameters {
     }
 
     /**
-     * Get the encryption property: Provides the encryption settings on the
-     * account. The default setting is unencrypted.
-     * 
+     * Get the encryption property: Provides the encryption settings on the account. The default setting is unencrypted.
+     *
      * @return the encryption value.
      */
     public Encryption encryption() {
@@ -143,9 +135,8 @@ public final class StorageAccountPropertiesUpdateParameters {
     }
 
     /**
-     * Set the encryption property: Provides the encryption settings on the
-     * account. The default setting is unencrypted.
-     * 
+     * Set the encryption property: Provides the encryption settings on the account. The default setting is unencrypted.
+     *
      * @param encryption the encryption value to set.
      * @return the StorageAccountPropertiesUpdateParameters object itself.
      */
@@ -155,9 +146,9 @@ public final class StorageAccountPropertiesUpdateParameters {
     }
 
     /**
-     * Get the accessTier property: Required for storage accounts where kind =
-     * BlobStorage. The access tier used for billing.
-     * 
+     * Get the accessTier property: Required for storage accounts where kind = BlobStorage. The access tier used for
+     * billing.
+     *
      * @return the accessTier value.
      */
     public AccessTier accessTier() {
@@ -165,9 +156,9 @@ public final class StorageAccountPropertiesUpdateParameters {
     }
 
     /**
-     * Set the accessTier property: Required for storage accounts where kind =
-     * BlobStorage. The access tier used for billing.
-     * 
+     * Set the accessTier property: Required for storage accounts where kind = BlobStorage. The access tier used for
+     * billing.
+     *
      * @param accessTier the accessTier value to set.
      * @return the StorageAccountPropertiesUpdateParameters object itself.
      */
@@ -177,9 +168,9 @@ public final class StorageAccountPropertiesUpdateParameters {
     }
 
     /**
-     * Get the azureFilesIdentityBasedAuthentication property: Provides the
-     * identity based authentication settings for Azure Files.
-     * 
+     * Get the azureFilesIdentityBasedAuthentication property: Provides the identity based authentication settings for
+     * Azure Files.
+     *
      * @return the azureFilesIdentityBasedAuthentication value.
      */
     public AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication() {
@@ -187,22 +178,21 @@ public final class StorageAccountPropertiesUpdateParameters {
     }
 
     /**
-     * Set the azureFilesIdentityBasedAuthentication property: Provides the
-     * identity based authentication settings for Azure Files.
-     * 
-     * @param azureFilesIdentityBasedAuthentication the
-     * azureFilesIdentityBasedAuthentication value to set.
+     * Set the azureFilesIdentityBasedAuthentication property: Provides the identity based authentication settings for
+     * Azure Files.
+     *
+     * @param azureFilesIdentityBasedAuthentication the azureFilesIdentityBasedAuthentication value to set.
      * @return the StorageAccountPropertiesUpdateParameters object itself.
      */
-    public StorageAccountPropertiesUpdateParameters withAzureFilesIdentityBasedAuthentication(AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication) {
+    public StorageAccountPropertiesUpdateParameters withAzureFilesIdentityBasedAuthentication(
+        AzureFilesIdentityBasedAuthentication azureFilesIdentityBasedAuthentication) {
         this.azureFilesIdentityBasedAuthentication = azureFilesIdentityBasedAuthentication;
         return this;
     }
 
     /**
-     * Get the enableHttpsTrafficOnly property: Allows https traffic only to
-     * storage service if sets to true.
-     * 
+     * Get the enableHttpsTrafficOnly property: Allows https traffic only to storage service if sets to true.
+     *
      * @return the enableHttpsTrafficOnly value.
      */
     public Boolean enableHttpsTrafficOnly() {
@@ -210,9 +200,8 @@ public final class StorageAccountPropertiesUpdateParameters {
     }
 
     /**
-     * Set the enableHttpsTrafficOnly property: Allows https traffic only to
-     * storage service if sets to true.
-     * 
+     * Set the enableHttpsTrafficOnly property: Allows https traffic only to storage service if sets to true.
+     *
      * @param enableHttpsTrafficOnly the enableHttpsTrafficOnly value to set.
      * @return the StorageAccountPropertiesUpdateParameters object itself.
      */
@@ -223,7 +212,7 @@ public final class StorageAccountPropertiesUpdateParameters {
 
     /**
      * Get the networkRuleSet property: Network rule set.
-     * 
+     *
      * @return the networkRuleSet value.
      */
     public NetworkRuleSet networkRuleSet() {
@@ -232,7 +221,7 @@ public final class StorageAccountPropertiesUpdateParameters {
 
     /**
      * Set the networkRuleSet property: Network rule set.
-     * 
+     *
      * @param networkRuleSet the networkRuleSet value to set.
      * @return the StorageAccountPropertiesUpdateParameters object itself.
      */
@@ -242,9 +231,9 @@ public final class StorageAccountPropertiesUpdateParameters {
     }
 
     /**
-     * Get the largeFileSharesState property: Allow large file shares if sets
-     * to Enabled. It cannot be disabled once it is enabled.
-     * 
+     * Get the largeFileSharesState property: Allow large file shares if sets to Enabled. It cannot be disabled once it
+     * is enabled.
+     *
      * @return the largeFileSharesState value.
      */
     public LargeFileSharesState largeFileSharesState() {
@@ -252,21 +241,22 @@ public final class StorageAccountPropertiesUpdateParameters {
     }
 
     /**
-     * Set the largeFileSharesState property: Allow large file shares if sets
-     * to Enabled. It cannot be disabled once it is enabled.
-     * 
+     * Set the largeFileSharesState property: Allow large file shares if sets to Enabled. It cannot be disabled once it
+     * is enabled.
+     *
      * @param largeFileSharesState the largeFileSharesState value to set.
      * @return the StorageAccountPropertiesUpdateParameters object itself.
      */
-    public StorageAccountPropertiesUpdateParameters withLargeFileSharesState(LargeFileSharesState largeFileSharesState) {
+    public StorageAccountPropertiesUpdateParameters withLargeFileSharesState(
+        LargeFileSharesState largeFileSharesState) {
         this.largeFileSharesState = largeFileSharesState;
         return this;
     }
 
     /**
-     * Get the routingPreference property: Maintains information about the
-     * network routing choice opted by the user for data transfer.
-     * 
+     * Get the routingPreference property: Maintains information about the network routing choice opted by the user for
+     * data transfer.
+     *
      * @return the routingPreference value.
      */
     public RoutingPreference routingPreference() {
@@ -274,9 +264,9 @@ public final class StorageAccountPropertiesUpdateParameters {
     }
 
     /**
-     * Set the routingPreference property: Maintains information about the
-     * network routing choice opted by the user for data transfer.
-     * 
+     * Set the routingPreference property: Maintains information about the network routing choice opted by the user for
+     * data transfer.
+     *
      * @param routingPreference the routingPreference value to set.
      * @return the StorageAccountPropertiesUpdateParameters object itself.
      */
@@ -286,10 +276,9 @@ public final class StorageAccountPropertiesUpdateParameters {
     }
 
     /**
-     * Get the allowBlobPublicAccess property: Allow or disallow public access
-     * to all blobs or containers in the storage account. The default
-     * interpretation is true for this property.
-     * 
+     * Get the allowBlobPublicAccess property: Allow or disallow public access to all blobs or containers in the storage
+     * account. The default interpretation is true for this property.
+     *
      * @return the allowBlobPublicAccess value.
      */
     public Boolean allowBlobPublicAccess() {
@@ -297,10 +286,9 @@ public final class StorageAccountPropertiesUpdateParameters {
     }
 
     /**
-     * Set the allowBlobPublicAccess property: Allow or disallow public access
-     * to all blobs or containers in the storage account. The default
-     * interpretation is true for this property.
-     * 
+     * Set the allowBlobPublicAccess property: Allow or disallow public access to all blobs or containers in the storage
+     * account. The default interpretation is true for this property.
+     *
      * @param allowBlobPublicAccess the allowBlobPublicAccess value to set.
      * @return the StorageAccountPropertiesUpdateParameters object itself.
      */
@@ -310,10 +298,9 @@ public final class StorageAccountPropertiesUpdateParameters {
     }
 
     /**
-     * Get the minimumTlsVersion property: Set the minimum TLS version to be
-     * permitted on requests to storage. The default interpretation is TLS 1.0
-     * for this property.
-     * 
+     * Get the minimumTlsVersion property: Set the minimum TLS version to be permitted on requests to storage. The
+     * default interpretation is TLS 1.0 for this property.
+     *
      * @return the minimumTlsVersion value.
      */
     public MinimumTlsVersion minimumTlsVersion() {
@@ -321,10 +308,9 @@ public final class StorageAccountPropertiesUpdateParameters {
     }
 
     /**
-     * Set the minimumTlsVersion property: Set the minimum TLS version to be
-     * permitted on requests to storage. The default interpretation is TLS 1.0
-     * for this property.
-     * 
+     * Set the minimumTlsVersion property: Set the minimum TLS version to be permitted on requests to storage. The
+     * default interpretation is TLS 1.0 for this property.
+     *
      * @param minimumTlsVersion the minimumTlsVersion value to set.
      * @return the StorageAccountPropertiesUpdateParameters object itself.
      */
@@ -334,12 +320,10 @@ public final class StorageAccountPropertiesUpdateParameters {
     }
 
     /**
-     * Get the allowSharedKeyAccess property: Indicates whether the storage
-     * account permits requests to be authorized with the account access key
-     * via Shared Key. If false, then all requests, including shared access
-     * signatures, must be authorized with Azure Active Directory (Azure AD).
-     * The default value is null, which is equivalent to true.
-     * 
+     * Get the allowSharedKeyAccess property: Indicates whether the storage account permits requests to be authorized
+     * with the account access key via Shared Key. If false, then all requests, including shared access signatures, must
+     * be authorized with Azure Active Directory (Azure AD). The default value is null, which is equivalent to true.
+     *
      * @return the allowSharedKeyAccess value.
      */
     public Boolean allowSharedKeyAccess() {
@@ -347,12 +331,10 @@ public final class StorageAccountPropertiesUpdateParameters {
     }
 
     /**
-     * Set the allowSharedKeyAccess property: Indicates whether the storage
-     * account permits requests to be authorized with the account access key
-     * via Shared Key. If false, then all requests, including shared access
-     * signatures, must be authorized with Azure Active Directory (Azure AD).
-     * The default value is null, which is equivalent to true.
-     * 
+     * Set the allowSharedKeyAccess property: Indicates whether the storage account permits requests to be authorized
+     * with the account access key via Shared Key. If false, then all requests, including shared access signatures, must
+     * be authorized with Azure Active Directory (Azure AD). The default value is null, which is equivalent to true.
+     *
      * @param allowSharedKeyAccess the allowSharedKeyAccess value to set.
      * @return the StorageAccountPropertiesUpdateParameters object itself.
      */
@@ -363,7 +345,7 @@ public final class StorageAccountPropertiesUpdateParameters {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

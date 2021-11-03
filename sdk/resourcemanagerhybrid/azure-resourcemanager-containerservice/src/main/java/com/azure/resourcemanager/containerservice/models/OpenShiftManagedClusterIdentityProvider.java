@@ -5,20 +5,14 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Defines the configuration of the identity providers to be used in the
- * OpenShift cluster.
- */
+/** Defines the configuration of the identity providers to be used in the OpenShift cluster. */
 @Fluent
 public final class OpenShiftManagedClusterIdentityProvider {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(OpenShiftManagedClusterIdentityProvider.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(OpenShiftManagedClusterIdentityProvider.class);
 
     /*
      * Name of the provider.
@@ -34,7 +28,7 @@ public final class OpenShiftManagedClusterIdentityProvider {
 
     /**
      * Get the name property: Name of the provider.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -43,7 +37,7 @@ public final class OpenShiftManagedClusterIdentityProvider {
 
     /**
      * Set the name property: Name of the provider.
-     * 
+     *
      * @param name the name value to set.
      * @return the OpenShiftManagedClusterIdentityProvider object itself.
      */
@@ -54,7 +48,7 @@ public final class OpenShiftManagedClusterIdentityProvider {
 
     /**
      * Get the provider property: Configuration of the provider.
-     * 
+     *
      * @return the provider value.
      */
     public OpenShiftManagedClusterBaseIdentityProvider provider() {
@@ -63,7 +57,7 @@ public final class OpenShiftManagedClusterIdentityProvider {
 
     /**
      * Set the provider property: Configuration of the provider.
-     * 
+     *
      * @param provider the provider value to set.
      * @return the OpenShiftManagedClusterIdentityProvider object itself.
      */
@@ -74,7 +68,7 @@ public final class OpenShiftManagedClusterIdentityProvider {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

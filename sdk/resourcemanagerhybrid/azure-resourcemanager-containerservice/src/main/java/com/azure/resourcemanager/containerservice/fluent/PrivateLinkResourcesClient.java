@@ -11,14 +11,12 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.containerservice.fluent.models.PrivateLinkResourcesListResultInner;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * PrivateLinkResourcesClient.
- */
+/** An instance of this class provides access to all the operations defined in PrivateLinkResourcesClient. */
 public interface PrivateLinkResourcesClient {
     /**
-     * Gets a list of private link resources in the specified managed cluster. The operation returns properties of each private link resource.
-     * 
+     * Gets a list of private link resources in the specified managed cluster. The operation returns properties of each
+     * private link resource.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -27,11 +25,13 @@ public interface PrivateLinkResourcesClient {
      * @return a list of private link resources in the specified managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<PrivateLinkResourcesListResultInner>> listWithResponseAsync(String resourceGroupName, String resourceName);
+    Mono<Response<PrivateLinkResourcesListResultInner>> listWithResponseAsync(
+        String resourceGroupName, String resourceName);
 
     /**
-     * Gets a list of private link resources in the specified managed cluster. The operation returns properties of each private link resource.
-     * 
+     * Gets a list of private link resources in the specified managed cluster. The operation returns properties of each
+     * private link resource.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -43,8 +43,9 @@ public interface PrivateLinkResourcesClient {
     Mono<PrivateLinkResourcesListResultInner> listAsync(String resourceGroupName, String resourceName);
 
     /**
-     * Gets a list of private link resources in the specified managed cluster. The operation returns properties of each private link resource.
-     * 
+     * Gets a list of private link resources in the specified managed cluster. The operation returns properties of each
+     * private link resource.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -56,8 +57,9 @@ public interface PrivateLinkResourcesClient {
     PrivateLinkResourcesListResultInner list(String resourceGroupName, String resourceName);
 
     /**
-     * Gets a list of private link resources in the specified managed cluster. The operation returns properties of each private link resource.
-     * 
+     * Gets a list of private link resources in the specified managed cluster. The operation returns properties of each
+     * private link resource.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param resourceName The name of the managed cluster resource.
      * @param context The context to associate with this operation.
@@ -67,5 +69,6 @@ public interface PrivateLinkResourcesClient {
      * @return a list of private link resources in the specified managed cluster.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<PrivateLinkResourcesListResultInner> listWithResponse(String resourceGroupName, String resourceName, Context context);
+    Response<PrivateLinkResourcesListResultInner> listWithResponse(
+        String resourceGroupName, String resourceName, Context context);
 }

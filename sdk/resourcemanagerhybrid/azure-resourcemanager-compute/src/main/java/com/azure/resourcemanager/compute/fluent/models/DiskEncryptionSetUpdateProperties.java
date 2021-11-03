@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.KeyVaultAndKeyReference;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * disk encryption set resource update properties.
- */
+/** disk encryption set resource update properties. */
 @Fluent
 public final class DiskEncryptionSetUpdateProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(DiskEncryptionSetUpdateProperties.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiskEncryptionSetUpdateProperties.class);
 
     /*
      * Key Vault Key Url and vault id of KeK, KeK is optional and when provided
@@ -28,9 +23,9 @@ public final class DiskEncryptionSetUpdateProperties {
     private KeyVaultAndKeyReference activeKey;
 
     /**
-     * Get the activeKey property: Key Vault Key Url and vault id of KeK, KeK
-     * is optional and when provided is used to unwrap the encryptionKey.
-     * 
+     * Get the activeKey property: Key Vault Key Url and vault id of KeK, KeK is optional and when provided is used to
+     * unwrap the encryptionKey.
+     *
      * @return the activeKey value.
      */
     public KeyVaultAndKeyReference activeKey() {
@@ -38,9 +33,9 @@ public final class DiskEncryptionSetUpdateProperties {
     }
 
     /**
-     * Set the activeKey property: Key Vault Key Url and vault id of KeK, KeK
-     * is optional and when provided is used to unwrap the encryptionKey.
-     * 
+     * Set the activeKey property: Key Vault Key Url and vault id of KeK, KeK is optional and when provided is used to
+     * unwrap the encryptionKey.
+     *
      * @param activeKey the activeKey value to set.
      * @return the DiskEncryptionSetUpdateProperties object itself.
      */
@@ -51,7 +46,7 @@ public final class DiskEncryptionSetUpdateProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

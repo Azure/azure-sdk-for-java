@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Data used when creating a disk.
- */
+/** Data used when creating a disk. */
 @Fluent
 public final class CreationData {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(CreationData.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(CreationData.class);
 
     /*
      * This enumerates the possible sources of a disk's creation.
@@ -70,9 +65,8 @@ public final class CreationData {
     private Long uploadSizeBytes;
 
     /**
-     * Get the createOption property: This enumerates the possible sources of a
-     * disk's creation.
-     * 
+     * Get the createOption property: This enumerates the possible sources of a disk's creation.
+     *
      * @return the createOption value.
      */
     public DiskCreateOption createOption() {
@@ -80,9 +74,8 @@ public final class CreationData {
     }
 
     /**
-     * Set the createOption property: This enumerates the possible sources of a
-     * disk's creation.
-     * 
+     * Set the createOption property: This enumerates the possible sources of a disk's creation.
+     *
      * @param createOption the createOption value to set.
      * @return the CreationData object itself.
      */
@@ -92,10 +85,9 @@ public final class CreationData {
     }
 
     /**
-     * Get the storageAccountId property: Required if createOption is Import.
-     * The Azure Resource Manager identifier of the storage account containing
-     * the blob to import as a disk.
-     * 
+     * Get the storageAccountId property: Required if createOption is Import. The Azure Resource Manager identifier of
+     * the storage account containing the blob to import as a disk.
+     *
      * @return the storageAccountId value.
      */
     public String storageAccountId() {
@@ -103,10 +95,9 @@ public final class CreationData {
     }
 
     /**
-     * Set the storageAccountId property: Required if createOption is Import.
-     * The Azure Resource Manager identifier of the storage account containing
-     * the blob to import as a disk.
-     * 
+     * Set the storageAccountId property: Required if createOption is Import. The Azure Resource Manager identifier of
+     * the storage account containing the blob to import as a disk.
+     *
      * @param storageAccountId the storageAccountId value to set.
      * @return the CreationData object itself.
      */
@@ -117,7 +108,7 @@ public final class CreationData {
 
     /**
      * Get the imageReference property: Disk source information.
-     * 
+     *
      * @return the imageReference value.
      */
     public ImageDiskReference imageReference() {
@@ -126,7 +117,7 @@ public final class CreationData {
 
     /**
      * Set the imageReference property: Disk source information.
-     * 
+     *
      * @param imageReference the imageReference value to set.
      * @return the CreationData object itself.
      */
@@ -136,9 +127,9 @@ public final class CreationData {
     }
 
     /**
-     * Get the sourceUri property: If createOption is Import, this is the URI
-     * of a blob to be imported into a managed disk.
-     * 
+     * Get the sourceUri property: If createOption is Import, this is the URI of a blob to be imported into a managed
+     * disk.
+     *
      * @return the sourceUri value.
      */
     public String sourceUri() {
@@ -146,9 +137,9 @@ public final class CreationData {
     }
 
     /**
-     * Set the sourceUri property: If createOption is Import, this is the URI
-     * of a blob to be imported into a managed disk.
-     * 
+     * Set the sourceUri property: If createOption is Import, this is the URI of a blob to be imported into a managed
+     * disk.
+     *
      * @param sourceUri the sourceUri value to set.
      * @return the CreationData object itself.
      */
@@ -158,9 +149,8 @@ public final class CreationData {
     }
 
     /**
-     * Get the sourceResourceId property: If createOption is Copy, this is the
-     * ARM id of the source snapshot or disk.
-     * 
+     * Get the sourceResourceId property: If createOption is Copy, this is the ARM id of the source snapshot or disk.
+     *
      * @return the sourceResourceId value.
      */
     public String sourceResourceId() {
@@ -168,9 +158,8 @@ public final class CreationData {
     }
 
     /**
-     * Set the sourceResourceId property: If createOption is Copy, this is the
-     * ARM id of the source snapshot or disk.
-     * 
+     * Set the sourceResourceId property: If createOption is Copy, this is the ARM id of the source snapshot or disk.
+     *
      * @param sourceResourceId the sourceResourceId value to set.
      * @return the CreationData object itself.
      */
@@ -180,9 +169,9 @@ public final class CreationData {
     }
 
     /**
-     * Get the sourceUniqueId property: If this field is set, this is the
-     * unique id identifying the source of this resource.
-     * 
+     * Get the sourceUniqueId property: If this field is set, this is the unique id identifying the source of this
+     * resource.
+     *
      * @return the sourceUniqueId value.
      */
     public String sourceUniqueId() {
@@ -190,11 +179,10 @@ public final class CreationData {
     }
 
     /**
-     * Get the uploadSizeBytes property: If createOption is Upload, this is the
-     * size of the contents of the upload including the VHD footer. This value
-     * should be between 20972032 (20 MiB + 512 bytes for the VHD footer) and
+     * Get the uploadSizeBytes property: If createOption is Upload, this is the size of the contents of the upload
+     * including the VHD footer. This value should be between 20972032 (20 MiB + 512 bytes for the VHD footer) and
      * 35183298347520 bytes (32 TiB + 512 bytes for the VHD footer).
-     * 
+     *
      * @return the uploadSizeBytes value.
      */
     public Long uploadSizeBytes() {
@@ -202,11 +190,10 @@ public final class CreationData {
     }
 
     /**
-     * Set the uploadSizeBytes property: If createOption is Upload, this is the
-     * size of the contents of the upload including the VHD footer. This value
-     * should be between 20972032 (20 MiB + 512 bytes for the VHD footer) and
+     * Set the uploadSizeBytes property: If createOption is Upload, this is the size of the contents of the upload
+     * including the VHD footer. This value should be between 20972032 (20 MiB + 512 bytes for the VHD footer) and
      * 35183298347520 bytes (32 TiB + 512 bytes for the VHD footer).
-     * 
+     *
      * @param uploadSizeBytes the uploadSizeBytes value to set.
      * @return the CreationData object itself.
      */
@@ -217,12 +204,14 @@ public final class CreationData {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (createOption() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property createOption in model CreationData"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property createOption in model CreationData"));
         }
         if (imageReference() != null) {
             imageReference().validate();

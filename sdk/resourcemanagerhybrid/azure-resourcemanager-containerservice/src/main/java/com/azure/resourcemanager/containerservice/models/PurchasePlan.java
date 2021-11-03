@@ -5,20 +5,14 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Used for establishing the purchase context of any 3rd Party artifact through
- * MarketPlace.
- */
+/** Used for establishing the purchase context of any 3rd Party artifact through MarketPlace. */
 @Fluent
 public final class PurchasePlan {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(PurchasePlan.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PurchasePlan.class);
 
     /*
      * The plan ID.
@@ -47,7 +41,7 @@ public final class PurchasePlan {
 
     /**
      * Get the name property: The plan ID.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -56,7 +50,7 @@ public final class PurchasePlan {
 
     /**
      * Set the name property: The plan ID.
-     * 
+     *
      * @param name the name value to set.
      * @return the PurchasePlan object itself.
      */
@@ -66,10 +60,9 @@ public final class PurchasePlan {
     }
 
     /**
-     * Get the product property: Specifies the product of the image from the
-     * marketplace. This is the same value as Offer under the imageReference
-     * element.
-     * 
+     * Get the product property: Specifies the product of the image from the marketplace. This is the same value as
+     * Offer under the imageReference element.
+     *
      * @return the product value.
      */
     public String product() {
@@ -77,10 +70,9 @@ public final class PurchasePlan {
     }
 
     /**
-     * Set the product property: Specifies the product of the image from the
-     * marketplace. This is the same value as Offer under the imageReference
-     * element.
-     * 
+     * Set the product property: Specifies the product of the image from the marketplace. This is the same value as
+     * Offer under the imageReference element.
+     *
      * @param product the product value to set.
      * @return the PurchasePlan object itself.
      */
@@ -91,7 +83,7 @@ public final class PurchasePlan {
 
     /**
      * Get the promotionCode property: The promotion code.
-     * 
+     *
      * @return the promotionCode value.
      */
     public String promotionCode() {
@@ -100,7 +92,7 @@ public final class PurchasePlan {
 
     /**
      * Set the promotionCode property: The promotion code.
-     * 
+     *
      * @param promotionCode the promotionCode value to set.
      * @return the PurchasePlan object itself.
      */
@@ -111,7 +103,7 @@ public final class PurchasePlan {
 
     /**
      * Get the publisher property: The plan ID.
-     * 
+     *
      * @return the publisher value.
      */
     public String publisher() {
@@ -120,7 +112,7 @@ public final class PurchasePlan {
 
     /**
      * Set the publisher property: The plan ID.
-     * 
+     *
      * @param publisher the publisher value to set.
      * @return the PurchasePlan object itself.
      */
@@ -131,7 +123,7 @@ public final class PurchasePlan {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

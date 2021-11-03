@@ -5,20 +5,16 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Contains information about SSH certificate public key and the path on the
- * Linux VM where the public key is placed.
+ * Contains information about SSH certificate public key and the path on the Linux VM where the public key is placed.
  */
 @Fluent
 public final class SshPublicKey {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(SshPublicKey.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SshPublicKey.class);
 
     /*
      * Specifies the full path on the created VM where ssh public key is
@@ -39,10 +35,9 @@ public final class SshPublicKey {
     private String keyData;
 
     /**
-     * Get the path property: Specifies the full path on the created VM where
-     * ssh public key is stored. If the file already exists, the specified key
-     * is appended to the file. Example: /home/user/.ssh/authorized_keys.
-     * 
+     * Get the path property: Specifies the full path on the created VM where ssh public key is stored. If the file
+     * already exists, the specified key is appended to the file. Example: /home/user/.ssh/authorized_keys.
+     *
      * @return the path value.
      */
     public String path() {
@@ -50,10 +45,9 @@ public final class SshPublicKey {
     }
 
     /**
-     * Set the path property: Specifies the full path on the created VM where
-     * ssh public key is stored. If the file already exists, the specified key
-     * is appended to the file. Example: /home/user/.ssh/authorized_keys.
-     * 
+     * Set the path property: Specifies the full path on the created VM where ssh public key is stored. If the file
+     * already exists, the specified key is appended to the file. Example: /home/user/.ssh/authorized_keys.
+     *
      * @param path the path value to set.
      * @return the SshPublicKey object itself.
      */
@@ -63,12 +57,11 @@ public final class SshPublicKey {
     }
 
     /**
-     * Get the keyData property: SSH public key certificate used to
-     * authenticate with the VM through ssh. The key needs to be at least
-     * 2048-bit and in ssh-rsa format. &lt;br&gt;&lt;br&gt; For creating ssh
-     * keys, see [Create SSH keys on Linux and Mac for Linux VMs in
+     * Get the keyData property: SSH public key certificate used to authenticate with the VM through ssh. The key needs
+     * to be at least 2048-bit and in ssh-rsa format. &lt;br&gt;&lt;br&gt; For creating ssh keys, see [Create SSH keys
+     * on Linux and Mac for Linux VMs in
      * Azure](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/mac-create-ssh-keys?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json).
-     * 
+     *
      * @return the keyData value.
      */
     public String keyData() {
@@ -76,12 +69,11 @@ public final class SshPublicKey {
     }
 
     /**
-     * Set the keyData property: SSH public key certificate used to
-     * authenticate with the VM through ssh. The key needs to be at least
-     * 2048-bit and in ssh-rsa format. &lt;br&gt;&lt;br&gt; For creating ssh
-     * keys, see [Create SSH keys on Linux and Mac for Linux VMs in
+     * Set the keyData property: SSH public key certificate used to authenticate with the VM through ssh. The key needs
+     * to be at least 2048-bit and in ssh-rsa format. &lt;br&gt;&lt;br&gt; For creating ssh keys, see [Create SSH keys
+     * on Linux and Mac for Linux VMs in
      * Azure](https://docs.microsoft.com/en-us/azure/virtual-machines/linux/mac-create-ssh-keys?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json).
-     * 
+     *
      * @param keyData the keyData value to set.
      * @return the SshPublicKey object itself.
      */
@@ -92,7 +84,7 @@ public final class SshPublicKey {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

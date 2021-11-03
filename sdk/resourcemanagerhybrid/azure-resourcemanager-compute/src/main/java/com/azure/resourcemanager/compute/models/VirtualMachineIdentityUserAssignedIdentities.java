@@ -4,16 +4,12 @@
 
 package com.azure.resourcemanager.compute.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The VirtualMachineIdentityUserAssignedIdentities model.
- */
+/** The VirtualMachineIdentityUserAssignedIdentities model. */
 @Immutable
 public final class VirtualMachineIdentityUserAssignedIdentities {
     @JsonIgnore
@@ -32,9 +28,8 @@ public final class VirtualMachineIdentityUserAssignedIdentities {
     private String clientId;
 
     /**
-     * Get the principalId property: The principal id of user assigned
-     * identity.
-     * 
+     * Get the principalId property: The principal id of user assigned identity.
+     *
      * @return the principalId value.
      */
     public String principalId() {
@@ -43,7 +38,7 @@ public final class VirtualMachineIdentityUserAssignedIdentities {
 
     /**
      * Get the clientId property: The client id of user assigned identity.
-     * 
+     *
      * @return the clientId value.
      */
     public String clientId() {
@@ -52,7 +47,7 @@ public final class VirtualMachineIdentityUserAssignedIdentities {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

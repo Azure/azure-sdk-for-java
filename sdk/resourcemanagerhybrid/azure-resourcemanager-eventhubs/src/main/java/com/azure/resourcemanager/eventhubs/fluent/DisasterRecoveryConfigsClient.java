@@ -8,8 +8,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventhubs.fluent.models.AccessKeysInner;
@@ -19,14 +17,11 @@ import com.azure.resourcemanager.eventhubs.fluent.models.CheckNameAvailabilityRe
 import com.azure.resourcemanager.eventhubs.models.CheckNameAvailabilityParameter;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * DisasterRecoveryConfigsClient.
- */
+/** An instance of this class provides access to all the operations defined in DisasterRecoveryConfigsClient. */
 public interface DisasterRecoveryConfigsClient {
     /**
      * Gets a list of authorization rules for a Namespace.
-     * 
+     *
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -36,11 +31,12 @@ public interface DisasterRecoveryConfigsClient {
      * @return a list of authorization rules for a Namespace.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<AuthorizationRuleInner> listAuthorizationRulesAsync(String resourceGroupName, String namespaceName, String alias);
+    PagedFlux<AuthorizationRuleInner> listAuthorizationRulesAsync(
+        String resourceGroupName, String namespaceName, String alias);
 
     /**
      * Gets a list of authorization rules for a Namespace.
-     * 
+     *
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -50,11 +46,12 @@ public interface DisasterRecoveryConfigsClient {
      * @return a list of authorization rules for a Namespace.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AuthorizationRuleInner> listAuthorizationRules(String resourceGroupName, String namespaceName, String alias);
+    PagedIterable<AuthorizationRuleInner> listAuthorizationRules(
+        String resourceGroupName, String namespaceName, String alias);
 
     /**
      * Gets a list of authorization rules for a Namespace.
-     * 
+     *
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -65,11 +62,12 @@ public interface DisasterRecoveryConfigsClient {
      * @return a list of authorization rules for a Namespace.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AuthorizationRuleInner> listAuthorizationRules(String resourceGroupName, String namespaceName, String alias, Context context);
+    PagedIterable<AuthorizationRuleInner> listAuthorizationRules(
+        String resourceGroupName, String namespaceName, String alias, Context context);
 
     /**
      * Gets an AuthorizationRule for a Namespace by rule name.
-     * 
+     *
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -80,11 +78,12 @@ public interface DisasterRecoveryConfigsClient {
      * @return an AuthorizationRule for a Namespace by rule name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<AuthorizationRuleInner>> getAuthorizationRuleWithResponseAsync(String resourceGroupName, String namespaceName, String alias, String authorizationRuleName);
+    Mono<Response<AuthorizationRuleInner>> getAuthorizationRuleWithResponseAsync(
+        String resourceGroupName, String namespaceName, String alias, String authorizationRuleName);
 
     /**
      * Gets an AuthorizationRule for a Namespace by rule name.
-     * 
+     *
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -95,11 +94,12 @@ public interface DisasterRecoveryConfigsClient {
      * @return an AuthorizationRule for a Namespace by rule name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<AuthorizationRuleInner> getAuthorizationRuleAsync(String resourceGroupName, String namespaceName, String alias, String authorizationRuleName);
+    Mono<AuthorizationRuleInner> getAuthorizationRuleAsync(
+        String resourceGroupName, String namespaceName, String alias, String authorizationRuleName);
 
     /**
      * Gets an AuthorizationRule for a Namespace by rule name.
-     * 
+     *
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -110,11 +110,12 @@ public interface DisasterRecoveryConfigsClient {
      * @return an AuthorizationRule for a Namespace by rule name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AuthorizationRuleInner getAuthorizationRule(String resourceGroupName, String namespaceName, String alias, String authorizationRuleName);
+    AuthorizationRuleInner getAuthorizationRule(
+        String resourceGroupName, String namespaceName, String alias, String authorizationRuleName);
 
     /**
      * Gets an AuthorizationRule for a Namespace by rule name.
-     * 
+     *
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -126,11 +127,12 @@ public interface DisasterRecoveryConfigsClient {
      * @return an AuthorizationRule for a Namespace by rule name.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AuthorizationRuleInner> getAuthorizationRuleWithResponse(String resourceGroupName, String namespaceName, String alias, String authorizationRuleName, Context context);
+    Response<AuthorizationRuleInner> getAuthorizationRuleWithResponse(
+        String resourceGroupName, String namespaceName, String alias, String authorizationRuleName, Context context);
 
     /**
      * Gets the primary and secondary connection strings for the Namespace.
-     * 
+     *
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -141,11 +143,12 @@ public interface DisasterRecoveryConfigsClient {
      * @return the primary and secondary connection strings for the Namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<AccessKeysInner>> listKeysWithResponseAsync(String resourceGroupName, String namespaceName, String alias, String authorizationRuleName);
+    Mono<Response<AccessKeysInner>> listKeysWithResponseAsync(
+        String resourceGroupName, String namespaceName, String alias, String authorizationRuleName);
 
     /**
      * Gets the primary and secondary connection strings for the Namespace.
-     * 
+     *
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -156,11 +159,12 @@ public interface DisasterRecoveryConfigsClient {
      * @return the primary and secondary connection strings for the Namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<AccessKeysInner> listKeysAsync(String resourceGroupName, String namespaceName, String alias, String authorizationRuleName);
+    Mono<AccessKeysInner> listKeysAsync(
+        String resourceGroupName, String namespaceName, String alias, String authorizationRuleName);
 
     /**
      * Gets the primary and secondary connection strings for the Namespace.
-     * 
+     *
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -171,11 +175,12 @@ public interface DisasterRecoveryConfigsClient {
      * @return the primary and secondary connection strings for the Namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AccessKeysInner listKeys(String resourceGroupName, String namespaceName, String alias, String authorizationRuleName);
+    AccessKeysInner listKeys(
+        String resourceGroupName, String namespaceName, String alias, String authorizationRuleName);
 
     /**
      * Gets the primary and secondary connection strings for the Namespace.
-     * 
+     *
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -187,11 +192,12 @@ public interface DisasterRecoveryConfigsClient {
      * @return the primary and secondary connection strings for the Namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AccessKeysInner> listKeysWithResponse(String resourceGroupName, String namespaceName, String alias, String authorizationRuleName, Context context);
+    Response<AccessKeysInner> listKeysWithResponse(
+        String resourceGroupName, String namespaceName, String alias, String authorizationRuleName, Context context);
 
     /**
      * Check the give Namespace name availability.
-     * 
+     *
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param parameters Parameters to check availability of the given Alias name.
@@ -201,11 +207,12 @@ public interface DisasterRecoveryConfigsClient {
      * @return the Result of the CheckNameAvailability operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<CheckNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(String resourceGroupName, String namespaceName, CheckNameAvailabilityParameter parameters);
+    Mono<Response<CheckNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(
+        String resourceGroupName, String namespaceName, CheckNameAvailabilityParameter parameters);
 
     /**
      * Check the give Namespace name availability.
-     * 
+     *
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param parameters Parameters to check availability of the given Alias name.
@@ -215,11 +222,12 @@ public interface DisasterRecoveryConfigsClient {
      * @return the Result of the CheckNameAvailability operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<CheckNameAvailabilityResultInner> checkNameAvailabilityAsync(String resourceGroupName, String namespaceName, CheckNameAvailabilityParameter parameters);
+    Mono<CheckNameAvailabilityResultInner> checkNameAvailabilityAsync(
+        String resourceGroupName, String namespaceName, CheckNameAvailabilityParameter parameters);
 
     /**
      * Check the give Namespace name availability.
-     * 
+     *
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param parameters Parameters to check availability of the given Alias name.
@@ -229,11 +237,12 @@ public interface DisasterRecoveryConfigsClient {
      * @return the Result of the CheckNameAvailability operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    CheckNameAvailabilityResultInner checkNameAvailability(String resourceGroupName, String namespaceName, CheckNameAvailabilityParameter parameters);
+    CheckNameAvailabilityResultInner checkNameAvailability(
+        String resourceGroupName, String namespaceName, CheckNameAvailabilityParameter parameters);
 
     /**
      * Check the give Namespace name availability.
-     * 
+     *
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param parameters Parameters to check availability of the given Alias name.
@@ -244,11 +253,12 @@ public interface DisasterRecoveryConfigsClient {
      * @return the Result of the CheckNameAvailability operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckNameAvailabilityResultInner> checkNameAvailabilityWithResponse(String resourceGroupName, String namespaceName, CheckNameAvailabilityParameter parameters, Context context);
+    Response<CheckNameAvailabilityResultInner> checkNameAvailabilityWithResponse(
+        String resourceGroupName, String namespaceName, CheckNameAvailabilityParameter parameters, Context context);
 
     /**
      * Gets all Alias(Disaster Recovery configurations).
-     * 
+     *
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -261,7 +271,7 @@ public interface DisasterRecoveryConfigsClient {
 
     /**
      * Gets all Alias(Disaster Recovery configurations).
-     * 
+     *
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -274,7 +284,7 @@ public interface DisasterRecoveryConfigsClient {
 
     /**
      * Gets all Alias(Disaster Recovery configurations).
-     * 
+     *
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param context The context to associate with this operation.
@@ -288,7 +298,7 @@ public interface DisasterRecoveryConfigsClient {
 
     /**
      * Creates or updates a new Alias(Disaster Recovery configuration).
-     * 
+     *
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -299,11 +309,12 @@ public interface DisasterRecoveryConfigsClient {
      * @return single item in List or Get Alias(Disaster Recovery configuration) operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ArmDisasterRecoveryInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String namespaceName, String alias, ArmDisasterRecoveryInner parameters);
+    Mono<Response<ArmDisasterRecoveryInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String namespaceName, String alias, ArmDisasterRecoveryInner parameters);
 
     /**
      * Creates or updates a new Alias(Disaster Recovery configuration).
-     * 
+     *
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -314,11 +325,12 @@ public interface DisasterRecoveryConfigsClient {
      * @return single item in List or Get Alias(Disaster Recovery configuration) operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ArmDisasterRecoveryInner> createOrUpdateAsync(String resourceGroupName, String namespaceName, String alias, ArmDisasterRecoveryInner parameters);
+    Mono<ArmDisasterRecoveryInner> createOrUpdateAsync(
+        String resourceGroupName, String namespaceName, String alias, ArmDisasterRecoveryInner parameters);
 
     /**
      * Creates or updates a new Alias(Disaster Recovery configuration).
-     * 
+     *
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -329,11 +341,12 @@ public interface DisasterRecoveryConfigsClient {
      * @return single item in List or Get Alias(Disaster Recovery configuration) operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ArmDisasterRecoveryInner createOrUpdate(String resourceGroupName, String namespaceName, String alias, ArmDisasterRecoveryInner parameters);
+    ArmDisasterRecoveryInner createOrUpdate(
+        String resourceGroupName, String namespaceName, String alias, ArmDisasterRecoveryInner parameters);
 
     /**
      * Creates or updates a new Alias(Disaster Recovery configuration).
-     * 
+     *
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -345,11 +358,16 @@ public interface DisasterRecoveryConfigsClient {
      * @return single item in List or Get Alias(Disaster Recovery configuration) operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ArmDisasterRecoveryInner> createOrUpdateWithResponse(String resourceGroupName, String namespaceName, String alias, ArmDisasterRecoveryInner parameters, Context context);
+    Response<ArmDisasterRecoveryInner> createOrUpdateWithResponse(
+        String resourceGroupName,
+        String namespaceName,
+        String alias,
+        ArmDisasterRecoveryInner parameters,
+        Context context);
 
     /**
      * Deletes an Alias(Disaster Recovery configuration).
-     * 
+     *
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -363,7 +381,7 @@ public interface DisasterRecoveryConfigsClient {
 
     /**
      * Deletes an Alias(Disaster Recovery configuration).
-     * 
+     *
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -377,7 +395,7 @@ public interface DisasterRecoveryConfigsClient {
 
     /**
      * Deletes an Alias(Disaster Recovery configuration).
-     * 
+     *
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -390,7 +408,7 @@ public interface DisasterRecoveryConfigsClient {
 
     /**
      * Deletes an Alias(Disaster Recovery configuration).
-     * 
+     *
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -405,7 +423,7 @@ public interface DisasterRecoveryConfigsClient {
 
     /**
      * Retrieves Alias(Disaster Recovery configuration) for primary or secondary namespace.
-     * 
+     *
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -415,11 +433,12 @@ public interface DisasterRecoveryConfigsClient {
      * @return single item in List or Get Alias(Disaster Recovery configuration) operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ArmDisasterRecoveryInner>> getWithResponseAsync(String resourceGroupName, String namespaceName, String alias);
+    Mono<Response<ArmDisasterRecoveryInner>> getWithResponseAsync(
+        String resourceGroupName, String namespaceName, String alias);
 
     /**
      * Retrieves Alias(Disaster Recovery configuration) for primary or secondary namespace.
-     * 
+     *
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -433,7 +452,7 @@ public interface DisasterRecoveryConfigsClient {
 
     /**
      * Retrieves Alias(Disaster Recovery configuration) for primary or secondary namespace.
-     * 
+     *
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -447,7 +466,7 @@ public interface DisasterRecoveryConfigsClient {
 
     /**
      * Retrieves Alias(Disaster Recovery configuration) for primary or secondary namespace.
-     * 
+     *
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -458,11 +477,12 @@ public interface DisasterRecoveryConfigsClient {
      * @return single item in List or Get Alias(Disaster Recovery configuration) operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ArmDisasterRecoveryInner> getWithResponse(String resourceGroupName, String namespaceName, String alias, Context context);
+    Response<ArmDisasterRecoveryInner> getWithResponse(
+        String resourceGroupName, String namespaceName, String alias, Context context);
 
     /**
      * This operation disables the Disaster Recovery and stops replicating changes from primary to secondary namespaces.
-     * 
+     *
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -476,7 +496,7 @@ public interface DisasterRecoveryConfigsClient {
 
     /**
      * This operation disables the Disaster Recovery and stops replicating changes from primary to secondary namespaces.
-     * 
+     *
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -490,7 +510,7 @@ public interface DisasterRecoveryConfigsClient {
 
     /**
      * This operation disables the Disaster Recovery and stops replicating changes from primary to secondary namespaces.
-     * 
+     *
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -503,7 +523,7 @@ public interface DisasterRecoveryConfigsClient {
 
     /**
      * This operation disables the Disaster Recovery and stops replicating changes from primary to secondary namespaces.
-     * 
+     *
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -514,11 +534,12 @@ public interface DisasterRecoveryConfigsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> breakPairingWithResponse(String resourceGroupName, String namespaceName, String alias, Context context);
+    Response<Void> breakPairingWithResponse(
+        String resourceGroupName, String namespaceName, String alias, Context context);
 
     /**
      * Invokes GEO DR failover and reconfigure the alias to point to the secondary namespace.
-     * 
+     *
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -532,7 +553,7 @@ public interface DisasterRecoveryConfigsClient {
 
     /**
      * Invokes GEO DR failover and reconfigure the alias to point to the secondary namespace.
-     * 
+     *
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -546,7 +567,7 @@ public interface DisasterRecoveryConfigsClient {
 
     /**
      * Invokes GEO DR failover and reconfigure the alias to point to the secondary namespace.
-     * 
+     *
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param alias The Disaster Recovery configuration name.
@@ -559,7 +580,7 @@ public interface DisasterRecoveryConfigsClient {
 
     /**
      * Invokes GEO DR failover and reconfigure the alias to point to the secondary namespace.
-     * 
+     *
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param alias The Disaster Recovery configuration name.

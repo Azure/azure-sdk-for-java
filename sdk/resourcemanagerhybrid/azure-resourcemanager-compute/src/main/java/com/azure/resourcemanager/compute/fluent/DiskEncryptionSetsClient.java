@@ -8,8 +8,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
@@ -20,64 +18,78 @@ import com.azure.resourcemanager.compute.models.DiskEncryptionSetUpdate;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
-import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * DiskEncryptionSetsClient.
- */
-public interface DiskEncryptionSetsClient extends InnerSupportsGet<DiskEncryptionSetInner>, InnerSupportsListing<DiskEncryptionSetInner>, InnerSupportsDelete<Void> {
+/** An instance of this class provides access to all the operations defined in DiskEncryptionSetsClient. */
+public interface DiskEncryptionSetsClient
+    extends InnerSupportsGet<DiskEncryptionSetInner>,
+        InnerSupportsListing<DiskEncryptionSetInner>,
+        InnerSupportsDelete<Void> {
     /**
      * Creates or updates a disk encryption set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
-     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set operation.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set
+     *     operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return disk encryption set resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetInner diskEncryptionSet);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetInner diskEncryptionSet);
 
     /**
      * Creates or updates a disk encryption set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
-     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set operation.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set
+     *     operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return disk encryption set resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginCreateOrUpdateAsync(String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetInner diskEncryptionSet);
+    PollerFlux<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetInner diskEncryptionSet);
 
     /**
      * Creates or updates a disk encryption set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
-     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set operation.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set
+     *     operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return disk encryption set resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginCreateOrUpdate(String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetInner diskEncryptionSet);
+    SyncPoller<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginCreateOrUpdate(
+        String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetInner diskEncryptionSet);
 
     /**
      * Creates or updates a disk encryption set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
-     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set operation.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set
+     *     operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -85,42 +97,57 @@ public interface DiskEncryptionSetsClient extends InnerSupportsGet<DiskEncryptio
      * @return disk encryption set resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginCreateOrUpdate(String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetInner diskEncryptionSet, Context context);
+    SyncPoller<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String diskEncryptionSetName,
+        DiskEncryptionSetInner diskEncryptionSet,
+        Context context);
 
     /**
      * Creates or updates a disk encryption set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
-     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set operation.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set
+     *     operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return disk encryption set resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DiskEncryptionSetInner> createOrUpdateAsync(String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetInner diskEncryptionSet);
+    Mono<DiskEncryptionSetInner> createOrUpdateAsync(
+        String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetInner diskEncryptionSet);
 
     /**
      * Creates or updates a disk encryption set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
-     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set operation.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set
+     *     operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return disk encryption set resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DiskEncryptionSetInner createOrUpdate(String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetInner diskEncryptionSet);
+    DiskEncryptionSetInner createOrUpdate(
+        String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetInner diskEncryptionSet);
 
     /**
      * Creates or updates a disk encryption set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
-     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set operation.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Put disk encryption set
+     *     operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -128,56 +155,75 @@ public interface DiskEncryptionSetsClient extends InnerSupportsGet<DiskEncryptio
      * @return disk encryption set resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DiskEncryptionSetInner createOrUpdate(String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetInner diskEncryptionSet, Context context);
+    DiskEncryptionSetInner createOrUpdate(
+        String resourceGroupName,
+        String diskEncryptionSetName,
+        DiskEncryptionSetInner diskEncryptionSet,
+        Context context);
 
     /**
      * Updates (patches) a disk encryption set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
-     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set operation.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set
+     *     operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return disk encryption set resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetUpdate diskEncryptionSet);
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
+        String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetUpdate diskEncryptionSet);
 
     /**
      * Updates (patches) a disk encryption set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
-     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set operation.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set
+     *     operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return disk encryption set resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginUpdateAsync(String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetUpdate diskEncryptionSet);
+    PollerFlux<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginUpdateAsync(
+        String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetUpdate diskEncryptionSet);
 
     /**
      * Updates (patches) a disk encryption set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
-     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set operation.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set
+     *     operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return disk encryption set resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginUpdate(String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetUpdate diskEncryptionSet);
+    SyncPoller<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginUpdate(
+        String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetUpdate diskEncryptionSet);
 
     /**
      * Updates (patches) a disk encryption set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
-     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set operation.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set
+     *     operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -185,42 +231,57 @@ public interface DiskEncryptionSetsClient extends InnerSupportsGet<DiskEncryptio
      * @return disk encryption set resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginUpdate(String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetUpdate diskEncryptionSet, Context context);
+    SyncPoller<PollResult<DiskEncryptionSetInner>, DiskEncryptionSetInner> beginUpdate(
+        String resourceGroupName,
+        String diskEncryptionSetName,
+        DiskEncryptionSetUpdate diskEncryptionSet,
+        Context context);
 
     /**
      * Updates (patches) a disk encryption set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
-     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set operation.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set
+     *     operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return disk encryption set resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DiskEncryptionSetInner> updateAsync(String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetUpdate diskEncryptionSet);
+    Mono<DiskEncryptionSetInner> updateAsync(
+        String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetUpdate diskEncryptionSet);
 
     /**
      * Updates (patches) a disk encryption set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
-     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set operation.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set
+     *     operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return disk encryption set resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DiskEncryptionSetInner update(String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetUpdate diskEncryptionSet);
+    DiskEncryptionSetInner update(
+        String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetUpdate diskEncryptionSet);
 
     /**
      * Updates (patches) a disk encryption set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
-     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
-     * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set operation.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
+     * @param diskEncryptionSet disk encryption set object supplied in the body of the Patch disk encryption set
+     *     operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -228,26 +289,35 @@ public interface DiskEncryptionSetsClient extends InnerSupportsGet<DiskEncryptio
      * @return disk encryption set resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DiskEncryptionSetInner update(String resourceGroupName, String diskEncryptionSetName, DiskEncryptionSetUpdate diskEncryptionSet, Context context);
+    DiskEncryptionSetInner update(
+        String resourceGroupName,
+        String diskEncryptionSetName,
+        DiskEncryptionSetUpdate diskEncryptionSet,
+        Context context);
 
     /**
      * Gets information about a disk encryption set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
-     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a disk encryption set.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DiskEncryptionSetInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String diskEncryptionSetName);
+    Mono<Response<DiskEncryptionSetInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String diskEncryptionSetName);
 
     /**
      * Gets information about a disk encryption set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
-     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -258,9 +328,11 @@ public interface DiskEncryptionSetsClient extends InnerSupportsGet<DiskEncryptio
 
     /**
      * Gets information about a disk encryption set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
-     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -271,9 +343,11 @@ public interface DiskEncryptionSetsClient extends InnerSupportsGet<DiskEncryptio
 
     /**
      * Gets information about a disk encryption set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
-     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -281,13 +355,16 @@ public interface DiskEncryptionSetsClient extends InnerSupportsGet<DiskEncryptio
      * @return information about a disk encryption set.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DiskEncryptionSetInner> getByResourceGroupWithResponse(String resourceGroupName, String diskEncryptionSetName, Context context);
+    Response<DiskEncryptionSetInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String diskEncryptionSetName, Context context);
 
     /**
      * Deletes a disk encryption set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
-     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -298,9 +375,11 @@ public interface DiskEncryptionSetsClient extends InnerSupportsGet<DiskEncryptio
 
     /**
      * Deletes a disk encryption set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
-     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -311,9 +390,11 @@ public interface DiskEncryptionSetsClient extends InnerSupportsGet<DiskEncryptio
 
     /**
      * Deletes a disk encryption set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
-     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -324,9 +405,11 @@ public interface DiskEncryptionSetsClient extends InnerSupportsGet<DiskEncryptio
 
     /**
      * Deletes a disk encryption set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
-     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -334,13 +417,16 @@ public interface DiskEncryptionSetsClient extends InnerSupportsGet<DiskEncryptio
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String diskEncryptionSetName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String diskEncryptionSetName, Context context);
 
     /**
      * Deletes a disk encryption set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
-     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -351,9 +437,11 @@ public interface DiskEncryptionSetsClient extends InnerSupportsGet<DiskEncryptio
 
     /**
      * Deletes a disk encryption set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
-     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -363,9 +451,11 @@ public interface DiskEncryptionSetsClient extends InnerSupportsGet<DiskEncryptio
 
     /**
      * Deletes a disk encryption set.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
-     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The maximum name length is 80 characters.
+     * @param diskEncryptionSetName The name of the disk encryption set that is being created. The name can't be changed
+     *     after the disk encryption set is created. Supported characters for the name are a-z, A-Z, 0-9 and _. The
+     *     maximum name length is 80 characters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -376,7 +466,7 @@ public interface DiskEncryptionSetsClient extends InnerSupportsGet<DiskEncryptio
 
     /**
      * Lists all the disk encryption sets under a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -388,7 +478,7 @@ public interface DiskEncryptionSetsClient extends InnerSupportsGet<DiskEncryptio
 
     /**
      * Lists all the disk encryption sets under a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -400,7 +490,7 @@ public interface DiskEncryptionSetsClient extends InnerSupportsGet<DiskEncryptio
 
     /**
      * Lists all the disk encryption sets under a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -413,7 +503,7 @@ public interface DiskEncryptionSetsClient extends InnerSupportsGet<DiskEncryptio
 
     /**
      * Lists all the disk encryption sets under a subscription.
-     * 
+     *
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List disk encryption set operation response.
@@ -423,7 +513,7 @@ public interface DiskEncryptionSetsClient extends InnerSupportsGet<DiskEncryptio
 
     /**
      * Lists all the disk encryption sets under a subscription.
-     * 
+     *
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List disk encryption set operation response.
@@ -433,7 +523,7 @@ public interface DiskEncryptionSetsClient extends InnerSupportsGet<DiskEncryptio
 
     /**
      * Lists all the disk encryption sets under a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.

@@ -5,25 +5,20 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.AzureFirewallApplicationRuleCollection;
 import com.azure.resourcemanager.network.models.AzureFirewallIpConfiguration;
 import com.azure.resourcemanager.network.models.AzureFirewallNatRuleCollection;
 import com.azure.resourcemanager.network.models.AzureFirewallNetworkRuleCollection;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Properties of the Azure Firewall.
- */
+/** Properties of the Azure Firewall. */
 @Fluent
 public final class AzureFirewallPropertiesFormat {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(AzureFirewallPropertiesFormat.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AzureFirewallPropertiesFormat.class);
 
     /*
      * Collection of application rule collections used by Azure Firewall.
@@ -56,9 +51,8 @@ public final class AzureFirewallPropertiesFormat {
     private ProvisioningState provisioningState;
 
     /**
-     * Get the applicationRuleCollections property: Collection of application
-     * rule collections used by Azure Firewall.
-     * 
+     * Get the applicationRuleCollections property: Collection of application rule collections used by Azure Firewall.
+     *
      * @return the applicationRuleCollections value.
      */
     public List<AzureFirewallApplicationRuleCollection> applicationRuleCollections() {
@@ -66,22 +60,20 @@ public final class AzureFirewallPropertiesFormat {
     }
 
     /**
-     * Set the applicationRuleCollections property: Collection of application
-     * rule collections used by Azure Firewall.
-     * 
-     * @param applicationRuleCollections the applicationRuleCollections value
-     * to set.
+     * Set the applicationRuleCollections property: Collection of application rule collections used by Azure Firewall.
+     *
+     * @param applicationRuleCollections the applicationRuleCollections value to set.
      * @return the AzureFirewallPropertiesFormat object itself.
      */
-    public AzureFirewallPropertiesFormat withApplicationRuleCollections(List<AzureFirewallApplicationRuleCollection> applicationRuleCollections) {
+    public AzureFirewallPropertiesFormat withApplicationRuleCollections(
+        List<AzureFirewallApplicationRuleCollection> applicationRuleCollections) {
         this.applicationRuleCollections = applicationRuleCollections;
         return this;
     }
 
     /**
-     * Get the natRuleCollections property: Collection of NAT rule collections
-     * used by Azure Firewall.
-     * 
+     * Get the natRuleCollections property: Collection of NAT rule collections used by Azure Firewall.
+     *
      * @return the natRuleCollections value.
      */
     public List<AzureFirewallNatRuleCollection> natRuleCollections() {
@@ -89,21 +81,20 @@ public final class AzureFirewallPropertiesFormat {
     }
 
     /**
-     * Set the natRuleCollections property: Collection of NAT rule collections
-     * used by Azure Firewall.
-     * 
+     * Set the natRuleCollections property: Collection of NAT rule collections used by Azure Firewall.
+     *
      * @param natRuleCollections the natRuleCollections value to set.
      * @return the AzureFirewallPropertiesFormat object itself.
      */
-    public AzureFirewallPropertiesFormat withNatRuleCollections(List<AzureFirewallNatRuleCollection> natRuleCollections) {
+    public AzureFirewallPropertiesFormat withNatRuleCollections(
+        List<AzureFirewallNatRuleCollection> natRuleCollections) {
         this.natRuleCollections = natRuleCollections;
         return this;
     }
 
     /**
-     * Get the networkRuleCollections property: Collection of network rule
-     * collections used by Azure Firewall.
-     * 
+     * Get the networkRuleCollections property: Collection of network rule collections used by Azure Firewall.
+     *
      * @return the networkRuleCollections value.
      */
     public List<AzureFirewallNetworkRuleCollection> networkRuleCollections() {
@@ -111,21 +102,20 @@ public final class AzureFirewallPropertiesFormat {
     }
 
     /**
-     * Set the networkRuleCollections property: Collection of network rule
-     * collections used by Azure Firewall.
-     * 
+     * Set the networkRuleCollections property: Collection of network rule collections used by Azure Firewall.
+     *
      * @param networkRuleCollections the networkRuleCollections value to set.
      * @return the AzureFirewallPropertiesFormat object itself.
      */
-    public AzureFirewallPropertiesFormat withNetworkRuleCollections(List<AzureFirewallNetworkRuleCollection> networkRuleCollections) {
+    public AzureFirewallPropertiesFormat withNetworkRuleCollections(
+        List<AzureFirewallNetworkRuleCollection> networkRuleCollections) {
         this.networkRuleCollections = networkRuleCollections;
         return this;
     }
 
     /**
-     * Get the ipConfigurations property: IP configuration of the Azure
-     * Firewall resource.
-     * 
+     * Get the ipConfigurations property: IP configuration of the Azure Firewall resource.
+     *
      * @return the ipConfigurations value.
      */
     public List<AzureFirewallIpConfiguration> ipConfigurations() {
@@ -133,9 +123,8 @@ public final class AzureFirewallPropertiesFormat {
     }
 
     /**
-     * Set the ipConfigurations property: IP configuration of the Azure
-     * Firewall resource.
-     * 
+     * Set the ipConfigurations property: IP configuration of the Azure Firewall resource.
+     *
      * @param ipConfigurations the ipConfigurations value to set.
      * @return the AzureFirewallPropertiesFormat object itself.
      */
@@ -145,9 +134,8 @@ public final class AzureFirewallPropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the
-     * resource.
-     * 
+     * Get the provisioningState property: The provisioning state of the resource.
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -155,9 +143,8 @@ public final class AzureFirewallPropertiesFormat {
     }
 
     /**
-     * Set the provisioningState property: The provisioning state of the
-     * resource.
-     * 
+     * Set the provisioningState property: The provisioning state of the resource.
+     *
      * @param provisioningState the provisioningState value to set.
      * @return the AzureFirewallPropertiesFormat object itself.
      */
@@ -168,7 +155,7 @@ public final class AzureFirewallPropertiesFormat {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

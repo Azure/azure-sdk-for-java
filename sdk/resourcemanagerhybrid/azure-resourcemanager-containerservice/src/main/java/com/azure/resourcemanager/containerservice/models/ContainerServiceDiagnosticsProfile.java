@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Profile for diagnostics on the container service cluster.
- */
+/** Profile for diagnostics on the container service cluster. */
 @Fluent
 public final class ContainerServiceDiagnosticsProfile {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ContainerServiceDiagnosticsProfile.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerServiceDiagnosticsProfile.class);
 
     /*
      * Profile for diagnostics on the container service VMs.
@@ -26,9 +21,8 @@ public final class ContainerServiceDiagnosticsProfile {
     private ContainerServiceVMDiagnostics vmDiagnostics;
 
     /**
-     * Get the vmDiagnostics property: Profile for diagnostics on the container
-     * service VMs.
-     * 
+     * Get the vmDiagnostics property: Profile for diagnostics on the container service VMs.
+     *
      * @return the vmDiagnostics value.
      */
     public ContainerServiceVMDiagnostics vmDiagnostics() {
@@ -36,9 +30,8 @@ public final class ContainerServiceDiagnosticsProfile {
     }
 
     /**
-     * Set the vmDiagnostics property: Profile for diagnostics on the container
-     * service VMs.
-     * 
+     * Set the vmDiagnostics property: Profile for diagnostics on the container service VMs.
+     *
      * @param vmDiagnostics the vmDiagnostics value to set.
      * @return the ContainerServiceDiagnosticsProfile object itself.
      */
@@ -49,12 +42,15 @@ public final class ContainerServiceDiagnosticsProfile {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (vmDiagnostics() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property vmDiagnostics in model ContainerServiceDiagnosticsProfile"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property vmDiagnostics in model ContainerServiceDiagnosticsProfile"));
         } else {
             vmDiagnostics().validate();
         }

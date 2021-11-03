@@ -8,28 +8,20 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for SoftwareUpdateRebootBehavior.
- */
+/** Defines values for SoftwareUpdateRebootBehavior. */
 public final class SoftwareUpdateRebootBehavior extends ExpandableStringEnum<SoftwareUpdateRebootBehavior> {
-    /**
-     * Static value NeverReboots for SoftwareUpdateRebootBehavior.
-     */
+    /** Static value NeverReboots for SoftwareUpdateRebootBehavior. */
     public static final SoftwareUpdateRebootBehavior NEVER_REBOOTS = fromString("NeverReboots");
 
-    /**
-     * Static value AlwaysRequiresReboot for SoftwareUpdateRebootBehavior.
-     */
+    /** Static value AlwaysRequiresReboot for SoftwareUpdateRebootBehavior. */
     public static final SoftwareUpdateRebootBehavior ALWAYS_REQUIRES_REBOOT = fromString("AlwaysRequiresReboot");
 
-    /**
-     * Static value CanRequestReboot for SoftwareUpdateRebootBehavior.
-     */
+    /** Static value CanRequestReboot for SoftwareUpdateRebootBehavior. */
     public static final SoftwareUpdateRebootBehavior CAN_REQUEST_REBOOT = fromString("CanRequestReboot");
 
     /**
      * Creates or finds a SoftwareUpdateRebootBehavior from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding SoftwareUpdateRebootBehavior.
      */
@@ -38,9 +30,7 @@ public final class SoftwareUpdateRebootBehavior extends ExpandableStringEnum<Sof
         return fromString(name, SoftwareUpdateRebootBehavior.class);
     }
 
-    /**
-     * @return known SoftwareUpdateRebootBehavior values.
-     */
+    /** @return known SoftwareUpdateRebootBehavior values. */
     public static Collection<SoftwareUpdateRebootBehavior> values() {
         return values(SoftwareUpdateRebootBehavior.class);
     }

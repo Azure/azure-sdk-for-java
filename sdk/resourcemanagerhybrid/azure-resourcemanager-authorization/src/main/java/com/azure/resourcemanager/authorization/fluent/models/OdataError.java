@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Active Directory OData error information.
- */
+/** Active Directory OData error information. */
 @Fluent
 public final class OdataError {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(OdataError.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(OdataError.class);
 
     /*
      * Error code.
@@ -33,7 +28,7 @@ public final class OdataError {
 
     /**
      * Get the code property: Error code.
-     * 
+     *
      * @return the code value.
      */
     public String code() {
@@ -42,7 +37,7 @@ public final class OdataError {
 
     /**
      * Set the code property: Error code.
-     * 
+     *
      * @param code the code value to set.
      * @return the OdataError object itself.
      */
@@ -53,7 +48,7 @@ public final class OdataError {
 
     /**
      * Get the innerMessage property: Error Message.
-     * 
+     *
      * @return the innerMessage value.
      */
     private ErrorMessage innerMessage() {
@@ -62,7 +57,7 @@ public final class OdataError {
 
     /**
      * Get the message property: Error message value.
-     * 
+     *
      * @return the message value.
      */
     public String message() {
@@ -71,7 +66,7 @@ public final class OdataError {
 
     /**
      * Set the message property: Error message value.
-     * 
+     *
      * @param message the message value to set.
      * @return the OdataError object itself.
      */
@@ -85,7 +80,7 @@ public final class OdataError {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

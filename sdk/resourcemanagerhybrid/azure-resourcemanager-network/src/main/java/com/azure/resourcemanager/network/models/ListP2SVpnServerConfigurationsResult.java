@@ -5,23 +5,19 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.P2SVpnServerConfigurationInner;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Result of the request to list all P2SVpnServerConfigurations associated to a
- * VirtualWan. It contains a list of P2SVpnServerConfigurations and a URL
- * nextLink to get the next set of results.
+ * Result of the request to list all P2SVpnServerConfigurations associated to a VirtualWan. It contains a list of
+ * P2SVpnServerConfigurations and a URL nextLink to get the next set of results.
  */
 @Fluent
 public final class ListP2SVpnServerConfigurationsResult {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ListP2SVpnServerConfigurationsResult.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ListP2SVpnServerConfigurationsResult.class);
 
     /*
      * List of P2SVpnServerConfigurations.
@@ -37,7 +33,7 @@ public final class ListP2SVpnServerConfigurationsResult {
 
     /**
      * Get the value property: List of P2SVpnServerConfigurations.
-     * 
+     *
      * @return the value value.
      */
     public List<P2SVpnServerConfigurationInner> value() {
@@ -46,7 +42,7 @@ public final class ListP2SVpnServerConfigurationsResult {
 
     /**
      * Set the value property: List of P2SVpnServerConfigurations.
-     * 
+     *
      * @param value the value value to set.
      * @return the ListP2SVpnServerConfigurationsResult object itself.
      */
@@ -56,9 +52,8 @@ public final class ListP2SVpnServerConfigurationsResult {
     }
 
     /**
-     * Get the nextLink property: URL to get the next set of operation list
-     * results if there are any.
-     * 
+     * Get the nextLink property: URL to get the next set of operation list results if there are any.
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -66,9 +61,8 @@ public final class ListP2SVpnServerConfigurationsResult {
     }
 
     /**
-     * Set the nextLink property: URL to get the next set of operation list
-     * results if there are any.
-     * 
+     * Set the nextLink property: URL to get the next set of operation list results if there are any.
+     *
      * @param nextLink the nextLink value to set.
      * @return the ListP2SVpnServerConfigurationsResult object itself.
      */
@@ -79,7 +73,7 @@ public final class ListP2SVpnServerConfigurationsResult {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

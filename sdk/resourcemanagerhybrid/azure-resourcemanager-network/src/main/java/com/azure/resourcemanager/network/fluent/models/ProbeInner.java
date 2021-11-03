@@ -5,22 +5,17 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProbeProtocol;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * A load balancer probe.
- */
+/** A load balancer probe. */
 @Fluent
 public final class ProbeInner extends SubResource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ProbeInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProbeInner.class);
 
     /*
      * Properties of load balancer probe.
@@ -43,7 +38,7 @@ public final class ProbeInner extends SubResource {
 
     /**
      * Get the innerProperties property: Properties of load balancer probe.
-     * 
+     *
      * @return the innerProperties value.
      */
     private ProbePropertiesFormat innerProperties() {
@@ -51,9 +46,9 @@ public final class ProbeInner extends SubResource {
     }
 
     /**
-     * Get the name property: Gets name of the resource that is unique within a
-     * resource group. This name can be used to access the resource.
-     * 
+     * Get the name property: Gets name of the resource that is unique within a resource group. This name can be used to
+     * access the resource.
+     *
      * @return the name value.
      */
     public String name() {
@@ -61,9 +56,9 @@ public final class ProbeInner extends SubResource {
     }
 
     /**
-     * Set the name property: Gets name of the resource that is unique within a
-     * resource group. This name can be used to access the resource.
-     * 
+     * Set the name property: Gets name of the resource that is unique within a resource group. This name can be used to
+     * access the resource.
+     *
      * @param name the name value to set.
      * @return the ProbeInner object itself.
      */
@@ -73,9 +68,8 @@ public final class ProbeInner extends SubResource {
     }
 
     /**
-     * Get the etag property: A unique read-only string that changes whenever
-     * the resource is updated.
-     * 
+     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -83,9 +77,8 @@ public final class ProbeInner extends SubResource {
     }
 
     /**
-     * Set the etag property: A unique read-only string that changes whenever
-     * the resource is updated.
-     * 
+     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
      * @param etag the etag value to set.
      * @return the ProbeInner object itself.
      */
@@ -94,9 +87,7 @@ public final class ProbeInner extends SubResource {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ProbeInner withId(String id) {
         super.withId(id);
@@ -104,9 +95,8 @@ public final class ProbeInner extends SubResource {
     }
 
     /**
-     * Get the loadBalancingRules property: The load balancer rules that use
-     * this probe.
-     * 
+     * Get the loadBalancingRules property: The load balancer rules that use this probe.
+     *
      * @return the loadBalancingRules value.
      */
     public List<SubResource> loadBalancingRules() {
@@ -114,12 +104,10 @@ public final class ProbeInner extends SubResource {
     }
 
     /**
-     * Get the protocol property: The protocol of the end point. Possible
-     * values are: 'Http', 'Tcp', or 'Https'. If 'Tcp' is specified, a received
-     * ACK is required for the probe to be successful. If 'Http' or 'Https' is
-     * specified, a 200 OK response from the specifies URI is required for the
-     * probe to be successful.
-     * 
+     * Get the protocol property: The protocol of the end point. Possible values are: 'Http', 'Tcp', or 'Https'. If
+     * 'Tcp' is specified, a received ACK is required for the probe to be successful. If 'Http' or 'Https' is specified,
+     * a 200 OK response from the specifies URI is required for the probe to be successful.
+     *
      * @return the protocol value.
      */
     public ProbeProtocol protocol() {
@@ -127,12 +115,10 @@ public final class ProbeInner extends SubResource {
     }
 
     /**
-     * Set the protocol property: The protocol of the end point. Possible
-     * values are: 'Http', 'Tcp', or 'Https'. If 'Tcp' is specified, a received
-     * ACK is required for the probe to be successful. If 'Http' or 'Https' is
-     * specified, a 200 OK response from the specifies URI is required for the
-     * probe to be successful.
-     * 
+     * Set the protocol property: The protocol of the end point. Possible values are: 'Http', 'Tcp', or 'Https'. If
+     * 'Tcp' is specified, a received ACK is required for the probe to be successful. If 'Http' or 'Https' is specified,
+     * a 200 OK response from the specifies URI is required for the probe to be successful.
+     *
      * @param protocol the protocol value to set.
      * @return the ProbeInner object itself.
      */
@@ -145,9 +131,8 @@ public final class ProbeInner extends SubResource {
     }
 
     /**
-     * Get the port property: The port for communicating the probe. Possible
-     * values range from 1 to 65535, inclusive.
-     * 
+     * Get the port property: The port for communicating the probe. Possible values range from 1 to 65535, inclusive.
+     *
      * @return the port value.
      */
     public Integer port() {
@@ -155,9 +140,8 @@ public final class ProbeInner extends SubResource {
     }
 
     /**
-     * Set the port property: The port for communicating the probe. Possible
-     * values range from 1 to 65535, inclusive.
-     * 
+     * Set the port property: The port for communicating the probe. Possible values range from 1 to 65535, inclusive.
+     *
      * @param port the port value to set.
      * @return the ProbeInner object itself.
      */
@@ -170,12 +154,10 @@ public final class ProbeInner extends SubResource {
     }
 
     /**
-     * Get the intervalInSeconds property: The interval, in seconds, for how
-     * frequently to probe the endpoint for health status. Typically, the
-     * interval is slightly less than half the allocated timeout period (in
-     * seconds) which allows two full probes before taking the instance out of
-     * rotation. The default value is 15, the minimum value is 5.
-     * 
+     * Get the intervalInSeconds property: The interval, in seconds, for how frequently to probe the endpoint for health
+     * status. Typically, the interval is slightly less than half the allocated timeout period (in seconds) which allows
+     * two full probes before taking the instance out of rotation. The default value is 15, the minimum value is 5.
+     *
      * @return the intervalInSeconds value.
      */
     public Integer intervalInSeconds() {
@@ -183,12 +165,10 @@ public final class ProbeInner extends SubResource {
     }
 
     /**
-     * Set the intervalInSeconds property: The interval, in seconds, for how
-     * frequently to probe the endpoint for health status. Typically, the
-     * interval is slightly less than half the allocated timeout period (in
-     * seconds) which allows two full probes before taking the instance out of
-     * rotation. The default value is 15, the minimum value is 5.
-     * 
+     * Set the intervalInSeconds property: The interval, in seconds, for how frequently to probe the endpoint for health
+     * status. Typically, the interval is slightly less than half the allocated timeout period (in seconds) which allows
+     * two full probes before taking the instance out of rotation. The default value is 15, the minimum value is 5.
+     *
      * @param intervalInSeconds the intervalInSeconds value to set.
      * @return the ProbeInner object itself.
      */
@@ -201,11 +181,10 @@ public final class ProbeInner extends SubResource {
     }
 
     /**
-     * Get the numberOfProbes property: The number of probes where if no
-     * response, will result in stopping further traffic from being delivered
-     * to the endpoint. This values allows endpoints to be taken out of
-     * rotation faster or slower than the typical times used in Azure.
-     * 
+     * Get the numberOfProbes property: The number of probes where if no response, will result in stopping further
+     * traffic from being delivered to the endpoint. This values allows endpoints to be taken out of rotation faster or
+     * slower than the typical times used in Azure.
+     *
      * @return the numberOfProbes value.
      */
     public Integer numberOfProbes() {
@@ -213,11 +192,10 @@ public final class ProbeInner extends SubResource {
     }
 
     /**
-     * Set the numberOfProbes property: The number of probes where if no
-     * response, will result in stopping further traffic from being delivered
-     * to the endpoint. This values allows endpoints to be taken out of
-     * rotation faster or slower than the typical times used in Azure.
-     * 
+     * Set the numberOfProbes property: The number of probes where if no response, will result in stopping further
+     * traffic from being delivered to the endpoint. This values allows endpoints to be taken out of rotation faster or
+     * slower than the typical times used in Azure.
+     *
      * @param numberOfProbes the numberOfProbes value to set.
      * @return the ProbeInner object itself.
      */
@@ -230,10 +208,9 @@ public final class ProbeInner extends SubResource {
     }
 
     /**
-     * Get the requestPath property: The URI used for requesting health status
-     * from the VM. Path is required if a protocol is set to http. Otherwise,
-     * it is not allowed. There is no default value.
-     * 
+     * Get the requestPath property: The URI used for requesting health status from the VM. Path is required if a
+     * protocol is set to http. Otherwise, it is not allowed. There is no default value.
+     *
      * @return the requestPath value.
      */
     public String requestPath() {
@@ -241,10 +218,9 @@ public final class ProbeInner extends SubResource {
     }
 
     /**
-     * Set the requestPath property: The URI used for requesting health status
-     * from the VM. Path is required if a protocol is set to http. Otherwise,
-     * it is not allowed. There is no default value.
-     * 
+     * Set the requestPath property: The URI used for requesting health status from the VM. Path is required if a
+     * protocol is set to http. Otherwise, it is not allowed. There is no default value.
+     *
      * @param requestPath the requestPath value to set.
      * @return the ProbeInner object itself.
      */
@@ -257,10 +233,9 @@ public final class ProbeInner extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: Gets the provisioning state of the
-     * public IP resource. Possible values are: 'Updating', 'Deleting', and
-     * 'Failed'.
-     * 
+     * Get the provisioningState property: Gets the provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -268,10 +243,9 @@ public final class ProbeInner extends SubResource {
     }
 
     /**
-     * Set the provisioningState property: Gets the provisioning state of the
-     * public IP resource. Possible values are: 'Updating', 'Deleting', and
-     * 'Failed'.
-     * 
+     * Set the provisioningState property: Gets the provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
      * @param provisioningState the provisioningState value to set.
      * @return the ProbeInner object itself.
      */
@@ -285,7 +259,7 @@ public final class ProbeInner extends SubResource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

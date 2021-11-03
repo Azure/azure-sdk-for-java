@@ -8,8 +8,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.fluent.models.SshPublicKeyGenerateKeyPairResultInner;
@@ -20,14 +18,15 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * SshPublicKeysClient.
- */
-public interface SshPublicKeysClient extends InnerSupportsGet<SshPublicKeyResourceInner>, InnerSupportsListing<SshPublicKeyResourceInner>, InnerSupportsDelete<Void> {
+/** An instance of this class provides access to all the operations defined in SshPublicKeysClient. */
+public interface SshPublicKeysClient
+    extends InnerSupportsGet<SshPublicKeyResourceInner>,
+        InnerSupportsListing<SshPublicKeyResourceInner>,
+        InnerSupportsDelete<Void> {
     /**
-     * Lists all of the SSH public keys in the subscription. Use the nextLink property in the response to get the next page of SSH public keys.
-     * 
+     * Lists all of the SSH public keys in the subscription. Use the nextLink property in the response to get the next
+     * page of SSH public keys.
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list SSH public keys operation response.
@@ -36,8 +35,9 @@ public interface SshPublicKeysClient extends InnerSupportsGet<SshPublicKeyResour
     PagedFlux<SshPublicKeyResourceInner> listAsync();
 
     /**
-     * Lists all of the SSH public keys in the subscription. Use the nextLink property in the response to get the next page of SSH public keys.
-     * 
+     * Lists all of the SSH public keys in the subscription. Use the nextLink property in the response to get the next
+     * page of SSH public keys.
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list SSH public keys operation response.
@@ -46,8 +46,9 @@ public interface SshPublicKeysClient extends InnerSupportsGet<SshPublicKeyResour
     PagedIterable<SshPublicKeyResourceInner> list();
 
     /**
-     * Lists all of the SSH public keys in the subscription. Use the nextLink property in the response to get the next page of SSH public keys.
-     * 
+     * Lists all of the SSH public keys in the subscription. Use the nextLink property in the response to get the next
+     * page of SSH public keys.
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -58,8 +59,9 @@ public interface SshPublicKeysClient extends InnerSupportsGet<SshPublicKeyResour
     PagedIterable<SshPublicKeyResourceInner> list(Context context);
 
     /**
-     * Lists all of the SSH public keys in the specified resource group. Use the nextLink property in the response to get the next page of SSH public keys.
-     * 
+     * Lists all of the SSH public keys in the specified resource group. Use the nextLink property in the response to
+     * get the next page of SSH public keys.
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -70,8 +72,9 @@ public interface SshPublicKeysClient extends InnerSupportsGet<SshPublicKeyResour
     PagedFlux<SshPublicKeyResourceInner> listByResourceGroupAsync(String resourceGroupName);
 
     /**
-     * Lists all of the SSH public keys in the specified resource group. Use the nextLink property in the response to get the next page of SSH public keys.
-     * 
+     * Lists all of the SSH public keys in the specified resource group. Use the nextLink property in the response to
+     * get the next page of SSH public keys.
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -82,8 +85,9 @@ public interface SshPublicKeysClient extends InnerSupportsGet<SshPublicKeyResour
     PagedIterable<SshPublicKeyResourceInner> listByResourceGroup(String resourceGroupName);
 
     /**
-     * Lists all of the SSH public keys in the specified resource group. Use the nextLink property in the response to get the next page of SSH public keys.
-     * 
+     * Lists all of the SSH public keys in the specified resource group. Use the nextLink property in the response to
+     * get the next page of SSH public keys.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -96,7 +100,7 @@ public interface SshPublicKeysClient extends InnerSupportsGet<SshPublicKeyResour
 
     /**
      * Creates a new SSH public key resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
      * @param parameters Parameters supplied to create the SSH public key.
@@ -106,11 +110,12 @@ public interface SshPublicKeysClient extends InnerSupportsGet<SshPublicKeyResour
      * @return specifies information about the SSH public key.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<SshPublicKeyResourceInner>> createWithResponseAsync(String resourceGroupName, String sshPublicKeyName, SshPublicKeyResourceInner parameters);
+    Mono<Response<SshPublicKeyResourceInner>> createWithResponseAsync(
+        String resourceGroupName, String sshPublicKeyName, SshPublicKeyResourceInner parameters);
 
     /**
      * Creates a new SSH public key resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
      * @param parameters Parameters supplied to create the SSH public key.
@@ -120,11 +125,12 @@ public interface SshPublicKeysClient extends InnerSupportsGet<SshPublicKeyResour
      * @return specifies information about the SSH public key.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SshPublicKeyResourceInner> createAsync(String resourceGroupName, String sshPublicKeyName, SshPublicKeyResourceInner parameters);
+    Mono<SshPublicKeyResourceInner> createAsync(
+        String resourceGroupName, String sshPublicKeyName, SshPublicKeyResourceInner parameters);
 
     /**
      * Creates a new SSH public key resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
      * @param parameters Parameters supplied to create the SSH public key.
@@ -134,11 +140,12 @@ public interface SshPublicKeysClient extends InnerSupportsGet<SshPublicKeyResour
      * @return specifies information about the SSH public key.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SshPublicKeyResourceInner create(String resourceGroupName, String sshPublicKeyName, SshPublicKeyResourceInner parameters);
+    SshPublicKeyResourceInner create(
+        String resourceGroupName, String sshPublicKeyName, SshPublicKeyResourceInner parameters);
 
     /**
      * Creates a new SSH public key resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
      * @param parameters Parameters supplied to create the SSH public key.
@@ -149,11 +156,12 @@ public interface SshPublicKeysClient extends InnerSupportsGet<SshPublicKeyResour
      * @return specifies information about the SSH public key.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SshPublicKeyResourceInner> createWithResponse(String resourceGroupName, String sshPublicKeyName, SshPublicKeyResourceInner parameters, Context context);
+    Response<SshPublicKeyResourceInner> createWithResponse(
+        String resourceGroupName, String sshPublicKeyName, SshPublicKeyResourceInner parameters, Context context);
 
     /**
      * Updates a new SSH public key resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
      * @param parameters Parameters supplied to update the SSH public key.
@@ -163,11 +171,12 @@ public interface SshPublicKeysClient extends InnerSupportsGet<SshPublicKeyResour
      * @return specifies information about the SSH public key.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<SshPublicKeyResourceInner>> updateWithResponseAsync(String resourceGroupName, String sshPublicKeyName, SshPublicKeyUpdateResource parameters);
+    Mono<Response<SshPublicKeyResourceInner>> updateWithResponseAsync(
+        String resourceGroupName, String sshPublicKeyName, SshPublicKeyUpdateResource parameters);
 
     /**
      * Updates a new SSH public key resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
      * @param parameters Parameters supplied to update the SSH public key.
@@ -177,11 +186,12 @@ public interface SshPublicKeysClient extends InnerSupportsGet<SshPublicKeyResour
      * @return specifies information about the SSH public key.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SshPublicKeyResourceInner> updateAsync(String resourceGroupName, String sshPublicKeyName, SshPublicKeyUpdateResource parameters);
+    Mono<SshPublicKeyResourceInner> updateAsync(
+        String resourceGroupName, String sshPublicKeyName, SshPublicKeyUpdateResource parameters);
 
     /**
      * Updates a new SSH public key resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
      * @param parameters Parameters supplied to update the SSH public key.
@@ -191,11 +201,12 @@ public interface SshPublicKeysClient extends InnerSupportsGet<SshPublicKeyResour
      * @return specifies information about the SSH public key.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SshPublicKeyResourceInner update(String resourceGroupName, String sshPublicKeyName, SshPublicKeyUpdateResource parameters);
+    SshPublicKeyResourceInner update(
+        String resourceGroupName, String sshPublicKeyName, SshPublicKeyUpdateResource parameters);
 
     /**
      * Updates a new SSH public key resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
      * @param parameters Parameters supplied to update the SSH public key.
@@ -206,11 +217,12 @@ public interface SshPublicKeysClient extends InnerSupportsGet<SshPublicKeyResour
      * @return specifies information about the SSH public key.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SshPublicKeyResourceInner> updateWithResponse(String resourceGroupName, String sshPublicKeyName, SshPublicKeyUpdateResource parameters, Context context);
+    Response<SshPublicKeyResourceInner> updateWithResponse(
+        String resourceGroupName, String sshPublicKeyName, SshPublicKeyUpdateResource parameters, Context context);
 
     /**
      * Delete an SSH public key.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -223,7 +235,7 @@ public interface SshPublicKeysClient extends InnerSupportsGet<SshPublicKeyResour
 
     /**
      * Delete an SSH public key.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -236,7 +248,7 @@ public interface SshPublicKeysClient extends InnerSupportsGet<SshPublicKeyResour
 
     /**
      * Delete an SSH public key.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -248,7 +260,7 @@ public interface SshPublicKeysClient extends InnerSupportsGet<SshPublicKeyResour
 
     /**
      * Delete an SSH public key.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
      * @param context The context to associate with this operation.
@@ -262,7 +274,7 @@ public interface SshPublicKeysClient extends InnerSupportsGet<SshPublicKeyResour
 
     /**
      * Retrieves information about an SSH public key.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -271,11 +283,12 @@ public interface SshPublicKeysClient extends InnerSupportsGet<SshPublicKeyResour
      * @return specifies information about the SSH public key.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<SshPublicKeyResourceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String sshPublicKeyName);
+    Mono<Response<SshPublicKeyResourceInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String sshPublicKeyName);
 
     /**
      * Retrieves information about an SSH public key.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -288,7 +301,7 @@ public interface SshPublicKeysClient extends InnerSupportsGet<SshPublicKeyResour
 
     /**
      * Retrieves information about an SSH public key.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -301,7 +314,7 @@ public interface SshPublicKeysClient extends InnerSupportsGet<SshPublicKeyResour
 
     /**
      * Retrieves information about an SSH public key.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
      * @param context The context to associate with this operation.
@@ -311,11 +324,13 @@ public interface SshPublicKeysClient extends InnerSupportsGet<SshPublicKeyResour
      * @return specifies information about the SSH public key.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SshPublicKeyResourceInner> getByResourceGroupWithResponse(String resourceGroupName, String sshPublicKeyName, Context context);
+    Response<SshPublicKeyResourceInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String sshPublicKeyName, Context context);
 
     /**
-     * Generates and returns a public/private key pair and populates the SSH public key resource with the public key. The length of the key will be 3072 bits. This operation can only be performed once per SSH public key resource.
-     * 
+     * Generates and returns a public/private key pair and populates the SSH public key resource with the public key.
+     * The length of the key will be 3072 bits. This operation can only be performed once per SSH public key resource.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -324,11 +339,13 @@ public interface SshPublicKeysClient extends InnerSupportsGet<SshPublicKeyResour
      * @return response from generation of an SSH key pair.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<SshPublicKeyGenerateKeyPairResultInner>> generateKeyPairWithResponseAsync(String resourceGroupName, String sshPublicKeyName);
+    Mono<Response<SshPublicKeyGenerateKeyPairResultInner>> generateKeyPairWithResponseAsync(
+        String resourceGroupName, String sshPublicKeyName);
 
     /**
-     * Generates and returns a public/private key pair and populates the SSH public key resource with the public key. The length of the key will be 3072 bits. This operation can only be performed once per SSH public key resource.
-     * 
+     * Generates and returns a public/private key pair and populates the SSH public key resource with the public key.
+     * The length of the key will be 3072 bits. This operation can only be performed once per SSH public key resource.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -337,11 +354,13 @@ public interface SshPublicKeysClient extends InnerSupportsGet<SshPublicKeyResour
      * @return response from generation of an SSH key pair.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SshPublicKeyGenerateKeyPairResultInner> generateKeyPairAsync(String resourceGroupName, String sshPublicKeyName);
+    Mono<SshPublicKeyGenerateKeyPairResultInner> generateKeyPairAsync(
+        String resourceGroupName, String sshPublicKeyName);
 
     /**
-     * Generates and returns a public/private key pair and populates the SSH public key resource with the public key. The length of the key will be 3072 bits. This operation can only be performed once per SSH public key resource.
-     * 
+     * Generates and returns a public/private key pair and populates the SSH public key resource with the public key.
+     * The length of the key will be 3072 bits. This operation can only be performed once per SSH public key resource.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -353,8 +372,9 @@ public interface SshPublicKeysClient extends InnerSupportsGet<SshPublicKeyResour
     SshPublicKeyGenerateKeyPairResultInner generateKeyPair(String resourceGroupName, String sshPublicKeyName);
 
     /**
-     * Generates and returns a public/private key pair and populates the SSH public key resource with the public key. The length of the key will be 3072 bits. This operation can only be performed once per SSH public key resource.
-     * 
+     * Generates and returns a public/private key pair and populates the SSH public key resource with the public key.
+     * The length of the key will be 3072 bits. This operation can only be performed once per SSH public key resource.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param sshPublicKeyName The name of the SSH public key.
      * @param context The context to associate with this operation.
@@ -364,5 +384,6 @@ public interface SshPublicKeysClient extends InnerSupportsGet<SshPublicKeyResour
      * @return response from generation of an SSH key pair.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SshPublicKeyGenerateKeyPairResultInner> generateKeyPairWithResponse(String resourceGroupName, String sshPublicKeyName, Context context);
+    Response<SshPublicKeyGenerateKeyPairResultInner> generateKeyPairWithResponse(
+        String resourceGroupName, String sshPublicKeyName, Context context);
 }

@@ -5,11 +5,9 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
@@ -17,17 +15,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Specifies the set of OAuth 2.0 permission scopes and app roles under the
- * specified resource that an application requires access to. The specified
- * OAuth 2.0 permission scopes may be requested by client applications (through
- * the requiredResourceAccess collection) when calling a resource application.
- * The requiredResourceAccess property of the Application entity is a
- * collection of RequiredResourceAccess.
+ * Specifies the set of OAuth 2.0 permission scopes and app roles under the specified resource that an application
+ * requires access to. The specified OAuth 2.0 permission scopes may be requested by client applications (through the
+ * requiredResourceAccess collection) when calling a resource application. The requiredResourceAccess property of the
+ * Application entity is a collection of RequiredResourceAccess.
  */
 @Fluent
 public final class RequiredResourceAccess {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(RequiredResourceAccess.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RequiredResourceAccess.class);
 
     /*
      * The list of OAuth2.0 permission scopes and app roles that the
@@ -52,13 +47,12 @@ public final class RequiredResourceAccess {
      * application. The requiredResourceAccess property of the Application
      * entity is a collection of RequiredResourceAccess.
      */
-    @JsonIgnore
-    private Map<String, Object> additionalProperties;
+    @JsonIgnore private Map<String, Object> additionalProperties;
 
     /**
-     * Get the resourceAccess property: The list of OAuth2.0 permission scopes
-     * and app roles that the application requires from the specified resource.
-     * 
+     * Get the resourceAccess property: The list of OAuth2.0 permission scopes and app roles that the application
+     * requires from the specified resource.
+     *
      * @return the resourceAccess value.
      */
     public List<ResourceAccess> resourceAccess() {
@@ -66,9 +60,9 @@ public final class RequiredResourceAccess {
     }
 
     /**
-     * Set the resourceAccess property: The list of OAuth2.0 permission scopes
-     * and app roles that the application requires from the specified resource.
-     * 
+     * Set the resourceAccess property: The list of OAuth2.0 permission scopes and app roles that the application
+     * requires from the specified resource.
+     *
      * @param resourceAccess the resourceAccess value to set.
      * @return the RequiredResourceAccess object itself.
      */
@@ -78,10 +72,9 @@ public final class RequiredResourceAccess {
     }
 
     /**
-     * Get the resourceAppId property: The unique identifier for the resource
-     * that the application requires access to. This should be equal to the
-     * appId declared on the target resource application.
-     * 
+     * Get the resourceAppId property: The unique identifier for the resource that the application requires access to.
+     * This should be equal to the appId declared on the target resource application.
+     *
      * @return the resourceAppId value.
      */
     public String resourceAppId() {
@@ -89,10 +82,9 @@ public final class RequiredResourceAccess {
     }
 
     /**
-     * Set the resourceAppId property: The unique identifier for the resource
-     * that the application requires access to. This should be equal to the
-     * appId declared on the target resource application.
-     * 
+     * Set the resourceAppId property: The unique identifier for the resource that the application requires access to.
+     * This should be equal to the appId declared on the target resource application.
+     *
      * @param resourceAppId the resourceAppId value to set.
      * @return the RequiredResourceAccess object itself.
      */
@@ -102,14 +94,12 @@ public final class RequiredResourceAccess {
     }
 
     /**
-     * Get the additionalProperties property: Specifies the set of OAuth 2.0
-     * permission scopes and app roles under the specified resource that an
-     * application requires access to. The specified OAuth 2.0 permission
-     * scopes may be requested by client applications (through the
-     * requiredResourceAccess collection) when calling a resource application.
-     * The requiredResourceAccess property of the Application entity is a
-     * collection of RequiredResourceAccess.
-     * 
+     * Get the additionalProperties property: Specifies the set of OAuth 2.0 permission scopes and app roles under the
+     * specified resource that an application requires access to. The specified OAuth 2.0 permission scopes may be
+     * requested by client applications (through the requiredResourceAccess collection) when calling a resource
+     * application. The requiredResourceAccess property of the Application entity is a collection of
+     * RequiredResourceAccess.
+     *
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -118,14 +108,12 @@ public final class RequiredResourceAccess {
     }
 
     /**
-     * Set the additionalProperties property: Specifies the set of OAuth 2.0
-     * permission scopes and app roles under the specified resource that an
-     * application requires access to. The specified OAuth 2.0 permission
-     * scopes may be requested by client applications (through the
-     * requiredResourceAccess collection) when calling a resource application.
-     * The requiredResourceAccess property of the Application entity is a
-     * collection of RequiredResourceAccess.
-     * 
+     * Set the additionalProperties property: Specifies the set of OAuth 2.0 permission scopes and app roles under the
+     * specified resource that an application requires access to. The specified OAuth 2.0 permission scopes may be
+     * requested by client applications (through the requiredResourceAccess collection) when calling a resource
+     * application. The requiredResourceAccess property of the Application entity is a collection of
+     * RequiredResourceAccess.
+     *
      * @param additionalProperties the additionalProperties value to set.
      * @return the RequiredResourceAccess object itself.
      */
@@ -144,12 +132,15 @@ public final class RequiredResourceAccess {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (resourceAccess() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property resourceAccess in model RequiredResourceAccess"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property resourceAccess in model RequiredResourceAccess"));
         } else {
             resourceAccess().forEach(e -> e.validate());
         }

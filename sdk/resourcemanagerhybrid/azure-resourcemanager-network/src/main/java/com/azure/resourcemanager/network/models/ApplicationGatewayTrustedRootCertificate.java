@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayTrustedRootCertificatePropertiesFormat;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Trusted Root certificates of an application gateway.
- */
+/** Trusted Root certificates of an application gateway. */
 @Fluent
 public final class ApplicationGatewayTrustedRootCertificate extends SubResource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ApplicationGatewayTrustedRootCertificate.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayTrustedRootCertificate.class);
 
     /*
      * Trusted Root certificates properties of an application gateway.
@@ -47,9 +42,8 @@ public final class ApplicationGatewayTrustedRootCertificate extends SubResource 
     private String type;
 
     /**
-     * Get the innerProperties property: Trusted Root certificates properties
-     * of an application gateway.
-     * 
+     * Get the innerProperties property: Trusted Root certificates properties of an application gateway.
+     *
      * @return the innerProperties value.
      */
     private ApplicationGatewayTrustedRootCertificatePropertiesFormat innerProperties() {
@@ -57,9 +51,8 @@ public final class ApplicationGatewayTrustedRootCertificate extends SubResource 
     }
 
     /**
-     * Get the name property: Name of the trusted root certificate that is
-     * unique within an Application Gateway.
-     * 
+     * Get the name property: Name of the trusted root certificate that is unique within an Application Gateway.
+     *
      * @return the name value.
      */
     public String name() {
@@ -67,9 +60,8 @@ public final class ApplicationGatewayTrustedRootCertificate extends SubResource 
     }
 
     /**
-     * Set the name property: Name of the trusted root certificate that is
-     * unique within an Application Gateway.
-     * 
+     * Set the name property: Name of the trusted root certificate that is unique within an Application Gateway.
+     *
      * @param name the name value to set.
      * @return the ApplicationGatewayTrustedRootCertificate object itself.
      */
@@ -79,9 +71,8 @@ public final class ApplicationGatewayTrustedRootCertificate extends SubResource 
     }
 
     /**
-     * Get the etag property: A unique read-only string that changes whenever
-     * the resource is updated.
-     * 
+     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -89,9 +80,8 @@ public final class ApplicationGatewayTrustedRootCertificate extends SubResource 
     }
 
     /**
-     * Set the etag property: A unique read-only string that changes whenever
-     * the resource is updated.
-     * 
+     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
      * @param etag the etag value to set.
      * @return the ApplicationGatewayTrustedRootCertificate object itself.
      */
@@ -102,7 +92,7 @@ public final class ApplicationGatewayTrustedRootCertificate extends SubResource 
 
     /**
      * Get the type property: Type of the resource.
-     * 
+     *
      * @return the type value.
      */
     public String type() {
@@ -111,7 +101,7 @@ public final class ApplicationGatewayTrustedRootCertificate extends SubResource 
 
     /**
      * Set the type property: Type of the resource.
-     * 
+     *
      * @param type the type value to set.
      * @return the ApplicationGatewayTrustedRootCertificate object itself.
      */
@@ -120,9 +110,7 @@ public final class ApplicationGatewayTrustedRootCertificate extends SubResource 
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ApplicationGatewayTrustedRootCertificate withId(String id) {
         super.withId(id);
@@ -131,7 +119,7 @@ public final class ApplicationGatewayTrustedRootCertificate extends SubResource 
 
     /**
      * Get the data property: Certificate public data.
-     * 
+     *
      * @return the data value.
      */
     public String data() {
@@ -140,7 +128,7 @@ public final class ApplicationGatewayTrustedRootCertificate extends SubResource 
 
     /**
      * Set the data property: Certificate public data.
-     * 
+     *
      * @param data the data value to set.
      * @return the ApplicationGatewayTrustedRootCertificate object itself.
      */
@@ -153,9 +141,9 @@ public final class ApplicationGatewayTrustedRootCertificate extends SubResource 
     }
 
     /**
-     * Get the keyVaultSecretId property: Secret Id of (base-64 encoded
-     * unencrypted pfx) 'Secret' or 'Certificate' object stored in KeyVault.
-     * 
+     * Get the keyVaultSecretId property: Secret Id of (base-64 encoded unencrypted pfx) 'Secret' or 'Certificate'
+     * object stored in KeyVault.
+     *
      * @return the keyVaultSecretId value.
      */
     public String keyVaultSecretId() {
@@ -163,9 +151,9 @@ public final class ApplicationGatewayTrustedRootCertificate extends SubResource 
     }
 
     /**
-     * Set the keyVaultSecretId property: Secret Id of (base-64 encoded
-     * unencrypted pfx) 'Secret' or 'Certificate' object stored in KeyVault.
-     * 
+     * Set the keyVaultSecretId property: Secret Id of (base-64 encoded unencrypted pfx) 'Secret' or 'Certificate'
+     * object stored in KeyVault.
+     *
      * @param keyVaultSecretId the keyVaultSecretId value to set.
      * @return the ApplicationGatewayTrustedRootCertificate object itself.
      */
@@ -178,10 +166,9 @@ public final class ApplicationGatewayTrustedRootCertificate extends SubResource 
     }
 
     /**
-     * Get the provisioningState property: Provisioning state of the trusted
-     * root certificate resource. Possible values are: 'Updating', 'Deleting',
-     * and 'Failed'.
-     * 
+     * Get the provisioningState property: Provisioning state of the trusted root certificate resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -189,10 +176,9 @@ public final class ApplicationGatewayTrustedRootCertificate extends SubResource 
     }
 
     /**
-     * Set the provisioningState property: Provisioning state of the trusted
-     * root certificate resource. Possible values are: 'Updating', 'Deleting',
-     * and 'Failed'.
-     * 
+     * Set the provisioningState property: Provisioning state of the trusted root certificate resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
+     *
      * @param provisioningState the provisioningState value to set.
      * @return the ApplicationGatewayTrustedRootCertificate object itself.
      */
@@ -206,7 +192,7 @@ public final class ApplicationGatewayTrustedRootCertificate extends SubResource 
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

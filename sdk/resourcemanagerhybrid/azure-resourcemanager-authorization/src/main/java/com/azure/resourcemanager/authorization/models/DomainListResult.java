@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.fluent.models.DomainInner;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Server response for Get tenant domains API call.
- */
+/** Server response for Get tenant domains API call. */
 @Fluent
 public final class DomainListResult {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(DomainListResult.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DomainListResult.class);
 
     /*
      * the list of domains.
@@ -29,7 +24,7 @@ public final class DomainListResult {
 
     /**
      * Get the value property: the list of domains.
-     * 
+     *
      * @return the value value.
      */
     public List<DomainInner> value() {
@@ -38,7 +33,7 @@ public final class DomainListResult {
 
     /**
      * Set the value property: the list of domains.
-     * 
+     *
      * @param value the value value to set.
      * @return the DomainListResult object itself.
      */
@@ -49,7 +44,7 @@ public final class DomainListResult {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

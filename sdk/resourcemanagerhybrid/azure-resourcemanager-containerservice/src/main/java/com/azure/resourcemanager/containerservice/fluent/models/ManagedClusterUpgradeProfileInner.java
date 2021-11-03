@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPoolUpgradeProfile;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The list of available upgrades for compute pools.
- */
+/** The list of available upgrades for compute pools. */
 @Fluent
 public final class ManagedClusterUpgradeProfileInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ManagedClusterUpgradeProfileInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterUpgradeProfileInner.class);
 
     /*
      * Id of upgrade profile.
@@ -47,7 +42,7 @@ public final class ManagedClusterUpgradeProfileInner {
 
     /**
      * Get the id property: Id of upgrade profile.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -56,7 +51,7 @@ public final class ManagedClusterUpgradeProfileInner {
 
     /**
      * Get the name property: Name of upgrade profile.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -65,7 +60,7 @@ public final class ManagedClusterUpgradeProfileInner {
 
     /**
      * Get the type property: Type of upgrade profile.
-     * 
+     *
      * @return the type value.
      */
     public String type() {
@@ -74,7 +69,7 @@ public final class ManagedClusterUpgradeProfileInner {
 
     /**
      * Get the innerProperties property: Properties of upgrade profile.
-     * 
+     *
      * @return the innerProperties value.
      */
     private ManagedClusterUpgradeProfileProperties innerProperties() {
@@ -82,9 +77,8 @@ public final class ManagedClusterUpgradeProfileInner {
     }
 
     /**
-     * Get the controlPlaneProfile property: The list of available upgrade
-     * versions for the control plane.
-     * 
+     * Get the controlPlaneProfile property: The list of available upgrade versions for the control plane.
+     *
      * @return the controlPlaneProfile value.
      */
     public ManagedClusterPoolUpgradeProfile controlPlaneProfile() {
@@ -92,13 +86,13 @@ public final class ManagedClusterUpgradeProfileInner {
     }
 
     /**
-     * Set the controlPlaneProfile property: The list of available upgrade
-     * versions for the control plane.
-     * 
+     * Set the controlPlaneProfile property: The list of available upgrade versions for the control plane.
+     *
      * @param controlPlaneProfile the controlPlaneProfile value to set.
      * @return the ManagedClusterUpgradeProfileInner object itself.
      */
-    public ManagedClusterUpgradeProfileInner withControlPlaneProfile(ManagedClusterPoolUpgradeProfile controlPlaneProfile) {
+    public ManagedClusterUpgradeProfileInner withControlPlaneProfile(
+        ManagedClusterPoolUpgradeProfile controlPlaneProfile) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ManagedClusterUpgradeProfileProperties();
         }
@@ -107,9 +101,8 @@ public final class ManagedClusterUpgradeProfileInner {
     }
 
     /**
-     * Get the agentPoolProfiles property: The list of available upgrade
-     * versions for agent pools.
-     * 
+     * Get the agentPoolProfiles property: The list of available upgrade versions for agent pools.
+     *
      * @return the agentPoolProfiles value.
      */
     public List<ManagedClusterPoolUpgradeProfile> agentPoolProfiles() {
@@ -117,13 +110,13 @@ public final class ManagedClusterUpgradeProfileInner {
     }
 
     /**
-     * Set the agentPoolProfiles property: The list of available upgrade
-     * versions for agent pools.
-     * 
+     * Set the agentPoolProfiles property: The list of available upgrade versions for agent pools.
+     *
      * @param agentPoolProfiles the agentPoolProfiles value to set.
      * @return the ManagedClusterUpgradeProfileInner object itself.
      */
-    public ManagedClusterUpgradeProfileInner withAgentPoolProfiles(List<ManagedClusterPoolUpgradeProfile> agentPoolProfiles) {
+    public ManagedClusterUpgradeProfileInner withAgentPoolProfiles(
+        List<ManagedClusterPoolUpgradeProfile> agentPoolProfiles) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ManagedClusterUpgradeProfileProperties();
         }
@@ -133,12 +126,15 @@ public final class ManagedClusterUpgradeProfileInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property innerProperties in model ManagedClusterUpgradeProfileInner"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model ManagedClusterUpgradeProfileInner"));
         } else {
             innerProperties().validate();
         }

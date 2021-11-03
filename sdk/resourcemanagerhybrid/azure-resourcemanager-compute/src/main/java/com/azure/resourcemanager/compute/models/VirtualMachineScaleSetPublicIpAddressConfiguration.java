@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetPublicIpAddressConfigurationProperties;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Describes a virtual machines scale set IP Configuration's PublicIPAddress
- * configuration.
- */
+/** Describes a virtual machines scale set IP Configuration's PublicIPAddress configuration. */
 @Fluent
 public final class VirtualMachineScaleSetPublicIpAddressConfiguration {
     @JsonIgnore
@@ -38,7 +33,7 @@ public final class VirtualMachineScaleSetPublicIpAddressConfiguration {
 
     /**
      * Get the name property: The publicIP address configuration name.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -47,10 +42,9 @@ public final class VirtualMachineScaleSetPublicIpAddressConfiguration {
 
     /**
      * Set the name property: The publicIP address configuration name.
-     * 
+     *
      * @param name the name value to set.
-     * @return the VirtualMachineScaleSetPublicIpAddressConfiguration object
-     * itself.
+     * @return the VirtualMachineScaleSetPublicIpAddressConfiguration object itself.
      */
     public VirtualMachineScaleSetPublicIpAddressConfiguration withName(String name) {
         this.name = name;
@@ -58,9 +52,9 @@ public final class VirtualMachineScaleSetPublicIpAddressConfiguration {
     }
 
     /**
-     * Get the innerProperties property: Describes a virtual machines scale set
-     * IP Configuration's PublicIPAddress configuration.
-     * 
+     * Get the innerProperties property: Describes a virtual machines scale set IP Configuration's PublicIPAddress
+     * configuration.
+     *
      * @return the innerProperties value.
      */
     private VirtualMachineScaleSetPublicIpAddressConfigurationProperties innerProperties() {
@@ -68,9 +62,8 @@ public final class VirtualMachineScaleSetPublicIpAddressConfiguration {
     }
 
     /**
-     * Get the idleTimeoutInMinutes property: The idle timeout of the public IP
-     * address.
-     * 
+     * Get the idleTimeoutInMinutes property: The idle timeout of the public IP address.
+     *
      * @return the idleTimeoutInMinutes value.
      */
     public Integer idleTimeoutInMinutes() {
@@ -78,12 +71,10 @@ public final class VirtualMachineScaleSetPublicIpAddressConfiguration {
     }
 
     /**
-     * Set the idleTimeoutInMinutes property: The idle timeout of the public IP
-     * address.
-     * 
+     * Set the idleTimeoutInMinutes property: The idle timeout of the public IP address.
+     *
      * @param idleTimeoutInMinutes the idleTimeoutInMinutes value to set.
-     * @return the VirtualMachineScaleSetPublicIpAddressConfiguration object
-     * itself.
+     * @return the VirtualMachineScaleSetPublicIpAddressConfiguration object itself.
      */
     public VirtualMachineScaleSetPublicIpAddressConfiguration withIdleTimeoutInMinutes(Integer idleTimeoutInMinutes) {
         if (this.innerProperties() == null) {
@@ -94,9 +85,8 @@ public final class VirtualMachineScaleSetPublicIpAddressConfiguration {
     }
 
     /**
-     * Get the dnsSettings property: The dns settings to be applied on the
-     * publicIP addresses .
-     * 
+     * Get the dnsSettings property: The dns settings to be applied on the publicIP addresses .
+     *
      * @return the dnsSettings value.
      */
     public VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings dnsSettings() {
@@ -104,14 +94,13 @@ public final class VirtualMachineScaleSetPublicIpAddressConfiguration {
     }
 
     /**
-     * Set the dnsSettings property: The dns settings to be applied on the
-     * publicIP addresses .
-     * 
+     * Set the dnsSettings property: The dns settings to be applied on the publicIP addresses .
+     *
      * @param dnsSettings the dnsSettings value to set.
-     * @return the VirtualMachineScaleSetPublicIpAddressConfiguration object
-     * itself.
+     * @return the VirtualMachineScaleSetPublicIpAddressConfiguration object itself.
      */
-    public VirtualMachineScaleSetPublicIpAddressConfiguration withDnsSettings(VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings dnsSettings) {
+    public VirtualMachineScaleSetPublicIpAddressConfiguration withDnsSettings(
+        VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings dnsSettings) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualMachineScaleSetPublicIpAddressConfigurationProperties();
         }
@@ -120,9 +109,8 @@ public final class VirtualMachineScaleSetPublicIpAddressConfiguration {
     }
 
     /**
-     * Get the ipTags property: The list of IP tags associated with the public
-     * IP address.
-     * 
+     * Get the ipTags property: The list of IP tags associated with the public IP address.
+     *
      * @return the ipTags value.
      */
     public List<VirtualMachineScaleSetIpTag> ipTags() {
@@ -130,12 +118,10 @@ public final class VirtualMachineScaleSetPublicIpAddressConfiguration {
     }
 
     /**
-     * Set the ipTags property: The list of IP tags associated with the public
-     * IP address.
-     * 
+     * Set the ipTags property: The list of IP tags associated with the public IP address.
+     *
      * @param ipTags the ipTags value to set.
-     * @return the VirtualMachineScaleSetPublicIpAddressConfiguration object
-     * itself.
+     * @return the VirtualMachineScaleSetPublicIpAddressConfiguration object itself.
      */
     public VirtualMachineScaleSetPublicIpAddressConfiguration withIpTags(List<VirtualMachineScaleSetIpTag> ipTags) {
         if (this.innerProperties() == null) {
@@ -146,9 +132,8 @@ public final class VirtualMachineScaleSetPublicIpAddressConfiguration {
     }
 
     /**
-     * Get the publicIpPrefix property: The PublicIPPrefix from which to
-     * allocate publicIP addresses.
-     * 
+     * Get the publicIpPrefix property: The PublicIPPrefix from which to allocate publicIP addresses.
+     *
      * @return the publicIpPrefix value.
      */
     public SubResource publicIpPrefix() {
@@ -156,12 +141,10 @@ public final class VirtualMachineScaleSetPublicIpAddressConfiguration {
     }
 
     /**
-     * Set the publicIpPrefix property: The PublicIPPrefix from which to
-     * allocate publicIP addresses.
-     * 
+     * Set the publicIpPrefix property: The PublicIPPrefix from which to allocate publicIP addresses.
+     *
      * @param publicIpPrefix the publicIpPrefix value to set.
-     * @return the VirtualMachineScaleSetPublicIpAddressConfiguration object
-     * itself.
+     * @return the VirtualMachineScaleSetPublicIpAddressConfiguration object itself.
      */
     public VirtualMachineScaleSetPublicIpAddressConfiguration withPublicIpPrefix(SubResource publicIpPrefix) {
         if (this.innerProperties() == null) {
@@ -172,11 +155,9 @@ public final class VirtualMachineScaleSetPublicIpAddressConfiguration {
     }
 
     /**
-     * Get the publicIpAddressVersion property: Available from Api-Version
-     * 2019-07-01 onwards, it represents whether the specific ipconfiguration
-     * is IPv4 or IPv6. Default is taken as IPv4. Possible values are: 'IPv4'
-     * and 'IPv6'.
-     * 
+     * Get the publicIpAddressVersion property: Available from Api-Version 2019-07-01 onwards, it represents whether the
+     * specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
+     *
      * @return the publicIpAddressVersion value.
      */
     public IpVersion publicIpAddressVersion() {
@@ -184,16 +165,14 @@ public final class VirtualMachineScaleSetPublicIpAddressConfiguration {
     }
 
     /**
-     * Set the publicIpAddressVersion property: Available from Api-Version
-     * 2019-07-01 onwards, it represents whether the specific ipconfiguration
-     * is IPv4 or IPv6. Default is taken as IPv4. Possible values are: 'IPv4'
-     * and 'IPv6'.
-     * 
+     * Set the publicIpAddressVersion property: Available from Api-Version 2019-07-01 onwards, it represents whether the
+     * specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4. Possible values are: 'IPv4' and 'IPv6'.
+     *
      * @param publicIpAddressVersion the publicIpAddressVersion value to set.
-     * @return the VirtualMachineScaleSetPublicIpAddressConfiguration object
-     * itself.
+     * @return the VirtualMachineScaleSetPublicIpAddressConfiguration object itself.
      */
-    public VirtualMachineScaleSetPublicIpAddressConfiguration withPublicIpAddressVersion(IpVersion publicIpAddressVersion) {
+    public VirtualMachineScaleSetPublicIpAddressConfiguration withPublicIpAddressVersion(
+        IpVersion publicIpAddressVersion) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualMachineScaleSetPublicIpAddressConfigurationProperties();
         }
@@ -203,12 +182,15 @@ public final class VirtualMachineScaleSetPublicIpAddressConfiguration {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property name in model VirtualMachineScaleSetPublicIpAddressConfiguration"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property name in model VirtualMachineScaleSetPublicIpAddressConfiguration"));
         }
         if (innerProperties() != null) {
             innerProperties().validate();

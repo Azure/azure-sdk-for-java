@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * A list of private endpoint connections.
- */
+/** A list of private endpoint connections. */
 @Fluent
 public final class PrivateEndpointConnectionListResultInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionListResultInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointConnectionListResultInner.class);
 
     /*
      * The collection value.
@@ -28,7 +23,7 @@ public final class PrivateEndpointConnectionListResultInner {
 
     /**
      * Get the value property: The collection value.
-     * 
+     *
      * @return the value value.
      */
     public List<PrivateEndpointConnectionInner> value() {
@@ -37,7 +32,7 @@ public final class PrivateEndpointConnectionListResultInner {
 
     /**
      * Set the value property: The collection value.
-     * 
+     *
      * @param value the value value to set.
      * @return the PrivateEndpointConnectionListResultInner object itself.
      */
@@ -48,7 +43,7 @@ public final class PrivateEndpointConnectionListResultInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

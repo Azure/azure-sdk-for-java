@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Properties of SSL certificates of application gateway.
- */
+/** Properties of SSL certificates of application gateway. */
 @Fluent
 public final class VpnClientRootCertificatePropertiesFormat {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(VpnClientRootCertificatePropertiesFormat.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnClientRootCertificatePropertiesFormat.class);
 
     /*
      * The certificate public data.
@@ -34,7 +29,7 @@ public final class VpnClientRootCertificatePropertiesFormat {
 
     /**
      * Get the publicCertData property: The certificate public data.
-     * 
+     *
      * @return the publicCertData value.
      */
     public String publicCertData() {
@@ -43,7 +38,7 @@ public final class VpnClientRootCertificatePropertiesFormat {
 
     /**
      * Set the publicCertData property: The certificate public data.
-     * 
+     *
      * @param publicCertData the publicCertData value to set.
      * @return the VpnClientRootCertificatePropertiesFormat object itself.
      */
@@ -53,10 +48,9 @@ public final class VpnClientRootCertificatePropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the VPN
-     * client root certificate resource. Possible values are: 'Updating',
-     * 'Deleting', and 'Failed'.
-     * 
+     * Get the provisioningState property: The provisioning state of the VPN client root certificate resource. Possible
+     * values are: 'Updating', 'Deleting', and 'Failed'.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -65,12 +59,15 @@ public final class VpnClientRootCertificatePropertiesFormat {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (publicCertData() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property publicCertData in model VpnClientRootCertificatePropertiesFormat"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property publicCertData in model VpnClientRootCertificatePropertiesFormat"));
         }
     }
 }

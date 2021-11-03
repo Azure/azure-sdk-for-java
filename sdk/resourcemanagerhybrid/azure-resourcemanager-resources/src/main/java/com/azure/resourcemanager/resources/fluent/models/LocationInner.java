@@ -4,20 +4,15 @@
 
 package com.azure.resourcemanager.resources.fluent.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Location information.
- */
+/** Location information. */
 @Immutable
 public final class LocationInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(LocationInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(LocationInner.class);
 
     /*
      * The fully qualified ID of the location. For example,
@@ -57,10 +52,9 @@ public final class LocationInner {
     private String longitude;
 
     /**
-     * Get the id property: The fully qualified ID of the location. For
-     * example,
+     * Get the id property: The fully qualified ID of the location. For example,
      * /subscriptions/00000000-0000-0000-0000-000000000000/locations/westus.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -69,7 +63,7 @@ public final class LocationInner {
 
     /**
      * Get the subscriptionId property: The subscription ID.
-     * 
+     *
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -78,7 +72,7 @@ public final class LocationInner {
 
     /**
      * Get the name property: The location name.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -87,7 +81,7 @@ public final class LocationInner {
 
     /**
      * Get the displayName property: The display name of the location.
-     * 
+     *
      * @return the displayName value.
      */
     public String displayName() {
@@ -96,7 +90,7 @@ public final class LocationInner {
 
     /**
      * Get the latitude property: The latitude of the location.
-     * 
+     *
      * @return the latitude value.
      */
     public String latitude() {
@@ -105,7 +99,7 @@ public final class LocationInner {
 
     /**
      * Get the longitude property: The longitude of the location.
-     * 
+     *
      * @return the longitude value.
      */
     public String longitude() {
@@ -114,7 +108,7 @@ public final class LocationInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

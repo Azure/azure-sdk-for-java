@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Properties of the backend address pool.
- */
+/** Properties of the backend address pool. */
 @Fluent
 public final class BackendAddressPoolPropertiesFormat {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(BackendAddressPoolPropertiesFormat.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(BackendAddressPoolPropertiesFormat.class);
 
     /*
      * Gets collection of references to IP addresses defined in network
@@ -54,9 +49,9 @@ public final class BackendAddressPoolPropertiesFormat {
     private String provisioningState;
 
     /**
-     * Get the backendIpConfigurations property: Gets collection of references
-     * to IP addresses defined in network interfaces.
-     * 
+     * Get the backendIpConfigurations property: Gets collection of references to IP addresses defined in network
+     * interfaces.
+     *
      * @return the backendIpConfigurations value.
      */
     public List<NetworkInterfaceIpConfigurationInner> backendIpConfigurations() {
@@ -64,9 +59,8 @@ public final class BackendAddressPoolPropertiesFormat {
     }
 
     /**
-     * Get the loadBalancingRules property: Gets load balancing rules that use
-     * this backend address pool.
-     * 
+     * Get the loadBalancingRules property: Gets load balancing rules that use this backend address pool.
+     *
      * @return the loadBalancingRules value.
      */
     public List<SubResource> loadBalancingRules() {
@@ -74,9 +68,8 @@ public final class BackendAddressPoolPropertiesFormat {
     }
 
     /**
-     * Get the outboundRule property: Gets outbound rules that use this backend
-     * address pool.
-     * 
+     * Get the outboundRule property: Gets outbound rules that use this backend address pool.
+     *
      * @return the outboundRule value.
      */
     public SubResource outboundRule() {
@@ -84,9 +77,8 @@ public final class BackendAddressPoolPropertiesFormat {
     }
 
     /**
-     * Get the outboundRules property: Gets outbound rules that use this
-     * backend address pool.
-     * 
+     * Get the outboundRules property: Gets outbound rules that use this backend address pool.
+     *
      * @return the outboundRules value.
      */
     public List<SubResource> outboundRules() {
@@ -94,9 +86,9 @@ public final class BackendAddressPoolPropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: Get provisioning state of the public
-     * IP resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
-     * 
+     * Get the provisioningState property: Get provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -104,9 +96,9 @@ public final class BackendAddressPoolPropertiesFormat {
     }
 
     /**
-     * Set the provisioningState property: Get provisioning state of the public
-     * IP resource. Possible values are: 'Updating', 'Deleting', and 'Failed'.
-     * 
+     * Set the provisioningState property: Get provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
      * @param provisioningState the provisioningState value to set.
      * @return the BackendAddressPoolPropertiesFormat object itself.
      */
@@ -117,7 +109,7 @@ public final class BackendAddressPoolPropertiesFormat {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

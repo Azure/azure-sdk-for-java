@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Encryption at rest settings for disk or snapshot.
- */
+/** Encryption at rest settings for disk or snapshot. */
 @Fluent
 public final class Encryption {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(Encryption.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(Encryption.class);
 
     /*
      * ResourceId of the disk encryption set to use for enabling encryption at
@@ -33,9 +28,9 @@ public final class Encryption {
     private EncryptionType type;
 
     /**
-     * Get the diskEncryptionSetId property: ResourceId of the disk encryption
-     * set to use for enabling encryption at rest.
-     * 
+     * Get the diskEncryptionSetId property: ResourceId of the disk encryption set to use for enabling encryption at
+     * rest.
+     *
      * @return the diskEncryptionSetId value.
      */
     public String diskEncryptionSetId() {
@@ -43,9 +38,9 @@ public final class Encryption {
     }
 
     /**
-     * Set the diskEncryptionSetId property: ResourceId of the disk encryption
-     * set to use for enabling encryption at rest.
-     * 
+     * Set the diskEncryptionSetId property: ResourceId of the disk encryption set to use for enabling encryption at
+     * rest.
+     *
      * @param diskEncryptionSetId the diskEncryptionSetId value to set.
      * @return the Encryption object itself.
      */
@@ -55,9 +50,8 @@ public final class Encryption {
     }
 
     /**
-     * Get the type property: The type of key used to encrypt the data of the
-     * disk.
-     * 
+     * Get the type property: The type of key used to encrypt the data of the disk.
+     *
      * @return the type value.
      */
     public EncryptionType type() {
@@ -65,9 +59,8 @@ public final class Encryption {
     }
 
     /**
-     * Set the type property: The type of key used to encrypt the data of the
-     * disk.
-     * 
+     * Set the type property: The type of key used to encrypt the data of the disk.
+     *
      * @param type the type value to set.
      * @return the Encryption object itself.
      */
@@ -78,12 +71,14 @@ public final class Encryption {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (type() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property type in model Encryption"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property type in model Encryption"));
         }
     }
 }

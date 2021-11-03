@@ -4,20 +4,15 @@
 
 package com.azure.resourcemanager.eventhubs.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The object that represents the operation.
- */
+/** The object that represents the operation. */
 @Immutable
 public final class OperationDisplay {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(OperationDisplay.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationDisplay.class);
 
     /*
      * Service provider: Microsoft.EventHub
@@ -39,7 +34,7 @@ public final class OperationDisplay {
 
     /**
      * Get the provider property: Service provider: Microsoft.EventHub.
-     * 
+     *
      * @return the provider value.
      */
     public String provider() {
@@ -47,9 +42,8 @@ public final class OperationDisplay {
     }
 
     /**
-     * Get the resource property: Resource on which the operation is performed:
-     * Invoice, etc.
-     * 
+     * Get the resource property: Resource on which the operation is performed: Invoice, etc.
+     *
      * @return the resource value.
      */
     public String resource() {
@@ -58,7 +52,7 @@ public final class OperationDisplay {
 
     /**
      * Get the operation property: Operation type: Read, write, delete, etc.
-     * 
+     *
      * @return the operation value.
      */
     public String operation() {
@@ -67,7 +61,7 @@ public final class OperationDisplay {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

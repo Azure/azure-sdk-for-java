@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The type of the pattern for an alias path.
- */
+/** The type of the pattern for an alias path. */
 @Fluent
 public final class AliasPattern {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(AliasPattern.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AliasPattern.class);
 
     /*
      * The alias pattern phrase.
@@ -39,7 +34,7 @@ public final class AliasPattern {
 
     /**
      * Get the phrase property: The alias pattern phrase.
-     * 
+     *
      * @return the phrase value.
      */
     public String phrase() {
@@ -48,7 +43,7 @@ public final class AliasPattern {
 
     /**
      * Set the phrase property: The alias pattern phrase.
-     * 
+     *
      * @param phrase the phrase value to set.
      * @return the AliasPattern object itself.
      */
@@ -59,7 +54,7 @@ public final class AliasPattern {
 
     /**
      * Get the variable property: The alias pattern variable.
-     * 
+     *
      * @return the variable value.
      */
     public String variable() {
@@ -68,7 +63,7 @@ public final class AliasPattern {
 
     /**
      * Set the variable property: The alias pattern variable.
-     * 
+     *
      * @param variable the variable value to set.
      * @return the AliasPattern object itself.
      */
@@ -79,7 +74,7 @@ public final class AliasPattern {
 
     /**
      * Get the type property: The type of alias pattern.
-     * 
+     *
      * @return the type value.
      */
     public AliasPatternType type() {
@@ -88,7 +83,7 @@ public final class AliasPattern {
 
     /**
      * Set the type property: The type of alias pattern.
-     * 
+     *
      * @param type the type value to set.
      * @return the AliasPattern object itself.
      */
@@ -99,7 +94,7 @@ public final class AliasPattern {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

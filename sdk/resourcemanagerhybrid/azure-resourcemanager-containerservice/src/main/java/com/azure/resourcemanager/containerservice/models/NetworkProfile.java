@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Represents the OpenShift networking configuration.
- */
+/** Represents the OpenShift networking configuration. */
 @Fluent
 public final class NetworkProfile {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(NetworkProfile.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkProfile.class);
 
     /*
      * CIDR for the OpenShift Vnet.
@@ -39,7 +34,7 @@ public final class NetworkProfile {
 
     /**
      * Get the vnetCidr property: CIDR for the OpenShift Vnet.
-     * 
+     *
      * @return the vnetCidr value.
      */
     public String vnetCidr() {
@@ -48,7 +43,7 @@ public final class NetworkProfile {
 
     /**
      * Set the vnetCidr property: CIDR for the OpenShift Vnet.
-     * 
+     *
      * @param vnetCidr the vnetCidr value to set.
      * @return the NetworkProfile object itself.
      */
@@ -59,7 +54,7 @@ public final class NetworkProfile {
 
     /**
      * Get the peerVnetId property: CIDR of the Vnet to peer.
-     * 
+     *
      * @return the peerVnetId value.
      */
     public String peerVnetId() {
@@ -68,7 +63,7 @@ public final class NetworkProfile {
 
     /**
      * Set the peerVnetId property: CIDR of the Vnet to peer.
-     * 
+     *
      * @param peerVnetId the peerVnetId value to set.
      * @return the NetworkProfile object itself.
      */
@@ -79,7 +74,7 @@ public final class NetworkProfile {
 
     /**
      * Get the vnetId property: ID of the Vnet created for OSA cluster.
-     * 
+     *
      * @return the vnetId value.
      */
     public String vnetId() {
@@ -88,7 +83,7 @@ public final class NetworkProfile {
 
     /**
      * Set the vnetId property: ID of the Vnet created for OSA cluster.
-     * 
+     *
      * @param vnetId the vnetId value to set.
      * @return the NetworkProfile object itself.
      */
@@ -99,7 +94,7 @@ public final class NetworkProfile {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

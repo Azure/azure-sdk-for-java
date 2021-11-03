@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Properties of ServiceAssociationLink.
- */
+/** Properties of ServiceAssociationLink. */
 @Fluent
 public final class ServiceAssociationLinkPropertiesFormat {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ServiceAssociationLinkPropertiesFormat.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceAssociationLinkPropertiesFormat.class);
 
     /*
      * Resource type of the linked resource.
@@ -38,9 +33,8 @@ public final class ServiceAssociationLinkPropertiesFormat {
     private String provisioningState;
 
     /**
-     * Get the linkedResourceType property: Resource type of the linked
-     * resource.
-     * 
+     * Get the linkedResourceType property: Resource type of the linked resource.
+     *
      * @return the linkedResourceType value.
      */
     public String linkedResourceType() {
@@ -48,9 +42,8 @@ public final class ServiceAssociationLinkPropertiesFormat {
     }
 
     /**
-     * Set the linkedResourceType property: Resource type of the linked
-     * resource.
-     * 
+     * Set the linkedResourceType property: Resource type of the linked resource.
+     *
      * @param linkedResourceType the linkedResourceType value to set.
      * @return the ServiceAssociationLinkPropertiesFormat object itself.
      */
@@ -61,7 +54,7 @@ public final class ServiceAssociationLinkPropertiesFormat {
 
     /**
      * Get the link property: Link to the external resource.
-     * 
+     *
      * @return the link value.
      */
     public String link() {
@@ -70,7 +63,7 @@ public final class ServiceAssociationLinkPropertiesFormat {
 
     /**
      * Set the link property: Link to the external resource.
-     * 
+     *
      * @param link the link value to set.
      * @return the ServiceAssociationLinkPropertiesFormat object itself.
      */
@@ -80,9 +73,8 @@ public final class ServiceAssociationLinkPropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: Provisioning state of the
-     * ServiceAssociationLink resource.
-     * 
+     * Get the provisioningState property: Provisioning state of the ServiceAssociationLink resource.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -91,7 +83,7 @@ public final class ServiceAssociationLinkPropertiesFormat {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

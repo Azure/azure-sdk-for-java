@@ -8,23 +8,17 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for VirtualMachineEvictionPolicyTypes.
- */
+/** Defines values for VirtualMachineEvictionPolicyTypes. */
 public final class VirtualMachineEvictionPolicyTypes extends ExpandableStringEnum<VirtualMachineEvictionPolicyTypes> {
-    /**
-     * Static value Deallocate for VirtualMachineEvictionPolicyTypes.
-     */
+    /** Static value Deallocate for VirtualMachineEvictionPolicyTypes. */
     public static final VirtualMachineEvictionPolicyTypes DEALLOCATE = fromString("Deallocate");
 
-    /**
-     * Static value Delete for VirtualMachineEvictionPolicyTypes.
-     */
+    /** Static value Delete for VirtualMachineEvictionPolicyTypes. */
     public static final VirtualMachineEvictionPolicyTypes DELETE = fromString("Delete");
 
     /**
      * Creates or finds a VirtualMachineEvictionPolicyTypes from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding VirtualMachineEvictionPolicyTypes.
      */
@@ -33,9 +27,7 @@ public final class VirtualMachineEvictionPolicyTypes extends ExpandableStringEnu
         return fromString(name, VirtualMachineEvictionPolicyTypes.class);
     }
 
-    /**
-     * @return known VirtualMachineEvictionPolicyTypes values.
-     */
+    /** @return known VirtualMachineEvictionPolicyTypes values. */
     public static Collection<VirtualMachineEvictionPolicyTypes> values() {
         return values(VirtualMachineEvictionPolicyTypes.class);
     }

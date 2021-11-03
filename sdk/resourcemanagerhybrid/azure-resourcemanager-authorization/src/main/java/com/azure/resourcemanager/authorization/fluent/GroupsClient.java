@@ -8,8 +8,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.authorization.fluent.models.ADGroupInner;
@@ -23,31 +21,33 @@ import com.azure.resourcemanager.authorization.models.GroupGetMemberGroupsParame
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * GroupsClient.
- */
+/** An instance of this class provides access to all the operations defined in GroupsClient. */
 public interface GroupsClient extends InnerSupportsDelete<Void> {
     /**
-     * Checks whether the specified user, group, contact, or service principal is a direct or transitive member of the specified group.
-     * 
+     * Checks whether the specified user, group, contact, or service principal is a direct or transitive member of the
+     * specified group.
+     *
      * @param tenantId The tenant ID.
      * @param parameters The check group membership parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return server response for IsMemberOf API call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<CheckGroupMembershipResultInner>> isMemberOfWithResponseAsync(String tenantId, CheckGroupMembershipParameters parameters);
+    Mono<Response<CheckGroupMembershipResultInner>> isMemberOfWithResponseAsync(
+        String tenantId, CheckGroupMembershipParameters parameters);
 
     /**
-     * Checks whether the specified user, group, contact, or service principal is a direct or transitive member of the specified group.
-     * 
+     * Checks whether the specified user, group, contact, or service principal is a direct or transitive member of the
+     * specified group.
+     *
      * @param tenantId The tenant ID.
      * @param parameters The check group membership parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return server response for IsMemberOf API call.
      */
@@ -55,12 +55,14 @@ public interface GroupsClient extends InnerSupportsDelete<Void> {
     Mono<CheckGroupMembershipResultInner> isMemberOfAsync(String tenantId, CheckGroupMembershipParameters parameters);
 
     /**
-     * Checks whether the specified user, group, contact, or service principal is a direct or transitive member of the specified group.
-     * 
+     * Checks whether the specified user, group, contact, or service principal is a direct or transitive member of the
+     * specified group.
+     *
      * @param tenantId The tenant ID.
      * @param parameters The check group membership parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return server response for IsMemberOf API call.
      */
@@ -68,27 +70,31 @@ public interface GroupsClient extends InnerSupportsDelete<Void> {
     CheckGroupMembershipResultInner isMemberOf(String tenantId, CheckGroupMembershipParameters parameters);
 
     /**
-     * Checks whether the specified user, group, contact, or service principal is a direct or transitive member of the specified group.
-     * 
+     * Checks whether the specified user, group, contact, or service principal is a direct or transitive member of the
+     * specified group.
+     *
      * @param tenantId The tenant ID.
      * @param parameters The check group membership parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return server response for IsMemberOf API call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CheckGroupMembershipResultInner> isMemberOfWithResponse(String tenantId, CheckGroupMembershipParameters parameters, Context context);
+    Response<CheckGroupMembershipResultInner> isMemberOfWithResponse(
+        String tenantId, CheckGroupMembershipParameters parameters, Context context);
 
     /**
      * Remove a member from a group.
-     * 
+     *
      * @param groupObjectId The object ID of the group from which to remove the member.
      * @param memberObjectId Member object id.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -97,12 +103,13 @@ public interface GroupsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Remove a member from a group.
-     * 
+     *
      * @param groupObjectId The object ID of the group from which to remove the member.
      * @param memberObjectId Member object id.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -111,12 +118,13 @@ public interface GroupsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Remove a member from a group.
-     * 
+     *
      * @param groupObjectId The object ID of the group from which to remove the member.
      * @param memberObjectId Member object id.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -124,41 +132,48 @@ public interface GroupsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Remove a member from a group.
-     * 
+     *
      * @param groupObjectId The object ID of the group from which to remove the member.
      * @param memberObjectId Member object id.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> removeMemberWithResponse(String groupObjectId, String memberObjectId, String tenantId, Context context);
+    Response<Void> removeMemberWithResponse(
+        String groupObjectId, String memberObjectId, String tenantId, Context context);
 
     /**
      * Add a member to a group.
-     * 
+     *
      * @param groupObjectId The object ID of the group to which to add the member.
      * @param tenantId The tenant ID.
-     * @param parameters The URL of the member object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
+     * @param parameters The URL of the member object, such as
+     *     https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> addMemberWithResponseAsync(String groupObjectId, String tenantId, GroupAddMemberParameters parameters);
+    Mono<Response<Void>> addMemberWithResponseAsync(
+        String groupObjectId, String tenantId, GroupAddMemberParameters parameters);
 
     /**
      * Add a member to a group.
-     * 
+     *
      * @param groupObjectId The object ID of the group to which to add the member.
      * @param tenantId The tenant ID.
-     * @param parameters The URL of the member object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
+     * @param parameters The URL of the member object, such as
+     *     https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -167,12 +182,14 @@ public interface GroupsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Add a member to a group.
-     * 
+     *
      * @param groupObjectId The object ID of the group to which to add the member.
      * @param tenantId The tenant ID.
-     * @param parameters The URL of the member object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
+     * @param parameters The URL of the member object, such as
+     *     https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -180,26 +197,30 @@ public interface GroupsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Add a member to a group.
-     * 
+     *
      * @param groupObjectId The object ID of the group to which to add the member.
      * @param tenantId The tenant ID.
-     * @param parameters The URL of the member object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
+     * @param parameters The URL of the member object, such as
+     *     https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> addMemberWithResponse(String groupObjectId, String tenantId, GroupAddMemberParameters parameters, Context context);
+    Response<Void> addMemberWithResponse(
+        String groupObjectId, String tenantId, GroupAddMemberParameters parameters, Context context);
 
     /**
      * Create a group in the directory.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param parameters The parameters for the group to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return active Directory group information.
      */
@@ -208,11 +229,12 @@ public interface GroupsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Create a group in the directory.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param parameters The parameters for the group to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return active Directory group information.
      */
@@ -221,11 +243,12 @@ public interface GroupsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Create a group in the directory.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param parameters The parameters for the group to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return active Directory group information.
      */
@@ -234,12 +257,13 @@ public interface GroupsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Create a group in the directory.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param parameters The parameters for the group to create.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return active Directory group information.
      */
@@ -248,11 +272,12 @@ public interface GroupsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Gets list of groups for the current tenant.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param filter The filter to apply to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of groups for the current tenant.
      */
@@ -261,10 +286,11 @@ public interface GroupsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Gets list of groups for the current tenant.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of groups for the current tenant.
      */
@@ -273,10 +299,11 @@ public interface GroupsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Gets list of groups for the current tenant.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of groups for the current tenant.
      */
@@ -285,12 +312,13 @@ public interface GroupsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Gets list of groups for the current tenant.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param filter The filter to apply to the operation.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of groups for the current tenant.
      */
@@ -299,11 +327,12 @@ public interface GroupsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Gets the members of a group.
-     * 
+     *
      * @param objectId The object ID of the group whose members should be retrieved.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the members of a group.
      */
@@ -312,11 +341,12 @@ public interface GroupsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Gets the members of a group.
-     * 
+     *
      * @param objectId The object ID of the group whose members should be retrieved.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the members of a group.
      */
@@ -325,12 +355,13 @@ public interface GroupsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Gets the members of a group.
-     * 
+     *
      * @param objectId The object ID of the group whose members should be retrieved.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the members of a group.
      */
@@ -339,11 +370,12 @@ public interface GroupsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Gets group information from the directory.
-     * 
+     *
      * @param objectId The object ID of the user for which to get group information.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return group information from the directory.
      */
@@ -352,11 +384,12 @@ public interface GroupsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Gets group information from the directory.
-     * 
+     *
      * @param objectId The object ID of the user for which to get group information.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return group information from the directory.
      */
@@ -365,11 +398,12 @@ public interface GroupsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Gets group information from the directory.
-     * 
+     *
      * @param objectId The object ID of the user for which to get group information.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return group information from the directory.
      */
@@ -378,12 +412,13 @@ public interface GroupsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Gets group information from the directory.
-     * 
+     *
      * @param objectId The object ID of the user for which to get group information.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return group information from the directory.
      */
@@ -392,11 +427,12 @@ public interface GroupsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Delete a group from the directory.
-     * 
+     *
      * @param objectId The object ID of the group to delete.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -405,11 +441,12 @@ public interface GroupsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Delete a group from the directory.
-     * 
+     *
      * @param objectId The object ID of the group to delete.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -418,11 +455,12 @@ public interface GroupsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Delete a group from the directory.
-     * 
+     *
      * @param objectId The object ID of the group to delete.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -430,12 +468,13 @@ public interface GroupsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Delete a group from the directory.
-     * 
+     *
      * @param objectId The object ID of the group to delete.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -444,12 +483,13 @@ public interface GroupsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Gets a collection of object IDs of groups of which the specified group is a member.
-     * 
+     *
      * @param objectId The object ID of the group for which to get group membership.
      * @param tenantId The tenant ID.
      * @param parameters Group filtering parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of object IDs of groups of which the specified group is a member.
      */
@@ -458,12 +498,13 @@ public interface GroupsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Gets a collection of object IDs of groups of which the specified group is a member.
-     * 
+     *
      * @param objectId The object ID of the group for which to get group membership.
      * @param tenantId The tenant ID.
      * @param parameters Group filtering parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of object IDs of groups of which the specified group is a member.
      */
@@ -472,26 +513,29 @@ public interface GroupsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Gets a collection of object IDs of groups of which the specified group is a member.
-     * 
+     *
      * @param objectId The object ID of the group for which to get group membership.
      * @param tenantId The tenant ID.
      * @param parameters Group filtering parameters.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of object IDs of groups of which the specified group is a member.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<String> getMemberGroups(String objectId, String tenantId, GroupGetMemberGroupsParameters parameters, Context context);
+    PagedIterable<String> getMemberGroups(
+        String objectId, String tenantId, GroupGetMemberGroupsParameters parameters, Context context);
 
     /**
      * The owners are a set of non-admin users who are allowed to modify this object.
-     * 
+     *
      * @param objectId The object ID of the group for which to get owners.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return directoryObject list operation result.
      */
@@ -500,11 +544,12 @@ public interface GroupsClient extends InnerSupportsDelete<Void> {
 
     /**
      * The owners are a set of non-admin users who are allowed to modify this object.
-     * 
+     *
      * @param objectId The object ID of the group for which to get owners.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return directoryObject list operation result.
      */
@@ -513,12 +558,13 @@ public interface GroupsClient extends InnerSupportsDelete<Void> {
 
     /**
      * The owners are a set of non-admin users who are allowed to modify this object.
-     * 
+     *
      * @param objectId The object ID of the group for which to get owners.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return directoryObject list operation result.
      */
@@ -527,12 +573,14 @@ public interface GroupsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Add an owner to a group.
-     * 
+     *
      * @param objectId The object ID of the application to which to add the owner.
      * @param tenantId The tenant ID.
-     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
+     * @param parameters The URL of the owner object, such as
+     *     https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -541,12 +589,14 @@ public interface GroupsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Add an owner to a group.
-     * 
+     *
      * @param objectId The object ID of the application to which to add the owner.
      * @param tenantId The tenant ID.
-     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
+     * @param parameters The URL of the owner object, such as
+     *     https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -555,12 +605,14 @@ public interface GroupsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Add an owner to a group.
-     * 
+     *
      * @param objectId The object ID of the application to which to add the owner.
      * @param tenantId The tenant ID.
-     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
+     * @param parameters The URL of the owner object, such as
+     *     https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -568,27 +620,31 @@ public interface GroupsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Add an owner to a group.
-     * 
+     *
      * @param objectId The object ID of the application to which to add the owner.
      * @param tenantId The tenant ID.
-     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
+     * @param parameters The URL of the owner object, such as
+     *     https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> addOwnerWithResponse(String objectId, String tenantId, AddOwnerParameters parameters, Context context);
+    Response<Void> addOwnerWithResponse(
+        String objectId, String tenantId, AddOwnerParameters parameters, Context context);
 
     /**
      * Remove a member from owners.
-     * 
+     *
      * @param objectId The object ID of the group from which to remove the owner.
      * @param ownerObjectId Owner object id.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -597,12 +653,13 @@ public interface GroupsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Remove a member from owners.
-     * 
+     *
      * @param objectId The object ID of the group from which to remove the owner.
      * @param ownerObjectId Owner object id.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -611,12 +668,13 @@ public interface GroupsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Remove a member from owners.
-     * 
+     *
      * @param objectId The object ID of the group from which to remove the owner.
      * @param ownerObjectId Owner object id.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -624,13 +682,14 @@ public interface GroupsClient extends InnerSupportsDelete<Void> {
 
     /**
      * Remove a member from owners.
-     * 
+     *
      * @param objectId The object ID of the group from which to remove the owner.
      * @param ownerObjectId Owner object id.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by server.
+     * @throws com.azure.resourcemanager.authorization.models.GraphErrorException thrown if the request is rejected by
+     *     server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */

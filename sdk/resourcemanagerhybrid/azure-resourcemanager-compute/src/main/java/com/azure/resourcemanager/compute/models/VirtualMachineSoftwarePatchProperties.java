@@ -4,22 +4,17 @@
 
 package com.azure.resourcemanager.compute.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/**
- * Describes the properties of a Virtual Machine software patch.
- */
+/** Describes the properties of a Virtual Machine software patch. */
 @Immutable
 public final class VirtualMachineSoftwarePatchProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(VirtualMachineSoftwarePatchProperties.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineSoftwarePatchProperties.class);
 
     /*
      * A unique identifier for the patch.
@@ -85,7 +80,7 @@ public final class VirtualMachineSoftwarePatchProperties {
 
     /**
      * Get the patchId property: A unique identifier for the patch.
-     * 
+     *
      * @return the patchId value.
      */
     public String patchId() {
@@ -94,7 +89,7 @@ public final class VirtualMachineSoftwarePatchProperties {
 
     /**
      * Get the name property: The friendly name of the patch.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -102,9 +97,8 @@ public final class VirtualMachineSoftwarePatchProperties {
     }
 
     /**
-     * Get the version property: The version number of the patch. This property
-     * applies only to Linux patches.
-     * 
+     * Get the version property: The version number of the patch. This property applies only to Linux patches.
+     *
      * @return the version value.
      */
     public String version() {
@@ -112,9 +106,8 @@ public final class VirtualMachineSoftwarePatchProperties {
     }
 
     /**
-     * Get the kbid property: The KBID of the patch. Only applies to Windows
-     * patches.
-     * 
+     * Get the kbid property: The KBID of the patch. Only applies to Windows patches.
+     *
      * @return the kbid value.
      */
     public String kbid() {
@@ -122,9 +115,8 @@ public final class VirtualMachineSoftwarePatchProperties {
     }
 
     /**
-     * Get the classifications property: The classification(s) of the patch as
-     * provided by the patch publisher.
-     * 
+     * Get the classifications property: The classification(s) of the patch as provided by the patch publisher.
+     *
      * @return the classifications value.
      */
     public List<String> classifications() {
@@ -132,9 +124,8 @@ public final class VirtualMachineSoftwarePatchProperties {
     }
 
     /**
-     * Get the rebootBehavior property: Describes the reboot requirements of
-     * the patch.
-     * 
+     * Get the rebootBehavior property: Describes the reboot requirements of the patch.
+     *
      * @return the rebootBehavior value.
      */
     public SoftwareUpdateRebootBehavior rebootBehavior() {
@@ -142,10 +133,9 @@ public final class VirtualMachineSoftwarePatchProperties {
     }
 
     /**
-     * Get the activityId property: The activity ID of the operation that
-     * produced this result. It is used to correlate across CRP and extension
-     * logs.
-     * 
+     * Get the activityId property: The activity ID of the operation that produced this result. It is used to correlate
+     * across CRP and extension logs.
+     *
      * @return the activityId value.
      */
     public String activityId() {
@@ -153,9 +143,8 @@ public final class VirtualMachineSoftwarePatchProperties {
     }
 
     /**
-     * Get the publishedDate property: The UTC timestamp when the repository
-     * published this patch.
-     * 
+     * Get the publishedDate property: The UTC timestamp when the repository published this patch.
+     *
      * @return the publishedDate value.
      */
     public OffsetDateTime publishedDate() {
@@ -163,9 +152,8 @@ public final class VirtualMachineSoftwarePatchProperties {
     }
 
     /**
-     * Get the lastModifiedDateTime property: The UTC timestamp of the last
-     * update to this patch record.
-     * 
+     * Get the lastModifiedDateTime property: The UTC timestamp of the last update to this patch record.
+     *
      * @return the lastModifiedDateTime value.
      */
     public OffsetDateTime lastModifiedDateTime() {
@@ -173,9 +161,8 @@ public final class VirtualMachineSoftwarePatchProperties {
     }
 
     /**
-     * Get the assessmentState property: Describes the outcome of an install
-     * operation for a given patch.
-     * 
+     * Get the assessmentState property: Describes the outcome of an install operation for a given patch.
+     *
      * @return the assessmentState value.
      */
     public PatchAssessmentState assessmentState() {
@@ -184,7 +171,7 @@ public final class VirtualMachineSoftwarePatchProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

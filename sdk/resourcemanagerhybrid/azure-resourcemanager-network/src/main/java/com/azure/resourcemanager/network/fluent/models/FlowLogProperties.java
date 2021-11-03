@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.FlowLogFormatParameters;
 import com.azure.resourcemanager.network.models.RetentionPolicyParameters;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Parameters that define the configuration of flow log.
- */
+/** Parameters that define the configuration of flow log. */
 @Fluent
 public final class FlowLogProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(FlowLogProperties.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(FlowLogProperties.class);
 
     /*
      * ID of the storage account which is used to store the flow log.
@@ -46,9 +41,8 @@ public final class FlowLogProperties {
     private FlowLogFormatParameters format;
 
     /**
-     * Get the storageId property: ID of the storage account which is used to
-     * store the flow log.
-     * 
+     * Get the storageId property: ID of the storage account which is used to store the flow log.
+     *
      * @return the storageId value.
      */
     public String storageId() {
@@ -56,9 +50,8 @@ public final class FlowLogProperties {
     }
 
     /**
-     * Set the storageId property: ID of the storage account which is used to
-     * store the flow log.
-     * 
+     * Set the storageId property: ID of the storage account which is used to store the flow log.
+     *
      * @param storageId the storageId value to set.
      * @return the FlowLogProperties object itself.
      */
@@ -69,7 +62,7 @@ public final class FlowLogProperties {
 
     /**
      * Get the enabled property: Flag to enable/disable flow logging.
-     * 
+     *
      * @return the enabled value.
      */
     public boolean enabled() {
@@ -78,7 +71,7 @@ public final class FlowLogProperties {
 
     /**
      * Set the enabled property: Flag to enable/disable flow logging.
-     * 
+     *
      * @param enabled the enabled value to set.
      * @return the FlowLogProperties object itself.
      */
@@ -88,9 +81,8 @@ public final class FlowLogProperties {
     }
 
     /**
-     * Get the retentionPolicy property: Parameters that define the retention
-     * policy for flow log.
-     * 
+     * Get the retentionPolicy property: Parameters that define the retention policy for flow log.
+     *
      * @return the retentionPolicy value.
      */
     public RetentionPolicyParameters retentionPolicy() {
@@ -98,9 +90,8 @@ public final class FlowLogProperties {
     }
 
     /**
-     * Set the retentionPolicy property: Parameters that define the retention
-     * policy for flow log.
-     * 
+     * Set the retentionPolicy property: Parameters that define the retention policy for flow log.
+     *
      * @param retentionPolicy the retentionPolicy value to set.
      * @return the FlowLogProperties object itself.
      */
@@ -111,7 +102,7 @@ public final class FlowLogProperties {
 
     /**
      * Get the format property: Parameters that define the flow log format.
-     * 
+     *
      * @return the format value.
      */
     public FlowLogFormatParameters format() {
@@ -120,7 +111,7 @@ public final class FlowLogProperties {
 
     /**
      * Set the format property: Parameters that define the flow log format.
-     * 
+     *
      * @param format the format value to set.
      * @return the FlowLogProperties object itself.
      */
@@ -131,12 +122,14 @@ public final class FlowLogProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (storageId() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property storageId in model FlowLogProperties"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property storageId in model FlowLogProperties"));
         }
         if (retentionPolicy() != null) {
             retentionPolicy().validate();

@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.dns.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * An NS record.
- */
+/** An NS record. */
 @Fluent
 public final class NsRecord {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(NsRecord.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(NsRecord.class);
 
     /*
      * The name server name for this NS record.
@@ -27,7 +22,7 @@ public final class NsRecord {
 
     /**
      * Get the nsdname property: The name server name for this NS record.
-     * 
+     *
      * @return the nsdname value.
      */
     public String nsdname() {
@@ -36,7 +31,7 @@ public final class NsRecord {
 
     /**
      * Set the nsdname property: The name server name for this NS record.
-     * 
+     *
      * @param nsdname the nsdname value to set.
      * @return the NsRecord object itself.
      */
@@ -47,7 +42,7 @@ public final class NsRecord {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

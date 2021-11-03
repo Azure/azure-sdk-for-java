@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The DedicatedHostGroupInstanceView model.
- */
+/** The DedicatedHostGroupInstanceView model. */
 @Fluent
 public final class DedicatedHostGroupInstanceView {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(DedicatedHostGroupInstanceView.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DedicatedHostGroupInstanceView.class);
 
     /*
      * List of instance view of the dedicated hosts under the dedicated host
@@ -28,9 +23,8 @@ public final class DedicatedHostGroupInstanceView {
     private List<DedicatedHostInstanceViewWithName> hosts;
 
     /**
-     * Get the hosts property: List of instance view of the dedicated hosts
-     * under the dedicated host group.
-     * 
+     * Get the hosts property: List of instance view of the dedicated hosts under the dedicated host group.
+     *
      * @return the hosts value.
      */
     public List<DedicatedHostInstanceViewWithName> hosts() {
@@ -38,9 +32,8 @@ public final class DedicatedHostGroupInstanceView {
     }
 
     /**
-     * Set the hosts property: List of instance view of the dedicated hosts
-     * under the dedicated host group.
-     * 
+     * Set the hosts property: List of instance view of the dedicated hosts under the dedicated host group.
+     *
      * @param hosts the hosts value to set.
      * @return the DedicatedHostGroupInstanceView object itself.
      */
@@ -51,7 +44,7 @@ public final class DedicatedHostGroupInstanceView {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

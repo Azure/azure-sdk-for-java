@@ -8,33 +8,24 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for ManagedClusterPodIdentityProvisioningState.
- */
-public final class ManagedClusterPodIdentityProvisioningState extends ExpandableStringEnum<ManagedClusterPodIdentityProvisioningState> {
-    /**
-     * Static value Assigned for ManagedClusterPodIdentityProvisioningState.
-     */
+/** Defines values for ManagedClusterPodIdentityProvisioningState. */
+public final class ManagedClusterPodIdentityProvisioningState
+    extends ExpandableStringEnum<ManagedClusterPodIdentityProvisioningState> {
+    /** Static value Assigned for ManagedClusterPodIdentityProvisioningState. */
     public static final ManagedClusterPodIdentityProvisioningState ASSIGNED = fromString("Assigned");
 
-    /**
-     * Static value Updating for ManagedClusterPodIdentityProvisioningState.
-     */
+    /** Static value Updating for ManagedClusterPodIdentityProvisioningState. */
     public static final ManagedClusterPodIdentityProvisioningState UPDATING = fromString("Updating");
 
-    /**
-     * Static value Deleting for ManagedClusterPodIdentityProvisioningState.
-     */
+    /** Static value Deleting for ManagedClusterPodIdentityProvisioningState. */
     public static final ManagedClusterPodIdentityProvisioningState DELETING = fromString("Deleting");
 
-    /**
-     * Static value Failed for ManagedClusterPodIdentityProvisioningState.
-     */
+    /** Static value Failed for ManagedClusterPodIdentityProvisioningState. */
     public static final ManagedClusterPodIdentityProvisioningState FAILED = fromString("Failed");
 
     /**
      * Creates or finds a ManagedClusterPodIdentityProvisioningState from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding ManagedClusterPodIdentityProvisioningState.
      */
@@ -43,9 +34,7 @@ public final class ManagedClusterPodIdentityProvisioningState extends Expandable
         return fromString(name, ManagedClusterPodIdentityProvisioningState.class);
     }
 
-    /**
-     * @return known ManagedClusterPodIdentityProvisioningState values.
-     */
+    /** @return known ManagedClusterPodIdentityProvisioningState values. */
     public static Collection<ManagedClusterPodIdentityProvisioningState> values() {
         return values(ManagedClusterPodIdentityProvisioningState.class);
     }

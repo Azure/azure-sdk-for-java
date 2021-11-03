@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * SKU of an application gateway.
- */
+/** SKU of an application gateway. */
 @Fluent
 public final class ApplicationGatewaySku {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ApplicationGatewaySku.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewaySku.class);
 
     /*
      * Name of an application gateway SKU.
@@ -39,7 +34,7 @@ public final class ApplicationGatewaySku {
 
     /**
      * Get the name property: Name of an application gateway SKU.
-     * 
+     *
      * @return the name value.
      */
     public ApplicationGatewaySkuName name() {
@@ -48,7 +43,7 @@ public final class ApplicationGatewaySku {
 
     /**
      * Set the name property: Name of an application gateway SKU.
-     * 
+     *
      * @param name the name value to set.
      * @return the ApplicationGatewaySku object itself.
      */
@@ -59,7 +54,7 @@ public final class ApplicationGatewaySku {
 
     /**
      * Get the tier property: Tier of an application gateway.
-     * 
+     *
      * @return the tier value.
      */
     public ApplicationGatewayTier tier() {
@@ -68,7 +63,7 @@ public final class ApplicationGatewaySku {
 
     /**
      * Set the tier property: Tier of an application gateway.
-     * 
+     *
      * @param tier the tier value to set.
      * @return the ApplicationGatewaySku object itself.
      */
@@ -78,9 +73,8 @@ public final class ApplicationGatewaySku {
     }
 
     /**
-     * Get the capacity property: Capacity (instance count) of an application
-     * gateway.
-     * 
+     * Get the capacity property: Capacity (instance count) of an application gateway.
+     *
      * @return the capacity value.
      */
     public Integer capacity() {
@@ -88,9 +82,8 @@ public final class ApplicationGatewaySku {
     }
 
     /**
-     * Set the capacity property: Capacity (instance count) of an application
-     * gateway.
-     * 
+     * Set the capacity property: Capacity (instance count) of an application gateway.
+     *
      * @param capacity the capacity value to set.
      * @return the ApplicationGatewaySku object itself.
      */
@@ -101,7 +94,7 @@ public final class ApplicationGatewaySku {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

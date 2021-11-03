@@ -48,135 +48,221 @@ import com.azure.resourcemanager.authorization.models.PasswordCredentialsUpdateP
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * ApplicationsClient.
- */
+/** An instance of this class provides access to all the operations defined in ApplicationsClient. */
 public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, ApplicationsClient {
     private final ClientLogger logger = new ClientLogger(ApplicationsClientImpl.class);
 
-    /**
-     * The proxy service used to perform REST calls.
-     */
+    /** The proxy service used to perform REST calls. */
     private final ApplicationsService service;
 
-    /**
-     * The service client containing this operation class.
-     */
+    /** The service client containing this operation class. */
     private final GraphRbacManagementClientImpl client;
 
     /**
      * Initializes an instance of ApplicationsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     ApplicationsClientImpl(GraphRbacManagementClientImpl client) {
-        this.service = RestProxy.create(ApplicationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+            RestProxy.create(ApplicationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for
-     * GraphRbacManagementClientApplications to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for GraphRbacManagementClientApplications to be used by the proxy service
+     * to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "GraphRbacManagementC")
     private interface ApplicationsService {
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Post("/{tenantID}/applications")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<ApplicationInner>> create(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @BodyParam("application/json") ApplicationCreateParameters parameters, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<ApplicationInner>> create(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("tenantID") String tenantId,
+            @BodyParam("application/json") ApplicationCreateParameters parameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Get("/{tenantID}/applications")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<ApplicationListResult>> list(@HostParam("$host") String endpoint, @QueryParam("$filter") String filter, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<ApplicationListResult>> list(
+            @HostParam("$host") String endpoint,
+            @QueryParam("$filter") String filter,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("tenantID") String tenantId,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Delete("/{tenantID}/applications/{applicationObjectId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @PathParam("applicationObjectId") String applicationObjectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Void>> delete(
+            @HostParam("$host") String endpoint,
+            @PathParam("applicationObjectId") String applicationObjectId,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("tenantID") String tenantId,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Get("/{tenantID}/applications/{applicationObjectId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<ApplicationInner>> get(@HostParam("$host") String endpoint, @PathParam("applicationObjectId") String applicationObjectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<ApplicationInner>> get(
+            @HostParam("$host") String endpoint,
+            @PathParam("applicationObjectId") String applicationObjectId,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("tenantID") String tenantId,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Patch("/{tenantID}/applications/{applicationObjectId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<Void>> patch(@HostParam("$host") String endpoint, @PathParam("applicationObjectId") String applicationObjectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @BodyParam("application/json") ApplicationUpdateParameters parameters, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Void>> patch(
+            @HostParam("$host") String endpoint,
+            @PathParam("applicationObjectId") String applicationObjectId,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("tenantID") String tenantId,
+            @BodyParam("application/json") ApplicationUpdateParameters parameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Get("/{tenantID}/applications/{applicationObjectId}/owners")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<DirectoryObjectListResult>> listOwners(@HostParam("$host") String endpoint, @PathParam("applicationObjectId") String applicationObjectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<DirectoryObjectListResult>> listOwners(
+            @HostParam("$host") String endpoint,
+            @PathParam("applicationObjectId") String applicationObjectId,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("tenantID") String tenantId,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Post("/{tenantID}/applications/{applicationObjectId}/$links/owners")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<Void>> addOwner(@HostParam("$host") String endpoint, @PathParam("applicationObjectId") String applicationObjectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @BodyParam("application/json") AddOwnerParameters parameters, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Void>> addOwner(
+            @HostParam("$host") String endpoint,
+            @PathParam("applicationObjectId") String applicationObjectId,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("tenantID") String tenantId,
+            @BodyParam("application/json") AddOwnerParameters parameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Delete("/{tenantID}/applications/{applicationObjectId}/$links/owners/{ownerObjectId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<Void>> removeOwner(@HostParam("$host") String endpoint, @PathParam("applicationObjectId") String applicationObjectId, @PathParam("ownerObjectId") String ownerObjectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Void>> removeOwner(
+            @HostParam("$host") String endpoint,
+            @PathParam("applicationObjectId") String applicationObjectId,
+            @PathParam("ownerObjectId") String ownerObjectId,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("tenantID") String tenantId,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Get("/{tenantID}/applications/{applicationObjectId}/keyCredentials")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<KeyCredentialListResult>> listKeyCredentials(@HostParam("$host") String endpoint, @PathParam("applicationObjectId") String applicationObjectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<KeyCredentialListResult>> listKeyCredentials(
+            @HostParam("$host") String endpoint,
+            @PathParam("applicationObjectId") String applicationObjectId,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("tenantID") String tenantId,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Patch("/{tenantID}/applications/{applicationObjectId}/keyCredentials")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<Void>> updateKeyCredentials(@HostParam("$host") String endpoint, @PathParam("applicationObjectId") String applicationObjectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @BodyParam("application/json") KeyCredentialsUpdateParameters parameters, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Void>> updateKeyCredentials(
+            @HostParam("$host") String endpoint,
+            @PathParam("applicationObjectId") String applicationObjectId,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("tenantID") String tenantId,
+            @BodyParam("application/json") KeyCredentialsUpdateParameters parameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Get("/{tenantID}/applications/{applicationObjectId}/passwordCredentials")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<PasswordCredentialListResult>> listPasswordCredentials(@HostParam("$host") String endpoint, @PathParam("applicationObjectId") String applicationObjectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<PasswordCredentialListResult>> listPasswordCredentials(
+            @HostParam("$host") String endpoint,
+            @PathParam("applicationObjectId") String applicationObjectId,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("tenantID") String tenantId,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Patch("/{tenantID}/applications/{applicationObjectId}/passwordCredentials")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<Void>> updatePasswordCredentials(@HostParam("$host") String endpoint, @PathParam("applicationObjectId") String applicationObjectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @BodyParam("application/json") PasswordCredentialsUpdateParameters parameters, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Void>> updatePasswordCredentials(
+            @HostParam("$host") String endpoint,
+            @PathParam("applicationObjectId") String applicationObjectId,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("tenantID") String tenantId,
+            @BodyParam("application/json") PasswordCredentialsUpdateParameters parameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Get("/{tenantID}/servicePrincipalsByAppId/{applicationID}/objectId")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<ServicePrincipalObjectResultInner>> getServicePrincipalsIdByAppId(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @PathParam("applicationID") String applicationId, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<ServicePrincipalObjectResultInner>> getServicePrincipalsIdByAppId(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("tenantID") String tenantId,
+            @PathParam("applicationID") String applicationId,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Get("/{tenantID}/{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<ApplicationListResult>> listNext(@HostParam("$host") String endpoint, @PathParam(value = "nextLink", encoded = true) String nextLink, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<ApplicationListResult>> listNext(
+            @HostParam("$host") String endpoint,
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("tenantID") String tenantId,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<DirectoryObjectListResult>> listOwnersNext(@PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<DirectoryObjectListResult>> listOwnersNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
      * Create a new application.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param parameters The parameters for creating an application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -185,9 +271,13 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
      * @return active Directory application information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ApplicationInner>> createWithResponseAsync(String tenantId, ApplicationCreateParameters parameters) {
+    public Mono<Response<ApplicationInner>> createWithResponseAsync(
+        String tenantId, ApplicationCreateParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (tenantId == null) {
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
@@ -198,13 +288,23 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
             parameters.validate();
         }
         final String accept = "application/json, text/json";
-        return FluxUtil.withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(), tenantId, parameters, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .create(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            tenantId,
+                            parameters,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create a new application.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param parameters The parameters for creating an application.
      * @param context The context to associate with this operation.
@@ -214,9 +314,13 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
      * @return active Directory application information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApplicationInner>> createWithResponseAsync(String tenantId, ApplicationCreateParameters parameters, Context context) {
+    private Mono<Response<ApplicationInner>> createWithResponseAsync(
+        String tenantId, ApplicationCreateParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (tenantId == null) {
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
@@ -228,12 +332,13 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), tenantId, parameters, accept, context);
+        return service
+            .create(this.client.getEndpoint(), this.client.getApiVersion(), tenantId, parameters, accept, context);
     }
 
     /**
      * Create a new application.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param parameters The parameters for creating an application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -244,18 +349,19 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ApplicationInner> createAsync(String tenantId, ApplicationCreateParameters parameters) {
         return createWithResponseAsync(tenantId, parameters)
-            .flatMap((Response<ApplicationInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (Response<ApplicationInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Create a new application.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param parameters The parameters for creating an application.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -270,7 +376,7 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
 
     /**
      * Create a new application.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param parameters The parameters for creating an application.
      * @param context The context to associate with this operation.
@@ -280,13 +386,14 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
      * @return active Directory application information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApplicationInner> createWithResponse(String tenantId, ApplicationCreateParameters parameters, Context context) {
+    public Response<ApplicationInner> createWithResponse(
+        String tenantId, ApplicationCreateParameters parameters, Context context) {
         return createWithResponseAsync(tenantId, parameters, context).block();
     }
 
     /**
      * Lists applications by filter parameters.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param filter The filters to apply to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -297,26 +404,36 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplicationInner>> listSinglePageAsync(String tenantId, String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (tenantId == null) {
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
-        return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), filter, this.client.getApiVersion(), tenantId, accept, context))
-            .<PagedResponse<ApplicationInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().odataNextLink(),
-                null))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .list(
+                            this.client.getEndpoint(), filter, this.client.getApiVersion(), tenantId, accept, context))
+            .<PagedResponse<ApplicationInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().odataNextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists applications by filter parameters.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param filter The filters to apply to the operation.
      * @param context The context to associate with this operation.
@@ -328,26 +445,32 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplicationInner>> listSinglePageAsync(String tenantId, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (tenantId == null) {
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service.list(this.client.getEndpoint(), filter, this.client.getApiVersion(), tenantId, accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().odataNextLink(),
-                null));
+        return service
+            .list(this.client.getEndpoint(), filter, this.client.getApiVersion(), tenantId, accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().odataNextLink(),
+                        null));
     }
 
     /**
      * Lists applications by filter parameters.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param filter The filters to apply to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -358,13 +481,12 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ApplicationInner> listAsync(String tenantId, String filter) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(tenantId, filter),
-            nextLink -> listNextSinglePageAsync(nextLink, tenantId));
+            () -> listSinglePageAsync(tenantId, filter), nextLink -> listNextSinglePageAsync(nextLink, tenantId));
     }
 
     /**
      * Lists applications by filter parameters.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -375,13 +497,12 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
     public PagedFlux<ApplicationInner> listAsync(String tenantId) {
         final String filter = null;
         return new PagedFlux<>(
-            () -> listSinglePageAsync(tenantId, filter),
-            nextLink -> listNextSinglePageAsync(nextLink, tenantId));
+            () -> listSinglePageAsync(tenantId, filter), nextLink -> listNextSinglePageAsync(nextLink, tenantId));
     }
 
     /**
      * Lists applications by filter parameters.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param filter The filters to apply to the operation.
      * @param context The context to associate with this operation.
@@ -399,7 +520,7 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
 
     /**
      * Lists applications by filter parameters.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -414,7 +535,7 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
 
     /**
      * Lists applications by filter parameters.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param filter The filters to apply to the operation.
      * @param context The context to associate with this operation.
@@ -430,7 +551,7 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
 
     /**
      * Delete an application.
-     * 
+     *
      * @param applicationObjectId Application object ID.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -441,22 +562,36 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String applicationObjectId, String tenantId) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
         }
         if (tenantId == null) {
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), applicationObjectId, this.client.getApiVersion(), tenantId, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .delete(
+                            this.client.getEndpoint(),
+                            applicationObjectId,
+                            this.client.getApiVersion(),
+                            tenantId,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete an application.
-     * 
+     *
      * @param applicationObjectId Application object ID.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
@@ -468,22 +603,28 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String applicationObjectId, String tenantId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
         }
         if (tenantId == null) {
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), applicationObjectId, this.client.getApiVersion(), tenantId, accept, context);
+        return service
+            .delete(
+                this.client.getEndpoint(), applicationObjectId, this.client.getApiVersion(), tenantId, accept, context);
     }
 
     /**
      * Delete an application.
-     * 
+     *
      * @param applicationObjectId Application object ID.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -493,13 +634,12 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String applicationObjectId, String tenantId) {
-        return deleteWithResponseAsync(applicationObjectId, tenantId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(applicationObjectId, tenantId).flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Delete an application.
-     * 
+     *
      * @param applicationObjectId Application object ID.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -513,7 +653,7 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
 
     /**
      * Delete an application.
-     * 
+     *
      * @param applicationObjectId Application object ID.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
@@ -529,7 +669,7 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
 
     /**
      * Get an application by object ID.
-     * 
+     *
      * @param applicationObjectId Application object ID.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -540,22 +680,36 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ApplicationInner>> getWithResponseAsync(String applicationObjectId, String tenantId) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
         }
         if (tenantId == null) {
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
-        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), applicationObjectId, this.client.getApiVersion(), tenantId, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .get(
+                            this.client.getEndpoint(),
+                            applicationObjectId,
+                            this.client.getApiVersion(),
+                            tenantId,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get an application by object ID.
-     * 
+     *
      * @param applicationObjectId Application object ID.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
@@ -565,24 +719,31 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
      * @return an application by object ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApplicationInner>> getWithResponseAsync(String applicationObjectId, String tenantId, Context context) {
+    private Mono<Response<ApplicationInner>> getWithResponseAsync(
+        String applicationObjectId, String tenantId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
         }
         if (tenantId == null) {
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), applicationObjectId, this.client.getApiVersion(), tenantId, accept, context);
+        return service
+            .get(
+                this.client.getEndpoint(), applicationObjectId, this.client.getApiVersion(), tenantId, accept, context);
     }
 
     /**
      * Get an application by object ID.
-     * 
+     *
      * @param applicationObjectId Application object ID.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -593,18 +754,19 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ApplicationInner> getAsync(String applicationObjectId, String tenantId) {
         return getWithResponseAsync(applicationObjectId, tenantId)
-            .flatMap((Response<ApplicationInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (Response<ApplicationInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Get an application by object ID.
-     * 
+     *
      * @param applicationObjectId Application object ID.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -619,7 +781,7 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
 
     /**
      * Get an application by object ID.
-     * 
+     *
      * @param applicationObjectId Application object ID.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
@@ -635,7 +797,7 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
 
     /**
      * Update an existing application.
-     * 
+     *
      * @param applicationObjectId Application object ID.
      * @param tenantId The tenant ID.
      * @param parameters Parameters to update an existing application.
@@ -645,12 +807,17 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> patchWithResponseAsync(String applicationObjectId, String tenantId, ApplicationUpdateParameters parameters) {
+    public Mono<Response<Void>> patchWithResponseAsync(
+        String applicationObjectId, String tenantId, ApplicationUpdateParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
         }
         if (tenantId == null) {
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
@@ -661,13 +828,24 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
             parameters.validate();
         }
         final String accept = "application/json, text/json";
-        return FluxUtil.withContext(context -> service.patch(this.client.getEndpoint(), applicationObjectId, this.client.getApiVersion(), tenantId, parameters, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .patch(
+                            this.client.getEndpoint(),
+                            applicationObjectId,
+                            this.client.getApiVersion(),
+                            tenantId,
+                            parameters,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update an existing application.
-     * 
+     *
      * @param applicationObjectId Application object ID.
      * @param tenantId The tenant ID.
      * @param parameters Parameters to update an existing application.
@@ -678,12 +856,17 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> patchWithResponseAsync(String applicationObjectId, String tenantId, ApplicationUpdateParameters parameters, Context context) {
+    private Mono<Response<Void>> patchWithResponseAsync(
+        String applicationObjectId, String tenantId, ApplicationUpdateParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
         }
         if (tenantId == null) {
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
@@ -695,12 +878,20 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service.patch(this.client.getEndpoint(), applicationObjectId, this.client.getApiVersion(), tenantId, parameters, accept, context);
+        return service
+            .patch(
+                this.client.getEndpoint(),
+                applicationObjectId,
+                this.client.getApiVersion(),
+                tenantId,
+                parameters,
+                accept,
+                context);
     }
 
     /**
      * Update an existing application.
-     * 
+     *
      * @param applicationObjectId Application object ID.
      * @param tenantId The tenant ID.
      * @param parameters Parameters to update an existing application.
@@ -717,7 +908,7 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
 
     /**
      * Update an existing application.
-     * 
+     *
      * @param applicationObjectId Application object ID.
      * @param tenantId The tenant ID.
      * @param parameters Parameters to update an existing application.
@@ -732,7 +923,7 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
 
     /**
      * Update an existing application.
-     * 
+     *
      * @param applicationObjectId Application object ID.
      * @param tenantId The tenant ID.
      * @param parameters Parameters to update an existing application.
@@ -743,13 +934,14 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> patchWithResponse(String applicationObjectId, String tenantId, ApplicationUpdateParameters parameters, Context context) {
+    public Response<Void> patchWithResponse(
+        String applicationObjectId, String tenantId, ApplicationUpdateParameters parameters, Context context) {
         return patchWithResponseAsync(applicationObjectId, tenantId, parameters, context).block();
     }
 
     /**
      * The owners are a set of non-admin users who are allowed to modify this object.
-     * 
+     *
      * @param applicationObjectId The object ID of the application for which to get owners.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -758,31 +950,48 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
      * @return directoryObject list operation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DirectoryObjectInner>> listOwnersSinglePageAsync(String applicationObjectId, String tenantId) {
+    private Mono<PagedResponse<DirectoryObjectInner>> listOwnersSinglePageAsync(
+        String applicationObjectId, String tenantId) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
         }
         if (tenantId == null) {
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
-        return FluxUtil.withContext(context -> service.listOwners(this.client.getEndpoint(), applicationObjectId, this.client.getApiVersion(), tenantId, accept, context))
-            .<PagedResponse<DirectoryObjectInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().odataNextLink(),
-                null))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listOwners(
+                            this.client.getEndpoint(),
+                            applicationObjectId,
+                            this.client.getApiVersion(),
+                            tenantId,
+                            accept,
+                            context))
+            .<PagedResponse<DirectoryObjectInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().odataNextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * The owners are a set of non-admin users who are allowed to modify this object.
-     * 
+     *
      * @param applicationObjectId The object ID of the application for which to get owners.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
@@ -792,31 +1001,40 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
      * @return directoryObject list operation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DirectoryObjectInner>> listOwnersSinglePageAsync(String applicationObjectId, String tenantId, Context context) {
+    private Mono<PagedResponse<DirectoryObjectInner>> listOwnersSinglePageAsync(
+        String applicationObjectId, String tenantId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
         }
         if (tenantId == null) {
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service.listOwners(this.client.getEndpoint(), applicationObjectId, this.client.getApiVersion(), tenantId, accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().odataNextLink(),
-                null));
+        return service
+            .listOwners(
+                this.client.getEndpoint(), applicationObjectId, this.client.getApiVersion(), tenantId, accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().odataNextLink(),
+                        null));
     }
 
     /**
      * The owners are a set of non-admin users who are allowed to modify this object.
-     * 
+     *
      * @param applicationObjectId The object ID of the application for which to get owners.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -833,7 +1051,7 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
 
     /**
      * The owners are a set of non-admin users who are allowed to modify this object.
-     * 
+     *
      * @param applicationObjectId The object ID of the application for which to get owners.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
@@ -843,7 +1061,8 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
      * @return directoryObject list operation result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DirectoryObjectInner> listOwnersAsync(String applicationObjectId, String tenantId, Context context) {
+    private PagedFlux<DirectoryObjectInner> listOwnersAsync(
+        String applicationObjectId, String tenantId, Context context) {
         return new PagedFlux<>(
             () -> listOwnersSinglePageAsync(applicationObjectId, tenantId, context),
             nextLink -> listOwnersNextSinglePageAsync(nextLink, context));
@@ -851,7 +1070,7 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
 
     /**
      * The owners are a set of non-admin users who are allowed to modify this object.
-     * 
+     *
      * @param applicationObjectId The object ID of the application for which to get owners.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -866,7 +1085,7 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
 
     /**
      * The owners are a set of non-admin users who are allowed to modify this object.
-     * 
+     *
      * @param applicationObjectId The object ID of the application for which to get owners.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
@@ -876,28 +1095,35 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
      * @return directoryObject list operation result.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DirectoryObjectInner> listOwners(String applicationObjectId, String tenantId, Context context) {
+    public PagedIterable<DirectoryObjectInner> listOwners(
+        String applicationObjectId, String tenantId, Context context) {
         return new PagedIterable<>(listOwnersAsync(applicationObjectId, tenantId, context));
     }
 
     /**
      * Add an owner to an application.
-     * 
+     *
      * @param applicationObjectId The object ID of the application to which to add the owner.
      * @param tenantId The tenant ID.
-     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
+     * @param parameters The URL of the owner object, such as
+     *     https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> addOwnerWithResponseAsync(String applicationObjectId, String tenantId, AddOwnerParameters parameters) {
+    public Mono<Response<Void>> addOwnerWithResponseAsync(
+        String applicationObjectId, String tenantId, AddOwnerParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
         }
         if (tenantId == null) {
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
@@ -908,16 +1134,28 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
             parameters.validate();
         }
         final String accept = "application/json, text/json";
-        return FluxUtil.withContext(context -> service.addOwner(this.client.getEndpoint(), applicationObjectId, this.client.getApiVersion(), tenantId, parameters, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .addOwner(
+                            this.client.getEndpoint(),
+                            applicationObjectId,
+                            this.client.getApiVersion(),
+                            tenantId,
+                            parameters,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Add an owner to an application.
-     * 
+     *
      * @param applicationObjectId The object ID of the application to which to add the owner.
      * @param tenantId The tenant ID.
-     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
+     * @param parameters The URL of the owner object, such as
+     *     https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -925,12 +1163,17 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> addOwnerWithResponseAsync(String applicationObjectId, String tenantId, AddOwnerParameters parameters, Context context) {
+    private Mono<Response<Void>> addOwnerWithResponseAsync(
+        String applicationObjectId, String tenantId, AddOwnerParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
         }
         if (tenantId == null) {
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
@@ -942,15 +1185,24 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service.addOwner(this.client.getEndpoint(), applicationObjectId, this.client.getApiVersion(), tenantId, parameters, accept, context);
+        return service
+            .addOwner(
+                this.client.getEndpoint(),
+                applicationObjectId,
+                this.client.getApiVersion(),
+                tenantId,
+                parameters,
+                accept,
+                context);
     }
 
     /**
      * Add an owner to an application.
-     * 
+     *
      * @param applicationObjectId The object ID of the application to which to add the owner.
      * @param tenantId The tenant ID.
-     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
+     * @param parameters The URL of the owner object, such as
+     *     https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -964,10 +1216,11 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
 
     /**
      * Add an owner to an application.
-     * 
+     *
      * @param applicationObjectId The object ID of the application to which to add the owner.
      * @param tenantId The tenant ID.
-     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
+     * @param parameters The URL of the owner object, such as
+     *     https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -979,10 +1232,11 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
 
     /**
      * Add an owner to an application.
-     * 
+     *
      * @param applicationObjectId The object ID of the application to which to add the owner.
      * @param tenantId The tenant ID.
-     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
+     * @param parameters The URL of the owner object, such as
+     *     https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -990,13 +1244,14 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> addOwnerWithResponse(String applicationObjectId, String tenantId, AddOwnerParameters parameters, Context context) {
+    public Response<Void> addOwnerWithResponse(
+        String applicationObjectId, String tenantId, AddOwnerParameters parameters, Context context) {
         return addOwnerWithResponseAsync(applicationObjectId, tenantId, parameters, context).block();
     }
 
     /**
      * Remove a member from owners.
-     * 
+     *
      * @param applicationObjectId The object ID of the application from which to remove the owner.
      * @param ownerObjectId Owner object id.
      * @param tenantId The tenant ID.
@@ -1006,12 +1261,17 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> removeOwnerWithResponseAsync(String applicationObjectId, String ownerObjectId, String tenantId) {
+    public Mono<Response<Void>> removeOwnerWithResponseAsync(
+        String applicationObjectId, String ownerObjectId, String tenantId) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
         }
         if (ownerObjectId == null) {
             return Mono.error(new IllegalArgumentException("Parameter ownerObjectId is required and cannot be null."));
@@ -1020,13 +1280,24 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
-        return FluxUtil.withContext(context -> service.removeOwner(this.client.getEndpoint(), applicationObjectId, ownerObjectId, this.client.getApiVersion(), tenantId, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .removeOwner(
+                            this.client.getEndpoint(),
+                            applicationObjectId,
+                            ownerObjectId,
+                            this.client.getApiVersion(),
+                            tenantId,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Remove a member from owners.
-     * 
+     *
      * @param applicationObjectId The object ID of the application from which to remove the owner.
      * @param ownerObjectId Owner object id.
      * @param tenantId The tenant ID.
@@ -1037,12 +1308,17 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> removeOwnerWithResponseAsync(String applicationObjectId, String ownerObjectId, String tenantId, Context context) {
+    private Mono<Response<Void>> removeOwnerWithResponseAsync(
+        String applicationObjectId, String ownerObjectId, String tenantId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
         }
         if (ownerObjectId == null) {
             return Mono.error(new IllegalArgumentException("Parameter ownerObjectId is required and cannot be null."));
@@ -1052,12 +1328,20 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service.removeOwner(this.client.getEndpoint(), applicationObjectId, ownerObjectId, this.client.getApiVersion(), tenantId, accept, context);
+        return service
+            .removeOwner(
+                this.client.getEndpoint(),
+                applicationObjectId,
+                ownerObjectId,
+                this.client.getApiVersion(),
+                tenantId,
+                accept,
+                context);
     }
 
     /**
      * Remove a member from owners.
-     * 
+     *
      * @param applicationObjectId The object ID of the application from which to remove the owner.
      * @param ownerObjectId Owner object id.
      * @param tenantId The tenant ID.
@@ -1074,7 +1358,7 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
 
     /**
      * Remove a member from owners.
-     * 
+     *
      * @param applicationObjectId The object ID of the application from which to remove the owner.
      * @param ownerObjectId Owner object id.
      * @param tenantId The tenant ID.
@@ -1089,7 +1373,7 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
 
     /**
      * Remove a member from owners.
-     * 
+     *
      * @param applicationObjectId The object ID of the application from which to remove the owner.
      * @param ownerObjectId Owner object id.
      * @param tenantId The tenant ID.
@@ -1100,13 +1384,14 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> removeOwnerWithResponse(String applicationObjectId, String ownerObjectId, String tenantId, Context context) {
+    public Response<Void> removeOwnerWithResponse(
+        String applicationObjectId, String ownerObjectId, String tenantId, Context context) {
         return removeOwnerWithResponseAsync(applicationObjectId, ownerObjectId, tenantId, context).block();
     }
 
     /**
      * Get the keyCredentials associated with an application.
-     * 
+     *
      * @param applicationObjectId Application object ID.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1115,31 +1400,43 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
      * @return the keyCredentials associated with an application.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<KeyCredentialInner>> listKeyCredentialsSinglePageAsync(String applicationObjectId, String tenantId) {
+    private Mono<PagedResponse<KeyCredentialInner>> listKeyCredentialsSinglePageAsync(
+        String applicationObjectId, String tenantId) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
         }
         if (tenantId == null) {
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
-        return FluxUtil.withContext(context -> service.listKeyCredentials(this.client.getEndpoint(), applicationObjectId, this.client.getApiVersion(), tenantId, accept, context))
-            .<PagedResponse<KeyCredentialInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                null,
-                null))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listKeyCredentials(
+                            this.client.getEndpoint(),
+                            applicationObjectId,
+                            this.client.getApiVersion(),
+                            tenantId,
+                            accept,
+                            context))
+            .<PagedResponse<KeyCredentialInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the keyCredentials associated with an application.
-     * 
+     *
      * @param applicationObjectId Application object ID.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
@@ -1149,31 +1446,35 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
      * @return the keyCredentials associated with an application.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<KeyCredentialInner>> listKeyCredentialsSinglePageAsync(String applicationObjectId, String tenantId, Context context) {
+    private Mono<PagedResponse<KeyCredentialInner>> listKeyCredentialsSinglePageAsync(
+        String applicationObjectId, String tenantId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
         }
         if (tenantId == null) {
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service.listKeyCredentials(this.client.getEndpoint(), applicationObjectId, this.client.getApiVersion(), tenantId, accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                null,
-                null));
+        return service
+            .listKeyCredentials(
+                this.client.getEndpoint(), applicationObjectId, this.client.getApiVersion(), tenantId, accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
     }
 
     /**
      * Get the keyCredentials associated with an application.
-     * 
+     *
      * @param applicationObjectId Application object ID.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1183,13 +1484,12 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<KeyCredentialInner> listKeyCredentialsAsync(String applicationObjectId, String tenantId) {
-        return new PagedFlux<>(
-            () -> listKeyCredentialsSinglePageAsync(applicationObjectId, tenantId));
+        return new PagedFlux<>(() -> listKeyCredentialsSinglePageAsync(applicationObjectId, tenantId));
     }
 
     /**
      * Get the keyCredentials associated with an application.
-     * 
+     *
      * @param applicationObjectId Application object ID.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
@@ -1199,14 +1499,14 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
      * @return the keyCredentials associated with an application.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<KeyCredentialInner> listKeyCredentialsAsync(String applicationObjectId, String tenantId, Context context) {
-        return new PagedFlux<>(
-            () -> listKeyCredentialsSinglePageAsync(applicationObjectId, tenantId, context));
+    private PagedFlux<KeyCredentialInner> listKeyCredentialsAsync(
+        String applicationObjectId, String tenantId, Context context) {
+        return new PagedFlux<>(() -> listKeyCredentialsSinglePageAsync(applicationObjectId, tenantId, context));
     }
 
     /**
      * Get the keyCredentials associated with an application.
-     * 
+     *
      * @param applicationObjectId Application object ID.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1221,7 +1521,7 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
 
     /**
      * Get the keyCredentials associated with an application.
-     * 
+     *
      * @param applicationObjectId Application object ID.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
@@ -1231,13 +1531,14 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
      * @return the keyCredentials associated with an application.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<KeyCredentialInner> listKeyCredentials(String applicationObjectId, String tenantId, Context context) {
+    public PagedIterable<KeyCredentialInner> listKeyCredentials(
+        String applicationObjectId, String tenantId, Context context) {
         return new PagedIterable<>(listKeyCredentialsAsync(applicationObjectId, tenantId, context));
     }
 
     /**
      * Update the keyCredentials associated with an application.
-     * 
+     *
      * @param applicationObjectId Application object ID.
      * @param tenantId The tenant ID.
      * @param parameters Parameters to update the keyCredentials of an existing application.
@@ -1247,12 +1548,17 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateKeyCredentialsWithResponseAsync(String applicationObjectId, String tenantId, KeyCredentialsUpdateParameters parameters) {
+    public Mono<Response<Void>> updateKeyCredentialsWithResponseAsync(
+        String applicationObjectId, String tenantId, KeyCredentialsUpdateParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
         }
         if (tenantId == null) {
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
@@ -1263,13 +1569,24 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
             parameters.validate();
         }
         final String accept = "application/json, text/json";
-        return FluxUtil.withContext(context -> service.updateKeyCredentials(this.client.getEndpoint(), applicationObjectId, this.client.getApiVersion(), tenantId, parameters, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .updateKeyCredentials(
+                            this.client.getEndpoint(),
+                            applicationObjectId,
+                            this.client.getApiVersion(),
+                            tenantId,
+                            parameters,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update the keyCredentials associated with an application.
-     * 
+     *
      * @param applicationObjectId Application object ID.
      * @param tenantId The tenant ID.
      * @param parameters Parameters to update the keyCredentials of an existing application.
@@ -1280,12 +1597,17 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> updateKeyCredentialsWithResponseAsync(String applicationObjectId, String tenantId, KeyCredentialsUpdateParameters parameters, Context context) {
+    private Mono<Response<Void>> updateKeyCredentialsWithResponseAsync(
+        String applicationObjectId, String tenantId, KeyCredentialsUpdateParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
         }
         if (tenantId == null) {
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
@@ -1297,12 +1619,20 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service.updateKeyCredentials(this.client.getEndpoint(), applicationObjectId, this.client.getApiVersion(), tenantId, parameters, accept, context);
+        return service
+            .updateKeyCredentials(
+                this.client.getEndpoint(),
+                applicationObjectId,
+                this.client.getApiVersion(),
+                tenantId,
+                parameters,
+                accept,
+                context);
     }
 
     /**
      * Update the keyCredentials associated with an application.
-     * 
+     *
      * @param applicationObjectId Application object ID.
      * @param tenantId The tenant ID.
      * @param parameters Parameters to update the keyCredentials of an existing application.
@@ -1312,14 +1642,15 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updateKeyCredentialsAsync(String applicationObjectId, String tenantId, KeyCredentialsUpdateParameters parameters) {
+    public Mono<Void> updateKeyCredentialsAsync(
+        String applicationObjectId, String tenantId, KeyCredentialsUpdateParameters parameters) {
         return updateKeyCredentialsWithResponseAsync(applicationObjectId, tenantId, parameters)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Update the keyCredentials associated with an application.
-     * 
+     *
      * @param applicationObjectId Application object ID.
      * @param tenantId The tenant ID.
      * @param parameters Parameters to update the keyCredentials of an existing application.
@@ -1328,13 +1659,14 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updateKeyCredentials(String applicationObjectId, String tenantId, KeyCredentialsUpdateParameters parameters) {
+    public void updateKeyCredentials(
+        String applicationObjectId, String tenantId, KeyCredentialsUpdateParameters parameters) {
         updateKeyCredentialsAsync(applicationObjectId, tenantId, parameters).block();
     }
 
     /**
      * Update the keyCredentials associated with an application.
-     * 
+     *
      * @param applicationObjectId Application object ID.
      * @param tenantId The tenant ID.
      * @param parameters Parameters to update the keyCredentials of an existing application.
@@ -1345,13 +1677,14 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updateKeyCredentialsWithResponse(String applicationObjectId, String tenantId, KeyCredentialsUpdateParameters parameters, Context context) {
+    public Response<Void> updateKeyCredentialsWithResponse(
+        String applicationObjectId, String tenantId, KeyCredentialsUpdateParameters parameters, Context context) {
         return updateKeyCredentialsWithResponseAsync(applicationObjectId, tenantId, parameters, context).block();
     }
 
     /**
      * Get the passwordCredentials associated with an application.
-     * 
+     *
      * @param applicationObjectId Application object ID.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1360,31 +1693,43 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
      * @return the passwordCredentials associated with an application.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PasswordCredentialInner>> listPasswordCredentialsSinglePageAsync(String applicationObjectId, String tenantId) {
+    private Mono<PagedResponse<PasswordCredentialInner>> listPasswordCredentialsSinglePageAsync(
+        String applicationObjectId, String tenantId) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
         }
         if (tenantId == null) {
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
-        return FluxUtil.withContext(context -> service.listPasswordCredentials(this.client.getEndpoint(), applicationObjectId, this.client.getApiVersion(), tenantId, accept, context))
-            .<PagedResponse<PasswordCredentialInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                null,
-                null))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listPasswordCredentials(
+                            this.client.getEndpoint(),
+                            applicationObjectId,
+                            this.client.getApiVersion(),
+                            tenantId,
+                            accept,
+                            context))
+            .<PagedResponse<PasswordCredentialInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the passwordCredentials associated with an application.
-     * 
+     *
      * @param applicationObjectId Application object ID.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
@@ -1394,31 +1739,35 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
      * @return the passwordCredentials associated with an application.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PasswordCredentialInner>> listPasswordCredentialsSinglePageAsync(String applicationObjectId, String tenantId, Context context) {
+    private Mono<PagedResponse<PasswordCredentialInner>> listPasswordCredentialsSinglePageAsync(
+        String applicationObjectId, String tenantId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
         }
         if (tenantId == null) {
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service.listPasswordCredentials(this.client.getEndpoint(), applicationObjectId, this.client.getApiVersion(), tenantId, accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                null,
-                null));
+        return service
+            .listPasswordCredentials(
+                this.client.getEndpoint(), applicationObjectId, this.client.getApiVersion(), tenantId, accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
     }
 
     /**
      * Get the passwordCredentials associated with an application.
-     * 
+     *
      * @param applicationObjectId Application object ID.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1427,14 +1776,14 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
      * @return the passwordCredentials associated with an application.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<PasswordCredentialInner> listPasswordCredentialsAsync(String applicationObjectId, String tenantId) {
-        return new PagedFlux<>(
-            () -> listPasswordCredentialsSinglePageAsync(applicationObjectId, tenantId));
+    public PagedFlux<PasswordCredentialInner> listPasswordCredentialsAsync(
+        String applicationObjectId, String tenantId) {
+        return new PagedFlux<>(() -> listPasswordCredentialsSinglePageAsync(applicationObjectId, tenantId));
     }
 
     /**
      * Get the passwordCredentials associated with an application.
-     * 
+     *
      * @param applicationObjectId Application object ID.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
@@ -1444,14 +1793,14 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
      * @return the passwordCredentials associated with an application.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PasswordCredentialInner> listPasswordCredentialsAsync(String applicationObjectId, String tenantId, Context context) {
-        return new PagedFlux<>(
-            () -> listPasswordCredentialsSinglePageAsync(applicationObjectId, tenantId, context));
+    private PagedFlux<PasswordCredentialInner> listPasswordCredentialsAsync(
+        String applicationObjectId, String tenantId, Context context) {
+        return new PagedFlux<>(() -> listPasswordCredentialsSinglePageAsync(applicationObjectId, tenantId, context));
     }
 
     /**
      * Get the passwordCredentials associated with an application.
-     * 
+     *
      * @param applicationObjectId Application object ID.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1466,7 +1815,7 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
 
     /**
      * Get the passwordCredentials associated with an application.
-     * 
+     *
      * @param applicationObjectId Application object ID.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
@@ -1476,13 +1825,14 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
      * @return the passwordCredentials associated with an application.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PasswordCredentialInner> listPasswordCredentials(String applicationObjectId, String tenantId, Context context) {
+    public PagedIterable<PasswordCredentialInner> listPasswordCredentials(
+        String applicationObjectId, String tenantId, Context context) {
         return new PagedIterable<>(listPasswordCredentialsAsync(applicationObjectId, tenantId, context));
     }
 
     /**
      * Update passwordCredentials associated with an application.
-     * 
+     *
      * @param applicationObjectId Application object ID.
      * @param tenantId The tenant ID.
      * @param parameters Parameters to update passwordCredentials of an existing application.
@@ -1492,12 +1842,17 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updatePasswordCredentialsWithResponseAsync(String applicationObjectId, String tenantId, PasswordCredentialsUpdateParameters parameters) {
+    public Mono<Response<Void>> updatePasswordCredentialsWithResponseAsync(
+        String applicationObjectId, String tenantId, PasswordCredentialsUpdateParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
         }
         if (tenantId == null) {
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
@@ -1508,13 +1863,24 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
             parameters.validate();
         }
         final String accept = "application/json, text/json";
-        return FluxUtil.withContext(context -> service.updatePasswordCredentials(this.client.getEndpoint(), applicationObjectId, this.client.getApiVersion(), tenantId, parameters, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .updatePasswordCredentials(
+                            this.client.getEndpoint(),
+                            applicationObjectId,
+                            this.client.getApiVersion(),
+                            tenantId,
+                            parameters,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update passwordCredentials associated with an application.
-     * 
+     *
      * @param applicationObjectId Application object ID.
      * @param tenantId The tenant ID.
      * @param parameters Parameters to update passwordCredentials of an existing application.
@@ -1525,12 +1891,17 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> updatePasswordCredentialsWithResponseAsync(String applicationObjectId, String tenantId, PasswordCredentialsUpdateParameters parameters, Context context) {
+    private Mono<Response<Void>> updatePasswordCredentialsWithResponseAsync(
+        String applicationObjectId, String tenantId, PasswordCredentialsUpdateParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (applicationObjectId == null) {
-            return Mono.error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter applicationObjectId is required and cannot be null."));
         }
         if (tenantId == null) {
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
@@ -1542,12 +1913,20 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service.updatePasswordCredentials(this.client.getEndpoint(), applicationObjectId, this.client.getApiVersion(), tenantId, parameters, accept, context);
+        return service
+            .updatePasswordCredentials(
+                this.client.getEndpoint(),
+                applicationObjectId,
+                this.client.getApiVersion(),
+                tenantId,
+                parameters,
+                accept,
+                context);
     }
 
     /**
      * Update passwordCredentials associated with an application.
-     * 
+     *
      * @param applicationObjectId Application object ID.
      * @param tenantId The tenant ID.
      * @param parameters Parameters to update passwordCredentials of an existing application.
@@ -1557,14 +1936,15 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> updatePasswordCredentialsAsync(String applicationObjectId, String tenantId, PasswordCredentialsUpdateParameters parameters) {
+    public Mono<Void> updatePasswordCredentialsAsync(
+        String applicationObjectId, String tenantId, PasswordCredentialsUpdateParameters parameters) {
         return updatePasswordCredentialsWithResponseAsync(applicationObjectId, tenantId, parameters)
             .flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Update passwordCredentials associated with an application.
-     * 
+     *
      * @param applicationObjectId Application object ID.
      * @param tenantId The tenant ID.
      * @param parameters Parameters to update passwordCredentials of an existing application.
@@ -1573,13 +1953,14 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void updatePasswordCredentials(String applicationObjectId, String tenantId, PasswordCredentialsUpdateParameters parameters) {
+    public void updatePasswordCredentials(
+        String applicationObjectId, String tenantId, PasswordCredentialsUpdateParameters parameters) {
         updatePasswordCredentialsAsync(applicationObjectId, tenantId, parameters).block();
     }
 
     /**
      * Update passwordCredentials associated with an application.
-     * 
+     *
      * @param applicationObjectId Application object ID.
      * @param tenantId The tenant ID.
      * @param parameters Parameters to update passwordCredentials of an existing application.
@@ -1590,13 +1971,14 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updatePasswordCredentialsWithResponse(String applicationObjectId, String tenantId, PasswordCredentialsUpdateParameters parameters, Context context) {
+    public Response<Void> updatePasswordCredentialsWithResponse(
+        String applicationObjectId, String tenantId, PasswordCredentialsUpdateParameters parameters, Context context) {
         return updatePasswordCredentialsWithResponseAsync(applicationObjectId, tenantId, parameters, context).block();
     }
 
     /**
      * Gets an object id for a given application id from the current tenant.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param applicationId The application ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1605,9 +1987,13 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
      * @return an object id for a given application id from the current tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<ServicePrincipalObjectResultInner>> getServicePrincipalsIdByAppIdWithResponseAsync(String tenantId, String applicationId) {
+    public Mono<Response<ServicePrincipalObjectResultInner>> getServicePrincipalsIdByAppIdWithResponseAsync(
+        String tenantId, String applicationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (tenantId == null) {
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
@@ -1616,13 +2002,23 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
             return Mono.error(new IllegalArgumentException("Parameter applicationId is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
-        return FluxUtil.withContext(context -> service.getServicePrincipalsIdByAppId(this.client.getEndpoint(), this.client.getApiVersion(), tenantId, applicationId, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getServicePrincipalsIdByAppId(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            tenantId,
+                            applicationId,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets an object id for a given application id from the current tenant.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param applicationId The application ID.
      * @param context The context to associate with this operation.
@@ -1632,9 +2028,13 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
      * @return an object id for a given application id from the current tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ServicePrincipalObjectResultInner>> getServicePrincipalsIdByAppIdWithResponseAsync(String tenantId, String applicationId, Context context) {
+    private Mono<Response<ServicePrincipalObjectResultInner>> getServicePrincipalsIdByAppIdWithResponseAsync(
+        String tenantId, String applicationId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (tenantId == null) {
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
@@ -1644,12 +2044,14 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service.getServicePrincipalsIdByAppId(this.client.getEndpoint(), this.client.getApiVersion(), tenantId, applicationId, accept, context);
+        return service
+            .getServicePrincipalsIdByAppId(
+                this.client.getEndpoint(), this.client.getApiVersion(), tenantId, applicationId, accept, context);
     }
 
     /**
      * Gets an object id for a given application id from the current tenant.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param applicationId The application ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1658,20 +2060,22 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
      * @return an object id for a given application id from the current tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ServicePrincipalObjectResultInner> getServicePrincipalsIdByAppIdAsync(String tenantId, String applicationId) {
+    public Mono<ServicePrincipalObjectResultInner> getServicePrincipalsIdByAppIdAsync(
+        String tenantId, String applicationId) {
         return getServicePrincipalsIdByAppIdWithResponseAsync(tenantId, applicationId)
-            .flatMap((Response<ServicePrincipalObjectResultInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (Response<ServicePrincipalObjectResultInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets an object id for a given application id from the current tenant.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param applicationId The application ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1686,7 +2090,7 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
 
     /**
      * Gets an object id for a given application id from the current tenant.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param applicationId The application ID.
      * @param context The context to associate with this operation.
@@ -1696,13 +2100,14 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
      * @return an object id for a given application id from the current tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ServicePrincipalObjectResultInner> getServicePrincipalsIdByAppIdWithResponse(String tenantId, String applicationId, Context context) {
+    public Response<ServicePrincipalObjectResultInner> getServicePrincipalsIdByAppIdWithResponse(
+        String tenantId, String applicationId, Context context) {
         return getServicePrincipalsIdByAppIdWithResponseAsync(tenantId, applicationId, context).block();
     }
 
     /**
      * Gets a list of applications from the current tenant.
-     * 
+     *
      * @param nextLink Next link for the list operation.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1713,7 +2118,10 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ApplicationInner>> listNextSinglePageAsync(String nextLink, String tenantId) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
@@ -1722,20 +2130,32 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
-        return FluxUtil.withContext(context -> service.listNext(this.client.getEndpoint(), nextLink, this.client.getApiVersion(), tenantId, accept, context))
-            .<PagedResponse<ApplicationInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().odataNextLink(),
-                null))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listNext(
+                            this.client.getEndpoint(),
+                            nextLink,
+                            this.client.getApiVersion(),
+                            tenantId,
+                            accept,
+                            context))
+            .<PagedResponse<ApplicationInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().odataNextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a list of applications from the current tenant.
-     * 
+     *
      * @param nextLink Next link for the list operation.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
@@ -1745,9 +2165,13 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
      * @return a list of applications from the current tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ApplicationInner>> listNextSinglePageAsync(String nextLink, String tenantId, Context context) {
+    private Mono<PagedResponse<ApplicationInner>> listNextSinglePageAsync(
+        String nextLink, String tenantId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
@@ -1757,19 +2181,22 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service.listNext(this.client.getEndpoint(), nextLink, this.client.getApiVersion(), tenantId, accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().odataNextLink(),
-                null));
+        return service
+            .listNext(this.client.getEndpoint(), nextLink, this.client.getApiVersion(), tenantId, accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().odataNextLink(),
+                        null));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -1782,23 +2209,29 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
-        return FluxUtil.withContext(context -> service.listOwnersNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DirectoryObjectInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().odataNextLink(),
-                null))
+        return FluxUtil
+            .withContext(context -> service.listOwnersNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<DirectoryObjectInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().odataNextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1812,17 +2245,23 @@ public final class ApplicationsClientImpl implements InnerSupportsDelete<Void>, 
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service.listOwnersNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().odataNextLink(),
-                null));
+        return service
+            .listOwnersNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().odataNextLink(),
+                        null));
     }
 }

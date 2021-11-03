@@ -5,22 +5,17 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.DiskUpdateProperties;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * Disk update resource.
- */
+/** Disk update resource. */
 @Fluent
 public final class DiskUpdate {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(DiskUpdate.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiskUpdate.class);
 
     /*
      * Disk resource update properties.
@@ -44,7 +39,7 @@ public final class DiskUpdate {
 
     /**
      * Get the innerProperties property: Disk resource update properties.
-     * 
+     *
      * @return the innerProperties value.
      */
     private DiskUpdateProperties innerProperties() {
@@ -53,7 +48,7 @@ public final class DiskUpdate {
 
     /**
      * Get the tags property: Resource tags.
-     * 
+     *
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -62,7 +57,7 @@ public final class DiskUpdate {
 
     /**
      * Set the tags property: Resource tags.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the DiskUpdate object itself.
      */
@@ -72,9 +67,8 @@ public final class DiskUpdate {
     }
 
     /**
-     * Get the sku property: The disks sku name. Can be Standard_LRS,
-     * Premium_LRS, StandardSSD_LRS, or UltraSSD_LRS.
-     * 
+     * Get the sku property: The disks sku name. Can be Standard_LRS, Premium_LRS, StandardSSD_LRS, or UltraSSD_LRS.
+     *
      * @return the sku value.
      */
     public DiskSku sku() {
@@ -82,9 +76,8 @@ public final class DiskUpdate {
     }
 
     /**
-     * Set the sku property: The disks sku name. Can be Standard_LRS,
-     * Premium_LRS, StandardSSD_LRS, or UltraSSD_LRS.
-     * 
+     * Set the sku property: The disks sku name. Can be Standard_LRS, Premium_LRS, StandardSSD_LRS, or UltraSSD_LRS.
+     *
      * @param sku the sku value to set.
      * @return the DiskUpdate object itself.
      */
@@ -95,7 +88,7 @@ public final class DiskUpdate {
 
     /**
      * Get the osType property: the Operating System type.
-     * 
+     *
      * @return the osType value.
      */
     public OperatingSystemTypes osType() {
@@ -104,7 +97,7 @@ public final class DiskUpdate {
 
     /**
      * Set the osType property: the Operating System type.
-     * 
+     *
      * @param osType the osType value to set.
      * @return the DiskUpdate object itself.
      */
@@ -117,12 +110,11 @@ public final class DiskUpdate {
     }
 
     /**
-     * Get the diskSizeGB property: If creationData.createOption is Empty, this
-     * field is mandatory and it indicates the size of the disk to create. If
-     * this field is present for updates or creation with other options, it
-     * indicates a resize. Resizes are only allowed if the disk is not attached
-     * to a running VM, and can only increase the disk's size.
-     * 
+     * Get the diskSizeGB property: If creationData.createOption is Empty, this field is mandatory and it indicates the
+     * size of the disk to create. If this field is present for updates or creation with other options, it indicates a
+     * resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's
+     * size.
+     *
      * @return the diskSizeGB value.
      */
     public Integer diskSizeGB() {
@@ -130,12 +122,11 @@ public final class DiskUpdate {
     }
 
     /**
-     * Set the diskSizeGB property: If creationData.createOption is Empty, this
-     * field is mandatory and it indicates the size of the disk to create. If
-     * this field is present for updates or creation with other options, it
-     * indicates a resize. Resizes are only allowed if the disk is not attached
-     * to a running VM, and can only increase the disk's size.
-     * 
+     * Set the diskSizeGB property: If creationData.createOption is Empty, this field is mandatory and it indicates the
+     * size of the disk to create. If this field is present for updates or creation with other options, it indicates a
+     * resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's
+     * size.
+     *
      * @param diskSizeGB the diskSizeGB value to set.
      * @return the DiskUpdate object itself.
      */
@@ -148,10 +139,9 @@ public final class DiskUpdate {
     }
 
     /**
-     * Get the encryptionSettingsCollection property: Encryption settings
-     * collection used be Azure Disk Encryption, can contain multiple
-     * encryption settings per disk or snapshot.
-     * 
+     * Get the encryptionSettingsCollection property: Encryption settings collection used be Azure Disk Encryption, can
+     * contain multiple encryption settings per disk or snapshot.
+     *
      * @return the encryptionSettingsCollection value.
      */
     public EncryptionSettingsCollection encryptionSettingsCollection() {
@@ -159,12 +149,10 @@ public final class DiskUpdate {
     }
 
     /**
-     * Set the encryptionSettingsCollection property: Encryption settings
-     * collection used be Azure Disk Encryption, can contain multiple
-     * encryption settings per disk or snapshot.
-     * 
-     * @param encryptionSettingsCollection the encryptionSettingsCollection
-     * value to set.
+     * Set the encryptionSettingsCollection property: Encryption settings collection used be Azure Disk Encryption, can
+     * contain multiple encryption settings per disk or snapshot.
+     *
+     * @param encryptionSettingsCollection the encryptionSettingsCollection value to set.
      * @return the DiskUpdate object itself.
      */
     public DiskUpdate withEncryptionSettingsCollection(EncryptionSettingsCollection encryptionSettingsCollection) {
@@ -176,10 +164,9 @@ public final class DiskUpdate {
     }
 
     /**
-     * Get the diskIopsReadWrite property: The number of IOPS allowed for this
-     * disk; only settable for UltraSSD disks. One operation can transfer
-     * between 4k and 256k bytes.
-     * 
+     * Get the diskIopsReadWrite property: The number of IOPS allowed for this disk; only settable for UltraSSD disks.
+     * One operation can transfer between 4k and 256k bytes.
+     *
      * @return the diskIopsReadWrite value.
      */
     public Long diskIopsReadWrite() {
@@ -187,10 +174,9 @@ public final class DiskUpdate {
     }
 
     /**
-     * Set the diskIopsReadWrite property: The number of IOPS allowed for this
-     * disk; only settable for UltraSSD disks. One operation can transfer
-     * between 4k and 256k bytes.
-     * 
+     * Set the diskIopsReadWrite property: The number of IOPS allowed for this disk; only settable for UltraSSD disks.
+     * One operation can transfer between 4k and 256k bytes.
+     *
      * @param diskIopsReadWrite the diskIopsReadWrite value to set.
      * @return the DiskUpdate object itself.
      */
@@ -203,10 +189,9 @@ public final class DiskUpdate {
     }
 
     /**
-     * Get the diskMBpsReadWrite property: The bandwidth allowed for this disk;
-     * only settable for UltraSSD disks. MBps means millions of bytes per
-     * second - MB here uses the ISO notation, of powers of 10.
-     * 
+     * Get the diskMBpsReadWrite property: The bandwidth allowed for this disk; only settable for UltraSSD disks. MBps
+     * means millions of bytes per second - MB here uses the ISO notation, of powers of 10.
+     *
      * @return the diskMBpsReadWrite value.
      */
     public Integer diskMBpsReadWrite() {
@@ -214,10 +199,9 @@ public final class DiskUpdate {
     }
 
     /**
-     * Set the diskMBpsReadWrite property: The bandwidth allowed for this disk;
-     * only settable for UltraSSD disks. MBps means millions of bytes per
-     * second - MB here uses the ISO notation, of powers of 10.
-     * 
+     * Set the diskMBpsReadWrite property: The bandwidth allowed for this disk; only settable for UltraSSD disks. MBps
+     * means millions of bytes per second - MB here uses the ISO notation, of powers of 10.
+     *
      * @param diskMBpsReadWrite the diskMBpsReadWrite value to set.
      * @return the DiskUpdate object itself.
      */
@@ -230,9 +214,9 @@ public final class DiskUpdate {
     }
 
     /**
-     * Get the encryption property: Encryption property can be used to encrypt
-     * data at rest with customer managed keys or platform managed keys.
-     * 
+     * Get the encryption property: Encryption property can be used to encrypt data at rest with customer managed keys
+     * or platform managed keys.
+     *
      * @return the encryption value.
      */
     public Encryption encryption() {
@@ -240,9 +224,9 @@ public final class DiskUpdate {
     }
 
     /**
-     * Set the encryption property: Encryption property can be used to encrypt
-     * data at rest with customer managed keys or platform managed keys.
-     * 
+     * Set the encryption property: Encryption property can be used to encrypt data at rest with customer managed keys
+     * or platform managed keys.
+     *
      * @param encryption the encryption value to set.
      * @return the DiskUpdate object itself.
      */
@@ -256,7 +240,7 @@ public final class DiskUpdate {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

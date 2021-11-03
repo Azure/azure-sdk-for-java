@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Role assignment properties with scope.
- */
+/** Role assignment properties with scope. */
 @Fluent
 public final class RoleAssignmentPropertiesWithScope {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(RoleAssignmentPropertiesWithScope.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoleAssignmentPropertiesWithScope.class);
 
     /*
      * The role assignment scope.
@@ -39,7 +34,7 @@ public final class RoleAssignmentPropertiesWithScope {
 
     /**
      * Get the scope property: The role assignment scope.
-     * 
+     *
      * @return the scope value.
      */
     public String scope() {
@@ -48,7 +43,7 @@ public final class RoleAssignmentPropertiesWithScope {
 
     /**
      * Set the scope property: The role assignment scope.
-     * 
+     *
      * @param scope the scope value to set.
      * @return the RoleAssignmentPropertiesWithScope object itself.
      */
@@ -59,7 +54,7 @@ public final class RoleAssignmentPropertiesWithScope {
 
     /**
      * Get the roleDefinitionId property: The role definition ID.
-     * 
+     *
      * @return the roleDefinitionId value.
      */
     public String roleDefinitionId() {
@@ -68,7 +63,7 @@ public final class RoleAssignmentPropertiesWithScope {
 
     /**
      * Set the roleDefinitionId property: The role definition ID.
-     * 
+     *
      * @param roleDefinitionId the roleDefinitionId value to set.
      * @return the RoleAssignmentPropertiesWithScope object itself.
      */
@@ -79,7 +74,7 @@ public final class RoleAssignmentPropertiesWithScope {
 
     /**
      * Get the principalId property: The principal ID.
-     * 
+     *
      * @return the principalId value.
      */
     public String principalId() {
@@ -88,7 +83,7 @@ public final class RoleAssignmentPropertiesWithScope {
 
     /**
      * Set the principalId property: The principal ID.
-     * 
+     *
      * @param principalId the principalId value to set.
      * @return the RoleAssignmentPropertiesWithScope object itself.
      */
@@ -99,7 +94,7 @@ public final class RoleAssignmentPropertiesWithScope {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

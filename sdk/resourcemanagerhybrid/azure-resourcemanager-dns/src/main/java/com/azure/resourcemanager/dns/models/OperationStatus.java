@@ -7,28 +7,18 @@ package com.azure.resourcemanager.dns.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for OperationStatus.
- */
+/** Defines values for OperationStatus. */
 public enum OperationStatus {
-    /**
-     * Enum value InProgress.
-     */
+    /** Enum value InProgress. */
     IN_PROGRESS("InProgress"),
 
-    /**
-     * Enum value Succeeded.
-     */
+    /** Enum value Succeeded. */
     SUCCEEDED("Succeeded"),
 
-    /**
-     * Enum value Failed.
-     */
+    /** Enum value Failed. */
     FAILED("Failed");
 
-    /**
-     * The actual serialized value for a OperationStatus instance.
-     */
+    /** The actual serialized value for a OperationStatus instance. */
     private final String value;
 
     OperationStatus(String value) {
@@ -37,7 +27,7 @@ public enum OperationStatus {
 
     /**
      * Parses a serialized value to a OperationStatus instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed OperationStatus object, or null if unable to parse.
      */

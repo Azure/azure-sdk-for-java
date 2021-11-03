@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.BgpSettings;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * LocalNetworkGateway properties.
- */
+/** LocalNetworkGateway properties. */
 @Fluent
 public final class LocalNetworkGatewayPropertiesFormat {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(LocalNetworkGatewayPropertiesFormat.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(LocalNetworkGatewayPropertiesFormat.class);
 
     /*
      * Local network site address space.
@@ -53,9 +48,8 @@ public final class LocalNetworkGatewayPropertiesFormat {
     private String provisioningState;
 
     /**
-     * Get the localNetworkAddressSpace property: Local network site address
-     * space.
-     * 
+     * Get the localNetworkAddressSpace property: Local network site address space.
+     *
      * @return the localNetworkAddressSpace value.
      */
     public AddressSpace localNetworkAddressSpace() {
@@ -63,11 +57,9 @@ public final class LocalNetworkGatewayPropertiesFormat {
     }
 
     /**
-     * Set the localNetworkAddressSpace property: Local network site address
-     * space.
-     * 
-     * @param localNetworkAddressSpace the localNetworkAddressSpace value to
-     * set.
+     * Set the localNetworkAddressSpace property: Local network site address space.
+     *
+     * @param localNetworkAddressSpace the localNetworkAddressSpace value to set.
      * @return the LocalNetworkGatewayPropertiesFormat object itself.
      */
     public LocalNetworkGatewayPropertiesFormat withLocalNetworkAddressSpace(AddressSpace localNetworkAddressSpace) {
@@ -77,7 +69,7 @@ public final class LocalNetworkGatewayPropertiesFormat {
 
     /**
      * Get the gatewayIpAddress property: IP address of local network gateway.
-     * 
+     *
      * @return the gatewayIpAddress value.
      */
     public String gatewayIpAddress() {
@@ -86,7 +78,7 @@ public final class LocalNetworkGatewayPropertiesFormat {
 
     /**
      * Set the gatewayIpAddress property: IP address of local network gateway.
-     * 
+     *
      * @param gatewayIpAddress the gatewayIpAddress value to set.
      * @return the LocalNetworkGatewayPropertiesFormat object itself.
      */
@@ -96,9 +88,8 @@ public final class LocalNetworkGatewayPropertiesFormat {
     }
 
     /**
-     * Get the bgpSettings property: Local network gateway's BGP speaker
-     * settings.
-     * 
+     * Get the bgpSettings property: Local network gateway's BGP speaker settings.
+     *
      * @return the bgpSettings value.
      */
     public BgpSettings bgpSettings() {
@@ -106,9 +97,8 @@ public final class LocalNetworkGatewayPropertiesFormat {
     }
 
     /**
-     * Set the bgpSettings property: Local network gateway's BGP speaker
-     * settings.
-     * 
+     * Set the bgpSettings property: Local network gateway's BGP speaker settings.
+     *
      * @param bgpSettings the bgpSettings value to set.
      * @return the LocalNetworkGatewayPropertiesFormat object itself.
      */
@@ -118,9 +108,8 @@ public final class LocalNetworkGatewayPropertiesFormat {
     }
 
     /**
-     * Get the resourceGuid property: The resource GUID property of the
-     * LocalNetworkGateway resource.
-     * 
+     * Get the resourceGuid property: The resource GUID property of the LocalNetworkGateway resource.
+     *
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -128,9 +117,8 @@ public final class LocalNetworkGatewayPropertiesFormat {
     }
 
     /**
-     * Set the resourceGuid property: The resource GUID property of the
-     * LocalNetworkGateway resource.
-     * 
+     * Set the resourceGuid property: The resource GUID property of the LocalNetworkGateway resource.
+     *
      * @param resourceGuid the resourceGuid value to set.
      * @return the LocalNetworkGatewayPropertiesFormat object itself.
      */
@@ -140,10 +128,9 @@ public final class LocalNetworkGatewayPropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the
-     * LocalNetworkGateway resource. Possible values are: 'Updating',
-     * 'Deleting', and 'Failed'.
-     * 
+     * Get the provisioningState property: The provisioning state of the LocalNetworkGateway resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -152,7 +139,7 @@ public final class LocalNetworkGatewayPropertiesFormat {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,23 +5,18 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.BgpSettings;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Parameters for VpnGateway.
- */
+/** Parameters for VpnGateway. */
 @Fluent
 public final class VpnGatewayProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(VpnGatewayProperties.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnGatewayProperties.class);
 
     /*
      * The VirtualHub to which the gateway belongs
@@ -54,9 +49,8 @@ public final class VpnGatewayProperties {
     private Integer vpnGatewayScaleUnit;
 
     /**
-     * Get the virtualHub property: The VirtualHub to which the gateway
-     * belongs.
-     * 
+     * Get the virtualHub property: The VirtualHub to which the gateway belongs.
+     *
      * @return the virtualHub value.
      */
     public SubResource virtualHub() {
@@ -64,9 +58,8 @@ public final class VpnGatewayProperties {
     }
 
     /**
-     * Set the virtualHub property: The VirtualHub to which the gateway
-     * belongs.
-     * 
+     * Set the virtualHub property: The VirtualHub to which the gateway belongs.
+     *
      * @param virtualHub the virtualHub value to set.
      * @return the VpnGatewayProperties object itself.
      */
@@ -76,9 +69,8 @@ public final class VpnGatewayProperties {
     }
 
     /**
-     * Get the connections property: list of all vpn connections to the
-     * gateway.
-     * 
+     * Get the connections property: list of all vpn connections to the gateway.
+     *
      * @return the connections value.
      */
     public List<VpnConnectionInner> connections() {
@@ -86,9 +78,8 @@ public final class VpnGatewayProperties {
     }
 
     /**
-     * Set the connections property: list of all vpn connections to the
-     * gateway.
-     * 
+     * Set the connections property: list of all vpn connections to the gateway.
+     *
      * @param connections the connections value to set.
      * @return the VpnGatewayProperties object itself.
      */
@@ -98,9 +89,8 @@ public final class VpnGatewayProperties {
     }
 
     /**
-     * Get the bgpSettings property: Local network gateway's BGP speaker
-     * settings.
-     * 
+     * Get the bgpSettings property: Local network gateway's BGP speaker settings.
+     *
      * @return the bgpSettings value.
      */
     public BgpSettings bgpSettings() {
@@ -108,9 +98,8 @@ public final class VpnGatewayProperties {
     }
 
     /**
-     * Set the bgpSettings property: Local network gateway's BGP speaker
-     * settings.
-     * 
+     * Set the bgpSettings property: Local network gateway's BGP speaker settings.
+     *
      * @param bgpSettings the bgpSettings value to set.
      * @return the VpnGatewayProperties object itself.
      */
@@ -120,9 +109,8 @@ public final class VpnGatewayProperties {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the
-     * resource.
-     * 
+     * Get the provisioningState property: The provisioning state of the resource.
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -130,9 +118,8 @@ public final class VpnGatewayProperties {
     }
 
     /**
-     * Set the provisioningState property: The provisioning state of the
-     * resource.
-     * 
+     * Set the provisioningState property: The provisioning state of the resource.
+     *
      * @param provisioningState the provisioningState value to set.
      * @return the VpnGatewayProperties object itself.
      */
@@ -142,9 +129,8 @@ public final class VpnGatewayProperties {
     }
 
     /**
-     * Get the vpnGatewayScaleUnit property: The scale unit for this vpn
-     * gateway.
-     * 
+     * Get the vpnGatewayScaleUnit property: The scale unit for this vpn gateway.
+     *
      * @return the vpnGatewayScaleUnit value.
      */
     public Integer vpnGatewayScaleUnit() {
@@ -152,9 +138,8 @@ public final class VpnGatewayProperties {
     }
 
     /**
-     * Set the vpnGatewayScaleUnit property: The scale unit for this vpn
-     * gateway.
-     * 
+     * Set the vpnGatewayScaleUnit property: The scale unit for this vpn gateway.
+     *
      * @param vpnGatewayScaleUnit the vpnGatewayScaleUnit value to set.
      * @return the VpnGatewayProperties object itself.
      */
@@ -165,7 +150,7 @@ public final class VpnGatewayProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

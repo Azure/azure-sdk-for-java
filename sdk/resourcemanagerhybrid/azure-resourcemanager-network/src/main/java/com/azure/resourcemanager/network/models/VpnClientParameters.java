@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Vpn Client Parameters for package generation.
- */
+/** Vpn Client Parameters for package generation. */
 @Fluent
 public final class VpnClientParameters {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(VpnClientParameters.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnClientParameters.class);
 
     /*
      * VPN client Processor Architecture. Possible values are: 'AMD64' and
@@ -51,9 +46,9 @@ public final class VpnClientParameters {
     private List<String> clientRootCertificates;
 
     /**
-     * Get the processorArchitecture property: VPN client Processor
-     * Architecture. Possible values are: 'AMD64' and 'X86'.
-     * 
+     * Get the processorArchitecture property: VPN client Processor Architecture. Possible values are: 'AMD64' and
+     * 'X86'.
+     *
      * @return the processorArchitecture value.
      */
     public ProcessorArchitecture processorArchitecture() {
@@ -61,9 +56,9 @@ public final class VpnClientParameters {
     }
 
     /**
-     * Set the processorArchitecture property: VPN client Processor
-     * Architecture. Possible values are: 'AMD64' and 'X86'.
-     * 
+     * Set the processorArchitecture property: VPN client Processor Architecture. Possible values are: 'AMD64' and
+     * 'X86'.
+     *
      * @param processorArchitecture the processorArchitecture value to set.
      * @return the VpnClientParameters object itself.
      */
@@ -73,9 +68,9 @@ public final class VpnClientParameters {
     }
 
     /**
-     * Get the authenticationMethod property: VPN client Authentication Method.
-     * Possible values are: 'EAPTLS' and 'EAPMSCHAPv2'.
-     * 
+     * Get the authenticationMethod property: VPN client Authentication Method. Possible values are: 'EAPTLS' and
+     * 'EAPMSCHAPv2'.
+     *
      * @return the authenticationMethod value.
      */
     public AuthenticationMethod authenticationMethod() {
@@ -83,9 +78,9 @@ public final class VpnClientParameters {
     }
 
     /**
-     * Set the authenticationMethod property: VPN client Authentication Method.
-     * Possible values are: 'EAPTLS' and 'EAPMSCHAPv2'.
-     * 
+     * Set the authenticationMethod property: VPN client Authentication Method. Possible values are: 'EAPTLS' and
+     * 'EAPMSCHAPv2'.
+     *
      * @param authenticationMethod the authenticationMethod value to set.
      * @return the VpnClientParameters object itself.
      */
@@ -95,11 +90,10 @@ public final class VpnClientParameters {
     }
 
     /**
-     * Get the radiusServerAuthCertificate property: The public certificate
-     * data for the radius server authentication certificate as a Base-64
-     * encoded string. Required only if external radius authentication has been
-     * configured with EAPTLS authentication.
-     * 
+     * Get the radiusServerAuthCertificate property: The public certificate data for the radius server authentication
+     * certificate as a Base-64 encoded string. Required only if external radius authentication has been configured with
+     * EAPTLS authentication.
+     *
      * @return the radiusServerAuthCertificate value.
      */
     public String radiusServerAuthCertificate() {
@@ -107,13 +101,11 @@ public final class VpnClientParameters {
     }
 
     /**
-     * Set the radiusServerAuthCertificate property: The public certificate
-     * data for the radius server authentication certificate as a Base-64
-     * encoded string. Required only if external radius authentication has been
-     * configured with EAPTLS authentication.
-     * 
-     * @param radiusServerAuthCertificate the radiusServerAuthCertificate value
-     * to set.
+     * Set the radiusServerAuthCertificate property: The public certificate data for the radius server authentication
+     * certificate as a Base-64 encoded string. Required only if external radius authentication has been configured with
+     * EAPTLS authentication.
+     *
+     * @param radiusServerAuthCertificate the radiusServerAuthCertificate value to set.
      * @return the VpnClientParameters object itself.
      */
     public VpnClientParameters withRadiusServerAuthCertificate(String radiusServerAuthCertificate) {
@@ -122,10 +114,9 @@ public final class VpnClientParameters {
     }
 
     /**
-     * Get the clientRootCertificates property: A list of client root
-     * certificates public certificate data encoded as Base-64 strings.
-     * Optional parameter for external radius based authentication with EAPTLS.
-     * 
+     * Get the clientRootCertificates property: A list of client root certificates public certificate data encoded as
+     * Base-64 strings. Optional parameter for external radius based authentication with EAPTLS.
+     *
      * @return the clientRootCertificates value.
      */
     public List<String> clientRootCertificates() {
@@ -133,10 +124,9 @@ public final class VpnClientParameters {
     }
 
     /**
-     * Set the clientRootCertificates property: A list of client root
-     * certificates public certificate data encoded as Base-64 strings.
-     * Optional parameter for external radius based authentication with EAPTLS.
-     * 
+     * Set the clientRootCertificates property: A list of client root certificates public certificate data encoded as
+     * Base-64 strings. Optional parameter for external radius based authentication with EAPTLS.
+     *
      * @param clientRootCertificates the clientRootCertificates value to set.
      * @return the VpnClientParameters object itself.
      */
@@ -147,7 +137,7 @@ public final class VpnClientParameters {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,23 +5,18 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VpnClientConnectionHealth;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Parameters for P2SVpnGateway.
- */
+/** Parameters for P2SVpnGateway. */
 @Fluent
 public final class P2SVpnGatewayProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(P2SVpnGatewayProperties.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(P2SVpnGatewayProperties.class);
 
     /*
      * The VirtualHub to which the gateway belongs
@@ -61,9 +56,8 @@ public final class P2SVpnGatewayProperties {
     private VpnClientConnectionHealth vpnClientConnectionHealth;
 
     /**
-     * Get the virtualHub property: The VirtualHub to which the gateway
-     * belongs.
-     * 
+     * Get the virtualHub property: The VirtualHub to which the gateway belongs.
+     *
      * @return the virtualHub value.
      */
     public SubResource virtualHub() {
@@ -71,9 +65,8 @@ public final class P2SVpnGatewayProperties {
     }
 
     /**
-     * Set the virtualHub property: The VirtualHub to which the gateway
-     * belongs.
-     * 
+     * Set the virtualHub property: The VirtualHub to which the gateway belongs.
+     *
      * @param virtualHub the virtualHub value to set.
      * @return the P2SVpnGatewayProperties object itself.
      */
@@ -83,9 +76,8 @@ public final class P2SVpnGatewayProperties {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the
-     * resource.
-     * 
+     * Get the provisioningState property: The provisioning state of the resource.
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -93,9 +85,8 @@ public final class P2SVpnGatewayProperties {
     }
 
     /**
-     * Set the provisioningState property: The provisioning state of the
-     * resource.
-     * 
+     * Set the provisioningState property: The provisioning state of the resource.
+     *
      * @param provisioningState the provisioningState value to set.
      * @return the P2SVpnGatewayProperties object itself.
      */
@@ -105,9 +96,8 @@ public final class P2SVpnGatewayProperties {
     }
 
     /**
-     * Get the vpnGatewayScaleUnit property: The scale unit for this p2s vpn
-     * gateway.
-     * 
+     * Get the vpnGatewayScaleUnit property: The scale unit for this p2s vpn gateway.
+     *
      * @return the vpnGatewayScaleUnit value.
      */
     public Integer vpnGatewayScaleUnit() {
@@ -115,9 +105,8 @@ public final class P2SVpnGatewayProperties {
     }
 
     /**
-     * Set the vpnGatewayScaleUnit property: The scale unit for this p2s vpn
-     * gateway.
-     * 
+     * Set the vpnGatewayScaleUnit property: The scale unit for this p2s vpn gateway.
+     *
      * @param vpnGatewayScaleUnit the vpnGatewayScaleUnit value to set.
      * @return the P2SVpnGatewayProperties object itself.
      */
@@ -127,9 +116,9 @@ public final class P2SVpnGatewayProperties {
     }
 
     /**
-     * Get the p2SVpnServerConfiguration property: The
-     * P2SVpnServerConfiguration to which the p2sVpnGateway is attached to.
-     * 
+     * Get the p2SVpnServerConfiguration property: The P2SVpnServerConfiguration to which the p2sVpnGateway is attached
+     * to.
+     *
      * @return the p2SVpnServerConfiguration value.
      */
     public SubResource p2SVpnServerConfiguration() {
@@ -137,11 +126,10 @@ public final class P2SVpnGatewayProperties {
     }
 
     /**
-     * Set the p2SVpnServerConfiguration property: The
-     * P2SVpnServerConfiguration to which the p2sVpnGateway is attached to.
-     * 
-     * @param p2SVpnServerConfiguration the p2SVpnServerConfiguration value to
-     * set.
+     * Set the p2SVpnServerConfiguration property: The P2SVpnServerConfiguration to which the p2sVpnGateway is attached
+     * to.
+     *
+     * @param p2SVpnServerConfiguration the p2SVpnServerConfiguration value to set.
      * @return the P2SVpnGatewayProperties object itself.
      */
     public P2SVpnGatewayProperties withP2SVpnServerConfiguration(SubResource p2SVpnServerConfiguration) {
@@ -150,9 +138,9 @@ public final class P2SVpnGatewayProperties {
     }
 
     /**
-     * Get the vpnClientAddressPool property: The reference of the address
-     * space resource which represents Address space for P2S VpnClient.
-     * 
+     * Get the vpnClientAddressPool property: The reference of the address space resource which represents Address space
+     * for P2S VpnClient.
+     *
      * @return the vpnClientAddressPool value.
      */
     public AddressSpace vpnClientAddressPool() {
@@ -160,9 +148,9 @@ public final class P2SVpnGatewayProperties {
     }
 
     /**
-     * Set the vpnClientAddressPool property: The reference of the address
-     * space resource which represents Address space for P2S VpnClient.
-     * 
+     * Set the vpnClientAddressPool property: The reference of the address space resource which represents Address space
+     * for P2S VpnClient.
+     *
      * @param vpnClientAddressPool the vpnClientAddressPool value to set.
      * @return the P2SVpnGatewayProperties object itself.
      */
@@ -172,9 +160,8 @@ public final class P2SVpnGatewayProperties {
     }
 
     /**
-     * Get the vpnClientConnectionHealth property: All P2S VPN clients'
-     * connection health status.
-     * 
+     * Get the vpnClientConnectionHealth property: All P2S VPN clients' connection health status.
+     *
      * @return the vpnClientConnectionHealth value.
      */
     public VpnClientConnectionHealth vpnClientConnectionHealth() {
@@ -183,7 +170,7 @@ public final class P2SVpnGatewayProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,24 +5,18 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.BgpSettings;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * A common class for general resource information.
- */
+/** A common class for general resource information. */
 @Fluent
 public final class LocalNetworkGatewayInner extends Resource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(LocalNetworkGatewayInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(LocalNetworkGatewayInner.class);
 
     /*
      * Properties of the local network gateway.
@@ -43,9 +37,8 @@ public final class LocalNetworkGatewayInner extends Resource {
     private String id;
 
     /**
-     * Get the innerProperties property: Properties of the local network
-     * gateway.
-     * 
+     * Get the innerProperties property: Properties of the local network gateway.
+     *
      * @return the innerProperties value.
      */
     private LocalNetworkGatewayPropertiesFormat innerProperties() {
@@ -53,9 +46,8 @@ public final class LocalNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Get the etag property: A unique read-only string that changes whenever
-     * the resource is updated.
-     * 
+     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -63,9 +55,8 @@ public final class LocalNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Set the etag property: A unique read-only string that changes whenever
-     * the resource is updated.
-     * 
+     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
      * @param etag the etag value to set.
      * @return the LocalNetworkGatewayInner object itself.
      */
@@ -76,7 +67,7 @@ public final class LocalNetworkGatewayInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -85,7 +76,7 @@ public final class LocalNetworkGatewayInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     * 
+     *
      * @param id the id value to set.
      * @return the LocalNetworkGatewayInner object itself.
      */
@@ -94,18 +85,14 @@ public final class LocalNetworkGatewayInner extends Resource {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public LocalNetworkGatewayInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public LocalNetworkGatewayInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -113,9 +100,8 @@ public final class LocalNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Get the localNetworkAddressSpace property: Local network site address
-     * space.
-     * 
+     * Get the localNetworkAddressSpace property: Local network site address space.
+     *
      * @return the localNetworkAddressSpace value.
      */
     public AddressSpace localNetworkAddressSpace() {
@@ -123,11 +109,9 @@ public final class LocalNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Set the localNetworkAddressSpace property: Local network site address
-     * space.
-     * 
-     * @param localNetworkAddressSpace the localNetworkAddressSpace value to
-     * set.
+     * Set the localNetworkAddressSpace property: Local network site address space.
+     *
+     * @param localNetworkAddressSpace the localNetworkAddressSpace value to set.
      * @return the LocalNetworkGatewayInner object itself.
      */
     public LocalNetworkGatewayInner withLocalNetworkAddressSpace(AddressSpace localNetworkAddressSpace) {
@@ -140,7 +124,7 @@ public final class LocalNetworkGatewayInner extends Resource {
 
     /**
      * Get the gatewayIpAddress property: IP address of local network gateway.
-     * 
+     *
      * @return the gatewayIpAddress value.
      */
     public String gatewayIpAddress() {
@@ -149,7 +133,7 @@ public final class LocalNetworkGatewayInner extends Resource {
 
     /**
      * Set the gatewayIpAddress property: IP address of local network gateway.
-     * 
+     *
      * @param gatewayIpAddress the gatewayIpAddress value to set.
      * @return the LocalNetworkGatewayInner object itself.
      */
@@ -162,9 +146,8 @@ public final class LocalNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Get the bgpSettings property: Local network gateway's BGP speaker
-     * settings.
-     * 
+     * Get the bgpSettings property: Local network gateway's BGP speaker settings.
+     *
      * @return the bgpSettings value.
      */
     public BgpSettings bgpSettings() {
@@ -172,9 +155,8 @@ public final class LocalNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Set the bgpSettings property: Local network gateway's BGP speaker
-     * settings.
-     * 
+     * Set the bgpSettings property: Local network gateway's BGP speaker settings.
+     *
      * @param bgpSettings the bgpSettings value to set.
      * @return the LocalNetworkGatewayInner object itself.
      */
@@ -187,9 +169,8 @@ public final class LocalNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Get the resourceGuid property: The resource GUID property of the
-     * LocalNetworkGateway resource.
-     * 
+     * Get the resourceGuid property: The resource GUID property of the LocalNetworkGateway resource.
+     *
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -197,9 +178,8 @@ public final class LocalNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Set the resourceGuid property: The resource GUID property of the
-     * LocalNetworkGateway resource.
-     * 
+     * Set the resourceGuid property: The resource GUID property of the LocalNetworkGateway resource.
+     *
      * @param resourceGuid the resourceGuid value to set.
      * @return the LocalNetworkGatewayInner object itself.
      */
@@ -212,10 +192,9 @@ public final class LocalNetworkGatewayInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the
-     * LocalNetworkGateway resource. Possible values are: 'Updating',
-     * 'Deleting', and 'Failed'.
-     * 
+     * Get the provisioningState property: The provisioning state of the LocalNetworkGateway resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -224,12 +203,15 @@ public final class LocalNetworkGatewayInner extends Resource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property innerProperties in model LocalNetworkGatewayInner"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model LocalNetworkGatewayInner"));
         } else {
             innerProperties().validate();
         }

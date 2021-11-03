@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Header configuration of the Actions set in Application Gateway.
- */
+/** Header configuration of the Actions set in Application Gateway. */
 @Fluent
 public final class ApplicationGatewayHeaderConfiguration {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ApplicationGatewayHeaderConfiguration.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayHeaderConfiguration.class);
 
     /*
      * Header name of the header configuration
@@ -33,7 +28,7 @@ public final class ApplicationGatewayHeaderConfiguration {
 
     /**
      * Get the headerName property: Header name of the header configuration.
-     * 
+     *
      * @return the headerName value.
      */
     public String headerName() {
@@ -42,7 +37,7 @@ public final class ApplicationGatewayHeaderConfiguration {
 
     /**
      * Set the headerName property: Header name of the header configuration.
-     * 
+     *
      * @param headerName the headerName value to set.
      * @return the ApplicationGatewayHeaderConfiguration object itself.
      */
@@ -53,7 +48,7 @@ public final class ApplicationGatewayHeaderConfiguration {
 
     /**
      * Get the headerValue property: Header value of the header configuration.
-     * 
+     *
      * @return the headerValue value.
      */
     public String headerValue() {
@@ -62,7 +57,7 @@ public final class ApplicationGatewayHeaderConfiguration {
 
     /**
      * Set the headerValue property: Header value of the header configuration.
-     * 
+     *
      * @param headerValue the headerValue value to set.
      * @return the ApplicationGatewayHeaderConfiguration object itself.
      */
@@ -73,7 +68,7 @@ public final class ApplicationGatewayHeaderConfiguration {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

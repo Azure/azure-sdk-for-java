@@ -8,8 +8,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
@@ -20,19 +18,18 @@ import com.azure.resourcemanager.network.models.TagsObject;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
-import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * ApplicationSecurityGroupsClient.
- */
-public interface ApplicationSecurityGroupsClient extends InnerSupportsGet<ApplicationSecurityGroupInner>, InnerSupportsListing<ApplicationSecurityGroupInner>, InnerSupportsDelete<Void> {
+/** An instance of this class provides access to all the operations defined in ApplicationSecurityGroupsClient. */
+public interface ApplicationSecurityGroupsClient
+    extends InnerSupportsGet<ApplicationSecurityGroupInner>,
+        InnerSupportsListing<ApplicationSecurityGroupInner>,
+        InnerSupportsDelete<Void> {
     /**
      * Deletes the specified application security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -41,11 +38,12 @@ public interface ApplicationSecurityGroupsClient extends InnerSupportsGet<Applic
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String applicationSecurityGroupName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String applicationSecurityGroupName);
 
     /**
      * Deletes the specified application security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -58,7 +56,7 @@ public interface ApplicationSecurityGroupsClient extends InnerSupportsGet<Applic
 
     /**
      * Deletes the specified application security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -71,7 +69,7 @@ public interface ApplicationSecurityGroupsClient extends InnerSupportsGet<Applic
 
     /**
      * Deletes the specified application security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @param context The context to associate with this operation.
@@ -81,11 +79,12 @@ public interface ApplicationSecurityGroupsClient extends InnerSupportsGet<Applic
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String applicationSecurityGroupName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String applicationSecurityGroupName, Context context);
 
     /**
      * Deletes the specified application security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -98,7 +97,7 @@ public interface ApplicationSecurityGroupsClient extends InnerSupportsGet<Applic
 
     /**
      * Deletes the specified application security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -110,7 +109,7 @@ public interface ApplicationSecurityGroupsClient extends InnerSupportsGet<Applic
 
     /**
      * Deletes the specified application security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @param context The context to associate with this operation.
@@ -123,7 +122,7 @@ public interface ApplicationSecurityGroupsClient extends InnerSupportsGet<Applic
 
     /**
      * Gets information about the specified application security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -132,11 +131,12 @@ public interface ApplicationSecurityGroupsClient extends InnerSupportsGet<Applic
      * @return information about the specified application security group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ApplicationSecurityGroupInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String applicationSecurityGroupName);
+    Mono<Response<ApplicationSecurityGroupInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String applicationSecurityGroupName);
 
     /**
      * Gets information about the specified application security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -145,11 +145,12 @@ public interface ApplicationSecurityGroupsClient extends InnerSupportsGet<Applic
      * @return information about the specified application security group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ApplicationSecurityGroupInner> getByResourceGroupAsync(String resourceGroupName, String applicationSecurityGroupName);
+    Mono<ApplicationSecurityGroupInner> getByResourceGroupAsync(
+        String resourceGroupName, String applicationSecurityGroupName);
 
     /**
      * Gets information about the specified application security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -162,7 +163,7 @@ public interface ApplicationSecurityGroupsClient extends InnerSupportsGet<Applic
 
     /**
      * Gets information about the specified application security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @param context The context to associate with this operation.
@@ -172,11 +173,12 @@ public interface ApplicationSecurityGroupsClient extends InnerSupportsGet<Applic
      * @return information about the specified application security group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplicationSecurityGroupInner> getByResourceGroupWithResponse(String resourceGroupName, String applicationSecurityGroupName, Context context);
+    Response<ApplicationSecurityGroupInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String applicationSecurityGroupName, Context context);
 
     /**
      * Creates or updates an application security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @param parameters Parameters supplied to the create or update ApplicationSecurityGroup operation.
@@ -186,11 +188,12 @@ public interface ApplicationSecurityGroupsClient extends InnerSupportsGet<Applic
      * @return an application security group in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String applicationSecurityGroupName, ApplicationSecurityGroupInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String applicationSecurityGroupName, ApplicationSecurityGroupInner parameters);
 
     /**
      * Creates or updates an application security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @param parameters Parameters supplied to the create or update ApplicationSecurityGroup operation.
@@ -200,11 +203,12 @@ public interface ApplicationSecurityGroupsClient extends InnerSupportsGet<Applic
      * @return an application security group in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<ApplicationSecurityGroupInner>, ApplicationSecurityGroupInner> beginCreateOrUpdateAsync(String resourceGroupName, String applicationSecurityGroupName, ApplicationSecurityGroupInner parameters);
+    PollerFlux<PollResult<ApplicationSecurityGroupInner>, ApplicationSecurityGroupInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String applicationSecurityGroupName, ApplicationSecurityGroupInner parameters);
 
     /**
      * Creates or updates an application security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @param parameters Parameters supplied to the create or update ApplicationSecurityGroup operation.
@@ -214,54 +218,12 @@ public interface ApplicationSecurityGroupsClient extends InnerSupportsGet<Applic
      * @return an application security group in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ApplicationSecurityGroupInner>, ApplicationSecurityGroupInner> beginCreateOrUpdate(String resourceGroupName, String applicationSecurityGroupName, ApplicationSecurityGroupInner parameters);
+    SyncPoller<PollResult<ApplicationSecurityGroupInner>, ApplicationSecurityGroupInner> beginCreateOrUpdate(
+        String resourceGroupName, String applicationSecurityGroupName, ApplicationSecurityGroupInner parameters);
 
     /**
      * Creates or updates an application security group.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param applicationSecurityGroupName The name of the application security group.
-     * @param parameters Parameters supplied to the create or update ApplicationSecurityGroup operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application security group in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ApplicationSecurityGroupInner>, ApplicationSecurityGroupInner> beginCreateOrUpdate(String resourceGroupName, String applicationSecurityGroupName, ApplicationSecurityGroupInner parameters, Context context);
-
-    /**
-     * Creates or updates an application security group.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param applicationSecurityGroupName The name of the application security group.
-     * @param parameters Parameters supplied to the create or update ApplicationSecurityGroup operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application security group in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ApplicationSecurityGroupInner> createOrUpdateAsync(String resourceGroupName, String applicationSecurityGroupName, ApplicationSecurityGroupInner parameters);
-
-    /**
-     * Creates or updates an application security group.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param applicationSecurityGroupName The name of the application security group.
-     * @param parameters Parameters supplied to the create or update ApplicationSecurityGroup operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application security group in a resource group.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationSecurityGroupInner createOrUpdate(String resourceGroupName, String applicationSecurityGroupName, ApplicationSecurityGroupInner parameters);
-
-    /**
-     * Creates or updates an application security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @param parameters Parameters supplied to the create or update ApplicationSecurityGroup operation.
@@ -272,11 +234,64 @@ public interface ApplicationSecurityGroupsClient extends InnerSupportsGet<Applic
      * @return an application security group in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationSecurityGroupInner createOrUpdate(String resourceGroupName, String applicationSecurityGroupName, ApplicationSecurityGroupInner parameters, Context context);
+    SyncPoller<PollResult<ApplicationSecurityGroupInner>, ApplicationSecurityGroupInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String applicationSecurityGroupName,
+        ApplicationSecurityGroupInner parameters,
+        Context context);
+
+    /**
+     * Creates or updates an application security group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationSecurityGroupName The name of the application security group.
+     * @param parameters Parameters supplied to the create or update ApplicationSecurityGroup operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an application security group in a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ApplicationSecurityGroupInner> createOrUpdateAsync(
+        String resourceGroupName, String applicationSecurityGroupName, ApplicationSecurityGroupInner parameters);
+
+    /**
+     * Creates or updates an application security group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationSecurityGroupName The name of the application security group.
+     * @param parameters Parameters supplied to the create or update ApplicationSecurityGroup operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an application security group in a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ApplicationSecurityGroupInner createOrUpdate(
+        String resourceGroupName, String applicationSecurityGroupName, ApplicationSecurityGroupInner parameters);
+
+    /**
+     * Creates or updates an application security group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param applicationSecurityGroupName The name of the application security group.
+     * @param parameters Parameters supplied to the create or update ApplicationSecurityGroup operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an application security group in a resource group.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ApplicationSecurityGroupInner createOrUpdate(
+        String resourceGroupName,
+        String applicationSecurityGroupName,
+        ApplicationSecurityGroupInner parameters,
+        Context context);
 
     /**
      * Updates an application security group's tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @param parameters Parameters supplied to update application security group tags.
@@ -286,11 +301,12 @@ public interface ApplicationSecurityGroupsClient extends InnerSupportsGet<Applic
      * @return an application security group in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(String resourceGroupName, String applicationSecurityGroupName, TagsObject parameters);
+    Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
+        String resourceGroupName, String applicationSecurityGroupName, TagsObject parameters);
 
     /**
      * Updates an application security group's tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @param parameters Parameters supplied to update application security group tags.
@@ -300,11 +316,12 @@ public interface ApplicationSecurityGroupsClient extends InnerSupportsGet<Applic
      * @return an application security group in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<ApplicationSecurityGroupInner>, ApplicationSecurityGroupInner> beginUpdateTagsAsync(String resourceGroupName, String applicationSecurityGroupName, TagsObject parameters);
+    PollerFlux<PollResult<ApplicationSecurityGroupInner>, ApplicationSecurityGroupInner> beginUpdateTagsAsync(
+        String resourceGroupName, String applicationSecurityGroupName, TagsObject parameters);
 
     /**
      * Updates an application security group's tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @param parameters Parameters supplied to update application security group tags.
@@ -314,11 +331,12 @@ public interface ApplicationSecurityGroupsClient extends InnerSupportsGet<Applic
      * @return an application security group in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ApplicationSecurityGroupInner>, ApplicationSecurityGroupInner> beginUpdateTags(String resourceGroupName, String applicationSecurityGroupName, TagsObject parameters);
+    SyncPoller<PollResult<ApplicationSecurityGroupInner>, ApplicationSecurityGroupInner> beginUpdateTags(
+        String resourceGroupName, String applicationSecurityGroupName, TagsObject parameters);
 
     /**
      * Updates an application security group's tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @param parameters Parameters supplied to update application security group tags.
@@ -329,11 +347,12 @@ public interface ApplicationSecurityGroupsClient extends InnerSupportsGet<Applic
      * @return an application security group in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ApplicationSecurityGroupInner>, ApplicationSecurityGroupInner> beginUpdateTags(String resourceGroupName, String applicationSecurityGroupName, TagsObject parameters, Context context);
+    SyncPoller<PollResult<ApplicationSecurityGroupInner>, ApplicationSecurityGroupInner> beginUpdateTags(
+        String resourceGroupName, String applicationSecurityGroupName, TagsObject parameters, Context context);
 
     /**
      * Updates an application security group's tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @param parameters Parameters supplied to update application security group tags.
@@ -343,11 +362,12 @@ public interface ApplicationSecurityGroupsClient extends InnerSupportsGet<Applic
      * @return an application security group in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ApplicationSecurityGroupInner> updateTagsAsync(String resourceGroupName, String applicationSecurityGroupName, TagsObject parameters);
+    Mono<ApplicationSecurityGroupInner> updateTagsAsync(
+        String resourceGroupName, String applicationSecurityGroupName, TagsObject parameters);
 
     /**
      * Updates an application security group's tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @param parameters Parameters supplied to update application security group tags.
@@ -357,11 +377,12 @@ public interface ApplicationSecurityGroupsClient extends InnerSupportsGet<Applic
      * @return an application security group in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationSecurityGroupInner updateTags(String resourceGroupName, String applicationSecurityGroupName, TagsObject parameters);
+    ApplicationSecurityGroupInner updateTags(
+        String resourceGroupName, String applicationSecurityGroupName, TagsObject parameters);
 
     /**
      * Updates an application security group's tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param applicationSecurityGroupName The name of the application security group.
      * @param parameters Parameters supplied to update application security group tags.
@@ -372,11 +393,12 @@ public interface ApplicationSecurityGroupsClient extends InnerSupportsGet<Applic
      * @return an application security group in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationSecurityGroupInner updateTags(String resourceGroupName, String applicationSecurityGroupName, TagsObject parameters, Context context);
+    ApplicationSecurityGroupInner updateTags(
+        String resourceGroupName, String applicationSecurityGroupName, TagsObject parameters, Context context);
 
     /**
      * Gets all application security groups in a subscription.
-     * 
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all application security groups in a subscription.
@@ -386,7 +408,7 @@ public interface ApplicationSecurityGroupsClient extends InnerSupportsGet<Applic
 
     /**
      * Gets all application security groups in a subscription.
-     * 
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all application security groups in a subscription.
@@ -396,7 +418,7 @@ public interface ApplicationSecurityGroupsClient extends InnerSupportsGet<Applic
 
     /**
      * Gets all application security groups in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -408,7 +430,7 @@ public interface ApplicationSecurityGroupsClient extends InnerSupportsGet<Applic
 
     /**
      * Gets all the application security groups in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -420,7 +442,7 @@ public interface ApplicationSecurityGroupsClient extends InnerSupportsGet<Applic
 
     /**
      * Gets all the application security groups in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -432,7 +454,7 @@ public interface ApplicationSecurityGroupsClient extends InnerSupportsGet<Applic
 
     /**
      * Gets all the application security groups in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

@@ -5,25 +5,18 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.DedicatedHostProperties;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Specifies information about the dedicated host. Only tags,
- * autoReplaceOnFailure and licenseType may be updated.
- */
+/** Specifies information about the dedicated host. Only tags, autoReplaceOnFailure and licenseType may be updated. */
 @Fluent
 public final class DedicatedHostUpdate extends UpdateResource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(DedicatedHostUpdate.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DedicatedHostUpdate.class);
 
     /*
      * Properties of the dedicated host.
@@ -33,16 +26,14 @@ public final class DedicatedHostUpdate extends UpdateResource {
 
     /**
      * Get the innerProperties property: Properties of the dedicated host.
-     * 
+     *
      * @return the innerProperties value.
      */
     private DedicatedHostProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public DedicatedHostUpdate withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -50,9 +41,8 @@ public final class DedicatedHostUpdate extends UpdateResource {
     }
 
     /**
-     * Get the platformFaultDomain property: Fault domain of the dedicated host
-     * within a dedicated host group.
-     * 
+     * Get the platformFaultDomain property: Fault domain of the dedicated host within a dedicated host group.
+     *
      * @return the platformFaultDomain value.
      */
     public Integer platformFaultDomain() {
@@ -60,9 +50,8 @@ public final class DedicatedHostUpdate extends UpdateResource {
     }
 
     /**
-     * Set the platformFaultDomain property: Fault domain of the dedicated host
-     * within a dedicated host group.
-     * 
+     * Set the platformFaultDomain property: Fault domain of the dedicated host within a dedicated host group.
+     *
      * @param platformFaultDomain the platformFaultDomain value to set.
      * @return the DedicatedHostUpdate object itself.
      */
@@ -75,10 +64,9 @@ public final class DedicatedHostUpdate extends UpdateResource {
     }
 
     /**
-     * Get the autoReplaceOnFailure property: Specifies whether the dedicated
-     * host should be replaced automatically in case of a failure. The value is
-     * defaulted to 'true' when not provided.
-     * 
+     * Get the autoReplaceOnFailure property: Specifies whether the dedicated host should be replaced automatically in
+     * case of a failure. The value is defaulted to 'true' when not provided.
+     *
      * @return the autoReplaceOnFailure value.
      */
     public Boolean autoReplaceOnFailure() {
@@ -86,10 +74,9 @@ public final class DedicatedHostUpdate extends UpdateResource {
     }
 
     /**
-     * Set the autoReplaceOnFailure property: Specifies whether the dedicated
-     * host should be replaced automatically in case of a failure. The value is
-     * defaulted to 'true' when not provided.
-     * 
+     * Set the autoReplaceOnFailure property: Specifies whether the dedicated host should be replaced automatically in
+     * case of a failure. The value is defaulted to 'true' when not provided.
+     *
      * @param autoReplaceOnFailure the autoReplaceOnFailure value to set.
      * @return the DedicatedHostUpdate object itself.
      */
@@ -102,10 +89,9 @@ public final class DedicatedHostUpdate extends UpdateResource {
     }
 
     /**
-     * Get the hostId property: A unique id generated and assigned to the
-     * dedicated host by the platform. &lt;br&gt;&lt;br&gt; Does not change
-     * throughout the lifetime of the host.
-     * 
+     * Get the hostId property: A unique id generated and assigned to the dedicated host by the platform.
+     * &lt;br&gt;&lt;br&gt; Does not change throughout the lifetime of the host.
+     *
      * @return the hostId value.
      */
     public String hostId() {
@@ -113,9 +99,8 @@ public final class DedicatedHostUpdate extends UpdateResource {
     }
 
     /**
-     * Get the virtualMachines property: A list of references to all virtual
-     * machines in the Dedicated Host.
-     * 
+     * Get the virtualMachines property: A list of references to all virtual machines in the Dedicated Host.
+     *
      * @return the virtualMachines value.
      */
     public List<SubResourceReadOnly> virtualMachines() {
@@ -123,12 +108,11 @@ public final class DedicatedHostUpdate extends UpdateResource {
     }
 
     /**
-     * Get the licenseType property: Specifies the software license type that
-     * will be applied to the VMs deployed on the dedicated host.
-     * &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **None**
-     * &lt;br&gt;&lt;br&gt; **Windows_Server_Hybrid** &lt;br&gt;&lt;br&gt;
-     * **Windows_Server_Perpetual** &lt;br&gt;&lt;br&gt; Default: **None**.
-     * 
+     * Get the licenseType property: Specifies the software license type that will be applied to the VMs deployed on the
+     * dedicated host. &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **None** &lt;br&gt;&lt;br&gt;
+     * **Windows_Server_Hybrid** &lt;br&gt;&lt;br&gt; **Windows_Server_Perpetual** &lt;br&gt;&lt;br&gt; Default:
+     * **None**.
+     *
      * @return the licenseType value.
      */
     public DedicatedHostLicenseTypes licenseType() {
@@ -136,12 +120,11 @@ public final class DedicatedHostUpdate extends UpdateResource {
     }
 
     /**
-     * Set the licenseType property: Specifies the software license type that
-     * will be applied to the VMs deployed on the dedicated host.
-     * &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **None**
-     * &lt;br&gt;&lt;br&gt; **Windows_Server_Hybrid** &lt;br&gt;&lt;br&gt;
-     * **Windows_Server_Perpetual** &lt;br&gt;&lt;br&gt; Default: **None**.
-     * 
+     * Set the licenseType property: Specifies the software license type that will be applied to the VMs deployed on the
+     * dedicated host. &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **None** &lt;br&gt;&lt;br&gt;
+     * **Windows_Server_Hybrid** &lt;br&gt;&lt;br&gt; **Windows_Server_Perpetual** &lt;br&gt;&lt;br&gt; Default:
+     * **None**.
+     *
      * @param licenseType the licenseType value to set.
      * @return the DedicatedHostUpdate object itself.
      */
@@ -154,9 +137,8 @@ public final class DedicatedHostUpdate extends UpdateResource {
     }
 
     /**
-     * Get the provisioningTime property: The date when the host was first
-     * provisioned.
-     * 
+     * Get the provisioningTime property: The date when the host was first provisioned.
+     *
      * @return the provisioningTime value.
      */
     public OffsetDateTime provisioningTime() {
@@ -164,9 +146,8 @@ public final class DedicatedHostUpdate extends UpdateResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state, which only
-     * appears in the response.
-     * 
+     * Get the provisioningState property: The provisioning state, which only appears in the response.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -175,7 +156,7 @@ public final class DedicatedHostUpdate extends UpdateResource {
 
     /**
      * Get the instanceView property: The dedicated host instance view.
-     * 
+     *
      * @return the instanceView value.
      */
     public DedicatedHostInstanceView instanceView() {
@@ -184,7 +165,7 @@ public final class DedicatedHostUpdate extends UpdateResource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

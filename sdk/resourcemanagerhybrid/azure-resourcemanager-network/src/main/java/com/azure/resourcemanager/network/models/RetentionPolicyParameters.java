@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Parameters that define the retention policy for flow log.
- */
+/** Parameters that define the retention policy for flow log. */
 @Fluent
 public final class RetentionPolicyParameters {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(RetentionPolicyParameters.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RetentionPolicyParameters.class);
 
     /*
      * Number of days to retain flow log records.
@@ -33,7 +28,7 @@ public final class RetentionPolicyParameters {
 
     /**
      * Get the days property: Number of days to retain flow log records.
-     * 
+     *
      * @return the days value.
      */
     public Integer days() {
@@ -42,7 +37,7 @@ public final class RetentionPolicyParameters {
 
     /**
      * Set the days property: Number of days to retain flow log records.
-     * 
+     *
      * @param days the days value to set.
      * @return the RetentionPolicyParameters object itself.
      */
@@ -53,7 +48,7 @@ public final class RetentionPolicyParameters {
 
     /**
      * Get the enabled property: Flag to enable/disable retention.
-     * 
+     *
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -62,7 +57,7 @@ public final class RetentionPolicyParameters {
 
     /**
      * Set the enabled property: Flag to enable/disable retention.
-     * 
+     *
      * @param enabled the enabled value to set.
      * @return the RetentionPolicyParameters object itself.
      */
@@ -73,7 +68,7 @@ public final class RetentionPolicyParameters {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

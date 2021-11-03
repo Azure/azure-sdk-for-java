@@ -5,20 +5,14 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Network configuration diagnostic result corresponded to provided traffic
- * query.
- */
+/** Network configuration diagnostic result corresponded to provided traffic query. */
 @Fluent
 public final class NetworkConfigurationDiagnosticResult {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(NetworkConfigurationDiagnosticResult.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkConfigurationDiagnosticResult.class);
 
     /*
      * Parameters to compare with network configuration.
@@ -34,9 +28,8 @@ public final class NetworkConfigurationDiagnosticResult {
     private NetworkSecurityGroupResult networkSecurityGroupResult;
 
     /**
-     * Get the profile property: Parameters to compare with network
-     * configuration.
-     * 
+     * Get the profile property: Parameters to compare with network configuration.
+     *
      * @return the profile value.
      */
     public NetworkConfigurationDiagnosticProfile profile() {
@@ -44,9 +37,8 @@ public final class NetworkConfigurationDiagnosticResult {
     }
 
     /**
-     * Set the profile property: Parameters to compare with network
-     * configuration.
-     * 
+     * Set the profile property: Parameters to compare with network configuration.
+     *
      * @param profile the profile value to set.
      * @return the NetworkConfigurationDiagnosticResult object itself.
      */
@@ -56,9 +48,9 @@ public final class NetworkConfigurationDiagnosticResult {
     }
 
     /**
-     * Get the networkSecurityGroupResult property: Network configuration
-     * diagnostic result corresponded provided traffic query.
-     * 
+     * Get the networkSecurityGroupResult property: Network configuration diagnostic result corresponded provided
+     * traffic query.
+     *
      * @return the networkSecurityGroupResult value.
      */
     public NetworkSecurityGroupResult networkSecurityGroupResult() {
@@ -66,21 +58,21 @@ public final class NetworkConfigurationDiagnosticResult {
     }
 
     /**
-     * Set the networkSecurityGroupResult property: Network configuration
-     * diagnostic result corresponded provided traffic query.
-     * 
-     * @param networkSecurityGroupResult the networkSecurityGroupResult value
-     * to set.
+     * Set the networkSecurityGroupResult property: Network configuration diagnostic result corresponded provided
+     * traffic query.
+     *
+     * @param networkSecurityGroupResult the networkSecurityGroupResult value to set.
      * @return the NetworkConfigurationDiagnosticResult object itself.
      */
-    public NetworkConfigurationDiagnosticResult withNetworkSecurityGroupResult(NetworkSecurityGroupResult networkSecurityGroupResult) {
+    public NetworkConfigurationDiagnosticResult withNetworkSecurityGroupResult(
+        NetworkSecurityGroupResult networkSecurityGroupResult) {
         this.networkSecurityGroupResult = networkSecurityGroupResult;
         return this;
     }
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.VirtualNetworkGatewayInner;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Response for the ListVirtualNetworkGateways API service call.
- */
+/** Response for the ListVirtualNetworkGateways API service call. */
 @Fluent
 public final class VirtualNetworkGatewayListResult {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(VirtualNetworkGatewayListResult.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkGatewayListResult.class);
 
     /*
      * Gets a list of VirtualNetworkGateway resources that exists in a resource
@@ -35,9 +30,8 @@ public final class VirtualNetworkGatewayListResult {
     private String nextLink;
 
     /**
-     * Get the value property: Gets a list of VirtualNetworkGateway resources
-     * that exists in a resource group.
-     * 
+     * Get the value property: Gets a list of VirtualNetworkGateway resources that exists in a resource group.
+     *
      * @return the value value.
      */
     public List<VirtualNetworkGatewayInner> value() {
@@ -45,9 +39,8 @@ public final class VirtualNetworkGatewayListResult {
     }
 
     /**
-     * Set the value property: Gets a list of VirtualNetworkGateway resources
-     * that exists in a resource group.
-     * 
+     * Set the value property: Gets a list of VirtualNetworkGateway resources that exists in a resource group.
+     *
      * @param value the value value to set.
      * @return the VirtualNetworkGatewayListResult object itself.
      */
@@ -58,7 +51,7 @@ public final class VirtualNetworkGatewayListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     * 
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -67,7 +60,7 @@ public final class VirtualNetworkGatewayListResult {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

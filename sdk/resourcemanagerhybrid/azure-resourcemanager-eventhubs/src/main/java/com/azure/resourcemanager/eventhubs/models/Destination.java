@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.fluent.models.DestinationProperties;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Capture storage details for capture description.
- */
+/** Capture storage details for capture description. */
 @Fluent
 public final class Destination {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(Destination.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(Destination.class);
 
     /*
      * Name for capture destination
@@ -35,7 +30,7 @@ public final class Destination {
 
     /**
      * Get the name property: Name for capture destination.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -44,7 +39,7 @@ public final class Destination {
 
     /**
      * Set the name property: Name for capture destination.
-     * 
+     *
      * @param name the name value to set.
      * @return the Destination object itself.
      */
@@ -54,9 +49,9 @@ public final class Destination {
     }
 
     /**
-     * Get the innerProperties property: Properties describing the storage
-     * account, blob container and archive name format for capture destination.
-     * 
+     * Get the innerProperties property: Properties describing the storage account, blob container and archive name
+     * format for capture destination.
+     *
      * @return the innerProperties value.
      */
     private DestinationProperties innerProperties() {
@@ -64,9 +59,8 @@ public final class Destination {
     }
 
     /**
-     * Get the storageAccountResourceId property: Resource id of the storage
-     * account to be used to create the blobs.
-     * 
+     * Get the storageAccountResourceId property: Resource id of the storage account to be used to create the blobs.
+     *
      * @return the storageAccountResourceId value.
      */
     public String storageAccountResourceId() {
@@ -74,11 +68,9 @@ public final class Destination {
     }
 
     /**
-     * Set the storageAccountResourceId property: Resource id of the storage
-     * account to be used to create the blobs.
-     * 
-     * @param storageAccountResourceId the storageAccountResourceId value to
-     * set.
+     * Set the storageAccountResourceId property: Resource id of the storage account to be used to create the blobs.
+     *
+     * @param storageAccountResourceId the storageAccountResourceId value to set.
      * @return the Destination object itself.
      */
     public Destination withStorageAccountResourceId(String storageAccountResourceId) {
@@ -91,7 +83,7 @@ public final class Destination {
 
     /**
      * Get the blobContainer property: Blob container Name.
-     * 
+     *
      * @return the blobContainer value.
      */
     public String blobContainer() {
@@ -100,7 +92,7 @@ public final class Destination {
 
     /**
      * Set the blobContainer property: Blob container Name.
-     * 
+     *
      * @param blobContainer the blobContainer value to set.
      * @return the Destination object itself.
      */
@@ -113,12 +105,10 @@ public final class Destination {
     }
 
     /**
-     * Get the archiveNameFormat property: Blob naming convention for archive,
-     * e.g.
-     * {Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}.
-     * Here all the parameters (Namespace,EventHub .. etc) are mandatory
-     * irrespective of order.
-     * 
+     * Get the archiveNameFormat property: Blob naming convention for archive, e.g.
+     * {Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}. Here all the parameters
+     * (Namespace,EventHub .. etc) are mandatory irrespective of order.
+     *
      * @return the archiveNameFormat value.
      */
     public String archiveNameFormat() {
@@ -126,12 +116,10 @@ public final class Destination {
     }
 
     /**
-     * Set the archiveNameFormat property: Blob naming convention for archive,
-     * e.g.
-     * {Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}.
-     * Here all the parameters (Namespace,EventHub .. etc) are mandatory
-     * irrespective of order.
-     * 
+     * Set the archiveNameFormat property: Blob naming convention for archive, e.g.
+     * {Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}. Here all the parameters
+     * (Namespace,EventHub .. etc) are mandatory irrespective of order.
+     *
      * @param archiveNameFormat the archiveNameFormat value to set.
      * @return the Destination object itself.
      */
@@ -145,7 +133,7 @@ public final class Destination {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

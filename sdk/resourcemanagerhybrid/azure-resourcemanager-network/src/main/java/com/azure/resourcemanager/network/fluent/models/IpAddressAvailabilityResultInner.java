@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Response for CheckIPAddressAvailability API service call.
- */
+/** Response for CheckIPAddressAvailability API service call. */
 @Fluent
 public final class IpAddressAvailabilityResultInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(IpAddressAvailabilityResultInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(IpAddressAvailabilityResultInner.class);
 
     /*
      * Private IP address availability.
@@ -35,7 +30,7 @@ public final class IpAddressAvailabilityResultInner {
 
     /**
      * Get the available property: Private IP address availability.
-     * 
+     *
      * @return the available value.
      */
     public Boolean available() {
@@ -44,7 +39,7 @@ public final class IpAddressAvailabilityResultInner {
 
     /**
      * Set the available property: Private IP address availability.
-     * 
+     *
      * @param available the available value to set.
      * @return the IpAddressAvailabilityResultInner object itself.
      */
@@ -54,9 +49,9 @@ public final class IpAddressAvailabilityResultInner {
     }
 
     /**
-     * Get the availableIpAddresses property: Contains other available private
-     * IP addresses if the asked for address is taken.
-     * 
+     * Get the availableIpAddresses property: Contains other available private IP addresses if the asked for address is
+     * taken.
+     *
      * @return the availableIpAddresses value.
      */
     public List<String> availableIpAddresses() {
@@ -64,9 +59,9 @@ public final class IpAddressAvailabilityResultInner {
     }
 
     /**
-     * Set the availableIpAddresses property: Contains other available private
-     * IP addresses if the asked for address is taken.
-     * 
+     * Set the availableIpAddresses property: Contains other available private IP addresses if the asked for address is
+     * taken.
+     *
      * @param availableIpAddresses the availableIpAddresses value to set.
      * @return the IpAddressAvailabilityResultInner object itself.
      */
@@ -77,7 +72,7 @@ public final class IpAddressAvailabilityResultInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

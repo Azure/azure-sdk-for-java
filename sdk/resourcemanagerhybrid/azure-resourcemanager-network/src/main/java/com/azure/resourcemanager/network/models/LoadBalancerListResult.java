@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.LoadBalancerInner;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Response for ListLoadBalancers API service call.
- */
+/** Response for ListLoadBalancers API service call. */
 @Fluent
 public final class LoadBalancerListResult {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(LoadBalancerListResult.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(LoadBalancerListResult.class);
 
     /*
      * A list of load balancers in a resource group.
@@ -35,7 +30,7 @@ public final class LoadBalancerListResult {
 
     /**
      * Get the value property: A list of load balancers in a resource group.
-     * 
+     *
      * @return the value value.
      */
     public List<LoadBalancerInner> value() {
@@ -44,7 +39,7 @@ public final class LoadBalancerListResult {
 
     /**
      * Set the value property: A list of load balancers in a resource group.
-     * 
+     *
      * @param value the value value to set.
      * @return the LoadBalancerListResult object itself.
      */
@@ -55,7 +50,7 @@ public final class LoadBalancerListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     * 
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -64,7 +59,7 @@ public final class LoadBalancerListResult {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

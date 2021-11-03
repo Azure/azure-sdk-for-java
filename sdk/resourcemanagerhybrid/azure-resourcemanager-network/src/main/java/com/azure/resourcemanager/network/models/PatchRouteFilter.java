@@ -5,26 +5,21 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteCircuitPeeringInner;
 import com.azure.resourcemanager.network.fluent.models.RouteFilterPropertiesFormat;
 import com.azure.resourcemanager.network.fluent.models.RouteFilterRuleInner;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Route Filter Resource.
- */
+/** Route Filter Resource. */
 @Fluent
 public final class PatchRouteFilter extends SubResource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(PatchRouteFilter.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PatchRouteFilter.class);
 
     /*
      * Route Filter Resource
@@ -60,7 +55,7 @@ public final class PatchRouteFilter extends SubResource {
 
     /**
      * Get the innerProperties property: Route Filter Resource.
-     * 
+     *
      * @return the innerProperties value.
      */
     private RouteFilterPropertiesFormat innerProperties() {
@@ -68,9 +63,9 @@ public final class PatchRouteFilter extends SubResource {
     }
 
     /**
-     * Get the name property: The name of the resource that is unique within a
-     * resource group. This name can be used to access the resource.
-     * 
+     * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
+     * access the resource.
+     *
      * @return the name value.
      */
     public String name() {
@@ -78,9 +73,8 @@ public final class PatchRouteFilter extends SubResource {
     }
 
     /**
-     * Get the etag property: A unique read-only string that changes whenever
-     * the resource is updated.
-     * 
+     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -89,7 +83,7 @@ public final class PatchRouteFilter extends SubResource {
 
     /**
      * Get the type property: Resource type.
-     * 
+     *
      * @return the type value.
      */
     public String type() {
@@ -98,7 +92,7 @@ public final class PatchRouteFilter extends SubResource {
 
     /**
      * Get the tags property: Resource tags.
-     * 
+     *
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -107,7 +101,7 @@ public final class PatchRouteFilter extends SubResource {
 
     /**
      * Set the tags property: Resource tags.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the PatchRouteFilter object itself.
      */
@@ -116,9 +110,7 @@ public final class PatchRouteFilter extends SubResource {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public PatchRouteFilter withId(String id) {
         super.withId(id);
@@ -126,9 +118,8 @@ public final class PatchRouteFilter extends SubResource {
     }
 
     /**
-     * Get the rules property: Collection of RouteFilterRules contained within
-     * a route filter.
-     * 
+     * Get the rules property: Collection of RouteFilterRules contained within a route filter.
+     *
      * @return the rules value.
      */
     public List<RouteFilterRuleInner> rules() {
@@ -136,9 +127,8 @@ public final class PatchRouteFilter extends SubResource {
     }
 
     /**
-     * Set the rules property: Collection of RouteFilterRules contained within
-     * a route filter.
-     * 
+     * Set the rules property: Collection of RouteFilterRules contained within a route filter.
+     *
      * @param rules the rules value to set.
      * @return the PatchRouteFilter object itself.
      */
@@ -151,9 +141,8 @@ public final class PatchRouteFilter extends SubResource {
     }
 
     /**
-     * Get the peerings property: A collection of references to express route
-     * circuit peerings.
-     * 
+     * Get the peerings property: A collection of references to express route circuit peerings.
+     *
      * @return the peerings value.
      */
     public List<ExpressRouteCircuitPeeringInner> peerings() {
@@ -161,9 +150,8 @@ public final class PatchRouteFilter extends SubResource {
     }
 
     /**
-     * Set the peerings property: A collection of references to express route
-     * circuit peerings.
-     * 
+     * Set the peerings property: A collection of references to express route circuit peerings.
+     *
      * @param peerings the peerings value to set.
      * @return the PatchRouteFilter object itself.
      */
@@ -176,10 +164,9 @@ public final class PatchRouteFilter extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the
-     * resource. Possible values are: 'Updating', 'Deleting', 'Succeeded' and
-     * 'Failed'.
-     * 
+     * Get the provisioningState property: The provisioning state of the resource. Possible values are: 'Updating',
+     * 'Deleting', 'Succeeded' and 'Failed'.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -188,7 +175,7 @@ public final class PatchRouteFilter extends SubResource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

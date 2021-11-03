@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Deployment dependency information.
- */
+/** Deployment dependency information. */
 @Fluent
 public final class BasicDependency {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(BasicDependency.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(BasicDependency.class);
 
     /*
      * The ID of the dependency.
@@ -39,7 +34,7 @@ public final class BasicDependency {
 
     /**
      * Get the id property: The ID of the dependency.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -48,7 +43,7 @@ public final class BasicDependency {
 
     /**
      * Set the id property: The ID of the dependency.
-     * 
+     *
      * @param id the id value to set.
      * @return the BasicDependency object itself.
      */
@@ -59,7 +54,7 @@ public final class BasicDependency {
 
     /**
      * Get the resourceType property: The dependency resource type.
-     * 
+     *
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -68,7 +63,7 @@ public final class BasicDependency {
 
     /**
      * Set the resourceType property: The dependency resource type.
-     * 
+     *
      * @param resourceType the resourceType value to set.
      * @return the BasicDependency object itself.
      */
@@ -79,7 +74,7 @@ public final class BasicDependency {
 
     /**
      * Get the resourceName property: The dependency resource name.
-     * 
+     *
      * @return the resourceName value.
      */
     public String resourceName() {
@@ -88,7 +83,7 @@ public final class BasicDependency {
 
     /**
      * Set the resourceName property: The dependency resource name.
-     * 
+     *
      * @param resourceName the resourceName value to set.
      * @return the BasicDependency object itself.
      */
@@ -99,7 +94,7 @@ public final class BasicDependency {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

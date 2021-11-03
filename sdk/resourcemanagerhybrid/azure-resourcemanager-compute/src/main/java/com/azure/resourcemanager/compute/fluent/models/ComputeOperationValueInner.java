@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Describes the properties of a Compute Operation value.
- */
+/** Describes the properties of a Compute Operation value. */
 @Fluent
 public final class ComputeOperationValueInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ComputeOperationValueInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ComputeOperationValueInner.class);
 
     /*
      * The origin of the compute operation.
@@ -39,7 +34,7 @@ public final class ComputeOperationValueInner {
 
     /**
      * Get the origin property: The origin of the compute operation.
-     * 
+     *
      * @return the origin value.
      */
     public String origin() {
@@ -48,7 +43,7 @@ public final class ComputeOperationValueInner {
 
     /**
      * Get the name property: The name of the compute operation.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -56,9 +51,8 @@ public final class ComputeOperationValueInner {
     }
 
     /**
-     * Get the innerDisplay property: Describes the properties of a Compute
-     * Operation Value Display.
-     * 
+     * Get the innerDisplay property: Describes the properties of a Compute Operation Value Display.
+     *
      * @return the innerDisplay value.
      */
     private ComputeOperationValueDisplay innerDisplay() {
@@ -67,7 +61,7 @@ public final class ComputeOperationValueInner {
 
     /**
      * Get the operation property: The display name of the compute operation.
-     * 
+     *
      * @return the operation value.
      */
     public String operation() {
@@ -75,9 +69,8 @@ public final class ComputeOperationValueInner {
     }
 
     /**
-     * Get the resource property: The display name of the resource the
-     * operation applies to.
-     * 
+     * Get the resource property: The display name of the resource the operation applies to.
+     *
      * @return the resource value.
      */
     public String resource() {
@@ -86,7 +79,7 @@ public final class ComputeOperationValueInner {
 
     /**
      * Get the description property: The description of the operation.
-     * 
+     *
      * @return the description value.
      */
     public String description() {
@@ -95,7 +88,7 @@ public final class ComputeOperationValueInner {
 
     /**
      * Get the provider property: The resource provider for the operation.
-     * 
+     *
      * @return the provider value.
      */
     public String provider() {
@@ -104,7 +97,7 @@ public final class ComputeOperationValueInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

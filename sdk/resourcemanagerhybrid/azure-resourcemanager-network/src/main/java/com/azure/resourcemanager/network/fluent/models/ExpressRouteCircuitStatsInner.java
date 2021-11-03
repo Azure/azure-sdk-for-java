@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Contains stats associated with the peering.
- */
+/** Contains stats associated with the peering. */
 @Fluent
 public final class ExpressRouteCircuitStatsInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitStatsInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitStatsInner.class);
 
     /*
      * Gets BytesIn of the peering.
@@ -45,7 +40,7 @@ public final class ExpressRouteCircuitStatsInner {
 
     /**
      * Get the primarybytesIn property: Gets BytesIn of the peering.
-     * 
+     *
      * @return the primarybytesIn value.
      */
     public Long primarybytesIn() {
@@ -54,7 +49,7 @@ public final class ExpressRouteCircuitStatsInner {
 
     /**
      * Set the primarybytesIn property: Gets BytesIn of the peering.
-     * 
+     *
      * @param primarybytesIn the primarybytesIn value to set.
      * @return the ExpressRouteCircuitStatsInner object itself.
      */
@@ -65,7 +60,7 @@ public final class ExpressRouteCircuitStatsInner {
 
     /**
      * Get the primarybytesOut property: Gets BytesOut of the peering.
-     * 
+     *
      * @return the primarybytesOut value.
      */
     public Long primarybytesOut() {
@@ -74,7 +69,7 @@ public final class ExpressRouteCircuitStatsInner {
 
     /**
      * Set the primarybytesOut property: Gets BytesOut of the peering.
-     * 
+     *
      * @param primarybytesOut the primarybytesOut value to set.
      * @return the ExpressRouteCircuitStatsInner object itself.
      */
@@ -85,7 +80,7 @@ public final class ExpressRouteCircuitStatsInner {
 
     /**
      * Get the secondarybytesIn property: Gets BytesIn of the peering.
-     * 
+     *
      * @return the secondarybytesIn value.
      */
     public Long secondarybytesIn() {
@@ -94,7 +89,7 @@ public final class ExpressRouteCircuitStatsInner {
 
     /**
      * Set the secondarybytesIn property: Gets BytesIn of the peering.
-     * 
+     *
      * @param secondarybytesIn the secondarybytesIn value to set.
      * @return the ExpressRouteCircuitStatsInner object itself.
      */
@@ -105,7 +100,7 @@ public final class ExpressRouteCircuitStatsInner {
 
     /**
      * Get the secondarybytesOut property: Gets BytesOut of the peering.
-     * 
+     *
      * @return the secondarybytesOut value.
      */
     public Long secondarybytesOut() {
@@ -114,7 +109,7 @@ public final class ExpressRouteCircuitStatsInner {
 
     /**
      * Set the secondarybytesOut property: Gets BytesOut of the peering.
-     * 
+     *
      * @param secondarybytesOut the secondarybytesOut value to set.
      * @return the ExpressRouteCircuitStatsInner object itself.
      */
@@ -125,7 +120,7 @@ public final class ExpressRouteCircuitStatsInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

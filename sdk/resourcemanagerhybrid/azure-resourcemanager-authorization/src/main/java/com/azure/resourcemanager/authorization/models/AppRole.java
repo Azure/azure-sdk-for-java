@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The AppRole model.
- */
+/** The AppRole model. */
 @Fluent
 public final class AppRole {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(AppRole.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AppRole.class);
 
     /*
      * Unique role identifier inside the appRoles collection.
@@ -65,9 +60,8 @@ public final class AppRole {
     private String value;
 
     /**
-     * Get the id property: Unique role identifier inside the appRoles
-     * collection.
-     * 
+     * Get the id property: Unique role identifier inside the appRoles collection.
+     *
      * @return the id value.
      */
     public String id() {
@@ -75,9 +69,8 @@ public final class AppRole {
     }
 
     /**
-     * Set the id property: Unique role identifier inside the appRoles
-     * collection.
-     * 
+     * Set the id property: Unique role identifier inside the appRoles collection.
+     *
      * @param id the id value to set.
      * @return the AppRole object itself.
      */
@@ -87,11 +80,10 @@ public final class AppRole {
     }
 
     /**
-     * Get the allowedMemberTypes property: Specifies whether this app role
-     * definition can be assigned to users and groups by setting to 'User', or
-     * to other applications (that are accessing this application in daemon
-     * service scenarios) by setting to 'Application', or to both.
-     * 
+     * Get the allowedMemberTypes property: Specifies whether this app role definition can be assigned to users and
+     * groups by setting to 'User', or to other applications (that are accessing this application in daemon service
+     * scenarios) by setting to 'Application', or to both.
+     *
      * @return the allowedMemberTypes value.
      */
     public List<String> allowedMemberTypes() {
@@ -99,11 +91,10 @@ public final class AppRole {
     }
 
     /**
-     * Set the allowedMemberTypes property: Specifies whether this app role
-     * definition can be assigned to users and groups by setting to 'User', or
-     * to other applications (that are accessing this application in daemon
-     * service scenarios) by setting to 'Application', or to both.
-     * 
+     * Set the allowedMemberTypes property: Specifies whether this app role definition can be assigned to users and
+     * groups by setting to 'User', or to other applications (that are accessing this application in daemon service
+     * scenarios) by setting to 'Application', or to both.
+     *
      * @param allowedMemberTypes the allowedMemberTypes value to set.
      * @return the AppRole object itself.
      */
@@ -113,9 +104,9 @@ public final class AppRole {
     }
 
     /**
-     * Get the description property: Permission help text that appears in the
-     * admin app assignment and consent experiences.
-     * 
+     * Get the description property: Permission help text that appears in the admin app assignment and consent
+     * experiences.
+     *
      * @return the description value.
      */
     public String description() {
@@ -123,9 +114,9 @@ public final class AppRole {
     }
 
     /**
-     * Set the description property: Permission help text that appears in the
-     * admin app assignment and consent experiences.
-     * 
+     * Set the description property: Permission help text that appears in the admin app assignment and consent
+     * experiences.
+     *
      * @param description the description value to set.
      * @return the AppRole object itself.
      */
@@ -135,9 +126,9 @@ public final class AppRole {
     }
 
     /**
-     * Get the displayName property: Display name for the permission that
-     * appears in the admin consent and app assignment experiences.
-     * 
+     * Get the displayName property: Display name for the permission that appears in the admin consent and app
+     * assignment experiences.
+     *
      * @return the displayName value.
      */
     public String displayName() {
@@ -145,9 +136,9 @@ public final class AppRole {
     }
 
     /**
-     * Set the displayName property: Display name for the permission that
-     * appears in the admin consent and app assignment experiences.
-     * 
+     * Set the displayName property: Display name for the permission that appears in the admin consent and app
+     * assignment experiences.
+     *
      * @param displayName the displayName value to set.
      * @return the AppRole object itself.
      */
@@ -157,11 +148,10 @@ public final class AppRole {
     }
 
     /**
-     * Get the isEnabled property: When creating or updating a role definition,
-     * this must be set to true (which is the default). To delete a role, this
-     * must first be set to false. At that point, in a subsequent call, this
-     * role may be removed.
-     * 
+     * Get the isEnabled property: When creating or updating a role definition, this must be set to true (which is the
+     * default). To delete a role, this must first be set to false. At that point, in a subsequent call, this role may
+     * be removed.
+     *
      * @return the isEnabled value.
      */
     public Boolean isEnabled() {
@@ -169,11 +159,10 @@ public final class AppRole {
     }
 
     /**
-     * Set the isEnabled property: When creating or updating a role definition,
-     * this must be set to true (which is the default). To delete a role, this
-     * must first be set to false. At that point, in a subsequent call, this
-     * role may be removed.
-     * 
+     * Set the isEnabled property: When creating or updating a role definition, this must be set to true (which is the
+     * default). To delete a role, this must first be set to false. At that point, in a subsequent call, this role may
+     * be removed.
+     *
      * @param isEnabled the isEnabled value to set.
      * @return the AppRole object itself.
      */
@@ -183,9 +172,9 @@ public final class AppRole {
     }
 
     /**
-     * Get the value property: Specifies the value of the roles claim that the
-     * application should expect in the authentication and access tokens.
-     * 
+     * Get the value property: Specifies the value of the roles claim that the application should expect in the
+     * authentication and access tokens.
+     *
      * @return the value value.
      */
     public String value() {
@@ -193,9 +182,9 @@ public final class AppRole {
     }
 
     /**
-     * Set the value property: Specifies the value of the roles claim that the
-     * application should expect in the authentication and access tokens.
-     * 
+     * Set the value property: Specifies the value of the roles claim that the application should expect in the
+     * authentication and access tokens.
+     *
      * @param value the value value to set.
      * @return the AppRole object itself.
      */
@@ -206,7 +195,7 @@ public final class AppRole {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

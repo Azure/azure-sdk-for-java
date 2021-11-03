@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Collection of SecurityProviders.
- */
+/** Collection of SecurityProviders. */
 @Fluent
 public final class VirtualWanSecurityProvider {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(VirtualWanSecurityProvider.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualWanSecurityProvider.class);
 
     /*
      * Name of the security provider.
@@ -39,7 +34,7 @@ public final class VirtualWanSecurityProvider {
 
     /**
      * Get the name property: Name of the security provider.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -48,7 +43,7 @@ public final class VirtualWanSecurityProvider {
 
     /**
      * Set the name property: Name of the security provider.
-     * 
+     *
      * @param name the name value to set.
      * @return the VirtualWanSecurityProvider object itself.
      */
@@ -59,7 +54,7 @@ public final class VirtualWanSecurityProvider {
 
     /**
      * Get the url property: Url of the security provider.
-     * 
+     *
      * @return the url value.
      */
     public String url() {
@@ -68,7 +63,7 @@ public final class VirtualWanSecurityProvider {
 
     /**
      * Set the url property: Url of the security provider.
-     * 
+     *
      * @param url the url value to set.
      * @return the VirtualWanSecurityProvider object itself.
      */
@@ -79,7 +74,7 @@ public final class VirtualWanSecurityProvider {
 
     /**
      * Get the type property: Name of the security provider.
-     * 
+     *
      * @return the type value.
      */
     public VirtualWanSecurityProviderType type() {
@@ -88,7 +83,7 @@ public final class VirtualWanSecurityProvider {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Encryption settings for disk or snapshot.
- */
+/** Encryption settings for disk or snapshot. */
 @Fluent
 public final class EncryptionSettingsCollection {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(EncryptionSettingsCollection.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(EncryptionSettingsCollection.class);
 
     /*
      * Set this flag to true and provide DiskEncryptionKey and optional
@@ -45,12 +40,10 @@ public final class EncryptionSettingsCollection {
     private String encryptionSettingsVersion;
 
     /**
-     * Get the enabled property: Set this flag to true and provide
-     * DiskEncryptionKey and optional KeyEncryptionKey to enable encryption.
-     * Set this flag to false and remove DiskEncryptionKey and KeyEncryptionKey
-     * to disable encryption. If EncryptionSettings is null in the request
-     * object, the existing settings remain unchanged.
-     * 
+     * Get the enabled property: Set this flag to true and provide DiskEncryptionKey and optional KeyEncryptionKey to
+     * enable encryption. Set this flag to false and remove DiskEncryptionKey and KeyEncryptionKey to disable
+     * encryption. If EncryptionSettings is null in the request object, the existing settings remain unchanged.
+     *
      * @return the enabled value.
      */
     public boolean enabled() {
@@ -58,12 +51,10 @@ public final class EncryptionSettingsCollection {
     }
 
     /**
-     * Set the enabled property: Set this flag to true and provide
-     * DiskEncryptionKey and optional KeyEncryptionKey to enable encryption.
-     * Set this flag to false and remove DiskEncryptionKey and KeyEncryptionKey
-     * to disable encryption. If EncryptionSettings is null in the request
-     * object, the existing settings remain unchanged.
-     * 
+     * Set the enabled property: Set this flag to true and provide DiskEncryptionKey and optional KeyEncryptionKey to
+     * enable encryption. Set this flag to false and remove DiskEncryptionKey and KeyEncryptionKey to disable
+     * encryption. If EncryptionSettings is null in the request object, the existing settings remain unchanged.
+     *
      * @param enabled the enabled value to set.
      * @return the EncryptionSettingsCollection object itself.
      */
@@ -73,9 +64,8 @@ public final class EncryptionSettingsCollection {
     }
 
     /**
-     * Get the encryptionSettings property: A collection of encryption
-     * settings, one for each disk volume.
-     * 
+     * Get the encryptionSettings property: A collection of encryption settings, one for each disk volume.
+     *
      * @return the encryptionSettings value.
      */
     public List<EncryptionSettingsElement> encryptionSettings() {
@@ -83,9 +73,8 @@ public final class EncryptionSettingsCollection {
     }
 
     /**
-     * Set the encryptionSettings property: A collection of encryption
-     * settings, one for each disk volume.
-     * 
+     * Set the encryptionSettings property: A collection of encryption settings, one for each disk volume.
+     *
      * @param encryptionSettings the encryptionSettings value to set.
      * @return the EncryptionSettingsCollection object itself.
      */
@@ -95,11 +84,10 @@ public final class EncryptionSettingsCollection {
     }
 
     /**
-     * Get the encryptionSettingsVersion property: Describes what type of
-     * encryption is used for the disks. Once this field is set, it cannot be
-     * overwritten. '1.0' corresponds to Azure Disk Encryption with AAD
-     * app.'1.1' corresponds to Azure Disk Encryption.
-     * 
+     * Get the encryptionSettingsVersion property: Describes what type of encryption is used for the disks. Once this
+     * field is set, it cannot be overwritten. '1.0' corresponds to Azure Disk Encryption with AAD app.'1.1' corresponds
+     * to Azure Disk Encryption.
+     *
      * @return the encryptionSettingsVersion value.
      */
     public String encryptionSettingsVersion() {
@@ -107,13 +95,11 @@ public final class EncryptionSettingsCollection {
     }
 
     /**
-     * Set the encryptionSettingsVersion property: Describes what type of
-     * encryption is used for the disks. Once this field is set, it cannot be
-     * overwritten. '1.0' corresponds to Azure Disk Encryption with AAD
-     * app.'1.1' corresponds to Azure Disk Encryption.
-     * 
-     * @param encryptionSettingsVersion the encryptionSettingsVersion value to
-     * set.
+     * Set the encryptionSettingsVersion property: Describes what type of encryption is used for the disks. Once this
+     * field is set, it cannot be overwritten. '1.0' corresponds to Azure Disk Encryption with AAD app.'1.1' corresponds
+     * to Azure Disk Encryption.
+     *
+     * @param encryptionSettingsVersion the encryptionSettingsVersion value to set.
      * @return the EncryptionSettingsCollection object itself.
      */
     public EncryptionSettingsCollection withEncryptionSettingsVersion(String encryptionSettingsVersion) {
@@ -123,7 +109,7 @@ public final class EncryptionSettingsCollection {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

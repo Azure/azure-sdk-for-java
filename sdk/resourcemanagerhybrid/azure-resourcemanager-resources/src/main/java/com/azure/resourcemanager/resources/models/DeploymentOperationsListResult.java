@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluent.models.DeploymentOperationInner;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * List of deployment operations.
- */
+/** List of deployment operations. */
 @Fluent
 public final class DeploymentOperationsListResult {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(DeploymentOperationsListResult.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentOperationsListResult.class);
 
     /*
      * An array of deployment operations.
@@ -35,7 +30,7 @@ public final class DeploymentOperationsListResult {
 
     /**
      * Get the value property: An array of deployment operations.
-     * 
+     *
      * @return the value value.
      */
     public List<DeploymentOperationInner> value() {
@@ -44,7 +39,7 @@ public final class DeploymentOperationsListResult {
 
     /**
      * Set the value property: An array of deployment operations.
-     * 
+     *
      * @param value the value value to set.
      * @return the DeploymentOperationsListResult object itself.
      */
@@ -54,9 +49,8 @@ public final class DeploymentOperationsListResult {
     }
 
     /**
-     * Get the nextLink property: The URL to use for getting the next set of
-     * results.
-     * 
+     * Get the nextLink property: The URL to use for getting the next set of results.
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -65,7 +59,7 @@ public final class DeploymentOperationsListResult {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

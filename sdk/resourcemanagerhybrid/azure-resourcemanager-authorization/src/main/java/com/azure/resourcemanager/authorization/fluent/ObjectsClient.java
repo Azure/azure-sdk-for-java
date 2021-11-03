@@ -8,21 +8,16 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.authorization.fluent.models.DirectoryObjectInner;
 import com.azure.resourcemanager.authorization.models.GetObjectsParameters;
-import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * ObjectsClient.
- */
+/** An instance of this class provides access to all the operations defined in ObjectsClient. */
 public interface ObjectsClient {
     /**
-     * Gets the directory objects specified in a list of object IDs. You can also specify which resource collections (users, groups, etc.) should be searched by specifying the optional types parameter.
-     * 
+     * Gets the directory objects specified in a list of object IDs. You can also specify which resource collections
+     * (users, groups, etc.) should be searched by specifying the optional types parameter.
+     *
      * @param tenantId The tenant ID.
      * @param parameters Objects filtering parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -34,8 +29,9 @@ public interface ObjectsClient {
     PagedFlux<DirectoryObjectInner> getObjectsByObjectIdsAsync(String tenantId, GetObjectsParameters parameters);
 
     /**
-     * Gets the directory objects specified in a list of object IDs. You can also specify which resource collections (users, groups, etc.) should be searched by specifying the optional types parameter.
-     * 
+     * Gets the directory objects specified in a list of object IDs. You can also specify which resource collections
+     * (users, groups, etc.) should be searched by specifying the optional types parameter.
+     *
      * @param tenantId The tenant ID.
      * @param parameters Objects filtering parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -47,8 +43,9 @@ public interface ObjectsClient {
     PagedIterable<DirectoryObjectInner> getObjectsByObjectIds(String tenantId, GetObjectsParameters parameters);
 
     /**
-     * Gets the directory objects specified in a list of object IDs. You can also specify which resource collections (users, groups, etc.) should be searched by specifying the optional types parameter.
-     * 
+     * Gets the directory objects specified in a list of object IDs. You can also specify which resource collections
+     * (users, groups, etc.) should be searched by specifying the optional types parameter.
+     *
      * @param tenantId The tenant ID.
      * @param parameters Objects filtering parameters.
      * @param context The context to associate with this operation.
@@ -58,5 +55,6 @@ public interface ObjectsClient {
      * @return the directory objects specified in a list of object IDs.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DirectoryObjectInner> getObjectsByObjectIds(String tenantId, GetObjectsParameters parameters, Context context);
+    PagedIterable<DirectoryObjectInner> getObjectsByObjectIds(
+        String tenantId, GetObjectsParameters parameters, Context context);
 }

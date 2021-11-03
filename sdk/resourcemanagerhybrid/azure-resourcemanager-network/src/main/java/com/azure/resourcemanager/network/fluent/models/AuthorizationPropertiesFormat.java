@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.AuthorizationUseStatus;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The AuthorizationPropertiesFormat model.
- */
+/** The AuthorizationPropertiesFormat model. */
 @Fluent
 public final class AuthorizationPropertiesFormat {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(AuthorizationPropertiesFormat.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AuthorizationPropertiesFormat.class);
 
     /*
      * The authorization key.
@@ -41,7 +36,7 @@ public final class AuthorizationPropertiesFormat {
 
     /**
      * Get the authorizationKey property: The authorization key.
-     * 
+     *
      * @return the authorizationKey value.
      */
     public String authorizationKey() {
@@ -50,7 +45,7 @@ public final class AuthorizationPropertiesFormat {
 
     /**
      * Set the authorizationKey property: The authorization key.
-     * 
+     *
      * @param authorizationKey the authorizationKey value to set.
      * @return the AuthorizationPropertiesFormat object itself.
      */
@@ -60,9 +55,8 @@ public final class AuthorizationPropertiesFormat {
     }
 
     /**
-     * Get the authorizationUseStatus property: AuthorizationUseStatus.
-     * Possible values are: 'Available' and 'InUse'.
-     * 
+     * Get the authorizationUseStatus property: AuthorizationUseStatus. Possible values are: 'Available' and 'InUse'.
+     *
      * @return the authorizationUseStatus value.
      */
     public AuthorizationUseStatus authorizationUseStatus() {
@@ -70,9 +64,8 @@ public final class AuthorizationPropertiesFormat {
     }
 
     /**
-     * Set the authorizationUseStatus property: AuthorizationUseStatus.
-     * Possible values are: 'Available' and 'InUse'.
-     * 
+     * Set the authorizationUseStatus property: AuthorizationUseStatus. Possible values are: 'Available' and 'InUse'.
+     *
      * @param authorizationUseStatus the authorizationUseStatus value to set.
      * @return the AuthorizationPropertiesFormat object itself.
      */
@@ -82,10 +75,9 @@ public final class AuthorizationPropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: Gets the provisioning state of the
-     * public IP resource. Possible values are: 'Updating', 'Deleting', and
-     * 'Failed'.
-     * 
+     * Get the provisioningState property: Gets the provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -93,10 +85,9 @@ public final class AuthorizationPropertiesFormat {
     }
 
     /**
-     * Set the provisioningState property: Gets the provisioning state of the
-     * public IP resource. Possible values are: 'Updating', 'Deleting', and
-     * 'Failed'.
-     * 
+     * Set the provisioningState property: Gets the provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
      * @param provisioningState the provisioningState value to set.
      * @return the AuthorizationPropertiesFormat object itself.
      */
@@ -107,7 +98,7 @@ public final class AuthorizationPropertiesFormat {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

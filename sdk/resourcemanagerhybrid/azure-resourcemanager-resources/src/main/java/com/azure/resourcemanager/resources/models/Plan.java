@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Plan for the resource.
- */
+/** Plan for the resource. */
 @Fluent
 public final class Plan {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(Plan.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(Plan.class);
 
     /*
      * The plan ID.
@@ -51,7 +46,7 @@ public final class Plan {
 
     /**
      * Get the name property: The plan ID.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -60,7 +55,7 @@ public final class Plan {
 
     /**
      * Set the name property: The plan ID.
-     * 
+     *
      * @param name the name value to set.
      * @return the Plan object itself.
      */
@@ -71,7 +66,7 @@ public final class Plan {
 
     /**
      * Get the publisher property: The publisher ID.
-     * 
+     *
      * @return the publisher value.
      */
     public String publisher() {
@@ -80,7 +75,7 @@ public final class Plan {
 
     /**
      * Set the publisher property: The publisher ID.
-     * 
+     *
      * @param publisher the publisher value to set.
      * @return the Plan object itself.
      */
@@ -91,7 +86,7 @@ public final class Plan {
 
     /**
      * Get the product property: The offer ID.
-     * 
+     *
      * @return the product value.
      */
     public String product() {
@@ -100,7 +95,7 @@ public final class Plan {
 
     /**
      * Set the product property: The offer ID.
-     * 
+     *
      * @param product the product value to set.
      * @return the Plan object itself.
      */
@@ -111,7 +106,7 @@ public final class Plan {
 
     /**
      * Get the promotionCode property: The promotion code.
-     * 
+     *
      * @return the promotionCode value.
      */
     public String promotionCode() {
@@ -120,7 +115,7 @@ public final class Plan {
 
     /**
      * Set the promotionCode property: The promotion code.
-     * 
+     *
      * @param promotionCode the promotionCode value to set.
      * @return the Plan object itself.
      */
@@ -131,7 +126,7 @@ public final class Plan {
 
     /**
      * Get the version property: The plan's version.
-     * 
+     *
      * @return the version value.
      */
     public String version() {
@@ -140,7 +135,7 @@ public final class Plan {
 
     /**
      * Set the version property: The plan's version.
-     * 
+     *
      * @param version the version value to set.
      * @return the Plan object itself.
      */
@@ -151,7 +146,7 @@ public final class Plan {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

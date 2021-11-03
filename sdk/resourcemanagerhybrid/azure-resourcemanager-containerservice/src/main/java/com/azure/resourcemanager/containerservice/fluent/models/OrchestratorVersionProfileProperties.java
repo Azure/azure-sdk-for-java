@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.models.OrchestratorVersionProfile;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The properties of an orchestrator version profile.
- */
+/** The properties of an orchestrator version profile. */
 @Fluent
 public final class OrchestratorVersionProfileProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(OrchestratorVersionProfileProperties.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(OrchestratorVersionProfileProperties.class);
 
     /*
      * List of orchestrator version profiles.
@@ -29,7 +24,7 @@ public final class OrchestratorVersionProfileProperties {
 
     /**
      * Get the orchestrators property: List of orchestrator version profiles.
-     * 
+     *
      * @return the orchestrators value.
      */
     public List<OrchestratorVersionProfile> orchestrators() {
@@ -38,7 +33,7 @@ public final class OrchestratorVersionProfileProperties {
 
     /**
      * Set the orchestrators property: List of orchestrator version profiles.
-     * 
+     *
      * @param orchestrators the orchestrators value to set.
      * @return the OrchestratorVersionProfileProperties object itself.
      */
@@ -49,12 +44,15 @@ public final class OrchestratorVersionProfileProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (orchestrators() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property orchestrators in model OrchestratorVersionProfileProperties"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property orchestrators in model OrchestratorVersionProfileProperties"));
         } else {
             orchestrators().forEach(e -> e.validate());
         }

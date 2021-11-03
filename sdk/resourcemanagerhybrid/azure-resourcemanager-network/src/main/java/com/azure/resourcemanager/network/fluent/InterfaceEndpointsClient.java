@@ -8,8 +8,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
@@ -19,19 +17,18 @@ import com.azure.resourcemanager.network.fluent.models.InterfaceEndpointInner;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
-import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * InterfaceEndpointsClient.
- */
-public interface InterfaceEndpointsClient extends InnerSupportsGet<InterfaceEndpointInner>, InnerSupportsListing<InterfaceEndpointInner>, InnerSupportsDelete<Void> {
+/** An instance of this class provides access to all the operations defined in InterfaceEndpointsClient. */
+public interface InterfaceEndpointsClient
+    extends InnerSupportsGet<InterfaceEndpointInner>,
+        InnerSupportsListing<InterfaceEndpointInner>,
+        InnerSupportsDelete<Void> {
     /**
      * Deletes the specified interface endpoint.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param interfaceEndpointName The name of the interface endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -44,7 +41,7 @@ public interface InterfaceEndpointsClient extends InnerSupportsGet<InterfaceEndp
 
     /**
      * Deletes the specified interface endpoint.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param interfaceEndpointName The name of the interface endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -57,7 +54,7 @@ public interface InterfaceEndpointsClient extends InnerSupportsGet<InterfaceEndp
 
     /**
      * Deletes the specified interface endpoint.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param interfaceEndpointName The name of the interface endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -70,7 +67,7 @@ public interface InterfaceEndpointsClient extends InnerSupportsGet<InterfaceEndp
 
     /**
      * Deletes the specified interface endpoint.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param interfaceEndpointName The name of the interface endpoint.
      * @param context The context to associate with this operation.
@@ -80,11 +77,12 @@ public interface InterfaceEndpointsClient extends InnerSupportsGet<InterfaceEndp
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String interfaceEndpointName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String interfaceEndpointName, Context context);
 
     /**
      * Deletes the specified interface endpoint.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param interfaceEndpointName The name of the interface endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -97,7 +95,7 @@ public interface InterfaceEndpointsClient extends InnerSupportsGet<InterfaceEndp
 
     /**
      * Deletes the specified interface endpoint.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param interfaceEndpointName The name of the interface endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -109,7 +107,7 @@ public interface InterfaceEndpointsClient extends InnerSupportsGet<InterfaceEndp
 
     /**
      * Deletes the specified interface endpoint.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param interfaceEndpointName The name of the interface endpoint.
      * @param context The context to associate with this operation.
@@ -122,7 +120,7 @@ public interface InterfaceEndpointsClient extends InnerSupportsGet<InterfaceEndp
 
     /**
      * Gets the specified interface endpoint by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param interfaceEndpointName The name of the interface endpoint.
      * @param expand Expands referenced resources.
@@ -132,11 +130,12 @@ public interface InterfaceEndpointsClient extends InnerSupportsGet<InterfaceEndp
      * @return the specified interface endpoint by resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<InterfaceEndpointInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String interfaceEndpointName, String expand);
+    Mono<Response<InterfaceEndpointInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String interfaceEndpointName, String expand);
 
     /**
      * Gets the specified interface endpoint by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param interfaceEndpointName The name of the interface endpoint.
      * @param expand Expands referenced resources.
@@ -146,11 +145,12 @@ public interface InterfaceEndpointsClient extends InnerSupportsGet<InterfaceEndp
      * @return the specified interface endpoint by resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<InterfaceEndpointInner> getByResourceGroupAsync(String resourceGroupName, String interfaceEndpointName, String expand);
+    Mono<InterfaceEndpointInner> getByResourceGroupAsync(
+        String resourceGroupName, String interfaceEndpointName, String expand);
 
     /**
      * Gets the specified interface endpoint by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param interfaceEndpointName The name of the interface endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -163,7 +163,7 @@ public interface InterfaceEndpointsClient extends InnerSupportsGet<InterfaceEndp
 
     /**
      * Gets the specified interface endpoint by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param interfaceEndpointName The name of the interface endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -176,7 +176,7 @@ public interface InterfaceEndpointsClient extends InnerSupportsGet<InterfaceEndp
 
     /**
      * Gets the specified interface endpoint by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param interfaceEndpointName The name of the interface endpoint.
      * @param expand Expands referenced resources.
@@ -187,11 +187,12 @@ public interface InterfaceEndpointsClient extends InnerSupportsGet<InterfaceEndp
      * @return the specified interface endpoint by resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<InterfaceEndpointInner> getByResourceGroupWithResponse(String resourceGroupName, String interfaceEndpointName, String expand, Context context);
+    Response<InterfaceEndpointInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String interfaceEndpointName, String expand, Context context);
 
     /**
      * Creates or updates an interface endpoint in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param interfaceEndpointName The name of the interface endpoint.
      * @param parameters Parameters supplied to the create or update interface endpoint operation.
@@ -201,11 +202,12 @@ public interface InterfaceEndpointsClient extends InnerSupportsGet<InterfaceEndp
      * @return interface endpoint resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String interfaceEndpointName, InterfaceEndpointInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String interfaceEndpointName, InterfaceEndpointInner parameters);
 
     /**
      * Creates or updates an interface endpoint in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param interfaceEndpointName The name of the interface endpoint.
      * @param parameters Parameters supplied to the create or update interface endpoint operation.
@@ -215,11 +217,12 @@ public interface InterfaceEndpointsClient extends InnerSupportsGet<InterfaceEndp
      * @return interface endpoint resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<InterfaceEndpointInner>, InterfaceEndpointInner> beginCreateOrUpdateAsync(String resourceGroupName, String interfaceEndpointName, InterfaceEndpointInner parameters);
+    PollerFlux<PollResult<InterfaceEndpointInner>, InterfaceEndpointInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String interfaceEndpointName, InterfaceEndpointInner parameters);
 
     /**
      * Creates or updates an interface endpoint in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param interfaceEndpointName The name of the interface endpoint.
      * @param parameters Parameters supplied to the create or update interface endpoint operation.
@@ -229,54 +232,12 @@ public interface InterfaceEndpointsClient extends InnerSupportsGet<InterfaceEndp
      * @return interface endpoint resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<InterfaceEndpointInner>, InterfaceEndpointInner> beginCreateOrUpdate(String resourceGroupName, String interfaceEndpointName, InterfaceEndpointInner parameters);
+    SyncPoller<PollResult<InterfaceEndpointInner>, InterfaceEndpointInner> beginCreateOrUpdate(
+        String resourceGroupName, String interfaceEndpointName, InterfaceEndpointInner parameters);
 
     /**
      * Creates or updates an interface endpoint in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param interfaceEndpointName The name of the interface endpoint.
-     * @param parameters Parameters supplied to the create or update interface endpoint operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return interface endpoint resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<InterfaceEndpointInner>, InterfaceEndpointInner> beginCreateOrUpdate(String resourceGroupName, String interfaceEndpointName, InterfaceEndpointInner parameters, Context context);
-
-    /**
-     * Creates or updates an interface endpoint in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param interfaceEndpointName The name of the interface endpoint.
-     * @param parameters Parameters supplied to the create or update interface endpoint operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return interface endpoint resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<InterfaceEndpointInner> createOrUpdateAsync(String resourceGroupName, String interfaceEndpointName, InterfaceEndpointInner parameters);
-
-    /**
-     * Creates or updates an interface endpoint in the specified resource group.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param interfaceEndpointName The name of the interface endpoint.
-     * @param parameters Parameters supplied to the create or update interface endpoint operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return interface endpoint resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    InterfaceEndpointInner createOrUpdate(String resourceGroupName, String interfaceEndpointName, InterfaceEndpointInner parameters);
-
-    /**
-     * Creates or updates an interface endpoint in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param interfaceEndpointName The name of the interface endpoint.
      * @param parameters Parameters supplied to the create or update interface endpoint operation.
@@ -287,11 +248,58 @@ public interface InterfaceEndpointsClient extends InnerSupportsGet<InterfaceEndp
      * @return interface endpoint resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    InterfaceEndpointInner createOrUpdate(String resourceGroupName, String interfaceEndpointName, InterfaceEndpointInner parameters, Context context);
+    SyncPoller<PollResult<InterfaceEndpointInner>, InterfaceEndpointInner> beginCreateOrUpdate(
+        String resourceGroupName, String interfaceEndpointName, InterfaceEndpointInner parameters, Context context);
+
+    /**
+     * Creates or updates an interface endpoint in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param interfaceEndpointName The name of the interface endpoint.
+     * @param parameters Parameters supplied to the create or update interface endpoint operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return interface endpoint resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<InterfaceEndpointInner> createOrUpdateAsync(
+        String resourceGroupName, String interfaceEndpointName, InterfaceEndpointInner parameters);
+
+    /**
+     * Creates or updates an interface endpoint in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param interfaceEndpointName The name of the interface endpoint.
+     * @param parameters Parameters supplied to the create or update interface endpoint operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return interface endpoint resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    InterfaceEndpointInner createOrUpdate(
+        String resourceGroupName, String interfaceEndpointName, InterfaceEndpointInner parameters);
+
+    /**
+     * Creates or updates an interface endpoint in the specified resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param interfaceEndpointName The name of the interface endpoint.
+     * @param parameters Parameters supplied to the create or update interface endpoint operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return interface endpoint resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    InterfaceEndpointInner createOrUpdate(
+        String resourceGroupName, String interfaceEndpointName, InterfaceEndpointInner parameters, Context context);
 
     /**
      * Gets all interface endpoints in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -303,7 +311,7 @@ public interface InterfaceEndpointsClient extends InnerSupportsGet<InterfaceEndp
 
     /**
      * Gets all interface endpoints in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -315,7 +323,7 @@ public interface InterfaceEndpointsClient extends InnerSupportsGet<InterfaceEndp
 
     /**
      * Gets all interface endpoints in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -328,7 +336,7 @@ public interface InterfaceEndpointsClient extends InnerSupportsGet<InterfaceEndp
 
     /**
      * Gets all interface endpoints in a subscription.
-     * 
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all interface endpoints in a subscription.
@@ -338,7 +346,7 @@ public interface InterfaceEndpointsClient extends InnerSupportsGet<InterfaceEndp
 
     /**
      * Gets all interface endpoints in a subscription.
-     * 
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all interface endpoints in a subscription.
@@ -348,7 +356,7 @@ public interface InterfaceEndpointsClient extends InnerSupportsGet<InterfaceEndp
 
     /**
      * Gets all interface endpoints in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

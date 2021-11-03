@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Vpn Profile Response for package generation.
- */
+/** Vpn Profile Response for package generation. */
 @Fluent
 public final class VpnProfileResponseInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(VpnProfileResponseInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnProfileResponseInner.class);
 
     /*
      * URL to the VPN profile
@@ -27,7 +22,7 @@ public final class VpnProfileResponseInner {
 
     /**
      * Get the profileUrl property: URL to the VPN profile.
-     * 
+     *
      * @return the profileUrl value.
      */
     public String profileUrl() {
@@ -36,7 +31,7 @@ public final class VpnProfileResponseInner {
 
     /**
      * Set the profileUrl property: URL to the VPN profile.
-     * 
+     *
      * @param profileUrl the profileUrl value to set.
      * @return the VpnProfileResponseInner object itself.
      */
@@ -47,7 +42,7 @@ public final class VpnProfileResponseInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

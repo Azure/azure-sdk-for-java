@@ -35,80 +35,118 @@ import com.azure.resourcemanager.network.fluent.P2SVpnServerConfigurationsClient
 import com.azure.resourcemanager.network.fluent.models.P2SVpnServerConfigurationInner;
 import com.azure.resourcemanager.network.models.ErrorException;
 import com.azure.resourcemanager.network.models.ListP2SVpnServerConfigurationsResult;
-import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * P2SVpnServerConfigurationsClient.
- */
+/** An instance of this class provides access to all the operations defined in P2SVpnServerConfigurationsClient. */
 public final class P2SVpnServerConfigurationsClientImpl implements P2SVpnServerConfigurationsClient {
     private final ClientLogger logger = new ClientLogger(P2SVpnServerConfigurationsClientImpl.class);
 
-    /**
-     * The proxy service used to perform REST calls.
-     */
+    /** The proxy service used to perform REST calls. */
     private final P2SVpnServerConfigurationsService service;
 
-    /**
-     * The service client containing this operation class.
-     */
+    /** The service client containing this operation class. */
     private final NetworkManagementClientImpl client;
 
     /**
      * Initializes an instance of P2SVpnServerConfigurationsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     P2SVpnServerConfigurationsClientImpl(NetworkManagementClientImpl client) {
-        this.service = RestProxy.create(P2SVpnServerConfigurationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+            RestProxy
+                .create(
+                    P2SVpnServerConfigurationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for
-     * NetworkManagementClientP2SVpnServerConfigurations to be used by the
+     * The interface defining all the services for NetworkManagementClientP2SVpnServerConfigurations to be used by the
      * proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     private interface P2SVpnServerConfigurationsService {
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans/{virtualWanName}/p2sVpnServerConfigurations/{p2SVpnServerConfigurationName}")
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans"
+                + "/{virtualWanName}/p2sVpnServerConfigurations/{p2SVpnServerConfigurationName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<P2SVpnServerConfigurationInner>> get(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("virtualWanName") String virtualWanName, @PathParam("p2SVpnServerConfigurationName") String p2SVpnServerConfigurationName, @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<P2SVpnServerConfigurationInner>> get(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("virtualWanName") String virtualWanName,
+            @PathParam("p2SVpnServerConfigurationName") String p2SVpnServerConfigurationName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans/{virtualWanName}/p2sVpnServerConfigurations/{p2SVpnServerConfigurationName}")
+        @Headers({"Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans"
+                + "/{virtualWanName}/p2sVpnServerConfigurations/{p2SVpnServerConfigurationName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("virtualWanName") String virtualWanName, @PathParam("p2SVpnServerConfigurationName") String p2SVpnServerConfigurationName, @QueryParam("api-version") String apiVersion, @BodyParam("application/json") P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("virtualWanName") String virtualWanName,
+            @PathParam("p2SVpnServerConfigurationName") String p2SVpnServerConfigurationName,
+            @QueryParam("api-version") String apiVersion,
+            @BodyParam("application/json") P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans/{virtualWanName}/p2sVpnServerConfigurations/{p2SVpnServerConfigurationName}")
+        @Headers({"Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans"
+                + "/{virtualWanName}/p2sVpnServerConfigurations/{p2SVpnServerConfigurationName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("virtualWanName") String virtualWanName, @PathParam("p2SVpnServerConfigurationName") String p2SVpnServerConfigurationName, @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("virtualWanName") String virtualWanName,
+            @PathParam("p2SVpnServerConfigurationName") String p2SVpnServerConfigurationName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans/{virtualWanName}/p2sVpnServerConfigurations")
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualWans"
+                + "/{virtualWanName}/p2sVpnServerConfigurations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<ListP2SVpnServerConfigurationsResult>> listByVirtualWan(@HostParam("$host") String endpoint, @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("virtualWanName") String virtualWanName, @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<ListP2SVpnServerConfigurationsResult>> listByVirtualWan(
+            @HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("virtualWanName") String virtualWanName,
+            @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<ListP2SVpnServerConfigurationsResult>> listByVirtualWanNext(@PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<ListP2SVpnServerConfigurationsResult>> listByVirtualWanNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
      * Retrieves the details of a P2SVpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnServerConfiguration.
      * @param virtualWanName The name of the VirtualWan.
      * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
@@ -118,31 +156,54 @@ public final class P2SVpnServerConfigurationsClientImpl implements P2SVpnServerC
      * @return p2SVpnServerConfiguration Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<P2SVpnServerConfigurationInner>> getWithResponseAsync(String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName) {
+    public Mono<Response<P2SVpnServerConfigurationInner>> getWithResponseAsync(
+        String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (virtualWanName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
         }
         if (p2SVpnServerConfigurationName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter p2SVpnServerConfigurationName is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter p2SVpnServerConfigurationName is required and cannot be null."));
         }
         final String apiVersion = "2018-11-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, virtualWanName, p2SVpnServerConfigurationName, apiVersion, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .get(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            virtualWanName,
+                            p2SVpnServerConfigurationName,
+                            apiVersion,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieves the details of a P2SVpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnServerConfiguration.
      * @param virtualWanName The name of the VirtualWan.
      * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
@@ -153,31 +214,51 @@ public final class P2SVpnServerConfigurationsClientImpl implements P2SVpnServerC
      * @return p2SVpnServerConfiguration Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<P2SVpnServerConfigurationInner>> getWithResponseAsync(String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName, Context context) {
+    private Mono<Response<P2SVpnServerConfigurationInner>> getWithResponseAsync(
+        String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (virtualWanName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
         }
         if (p2SVpnServerConfigurationName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter p2SVpnServerConfigurationName is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter p2SVpnServerConfigurationName is required and cannot be null."));
         }
         final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, virtualWanName, p2SVpnServerConfigurationName, apiVersion, accept, context);
+        return service
+            .get(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                virtualWanName,
+                p2SVpnServerConfigurationName,
+                apiVersion,
+                accept,
+                context);
     }
 
     /**
      * Retrieves the details of a P2SVpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnServerConfiguration.
      * @param virtualWanName The name of the VirtualWan.
      * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
@@ -187,20 +268,22 @@ public final class P2SVpnServerConfigurationsClientImpl implements P2SVpnServerC
      * @return p2SVpnServerConfiguration Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<P2SVpnServerConfigurationInner> getAsync(String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName) {
+    public Mono<P2SVpnServerConfigurationInner> getAsync(
+        String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName) {
         return getWithResponseAsync(resourceGroupName, virtualWanName, p2SVpnServerConfigurationName)
-            .flatMap((Response<P2SVpnServerConfigurationInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (Response<P2SVpnServerConfigurationInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Retrieves the details of a P2SVpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnServerConfiguration.
      * @param virtualWanName The name of the VirtualWan.
      * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
@@ -210,13 +293,14 @@ public final class P2SVpnServerConfigurationsClientImpl implements P2SVpnServerC
      * @return p2SVpnServerConfiguration Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public P2SVpnServerConfigurationInner get(String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName) {
+    public P2SVpnServerConfigurationInner get(
+        String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName) {
         return getAsync(resourceGroupName, virtualWanName, p2SVpnServerConfigurationName).block();
     }
 
     /**
      * Retrieves the details of a P2SVpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnServerConfiguration.
      * @param virtualWanName The name of the VirtualWan.
      * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
@@ -227,13 +311,15 @@ public final class P2SVpnServerConfigurationsClientImpl implements P2SVpnServerC
      * @return p2SVpnServerConfiguration Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<P2SVpnServerConfigurationInner> getWithResponse(String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName, Context context) {
+    public Response<P2SVpnServerConfigurationInner> getWithResponse(
+        String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName, Context context) {
         return getWithResponseAsync(resourceGroupName, virtualWanName, p2SVpnServerConfigurationName, context).block();
     }
 
     /**
-     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing P2SVpnServerConfiguration.
-     * 
+     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing
+     * P2SVpnServerConfiguration.
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWan.
      * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
@@ -244,36 +330,67 @@ public final class P2SVpnServerConfigurationsClientImpl implements P2SVpnServerC
      * @return p2SVpnServerConfiguration Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName, P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters) {
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName,
+        String virtualWanName,
+        String p2SVpnServerConfigurationName,
+        P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (virtualWanName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
         }
         if (p2SVpnServerConfigurationName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter p2SVpnServerConfigurationName is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter p2SVpnServerConfigurationName is required and cannot be null."));
         }
         if (p2SVpnServerConfigurationParameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter p2SVpnServerConfigurationParameters is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter p2SVpnServerConfigurationParameters is required and cannot be null."));
         } else {
             p2SVpnServerConfigurationParameters.validate();
         }
         final String apiVersion = "2018-11-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, virtualWanName, p2SVpnServerConfigurationName, apiVersion, p2SVpnServerConfigurationParameters, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .createOrUpdate(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            virtualWanName,
+                            p2SVpnServerConfigurationName,
+                            apiVersion,
+                            p2SVpnServerConfigurationParameters,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing P2SVpnServerConfiguration.
-     * 
+     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing
+     * P2SVpnServerConfiguration.
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWan.
      * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
@@ -285,36 +402,65 @@ public final class P2SVpnServerConfigurationsClientImpl implements P2SVpnServerC
      * @return p2SVpnServerConfiguration Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName, P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName,
+        String virtualWanName,
+        String p2SVpnServerConfigurationName,
+        P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (virtualWanName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
         }
         if (p2SVpnServerConfigurationName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter p2SVpnServerConfigurationName is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter p2SVpnServerConfigurationName is required and cannot be null."));
         }
         if (p2SVpnServerConfigurationParameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter p2SVpnServerConfigurationParameters is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter p2SVpnServerConfigurationParameters is required and cannot be null."));
         } else {
             p2SVpnServerConfigurationParameters.validate();
         }
         final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, virtualWanName, p2SVpnServerConfigurationName, apiVersion, p2SVpnServerConfigurationParameters, accept, context);
+        return service
+            .createOrUpdate(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                virtualWanName,
+                p2SVpnServerConfigurationName,
+                apiVersion,
+                p2SVpnServerConfigurationParameters,
+                accept,
+                context);
     }
 
     /**
-     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing P2SVpnServerConfiguration.
-     * 
+     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing
+     * P2SVpnServerConfiguration.
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWan.
      * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
@@ -325,14 +471,29 @@ public final class P2SVpnServerConfigurationsClientImpl implements P2SVpnServerC
      * @return p2SVpnServerConfiguration Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<P2SVpnServerConfigurationInner>, P2SVpnServerConfigurationInner> beginCreateOrUpdateAsync(String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName, P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, virtualWanName, p2SVpnServerConfigurationName, p2SVpnServerConfigurationParameters);
-        return this.client.<P2SVpnServerConfigurationInner, P2SVpnServerConfigurationInner>getLroResult(mono, this.client.getHttpPipeline(), P2SVpnServerConfigurationInner.class, P2SVpnServerConfigurationInner.class, Context.NONE);
+    public PollerFlux<PollResult<P2SVpnServerConfigurationInner>, P2SVpnServerConfigurationInner>
+        beginCreateOrUpdateAsync(
+            String resourceGroupName,
+            String virtualWanName,
+            String p2SVpnServerConfigurationName,
+            P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(
+                resourceGroupName, virtualWanName, p2SVpnServerConfigurationName, p2SVpnServerConfigurationParameters);
+        return this
+            .client
+            .<P2SVpnServerConfigurationInner, P2SVpnServerConfigurationInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                P2SVpnServerConfigurationInner.class,
+                P2SVpnServerConfigurationInner.class,
+                Context.NONE);
     }
 
     /**
-     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing P2SVpnServerConfiguration.
-     * 
+     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing
+     * P2SVpnServerConfiguration.
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWan.
      * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
@@ -344,15 +505,35 @@ public final class P2SVpnServerConfigurationsClientImpl implements P2SVpnServerC
      * @return p2SVpnServerConfiguration Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<P2SVpnServerConfigurationInner>, P2SVpnServerConfigurationInner> beginCreateOrUpdateAsync(String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName, P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters, Context context) {
+    private PollerFlux<PollResult<P2SVpnServerConfigurationInner>, P2SVpnServerConfigurationInner>
+        beginCreateOrUpdateAsync(
+            String resourceGroupName,
+            String virtualWanName,
+            String p2SVpnServerConfigurationName,
+            P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters,
+            Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, virtualWanName, p2SVpnServerConfigurationName, p2SVpnServerConfigurationParameters, context);
-        return this.client.<P2SVpnServerConfigurationInner, P2SVpnServerConfigurationInner>getLroResult(mono, this.client.getHttpPipeline(), P2SVpnServerConfigurationInner.class, P2SVpnServerConfigurationInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(
+                resourceGroupName,
+                virtualWanName,
+                p2SVpnServerConfigurationName,
+                p2SVpnServerConfigurationParameters,
+                context);
+        return this
+            .client
+            .<P2SVpnServerConfigurationInner, P2SVpnServerConfigurationInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                P2SVpnServerConfigurationInner.class,
+                P2SVpnServerConfigurationInner.class,
+                context);
     }
 
     /**
-     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing P2SVpnServerConfiguration.
-     * 
+     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing
+     * P2SVpnServerConfiguration.
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWan.
      * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
@@ -363,13 +544,20 @@ public final class P2SVpnServerConfigurationsClientImpl implements P2SVpnServerC
      * @return p2SVpnServerConfiguration Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<P2SVpnServerConfigurationInner>, P2SVpnServerConfigurationInner> beginCreateOrUpdate(String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName, P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, virtualWanName, p2SVpnServerConfigurationName, p2SVpnServerConfigurationParameters)
-            .getSyncPoller();}
+    public SyncPoller<PollResult<P2SVpnServerConfigurationInner>, P2SVpnServerConfigurationInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String virtualWanName,
+        String p2SVpnServerConfigurationName,
+        P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters) {
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, virtualWanName, p2SVpnServerConfigurationName, p2SVpnServerConfigurationParameters)
+            .getSyncPoller();
+    }
 
     /**
-     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing P2SVpnServerConfiguration.
-     * 
+     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing
+     * P2SVpnServerConfiguration.
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWan.
      * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
@@ -381,13 +569,25 @@ public final class P2SVpnServerConfigurationsClientImpl implements P2SVpnServerC
      * @return p2SVpnServerConfiguration Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<P2SVpnServerConfigurationInner>, P2SVpnServerConfigurationInner> beginCreateOrUpdate(String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName, P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, virtualWanName, p2SVpnServerConfigurationName, p2SVpnServerConfigurationParameters, context)
-            .getSyncPoller();}
+    public SyncPoller<PollResult<P2SVpnServerConfigurationInner>, P2SVpnServerConfigurationInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String virtualWanName,
+        String p2SVpnServerConfigurationName,
+        P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters,
+        Context context) {
+        return beginCreateOrUpdateAsync(
+                resourceGroupName,
+                virtualWanName,
+                p2SVpnServerConfigurationName,
+                p2SVpnServerConfigurationParameters,
+                context)
+            .getSyncPoller();
+    }
 
     /**
-     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing P2SVpnServerConfiguration.
-     * 
+     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing
+     * P2SVpnServerConfiguration.
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWan.
      * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
@@ -398,15 +598,21 @@ public final class P2SVpnServerConfigurationsClientImpl implements P2SVpnServerC
      * @return p2SVpnServerConfiguration Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<P2SVpnServerConfigurationInner> createOrUpdateAsync(String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName, P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, virtualWanName, p2SVpnServerConfigurationName, p2SVpnServerConfigurationParameters)
+    public Mono<P2SVpnServerConfigurationInner> createOrUpdateAsync(
+        String resourceGroupName,
+        String virtualWanName,
+        String p2SVpnServerConfigurationName,
+        P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters) {
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, virtualWanName, p2SVpnServerConfigurationName, p2SVpnServerConfigurationParameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing P2SVpnServerConfiguration.
-     * 
+     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing
+     * P2SVpnServerConfiguration.
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWan.
      * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
@@ -418,15 +624,26 @@ public final class P2SVpnServerConfigurationsClientImpl implements P2SVpnServerC
      * @return p2SVpnServerConfiguration Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<P2SVpnServerConfigurationInner> createOrUpdateAsync(String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName, P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, virtualWanName, p2SVpnServerConfigurationName, p2SVpnServerConfigurationParameters, context)
+    private Mono<P2SVpnServerConfigurationInner> createOrUpdateAsync(
+        String resourceGroupName,
+        String virtualWanName,
+        String p2SVpnServerConfigurationName,
+        P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters,
+        Context context) {
+        return beginCreateOrUpdateAsync(
+                resourceGroupName,
+                virtualWanName,
+                p2SVpnServerConfigurationName,
+                p2SVpnServerConfigurationParameters,
+                context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing P2SVpnServerConfiguration.
-     * 
+     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing
+     * P2SVpnServerConfiguration.
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWan.
      * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
@@ -437,13 +654,20 @@ public final class P2SVpnServerConfigurationsClientImpl implements P2SVpnServerC
      * @return p2SVpnServerConfiguration Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public P2SVpnServerConfigurationInner createOrUpdate(String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName, P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters) {
-        return createOrUpdateAsync(resourceGroupName, virtualWanName, p2SVpnServerConfigurationName, p2SVpnServerConfigurationParameters).block();
+    public P2SVpnServerConfigurationInner createOrUpdate(
+        String resourceGroupName,
+        String virtualWanName,
+        String p2SVpnServerConfigurationName,
+        P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters) {
+        return createOrUpdateAsync(
+                resourceGroupName, virtualWanName, p2SVpnServerConfigurationName, p2SVpnServerConfigurationParameters)
+            .block();
     }
 
     /**
-     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing P2SVpnServerConfiguration.
-     * 
+     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing
+     * P2SVpnServerConfiguration.
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWan.
      * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
@@ -455,13 +679,24 @@ public final class P2SVpnServerConfigurationsClientImpl implements P2SVpnServerC
      * @return p2SVpnServerConfiguration Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public P2SVpnServerConfigurationInner createOrUpdate(String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName, P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters, Context context) {
-        return createOrUpdateAsync(resourceGroupName, virtualWanName, p2SVpnServerConfigurationName, p2SVpnServerConfigurationParameters, context).block();
+    public P2SVpnServerConfigurationInner createOrUpdate(
+        String resourceGroupName,
+        String virtualWanName,
+        String p2SVpnServerConfigurationName,
+        P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters,
+        Context context) {
+        return createOrUpdateAsync(
+                resourceGroupName,
+                virtualWanName,
+                p2SVpnServerConfigurationName,
+                p2SVpnServerConfigurationParameters,
+                context)
+            .block();
     }
 
     /**
      * Deletes a P2SVpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnServerConfiguration.
      * @param virtualWanName The name of the VirtualWan.
      * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
@@ -471,31 +706,54 @@ public final class P2SVpnServerConfigurationsClientImpl implements P2SVpnServerC
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (virtualWanName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
         }
         if (p2SVpnServerConfigurationName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter p2SVpnServerConfigurationName is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter p2SVpnServerConfigurationName is required and cannot be null."));
         }
         final String apiVersion = "2018-11-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, virtualWanName, p2SVpnServerConfigurationName, apiVersion, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .delete(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            virtualWanName,
+                            p2SVpnServerConfigurationName,
+                            apiVersion,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a P2SVpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnServerConfiguration.
      * @param virtualWanName The name of the VirtualWan.
      * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
@@ -506,31 +764,51 @@ public final class P2SVpnServerConfigurationsClientImpl implements P2SVpnServerC
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (virtualWanName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
         }
         if (p2SVpnServerConfigurationName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter p2SVpnServerConfigurationName is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter p2SVpnServerConfigurationName is required and cannot be null."));
         }
         final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, virtualWanName, p2SVpnServerConfigurationName, apiVersion, accept, context);
+        return service
+            .delete(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                virtualWanName,
+                p2SVpnServerConfigurationName,
+                apiVersion,
+                accept,
+                context);
     }
 
     /**
      * Deletes a P2SVpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnServerConfiguration.
      * @param virtualWanName The name of the VirtualWan.
      * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
@@ -540,14 +818,18 @@ public final class P2SVpnServerConfigurationsClientImpl implements P2SVpnServerC
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, virtualWanName, p2SVpnServerConfigurationName);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, virtualWanName, p2SVpnServerConfigurationName);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
      * Deletes a P2SVpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnServerConfiguration.
      * @param virtualWanName The name of the VirtualWan.
      * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
@@ -558,15 +840,19 @@ public final class P2SVpnServerConfigurationsClientImpl implements P2SVpnServerC
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, virtualWanName, p2SVpnServerConfigurationName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, virtualWanName, p2SVpnServerConfigurationName, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
      * Deletes a P2SVpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnServerConfiguration.
      * @param virtualWanName The name of the VirtualWan.
      * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
@@ -576,13 +862,14 @@ public final class P2SVpnServerConfigurationsClientImpl implements P2SVpnServerC
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName) {
-        return beginDeleteAsync(resourceGroupName, virtualWanName, p2SVpnServerConfigurationName)
-            .getSyncPoller();}
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName) {
+        return beginDeleteAsync(resourceGroupName, virtualWanName, p2SVpnServerConfigurationName).getSyncPoller();
+    }
 
     /**
      * Deletes a P2SVpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnServerConfiguration.
      * @param virtualWanName The name of the VirtualWan.
      * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
@@ -593,13 +880,15 @@ public final class P2SVpnServerConfigurationsClientImpl implements P2SVpnServerC
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName, Context context) {
         return beginDeleteAsync(resourceGroupName, virtualWanName, p2SVpnServerConfigurationName, context)
-            .getSyncPoller();}
+            .getSyncPoller();
+    }
 
     /**
      * Deletes a P2SVpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnServerConfiguration.
      * @param virtualWanName The name of the VirtualWan.
      * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
@@ -609,7 +898,8 @@ public final class P2SVpnServerConfigurationsClientImpl implements P2SVpnServerC
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName) {
+    public Mono<Void> deleteAsync(
+        String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName) {
         return beginDeleteAsync(resourceGroupName, virtualWanName, p2SVpnServerConfigurationName)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -617,7 +907,7 @@ public final class P2SVpnServerConfigurationsClientImpl implements P2SVpnServerC
 
     /**
      * Deletes a P2SVpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnServerConfiguration.
      * @param virtualWanName The name of the VirtualWan.
      * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
@@ -628,7 +918,8 @@ public final class P2SVpnServerConfigurationsClientImpl implements P2SVpnServerC
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName, Context context) {
+    private Mono<Void> deleteAsync(
+        String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName, Context context) {
         return beginDeleteAsync(resourceGroupName, virtualWanName, p2SVpnServerConfigurationName, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -636,7 +927,7 @@ public final class P2SVpnServerConfigurationsClientImpl implements P2SVpnServerC
 
     /**
      * Deletes a P2SVpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnServerConfiguration.
      * @param virtualWanName The name of the VirtualWan.
      * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
@@ -651,7 +942,7 @@ public final class P2SVpnServerConfigurationsClientImpl implements P2SVpnServerC
 
     /**
      * Deletes a P2SVpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnServerConfiguration.
      * @param virtualWanName The name of the VirtualWan.
      * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
@@ -661,13 +952,14 @@ public final class P2SVpnServerConfigurationsClientImpl implements P2SVpnServerC
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName, Context context) {
+    public void delete(
+        String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName, Context context) {
         deleteAsync(resourceGroupName, virtualWanName, p2SVpnServerConfigurationName, context).block();
     }
 
     /**
      * Retrieves all P2SVpnServerConfigurations for a particular VirtualWan.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -676,35 +968,56 @@ public final class P2SVpnServerConfigurationsClientImpl implements P2SVpnServerC
      * @return result of the request to list all P2SVpnServerConfigurations associated to a VirtualWan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<P2SVpnServerConfigurationInner>> listByVirtualWanSinglePageAsync(String resourceGroupName, String virtualWanName) {
+    private Mono<PagedResponse<P2SVpnServerConfigurationInner>> listByVirtualWanSinglePageAsync(
+        String resourceGroupName, String virtualWanName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (virtualWanName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
         }
         final String apiVersion = "2018-11-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listByVirtualWan(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, virtualWanName, apiVersion, accept, context))
-            .<PagedResponse<P2SVpnServerConfigurationInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByVirtualWan(
+                            this.client.getEndpoint(),
+                            this.client.getSubscriptionId(),
+                            resourceGroupName,
+                            virtualWanName,
+                            apiVersion,
+                            accept,
+                            context))
+            .<PagedResponse<P2SVpnServerConfigurationInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieves all P2SVpnServerConfigurations for a particular VirtualWan.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWan.
      * @param context The context to associate with this operation.
@@ -714,15 +1027,23 @@ public final class P2SVpnServerConfigurationsClientImpl implements P2SVpnServerC
      * @return result of the request to list all P2SVpnServerConfigurations associated to a VirtualWan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<P2SVpnServerConfigurationInner>> listByVirtualWanSinglePageAsync(String resourceGroupName, String virtualWanName, Context context) {
+    private Mono<PagedResponse<P2SVpnServerConfigurationInner>> listByVirtualWanSinglePageAsync(
+        String resourceGroupName, String virtualWanName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (virtualWanName == null) {
             return Mono.error(new IllegalArgumentException("Parameter virtualWanName is required and cannot be null."));
@@ -730,19 +1051,29 @@ public final class P2SVpnServerConfigurationsClientImpl implements P2SVpnServerC
         final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listByVirtualWan(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, virtualWanName, apiVersion, accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return service
+            .listByVirtualWan(
+                this.client.getEndpoint(),
+                this.client.getSubscriptionId(),
+                resourceGroupName,
+                virtualWanName,
+                apiVersion,
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 
     /**
      * Retrieves all P2SVpnServerConfigurations for a particular VirtualWan.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -751,7 +1082,8 @@ public final class P2SVpnServerConfigurationsClientImpl implements P2SVpnServerC
      * @return result of the request to list all P2SVpnServerConfigurations associated to a VirtualWan.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<P2SVpnServerConfigurationInner> listByVirtualWanAsync(String resourceGroupName, String virtualWanName) {
+    public PagedFlux<P2SVpnServerConfigurationInner> listByVirtualWanAsync(
+        String resourceGroupName, String virtualWanName) {
         return new PagedFlux<>(
             () -> listByVirtualWanSinglePageAsync(resourceGroupName, virtualWanName),
             nextLink -> listByVirtualWanNextSinglePageAsync(nextLink));
@@ -759,7 +1091,7 @@ public final class P2SVpnServerConfigurationsClientImpl implements P2SVpnServerC
 
     /**
      * Retrieves all P2SVpnServerConfigurations for a particular VirtualWan.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWan.
      * @param context The context to associate with this operation.
@@ -769,7 +1101,8 @@ public final class P2SVpnServerConfigurationsClientImpl implements P2SVpnServerC
      * @return result of the request to list all P2SVpnServerConfigurations associated to a VirtualWan.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<P2SVpnServerConfigurationInner> listByVirtualWanAsync(String resourceGroupName, String virtualWanName, Context context) {
+    private PagedFlux<P2SVpnServerConfigurationInner> listByVirtualWanAsync(
+        String resourceGroupName, String virtualWanName, Context context) {
         return new PagedFlux<>(
             () -> listByVirtualWanSinglePageAsync(resourceGroupName, virtualWanName, context),
             nextLink -> listByVirtualWanNextSinglePageAsync(nextLink, context));
@@ -777,7 +1110,7 @@ public final class P2SVpnServerConfigurationsClientImpl implements P2SVpnServerC
 
     /**
      * Retrieves all P2SVpnServerConfigurations for a particular VirtualWan.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -786,13 +1119,14 @@ public final class P2SVpnServerConfigurationsClientImpl implements P2SVpnServerC
      * @return result of the request to list all P2SVpnServerConfigurations associated to a VirtualWan.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<P2SVpnServerConfigurationInner> listByVirtualWan(String resourceGroupName, String virtualWanName) {
+    public PagedIterable<P2SVpnServerConfigurationInner> listByVirtualWan(
+        String resourceGroupName, String virtualWanName) {
         return new PagedIterable<>(listByVirtualWanAsync(resourceGroupName, virtualWanName));
     }
 
     /**
      * Retrieves all P2SVpnServerConfigurations for a particular VirtualWan.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWan.
      * @param context The context to associate with this operation.
@@ -802,13 +1136,14 @@ public final class P2SVpnServerConfigurationsClientImpl implements P2SVpnServerC
      * @return result of the request to list all P2SVpnServerConfigurations associated to a VirtualWan.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<P2SVpnServerConfigurationInner> listByVirtualWan(String resourceGroupName, String virtualWanName, Context context) {
+    public PagedIterable<P2SVpnServerConfigurationInner> listByVirtualWan(
+        String resourceGroupName, String virtualWanName, Context context) {
         return new PagedIterable<>(listByVirtualWanAsync(resourceGroupName, virtualWanName, context));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -821,23 +1156,29 @@ public final class P2SVpnServerConfigurationsClientImpl implements P2SVpnServerC
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listByVirtualWanNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<P2SVpnServerConfigurationInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(context -> service.listByVirtualWanNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<P2SVpnServerConfigurationInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -846,22 +1187,29 @@ public final class P2SVpnServerConfigurationsClientImpl implements P2SVpnServerC
      * @return result of the request to list all P2SVpnServerConfigurations associated to a VirtualWan.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<P2SVpnServerConfigurationInner>> listByVirtualWanNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<P2SVpnServerConfigurationInner>> listByVirtualWanNextSinglePageAsync(
+        String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listByVirtualWanNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return service
+            .listByVirtualWanNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 }

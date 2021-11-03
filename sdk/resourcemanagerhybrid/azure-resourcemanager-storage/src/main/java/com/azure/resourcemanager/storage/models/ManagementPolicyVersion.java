@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Management policy action for blob version.
- */
+/** Management policy action for blob version. */
 @Fluent
 public final class ManagementPolicyVersion {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ManagementPolicyVersion.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagementPolicyVersion.class);
 
     /*
      * The function to tier blob version to cool storage. Support blob version
@@ -40,9 +35,9 @@ public final class ManagementPolicyVersion {
     private DateAfterCreation delete;
 
     /**
-     * Get the tierToCool property: The function to tier blob version to cool
-     * storage. Support blob version currently at Hot tier.
-     * 
+     * Get the tierToCool property: The function to tier blob version to cool storage. Support blob version currently at
+     * Hot tier.
+     *
      * @return the tierToCool value.
      */
     public DateAfterCreation tierToCool() {
@@ -50,9 +45,9 @@ public final class ManagementPolicyVersion {
     }
 
     /**
-     * Set the tierToCool property: The function to tier blob version to cool
-     * storage. Support blob version currently at Hot tier.
-     * 
+     * Set the tierToCool property: The function to tier blob version to cool storage. Support blob version currently at
+     * Hot tier.
+     *
      * @param tierToCool the tierToCool value to set.
      * @return the ManagementPolicyVersion object itself.
      */
@@ -62,9 +57,9 @@ public final class ManagementPolicyVersion {
     }
 
     /**
-     * Get the tierToArchive property: The function to tier blob version to
-     * archive storage. Support blob version currently at Hot or Cool tier.
-     * 
+     * Get the tierToArchive property: The function to tier blob version to archive storage. Support blob version
+     * currently at Hot or Cool tier.
+     *
      * @return the tierToArchive value.
      */
     public DateAfterCreation tierToArchive() {
@@ -72,9 +67,9 @@ public final class ManagementPolicyVersion {
     }
 
     /**
-     * Set the tierToArchive property: The function to tier blob version to
-     * archive storage. Support blob version currently at Hot or Cool tier.
-     * 
+     * Set the tierToArchive property: The function to tier blob version to archive storage. Support blob version
+     * currently at Hot or Cool tier.
+     *
      * @param tierToArchive the tierToArchive value to set.
      * @return the ManagementPolicyVersion object itself.
      */
@@ -85,7 +80,7 @@ public final class ManagementPolicyVersion {
 
     /**
      * Get the delete property: The function to delete the blob version.
-     * 
+     *
      * @return the delete value.
      */
     public DateAfterCreation delete() {
@@ -94,7 +89,7 @@ public final class ManagementPolicyVersion {
 
     /**
      * Set the delete property: The function to delete the blob version.
-     * 
+     *
      * @param delete the delete value to set.
      * @return the ManagementPolicyVersion object itself.
      */
@@ -105,7 +100,7 @@ public final class ManagementPolicyVersion {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

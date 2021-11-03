@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.ImageInner;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The List Image operation response.
- */
+/** The List Image operation response. */
 @Fluent
 public final class ImageListResult {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ImageListResult.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ImageListResult.class);
 
     /*
      * The list of Images.
@@ -36,7 +31,7 @@ public final class ImageListResult {
 
     /**
      * Get the value property: The list of Images.
-     * 
+     *
      * @return the value value.
      */
     public List<ImageInner> value() {
@@ -45,7 +40,7 @@ public final class ImageListResult {
 
     /**
      * Set the value property: The list of Images.
-     * 
+     *
      * @param value the value value to set.
      * @return the ImageListResult object itself.
      */
@@ -55,9 +50,9 @@ public final class ImageListResult {
     }
 
     /**
-     * Get the nextLink property: The uri to fetch the next page of Images.
-     * Call ListNext() with this to fetch the next page of Images.
-     * 
+     * Get the nextLink property: The uri to fetch the next page of Images. Call ListNext() with this to fetch the next
+     * page of Images.
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -65,9 +60,9 @@ public final class ImageListResult {
     }
 
     /**
-     * Set the nextLink property: The uri to fetch the next page of Images.
-     * Call ListNext() with this to fetch the next page of Images.
-     * 
+     * Set the nextLink property: The uri to fetch the next page of Images. Call ListNext() with this to fetch the next
+     * page of Images.
+     *
      * @param nextLink the nextLink value to set.
      * @return the ImageListResult object itself.
      */
@@ -78,12 +73,14 @@ public final class ImageListResult {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property value in model ImageListResult"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property value in model ImageListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

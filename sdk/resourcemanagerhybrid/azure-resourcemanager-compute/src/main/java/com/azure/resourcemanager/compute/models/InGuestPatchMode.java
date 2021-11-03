@@ -8,28 +8,20 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for InGuestPatchMode.
- */
+/** Defines values for InGuestPatchMode. */
 public final class InGuestPatchMode extends ExpandableStringEnum<InGuestPatchMode> {
-    /**
-     * Static value Manual for InGuestPatchMode.
-     */
+    /** Static value Manual for InGuestPatchMode. */
     public static final InGuestPatchMode MANUAL = fromString("Manual");
 
-    /**
-     * Static value AutomaticByOS for InGuestPatchMode.
-     */
+    /** Static value AutomaticByOS for InGuestPatchMode. */
     public static final InGuestPatchMode AUTOMATIC_BY_OS = fromString("AutomaticByOS");
 
-    /**
-     * Static value AutomaticByPlatform for InGuestPatchMode.
-     */
+    /** Static value AutomaticByPlatform for InGuestPatchMode. */
     public static final InGuestPatchMode AUTOMATIC_BY_PLATFORM = fromString("AutomaticByPlatform");
 
     /**
      * Creates or finds a InGuestPatchMode from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding InGuestPatchMode.
      */
@@ -38,9 +30,7 @@ public final class InGuestPatchMode extends ExpandableStringEnum<InGuestPatchMod
         return fromString(name, InGuestPatchMode.class);
     }
 
-    /**
-     * @return known InGuestPatchMode values.
-     */
+    /** @return known InGuestPatchMode values. */
     public static Collection<InGuestPatchMode> values() {
         return values(InGuestPatchMode.class);
     }

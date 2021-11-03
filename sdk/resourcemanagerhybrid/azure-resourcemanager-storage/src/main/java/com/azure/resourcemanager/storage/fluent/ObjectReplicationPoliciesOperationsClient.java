@@ -8,23 +8,22 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.storage.fluent.models.ObjectReplicationPolicyInner;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in
- * ObjectReplicationPoliciesOperationsClient.
+ * An instance of this class provides access to all the operations defined in ObjectReplicationPoliciesOperationsClient.
  */
 public interface ObjectReplicationPoliciesOperationsClient {
     /**
      * List the object replication policies associated with the storage account.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -35,9 +34,11 @@ public interface ObjectReplicationPoliciesOperationsClient {
 
     /**
      * List the object replication policies associated with the storage account.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -48,9 +49,11 @@ public interface ObjectReplicationPoliciesOperationsClient {
 
     /**
      * List the object replication policies associated with the storage account.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -62,9 +65,11 @@ public interface ObjectReplicationPoliciesOperationsClient {
 
     /**
      * Get the object replication policy of the storage account by policy ID.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -72,13 +77,16 @@ public interface ObjectReplicationPoliciesOperationsClient {
      * @return the object replication policy of the storage account by policy ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ObjectReplicationPolicyInner>> getWithResponseAsync(String resourceGroupName, String accountName, String objectReplicationPolicyId);
+    Mono<Response<ObjectReplicationPolicyInner>> getWithResponseAsync(
+        String resourceGroupName, String accountName, String objectReplicationPolicyId);
 
     /**
      * Get the object replication policy of the storage account by policy ID.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -86,13 +94,16 @@ public interface ObjectReplicationPoliciesOperationsClient {
      * @return the object replication policy of the storage account by policy ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ObjectReplicationPolicyInner> getAsync(String resourceGroupName, String accountName, String objectReplicationPolicyId);
+    Mono<ObjectReplicationPolicyInner> getAsync(
+        String resourceGroupName, String accountName, String objectReplicationPolicyId);
 
     /**
      * Get the object replication policy of the storage account by policy ID.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -104,9 +115,11 @@ public interface ObjectReplicationPoliciesOperationsClient {
 
     /**
      * Get the object replication policy of the storage account by policy ID.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -115,60 +128,85 @@ public interface ObjectReplicationPoliciesOperationsClient {
      * @return the object replication policy of the storage account by policy ID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ObjectReplicationPolicyInner> getWithResponse(String resourceGroupName, String accountName, String objectReplicationPolicyId, Context context);
+    Response<ObjectReplicationPolicyInner> getWithResponse(
+        String resourceGroupName, String accountName, String objectReplicationPolicyId, Context context);
 
     /**
      * Create or update the object replication policy of the storage account.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
-     * @param properties The object replication policy set to a storage account. A unique policy ID will be created if absent.
+     * @param properties The object replication policy set to a storage account. A unique policy ID will be created if
+     *     absent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the replication policy between two storage accounts.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ObjectReplicationPolicyInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String accountName, String objectReplicationPolicyId, ObjectReplicationPolicyInner properties);
+    Mono<Response<ObjectReplicationPolicyInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName,
+        String accountName,
+        String objectReplicationPolicyId,
+        ObjectReplicationPolicyInner properties);
 
     /**
      * Create or update the object replication policy of the storage account.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
-     * @param properties The object replication policy set to a storage account. A unique policy ID will be created if absent.
+     * @param properties The object replication policy set to a storage account. A unique policy ID will be created if
+     *     absent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the replication policy between two storage accounts.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ObjectReplicationPolicyInner> createOrUpdateAsync(String resourceGroupName, String accountName, String objectReplicationPolicyId, ObjectReplicationPolicyInner properties);
+    Mono<ObjectReplicationPolicyInner> createOrUpdateAsync(
+        String resourceGroupName,
+        String accountName,
+        String objectReplicationPolicyId,
+        ObjectReplicationPolicyInner properties);
 
     /**
      * Create or update the object replication policy of the storage account.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
-     * @param properties The object replication policy set to a storage account. A unique policy ID will be created if absent.
+     * @param properties The object replication policy set to a storage account. A unique policy ID will be created if
+     *     absent.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the replication policy between two storage accounts.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ObjectReplicationPolicyInner createOrUpdate(String resourceGroupName, String accountName, String objectReplicationPolicyId, ObjectReplicationPolicyInner properties);
+    ObjectReplicationPolicyInner createOrUpdate(
+        String resourceGroupName,
+        String accountName,
+        String objectReplicationPolicyId,
+        ObjectReplicationPolicyInner properties);
 
     /**
      * Create or update the object replication policy of the storage account.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
-     * @param properties The object replication policy set to a storage account. A unique policy ID will be created if absent.
+     * @param properties The object replication policy set to a storage account. A unique policy ID will be created if
+     *     absent.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -176,13 +214,20 @@ public interface ObjectReplicationPoliciesOperationsClient {
      * @return the replication policy between two storage accounts.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ObjectReplicationPolicyInner> createOrUpdateWithResponse(String resourceGroupName, String accountName, String objectReplicationPolicyId, ObjectReplicationPolicyInner properties, Context context);
+    Response<ObjectReplicationPolicyInner> createOrUpdateWithResponse(
+        String resourceGroupName,
+        String accountName,
+        String objectReplicationPolicyId,
+        ObjectReplicationPolicyInner properties,
+        Context context);
 
     /**
      * Deletes the object replication policy associated with the specified storage account.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -190,13 +235,16 @@ public interface ObjectReplicationPoliciesOperationsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Void>> deleteWithResponseAsync(String resourceGroupName, String accountName, String objectReplicationPolicyId);
+    Mono<Response<Void>> deleteWithResponseAsync(
+        String resourceGroupName, String accountName, String objectReplicationPolicyId);
 
     /**
      * Deletes the object replication policy associated with the specified storage account.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -208,9 +256,11 @@ public interface ObjectReplicationPoliciesOperationsClient {
 
     /**
      * Deletes the object replication policy associated with the specified storage account.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -221,9 +271,11 @@ public interface ObjectReplicationPoliciesOperationsClient {
 
     /**
      * Deletes the object replication policy associated with the specified storage account.
-     * 
-     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case insensitive.
-     * @param accountName The name of the storage account within the specified resource group. Storage account names must be between 3 and 24 characters in length and use numbers and lower-case letters only.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription. The name is case
+     *     insensitive.
+     * @param accountName The name of the storage account within the specified resource group. Storage account names
+     *     must be between 3 and 24 characters in length and use numbers and lower-case letters only.
      * @param objectReplicationPolicyId The ID of object replication policy or 'default' if the policy ID is unknown.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -232,5 +284,6 @@ public interface ObjectReplicationPoliciesOperationsClient {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String objectReplicationPolicyId, Context context);
+    Response<Void> deleteWithResponse(
+        String resourceGroupName, String accountName, String objectReplicationPolicyId, Context context);
 }

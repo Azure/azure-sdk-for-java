@@ -13,14 +13,11 @@ import com.azure.resourcemanager.compute.fluent.models.VirtualMachineImageResour
 import java.util.List;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * VirtualMachineImagesClient.
- */
+/** An instance of this class provides access to all the operations defined in VirtualMachineImagesClient. */
 public interface VirtualMachineImagesClient {
     /**
      * Gets a virtual machine image.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -32,11 +29,12 @@ public interface VirtualMachineImagesClient {
      * @return a virtual machine image.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<VirtualMachineImageInner>> getWithResponseAsync(String location, String publisherName, String offer, String skus, String version);
+    Mono<Response<VirtualMachineImageInner>> getWithResponseAsync(
+        String location, String publisherName, String offer, String skus, String version);
 
     /**
      * Gets a virtual machine image.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -48,11 +46,12 @@ public interface VirtualMachineImagesClient {
      * @return a virtual machine image.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VirtualMachineImageInner> getAsync(String location, String publisherName, String offer, String skus, String version);
+    Mono<VirtualMachineImageInner> getAsync(
+        String location, String publisherName, String offer, String skus, String version);
 
     /**
      * Gets a virtual machine image.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -68,7 +67,7 @@ public interface VirtualMachineImagesClient {
 
     /**
      * Gets a virtual machine image.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -81,11 +80,12 @@ public interface VirtualMachineImagesClient {
      * @return a virtual machine image.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VirtualMachineImageInner> getWithResponse(String location, String publisherName, String offer, String skus, String version, Context context);
+    Response<VirtualMachineImageInner> getWithResponse(
+        String location, String publisherName, String offer, String skus, String version, Context context);
 
     /**
      * Gets a list of all virtual machine image versions for the specified location, publisher, offer, and SKU.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -99,11 +99,12 @@ public interface VirtualMachineImagesClient {
      * @return a list of all virtual machine image versions for the specified location, publisher, offer, and SKU.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<List<VirtualMachineImageResourceInner>>> listWithResponseAsync(String location, String publisherName, String offer, String skus, String expand, Integer top, String orderby);
+    Mono<Response<List<VirtualMachineImageResourceInner>>> listWithResponseAsync(
+        String location, String publisherName, String offer, String skus, String expand, Integer top, String orderby);
 
     /**
      * Gets a list of all virtual machine image versions for the specified location, publisher, offer, and SKU.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -117,11 +118,12 @@ public interface VirtualMachineImagesClient {
      * @return a list of all virtual machine image versions for the specified location, publisher, offer, and SKU.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<List<VirtualMachineImageResourceInner>> listAsync(String location, String publisherName, String offer, String skus, String expand, Integer top, String orderby);
+    Mono<List<VirtualMachineImageResourceInner>> listAsync(
+        String location, String publisherName, String offer, String skus, String expand, Integer top, String orderby);
 
     /**
      * Gets a list of all virtual machine image versions for the specified location, publisher, offer, and SKU.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -132,11 +134,12 @@ public interface VirtualMachineImagesClient {
      * @return a list of all virtual machine image versions for the specified location, publisher, offer, and SKU.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<List<VirtualMachineImageResourceInner>> listAsync(String location, String publisherName, String offer, String skus);
+    Mono<List<VirtualMachineImageResourceInner>> listAsync(
+        String location, String publisherName, String offer, String skus);
 
     /**
      * Gets a list of all virtual machine image versions for the specified location, publisher, offer, and SKU.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -151,7 +154,7 @@ public interface VirtualMachineImagesClient {
 
     /**
      * Gets a list of all virtual machine image versions for the specified location, publisher, offer, and SKU.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -166,11 +169,19 @@ public interface VirtualMachineImagesClient {
      * @return a list of all virtual machine image versions for the specified location, publisher, offer, and SKU.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<List<VirtualMachineImageResourceInner>> listWithResponse(String location, String publisherName, String offer, String skus, String expand, Integer top, String orderby, Context context);
+    Response<List<VirtualMachineImageResourceInner>> listWithResponse(
+        String location,
+        String publisherName,
+        String offer,
+        String skus,
+        String expand,
+        Integer top,
+        String orderby,
+        Context context);
 
     /**
      * Gets a list of virtual machine image offers for the specified location and publisher.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName A valid image publisher.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -179,11 +190,12 @@ public interface VirtualMachineImagesClient {
      * @return a list of virtual machine image offers for the specified location and publisher.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<List<VirtualMachineImageResourceInner>>> listOffersWithResponseAsync(String location, String publisherName);
+    Mono<Response<List<VirtualMachineImageResourceInner>>> listOffersWithResponseAsync(
+        String location, String publisherName);
 
     /**
      * Gets a list of virtual machine image offers for the specified location and publisher.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName A valid image publisher.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -196,7 +208,7 @@ public interface VirtualMachineImagesClient {
 
     /**
      * Gets a list of virtual machine image offers for the specified location and publisher.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName A valid image publisher.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -209,7 +221,7 @@ public interface VirtualMachineImagesClient {
 
     /**
      * Gets a list of virtual machine image offers for the specified location and publisher.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName A valid image publisher.
      * @param context The context to associate with this operation.
@@ -219,11 +231,12 @@ public interface VirtualMachineImagesClient {
      * @return a list of virtual machine image offers for the specified location and publisher.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<List<VirtualMachineImageResourceInner>> listOffersWithResponse(String location, String publisherName, Context context);
+    Response<List<VirtualMachineImageResourceInner>> listOffersWithResponse(
+        String location, String publisherName, Context context);
 
     /**
      * Gets a list of virtual machine image publishers for the specified Azure location.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -235,7 +248,7 @@ public interface VirtualMachineImagesClient {
 
     /**
      * Gets a list of virtual machine image publishers for the specified Azure location.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -247,7 +260,7 @@ public interface VirtualMachineImagesClient {
 
     /**
      * Gets a list of virtual machine image publishers for the specified Azure location.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -259,7 +272,7 @@ public interface VirtualMachineImagesClient {
 
     /**
      * Gets a list of virtual machine image publishers for the specified Azure location.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -272,7 +285,7 @@ public interface VirtualMachineImagesClient {
 
     /**
      * Gets a list of virtual machine image SKUs for the specified location, publisher, and offer.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -282,11 +295,12 @@ public interface VirtualMachineImagesClient {
      * @return a list of virtual machine image SKUs for the specified location, publisher, and offer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<List<VirtualMachineImageResourceInner>>> listSkusWithResponseAsync(String location, String publisherName, String offer);
+    Mono<Response<List<VirtualMachineImageResourceInner>>> listSkusWithResponseAsync(
+        String location, String publisherName, String offer);
 
     /**
      * Gets a list of virtual machine image SKUs for the specified location, publisher, and offer.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -300,7 +314,7 @@ public interface VirtualMachineImagesClient {
 
     /**
      * Gets a list of virtual machine image SKUs for the specified location, publisher, and offer.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -314,7 +328,7 @@ public interface VirtualMachineImagesClient {
 
     /**
      * Gets a list of virtual machine image SKUs for the specified location, publisher, and offer.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName A valid image publisher.
      * @param offer A valid image publisher offer.
@@ -325,5 +339,6 @@ public interface VirtualMachineImagesClient {
      * @return a list of virtual machine image SKUs for the specified location, publisher, and offer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<List<VirtualMachineImageResourceInner>> listSkusWithResponse(String location, String publisherName, String offer, Context context);
+    Response<List<VirtualMachineImageResourceInner>> listSkusWithResponse(
+        String location, String publisherName, String offer, Context context);
 }

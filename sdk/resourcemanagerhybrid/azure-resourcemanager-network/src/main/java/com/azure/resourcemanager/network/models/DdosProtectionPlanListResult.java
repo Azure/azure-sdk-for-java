@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.DdosProtectionPlanInner;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * A list of DDoS protection plans.
- */
+/** A list of DDoS protection plans. */
 @Fluent
 public final class DdosProtectionPlanListResult {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(DdosProtectionPlanListResult.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DdosProtectionPlanListResult.class);
 
     /*
      * A list of DDoS protection plans.
@@ -35,7 +30,7 @@ public final class DdosProtectionPlanListResult {
 
     /**
      * Get the value property: A list of DDoS protection plans.
-     * 
+     *
      * @return the value value.
      */
     public List<DdosProtectionPlanInner> value() {
@@ -44,7 +39,7 @@ public final class DdosProtectionPlanListResult {
 
     /**
      * Set the value property: A list of DDoS protection plans.
-     * 
+     *
      * @param value the value value to set.
      * @return the DdosProtectionPlanListResult object itself.
      */
@@ -55,7 +50,7 @@ public final class DdosProtectionPlanListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     * 
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -64,7 +59,7 @@ public final class DdosProtectionPlanListResult {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

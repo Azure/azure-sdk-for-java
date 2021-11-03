@@ -38,92 +38,137 @@ import com.azure.resourcemanager.network.models.InterfaceEndpointListResult;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
-import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * InterfaceEndpointsClient.
- */
-public final class InterfaceEndpointsClientImpl implements InnerSupportsGet<InterfaceEndpointInner>, InnerSupportsListing<InterfaceEndpointInner>, InnerSupportsDelete<Void>, InterfaceEndpointsClient {
+/** An instance of this class provides access to all the operations defined in InterfaceEndpointsClient. */
+public final class InterfaceEndpointsClientImpl
+    implements InnerSupportsGet<InterfaceEndpointInner>,
+        InnerSupportsListing<InterfaceEndpointInner>,
+        InnerSupportsDelete<Void>,
+        InterfaceEndpointsClient {
     private final ClientLogger logger = new ClientLogger(InterfaceEndpointsClientImpl.class);
 
-    /**
-     * The proxy service used to perform REST calls.
-     */
+    /** The proxy service used to perform REST calls. */
     private final InterfaceEndpointsService service;
 
-    /**
-     * The service client containing this operation class.
-     */
+    /** The service client containing this operation class. */
     private final NetworkManagementClientImpl client;
 
     /**
      * Initializes an instance of InterfaceEndpointsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     InterfaceEndpointsClientImpl(NetworkManagementClientImpl client) {
-        this.service = RestProxy.create(InterfaceEndpointsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+            RestProxy.create(InterfaceEndpointsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for
-     * NetworkManagementClientInterfaceEndpoints to be used by the proxy
+     * The interface defining all the services for NetworkManagementClientInterfaceEndpoints to be used by the proxy
      * service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     private interface InterfaceEndpointsService {
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/interfaceEndpoints/{interfaceEndpointName}")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
+                + "/interfaceEndpoints/{interfaceEndpointName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("interfaceEndpointName") String interfaceEndpointName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("interfaceEndpointName") String interfaceEndpointName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/interfaceEndpoints/{interfaceEndpointName}")
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
+                + "/interfaceEndpoints/{interfaceEndpointName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<InterfaceEndpointInner>> getByResourceGroup(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("interfaceEndpointName") String interfaceEndpointName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @QueryParam("$expand") String expand, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<InterfaceEndpointInner>> getByResourceGroup(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("interfaceEndpointName") String interfaceEndpointName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @QueryParam("$expand") String expand,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/interfaceEndpoints/{interfaceEndpointName}")
+        @Headers({"Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
+                + "/interfaceEndpoints/{interfaceEndpointName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("interfaceEndpointName") String interfaceEndpointName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") InterfaceEndpointInner parameters, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("interfaceEndpointName") String interfaceEndpointName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") InterfaceEndpointInner parameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/interfaceEndpoints")
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
+                + "/interfaceEndpoints")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<InterfaceEndpointListResult>> listByResourceGroup(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<InterfaceEndpointListResult>> listByResourceGroup(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Network/interfaceEndpoints")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<InterfaceEndpointListResult>> list(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<InterfaceEndpointListResult>> list(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<InterfaceEndpointListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<InterfaceEndpointListResult>> listNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<InterfaceEndpointListResult>> listBySubscriptionNext(@PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<InterfaceEndpointListResult>> listBySubscriptionNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
      * Deletes the specified interface endpoint.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param interfaceEndpointName The name of the interface endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -132,27 +177,46 @@ public final class InterfaceEndpointsClientImpl implements InnerSupportsGet<Inte
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String interfaceEndpointName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String interfaceEndpointName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (interfaceEndpointName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter interfaceEndpointName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter interfaceEndpointName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-11-01";
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, interfaceEndpointName, apiVersion, this.client.getSubscriptionId(), context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .delete(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            interfaceEndpointName,
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the specified interface endpoint.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param interfaceEndpointName The name of the interface endpoint.
      * @param context The context to associate with this operation.
@@ -162,27 +226,43 @@ public final class InterfaceEndpointsClientImpl implements InnerSupportsGet<Inte
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String interfaceEndpointName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String interfaceEndpointName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (interfaceEndpointName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter interfaceEndpointName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter interfaceEndpointName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-11-01";
         context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), resourceGroupName, interfaceEndpointName, apiVersion, this.client.getSubscriptionId(), context);
+        return service
+            .delete(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                interfaceEndpointName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                context);
     }
 
     /**
      * Deletes the specified interface endpoint.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param interfaceEndpointName The name of the interface endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -193,12 +273,14 @@ public final class InterfaceEndpointsClientImpl implements InnerSupportsGet<Inte
     @ServiceMethod(returns = ReturnType.SINGLE)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String interfaceEndpointName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, interfaceEndpointName);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
      * Deletes the specified interface endpoint.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param interfaceEndpointName The name of the interface endpoint.
      * @param context The context to associate with this operation.
@@ -208,15 +290,19 @@ public final class InterfaceEndpointsClientImpl implements InnerSupportsGet<Inte
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String interfaceEndpointName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String interfaceEndpointName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, interfaceEndpointName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, interfaceEndpointName, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
      * Deletes the specified interface endpoint.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param interfaceEndpointName The name of the interface endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -226,12 +312,12 @@ public final class InterfaceEndpointsClientImpl implements InnerSupportsGet<Inte
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String interfaceEndpointName) {
-        return beginDeleteAsync(resourceGroupName, interfaceEndpointName)
-            .getSyncPoller();}
+        return beginDeleteAsync(resourceGroupName, interfaceEndpointName).getSyncPoller();
+    }
 
     /**
      * Deletes the specified interface endpoint.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param interfaceEndpointName The name of the interface endpoint.
      * @param context The context to associate with this operation.
@@ -241,13 +327,14 @@ public final class InterfaceEndpointsClientImpl implements InnerSupportsGet<Inte
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String interfaceEndpointName, Context context) {
-        return beginDeleteAsync(resourceGroupName, interfaceEndpointName, context)
-            .getSyncPoller();}
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String interfaceEndpointName, Context context) {
+        return beginDeleteAsync(resourceGroupName, interfaceEndpointName, context).getSyncPoller();
+    }
 
     /**
      * Deletes the specified interface endpoint.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param interfaceEndpointName The name of the interface endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -264,7 +351,7 @@ public final class InterfaceEndpointsClientImpl implements InnerSupportsGet<Inte
 
     /**
      * Deletes the specified interface endpoint.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param interfaceEndpointName The name of the interface endpoint.
      * @param context The context to associate with this operation.
@@ -282,7 +369,7 @@ public final class InterfaceEndpointsClientImpl implements InnerSupportsGet<Inte
 
     /**
      * Deletes the specified interface endpoint.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param interfaceEndpointName The name of the interface endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -296,7 +383,7 @@ public final class InterfaceEndpointsClientImpl implements InnerSupportsGet<Inte
 
     /**
      * Deletes the specified interface endpoint.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param interfaceEndpointName The name of the interface endpoint.
      * @param context The context to associate with this operation.
@@ -311,7 +398,7 @@ public final class InterfaceEndpointsClientImpl implements InnerSupportsGet<Inte
 
     /**
      * Gets the specified interface endpoint by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param interfaceEndpointName The name of the interface endpoint.
      * @param expand Expands referenced resources.
@@ -321,28 +408,49 @@ public final class InterfaceEndpointsClientImpl implements InnerSupportsGet<Inte
      * @return the specified interface endpoint by resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<InterfaceEndpointInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String interfaceEndpointName, String expand) {
+    public Mono<Response<InterfaceEndpointInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String interfaceEndpointName, String expand) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (interfaceEndpointName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter interfaceEndpointName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter interfaceEndpointName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-11-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, interfaceEndpointName, apiVersion, this.client.getSubscriptionId(), expand, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getByResourceGroup(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            interfaceEndpointName,
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            expand,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the specified interface endpoint by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param interfaceEndpointName The name of the interface endpoint.
      * @param expand Expands referenced resources.
@@ -353,28 +461,46 @@ public final class InterfaceEndpointsClientImpl implements InnerSupportsGet<Inte
      * @return the specified interface endpoint by resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<InterfaceEndpointInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String interfaceEndpointName, String expand, Context context) {
+    private Mono<Response<InterfaceEndpointInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String interfaceEndpointName, String expand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (interfaceEndpointName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter interfaceEndpointName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter interfaceEndpointName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, interfaceEndpointName, apiVersion, this.client.getSubscriptionId(), expand, accept, context);
+        return service
+            .getByResourceGroup(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                interfaceEndpointName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                expand,
+                accept,
+                context);
     }
 
     /**
      * Gets the specified interface endpoint by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param interfaceEndpointName The name of the interface endpoint.
      * @param expand Expands referenced resources.
@@ -384,20 +510,22 @@ public final class InterfaceEndpointsClientImpl implements InnerSupportsGet<Inte
      * @return the specified interface endpoint by resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<InterfaceEndpointInner> getByResourceGroupAsync(String resourceGroupName, String interfaceEndpointName, String expand) {
+    public Mono<InterfaceEndpointInner> getByResourceGroupAsync(
+        String resourceGroupName, String interfaceEndpointName, String expand) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, interfaceEndpointName, expand)
-            .flatMap((Response<InterfaceEndpointInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (Response<InterfaceEndpointInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets the specified interface endpoint by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param interfaceEndpointName The name of the interface endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -406,21 +534,23 @@ public final class InterfaceEndpointsClientImpl implements InnerSupportsGet<Inte
      * @return the specified interface endpoint by resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<InterfaceEndpointInner> getByResourceGroupAsync(String resourceGroupName, String interfaceEndpointName) {
+    public Mono<InterfaceEndpointInner> getByResourceGroupAsync(
+        String resourceGroupName, String interfaceEndpointName) {
         final String expand = null;
         return getByResourceGroupWithResponseAsync(resourceGroupName, interfaceEndpointName, expand)
-            .flatMap((Response<InterfaceEndpointInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (Response<InterfaceEndpointInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets the specified interface endpoint by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param interfaceEndpointName The name of the interface endpoint.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -436,7 +566,7 @@ public final class InterfaceEndpointsClientImpl implements InnerSupportsGet<Inte
 
     /**
      * Gets the specified interface endpoint by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param interfaceEndpointName The name of the interface endpoint.
      * @param expand Expands referenced resources.
@@ -447,13 +577,14 @@ public final class InterfaceEndpointsClientImpl implements InnerSupportsGet<Inte
      * @return the specified interface endpoint by resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<InterfaceEndpointInner> getByResourceGroupWithResponse(String resourceGroupName, String interfaceEndpointName, String expand, Context context) {
+    public Response<InterfaceEndpointInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String interfaceEndpointName, String expand, Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, interfaceEndpointName, expand, context).block();
     }
 
     /**
      * Creates or updates an interface endpoint in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param interfaceEndpointName The name of the interface endpoint.
      * @param parameters Parameters supplied to the create or update interface endpoint operation.
@@ -463,18 +594,27 @@ public final class InterfaceEndpointsClientImpl implements InnerSupportsGet<Inte
      * @return interface endpoint resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String interfaceEndpointName, InterfaceEndpointInner parameters) {
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String interfaceEndpointName, InterfaceEndpointInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (interfaceEndpointName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter interfaceEndpointName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter interfaceEndpointName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -483,13 +623,25 @@ public final class InterfaceEndpointsClientImpl implements InnerSupportsGet<Inte
         }
         final String apiVersion = "2018-11-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, interfaceEndpointName, apiVersion, this.client.getSubscriptionId(), parameters, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .createOrUpdate(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            interfaceEndpointName,
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            parameters,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates an interface endpoint in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param interfaceEndpointName The name of the interface endpoint.
      * @param parameters Parameters supplied to the create or update interface endpoint operation.
@@ -500,18 +652,27 @@ public final class InterfaceEndpointsClientImpl implements InnerSupportsGet<Inte
      * @return interface endpoint resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String interfaceEndpointName, InterfaceEndpointInner parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String interfaceEndpointName, InterfaceEndpointInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (interfaceEndpointName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter interfaceEndpointName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter interfaceEndpointName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -521,12 +682,21 @@ public final class InterfaceEndpointsClientImpl implements InnerSupportsGet<Inte
         final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, interfaceEndpointName, apiVersion, this.client.getSubscriptionId(), parameters, accept, context);
+        return service
+            .createOrUpdate(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                interfaceEndpointName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                parameters,
+                accept,
+                context);
     }
 
     /**
      * Creates or updates an interface endpoint in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param interfaceEndpointName The name of the interface endpoint.
      * @param parameters Parameters supplied to the create or update interface endpoint operation.
@@ -536,14 +706,23 @@ public final class InterfaceEndpointsClientImpl implements InnerSupportsGet<Inte
      * @return interface endpoint resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<InterfaceEndpointInner>, InterfaceEndpointInner> beginCreateOrUpdateAsync(String resourceGroupName, String interfaceEndpointName, InterfaceEndpointInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, interfaceEndpointName, parameters);
-        return this.client.<InterfaceEndpointInner, InterfaceEndpointInner>getLroResult(mono, this.client.getHttpPipeline(), InterfaceEndpointInner.class, InterfaceEndpointInner.class, Context.NONE);
+    public PollerFlux<PollResult<InterfaceEndpointInner>, InterfaceEndpointInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String interfaceEndpointName, InterfaceEndpointInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, interfaceEndpointName, parameters);
+        return this
+            .client
+            .<InterfaceEndpointInner, InterfaceEndpointInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                InterfaceEndpointInner.class,
+                InterfaceEndpointInner.class,
+                Context.NONE);
     }
 
     /**
      * Creates or updates an interface endpoint in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param interfaceEndpointName The name of the interface endpoint.
      * @param parameters Parameters supplied to the create or update interface endpoint operation.
@@ -554,15 +733,24 @@ public final class InterfaceEndpointsClientImpl implements InnerSupportsGet<Inte
      * @return interface endpoint resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<InterfaceEndpointInner>, InterfaceEndpointInner> beginCreateOrUpdateAsync(String resourceGroupName, String interfaceEndpointName, InterfaceEndpointInner parameters, Context context) {
+    private PollerFlux<PollResult<InterfaceEndpointInner>, InterfaceEndpointInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String interfaceEndpointName, InterfaceEndpointInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, interfaceEndpointName, parameters, context);
-        return this.client.<InterfaceEndpointInner, InterfaceEndpointInner>getLroResult(mono, this.client.getHttpPipeline(), InterfaceEndpointInner.class, InterfaceEndpointInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, interfaceEndpointName, parameters, context);
+        return this
+            .client
+            .<InterfaceEndpointInner, InterfaceEndpointInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                InterfaceEndpointInner.class,
+                InterfaceEndpointInner.class,
+                context);
     }
 
     /**
      * Creates or updates an interface endpoint in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param interfaceEndpointName The name of the interface endpoint.
      * @param parameters Parameters supplied to the create or update interface endpoint operation.
@@ -572,13 +760,14 @@ public final class InterfaceEndpointsClientImpl implements InnerSupportsGet<Inte
      * @return interface endpoint resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<InterfaceEndpointInner>, InterfaceEndpointInner> beginCreateOrUpdate(String resourceGroupName, String interfaceEndpointName, InterfaceEndpointInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, interfaceEndpointName, parameters)
-            .getSyncPoller();}
+    public SyncPoller<PollResult<InterfaceEndpointInner>, InterfaceEndpointInner> beginCreateOrUpdate(
+        String resourceGroupName, String interfaceEndpointName, InterfaceEndpointInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, interfaceEndpointName, parameters).getSyncPoller();
+    }
 
     /**
      * Creates or updates an interface endpoint in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param interfaceEndpointName The name of the interface endpoint.
      * @param parameters Parameters supplied to the create or update interface endpoint operation.
@@ -589,13 +778,14 @@ public final class InterfaceEndpointsClientImpl implements InnerSupportsGet<Inte
      * @return interface endpoint resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<InterfaceEndpointInner>, InterfaceEndpointInner> beginCreateOrUpdate(String resourceGroupName, String interfaceEndpointName, InterfaceEndpointInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, interfaceEndpointName, parameters, context)
-            .getSyncPoller();}
+    public SyncPoller<PollResult<InterfaceEndpointInner>, InterfaceEndpointInner> beginCreateOrUpdate(
+        String resourceGroupName, String interfaceEndpointName, InterfaceEndpointInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, interfaceEndpointName, parameters, context).getSyncPoller();
+    }
 
     /**
      * Creates or updates an interface endpoint in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param interfaceEndpointName The name of the interface endpoint.
      * @param parameters Parameters supplied to the create or update interface endpoint operation.
@@ -605,7 +795,8 @@ public final class InterfaceEndpointsClientImpl implements InnerSupportsGet<Inte
      * @return interface endpoint resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<InterfaceEndpointInner> createOrUpdateAsync(String resourceGroupName, String interfaceEndpointName, InterfaceEndpointInner parameters) {
+    public Mono<InterfaceEndpointInner> createOrUpdateAsync(
+        String resourceGroupName, String interfaceEndpointName, InterfaceEndpointInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, interfaceEndpointName, parameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -613,7 +804,7 @@ public final class InterfaceEndpointsClientImpl implements InnerSupportsGet<Inte
 
     /**
      * Creates or updates an interface endpoint in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param interfaceEndpointName The name of the interface endpoint.
      * @param parameters Parameters supplied to the create or update interface endpoint operation.
@@ -624,7 +815,8 @@ public final class InterfaceEndpointsClientImpl implements InnerSupportsGet<Inte
      * @return interface endpoint resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<InterfaceEndpointInner> createOrUpdateAsync(String resourceGroupName, String interfaceEndpointName, InterfaceEndpointInner parameters, Context context) {
+    private Mono<InterfaceEndpointInner> createOrUpdateAsync(
+        String resourceGroupName, String interfaceEndpointName, InterfaceEndpointInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, interfaceEndpointName, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -632,7 +824,7 @@ public final class InterfaceEndpointsClientImpl implements InnerSupportsGet<Inte
 
     /**
      * Creates or updates an interface endpoint in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param interfaceEndpointName The name of the interface endpoint.
      * @param parameters Parameters supplied to the create or update interface endpoint operation.
@@ -642,13 +834,14 @@ public final class InterfaceEndpointsClientImpl implements InnerSupportsGet<Inte
      * @return interface endpoint resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public InterfaceEndpointInner createOrUpdate(String resourceGroupName, String interfaceEndpointName, InterfaceEndpointInner parameters) {
+    public InterfaceEndpointInner createOrUpdate(
+        String resourceGroupName, String interfaceEndpointName, InterfaceEndpointInner parameters) {
         return createOrUpdateAsync(resourceGroupName, interfaceEndpointName, parameters).block();
     }
 
     /**
      * Creates or updates an interface endpoint in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param interfaceEndpointName The name of the interface endpoint.
      * @param parameters Parameters supplied to the create or update interface endpoint operation.
@@ -659,13 +852,14 @@ public final class InterfaceEndpointsClientImpl implements InnerSupportsGet<Inte
      * @return interface endpoint resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public InterfaceEndpointInner createOrUpdate(String resourceGroupName, String interfaceEndpointName, InterfaceEndpointInner parameters, Context context) {
+    public InterfaceEndpointInner createOrUpdate(
+        String resourceGroupName, String interfaceEndpointName, InterfaceEndpointInner parameters, Context context) {
         return createOrUpdateAsync(resourceGroupName, interfaceEndpointName, parameters, context).block();
     }
 
     /**
      * Gets all interface endpoints in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -675,30 +869,49 @@ public final class InterfaceEndpointsClientImpl implements InnerSupportsGet<Inte
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InterfaceEndpointInner>> listByResourceGroupSinglePageAsync(String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-11-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(), accept, context))
-            .<PagedResponse<InterfaceEndpointInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByResourceGroup(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            accept,
+                            context))
+            .<PagedResponse<InterfaceEndpointInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets all interface endpoints in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -707,32 +920,49 @@ public final class InterfaceEndpointsClientImpl implements InnerSupportsGet<Inte
      * @return all interface endpoints in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<InterfaceEndpointInner>> listByResourceGroupSinglePageAsync(String resourceGroupName, Context context) {
+    private Mono<PagedResponse<InterfaceEndpointInner>> listByResourceGroupSinglePageAsync(
+        String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName, apiVersion, this.client.getSubscriptionId(), accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return service
+            .listByResourceGroup(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 
     /**
      * Gets all interface endpoints in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -742,13 +972,12 @@ public final class InterfaceEndpointsClientImpl implements InnerSupportsGet<Inte
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<InterfaceEndpointInner> listByResourceGroupAsync(String resourceGroupName) {
         return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName),
-            nextLink -> listNextSinglePageAsync(nextLink));
+            () -> listByResourceGroupSinglePageAsync(resourceGroupName), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets all interface endpoints in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -765,7 +994,7 @@ public final class InterfaceEndpointsClientImpl implements InnerSupportsGet<Inte
 
     /**
      * Gets all interface endpoints in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -779,7 +1008,7 @@ public final class InterfaceEndpointsClientImpl implements InnerSupportsGet<Inte
 
     /**
      * Gets all interface endpoints in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -794,7 +1023,7 @@ public final class InterfaceEndpointsClientImpl implements InnerSupportsGet<Inte
 
     /**
      * Gets all interface endpoints in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all interface endpoints in a subscription.
@@ -802,27 +1031,39 @@ public final class InterfaceEndpointsClientImpl implements InnerSupportsGet<Inte
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InterfaceEndpointInner>> listSinglePageAsync() {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-11-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context))
-            .<PagedResponse<InterfaceEndpointInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<InterfaceEndpointInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets all interface endpoints in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -832,27 +1073,36 @@ public final class InterfaceEndpointsClientImpl implements InnerSupportsGet<Inte
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<InterfaceEndpointInner>> listSinglePageAsync(Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return service
+            .list(this.client.getEndpoint(), apiVersion, this.client.getSubscriptionId(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 
     /**
      * Gets all interface endpoints in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all interface endpoints in a subscription.
@@ -860,13 +1110,12 @@ public final class InterfaceEndpointsClientImpl implements InnerSupportsGet<Inte
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<InterfaceEndpointInner> listAsync() {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(),
-            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+            () -> listSinglePageAsync(), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets all interface endpoints in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -876,13 +1125,12 @@ public final class InterfaceEndpointsClientImpl implements InnerSupportsGet<Inte
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<InterfaceEndpointInner> listAsync(Context context) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(context),
-            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
+            () -> listSinglePageAsync(context), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets all interface endpoints in a subscription.
-     * 
+     *
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all interface endpoints in a subscription.
@@ -894,7 +1142,7 @@ public final class InterfaceEndpointsClientImpl implements InnerSupportsGet<Inte
 
     /**
      * Gets all interface endpoints in a subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -908,7 +1156,7 @@ public final class InterfaceEndpointsClientImpl implements InnerSupportsGet<Inte
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -921,23 +1169,29 @@ public final class InterfaceEndpointsClientImpl implements InnerSupportsGet<Inte
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<InterfaceEndpointInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<InterfaceEndpointInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -951,23 +1205,29 @@ public final class InterfaceEndpointsClientImpl implements InnerSupportsGet<Inte
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return service
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -980,23 +1240,30 @@ public final class InterfaceEndpointsClientImpl implements InnerSupportsGet<Inte
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<InterfaceEndpointInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(
+                context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<InterfaceEndpointInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1005,22 +1272,29 @@ public final class InterfaceEndpointsClientImpl implements InnerSupportsGet<Inte
      * @return response for the ListInterfaceEndpoints API service call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<InterfaceEndpointInner>> listBySubscriptionNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<InterfaceEndpointInner>> listBySubscriptionNextSinglePageAsync(
+        String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return service
+            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 }

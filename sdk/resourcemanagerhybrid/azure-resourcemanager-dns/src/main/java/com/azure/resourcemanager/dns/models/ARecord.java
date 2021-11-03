@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.dns.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * An A record.
- */
+/** An A record. */
 @Fluent
 public final class ARecord {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ARecord.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ARecord.class);
 
     /*
      * The IPv4 address of this A record.
@@ -27,7 +22,7 @@ public final class ARecord {
 
     /**
      * Get the ipv4Address property: The IPv4 address of this A record.
-     * 
+     *
      * @return the ipv4Address value.
      */
     public String ipv4Address() {
@@ -36,7 +31,7 @@ public final class ARecord {
 
     /**
      * Set the ipv4Address property: The IPv4 address of this A record.
-     * 
+     *
      * @param ipv4Address the ipv4Address value to set.
      * @return the ARecord object itself.
      */
@@ -47,7 +42,7 @@ public final class ARecord {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

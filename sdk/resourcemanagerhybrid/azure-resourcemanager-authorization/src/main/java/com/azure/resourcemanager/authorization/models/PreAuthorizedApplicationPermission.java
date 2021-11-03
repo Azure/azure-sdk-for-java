@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Contains information about the pre-authorized permissions.
- */
+/** Contains information about the pre-authorized permissions. */
 @Fluent
 public final class PreAuthorizedApplicationPermission {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(PreAuthorizedApplicationPermission.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PreAuthorizedApplicationPermission.class);
 
     /*
      * Indicates whether the permission set is DirectAccess or impersonation.
@@ -33,9 +28,8 @@ public final class PreAuthorizedApplicationPermission {
     private List<String> accessGrants;
 
     /**
-     * Get the directAccessGrant property: Indicates whether the permission set
-     * is DirectAccess or impersonation.
-     * 
+     * Get the directAccessGrant property: Indicates whether the permission set is DirectAccess or impersonation.
+     *
      * @return the directAccessGrant value.
      */
     public Boolean directAccessGrant() {
@@ -43,9 +37,8 @@ public final class PreAuthorizedApplicationPermission {
     }
 
     /**
-     * Set the directAccessGrant property: Indicates whether the permission set
-     * is DirectAccess or impersonation.
-     * 
+     * Set the directAccessGrant property: Indicates whether the permission set is DirectAccess or impersonation.
+     *
      * @param directAccessGrant the directAccessGrant value to set.
      * @return the PreAuthorizedApplicationPermission object itself.
      */
@@ -56,7 +49,7 @@ public final class PreAuthorizedApplicationPermission {
 
     /**
      * Get the accessGrants property: The list of permissions.
-     * 
+     *
      * @return the accessGrants value.
      */
     public List<String> accessGrants() {
@@ -65,7 +58,7 @@ public final class PreAuthorizedApplicationPermission {
 
     /**
      * Set the accessGrants property: The list of permissions.
-     * 
+     *
      * @param accessGrants the accessGrants value to set.
      * @return the PreAuthorizedApplicationPermission object itself.
      */
@@ -76,7 +69,7 @@ public final class PreAuthorizedApplicationPermission {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

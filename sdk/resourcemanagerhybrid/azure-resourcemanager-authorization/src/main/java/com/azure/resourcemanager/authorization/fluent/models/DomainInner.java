@@ -5,23 +5,18 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Active Directory Domain information.
- */
+/** Active Directory Domain information. */
 @Fluent
 public final class DomainInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(DomainInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DomainInner.class);
 
     /*
      * the type of the authentication into the domain.
@@ -50,13 +45,11 @@ public final class DomainInner {
     /*
      * Active Directory Domain information.
      */
-    @JsonIgnore
-    private Map<String, Object> additionalProperties;
+    @JsonIgnore private Map<String, Object> additionalProperties;
 
     /**
-     * Get the authenticationType property: the type of the authentication into
-     * the domain.
-     * 
+     * Get the authenticationType property: the type of the authentication into the domain.
+     *
      * @return the authenticationType value.
      */
     public String authenticationType() {
@@ -65,7 +58,7 @@ public final class DomainInner {
 
     /**
      * Get the isDefault property: if this is the default domain in the tenant.
-     * 
+     *
      * @return the isDefault value.
      */
     public Boolean isDefault() {
@@ -74,7 +67,7 @@ public final class DomainInner {
 
     /**
      * Get the isVerified property: if this domain's ownership is verified.
-     * 
+     *
      * @return the isVerified value.
      */
     public Boolean isVerified() {
@@ -83,7 +76,7 @@ public final class DomainInner {
 
     /**
      * Get the name property: the domain name.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -92,7 +85,7 @@ public final class DomainInner {
 
     /**
      * Set the name property: the domain name.
-     * 
+     *
      * @param name the name value to set.
      * @return the DomainInner object itself.
      */
@@ -102,9 +95,8 @@ public final class DomainInner {
     }
 
     /**
-     * Get the additionalProperties property: Active Directory Domain
-     * information.
-     * 
+     * Get the additionalProperties property: Active Directory Domain information.
+     *
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -113,9 +105,8 @@ public final class DomainInner {
     }
 
     /**
-     * Set the additionalProperties property: Active Directory Domain
-     * information.
-     * 
+     * Set the additionalProperties property: Active Directory Domain information.
+     *
      * @param additionalProperties the additionalProperties value to set.
      * @return the DomainInner object itself.
      */
@@ -134,12 +125,14 @@ public final class DomainInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property name in model DomainInner"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property name in model DomainInner"));
         }
     }
 }

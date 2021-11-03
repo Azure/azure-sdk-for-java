@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetUpdateNetworkConfigurationProperties;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Describes a virtual machine scale set network profile's network
- * configurations.
- */
+/** Describes a virtual machine scale set network profile's network configurations. */
 @Fluent
 public final class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubResource {
     @JsonIgnore
@@ -39,7 +34,7 @@ public final class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubR
 
     /**
      * Get the name property: The network configuration name.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -48,10 +43,9 @@ public final class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubR
 
     /**
      * Set the name property: The network configuration name.
-     * 
+     *
      * @param name the name value to set.
-     * @return the VirtualMachineScaleSetUpdateNetworkConfiguration object
-     * itself.
+     * @return the VirtualMachineScaleSetUpdateNetworkConfiguration object itself.
      */
     public VirtualMachineScaleSetUpdateNetworkConfiguration withName(String name) {
         this.name = name;
@@ -59,19 +53,16 @@ public final class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubR
     }
 
     /**
-     * Get the innerProperties property: Describes a virtual machine scale set
-     * updatable network profile's IP configuration.Use this object for
-     * updating network profile's IP Configuration.
-     * 
+     * Get the innerProperties property: Describes a virtual machine scale set updatable network profile's IP
+     * configuration.Use this object for updating network profile's IP Configuration.
+     *
      * @return the innerProperties value.
      */
     private VirtualMachineScaleSetUpdateNetworkConfigurationProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public VirtualMachineScaleSetUpdateNetworkConfiguration withId(String id) {
         super.withId(id);
@@ -79,9 +70,8 @@ public final class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubR
     }
 
     /**
-     * Get the primary property: Whether this is a primary NIC on a virtual
-     * machine.
-     * 
+     * Get the primary property: Whether this is a primary NIC on a virtual machine.
+     *
      * @return the primary value.
      */
     public Boolean primary() {
@@ -89,12 +79,10 @@ public final class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubR
     }
 
     /**
-     * Set the primary property: Whether this is a primary NIC on a virtual
-     * machine.
-     * 
+     * Set the primary property: Whether this is a primary NIC on a virtual machine.
+     *
      * @param primary the primary value to set.
-     * @return the VirtualMachineScaleSetUpdateNetworkConfiguration object
-     * itself.
+     * @return the VirtualMachineScaleSetUpdateNetworkConfiguration object itself.
      */
     public VirtualMachineScaleSetUpdateNetworkConfiguration withPrimary(Boolean primary) {
         if (this.innerProperties() == null) {
@@ -105,9 +93,9 @@ public final class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubR
     }
 
     /**
-     * Get the enableAcceleratedNetworking property: Specifies whether the
-     * network interface is accelerated networking-enabled.
-     * 
+     * Get the enableAcceleratedNetworking property: Specifies whether the network interface is accelerated
+     * networking-enabled.
+     *
      * @return the enableAcceleratedNetworking value.
      */
     public Boolean enableAcceleratedNetworking() {
@@ -115,15 +103,14 @@ public final class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubR
     }
 
     /**
-     * Set the enableAcceleratedNetworking property: Specifies whether the
-     * network interface is accelerated networking-enabled.
-     * 
-     * @param enableAcceleratedNetworking the enableAcceleratedNetworking value
-     * to set.
-     * @return the VirtualMachineScaleSetUpdateNetworkConfiguration object
-     * itself.
+     * Set the enableAcceleratedNetworking property: Specifies whether the network interface is accelerated
+     * networking-enabled.
+     *
+     * @param enableAcceleratedNetworking the enableAcceleratedNetworking value to set.
+     * @return the VirtualMachineScaleSetUpdateNetworkConfiguration object itself.
      */
-    public VirtualMachineScaleSetUpdateNetworkConfiguration withEnableAcceleratedNetworking(Boolean enableAcceleratedNetworking) {
+    public VirtualMachineScaleSetUpdateNetworkConfiguration withEnableAcceleratedNetworking(
+        Boolean enableAcceleratedNetworking) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualMachineScaleSetUpdateNetworkConfigurationProperties();
         }
@@ -132,9 +119,8 @@ public final class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubR
     }
 
     /**
-     * Get the enableFpga property: Specifies whether the network interface is
-     * FPGA networking-enabled.
-     * 
+     * Get the enableFpga property: Specifies whether the network interface is FPGA networking-enabled.
+     *
      * @return the enableFpga value.
      */
     public Boolean enableFpga() {
@@ -142,12 +128,10 @@ public final class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubR
     }
 
     /**
-     * Set the enableFpga property: Specifies whether the network interface is
-     * FPGA networking-enabled.
-     * 
+     * Set the enableFpga property: Specifies whether the network interface is FPGA networking-enabled.
+     *
      * @param enableFpga the enableFpga value to set.
-     * @return the VirtualMachineScaleSetUpdateNetworkConfiguration object
-     * itself.
+     * @return the VirtualMachineScaleSetUpdateNetworkConfiguration object itself.
      */
     public VirtualMachineScaleSetUpdateNetworkConfiguration withEnableFpga(Boolean enableFpga) {
         if (this.innerProperties() == null) {
@@ -159,7 +143,7 @@ public final class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubR
 
     /**
      * Get the networkSecurityGroup property: The network security group.
-     * 
+     *
      * @return the networkSecurityGroup value.
      */
     public SubResource networkSecurityGroup() {
@@ -168,10 +152,9 @@ public final class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubR
 
     /**
      * Set the networkSecurityGroup property: The network security group.
-     * 
+     *
      * @param networkSecurityGroup the networkSecurityGroup value to set.
-     * @return the VirtualMachineScaleSetUpdateNetworkConfiguration object
-     * itself.
+     * @return the VirtualMachineScaleSetUpdateNetworkConfiguration object itself.
      */
     public VirtualMachineScaleSetUpdateNetworkConfiguration withNetworkSecurityGroup(SubResource networkSecurityGroup) {
         if (this.innerProperties() == null) {
@@ -182,9 +165,8 @@ public final class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubR
     }
 
     /**
-     * Get the dnsSettings property: The dns settings to be applied on the
-     * network interfaces.
-     * 
+     * Get the dnsSettings property: The dns settings to be applied on the network interfaces.
+     *
      * @return the dnsSettings value.
      */
     public VirtualMachineScaleSetNetworkConfigurationDnsSettings dnsSettings() {
@@ -192,14 +174,13 @@ public final class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubR
     }
 
     /**
-     * Set the dnsSettings property: The dns settings to be applied on the
-     * network interfaces.
-     * 
+     * Set the dnsSettings property: The dns settings to be applied on the network interfaces.
+     *
      * @param dnsSettings the dnsSettings value to set.
-     * @return the VirtualMachineScaleSetUpdateNetworkConfiguration object
-     * itself.
+     * @return the VirtualMachineScaleSetUpdateNetworkConfiguration object itself.
      */
-    public VirtualMachineScaleSetUpdateNetworkConfiguration withDnsSettings(VirtualMachineScaleSetNetworkConfigurationDnsSettings dnsSettings) {
+    public VirtualMachineScaleSetUpdateNetworkConfiguration withDnsSettings(
+        VirtualMachineScaleSetNetworkConfigurationDnsSettings dnsSettings) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualMachineScaleSetUpdateNetworkConfigurationProperties();
         }
@@ -208,9 +189,8 @@ public final class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubR
     }
 
     /**
-     * Get the ipConfigurations property: The virtual machine scale set IP
-     * Configuration.
-     * 
+     * Get the ipConfigurations property: The virtual machine scale set IP Configuration.
+     *
      * @return the ipConfigurations value.
      */
     public List<VirtualMachineScaleSetUpdateIpConfiguration> ipConfigurations() {
@@ -218,14 +198,13 @@ public final class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubR
     }
 
     /**
-     * Set the ipConfigurations property: The virtual machine scale set IP
-     * Configuration.
-     * 
+     * Set the ipConfigurations property: The virtual machine scale set IP Configuration.
+     *
      * @param ipConfigurations the ipConfigurations value to set.
-     * @return the VirtualMachineScaleSetUpdateNetworkConfiguration object
-     * itself.
+     * @return the VirtualMachineScaleSetUpdateNetworkConfiguration object itself.
      */
-    public VirtualMachineScaleSetUpdateNetworkConfiguration withIpConfigurations(List<VirtualMachineScaleSetUpdateIpConfiguration> ipConfigurations) {
+    public VirtualMachineScaleSetUpdateNetworkConfiguration withIpConfigurations(
+        List<VirtualMachineScaleSetUpdateIpConfiguration> ipConfigurations) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualMachineScaleSetUpdateNetworkConfigurationProperties();
         }
@@ -234,9 +213,8 @@ public final class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubR
     }
 
     /**
-     * Get the enableIpForwarding property: Whether IP forwarding enabled on
-     * this NIC.
-     * 
+     * Get the enableIpForwarding property: Whether IP forwarding enabled on this NIC.
+     *
      * @return the enableIpForwarding value.
      */
     public Boolean enableIpForwarding() {
@@ -244,12 +222,10 @@ public final class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubR
     }
 
     /**
-     * Set the enableIpForwarding property: Whether IP forwarding enabled on
-     * this NIC.
-     * 
+     * Set the enableIpForwarding property: Whether IP forwarding enabled on this NIC.
+     *
      * @param enableIpForwarding the enableIpForwarding value to set.
-     * @return the VirtualMachineScaleSetUpdateNetworkConfiguration object
-     * itself.
+     * @return the VirtualMachineScaleSetUpdateNetworkConfiguration object itself.
      */
     public VirtualMachineScaleSetUpdateNetworkConfiguration withEnableIpForwarding(Boolean enableIpForwarding) {
         if (this.innerProperties() == null) {
@@ -261,7 +237,7 @@ public final class VirtualMachineScaleSetUpdateNetworkConfiguration extends SubR
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

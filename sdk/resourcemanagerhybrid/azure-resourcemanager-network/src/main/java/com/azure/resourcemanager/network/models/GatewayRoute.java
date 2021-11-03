@@ -4,20 +4,15 @@
 
 package com.azure.resourcemanager.network.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Gateway routing details.
- */
+/** Gateway routing details. */
 @Immutable
 public final class GatewayRoute {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(GatewayRoute.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(GatewayRoute.class);
 
     /*
      * The gateway's local address
@@ -63,7 +58,7 @@ public final class GatewayRoute {
 
     /**
      * Get the localAddress property: The gateway's local address.
-     * 
+     *
      * @return the localAddress value.
      */
     public String localAddress() {
@@ -72,7 +67,7 @@ public final class GatewayRoute {
 
     /**
      * Get the network property: The route's network prefix.
-     * 
+     *
      * @return the network value.
      */
     public String network() {
@@ -81,7 +76,7 @@ public final class GatewayRoute {
 
     /**
      * Get the nextHop property: The route's next hop.
-     * 
+     *
      * @return the nextHop value.
      */
     public String nextHop() {
@@ -90,7 +85,7 @@ public final class GatewayRoute {
 
     /**
      * Get the sourcePeer property: The peer this route was learned from.
-     * 
+     *
      * @return the sourcePeer value.
      */
     public String sourcePeer() {
@@ -99,7 +94,7 @@ public final class GatewayRoute {
 
     /**
      * Get the origin property: The source this route was learned from.
-     * 
+     *
      * @return the origin value.
      */
     public String origin() {
@@ -108,7 +103,7 @@ public final class GatewayRoute {
 
     /**
      * Get the asPath property: The route's AS path sequence.
-     * 
+     *
      * @return the asPath value.
      */
     public String asPath() {
@@ -117,7 +112,7 @@ public final class GatewayRoute {
 
     /**
      * Get the weight property: The route's weight.
-     * 
+     *
      * @return the weight value.
      */
     public Integer weight() {
@@ -126,7 +121,7 @@ public final class GatewayRoute {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

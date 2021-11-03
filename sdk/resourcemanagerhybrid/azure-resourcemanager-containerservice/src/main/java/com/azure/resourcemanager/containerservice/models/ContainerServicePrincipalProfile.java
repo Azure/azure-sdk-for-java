@@ -5,21 +5,17 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Information about a service principal identity for the cluster to use for
- * manipulating Azure APIs. Either secret or keyVaultSecretRef must be
- * specified.
+ * Information about a service principal identity for the cluster to use for manipulating Azure APIs. Either secret or
+ * keyVaultSecretRef must be specified.
  */
 @Fluent
 public final class ContainerServicePrincipalProfile {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ContainerServicePrincipalProfile.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerServicePrincipalProfile.class);
 
     /*
      * The ID for the service principal.
@@ -41,7 +37,7 @@ public final class ContainerServicePrincipalProfile {
 
     /**
      * Get the clientId property: The ID for the service principal.
-     * 
+     *
      * @return the clientId value.
      */
     public String clientId() {
@@ -50,7 +46,7 @@ public final class ContainerServicePrincipalProfile {
 
     /**
      * Set the clientId property: The ID for the service principal.
-     * 
+     *
      * @param clientId the clientId value to set.
      * @return the ContainerServicePrincipalProfile object itself.
      */
@@ -60,9 +56,8 @@ public final class ContainerServicePrincipalProfile {
     }
 
     /**
-     * Get the secret property: The secret password associated with the service
-     * principal in plain text.
-     * 
+     * Get the secret property: The secret password associated with the service principal in plain text.
+     *
      * @return the secret value.
      */
     public String secret() {
@@ -70,9 +65,8 @@ public final class ContainerServicePrincipalProfile {
     }
 
     /**
-     * Set the secret property: The secret password associated with the service
-     * principal in plain text.
-     * 
+     * Set the secret property: The secret password associated with the service principal in plain text.
+     *
      * @param secret the secret value to set.
      * @return the ContainerServicePrincipalProfile object itself.
      */
@@ -82,9 +76,8 @@ public final class ContainerServicePrincipalProfile {
     }
 
     /**
-     * Get the keyVaultSecretRef property: Reference to a secret stored in
-     * Azure Key Vault.
-     * 
+     * Get the keyVaultSecretRef property: Reference to a secret stored in Azure Key Vault.
+     *
      * @return the keyVaultSecretRef value.
      */
     public KeyVaultSecretRef keyVaultSecretRef() {
@@ -92,9 +85,8 @@ public final class ContainerServicePrincipalProfile {
     }
 
     /**
-     * Set the keyVaultSecretRef property: Reference to a secret stored in
-     * Azure Key Vault.
-     * 
+     * Set the keyVaultSecretRef property: Reference to a secret stored in Azure Key Vault.
+     *
      * @param keyVaultSecretRef the keyVaultSecretRef value to set.
      * @return the ContainerServicePrincipalProfile object itself.
      */
@@ -105,12 +97,15 @@ public final class ContainerServicePrincipalProfile {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (clientId() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property clientId in model ContainerServicePrincipalProfile"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property clientId in model ContainerServicePrincipalProfile"));
         }
         if (keyVaultSecretRef() != null) {
             keyVaultSecretRef().validate();

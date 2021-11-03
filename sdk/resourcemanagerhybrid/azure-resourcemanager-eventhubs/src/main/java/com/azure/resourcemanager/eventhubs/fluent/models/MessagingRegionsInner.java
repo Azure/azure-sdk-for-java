@@ -5,23 +5,17 @@
 package com.azure.resourcemanager.eventhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.models.MessagingRegionsProperties;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * Messaging Region.
- */
+/** Messaging Region. */
 @Fluent
 public final class MessagingRegionsInner extends Resource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(MessagingRegionsInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MessagingRegionsInner.class);
 
     /*
      * Properties of Messaging Region
@@ -31,7 +25,7 @@ public final class MessagingRegionsInner extends Resource {
 
     /**
      * Get the properties property: Properties of Messaging Region.
-     * 
+     *
      * @return the properties value.
      */
     public MessagingRegionsProperties properties() {
@@ -40,7 +34,7 @@ public final class MessagingRegionsInner extends Resource {
 
     /**
      * Set the properties property: Properties of Messaging Region.
-     * 
+     *
      * @param properties the properties value to set.
      * @return the MessagingRegionsInner object itself.
      */
@@ -49,18 +43,14 @@ public final class MessagingRegionsInner extends Resource {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public MessagingRegionsInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public MessagingRegionsInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -69,7 +59,7 @@ public final class MessagingRegionsInner extends Resource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

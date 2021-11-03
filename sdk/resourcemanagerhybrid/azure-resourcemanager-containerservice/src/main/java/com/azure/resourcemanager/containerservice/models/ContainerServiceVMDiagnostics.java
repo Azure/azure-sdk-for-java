@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Profile for diagnostics on the container service VMs.
- */
+/** Profile for diagnostics on the container service VMs. */
 @Fluent
 public final class ContainerServiceVMDiagnostics {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ContainerServiceVMDiagnostics.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerServiceVMDiagnostics.class);
 
     /*
      * Whether the VM diagnostic agent is provisioned on the VM.
@@ -32,9 +27,8 @@ public final class ContainerServiceVMDiagnostics {
     private String storageUri;
 
     /**
-     * Get the enabled property: Whether the VM diagnostic agent is provisioned
-     * on the VM.
-     * 
+     * Get the enabled property: Whether the VM diagnostic agent is provisioned on the VM.
+     *
      * @return the enabled value.
      */
     public boolean enabled() {
@@ -42,9 +36,8 @@ public final class ContainerServiceVMDiagnostics {
     }
 
     /**
-     * Set the enabled property: Whether the VM diagnostic agent is provisioned
-     * on the VM.
-     * 
+     * Set the enabled property: Whether the VM diagnostic agent is provisioned on the VM.
+     *
      * @param enabled the enabled value to set.
      * @return the ContainerServiceVMDiagnostics object itself.
      */
@@ -54,9 +47,8 @@ public final class ContainerServiceVMDiagnostics {
     }
 
     /**
-     * Get the storageUri property: The URI of the storage account where
-     * diagnostics are stored.
-     * 
+     * Get the storageUri property: The URI of the storage account where diagnostics are stored.
+     *
      * @return the storageUri value.
      */
     public String storageUri() {
@@ -65,7 +57,7 @@ public final class ContainerServiceVMDiagnostics {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

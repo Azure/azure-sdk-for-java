@@ -8,21 +8,16 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.SecurityRuleInner;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * DefaultSecurityRulesClient.
- */
+/** An instance of this class provides access to all the operations defined in DefaultSecurityRulesClient. */
 public interface DefaultSecurityRulesClient {
     /**
      * Gets all default security rules in a network security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -35,7 +30,7 @@ public interface DefaultSecurityRulesClient {
 
     /**
      * Gets all default security rules in a network security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -48,7 +43,7 @@ public interface DefaultSecurityRulesClient {
 
     /**
      * Gets all default security rules in a network security group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param context The context to associate with this operation.
@@ -62,7 +57,7 @@ public interface DefaultSecurityRulesClient {
 
     /**
      * Get the specified default network security rule.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param defaultSecurityRuleName The name of the default security rule.
@@ -72,11 +67,12 @@ public interface DefaultSecurityRulesClient {
      * @return the specified default network security rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<SecurityRuleInner>> getWithResponseAsync(String resourceGroupName, String networkSecurityGroupName, String defaultSecurityRuleName);
+    Mono<Response<SecurityRuleInner>> getWithResponseAsync(
+        String resourceGroupName, String networkSecurityGroupName, String defaultSecurityRuleName);
 
     /**
      * Get the specified default network security rule.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param defaultSecurityRuleName The name of the default security rule.
@@ -86,11 +82,12 @@ public interface DefaultSecurityRulesClient {
      * @return the specified default network security rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SecurityRuleInner> getAsync(String resourceGroupName, String networkSecurityGroupName, String defaultSecurityRuleName);
+    Mono<SecurityRuleInner> getAsync(
+        String resourceGroupName, String networkSecurityGroupName, String defaultSecurityRuleName);
 
     /**
      * Get the specified default network security rule.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param defaultSecurityRuleName The name of the default security rule.
@@ -104,7 +101,7 @@ public interface DefaultSecurityRulesClient {
 
     /**
      * Get the specified default network security rule.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkSecurityGroupName The name of the network security group.
      * @param defaultSecurityRuleName The name of the default security rule.
@@ -115,5 +112,6 @@ public interface DefaultSecurityRulesClient {
      * @return the specified default network security rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SecurityRuleInner> getWithResponse(String resourceGroupName, String networkSecurityGroupName, String defaultSecurityRuleName, Context context);
+    Response<SecurityRuleInner> getWithResponse(
+        String resourceGroupName, String networkSecurityGroupName, String defaultSecurityRuleName, Context context);
 }

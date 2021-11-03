@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The routes table associated with the ExpressRouteCircuit.
- */
+/** The routes table associated with the ExpressRouteCircuit. */
 @Fluent
 public final class ExpressRouteCircuitRoutesTable {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitRoutesTable.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitRoutesTable.class);
 
     /*
      * IP address of a network entity
@@ -52,7 +47,7 @@ public final class ExpressRouteCircuitRoutesTable {
 
     /**
      * Get the network property: IP address of a network entity.
-     * 
+     *
      * @return the network value.
      */
     public String network() {
@@ -61,7 +56,7 @@ public final class ExpressRouteCircuitRoutesTable {
 
     /**
      * Set the network property: IP address of a network entity.
-     * 
+     *
      * @param network the network value to set.
      * @return the ExpressRouteCircuitRoutesTable object itself.
      */
@@ -72,7 +67,7 @@ public final class ExpressRouteCircuitRoutesTable {
 
     /**
      * Get the nextHop property: NextHop address.
-     * 
+     *
      * @return the nextHop value.
      */
     public String nextHop() {
@@ -81,7 +76,7 @@ public final class ExpressRouteCircuitRoutesTable {
 
     /**
      * Set the nextHop property: NextHop address.
-     * 
+     *
      * @param nextHop the nextHop value to set.
      * @return the ExpressRouteCircuitRoutesTable object itself.
      */
@@ -91,9 +86,9 @@ public final class ExpressRouteCircuitRoutesTable {
     }
 
     /**
-     * Get the locPrf property: Local preference value as set with the set
-     * local-preference route-map configuration command.
-     * 
+     * Get the locPrf property: Local preference value as set with the set local-preference route-map configuration
+     * command.
+     *
      * @return the locPrf value.
      */
     public String locPrf() {
@@ -101,9 +96,9 @@ public final class ExpressRouteCircuitRoutesTable {
     }
 
     /**
-     * Set the locPrf property: Local preference value as set with the set
-     * local-preference route-map configuration command.
-     * 
+     * Set the locPrf property: Local preference value as set with the set local-preference route-map configuration
+     * command.
+     *
      * @param locPrf the locPrf value to set.
      * @return the ExpressRouteCircuitRoutesTable object itself.
      */
@@ -114,7 +109,7 @@ public final class ExpressRouteCircuitRoutesTable {
 
     /**
      * Get the weight property: Route Weight.
-     * 
+     *
      * @return the weight value.
      */
     public Integer weight() {
@@ -123,7 +118,7 @@ public final class ExpressRouteCircuitRoutesTable {
 
     /**
      * Set the weight property: Route Weight.
-     * 
+     *
      * @param weight the weight value to set.
      * @return the ExpressRouteCircuitRoutesTable object itself.
      */
@@ -133,9 +128,8 @@ public final class ExpressRouteCircuitRoutesTable {
     }
 
     /**
-     * Get the path property: Autonomous system paths to the destination
-     * network.
-     * 
+     * Get the path property: Autonomous system paths to the destination network.
+     *
      * @return the path value.
      */
     public String path() {
@@ -143,9 +137,8 @@ public final class ExpressRouteCircuitRoutesTable {
     }
 
     /**
-     * Set the path property: Autonomous system paths to the destination
-     * network.
-     * 
+     * Set the path property: Autonomous system paths to the destination network.
+     *
      * @param path the path value to set.
      * @return the ExpressRouteCircuitRoutesTable object itself.
      */
@@ -156,7 +149,7 @@ public final class ExpressRouteCircuitRoutesTable {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

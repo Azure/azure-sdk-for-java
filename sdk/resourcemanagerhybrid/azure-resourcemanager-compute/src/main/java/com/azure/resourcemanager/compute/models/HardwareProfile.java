@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Specifies the hardware settings for the virtual machine.
- */
+/** Specifies the hardware settings for the virtual machine. */
 @Fluent
 public final class HardwareProfile {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(HardwareProfile.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(HardwareProfile.class);
 
     /*
      * Specifies the size of the virtual machine. For more information about
@@ -42,26 +37,19 @@ public final class HardwareProfile {
     private VirtualMachineSizeTypes vmSize;
 
     /**
-     * Get the vmSize property: Specifies the size of the virtual machine. For
-     * more information about virtual machine sizes, see [Sizes for virtual
-     * machines](https://docs.microsoft.com/en-us/azure/virtual-machines/sizes).
-     * &lt;br&gt;&lt;br&gt; The available VM sizes depend on region and
-     * availability set. For a list of available sizes use these APIs: 
-     * &lt;br&gt;&lt;br&gt; [List all available virtual machine sizes in an
-     * availability
-     * set](https://docs.microsoft.com/rest/api/compute/availabilitysets/listavailablesizes)
-     * &lt;br&gt;&lt;br&gt; [List all available virtual machine sizes in a
-     * region](
-     * https://docs.microsoft.com/en-us/rest/api/compute/resourceskus/list)
-     * &lt;br&gt;&lt;br&gt; [List all available virtual machine sizes for
-     * resizing](https://docs.microsoft.com/rest/api/compute/virtualmachines/listavailablesizes).
-     * &lt;br&gt;&lt;br&gt; This list of sizes is no longer updated and the
-     * **VirtualMachineSizeTypes** string constants will be removed from the
-     * subsequent REST API specification. Use [List all available virtual
-     * machine sizes in a region](
-     * https://docs.microsoft.com/en-us/rest/api/compute/resourceskus/list) to
-     * get the latest sizes.
-     * 
+     * Get the vmSize property: Specifies the size of the virtual machine. For more information about virtual machine
+     * sizes, see [Sizes for virtual machines](https://docs.microsoft.com/en-us/azure/virtual-machines/sizes).
+     * &lt;br&gt;&lt;br&gt; The available VM sizes depend on region and availability set. For a list of available sizes
+     * use these APIs: &lt;br&gt;&lt;br&gt; [List all available virtual machine sizes in an availability
+     * set](https://docs.microsoft.com/rest/api/compute/availabilitysets/listavailablesizes) &lt;br&gt;&lt;br&gt; [List
+     * all available virtual machine sizes in a region](
+     * https://docs.microsoft.com/en-us/rest/api/compute/resourceskus/list) &lt;br&gt;&lt;br&gt; [List all available
+     * virtual machine sizes for
+     * resizing](https://docs.microsoft.com/rest/api/compute/virtualmachines/listavailablesizes). &lt;br&gt;&lt;br&gt;
+     * This list of sizes is no longer updated and the **VirtualMachineSizeTypes** string constants will be removed from
+     * the subsequent REST API specification. Use [List all available virtual machine sizes in a region](
+     * https://docs.microsoft.com/en-us/rest/api/compute/resourceskus/list) to get the latest sizes.
+     *
      * @return the vmSize value.
      */
     public VirtualMachineSizeTypes vmSize() {
@@ -69,26 +57,19 @@ public final class HardwareProfile {
     }
 
     /**
-     * Set the vmSize property: Specifies the size of the virtual machine. For
-     * more information about virtual machine sizes, see [Sizes for virtual
-     * machines](https://docs.microsoft.com/en-us/azure/virtual-machines/sizes).
-     * &lt;br&gt;&lt;br&gt; The available VM sizes depend on region and
-     * availability set. For a list of available sizes use these APIs: 
-     * &lt;br&gt;&lt;br&gt; [List all available virtual machine sizes in an
-     * availability
-     * set](https://docs.microsoft.com/rest/api/compute/availabilitysets/listavailablesizes)
-     * &lt;br&gt;&lt;br&gt; [List all available virtual machine sizes in a
-     * region](
-     * https://docs.microsoft.com/en-us/rest/api/compute/resourceskus/list)
-     * &lt;br&gt;&lt;br&gt; [List all available virtual machine sizes for
-     * resizing](https://docs.microsoft.com/rest/api/compute/virtualmachines/listavailablesizes).
-     * &lt;br&gt;&lt;br&gt; This list of sizes is no longer updated and the
-     * **VirtualMachineSizeTypes** string constants will be removed from the
-     * subsequent REST API specification. Use [List all available virtual
-     * machine sizes in a region](
-     * https://docs.microsoft.com/en-us/rest/api/compute/resourceskus/list) to
-     * get the latest sizes.
-     * 
+     * Set the vmSize property: Specifies the size of the virtual machine. For more information about virtual machine
+     * sizes, see [Sizes for virtual machines](https://docs.microsoft.com/en-us/azure/virtual-machines/sizes).
+     * &lt;br&gt;&lt;br&gt; The available VM sizes depend on region and availability set. For a list of available sizes
+     * use these APIs: &lt;br&gt;&lt;br&gt; [List all available virtual machine sizes in an availability
+     * set](https://docs.microsoft.com/rest/api/compute/availabilitysets/listavailablesizes) &lt;br&gt;&lt;br&gt; [List
+     * all available virtual machine sizes in a region](
+     * https://docs.microsoft.com/en-us/rest/api/compute/resourceskus/list) &lt;br&gt;&lt;br&gt; [List all available
+     * virtual machine sizes for
+     * resizing](https://docs.microsoft.com/rest/api/compute/virtualmachines/listavailablesizes). &lt;br&gt;&lt;br&gt;
+     * This list of sizes is no longer updated and the **VirtualMachineSizeTypes** string constants will be removed from
+     * the subsequent REST API specification. Use [List all available virtual machine sizes in a region](
+     * https://docs.microsoft.com/en-us/rest/api/compute/resourceskus/list) to get the latest sizes.
+     *
      * @param vmSize the vmSize value to set.
      * @return the HardwareProfile object itself.
      */
@@ -99,7 +80,7 @@ public final class HardwareProfile {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

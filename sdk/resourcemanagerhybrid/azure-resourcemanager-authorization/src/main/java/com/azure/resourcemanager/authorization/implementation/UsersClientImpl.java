@@ -40,26 +40,19 @@ import com.azure.resourcemanager.authorization.models.UserUpdateParameters;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * UsersClient.
- */
+/** An instance of this class provides access to all the operations defined in UsersClient. */
 public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersClient {
     private final ClientLogger logger = new ClientLogger(UsersClientImpl.class);
 
-    /**
-     * The proxy service used to perform REST calls.
-     */
+    /** The proxy service used to perform REST calls. */
     private final UsersService service;
 
-    /**
-     * The service client containing this operation class.
-     */
+    /** The service client containing this operation class. */
     private final GraphRbacManagementClientImpl client;
 
     /**
      * Initializes an instance of UsersClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     UsersClientImpl(GraphRbacManagementClientImpl client) {
@@ -68,59 +61,104 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
     }
 
     /**
-     * The interface defining all the services for
-     * GraphRbacManagementClientUsers to be used by the proxy service to
+     * The interface defining all the services for GraphRbacManagementClientUsers to be used by the proxy service to
      * perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "GraphRbacManagementC")
     private interface UsersService {
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Post("/{tenantID}/users")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<UserInner>> create(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @BodyParam("application/json") UserCreateParameters parameters, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<UserInner>> create(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("tenantID") String tenantId,
+            @BodyParam("application/json") UserCreateParameters parameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Get("/{tenantID}/users")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<UserListResult>> list(@HostParam("$host") String endpoint, @QueryParam("$filter") String filter, @QueryParam("$expand") String expand, @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<UserListResult>> list(
+            @HostParam("$host") String endpoint,
+            @QueryParam("$filter") String filter,
+            @QueryParam("$expand") String expand,
+            @QueryParam("$top") Integer top,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("tenantID") String tenantId,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Get("/{tenantID}/users/{upnOrObjectId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<UserInner>> get(@HostParam("$host") String endpoint, @PathParam("upnOrObjectId") String upnOrObjectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<UserInner>> get(
+            @HostParam("$host") String endpoint,
+            @PathParam("upnOrObjectId") String upnOrObjectId,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("tenantID") String tenantId,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Patch("/{tenantID}/users/{upnOrObjectId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<Void>> update(@HostParam("$host") String endpoint, @PathParam("upnOrObjectId") String upnOrObjectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @BodyParam("application/json") UserUpdateParameters parameters, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Void>> update(
+            @HostParam("$host") String endpoint,
+            @PathParam("upnOrObjectId") String upnOrObjectId,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("tenantID") String tenantId,
+            @BodyParam("application/json") UserUpdateParameters parameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Delete("/{tenantID}/users/{upnOrObjectId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @PathParam("upnOrObjectId") String upnOrObjectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Void>> delete(
+            @HostParam("$host") String endpoint,
+            @PathParam("upnOrObjectId") String upnOrObjectId,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("tenantID") String tenantId,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Post("/{tenantID}/users/{objectId}/getMemberGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<UserGetMemberGroupsResult>> getMemberGroups(@HostParam("$host") String endpoint, @PathParam("objectId") String objectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @BodyParam("application/json") UserGetMemberGroupsParameters parameters, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<UserGetMemberGroupsResult>> getMemberGroups(
+            @HostParam("$host") String endpoint,
+            @PathParam("objectId") String objectId,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("tenantID") String tenantId,
+            @BodyParam("application/json") UserGetMemberGroupsParameters parameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Get("/{tenantID}/{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<UserListResult>> listNext(@HostParam("$host") String endpoint, @PathParam(value = "nextLink", encoded = true) String nextLink, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<UserListResult>> listNext(
+            @HostParam("$host") String endpoint,
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("tenantID") String tenantId,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
      * Create a new user.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param parameters Parameters to create a user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -131,7 +169,10 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<UserInner>> createWithResponseAsync(String tenantId, UserCreateParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (tenantId == null) {
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
@@ -142,13 +183,23 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
             parameters.validate();
         }
         final String accept = "application/json, text/json";
-        return FluxUtil.withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(), tenantId, parameters, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .create(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            tenantId,
+                            parameters,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create a new user.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param parameters Parameters to create a user.
      * @param context The context to associate with this operation.
@@ -158,9 +209,13 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
      * @return active Directory user information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<UserInner>> createWithResponseAsync(String tenantId, UserCreateParameters parameters, Context context) {
+    private Mono<Response<UserInner>> createWithResponseAsync(
+        String tenantId, UserCreateParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (tenantId == null) {
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
@@ -172,12 +227,13 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), tenantId, parameters, accept, context);
+        return service
+            .create(this.client.getEndpoint(), this.client.getApiVersion(), tenantId, parameters, accept, context);
     }
 
     /**
      * Create a new user.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param parameters Parameters to create a user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -188,18 +244,19 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UserInner> createAsync(String tenantId, UserCreateParameters parameters) {
         return createWithResponseAsync(tenantId, parameters)
-            .flatMap((Response<UserInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (Response<UserInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Create a new user.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param parameters Parameters to create a user.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -214,7 +271,7 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
 
     /**
      * Create a new user.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param parameters Parameters to create a user.
      * @param context The context to associate with this operation.
@@ -230,7 +287,7 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
 
     /**
      * Gets list of users for the current tenant.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param filter The filter to apply to the operation.
      * @param expand The expand value for the operation result.
@@ -241,28 +298,46 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
      * @return list of users for the current tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<UserInner>> listSinglePageAsync(String tenantId, String filter, String expand, Integer top) {
+    private Mono<PagedResponse<UserInner>> listSinglePageAsync(
+        String tenantId, String filter, String expand, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (tenantId == null) {
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
-        return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), filter, expand, top, this.client.getApiVersion(), tenantId, accept, context))
-            .<PagedResponse<UserInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().odataNextLink(),
-                null))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .list(
+                            this.client.getEndpoint(),
+                            filter,
+                            expand,
+                            top,
+                            this.client.getApiVersion(),
+                            tenantId,
+                            accept,
+                            context))
+            .<PagedResponse<UserInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().odataNextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets list of users for the current tenant.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param filter The filter to apply to the operation.
      * @param expand The expand value for the operation result.
@@ -274,28 +349,36 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
      * @return list of users for the current tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<UserInner>> listSinglePageAsync(String tenantId, String filter, String expand, Integer top, Context context) {
+    private Mono<PagedResponse<UserInner>> listSinglePageAsync(
+        String tenantId, String filter, String expand, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (tenantId == null) {
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service.list(this.client.getEndpoint(), filter, expand, top, this.client.getApiVersion(), tenantId, accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().odataNextLink(),
-                null));
+        return service
+            .list(
+                this.client.getEndpoint(), filter, expand, top, this.client.getApiVersion(), tenantId, accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().odataNextLink(),
+                        null));
     }
 
     /**
      * Gets list of users for the current tenant.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param filter The filter to apply to the operation.
      * @param expand The expand value for the operation result.
@@ -314,7 +397,7 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
 
     /**
      * Gets list of users for the current tenant.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -333,7 +416,7 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
 
     /**
      * Gets list of users for the current tenant.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param filter The filter to apply to the operation.
      * @param expand The expand value for the operation result.
@@ -345,7 +428,8 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
      * @return list of users for the current tenant.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<UserInner> listAsync(String tenantId, String filter, String expand, Integer top, Context context) {
+    private PagedFlux<UserInner> listAsync(
+        String tenantId, String filter, String expand, Integer top, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(tenantId, filter, expand, top, context),
             nextLink -> listNextSinglePageAsync(nextLink, tenantId, context));
@@ -353,7 +437,7 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
 
     /**
      * Gets list of users for the current tenant.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -370,7 +454,7 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
 
     /**
      * Gets list of users for the current tenant.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param filter The filter to apply to the operation.
      * @param expand The expand value for the operation result.
@@ -388,7 +472,7 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
 
     /**
      * Gets user information from the directory.
-     * 
+     *
      * @param upnOrObjectId The object ID or principal name of the user for which to get information.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -399,7 +483,10 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<UserInner>> getWithResponseAsync(String upnOrObjectId, String tenantId) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (upnOrObjectId == null) {
             return Mono.error(new IllegalArgumentException("Parameter upnOrObjectId is required and cannot be null."));
@@ -408,13 +495,23 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
-        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), upnOrObjectId, this.client.getApiVersion(), tenantId, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .get(
+                            this.client.getEndpoint(),
+                            upnOrObjectId,
+                            this.client.getApiVersion(),
+                            tenantId,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets user information from the directory.
-     * 
+     *
      * @param upnOrObjectId The object ID or principal name of the user for which to get information.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
@@ -426,7 +523,10 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<UserInner>> getWithResponseAsync(String upnOrObjectId, String tenantId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (upnOrObjectId == null) {
             return Mono.error(new IllegalArgumentException("Parameter upnOrObjectId is required and cannot be null."));
@@ -436,12 +536,13 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), upnOrObjectId, this.client.getApiVersion(), tenantId, accept, context);
+        return service
+            .get(this.client.getEndpoint(), upnOrObjectId, this.client.getApiVersion(), tenantId, accept, context);
     }
 
     /**
      * Gets user information from the directory.
-     * 
+     *
      * @param upnOrObjectId The object ID or principal name of the user for which to get information.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -452,18 +553,19 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<UserInner> getAsync(String upnOrObjectId, String tenantId) {
         return getWithResponseAsync(upnOrObjectId, tenantId)
-            .flatMap((Response<UserInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (Response<UserInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets user information from the directory.
-     * 
+     *
      * @param upnOrObjectId The object ID or principal name of the user for which to get information.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -478,7 +580,7 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
 
     /**
      * Gets user information from the directory.
-     * 
+     *
      * @param upnOrObjectId The object ID or principal name of the user for which to get information.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
@@ -494,7 +596,7 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
 
     /**
      * Updates a user.
-     * 
+     *
      * @param upnOrObjectId The object ID or principal name of the user to update.
      * @param tenantId The tenant ID.
      * @param parameters Parameters to update an existing user.
@@ -504,9 +606,13 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> updateWithResponseAsync(String upnOrObjectId, String tenantId, UserUpdateParameters parameters) {
+    public Mono<Response<Void>> updateWithResponseAsync(
+        String upnOrObjectId, String tenantId, UserUpdateParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (upnOrObjectId == null) {
             return Mono.error(new IllegalArgumentException("Parameter upnOrObjectId is required and cannot be null."));
@@ -520,13 +626,24 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
             parameters.validate();
         }
         final String accept = "application/json, text/json";
-        return FluxUtil.withContext(context -> service.update(this.client.getEndpoint(), upnOrObjectId, this.client.getApiVersion(), tenantId, parameters, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .update(
+                            this.client.getEndpoint(),
+                            upnOrObjectId,
+                            this.client.getApiVersion(),
+                            tenantId,
+                            parameters,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates a user.
-     * 
+     *
      * @param upnOrObjectId The object ID or principal name of the user to update.
      * @param tenantId The tenant ID.
      * @param parameters Parameters to update an existing user.
@@ -537,9 +654,13 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> updateWithResponseAsync(String upnOrObjectId, String tenantId, UserUpdateParameters parameters, Context context) {
+    private Mono<Response<Void>> updateWithResponseAsync(
+        String upnOrObjectId, String tenantId, UserUpdateParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (upnOrObjectId == null) {
             return Mono.error(new IllegalArgumentException("Parameter upnOrObjectId is required and cannot be null."));
@@ -554,12 +675,20 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), upnOrObjectId, this.client.getApiVersion(), tenantId, parameters, accept, context);
+        return service
+            .update(
+                this.client.getEndpoint(),
+                upnOrObjectId,
+                this.client.getApiVersion(),
+                tenantId,
+                parameters,
+                accept,
+                context);
     }
 
     /**
      * Updates a user.
-     * 
+     *
      * @param upnOrObjectId The object ID or principal name of the user to update.
      * @param tenantId The tenant ID.
      * @param parameters Parameters to update an existing user.
@@ -576,7 +705,7 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
 
     /**
      * Updates a user.
-     * 
+     *
      * @param upnOrObjectId The object ID or principal name of the user to update.
      * @param tenantId The tenant ID.
      * @param parameters Parameters to update an existing user.
@@ -591,7 +720,7 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
 
     /**
      * Updates a user.
-     * 
+     *
      * @param upnOrObjectId The object ID or principal name of the user to update.
      * @param tenantId The tenant ID.
      * @param parameters Parameters to update an existing user.
@@ -602,13 +731,14 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> updateWithResponse(String upnOrObjectId, String tenantId, UserUpdateParameters parameters, Context context) {
+    public Response<Void> updateWithResponse(
+        String upnOrObjectId, String tenantId, UserUpdateParameters parameters, Context context) {
         return updateWithResponseAsync(upnOrObjectId, tenantId, parameters, context).block();
     }
 
     /**
      * Delete a user.
-     * 
+     *
      * @param upnOrObjectId The object ID or principal name of the user to delete.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -619,7 +749,10 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String upnOrObjectId, String tenantId) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (upnOrObjectId == null) {
             return Mono.error(new IllegalArgumentException("Parameter upnOrObjectId is required and cannot be null."));
@@ -628,13 +761,23 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), upnOrObjectId, this.client.getApiVersion(), tenantId, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .delete(
+                            this.client.getEndpoint(),
+                            upnOrObjectId,
+                            this.client.getApiVersion(),
+                            tenantId,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a user.
-     * 
+     *
      * @param upnOrObjectId The object ID or principal name of the user to delete.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
@@ -646,7 +789,10 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String upnOrObjectId, String tenantId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (upnOrObjectId == null) {
             return Mono.error(new IllegalArgumentException("Parameter upnOrObjectId is required and cannot be null."));
@@ -656,12 +802,13 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), upnOrObjectId, this.client.getApiVersion(), tenantId, accept, context);
+        return service
+            .delete(this.client.getEndpoint(), upnOrObjectId, this.client.getApiVersion(), tenantId, accept, context);
     }
 
     /**
      * Delete a user.
-     * 
+     *
      * @param upnOrObjectId The object ID or principal name of the user to delete.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -671,13 +818,12 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String upnOrObjectId, String tenantId) {
-        return deleteWithResponseAsync(upnOrObjectId, tenantId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(upnOrObjectId, tenantId).flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Delete a user.
-     * 
+     *
      * @param upnOrObjectId The object ID or principal name of the user to delete.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -691,7 +837,7 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
 
     /**
      * Delete a user.
-     * 
+     *
      * @param upnOrObjectId The object ID or principal name of the user to delete.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
@@ -707,7 +853,7 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
 
     /**
      * Gets a collection that contains the object IDs of the groups of which the user is a member.
-     * 
+     *
      * @param objectId The object ID of the user for which to get group membership.
      * @param tenantId The tenant ID.
      * @param parameters User filtering parameters.
@@ -717,9 +863,13 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
      * @return a collection that contains the object IDs of the groups of which the user is a member.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<String>> getMemberGroupsSinglePageAsync(String objectId, String tenantId, UserGetMemberGroupsParameters parameters) {
+    private Mono<PagedResponse<String>> getMemberGroupsSinglePageAsync(
+        String objectId, String tenantId, UserGetMemberGroupsParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (objectId == null) {
             return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
@@ -733,20 +883,28 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
             parameters.validate();
         }
         final String accept = "application/json, text/json";
-        return FluxUtil.withContext(context -> service.getMemberGroups(this.client.getEndpoint(), objectId, this.client.getApiVersion(), tenantId, parameters, accept, context))
-            .<PagedResponse<String>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                null,
-                null))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getMemberGroups(
+                            this.client.getEndpoint(),
+                            objectId,
+                            this.client.getApiVersion(),
+                            tenantId,
+                            parameters,
+                            accept,
+                            context))
+            .<PagedResponse<String>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a collection that contains the object IDs of the groups of which the user is a member.
-     * 
+     *
      * @param objectId The object ID of the user for which to get group membership.
      * @param tenantId The tenant ID.
      * @param parameters User filtering parameters.
@@ -757,9 +915,13 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
      * @return a collection that contains the object IDs of the groups of which the user is a member.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<String>> getMemberGroupsSinglePageAsync(String objectId, String tenantId, UserGetMemberGroupsParameters parameters, Context context) {
+    private Mono<PagedResponse<String>> getMemberGroupsSinglePageAsync(
+        String objectId, String tenantId, UserGetMemberGroupsParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (objectId == null) {
             return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
@@ -774,19 +936,18 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service.getMemberGroups(this.client.getEndpoint(), objectId, this.client.getApiVersion(), tenantId, parameters, accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                null,
-                null));
+        return service
+            .getMemberGroups(
+                this.client.getEndpoint(), objectId, this.client.getApiVersion(), tenantId, parameters, accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
     }
 
     /**
      * Gets a collection that contains the object IDs of the groups of which the user is a member.
-     * 
+     *
      * @param objectId The object ID of the user for which to get group membership.
      * @param tenantId The tenant ID.
      * @param parameters User filtering parameters.
@@ -796,14 +957,14 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
      * @return a collection that contains the object IDs of the groups of which the user is a member.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<String> getMemberGroupsAsync(String objectId, String tenantId, UserGetMemberGroupsParameters parameters) {
-        return new PagedFlux<>(
-            () -> getMemberGroupsSinglePageAsync(objectId, tenantId, parameters));
+    public PagedFlux<String> getMemberGroupsAsync(
+        String objectId, String tenantId, UserGetMemberGroupsParameters parameters) {
+        return new PagedFlux<>(() -> getMemberGroupsSinglePageAsync(objectId, tenantId, parameters));
     }
 
     /**
      * Gets a collection that contains the object IDs of the groups of which the user is a member.
-     * 
+     *
      * @param objectId The object ID of the user for which to get group membership.
      * @param tenantId The tenant ID.
      * @param parameters User filtering parameters.
@@ -814,14 +975,14 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
      * @return a collection that contains the object IDs of the groups of which the user is a member.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<String> getMemberGroupsAsync(String objectId, String tenantId, UserGetMemberGroupsParameters parameters, Context context) {
-        return new PagedFlux<>(
-            () -> getMemberGroupsSinglePageAsync(objectId, tenantId, parameters, context));
+    private PagedFlux<String> getMemberGroupsAsync(
+        String objectId, String tenantId, UserGetMemberGroupsParameters parameters, Context context) {
+        return new PagedFlux<>(() -> getMemberGroupsSinglePageAsync(objectId, tenantId, parameters, context));
     }
 
     /**
      * Gets a collection that contains the object IDs of the groups of which the user is a member.
-     * 
+     *
      * @param objectId The object ID of the user for which to get group membership.
      * @param tenantId The tenant ID.
      * @param parameters User filtering parameters.
@@ -831,13 +992,14 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
      * @return a collection that contains the object IDs of the groups of which the user is a member.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> getMemberGroups(String objectId, String tenantId, UserGetMemberGroupsParameters parameters) {
+    public PagedIterable<String> getMemberGroups(
+        String objectId, String tenantId, UserGetMemberGroupsParameters parameters) {
         return new PagedIterable<>(getMemberGroupsAsync(objectId, tenantId, parameters));
     }
 
     /**
      * Gets a collection that contains the object IDs of the groups of which the user is a member.
-     * 
+     *
      * @param objectId The object ID of the user for which to get group membership.
      * @param tenantId The tenant ID.
      * @param parameters User filtering parameters.
@@ -848,13 +1010,14 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
      * @return a collection that contains the object IDs of the groups of which the user is a member.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> getMemberGroups(String objectId, String tenantId, UserGetMemberGroupsParameters parameters, Context context) {
+    public PagedIterable<String> getMemberGroups(
+        String objectId, String tenantId, UserGetMemberGroupsParameters parameters, Context context) {
         return new PagedIterable<>(getMemberGroupsAsync(objectId, tenantId, parameters, context));
     }
 
     /**
      * Gets a list of users for the current tenant.
-     * 
+     *
      * @param nextLink Next link for the list operation.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -865,7 +1028,10 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UserInner>> listNextSinglePageAsync(String nextLink, String tenantId) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
@@ -874,20 +1040,32 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
-        return FluxUtil.withContext(context -> service.listNext(this.client.getEndpoint(), nextLink, this.client.getApiVersion(), tenantId, accept, context))
-            .<PagedResponse<UserInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().odataNextLink(),
-                null))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listNext(
+                            this.client.getEndpoint(),
+                            nextLink,
+                            this.client.getApiVersion(),
+                            tenantId,
+                            accept,
+                            context))
+            .<PagedResponse<UserInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().odataNextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a list of users for the current tenant.
-     * 
+     *
      * @param nextLink Next link for the list operation.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
@@ -899,7 +1077,10 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<UserInner>> listNextSinglePageAsync(String nextLink, String tenantId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
@@ -909,13 +1090,16 @@ public final class UsersClientImpl implements InnerSupportsDelete<Void>, UsersCl
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service.listNext(this.client.getEndpoint(), nextLink, this.client.getApiVersion(), tenantId, accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().odataNextLink(),
-                null));
+        return service
+            .listNext(this.client.getEndpoint(), nextLink, this.client.getApiVersion(), tenantId, accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().odataNextLink(),
+                        null));
     }
 }

@@ -5,20 +5,16 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Properties of the Radius client root certificate of
- * P2SVpnServerConfiguration.
- */
+/** Properties of the Radius client root certificate of P2SVpnServerConfiguration. */
 @Fluent
 public final class P2SVpnServerConfigRadiusClientRootCertificatePropertiesFormat {
     @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(P2SVpnServerConfigRadiusClientRootCertificatePropertiesFormat.class);
+    private final ClientLogger logger =
+        new ClientLogger(P2SVpnServerConfigRadiusClientRootCertificatePropertiesFormat.class);
 
     /*
      * The Radius client root certificate thumbprint.
@@ -34,9 +30,8 @@ public final class P2SVpnServerConfigRadiusClientRootCertificatePropertiesFormat
     private String provisioningState;
 
     /**
-     * Get the thumbprint property: The Radius client root certificate
-     * thumbprint.
-     * 
+     * Get the thumbprint property: The Radius client root certificate thumbprint.
+     *
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -44,13 +39,10 @@ public final class P2SVpnServerConfigRadiusClientRootCertificatePropertiesFormat
     }
 
     /**
-     * Set the thumbprint property: The Radius client root certificate
-     * thumbprint.
-     * 
+     * Set the thumbprint property: The Radius client root certificate thumbprint.
+     *
      * @param thumbprint the thumbprint value to set.
-     * @return the
-     * P2SVpnServerConfigRadiusClientRootCertificatePropertiesFormat object
-     * itself.
+     * @return the P2SVpnServerConfigRadiusClientRootCertificatePropertiesFormat object itself.
      */
     public P2SVpnServerConfigRadiusClientRootCertificatePropertiesFormat withThumbprint(String thumbprint) {
         this.thumbprint = thumbprint;
@@ -58,10 +50,9 @@ public final class P2SVpnServerConfigRadiusClientRootCertificatePropertiesFormat
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the Radius
-     * client root certificate resource. Possible values are: 'Updating',
-     * 'Deleting', and 'Failed'.
-     * 
+     * Get the provisioningState property: The provisioning state of the Radius client root certificate resource.
+     * Possible values are: 'Updating', 'Deleting', and 'Failed'.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -70,7 +61,7 @@ public final class P2SVpnServerConfigRadiusClientRootCertificatePropertiesFormat
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

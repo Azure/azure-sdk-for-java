@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.models.Tags;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Wrapper resource for tags API requests and responses.
- */
+/** Wrapper resource for tags API requests and responses. */
 @Fluent
 public final class TagsResourceInner extends ProxyResource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(TagsResourceInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(TagsResourceInner.class);
 
     /*
      * The set of tags.
@@ -29,7 +24,7 @@ public final class TagsResourceInner extends ProxyResource {
 
     /**
      * Get the properties property: The set of tags.
-     * 
+     *
      * @return the properties value.
      */
     public Tags properties() {
@@ -38,7 +33,7 @@ public final class TagsResourceInner extends ProxyResource {
 
     /**
      * Set the properties property: The set of tags.
-     * 
+     *
      * @param properties the properties value to set.
      * @return the TagsResourceInner object itself.
      */
@@ -49,12 +44,14 @@ public final class TagsResourceInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property properties in model TagsResourceInner"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property properties in model TagsResourceInner"));
         } else {
             properties().validate();
         }

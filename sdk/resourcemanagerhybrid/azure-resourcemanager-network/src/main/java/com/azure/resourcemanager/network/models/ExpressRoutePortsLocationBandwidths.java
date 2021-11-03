@@ -4,21 +4,15 @@
 
 package com.azure.resourcemanager.network.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * ExpressRoutePorts Location Bandwidths Real-time inventory of available
- * ExpressRoute port bandwidths.
- */
+/** ExpressRoutePorts Location Bandwidths Real-time inventory of available ExpressRoute port bandwidths. */
 @Immutable
 public final class ExpressRoutePortsLocationBandwidths {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ExpressRoutePortsLocationBandwidths.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRoutePortsLocationBandwidths.class);
 
     /*
      * Bandwidth descriptive name
@@ -34,7 +28,7 @@ public final class ExpressRoutePortsLocationBandwidths {
 
     /**
      * Get the offerName property: Bandwidth descriptive name.
-     * 
+     *
      * @return the offerName value.
      */
     public String offerName() {
@@ -43,7 +37,7 @@ public final class ExpressRoutePortsLocationBandwidths {
 
     /**
      * Get the valueInGbps property: Bandwidth value in Gbps.
-     * 
+     *
      * @return the valueInGbps value.
      */
     public Integer valueInGbps() {
@@ -52,7 +46,7 @@ public final class ExpressRoutePortsLocationBandwidths {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,27 +8,21 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.SubnetInner;
-import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * SubnetsClient.
- */
+/** An instance of this class provides access to all the operations defined in SubnetsClient. */
 public interface SubnetsClient {
     /**
      * Deletes the specified subnet.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -38,11 +32,12 @@ public interface SubnetsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String virtualNetworkName, String subnetName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String virtualNetworkName, String subnetName);
 
     /**
      * Deletes the specified subnet.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -52,11 +47,12 @@ public interface SubnetsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualNetworkName, String subnetName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String virtualNetworkName, String subnetName);
 
     /**
      * Deletes the specified subnet.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -66,11 +62,12 @@ public interface SubnetsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualNetworkName, String subnetName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String virtualNetworkName, String subnetName);
 
     /**
      * Deletes the specified subnet.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -81,11 +78,12 @@ public interface SubnetsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualNetworkName, String subnetName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String virtualNetworkName, String subnetName, Context context);
 
     /**
      * Deletes the specified subnet.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -99,7 +97,7 @@ public interface SubnetsClient {
 
     /**
      * Deletes the specified subnet.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -112,7 +110,7 @@ public interface SubnetsClient {
 
     /**
      * Deletes the specified subnet.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -126,7 +124,7 @@ public interface SubnetsClient {
 
     /**
      * Gets the specified subnet by virtual network and resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -137,11 +135,12 @@ public interface SubnetsClient {
      * @return the specified subnet by virtual network and resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<SubnetInner>> getWithResponseAsync(String resourceGroupName, String virtualNetworkName, String subnetName, String expand);
+    Mono<Response<SubnetInner>> getWithResponseAsync(
+        String resourceGroupName, String virtualNetworkName, String subnetName, String expand);
 
     /**
      * Gets the specified subnet by virtual network and resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -156,7 +155,7 @@ public interface SubnetsClient {
 
     /**
      * Gets the specified subnet by virtual network and resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -170,7 +169,7 @@ public interface SubnetsClient {
 
     /**
      * Gets the specified subnet by virtual network and resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -184,7 +183,7 @@ public interface SubnetsClient {
 
     /**
      * Gets the specified subnet by virtual network and resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -196,11 +195,12 @@ public interface SubnetsClient {
      * @return the specified subnet by virtual network and resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SubnetInner> getWithResponse(String resourceGroupName, String virtualNetworkName, String subnetName, String expand, Context context);
+    Response<SubnetInner> getWithResponse(
+        String resourceGroupName, String virtualNetworkName, String subnetName, String expand, Context context);
 
     /**
      * Creates or updates a subnet in the specified virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -211,11 +211,12 @@ public interface SubnetsClient {
      * @return subnet in a virtual network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters);
 
     /**
      * Creates or updates a subnet in the specified virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -226,11 +227,12 @@ public interface SubnetsClient {
      * @return subnet in a virtual network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<SubnetInner>, SubnetInner> beginCreateOrUpdateAsync(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters);
+    PollerFlux<PollResult<SubnetInner>, SubnetInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters);
 
     /**
      * Creates or updates a subnet in the specified virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -241,57 +243,12 @@ public interface SubnetsClient {
      * @return subnet in a virtual network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<SubnetInner>, SubnetInner> beginCreateOrUpdate(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters);
+    SyncPoller<PollResult<SubnetInner>, SubnetInner> beginCreateOrUpdate(
+        String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters);
 
     /**
      * Creates or updates a subnet in the specified virtual network.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param subnetParameters Parameters supplied to the create or update subnet operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subnet in a virtual network resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<SubnetInner>, SubnetInner> beginCreateOrUpdate(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters, Context context);
-
-    /**
-     * Creates or updates a subnet in the specified virtual network.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param subnetParameters Parameters supplied to the create or update subnet operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subnet in a virtual network resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SubnetInner> createOrUpdateAsync(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters);
-
-    /**
-     * Creates or updates a subnet in the specified virtual network.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param virtualNetworkName The name of the virtual network.
-     * @param subnetName The name of the subnet.
-     * @param subnetParameters Parameters supplied to the create or update subnet operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return subnet in a virtual network resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SubnetInner createOrUpdate(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters);
-
-    /**
-     * Creates or updates a subnet in the specified virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param subnetName The name of the subnet.
@@ -303,11 +260,69 @@ public interface SubnetsClient {
      * @return subnet in a virtual network resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SubnetInner createOrUpdate(String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters, Context context);
+    SyncPoller<PollResult<SubnetInner>, SubnetInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String virtualNetworkName,
+        String subnetName,
+        SubnetInner subnetParameters,
+        Context context);
+
+    /**
+     * Creates or updates a subnet in the specified virtual network.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param subnetName The name of the subnet.
+     * @param subnetParameters Parameters supplied to the create or update subnet operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return subnet in a virtual network resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<SubnetInner> createOrUpdateAsync(
+        String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters);
+
+    /**
+     * Creates or updates a subnet in the specified virtual network.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param subnetName The name of the subnet.
+     * @param subnetParameters Parameters supplied to the create or update subnet operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return subnet in a virtual network resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SubnetInner createOrUpdate(
+        String resourceGroupName, String virtualNetworkName, String subnetName, SubnetInner subnetParameters);
+
+    /**
+     * Creates or updates a subnet in the specified virtual network.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualNetworkName The name of the virtual network.
+     * @param subnetName The name of the subnet.
+     * @param subnetParameters Parameters supplied to the create or update subnet operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return subnet in a virtual network resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SubnetInner createOrUpdate(
+        String resourceGroupName,
+        String virtualNetworkName,
+        String subnetName,
+        SubnetInner subnetParameters,
+        Context context);
 
     /**
      * Gets all subnets in a virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -320,7 +335,7 @@ public interface SubnetsClient {
 
     /**
      * Gets all subnets in a virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -333,7 +348,7 @@ public interface SubnetsClient {
 
     /**
      * Gets all subnets in a virtual network.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param virtualNetworkName The name of the virtual network.
      * @param context The context to associate with this operation.

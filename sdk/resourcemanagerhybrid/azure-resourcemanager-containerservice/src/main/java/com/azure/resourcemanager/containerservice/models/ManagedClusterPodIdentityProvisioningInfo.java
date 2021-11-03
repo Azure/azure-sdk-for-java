@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The ManagedClusterPodIdentityProvisioningInfo model.
- */
+/** The ManagedClusterPodIdentityProvisioningInfo model. */
 @Fluent
 public final class ManagedClusterPodIdentityProvisioningInfo {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ManagedClusterPodIdentityProvisioningInfo.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterPodIdentityProvisioningInfo.class);
 
     /*
      * Pod identity assignment error (if any).
@@ -28,7 +23,7 @@ public final class ManagedClusterPodIdentityProvisioningInfo {
 
     /**
      * Get the error property: Pod identity assignment error (if any).
-     * 
+     *
      * @return the error value.
      */
     public ManagementError error() {
@@ -37,7 +32,7 @@ public final class ManagedClusterPodIdentityProvisioningInfo {
 
     /**
      * Set the error property: Pod identity assignment error (if any).
-     * 
+     *
      * @param error the error value to set.
      * @return the ManagedClusterPodIdentityProvisioningInfo object itself.
      */
@@ -48,7 +43,7 @@ public final class ManagedClusterPodIdentityProvisioningInfo {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,24 +5,19 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Active Directory Key Credential information.
- */
+/** Active Directory Key Credential information. */
 @Fluent
 public final class KeyCredentialInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(KeyCredentialInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyCredentialInner.class);
 
     /*
      * Start date.
@@ -69,12 +64,11 @@ public final class KeyCredentialInner {
     /*
      * Active Directory Key Credential information.
      */
-    @JsonIgnore
-    private Map<String, Object> additionalProperties;
+    @JsonIgnore private Map<String, Object> additionalProperties;
 
     /**
      * Get the startDate property: Start date.
-     * 
+     *
      * @return the startDate value.
      */
     public OffsetDateTime startDate() {
@@ -83,7 +77,7 @@ public final class KeyCredentialInner {
 
     /**
      * Set the startDate property: Start date.
-     * 
+     *
      * @param startDate the startDate value to set.
      * @return the KeyCredentialInner object itself.
      */
@@ -94,7 +88,7 @@ public final class KeyCredentialInner {
 
     /**
      * Get the endDate property: End date.
-     * 
+     *
      * @return the endDate value.
      */
     public OffsetDateTime endDate() {
@@ -103,7 +97,7 @@ public final class KeyCredentialInner {
 
     /**
      * Set the endDate property: End date.
-     * 
+     *
      * @param endDate the endDate value to set.
      * @return the KeyCredentialInner object itself.
      */
@@ -114,7 +108,7 @@ public final class KeyCredentialInner {
 
     /**
      * Get the value property: Key value.
-     * 
+     *
      * @return the value value.
      */
     public String value() {
@@ -123,7 +117,7 @@ public final class KeyCredentialInner {
 
     /**
      * Set the value property: Key value.
-     * 
+     *
      * @param value the value value to set.
      * @return the KeyCredentialInner object itself.
      */
@@ -134,7 +128,7 @@ public final class KeyCredentialInner {
 
     /**
      * Get the keyId property: Key ID.
-     * 
+     *
      * @return the keyId value.
      */
     public String keyId() {
@@ -143,7 +137,7 @@ public final class KeyCredentialInner {
 
     /**
      * Set the keyId property: Key ID.
-     * 
+     *
      * @param keyId the keyId value to set.
      * @return the KeyCredentialInner object itself.
      */
@@ -153,9 +147,8 @@ public final class KeyCredentialInner {
     }
 
     /**
-     * Get the usage property: Usage. Acceptable values are 'Verify' and
-     * 'Sign'.
-     * 
+     * Get the usage property: Usage. Acceptable values are 'Verify' and 'Sign'.
+     *
      * @return the usage value.
      */
     public String usage() {
@@ -163,9 +156,8 @@ public final class KeyCredentialInner {
     }
 
     /**
-     * Set the usage property: Usage. Acceptable values are 'Verify' and
-     * 'Sign'.
-     * 
+     * Set the usage property: Usage. Acceptable values are 'Verify' and 'Sign'.
+     *
      * @param usage the usage value to set.
      * @return the KeyCredentialInner object itself.
      */
@@ -175,9 +167,8 @@ public final class KeyCredentialInner {
     }
 
     /**
-     * Get the type property: Type. Acceptable values are 'AsymmetricX509Cert'
-     * and 'Symmetric'.
-     * 
+     * Get the type property: Type. Acceptable values are 'AsymmetricX509Cert' and 'Symmetric'.
+     *
      * @return the type value.
      */
     public String type() {
@@ -185,9 +176,8 @@ public final class KeyCredentialInner {
     }
 
     /**
-     * Set the type property: Type. Acceptable values are 'AsymmetricX509Cert'
-     * and 'Symmetric'.
-     * 
+     * Set the type property: Type. Acceptable values are 'AsymmetricX509Cert' and 'Symmetric'.
+     *
      * @param type the type value to set.
      * @return the KeyCredentialInner object itself.
      */
@@ -198,7 +188,7 @@ public final class KeyCredentialInner {
 
     /**
      * Get the customKeyIdentifier property: Custom Key Identifier.
-     * 
+     *
      * @return the customKeyIdentifier value.
      */
     public String customKeyIdentifier() {
@@ -207,7 +197,7 @@ public final class KeyCredentialInner {
 
     /**
      * Set the customKeyIdentifier property: Custom Key Identifier.
-     * 
+     *
      * @param customKeyIdentifier the customKeyIdentifier value to set.
      * @return the KeyCredentialInner object itself.
      */
@@ -217,9 +207,8 @@ public final class KeyCredentialInner {
     }
 
     /**
-     * Get the additionalProperties property: Active Directory Key Credential
-     * information.
-     * 
+     * Get the additionalProperties property: Active Directory Key Credential information.
+     *
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -228,9 +217,8 @@ public final class KeyCredentialInner {
     }
 
     /**
-     * Set the additionalProperties property: Active Directory Key Credential
-     * information.
-     * 
+     * Set the additionalProperties property: Active Directory Key Credential information.
+     *
      * @param additionalProperties the additionalProperties value to set.
      * @return the KeyCredentialInner object itself.
      */
@@ -249,7 +237,7 @@ public final class KeyCredentialInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

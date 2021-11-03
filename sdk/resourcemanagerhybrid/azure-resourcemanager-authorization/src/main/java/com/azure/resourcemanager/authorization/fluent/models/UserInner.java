@@ -5,27 +5,21 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.models.SignInName;
 import com.azure.resourcemanager.authorization.models.UserType;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.time.OffsetDateTime;
 import java.util.List;
 
-/**
- * Active Directory user information.
- */
+/** Active Directory user information. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("User")
 @Fluent
 public final class UserInner extends DirectoryObjectInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(UserInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserInner.class);
 
     /*
      * This must be specified if you are using a federated domain for the
@@ -101,11 +95,10 @@ public final class UserInner extends DirectoryObjectInner {
     private List<SignInName> signInNames;
 
     /**
-     * Get the immutableId property: This must be specified if you are using a
-     * federated domain for the user's userPrincipalName (UPN) property when
-     * creating a new user account. It is used to associate an on-premises
-     * Active Directory user account with their Azure AD user object.
-     * 
+     * Get the immutableId property: This must be specified if you are using a federated domain for the user's
+     * userPrincipalName (UPN) property when creating a new user account. It is used to associate an on-premises Active
+     * Directory user account with their Azure AD user object.
+     *
      * @return the immutableId value.
      */
     public String immutableId() {
@@ -113,11 +106,10 @@ public final class UserInner extends DirectoryObjectInner {
     }
 
     /**
-     * Set the immutableId property: This must be specified if you are using a
-     * federated domain for the user's userPrincipalName (UPN) property when
-     * creating a new user account. It is used to associate an on-premises
-     * Active Directory user account with their Azure AD user object.
-     * 
+     * Set the immutableId property: This must be specified if you are using a federated domain for the user's
+     * userPrincipalName (UPN) property when creating a new user account. It is used to associate an on-premises Active
+     * Directory user account with their Azure AD user object.
+     *
      * @param immutableId the immutableId value to set.
      * @return the UserInner object itself.
      */
@@ -127,11 +119,10 @@ public final class UserInner extends DirectoryObjectInner {
     }
 
     /**
-     * Get the usageLocation property: A two letter country code (ISO standard
-     * 3166). Required for users that will be assigned licenses due to legal
-     * requirement to check for availability of services in countries. Examples
-     * include: "US", "JP", and "GB".
-     * 
+     * Get the usageLocation property: A two letter country code (ISO standard 3166). Required for users that will be
+     * assigned licenses due to legal requirement to check for availability of services in countries. Examples include:
+     * "US", "JP", and "GB".
+     *
      * @return the usageLocation value.
      */
     public String usageLocation() {
@@ -139,11 +130,10 @@ public final class UserInner extends DirectoryObjectInner {
     }
 
     /**
-     * Set the usageLocation property: A two letter country code (ISO standard
-     * 3166). Required for users that will be assigned licenses due to legal
-     * requirement to check for availability of services in countries. Examples
-     * include: "US", "JP", and "GB".
-     * 
+     * Set the usageLocation property: A two letter country code (ISO standard 3166). Required for users that will be
+     * assigned licenses due to legal requirement to check for availability of services in countries. Examples include:
+     * "US", "JP", and "GB".
+     *
      * @param usageLocation the usageLocation value to set.
      * @return the UserInner object itself.
      */
@@ -154,7 +144,7 @@ public final class UserInner extends DirectoryObjectInner {
 
     /**
      * Get the givenName property: The given name for the user.
-     * 
+     *
      * @return the givenName value.
      */
     public String givenName() {
@@ -163,7 +153,7 @@ public final class UserInner extends DirectoryObjectInner {
 
     /**
      * Set the givenName property: The given name for the user.
-     * 
+     *
      * @param givenName the givenName value to set.
      * @return the UserInner object itself.
      */
@@ -174,7 +164,7 @@ public final class UserInner extends DirectoryObjectInner {
 
     /**
      * Get the surname property: The user's surname (family name or last name).
-     * 
+     *
      * @return the surname value.
      */
     public String surname() {
@@ -183,7 +173,7 @@ public final class UserInner extends DirectoryObjectInner {
 
     /**
      * Set the surname property: The user's surname (family name or last name).
-     * 
+     *
      * @param surname the surname value to set.
      * @return the UserInner object itself.
      */
@@ -193,9 +183,9 @@ public final class UserInner extends DirectoryObjectInner {
     }
 
     /**
-     * Get the userType property: A string value that can be used to classify
-     * user types in your directory, such as 'Member' and 'Guest'.
-     * 
+     * Get the userType property: A string value that can be used to classify user types in your directory, such as
+     * 'Member' and 'Guest'.
+     *
      * @return the userType value.
      */
     public UserType userType() {
@@ -203,9 +193,9 @@ public final class UserInner extends DirectoryObjectInner {
     }
 
     /**
-     * Set the userType property: A string value that can be used to classify
-     * user types in your directory, such as 'Member' and 'Guest'.
-     * 
+     * Set the userType property: A string value that can be used to classify user types in your directory, such as
+     * 'Member' and 'Guest'.
+     *
      * @param userType the userType value to set.
      * @return the UserInner object itself.
      */
@@ -216,7 +206,7 @@ public final class UserInner extends DirectoryObjectInner {
 
     /**
      * Get the accountEnabled property: Whether the account is enabled.
-     * 
+     *
      * @return the accountEnabled value.
      */
     public Boolean accountEnabled() {
@@ -225,7 +215,7 @@ public final class UserInner extends DirectoryObjectInner {
 
     /**
      * Set the accountEnabled property: Whether the account is enabled.
-     * 
+     *
      * @param accountEnabled the accountEnabled value to set.
      * @return the UserInner object itself.
      */
@@ -236,7 +226,7 @@ public final class UserInner extends DirectoryObjectInner {
 
     /**
      * Get the displayName property: The display name of the user.
-     * 
+     *
      * @return the displayName value.
      */
     public String displayName() {
@@ -245,7 +235,7 @@ public final class UserInner extends DirectoryObjectInner {
 
     /**
      * Set the displayName property: The display name of the user.
-     * 
+     *
      * @param displayName the displayName value to set.
      * @return the UserInner object itself.
      */
@@ -256,7 +246,7 @@ public final class UserInner extends DirectoryObjectInner {
 
     /**
      * Get the userPrincipalName property: The principal name of the user.
-     * 
+     *
      * @return the userPrincipalName value.
      */
     public String userPrincipalName() {
@@ -265,7 +255,7 @@ public final class UserInner extends DirectoryObjectInner {
 
     /**
      * Set the userPrincipalName property: The principal name of the user.
-     * 
+     *
      * @param userPrincipalName the userPrincipalName value to set.
      * @return the UserInner object itself.
      */
@@ -276,7 +266,7 @@ public final class UserInner extends DirectoryObjectInner {
 
     /**
      * Get the mailNickname property: The mail alias for the user.
-     * 
+     *
      * @return the mailNickname value.
      */
     public String mailNickname() {
@@ -285,7 +275,7 @@ public final class UserInner extends DirectoryObjectInner {
 
     /**
      * Set the mailNickname property: The mail alias for the user.
-     * 
+     *
      * @param mailNickname the mailNickname value to set.
      * @return the UserInner object itself.
      */
@@ -296,7 +286,7 @@ public final class UserInner extends DirectoryObjectInner {
 
     /**
      * Get the mail property: The primary email address of the user.
-     * 
+     *
      * @return the mail value.
      */
     public String mail() {
@@ -305,7 +295,7 @@ public final class UserInner extends DirectoryObjectInner {
 
     /**
      * Set the mail property: The primary email address of the user.
-     * 
+     *
      * @param mail the mail value to set.
      * @return the UserInner object itself.
      */
@@ -316,7 +306,7 @@ public final class UserInner extends DirectoryObjectInner {
 
     /**
      * Get the signInNames property: The sign-in names of the user.
-     * 
+     *
      * @return the signInNames value.
      */
     public List<SignInName> signInNames() {
@@ -325,7 +315,7 @@ public final class UserInner extends DirectoryObjectInner {
 
     /**
      * Set the signInNames property: The sign-in names of the user.
-     * 
+     *
      * @param signInNames the signInNames value to set.
      * @return the UserInner object itself.
      */
@@ -336,7 +326,7 @@ public final class UserInner extends DirectoryObjectInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

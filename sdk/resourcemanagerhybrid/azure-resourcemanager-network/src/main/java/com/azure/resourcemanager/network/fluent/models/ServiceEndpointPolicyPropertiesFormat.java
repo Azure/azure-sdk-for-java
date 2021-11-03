@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Service Endpoint Policy resource.
- */
+/** Service Endpoint Policy resource. */
 @Fluent
 public final class ServiceEndpointPolicyPropertiesFormat {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ServiceEndpointPolicyPropertiesFormat.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceEndpointPolicyPropertiesFormat.class);
 
     /*
      * A collection of service endpoint policy definitions of the service
@@ -47,9 +42,9 @@ public final class ServiceEndpointPolicyPropertiesFormat {
     private String provisioningState;
 
     /**
-     * Get the serviceEndpointPolicyDefinitions property: A collection of
-     * service endpoint policy definitions of the service endpoint policy.
-     * 
+     * Get the serviceEndpointPolicyDefinitions property: A collection of service endpoint policy definitions of the
+     * service endpoint policy.
+     *
      * @return the serviceEndpointPolicyDefinitions value.
      */
     public List<ServiceEndpointPolicyDefinitionInner> serviceEndpointPolicyDefinitions() {
@@ -57,21 +52,21 @@ public final class ServiceEndpointPolicyPropertiesFormat {
     }
 
     /**
-     * Set the serviceEndpointPolicyDefinitions property: A collection of
-     * service endpoint policy definitions of the service endpoint policy.
-     * 
-     * @param serviceEndpointPolicyDefinitions the
-     * serviceEndpointPolicyDefinitions value to set.
+     * Set the serviceEndpointPolicyDefinitions property: A collection of service endpoint policy definitions of the
+     * service endpoint policy.
+     *
+     * @param serviceEndpointPolicyDefinitions the serviceEndpointPolicyDefinitions value to set.
      * @return the ServiceEndpointPolicyPropertiesFormat object itself.
      */
-    public ServiceEndpointPolicyPropertiesFormat withServiceEndpointPolicyDefinitions(List<ServiceEndpointPolicyDefinitionInner> serviceEndpointPolicyDefinitions) {
+    public ServiceEndpointPolicyPropertiesFormat withServiceEndpointPolicyDefinitions(
+        List<ServiceEndpointPolicyDefinitionInner> serviceEndpointPolicyDefinitions) {
         this.serviceEndpointPolicyDefinitions = serviceEndpointPolicyDefinitions;
         return this;
     }
 
     /**
      * Get the subnets property: A collection of references to subnets.
-     * 
+     *
      * @return the subnets value.
      */
     public List<SubnetInner> subnets() {
@@ -79,9 +74,8 @@ public final class ServiceEndpointPolicyPropertiesFormat {
     }
 
     /**
-     * Get the resourceGuid property: The resource GUID property of the service
-     * endpoint policy resource.
-     * 
+     * Get the resourceGuid property: The resource GUID property of the service endpoint policy resource.
+     *
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -89,10 +83,9 @@ public final class ServiceEndpointPolicyPropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the
-     * service endpoint policy. Possible values are: 'Updating', 'Deleting',
-     * and 'Failed'.
-     * 
+     * Get the provisioningState property: The provisioning state of the service endpoint policy. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -101,7 +94,7 @@ public final class ServiceEndpointPolicyPropertiesFormat {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

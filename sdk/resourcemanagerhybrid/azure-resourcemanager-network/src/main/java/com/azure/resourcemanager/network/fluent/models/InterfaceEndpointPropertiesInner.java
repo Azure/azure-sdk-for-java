@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.EndpointService;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Properties of the interface endpoint.
- */
+/** Properties of the interface endpoint. */
 @Fluent
 public final class InterfaceEndpointPropertiesInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(InterfaceEndpointPropertiesInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(InterfaceEndpointPropertiesInner.class);
 
     /*
      * A first-party service's FQDN that is mapped to the private IP allocated
@@ -62,9 +57,9 @@ public final class InterfaceEndpointPropertiesInner {
     private String provisioningState;
 
     /**
-     * Get the fqdn property: A first-party service's FQDN that is mapped to
-     * the private IP allocated via this interface endpoint.
-     * 
+     * Get the fqdn property: A first-party service's FQDN that is mapped to the private IP allocated via this interface
+     * endpoint.
+     *
      * @return the fqdn value.
      */
     public String fqdn() {
@@ -72,9 +67,9 @@ public final class InterfaceEndpointPropertiesInner {
     }
 
     /**
-     * Set the fqdn property: A first-party service's FQDN that is mapped to
-     * the private IP allocated via this interface endpoint.
-     * 
+     * Set the fqdn property: A first-party service's FQDN that is mapped to the private IP allocated via this interface
+     * endpoint.
+     *
      * @param fqdn the fqdn value to set.
      * @return the InterfaceEndpointPropertiesInner object itself.
      */
@@ -84,9 +79,8 @@ public final class InterfaceEndpointPropertiesInner {
     }
 
     /**
-     * Get the endpointService property: A reference to the service being
-     * brought into the virtual network.
-     * 
+     * Get the endpointService property: A reference to the service being brought into the virtual network.
+     *
      * @return the endpointService value.
      */
     public EndpointService endpointService() {
@@ -94,9 +88,8 @@ public final class InterfaceEndpointPropertiesInner {
     }
 
     /**
-     * Set the endpointService property: A reference to the service being
-     * brought into the virtual network.
-     * 
+     * Set the endpointService property: A reference to the service being brought into the virtual network.
+     *
      * @param endpointService the endpointService value to set.
      * @return the InterfaceEndpointPropertiesInner object itself.
      */
@@ -106,9 +99,8 @@ public final class InterfaceEndpointPropertiesInner {
     }
 
     /**
-     * Get the subnet property: The ID of the subnet from which the private IP
-     * will be allocated.
-     * 
+     * Get the subnet property: The ID of the subnet from which the private IP will be allocated.
+     *
      * @return the subnet value.
      */
     public SubnetInner subnet() {
@@ -116,9 +108,8 @@ public final class InterfaceEndpointPropertiesInner {
     }
 
     /**
-     * Set the subnet property: The ID of the subnet from which the private IP
-     * will be allocated.
-     * 
+     * Set the subnet property: The ID of the subnet from which the private IP will be allocated.
+     *
      * @param subnet the subnet value to set.
      * @return the InterfaceEndpointPropertiesInner object itself.
      */
@@ -128,9 +119,9 @@ public final class InterfaceEndpointPropertiesInner {
     }
 
     /**
-     * Get the networkInterfaces property: Gets an array of references to the
-     * network interfaces created for this interface endpoint.
-     * 
+     * Get the networkInterfaces property: Gets an array of references to the network interfaces created for this
+     * interface endpoint.
+     *
      * @return the networkInterfaces value.
      */
     public List<NetworkInterfaceInner> networkInterfaces() {
@@ -138,9 +129,8 @@ public final class InterfaceEndpointPropertiesInner {
     }
 
     /**
-     * Get the owner property: A read-only property that identifies who created
-     * this interface endpoint.
-     * 
+     * Get the owner property: A read-only property that identifies who created this interface endpoint.
+     *
      * @return the owner value.
      */
     public String owner() {
@@ -148,10 +138,9 @@ public final class InterfaceEndpointPropertiesInner {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the
-     * interface endpoint. Possible values are: 'Updating', 'Deleting', and
-     * 'Failed'.
-     * 
+     * Get the provisioningState property: The provisioning state of the interface endpoint. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -160,7 +149,7 @@ public final class InterfaceEndpointPropertiesInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

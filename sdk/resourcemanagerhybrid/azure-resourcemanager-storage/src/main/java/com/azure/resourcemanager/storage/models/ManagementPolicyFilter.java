@@ -5,21 +5,18 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Filters limit rule actions to a subset of blobs within the storage account.
- * If multiple filters are defined, a logical AND is performed on all filters.
+ * Filters limit rule actions to a subset of blobs within the storage account. If multiple filters are defined, a
+ * logical AND is performed on all filters.
  */
 @Fluent
 public final class ManagementPolicyFilter {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ManagementPolicyFilter.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagementPolicyFilter.class);
 
     /*
      * An array of strings for prefixes to be match.
@@ -43,9 +40,8 @@ public final class ManagementPolicyFilter {
     private List<TagFilter> blobIndexMatch;
 
     /**
-     * Get the prefixMatch property: An array of strings for prefixes to be
-     * match.
-     * 
+     * Get the prefixMatch property: An array of strings for prefixes to be match.
+     *
      * @return the prefixMatch value.
      */
     public List<String> prefixMatch() {
@@ -53,9 +49,8 @@ public final class ManagementPolicyFilter {
     }
 
     /**
-     * Set the prefixMatch property: An array of strings for prefixes to be
-     * match.
-     * 
+     * Set the prefixMatch property: An array of strings for prefixes to be match.
+     *
      * @param prefixMatch the prefixMatch value to set.
      * @return the ManagementPolicyFilter object itself.
      */
@@ -65,10 +60,9 @@ public final class ManagementPolicyFilter {
     }
 
     /**
-     * Get the blobTypes property: An array of predefined enum values.
-     * Currently blockBlob supports all tiering and delete actions. Only delete
-     * actions are supported for appendBlob.
-     * 
+     * Get the blobTypes property: An array of predefined enum values. Currently blockBlob supports all tiering and
+     * delete actions. Only delete actions are supported for appendBlob.
+     *
      * @return the blobTypes value.
      */
     public List<String> blobTypes() {
@@ -76,10 +70,9 @@ public final class ManagementPolicyFilter {
     }
 
     /**
-     * Set the blobTypes property: An array of predefined enum values.
-     * Currently blockBlob supports all tiering and delete actions. Only delete
-     * actions are supported for appendBlob.
-     * 
+     * Set the blobTypes property: An array of predefined enum values. Currently blockBlob supports all tiering and
+     * delete actions. Only delete actions are supported for appendBlob.
+     *
      * @param blobTypes the blobTypes value to set.
      * @return the ManagementPolicyFilter object itself.
      */
@@ -89,9 +82,8 @@ public final class ManagementPolicyFilter {
     }
 
     /**
-     * Get the blobIndexMatch property: An array of blob index tag based
-     * filters, there can be at most 10 tag filters.
-     * 
+     * Get the blobIndexMatch property: An array of blob index tag based filters, there can be at most 10 tag filters.
+     *
      * @return the blobIndexMatch value.
      */
     public List<TagFilter> blobIndexMatch() {
@@ -99,9 +91,8 @@ public final class ManagementPolicyFilter {
     }
 
     /**
-     * Set the blobIndexMatch property: An array of blob index tag based
-     * filters, there can be at most 10 tag filters.
-     * 
+     * Set the blobIndexMatch property: An array of blob index tag based filters, there can be at most 10 tag filters.
+     *
      * @param blobIndexMatch the blobIndexMatch value to set.
      * @return the ManagementPolicyFilter object itself.
      */
@@ -112,12 +103,15 @@ public final class ManagementPolicyFilter {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (blobTypes() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property blobTypes in model ManagementPolicyFilter"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property blobTypes in model ManagementPolicyFilter"));
         }
         if (blobIndexMatch() != null) {
             blobIndexMatch().forEach(e -> e.validate());

@@ -5,24 +5,18 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
-import java.time.OffsetDateTime;
 
-/**
- * AppRoleAssignment information.
- */
+/** AppRoleAssignment information. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("AppRoleAssignment")
 @Fluent
 public final class AppRoleAssignmentInner extends DirectoryObjectInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(AppRoleAssignmentInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AppRoleAssignmentInner.class);
 
     /*
      * The role id that was assigned to the principal. This role must be
@@ -66,10 +60,9 @@ public final class AppRoleAssignmentInner extends DirectoryObjectInner {
     private String resourceId;
 
     /**
-     * Get the id property: The role id that was assigned to the principal.
-     * This role must be declared by the target resource application resourceId
-     * in its appRoles property.
-     * 
+     * Get the id property: The role id that was assigned to the principal. This role must be declared by the target
+     * resource application resourceId in its appRoles property.
+     *
      * @return the id value.
      */
     public String id() {
@@ -77,10 +70,9 @@ public final class AppRoleAssignmentInner extends DirectoryObjectInner {
     }
 
     /**
-     * Set the id property: The role id that was assigned to the principal.
-     * This role must be declared by the target resource application resourceId
-     * in its appRoles property.
-     * 
+     * Set the id property: The role id that was assigned to the principal. This role must be declared by the target
+     * resource application resourceId in its appRoles property.
+     *
      * @param id the id value to set.
      * @return the AppRoleAssignmentInner object itself.
      */
@@ -90,9 +82,8 @@ public final class AppRoleAssignmentInner extends DirectoryObjectInner {
     }
 
     /**
-     * Get the principalDisplayName property: The display name of the principal
-     * that was granted the access.
-     * 
+     * Get the principalDisplayName property: The display name of the principal that was granted the access.
+     *
      * @return the principalDisplayName value.
      */
     public String principalDisplayName() {
@@ -100,9 +91,8 @@ public final class AppRoleAssignmentInner extends DirectoryObjectInner {
     }
 
     /**
-     * Set the principalDisplayName property: The display name of the principal
-     * that was granted the access.
-     * 
+     * Set the principalDisplayName property: The display name of the principal that was granted the access.
+     *
      * @param principalDisplayName the principalDisplayName value to set.
      * @return the AppRoleAssignmentInner object itself.
      */
@@ -112,9 +102,8 @@ public final class AppRoleAssignmentInner extends DirectoryObjectInner {
     }
 
     /**
-     * Get the principalId property: The unique identifier (objectId) for the
-     * principal being granted the access.
-     * 
+     * Get the principalId property: The unique identifier (objectId) for the principal being granted the access.
+     *
      * @return the principalId value.
      */
     public String principalId() {
@@ -122,9 +111,8 @@ public final class AppRoleAssignmentInner extends DirectoryObjectInner {
     }
 
     /**
-     * Set the principalId property: The unique identifier (objectId) for the
-     * principal being granted the access.
-     * 
+     * Set the principalId property: The unique identifier (objectId) for the principal being granted the access.
+     *
      * @param principalId the principalId value to set.
      * @return the AppRoleAssignmentInner object itself.
      */
@@ -134,9 +122,8 @@ public final class AppRoleAssignmentInner extends DirectoryObjectInner {
     }
 
     /**
-     * Get the principalType property: The type of principal. This can either
-     * be "User", "Group" or "ServicePrincipal".
-     * 
+     * Get the principalType property: The type of principal. This can either be "User", "Group" or "ServicePrincipal".
+     *
      * @return the principalType value.
      */
     public String principalType() {
@@ -144,9 +131,8 @@ public final class AppRoleAssignmentInner extends DirectoryObjectInner {
     }
 
     /**
-     * Set the principalType property: The type of principal. This can either
-     * be "User", "Group" or "ServicePrincipal".
-     * 
+     * Set the principalType property: The type of principal. This can either be "User", "Group" or "ServicePrincipal".
+     *
      * @param principalType the principalType value to set.
      * @return the AppRoleAssignmentInner object itself.
      */
@@ -156,9 +142,8 @@ public final class AppRoleAssignmentInner extends DirectoryObjectInner {
     }
 
     /**
-     * Get the resourceDisplayName property: The display name of the resource
-     * to which the assignment was made.
-     * 
+     * Get the resourceDisplayName property: The display name of the resource to which the assignment was made.
+     *
      * @return the resourceDisplayName value.
      */
     public String resourceDisplayName() {
@@ -166,9 +151,8 @@ public final class AppRoleAssignmentInner extends DirectoryObjectInner {
     }
 
     /**
-     * Set the resourceDisplayName property: The display name of the resource
-     * to which the assignment was made.
-     * 
+     * Set the resourceDisplayName property: The display name of the resource to which the assignment was made.
+     *
      * @param resourceDisplayName the resourceDisplayName value to set.
      * @return the AppRoleAssignmentInner object itself.
      */
@@ -178,9 +162,9 @@ public final class AppRoleAssignmentInner extends DirectoryObjectInner {
     }
 
     /**
-     * Get the resourceId property: The unique identifier (objectId) for the
-     * target resource (service principal) for which the assignment was made.
-     * 
+     * Get the resourceId property: The unique identifier (objectId) for the target resource (service principal) for
+     * which the assignment was made.
+     *
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -188,9 +172,9 @@ public final class AppRoleAssignmentInner extends DirectoryObjectInner {
     }
 
     /**
-     * Set the resourceId property: The unique identifier (objectId) for the
-     * target resource (service principal) for which the assignment was made.
-     * 
+     * Set the resourceId property: The unique identifier (objectId) for the target resource (service principal) for
+     * which the assignment was made.
+     *
      * @param resourceId the resourceId value to set.
      * @return the AppRoleAssignmentInner object itself.
      */
@@ -201,7 +185,7 @@ public final class AppRoleAssignmentInner extends DirectoryObjectInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

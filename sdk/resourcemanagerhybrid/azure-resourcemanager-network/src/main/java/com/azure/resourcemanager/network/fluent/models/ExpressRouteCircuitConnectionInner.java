@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.CircuitConnectionStatus;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Express Route Circuit Connection in an ExpressRouteCircuitPeering resource.
- */
+/** Express Route Circuit Connection in an ExpressRouteCircuitPeering resource. */
 @Fluent
 public final class ExpressRouteCircuitConnectionInner extends SubResource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitConnectionInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteCircuitConnectionInner.class);
 
     /*
      * The properties property.
@@ -42,7 +37,7 @@ public final class ExpressRouteCircuitConnectionInner extends SubResource {
 
     /**
      * Get the innerProperties property: The properties property.
-     * 
+     *
      * @return the innerProperties value.
      */
     private ExpressRouteCircuitConnectionPropertiesFormat innerProperties() {
@@ -50,9 +45,9 @@ public final class ExpressRouteCircuitConnectionInner extends SubResource {
     }
 
     /**
-     * Get the name property: Gets name of the resource that is unique within a
-     * resource group. This name can be used to access the resource.
-     * 
+     * Get the name property: Gets name of the resource that is unique within a resource group. This name can be used to
+     * access the resource.
+     *
      * @return the name value.
      */
     public String name() {
@@ -60,9 +55,9 @@ public final class ExpressRouteCircuitConnectionInner extends SubResource {
     }
 
     /**
-     * Set the name property: Gets name of the resource that is unique within a
-     * resource group. This name can be used to access the resource.
-     * 
+     * Set the name property: Gets name of the resource that is unique within a resource group. This name can be used to
+     * access the resource.
+     *
      * @param name the name value to set.
      * @return the ExpressRouteCircuitConnectionInner object itself.
      */
@@ -72,18 +67,15 @@ public final class ExpressRouteCircuitConnectionInner extends SubResource {
     }
 
     /**
-     * Get the etag property: A unique read-only string that changes whenever
-     * the resource is updated.
-     * 
+     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
      * @return the etag value.
      */
     public String etag() {
         return this.etag;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ExpressRouteCircuitConnectionInner withId(String id) {
         super.withId(id);
@@ -91,9 +83,9 @@ public final class ExpressRouteCircuitConnectionInner extends SubResource {
     }
 
     /**
-     * Get the expressRouteCircuitPeering property: Reference to Express Route
-     * Circuit Private Peering Resource of the circuit initiating connection.
-     * 
+     * Get the expressRouteCircuitPeering property: Reference to Express Route Circuit Private Peering Resource of the
+     * circuit initiating connection.
+     *
      * @return the expressRouteCircuitPeering value.
      */
     public SubResource expressRouteCircuitPeering() {
@@ -101,11 +93,10 @@ public final class ExpressRouteCircuitConnectionInner extends SubResource {
     }
 
     /**
-     * Set the expressRouteCircuitPeering property: Reference to Express Route
-     * Circuit Private Peering Resource of the circuit initiating connection.
-     * 
-     * @param expressRouteCircuitPeering the expressRouteCircuitPeering value
-     * to set.
+     * Set the expressRouteCircuitPeering property: Reference to Express Route Circuit Private Peering Resource of the
+     * circuit initiating connection.
+     *
+     * @param expressRouteCircuitPeering the expressRouteCircuitPeering value to set.
      * @return the ExpressRouteCircuitConnectionInner object itself.
      */
     public ExpressRouteCircuitConnectionInner withExpressRouteCircuitPeering(SubResource expressRouteCircuitPeering) {
@@ -117,9 +108,9 @@ public final class ExpressRouteCircuitConnectionInner extends SubResource {
     }
 
     /**
-     * Get the peerExpressRouteCircuitPeering property: Reference to Express
-     * Route Circuit Private Peering Resource of the peered circuit.
-     * 
+     * Get the peerExpressRouteCircuitPeering property: Reference to Express Route Circuit Private Peering Resource of
+     * the peered circuit.
+     *
      * @return the peerExpressRouteCircuitPeering value.
      */
     public SubResource peerExpressRouteCircuitPeering() {
@@ -127,14 +118,14 @@ public final class ExpressRouteCircuitConnectionInner extends SubResource {
     }
 
     /**
-     * Set the peerExpressRouteCircuitPeering property: Reference to Express
-     * Route Circuit Private Peering Resource of the peered circuit.
-     * 
-     * @param peerExpressRouteCircuitPeering the peerExpressRouteCircuitPeering
-     * value to set.
+     * Set the peerExpressRouteCircuitPeering property: Reference to Express Route Circuit Private Peering Resource of
+     * the peered circuit.
+     *
+     * @param peerExpressRouteCircuitPeering the peerExpressRouteCircuitPeering value to set.
      * @return the ExpressRouteCircuitConnectionInner object itself.
      */
-    public ExpressRouteCircuitConnectionInner withPeerExpressRouteCircuitPeering(SubResource peerExpressRouteCircuitPeering) {
+    public ExpressRouteCircuitConnectionInner withPeerExpressRouteCircuitPeering(
+        SubResource peerExpressRouteCircuitPeering) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ExpressRouteCircuitConnectionPropertiesFormat();
         }
@@ -143,9 +134,8 @@ public final class ExpressRouteCircuitConnectionInner extends SubResource {
     }
 
     /**
-     * Get the addressPrefix property: /29 IP address space to carve out
-     * Customer addresses for tunnels.
-     * 
+     * Get the addressPrefix property: /29 IP address space to carve out Customer addresses for tunnels.
+     *
      * @return the addressPrefix value.
      */
     public String addressPrefix() {
@@ -153,9 +143,8 @@ public final class ExpressRouteCircuitConnectionInner extends SubResource {
     }
 
     /**
-     * Set the addressPrefix property: /29 IP address space to carve out
-     * Customer addresses for tunnels.
-     * 
+     * Set the addressPrefix property: /29 IP address space to carve out Customer addresses for tunnels.
+     *
      * @param addressPrefix the addressPrefix value to set.
      * @return the ExpressRouteCircuitConnectionInner object itself.
      */
@@ -169,7 +158,7 @@ public final class ExpressRouteCircuitConnectionInner extends SubResource {
 
     /**
      * Get the authorizationKey property: The authorization key.
-     * 
+     *
      * @return the authorizationKey value.
      */
     public String authorizationKey() {
@@ -178,7 +167,7 @@ public final class ExpressRouteCircuitConnectionInner extends SubResource {
 
     /**
      * Set the authorizationKey property: The authorization key.
-     * 
+     *
      * @param authorizationKey the authorizationKey value to set.
      * @return the ExpressRouteCircuitConnectionInner object itself.
      */
@@ -191,9 +180,9 @@ public final class ExpressRouteCircuitConnectionInner extends SubResource {
     }
 
     /**
-     * Get the circuitConnectionStatus property: Express Route Circuit
-     * Connection State. Possible values are: 'Connected' and 'Disconnected'.
-     * 
+     * Get the circuitConnectionStatus property: Express Route Circuit Connection State. Possible values are:
+     * 'Connected' and 'Disconnected'.
+     *
      * @return the circuitConnectionStatus value.
      */
     public CircuitConnectionStatus circuitConnectionStatus() {
@@ -201,10 +190,9 @@ public final class ExpressRouteCircuitConnectionInner extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: Provisioning state of the circuit
-     * connection resource. Possible values are: 'Succeeded', 'Updating',
-     * 'Deleting', and 'Failed'.
-     * 
+     * Get the provisioningState property: Provisioning state of the circuit connection resource. Possible values are:
+     * 'Succeeded', 'Updating', 'Deleting', and 'Failed'.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -213,7 +201,7 @@ public final class ExpressRouteCircuitConnectionInner extends SubResource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,18 +7,12 @@ package com.azure.resourcemanager.storage.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for GetShareExpand.
- */
+/** Defines values for GetShareExpand. */
 public enum GetShareExpand {
-    /**
-     * Enum value stats.
-     */
+    /** Enum value stats. */
     STATS("stats");
 
-    /**
-     * The actual serialized value for a GetShareExpand instance.
-     */
+    /** The actual serialized value for a GetShareExpand instance. */
     private final String value;
 
     GetShareExpand(String value) {
@@ -27,7 +21,7 @@ public enum GetShareExpand {
 
     /**
      * Parses a serialized value to a GetShareExpand instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed GetShareExpand object, or null if unable to parse.
      */

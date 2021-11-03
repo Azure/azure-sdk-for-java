@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Describes the HTTP header.
- */
+/** Describes the HTTP header. */
 @Fluent
 public final class HttpHeader {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(HttpHeader.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(HttpHeader.class);
 
     /*
      * The name in HTTP header.
@@ -33,7 +28,7 @@ public final class HttpHeader {
 
     /**
      * Get the name property: The name in HTTP header.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -42,7 +37,7 @@ public final class HttpHeader {
 
     /**
      * Set the name property: The name in HTTP header.
-     * 
+     *
      * @param name the name value to set.
      * @return the HttpHeader object itself.
      */
@@ -53,7 +48,7 @@ public final class HttpHeader {
 
     /**
      * Get the value property: The value in HTTP header.
-     * 
+     *
      * @return the value value.
      */
     public String value() {
@@ -62,7 +57,7 @@ public final class HttpHeader {
 
     /**
      * Set the value property: The value in HTTP header.
-     * 
+     *
      * @param value the value value to set.
      * @return the HttpHeader object itself.
      */
@@ -73,7 +68,7 @@ public final class HttpHeader {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,23 +5,18 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.Container;
 import com.azure.resourcemanager.network.models.ContainerNetworkInterfaceConfiguration;
 import com.azure.resourcemanager.network.models.ContainerNetworkInterfaceIpConfiguration;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ContainerNetworkInterfacePropertiesFormat model.
- */
+/** The ContainerNetworkInterfacePropertiesFormat model. */
 @Fluent
 public final class ContainerNetworkInterfacePropertiesFormat {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ContainerNetworkInterfacePropertiesFormat.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerNetworkInterfacePropertiesFormat.class);
 
     /*
      * Container network interface configuration from which this container
@@ -50,10 +45,9 @@ public final class ContainerNetworkInterfacePropertiesFormat {
     private String provisioningState;
 
     /**
-     * Get the containerNetworkInterfaceConfiguration property: Container
-     * network interface configuration from which this container network
-     * interface is created.
-     * 
+     * Get the containerNetworkInterfaceConfiguration property: Container network interface configuration from which
+     * this container network interface is created.
+     *
      * @return the containerNetworkInterfaceConfiguration value.
      */
     public ContainerNetworkInterfaceConfiguration containerNetworkInterfaceConfiguration() {
@@ -61,23 +55,21 @@ public final class ContainerNetworkInterfacePropertiesFormat {
     }
 
     /**
-     * Set the containerNetworkInterfaceConfiguration property: Container
-     * network interface configuration from which this container network
-     * interface is created.
-     * 
-     * @param containerNetworkInterfaceConfiguration the
-     * containerNetworkInterfaceConfiguration value to set.
+     * Set the containerNetworkInterfaceConfiguration property: Container network interface configuration from which
+     * this container network interface is created.
+     *
+     * @param containerNetworkInterfaceConfiguration the containerNetworkInterfaceConfiguration value to set.
      * @return the ContainerNetworkInterfacePropertiesFormat object itself.
      */
-    public ContainerNetworkInterfacePropertiesFormat withContainerNetworkInterfaceConfiguration(ContainerNetworkInterfaceConfiguration containerNetworkInterfaceConfiguration) {
+    public ContainerNetworkInterfacePropertiesFormat withContainerNetworkInterfaceConfiguration(
+        ContainerNetworkInterfaceConfiguration containerNetworkInterfaceConfiguration) {
         this.containerNetworkInterfaceConfiguration = containerNetworkInterfaceConfiguration;
         return this;
     }
 
     /**
-     * Get the container property: Reference to the container to which this
-     * container network interface is attached.
-     * 
+     * Get the container property: Reference to the container to which this container network interface is attached.
+     *
      * @return the container value.
      */
     public Container container() {
@@ -85,9 +77,8 @@ public final class ContainerNetworkInterfacePropertiesFormat {
     }
 
     /**
-     * Set the container property: Reference to the container to which this
-     * container network interface is attached.
-     * 
+     * Set the container property: Reference to the container to which this container network interface is attached.
+     *
      * @param container the container value to set.
      * @return the ContainerNetworkInterfacePropertiesFormat object itself.
      */
@@ -97,9 +88,8 @@ public final class ContainerNetworkInterfacePropertiesFormat {
     }
 
     /**
-     * Get the ipConfigurations property: Reference to the ip configuration on
-     * this container nic.
-     * 
+     * Get the ipConfigurations property: Reference to the ip configuration on this container nic.
+     *
      * @return the ipConfigurations value.
      */
     public List<ContainerNetworkInterfaceIpConfiguration> ipConfigurations() {
@@ -107,21 +97,20 @@ public final class ContainerNetworkInterfacePropertiesFormat {
     }
 
     /**
-     * Set the ipConfigurations property: Reference to the ip configuration on
-     * this container nic.
-     * 
+     * Set the ipConfigurations property: Reference to the ip configuration on this container nic.
+     *
      * @param ipConfigurations the ipConfigurations value to set.
      * @return the ContainerNetworkInterfacePropertiesFormat object itself.
      */
-    public ContainerNetworkInterfacePropertiesFormat withIpConfigurations(List<ContainerNetworkInterfaceIpConfiguration> ipConfigurations) {
+    public ContainerNetworkInterfacePropertiesFormat withIpConfigurations(
+        List<ContainerNetworkInterfaceIpConfiguration> ipConfigurations) {
         this.ipConfigurations = ipConfigurations;
         return this;
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the
-     * resource.
-     * 
+     * Get the provisioningState property: The provisioning state of the resource.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -130,7 +119,7 @@ public final class ContainerNetworkInterfacePropertiesFormat {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

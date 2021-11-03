@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Properties to configure Identity for Bring your Own Keys.
- */
+/** Properties to configure Identity for Bring your Own Keys. */
 @Fluent
 public class Identity {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(Identity.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(Identity.class);
 
     /*
      * ObjectId from the KeyVault
@@ -40,7 +35,7 @@ public class Identity {
 
     /**
      * Get the principalId property: ObjectId from the KeyVault.
-     * 
+     *
      * @return the principalId value.
      */
     public String principalId() {
@@ -49,7 +44,7 @@ public class Identity {
 
     /**
      * Set the principalId property: ObjectId from the KeyVault.
-     * 
+     *
      * @param principalId the principalId value to set.
      * @return the Identity object itself.
      */
@@ -60,7 +55,7 @@ public class Identity {
 
     /**
      * Get the tenantId property: TenantId from the KeyVault.
-     * 
+     *
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -69,7 +64,7 @@ public class Identity {
 
     /**
      * Set the tenantId property: TenantId from the KeyVault.
-     * 
+     *
      * @param tenantId the tenantId value to set.
      * @return the Identity object itself.
      */
@@ -79,9 +74,9 @@ public class Identity {
     }
 
     /**
-     * Get the type property: Enumerates the possible value Identity type,
-     * which currently supports only 'SystemAssigned'.
-     * 
+     * Get the type property: Enumerates the possible value Identity type, which currently supports only
+     * 'SystemAssigned'.
+     *
      * @return the type value.
      */
     public IdentityType type() {
@@ -89,9 +84,9 @@ public class Identity {
     }
 
     /**
-     * Set the type property: Enumerates the possible value Identity type,
-     * which currently supports only 'SystemAssigned'.
-     * 
+     * Set the type property: Enumerates the possible value Identity type, which currently supports only
+     * 'SystemAssigned'.
+     *
      * @param type the type value to set.
      * @return the Identity object itself.
      */
@@ -102,7 +97,7 @@ public class Identity {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

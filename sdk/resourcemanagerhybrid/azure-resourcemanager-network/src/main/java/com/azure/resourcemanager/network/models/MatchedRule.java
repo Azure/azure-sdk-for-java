@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Matched rule.
- */
+/** Matched rule. */
 @Fluent
 public final class MatchedRule {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(MatchedRule.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(MatchedRule.class);
 
     /*
      * Name of the matched network security rule.
@@ -34,7 +29,7 @@ public final class MatchedRule {
 
     /**
      * Get the ruleName property: Name of the matched network security rule.
-     * 
+     *
      * @return the ruleName value.
      */
     public String ruleName() {
@@ -43,7 +38,7 @@ public final class MatchedRule {
 
     /**
      * Set the ruleName property: Name of the matched network security rule.
-     * 
+     *
      * @param ruleName the ruleName value to set.
      * @return the MatchedRule object itself.
      */
@@ -53,9 +48,8 @@ public final class MatchedRule {
     }
 
     /**
-     * Get the action property: The network traffic is allowed or denied.
-     * Possible values are 'Allow' and 'Deny'.
-     * 
+     * Get the action property: The network traffic is allowed or denied. Possible values are 'Allow' and 'Deny'.
+     *
      * @return the action value.
      */
     public String action() {
@@ -63,9 +57,8 @@ public final class MatchedRule {
     }
 
     /**
-     * Set the action property: The network traffic is allowed or denied.
-     * Possible values are 'Allow' and 'Deny'.
-     * 
+     * Set the action property: The network traffic is allowed or denied. Possible values are 'Allow' and 'Deny'.
+     *
      * @param action the action value to set.
      * @return the MatchedRule object itself.
      */
@@ -76,7 +69,7 @@ public final class MatchedRule {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,23 +8,17 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for ProximityPlacementGroupType.
- */
+/** Defines values for ProximityPlacementGroupType. */
 public final class ProximityPlacementGroupType extends ExpandableStringEnum<ProximityPlacementGroupType> {
-    /**
-     * Static value Standard for ProximityPlacementGroupType.
-     */
+    /** Static value Standard for ProximityPlacementGroupType. */
     public static final ProximityPlacementGroupType STANDARD = fromString("Standard");
 
-    /**
-     * Static value Ultra for ProximityPlacementGroupType.
-     */
+    /** Static value Ultra for ProximityPlacementGroupType. */
     public static final ProximityPlacementGroupType ULTRA = fromString("Ultra");
 
     /**
      * Creates or finds a ProximityPlacementGroupType from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding ProximityPlacementGroupType.
      */
@@ -33,9 +27,7 @@ public final class ProximityPlacementGroupType extends ExpandableStringEnum<Prox
         return fromString(name, ProximityPlacementGroupType.class);
     }
 
-    /**
-     * @return known ProximityPlacementGroupType values.
-     */
+    /** @return known ProximityPlacementGroupType values. */
     public static Collection<ProximityPlacementGroupType> values() {
         return values(ProximityPlacementGroupType.class);
     }

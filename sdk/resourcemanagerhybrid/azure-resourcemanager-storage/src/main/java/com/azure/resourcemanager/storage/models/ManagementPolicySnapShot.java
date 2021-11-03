@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Management policy action for snapshot.
- */
+/** Management policy action for snapshot. */
 @Fluent
 public final class ManagementPolicySnapShot {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ManagementPolicySnapShot.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagementPolicySnapShot.class);
 
     /*
      * The function to tier blob snapshot to cool storage. Support blob
@@ -40,9 +35,9 @@ public final class ManagementPolicySnapShot {
     private DateAfterCreation delete;
 
     /**
-     * Get the tierToCool property: The function to tier blob snapshot to cool
-     * storage. Support blob snapshot currently at Hot tier.
-     * 
+     * Get the tierToCool property: The function to tier blob snapshot to cool storage. Support blob snapshot currently
+     * at Hot tier.
+     *
      * @return the tierToCool value.
      */
     public DateAfterCreation tierToCool() {
@@ -50,9 +45,9 @@ public final class ManagementPolicySnapShot {
     }
 
     /**
-     * Set the tierToCool property: The function to tier blob snapshot to cool
-     * storage. Support blob snapshot currently at Hot tier.
-     * 
+     * Set the tierToCool property: The function to tier blob snapshot to cool storage. Support blob snapshot currently
+     * at Hot tier.
+     *
      * @param tierToCool the tierToCool value to set.
      * @return the ManagementPolicySnapShot object itself.
      */
@@ -62,9 +57,9 @@ public final class ManagementPolicySnapShot {
     }
 
     /**
-     * Get the tierToArchive property: The function to tier blob snapshot to
-     * archive storage. Support blob snapshot currently at Hot or Cool tier.
-     * 
+     * Get the tierToArchive property: The function to tier blob snapshot to archive storage. Support blob snapshot
+     * currently at Hot or Cool tier.
+     *
      * @return the tierToArchive value.
      */
     public DateAfterCreation tierToArchive() {
@@ -72,9 +67,9 @@ public final class ManagementPolicySnapShot {
     }
 
     /**
-     * Set the tierToArchive property: The function to tier blob snapshot to
-     * archive storage. Support blob snapshot currently at Hot or Cool tier.
-     * 
+     * Set the tierToArchive property: The function to tier blob snapshot to archive storage. Support blob snapshot
+     * currently at Hot or Cool tier.
+     *
      * @param tierToArchive the tierToArchive value to set.
      * @return the ManagementPolicySnapShot object itself.
      */
@@ -85,7 +80,7 @@ public final class ManagementPolicySnapShot {
 
     /**
      * Get the delete property: The function to delete the blob snapshot.
-     * 
+     *
      * @return the delete value.
      */
     public DateAfterCreation delete() {
@@ -94,7 +89,7 @@ public final class ManagementPolicySnapShot {
 
     /**
      * Set the delete property: The function to delete the blob snapshot.
-     * 
+     *
      * @param delete the delete value to set.
      * @return the ManagementPolicySnapShot object itself.
      */
@@ -105,7 +100,7 @@ public final class ManagementPolicySnapShot {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

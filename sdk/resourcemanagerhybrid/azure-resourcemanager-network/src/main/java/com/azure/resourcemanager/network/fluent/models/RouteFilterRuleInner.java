@@ -5,23 +5,18 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.Access;
 import com.azure.resourcemanager.network.models.RouteFilterRuleType;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Route Filter Rule Resource.
- */
+/** Route Filter Rule Resource. */
 @Fluent
 public final class RouteFilterRuleInner extends SubResource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(RouteFilterRuleInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RouteFilterRuleInner.class);
 
     /*
      * Route Filter Rule Resource
@@ -50,7 +45,7 @@ public final class RouteFilterRuleInner extends SubResource {
 
     /**
      * Get the innerProperties property: Route Filter Rule Resource.
-     * 
+     *
      * @return the innerProperties value.
      */
     private RouteFilterRulePropertiesFormat innerProperties() {
@@ -58,9 +53,9 @@ public final class RouteFilterRuleInner extends SubResource {
     }
 
     /**
-     * Get the name property: The name of the resource that is unique within a
-     * resource group. This name can be used to access the resource.
-     * 
+     * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
+     * access the resource.
+     *
      * @return the name value.
      */
     public String name() {
@@ -68,9 +63,9 @@ public final class RouteFilterRuleInner extends SubResource {
     }
 
     /**
-     * Set the name property: The name of the resource that is unique within a
-     * resource group. This name can be used to access the resource.
-     * 
+     * Set the name property: The name of the resource that is unique within a resource group. This name can be used to
+     * access the resource.
+     *
      * @param name the name value to set.
      * @return the RouteFilterRuleInner object itself.
      */
@@ -81,7 +76,7 @@ public final class RouteFilterRuleInner extends SubResource {
 
     /**
      * Get the location property: Resource location.
-     * 
+     *
      * @return the location value.
      */
     public String location() {
@@ -90,7 +85,7 @@ public final class RouteFilterRuleInner extends SubResource {
 
     /**
      * Set the location property: Resource location.
-     * 
+     *
      * @param location the location value to set.
      * @return the RouteFilterRuleInner object itself.
      */
@@ -100,18 +95,15 @@ public final class RouteFilterRuleInner extends SubResource {
     }
 
     /**
-     * Get the etag property: A unique read-only string that changes whenever
-     * the resource is updated.
-     * 
+     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
      * @return the etag value.
      */
     public String etag() {
         return this.etag;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public RouteFilterRuleInner withId(String id) {
         super.withId(id);
@@ -119,9 +111,8 @@ public final class RouteFilterRuleInner extends SubResource {
     }
 
     /**
-     * Get the access property: The access type of the rule. Valid values are:
-     * 'Allow', 'Deny'.
-     * 
+     * Get the access property: The access type of the rule. Valid values are: 'Allow', 'Deny'.
+     *
      * @return the access value.
      */
     public Access access() {
@@ -129,9 +120,8 @@ public final class RouteFilterRuleInner extends SubResource {
     }
 
     /**
-     * Set the access property: The access type of the rule. Valid values are:
-     * 'Allow', 'Deny'.
-     * 
+     * Set the access property: The access type of the rule. Valid values are: 'Allow', 'Deny'.
+     *
      * @param access the access value to set.
      * @return the RouteFilterRuleInner object itself.
      */
@@ -144,9 +134,8 @@ public final class RouteFilterRuleInner extends SubResource {
     }
 
     /**
-     * Get the routeFilterRuleType property: The rule type of the rule. Valid
-     * value is: 'Community'.
-     * 
+     * Get the routeFilterRuleType property: The rule type of the rule. Valid value is: 'Community'.
+     *
      * @return the routeFilterRuleType value.
      */
     public RouteFilterRuleType routeFilterRuleType() {
@@ -154,9 +143,8 @@ public final class RouteFilterRuleInner extends SubResource {
     }
 
     /**
-     * Set the routeFilterRuleType property: The rule type of the rule. Valid
-     * value is: 'Community'.
-     * 
+     * Set the routeFilterRuleType property: The rule type of the rule. Valid value is: 'Community'.
+     *
      * @param routeFilterRuleType the routeFilterRuleType value to set.
      * @return the RouteFilterRuleInner object itself.
      */
@@ -169,9 +157,9 @@ public final class RouteFilterRuleInner extends SubResource {
     }
 
     /**
-     * Get the communities property: The collection for bgp community values to
-     * filter on. e.g. ['12076:5010','12076:5020'].
-     * 
+     * Get the communities property: The collection for bgp community values to filter on. e.g.
+     * ['12076:5010','12076:5020'].
+     *
      * @return the communities value.
      */
     public List<String> communities() {
@@ -179,9 +167,9 @@ public final class RouteFilterRuleInner extends SubResource {
     }
 
     /**
-     * Set the communities property: The collection for bgp community values to
-     * filter on. e.g. ['12076:5010','12076:5020'].
-     * 
+     * Set the communities property: The collection for bgp community values to filter on. e.g.
+     * ['12076:5010','12076:5020'].
+     *
      * @param communities the communities value to set.
      * @return the RouteFilterRuleInner object itself.
      */
@@ -194,10 +182,9 @@ public final class RouteFilterRuleInner extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the
-     * resource. Possible values are: 'Updating', 'Deleting', 'Succeeded' and
-     * 'Failed'.
-     * 
+     * Get the provisioningState property: The provisioning state of the resource. Possible values are: 'Updating',
+     * 'Deleting', 'Succeeded' and 'Failed'.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -206,7 +193,7 @@ public final class RouteFilterRuleInner extends SubResource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

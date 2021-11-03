@@ -4,21 +4,16 @@
 
 package com.azure.resourcemanager.compute.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ResourceSkuLocationInfo model.
- */
+/** The ResourceSkuLocationInfo model. */
 @Immutable
 public final class ResourceSkuLocationInfo {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ResourceSkuLocationInfo.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceSkuLocationInfo.class);
 
     /*
      * Location of the SKU
@@ -40,7 +35,7 @@ public final class ResourceSkuLocationInfo {
 
     /**
      * Get the location property: Location of the SKU.
-     * 
+     *
      * @return the location value.
      */
     public String location() {
@@ -48,9 +43,8 @@ public final class ResourceSkuLocationInfo {
     }
 
     /**
-     * Get the zones property: List of availability zones where the SKU is
-     * supported.
-     * 
+     * Get the zones property: List of availability zones where the SKU is supported.
+     *
      * @return the zones value.
      */
     public List<String> zones() {
@@ -58,9 +52,8 @@ public final class ResourceSkuLocationInfo {
     }
 
     /**
-     * Get the zoneDetails property: Details of capabilities available to a SKU
-     * in specific zones.
-     * 
+     * Get the zoneDetails property: Details of capabilities available to a SKU in specific zones.
+     *
      * @return the zoneDetails value.
      */
     public List<ResourceSkuZoneDetails> zoneDetails() {
@@ -69,7 +62,7 @@ public final class ResourceSkuLocationInfo {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

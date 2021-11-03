@@ -8,27 +8,21 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.P2SVpnServerConfigurationInner;
-import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * P2SVpnServerConfigurationsClient.
- */
+/** An instance of this class provides access to all the operations defined in P2SVpnServerConfigurationsClient. */
 public interface P2SVpnServerConfigurationsClient {
     /**
      * Retrieves the details of a P2SVpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnServerConfiguration.
      * @param virtualWanName The name of the VirtualWan.
      * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
@@ -38,11 +32,12 @@ public interface P2SVpnServerConfigurationsClient {
      * @return p2SVpnServerConfiguration Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<P2SVpnServerConfigurationInner>> getWithResponseAsync(String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName);
+    Mono<Response<P2SVpnServerConfigurationInner>> getWithResponseAsync(
+        String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName);
 
     /**
      * Retrieves the details of a P2SVpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnServerConfiguration.
      * @param virtualWanName The name of the VirtualWan.
      * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
@@ -52,11 +47,12 @@ public interface P2SVpnServerConfigurationsClient {
      * @return p2SVpnServerConfiguration Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<P2SVpnServerConfigurationInner> getAsync(String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName);
+    Mono<P2SVpnServerConfigurationInner> getAsync(
+        String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName);
 
     /**
      * Retrieves the details of a P2SVpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnServerConfiguration.
      * @param virtualWanName The name of the VirtualWan.
      * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
@@ -66,11 +62,12 @@ public interface P2SVpnServerConfigurationsClient {
      * @return p2SVpnServerConfiguration Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    P2SVpnServerConfigurationInner get(String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName);
+    P2SVpnServerConfigurationInner get(
+        String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName);
 
     /**
      * Retrieves the details of a P2SVpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnServerConfiguration.
      * @param virtualWanName The name of the VirtualWan.
      * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
@@ -81,11 +78,13 @@ public interface P2SVpnServerConfigurationsClient {
      * @return p2SVpnServerConfiguration Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<P2SVpnServerConfigurationInner> getWithResponse(String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName, Context context);
+    Response<P2SVpnServerConfigurationInner> getWithResponse(
+        String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName, Context context);
 
     /**
-     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing P2SVpnServerConfiguration.
-     * 
+     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing
+     * P2SVpnServerConfiguration.
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWan.
      * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
@@ -96,11 +95,16 @@ public interface P2SVpnServerConfigurationsClient {
      * @return p2SVpnServerConfiguration Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName, P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName,
+        String virtualWanName,
+        String p2SVpnServerConfigurationName,
+        P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters);
 
     /**
-     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing P2SVpnServerConfiguration.
-     * 
+     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing
+     * P2SVpnServerConfiguration.
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWan.
      * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
@@ -111,11 +115,16 @@ public interface P2SVpnServerConfigurationsClient {
      * @return p2SVpnServerConfiguration Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<P2SVpnServerConfigurationInner>, P2SVpnServerConfigurationInner> beginCreateOrUpdateAsync(String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName, P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters);
+    PollerFlux<PollResult<P2SVpnServerConfigurationInner>, P2SVpnServerConfigurationInner> beginCreateOrUpdateAsync(
+        String resourceGroupName,
+        String virtualWanName,
+        String p2SVpnServerConfigurationName,
+        P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters);
 
     /**
-     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing P2SVpnServerConfiguration.
-     * 
+     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing
+     * P2SVpnServerConfiguration.
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWan.
      * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
@@ -126,57 +135,16 @@ public interface P2SVpnServerConfigurationsClient {
      * @return p2SVpnServerConfiguration Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<P2SVpnServerConfigurationInner>, P2SVpnServerConfigurationInner> beginCreateOrUpdate(String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName, P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters);
+    SyncPoller<PollResult<P2SVpnServerConfigurationInner>, P2SVpnServerConfigurationInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String virtualWanName,
+        String p2SVpnServerConfigurationName,
+        P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters);
 
     /**
-     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing P2SVpnServerConfiguration.
-     * 
-     * @param resourceGroupName The resource group name of the VirtualWan.
-     * @param virtualWanName The name of the VirtualWan.
-     * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
-     * @param p2SVpnServerConfigurationParameters Parameters supplied to create or Update a P2SVpnServerConfiguration.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnServerConfiguration Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<P2SVpnServerConfigurationInner>, P2SVpnServerConfigurationInner> beginCreateOrUpdate(String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName, P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters, Context context);
-
-    /**
-     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing P2SVpnServerConfiguration.
-     * 
-     * @param resourceGroupName The resource group name of the VirtualWan.
-     * @param virtualWanName The name of the VirtualWan.
-     * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
-     * @param p2SVpnServerConfigurationParameters Parameters supplied to create or Update a P2SVpnServerConfiguration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnServerConfiguration Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<P2SVpnServerConfigurationInner> createOrUpdateAsync(String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName, P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters);
-
-    /**
-     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing P2SVpnServerConfiguration.
-     * 
-     * @param resourceGroupName The resource group name of the VirtualWan.
-     * @param virtualWanName The name of the VirtualWan.
-     * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
-     * @param p2SVpnServerConfigurationParameters Parameters supplied to create or Update a P2SVpnServerConfiguration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return p2SVpnServerConfiguration Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    P2SVpnServerConfigurationInner createOrUpdate(String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName, P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters);
-
-    /**
-     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing P2SVpnServerConfiguration.
-     * 
+     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing
+     * P2SVpnServerConfiguration.
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWan.
      * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
@@ -188,11 +156,78 @@ public interface P2SVpnServerConfigurationsClient {
      * @return p2SVpnServerConfiguration Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    P2SVpnServerConfigurationInner createOrUpdate(String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName, P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters, Context context);
+    SyncPoller<PollResult<P2SVpnServerConfigurationInner>, P2SVpnServerConfigurationInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String virtualWanName,
+        String p2SVpnServerConfigurationName,
+        P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters,
+        Context context);
+
+    /**
+     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing
+     * P2SVpnServerConfiguration.
+     *
+     * @param resourceGroupName The resource group name of the VirtualWan.
+     * @param virtualWanName The name of the VirtualWan.
+     * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
+     * @param p2SVpnServerConfigurationParameters Parameters supplied to create or Update a P2SVpnServerConfiguration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return p2SVpnServerConfiguration Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<P2SVpnServerConfigurationInner> createOrUpdateAsync(
+        String resourceGroupName,
+        String virtualWanName,
+        String p2SVpnServerConfigurationName,
+        P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters);
+
+    /**
+     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing
+     * P2SVpnServerConfiguration.
+     *
+     * @param resourceGroupName The resource group name of the VirtualWan.
+     * @param virtualWanName The name of the VirtualWan.
+     * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
+     * @param p2SVpnServerConfigurationParameters Parameters supplied to create or Update a P2SVpnServerConfiguration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return p2SVpnServerConfiguration Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    P2SVpnServerConfigurationInner createOrUpdate(
+        String resourceGroupName,
+        String virtualWanName,
+        String p2SVpnServerConfigurationName,
+        P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters);
+
+    /**
+     * Creates a P2SVpnServerConfiguration to associate with a VirtualWan if it doesn't exist else updates the existing
+     * P2SVpnServerConfiguration.
+     *
+     * @param resourceGroupName The resource group name of the VirtualWan.
+     * @param virtualWanName The name of the VirtualWan.
+     * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
+     * @param p2SVpnServerConfigurationParameters Parameters supplied to create or Update a P2SVpnServerConfiguration.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.network.models.ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return p2SVpnServerConfiguration Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    P2SVpnServerConfigurationInner createOrUpdate(
+        String resourceGroupName,
+        String virtualWanName,
+        String p2SVpnServerConfigurationName,
+        P2SVpnServerConfigurationInner p2SVpnServerConfigurationParameters,
+        Context context);
 
     /**
      * Deletes a P2SVpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnServerConfiguration.
      * @param virtualWanName The name of the VirtualWan.
      * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
@@ -202,11 +237,12 @@ public interface P2SVpnServerConfigurationsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName);
 
     /**
      * Deletes a P2SVpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnServerConfiguration.
      * @param virtualWanName The name of the VirtualWan.
      * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
@@ -216,11 +252,12 @@ public interface P2SVpnServerConfigurationsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName);
 
     /**
      * Deletes a P2SVpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnServerConfiguration.
      * @param virtualWanName The name of the VirtualWan.
      * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
@@ -230,11 +267,12 @@ public interface P2SVpnServerConfigurationsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName);
 
     /**
      * Deletes a P2SVpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnServerConfiguration.
      * @param virtualWanName The name of the VirtualWan.
      * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
@@ -245,11 +283,12 @@ public interface P2SVpnServerConfigurationsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String virtualWanName, String p2SVpnServerConfigurationName, Context context);
 
     /**
      * Deletes a P2SVpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnServerConfiguration.
      * @param virtualWanName The name of the VirtualWan.
      * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
@@ -263,7 +302,7 @@ public interface P2SVpnServerConfigurationsClient {
 
     /**
      * Deletes a P2SVpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnServerConfiguration.
      * @param virtualWanName The name of the VirtualWan.
      * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
@@ -276,7 +315,7 @@ public interface P2SVpnServerConfigurationsClient {
 
     /**
      * Deletes a P2SVpnServerConfiguration.
-     * 
+     *
      * @param resourceGroupName The resource group name of the P2SVpnServerConfiguration.
      * @param virtualWanName The name of the VirtualWan.
      * @param p2SVpnServerConfigurationName The name of the P2SVpnServerConfiguration.
@@ -290,7 +329,7 @@ public interface P2SVpnServerConfigurationsClient {
 
     /**
      * Retrieves all P2SVpnServerConfigurations for a particular VirtualWan.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -303,7 +342,7 @@ public interface P2SVpnServerConfigurationsClient {
 
     /**
      * Retrieves all P2SVpnServerConfigurations for a particular VirtualWan.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWan.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -316,7 +355,7 @@ public interface P2SVpnServerConfigurationsClient {
 
     /**
      * Retrieves all P2SVpnServerConfigurations for a particular VirtualWan.
-     * 
+     *
      * @param resourceGroupName The resource group name of the VirtualWan.
      * @param virtualWanName The name of the VirtualWan.
      * @param context The context to associate with this operation.
@@ -326,5 +365,6 @@ public interface P2SVpnServerConfigurationsClient {
      * @return result of the request to list all P2SVpnServerConfigurations associated to a VirtualWan.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<P2SVpnServerConfigurationInner> listByVirtualWan(String resourceGroupName, String virtualWanName, Context context);
+    PagedIterable<P2SVpnServerConfigurationInner> listByVirtualWan(
+        String resourceGroupName, String virtualWanName, Context context);
 }

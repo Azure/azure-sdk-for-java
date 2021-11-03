@@ -5,23 +5,20 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.models.WhatIfChange;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Result of the What-If operation. Contains a list of predicted changes and a
- * URL link to get to the next set of results.
+ * Result of the What-If operation. Contains a list of predicted changes and a URL link to get to the next set of
+ * results.
  */
 @Fluent
 public final class WhatIfOperationResultInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(WhatIfOperationResultInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(WhatIfOperationResultInner.class);
 
     /*
      * Status of the What-If operation.
@@ -43,7 +40,7 @@ public final class WhatIfOperationResultInner {
 
     /**
      * Get the status property: Status of the What-If operation.
-     * 
+     *
      * @return the status value.
      */
     public String status() {
@@ -52,7 +49,7 @@ public final class WhatIfOperationResultInner {
 
     /**
      * Set the status property: Status of the What-If operation.
-     * 
+     *
      * @param status the status value to set.
      * @return the WhatIfOperationResultInner object itself.
      */
@@ -63,7 +60,7 @@ public final class WhatIfOperationResultInner {
 
     /**
      * Get the innerProperties property: What-If operation properties.
-     * 
+     *
      * @return the innerProperties value.
      */
     private WhatIfOperationProperties innerProperties() {
@@ -71,9 +68,8 @@ public final class WhatIfOperationResultInner {
     }
 
     /**
-     * Get the error property: Error Response Error when What-If operation
-     * fails.
-     * 
+     * Get the error property: Error Response Error when What-If operation fails.
+     *
      * @return the error value.
      */
     public ManagementError error() {
@@ -81,9 +77,8 @@ public final class WhatIfOperationResultInner {
     }
 
     /**
-     * Set the error property: Error Response Error when What-If operation
-     * fails.
-     * 
+     * Set the error property: Error Response Error when What-If operation fails.
+     *
      * @param error the error value to set.
      * @return the WhatIfOperationResultInner object itself.
      */
@@ -93,9 +88,8 @@ public final class WhatIfOperationResultInner {
     }
 
     /**
-     * Get the changes property: List of resource changes predicted by What-If
-     * operation.
-     * 
+     * Get the changes property: List of resource changes predicted by What-If operation.
+     *
      * @return the changes value.
      */
     public List<WhatIfChange> changes() {
@@ -103,9 +97,8 @@ public final class WhatIfOperationResultInner {
     }
 
     /**
-     * Set the changes property: List of resource changes predicted by What-If
-     * operation.
-     * 
+     * Set the changes property: List of resource changes predicted by What-If operation.
+     *
      * @param changes the changes value to set.
      * @return the WhatIfOperationResultInner object itself.
      */
@@ -119,7 +112,7 @@ public final class WhatIfOperationResultInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The BlobContainersCreateOrUpdateImmutabilityPolicyHeaders model.
- */
+/** The BlobContainersCreateOrUpdateImmutabilityPolicyHeaders model. */
 @Fluent
 public final class BlobContainersCreateOrUpdateImmutabilityPolicyHeaders {
     @JsonIgnore
@@ -27,7 +23,7 @@ public final class BlobContainersCreateOrUpdateImmutabilityPolicyHeaders {
 
     /**
      * Get the etag property: The Etag property.
-     * 
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -36,10 +32,9 @@ public final class BlobContainersCreateOrUpdateImmutabilityPolicyHeaders {
 
     /**
      * Set the etag property: The Etag property.
-     * 
+     *
      * @param etag the etag value to set.
-     * @return the BlobContainersCreateOrUpdateImmutabilityPolicyHeaders object
-     * itself.
+     * @return the BlobContainersCreateOrUpdateImmutabilityPolicyHeaders object itself.
      */
     public BlobContainersCreateOrUpdateImmutabilityPolicyHeaders withEtag(String etag) {
         this.etag = etag;
@@ -48,7 +43,7 @@ public final class BlobContainersCreateOrUpdateImmutabilityPolicyHeaders {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

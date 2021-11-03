@@ -8,23 +8,17 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for ManagedClusterSkuTier.
- */
+/** Defines values for ManagedClusterSkuTier. */
 public final class ManagedClusterSkuTier extends ExpandableStringEnum<ManagedClusterSkuTier> {
-    /**
-     * Static value Paid for ManagedClusterSkuTier.
-     */
+    /** Static value Paid for ManagedClusterSkuTier. */
     public static final ManagedClusterSkuTier PAID = fromString("Paid");
 
-    /**
-     * Static value Free for ManagedClusterSkuTier.
-     */
+    /** Static value Free for ManagedClusterSkuTier. */
     public static final ManagedClusterSkuTier FREE = fromString("Free");
 
     /**
      * Creates or finds a ManagedClusterSkuTier from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding ManagedClusterSkuTier.
      */
@@ -33,9 +27,7 @@ public final class ManagedClusterSkuTier extends ExpandableStringEnum<ManagedClu
         return fromString(name, ManagedClusterSkuTier.class);
     }
 
-    /**
-     * @return known ManagedClusterSkuTier values.
-     */
+    /** @return known ManagedClusterSkuTier values. */
     public static Collection<ManagedClusterSkuTier> values() {
         return values(ManagedClusterSkuTier.class);
     }

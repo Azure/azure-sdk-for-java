@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRouteServiceProviderBandwidthsOffered;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Properties of ExpressRouteServiceProvider.
- */
+/** Properties of ExpressRouteServiceProvider. */
 @Fluent
 public final class ExpressRouteServiceProviderPropertiesFormat {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ExpressRouteServiceProviderPropertiesFormat.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteServiceProviderPropertiesFormat.class);
 
     /*
      * Get a list of peering locations.
@@ -41,7 +36,7 @@ public final class ExpressRouteServiceProviderPropertiesFormat {
 
     /**
      * Get the peeringLocations property: Get a list of peering locations.
-     * 
+     *
      * @return the peeringLocations value.
      */
     public List<String> peeringLocations() {
@@ -50,7 +45,7 @@ public final class ExpressRouteServiceProviderPropertiesFormat {
 
     /**
      * Set the peeringLocations property: Get a list of peering locations.
-     * 
+     *
      * @param peeringLocations the peeringLocations value to set.
      * @return the ExpressRouteServiceProviderPropertiesFormat object itself.
      */
@@ -61,7 +56,7 @@ public final class ExpressRouteServiceProviderPropertiesFormat {
 
     /**
      * Get the bandwidthsOffered property: Gets bandwidths offered.
-     * 
+     *
      * @return the bandwidthsOffered value.
      */
     public List<ExpressRouteServiceProviderBandwidthsOffered> bandwidthsOffered() {
@@ -70,19 +65,19 @@ public final class ExpressRouteServiceProviderPropertiesFormat {
 
     /**
      * Set the bandwidthsOffered property: Gets bandwidths offered.
-     * 
+     *
      * @param bandwidthsOffered the bandwidthsOffered value to set.
      * @return the ExpressRouteServiceProviderPropertiesFormat object itself.
      */
-    public ExpressRouteServiceProviderPropertiesFormat withBandwidthsOffered(List<ExpressRouteServiceProviderBandwidthsOffered> bandwidthsOffered) {
+    public ExpressRouteServiceProviderPropertiesFormat withBandwidthsOffered(
+        List<ExpressRouteServiceProviderBandwidthsOffered> bandwidthsOffered) {
         this.bandwidthsOffered = bandwidthsOffered;
         return this;
     }
 
     /**
-     * Get the provisioningState property: Gets the provisioning state of the
-     * resource.
-     * 
+     * Get the provisioningState property: Gets the provisioning state of the resource.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -90,9 +85,8 @@ public final class ExpressRouteServiceProviderPropertiesFormat {
     }
 
     /**
-     * Set the provisioningState property: Gets the provisioning state of the
-     * resource.
-     * 
+     * Set the provisioningState property: Gets the provisioning state of the resource.
+     *
      * @param provisioningState the provisioningState value to set.
      * @return the ExpressRouteServiceProviderPropertiesFormat object itself.
      */
@@ -103,7 +97,7 @@ public final class ExpressRouteServiceProviderPropertiesFormat {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.authorization.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Role assignment properties.
- */
+/** Role assignment properties. */
 @Fluent
 public final class RoleAssignmentProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(RoleAssignmentProperties.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoleAssignmentProperties.class);
 
     /*
      * The role definition ID used in the role assignment.
@@ -34,9 +29,8 @@ public final class RoleAssignmentProperties {
     private String principalId;
 
     /**
-     * Get the roleDefinitionId property: The role definition ID used in the
-     * role assignment.
-     * 
+     * Get the roleDefinitionId property: The role definition ID used in the role assignment.
+     *
      * @return the roleDefinitionId value.
      */
     public String roleDefinitionId() {
@@ -44,9 +38,8 @@ public final class RoleAssignmentProperties {
     }
 
     /**
-     * Set the roleDefinitionId property: The role definition ID used in the
-     * role assignment.
-     * 
+     * Set the roleDefinitionId property: The role definition ID used in the role assignment.
+     *
      * @param roleDefinitionId the roleDefinitionId value to set.
      * @return the RoleAssignmentProperties object itself.
      */
@@ -56,10 +49,9 @@ public final class RoleAssignmentProperties {
     }
 
     /**
-     * Get the principalId property: The principal ID assigned to the role.
-     * This maps to the ID inside the Active Directory. It can point to a user,
-     * service principal, or security group.
-     * 
+     * Get the principalId property: The principal ID assigned to the role. This maps to the ID inside the Active
+     * Directory. It can point to a user, service principal, or security group.
+     *
      * @return the principalId value.
      */
     public String principalId() {
@@ -67,10 +59,9 @@ public final class RoleAssignmentProperties {
     }
 
     /**
-     * Set the principalId property: The principal ID assigned to the role.
-     * This maps to the ID inside the Active Directory. It can point to a user,
-     * service principal, or security group.
-     * 
+     * Set the principalId property: The principal ID assigned to the role. This maps to the ID inside the Active
+     * Directory. It can point to a user, service principal, or security group.
+     *
      * @param principalId the principalId value to set.
      * @return the RoleAssignmentProperties object itself.
      */
@@ -81,15 +72,21 @@ public final class RoleAssignmentProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (roleDefinitionId() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property roleDefinitionId in model RoleAssignmentProperties"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property roleDefinitionId in model RoleAssignmentProperties"));
         }
         if (principalId() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property principalId in model RoleAssignmentProperties"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property principalId in model RoleAssignmentProperties"));
         }
     }
 }

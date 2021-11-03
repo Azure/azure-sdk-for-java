@@ -5,26 +5,20 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VpnClientConnectionHealth;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * P2SVpnGateway Resource.
- */
+/** P2SVpnGateway Resource. */
 @Fluent
 public final class P2SVpnGatewayInner extends Resource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(P2SVpnGatewayInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(P2SVpnGatewayInner.class);
 
     /*
      * Parameters for P2SVpnGateway
@@ -47,7 +41,7 @@ public final class P2SVpnGatewayInner extends Resource {
 
     /**
      * Get the innerProperties property: Parameters for P2SVpnGateway.
-     * 
+     *
      * @return the innerProperties value.
      */
     private P2SVpnGatewayProperties innerProperties() {
@@ -55,9 +49,8 @@ public final class P2SVpnGatewayInner extends Resource {
     }
 
     /**
-     * Get the etag property: Gets a unique read-only string that changes
-     * whenever the resource is updated.
-     * 
+     * Get the etag property: Gets a unique read-only string that changes whenever the resource is updated.
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -66,7 +59,7 @@ public final class P2SVpnGatewayInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -75,7 +68,7 @@ public final class P2SVpnGatewayInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     * 
+     *
      * @param id the id value to set.
      * @return the P2SVpnGatewayInner object itself.
      */
@@ -84,18 +77,14 @@ public final class P2SVpnGatewayInner extends Resource {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public P2SVpnGatewayInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public P2SVpnGatewayInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -103,9 +92,8 @@ public final class P2SVpnGatewayInner extends Resource {
     }
 
     /**
-     * Get the virtualHub property: The VirtualHub to which the gateway
-     * belongs.
-     * 
+     * Get the virtualHub property: The VirtualHub to which the gateway belongs.
+     *
      * @return the virtualHub value.
      */
     public SubResource virtualHub() {
@@ -113,9 +101,8 @@ public final class P2SVpnGatewayInner extends Resource {
     }
 
     /**
-     * Set the virtualHub property: The VirtualHub to which the gateway
-     * belongs.
-     * 
+     * Set the virtualHub property: The VirtualHub to which the gateway belongs.
+     *
      * @param virtualHub the virtualHub value to set.
      * @return the P2SVpnGatewayInner object itself.
      */
@@ -128,9 +115,8 @@ public final class P2SVpnGatewayInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the
-     * resource.
-     * 
+     * Get the provisioningState property: The provisioning state of the resource.
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -138,9 +124,8 @@ public final class P2SVpnGatewayInner extends Resource {
     }
 
     /**
-     * Set the provisioningState property: The provisioning state of the
-     * resource.
-     * 
+     * Set the provisioningState property: The provisioning state of the resource.
+     *
      * @param provisioningState the provisioningState value to set.
      * @return the P2SVpnGatewayInner object itself.
      */
@@ -153,9 +138,8 @@ public final class P2SVpnGatewayInner extends Resource {
     }
 
     /**
-     * Get the vpnGatewayScaleUnit property: The scale unit for this p2s vpn
-     * gateway.
-     * 
+     * Get the vpnGatewayScaleUnit property: The scale unit for this p2s vpn gateway.
+     *
      * @return the vpnGatewayScaleUnit value.
      */
     public Integer vpnGatewayScaleUnit() {
@@ -163,9 +147,8 @@ public final class P2SVpnGatewayInner extends Resource {
     }
 
     /**
-     * Set the vpnGatewayScaleUnit property: The scale unit for this p2s vpn
-     * gateway.
-     * 
+     * Set the vpnGatewayScaleUnit property: The scale unit for this p2s vpn gateway.
+     *
      * @param vpnGatewayScaleUnit the vpnGatewayScaleUnit value to set.
      * @return the P2SVpnGatewayInner object itself.
      */
@@ -178,9 +161,9 @@ public final class P2SVpnGatewayInner extends Resource {
     }
 
     /**
-     * Get the p2SVpnServerConfiguration property: The
-     * P2SVpnServerConfiguration to which the p2sVpnGateway is attached to.
-     * 
+     * Get the p2SVpnServerConfiguration property: The P2SVpnServerConfiguration to which the p2sVpnGateway is attached
+     * to.
+     *
      * @return the p2SVpnServerConfiguration value.
      */
     public SubResource p2SVpnServerConfiguration() {
@@ -188,11 +171,10 @@ public final class P2SVpnGatewayInner extends Resource {
     }
 
     /**
-     * Set the p2SVpnServerConfiguration property: The
-     * P2SVpnServerConfiguration to which the p2sVpnGateway is attached to.
-     * 
-     * @param p2SVpnServerConfiguration the p2SVpnServerConfiguration value to
-     * set.
+     * Set the p2SVpnServerConfiguration property: The P2SVpnServerConfiguration to which the p2sVpnGateway is attached
+     * to.
+     *
+     * @param p2SVpnServerConfiguration the p2SVpnServerConfiguration value to set.
      * @return the P2SVpnGatewayInner object itself.
      */
     public P2SVpnGatewayInner withP2SVpnServerConfiguration(SubResource p2SVpnServerConfiguration) {
@@ -204,9 +186,9 @@ public final class P2SVpnGatewayInner extends Resource {
     }
 
     /**
-     * Get the vpnClientAddressPool property: The reference of the address
-     * space resource which represents Address space for P2S VpnClient.
-     * 
+     * Get the vpnClientAddressPool property: The reference of the address space resource which represents Address space
+     * for P2S VpnClient.
+     *
      * @return the vpnClientAddressPool value.
      */
     public AddressSpace vpnClientAddressPool() {
@@ -214,9 +196,9 @@ public final class P2SVpnGatewayInner extends Resource {
     }
 
     /**
-     * Set the vpnClientAddressPool property: The reference of the address
-     * space resource which represents Address space for P2S VpnClient.
-     * 
+     * Set the vpnClientAddressPool property: The reference of the address space resource which represents Address space
+     * for P2S VpnClient.
+     *
      * @param vpnClientAddressPool the vpnClientAddressPool value to set.
      * @return the P2SVpnGatewayInner object itself.
      */
@@ -229,9 +211,8 @@ public final class P2SVpnGatewayInner extends Resource {
     }
 
     /**
-     * Get the vpnClientConnectionHealth property: All P2S VPN clients'
-     * connection health status.
-     * 
+     * Get the vpnClientConnectionHealth property: All P2S VPN clients' connection health status.
+     *
      * @return the vpnClientConnectionHealth value.
      */
     public VpnClientConnectionHealth vpnClientConnectionHealth() {
@@ -240,7 +221,7 @@ public final class P2SVpnGatewayInner extends Resource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

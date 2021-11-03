@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Profile for the container service master.
- */
+/** Profile for the container service master. */
 @Fluent
 public final class ContainerServiceMasterProfile {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ContainerServiceMasterProfile.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerServiceMasterProfile.class);
 
     /*
      * Number of masters (VMs) in the container service cluster. Allowed values
@@ -73,9 +68,9 @@ public final class ContainerServiceMasterProfile {
     private String fqdn;
 
     /**
-     * Get the count property: Number of masters (VMs) in the container service
-     * cluster. Allowed values are 1, 3, and 5. The default value is 1.
-     * 
+     * Get the count property: Number of masters (VMs) in the container service cluster. Allowed values are 1, 3, and 5.
+     * The default value is 1.
+     *
      * @return the count value.
      */
     public Count count() {
@@ -83,9 +78,9 @@ public final class ContainerServiceMasterProfile {
     }
 
     /**
-     * Set the count property: Number of masters (VMs) in the container service
-     * cluster. Allowed values are 1, 3, and 5. The default value is 1.
-     * 
+     * Set the count property: Number of masters (VMs) in the container service cluster. Allowed values are 1, 3, and 5.
+     * The default value is 1.
+     *
      * @param count the count value to set.
      * @return the ContainerServiceMasterProfile object itself.
      */
@@ -95,9 +90,8 @@ public final class ContainerServiceMasterProfile {
     }
 
     /**
-     * Get the dnsPrefix property: DNS prefix to be used to create the FQDN for
-     * the master pool.
-     * 
+     * Get the dnsPrefix property: DNS prefix to be used to create the FQDN for the master pool.
+     *
      * @return the dnsPrefix value.
      */
     public String dnsPrefix() {
@@ -105,9 +99,8 @@ public final class ContainerServiceMasterProfile {
     }
 
     /**
-     * Set the dnsPrefix property: DNS prefix to be used to create the FQDN for
-     * the master pool.
-     * 
+     * Set the dnsPrefix property: DNS prefix to be used to create the FQDN for the master pool.
+     *
      * @param dnsPrefix the dnsPrefix value to set.
      * @return the ContainerServiceMasterProfile object itself.
      */
@@ -118,7 +111,7 @@ public final class ContainerServiceMasterProfile {
 
     /**
      * Get the vmSize property: Size of agent VMs.
-     * 
+     *
      * @return the vmSize value.
      */
     public ContainerServiceVMSizeTypes vmSize() {
@@ -127,7 +120,7 @@ public final class ContainerServiceMasterProfile {
 
     /**
      * Set the vmSize property: Size of agent VMs.
-     * 
+     *
      * @param vmSize the vmSize value to set.
      * @return the ContainerServiceMasterProfile object itself.
      */
@@ -137,11 +130,9 @@ public final class ContainerServiceMasterProfile {
     }
 
     /**
-     * Get the osDiskSizeGB property: OS Disk Size in GB to be used to specify
-     * the disk size for every machine in this master/agent pool. If you
-     * specify 0, it will apply the default osDisk size according to the vmSize
-     * specified.
-     * 
+     * Get the osDiskSizeGB property: OS Disk Size in GB to be used to specify the disk size for every machine in this
+     * master/agent pool. If you specify 0, it will apply the default osDisk size according to the vmSize specified.
+     *
      * @return the osDiskSizeGB value.
      */
     public Integer osDiskSizeGB() {
@@ -149,11 +140,9 @@ public final class ContainerServiceMasterProfile {
     }
 
     /**
-     * Set the osDiskSizeGB property: OS Disk Size in GB to be used to specify
-     * the disk size for every machine in this master/agent pool. If you
-     * specify 0, it will apply the default osDisk size according to the vmSize
-     * specified.
-     * 
+     * Set the osDiskSizeGB property: OS Disk Size in GB to be used to specify the disk size for every machine in this
+     * master/agent pool. If you specify 0, it will apply the default osDisk size according to the vmSize specified.
+     *
      * @param osDiskSizeGB the osDiskSizeGB value to set.
      * @return the ContainerServiceMasterProfile object itself.
      */
@@ -163,9 +152,8 @@ public final class ContainerServiceMasterProfile {
     }
 
     /**
-     * Get the vnetSubnetId property: VNet SubnetID specifies the VNet's subnet
-     * identifier.
-     * 
+     * Get the vnetSubnetId property: VNet SubnetID specifies the VNet's subnet identifier.
+     *
      * @return the vnetSubnetId value.
      */
     public String vnetSubnetId() {
@@ -173,9 +161,8 @@ public final class ContainerServiceMasterProfile {
     }
 
     /**
-     * Set the vnetSubnetId property: VNet SubnetID specifies the VNet's subnet
-     * identifier.
-     * 
+     * Set the vnetSubnetId property: VNet SubnetID specifies the VNet's subnet identifier.
+     *
      * @param vnetSubnetId the vnetSubnetId value to set.
      * @return the ContainerServiceMasterProfile object itself.
      */
@@ -185,9 +172,9 @@ public final class ContainerServiceMasterProfile {
     }
 
     /**
-     * Get the firstConsecutiveStaticIp property: FirstConsecutiveStaticIP used
-     * to specify the first static ip of masters.
-     * 
+     * Get the firstConsecutiveStaticIp property: FirstConsecutiveStaticIP used to specify the first static ip of
+     * masters.
+     *
      * @return the firstConsecutiveStaticIp value.
      */
     public String firstConsecutiveStaticIp() {
@@ -195,11 +182,10 @@ public final class ContainerServiceMasterProfile {
     }
 
     /**
-     * Set the firstConsecutiveStaticIp property: FirstConsecutiveStaticIP used
-     * to specify the first static ip of masters.
-     * 
-     * @param firstConsecutiveStaticIp the firstConsecutiveStaticIp value to
-     * set.
+     * Set the firstConsecutiveStaticIp property: FirstConsecutiveStaticIP used to specify the first static ip of
+     * masters.
+     *
+     * @param firstConsecutiveStaticIp the firstConsecutiveStaticIp value to set.
      * @return the ContainerServiceMasterProfile object itself.
      */
     public ContainerServiceMasterProfile withFirstConsecutiveStaticIp(String firstConsecutiveStaticIp) {
@@ -208,10 +194,9 @@ public final class ContainerServiceMasterProfile {
     }
 
     /**
-     * Get the storageProfile property: Storage profile specifies what kind of
-     * storage used. Choose from StorageAccount and ManagedDisks. Leave it
-     * empty, we will choose for you based on the orchestrator choice.
-     * 
+     * Get the storageProfile property: Storage profile specifies what kind of storage used. Choose from StorageAccount
+     * and ManagedDisks. Leave it empty, we will choose for you based on the orchestrator choice.
+     *
      * @return the storageProfile value.
      */
     public ContainerServiceStorageProfileTypes storageProfile() {
@@ -219,10 +204,9 @@ public final class ContainerServiceMasterProfile {
     }
 
     /**
-     * Set the storageProfile property: Storage profile specifies what kind of
-     * storage used. Choose from StorageAccount and ManagedDisks. Leave it
-     * empty, we will choose for you based on the orchestrator choice.
-     * 
+     * Set the storageProfile property: Storage profile specifies what kind of storage used. Choose from StorageAccount
+     * and ManagedDisks. Leave it empty, we will choose for you based on the orchestrator choice.
+     *
      * @param storageProfile the storageProfile value to set.
      * @return the ContainerServiceMasterProfile object itself.
      */
@@ -233,7 +217,7 @@ public final class ContainerServiceMasterProfile {
 
     /**
      * Get the fqdn property: FQDN for the master pool.
-     * 
+     *
      * @return the fqdn value.
      */
     public String fqdn() {
@@ -242,15 +226,21 @@ public final class ContainerServiceMasterProfile {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (dnsPrefix() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property dnsPrefix in model ContainerServiceMasterProfile"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property dnsPrefix in model ContainerServiceMasterProfile"));
         }
         if (vmSize() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property vmSize in model ContainerServiceMasterProfile"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property vmSize in model ContainerServiceMasterProfile"));
         }
     }
 }

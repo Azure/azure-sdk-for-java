@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The list of available upgrade versions.
- */
+/** The list of available upgrade versions. */
 @Fluent
 public final class ManagedClusterPoolUpgradeProfile {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ManagedClusterPoolUpgradeProfile.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterPoolUpgradeProfile.class);
 
     /*
      * Kubernetes version (major, minor, patch).
@@ -46,9 +41,8 @@ public final class ManagedClusterPoolUpgradeProfile {
     private List<ManagedClusterPoolUpgradeProfileUpgradesItem> upgrades;
 
     /**
-     * Get the kubernetesVersion property: Kubernetes version (major, minor,
-     * patch).
-     * 
+     * Get the kubernetesVersion property: Kubernetes version (major, minor, patch).
+     *
      * @return the kubernetesVersion value.
      */
     public String kubernetesVersion() {
@@ -56,9 +50,8 @@ public final class ManagedClusterPoolUpgradeProfile {
     }
 
     /**
-     * Set the kubernetesVersion property: Kubernetes version (major, minor,
-     * patch).
-     * 
+     * Set the kubernetesVersion property: Kubernetes version (major, minor, patch).
+     *
      * @param kubernetesVersion the kubernetesVersion value to set.
      * @return the ManagedClusterPoolUpgradeProfile object itself.
      */
@@ -69,7 +62,7 @@ public final class ManagedClusterPoolUpgradeProfile {
 
     /**
      * Get the name property: Pool name.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -78,7 +71,7 @@ public final class ManagedClusterPoolUpgradeProfile {
 
     /**
      * Set the name property: Pool name.
-     * 
+     *
      * @param name the name value to set.
      * @return the ManagedClusterPoolUpgradeProfile object itself.
      */
@@ -88,9 +81,8 @@ public final class ManagedClusterPoolUpgradeProfile {
     }
 
     /**
-     * Get the osType property: OsType to be used to specify os type. Choose
-     * from Linux and Windows. Default to Linux.
-     * 
+     * Get the osType property: OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
+     *
      * @return the osType value.
      */
     public OSType osType() {
@@ -98,9 +90,8 @@ public final class ManagedClusterPoolUpgradeProfile {
     }
 
     /**
-     * Set the osType property: OsType to be used to specify os type. Choose
-     * from Linux and Windows. Default to Linux.
-     * 
+     * Set the osType property: OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux.
+     *
      * @param osType the osType value to set.
      * @return the ManagedClusterPoolUpgradeProfile object itself.
      */
@@ -110,9 +101,8 @@ public final class ManagedClusterPoolUpgradeProfile {
     }
 
     /**
-     * Get the upgrades property: List of orchestrator types and versions
-     * available for upgrade.
-     * 
+     * Get the upgrades property: List of orchestrator types and versions available for upgrade.
+     *
      * @return the upgrades value.
      */
     public List<ManagedClusterPoolUpgradeProfileUpgradesItem> upgrades() {
@@ -120,9 +110,8 @@ public final class ManagedClusterPoolUpgradeProfile {
     }
 
     /**
-     * Set the upgrades property: List of orchestrator types and versions
-     * available for upgrade.
-     * 
+     * Set the upgrades property: List of orchestrator types and versions available for upgrade.
+     *
      * @param upgrades the upgrades value to set.
      * @return the ManagedClusterPoolUpgradeProfile object itself.
      */
@@ -133,15 +122,21 @@ public final class ManagedClusterPoolUpgradeProfile {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (kubernetesVersion() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property kubernetesVersion in model ManagedClusterPoolUpgradeProfile"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property kubernetesVersion in model ManagedClusterPoolUpgradeProfile"));
         }
         if (osType() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property osType in model ManagedClusterPoolUpgradeProfile"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property osType in model ManagedClusterPoolUpgradeProfile"));
         }
         if (upgrades() != null) {
             upgrades().forEach(e -> e.validate());

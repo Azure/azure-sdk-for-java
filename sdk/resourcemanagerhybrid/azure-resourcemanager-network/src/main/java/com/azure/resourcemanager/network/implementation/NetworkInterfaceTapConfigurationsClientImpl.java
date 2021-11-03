@@ -35,80 +35,121 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.NetworkInterfaceTapConfigurationsClient;
 import com.azure.resourcemanager.network.fluent.models.NetworkInterfaceTapConfigurationInner;
 import com.azure.resourcemanager.network.models.NetworkInterfaceTapConfigurationListResult;
-import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in
- * NetworkInterfaceTapConfigurationsClient.
+ * An instance of this class provides access to all the operations defined in NetworkInterfaceTapConfigurationsClient.
  */
 public final class NetworkInterfaceTapConfigurationsClientImpl implements NetworkInterfaceTapConfigurationsClient {
     private final ClientLogger logger = new ClientLogger(NetworkInterfaceTapConfigurationsClientImpl.class);
 
-    /**
-     * The proxy service used to perform REST calls.
-     */
+    /** The proxy service used to perform REST calls. */
     private final NetworkInterfaceTapConfigurationsService service;
 
-    /**
-     * The service client containing this operation class.
-     */
+    /** The service client containing this operation class. */
     private final NetworkManagementClientImpl client;
 
     /**
      * Initializes an instance of NetworkInterfaceTapConfigurationsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     NetworkInterfaceTapConfigurationsClientImpl(NetworkManagementClientImpl client) {
-        this.service = RestProxy.create(NetworkInterfaceTapConfigurationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+            RestProxy
+                .create(
+                    NetworkInterfaceTapConfigurationsService.class,
+                    client.getHttpPipeline(),
+                    client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for
-     * NetworkManagementClientNetworkInterfaceTapConfigurations to be used by
-     * the proxy service to perform REST calls.
+     * The interface defining all the services for NetworkManagementClientNetworkInterfaceTapConfigurations to be used
+     * by the proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "NetworkManagementCli")
     private interface NetworkInterfaceTapConfigurationsService {
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkInterfaces/{networkInterfaceName}/tapConfigurations/{tapConfigurationName}")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
+                + "/networkInterfaces/{networkInterfaceName}/tapConfigurations/{tapConfigurationName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("networkInterfaceName") String networkInterfaceName, @PathParam("tapConfigurationName") String tapConfigurationName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("networkInterfaceName") String networkInterfaceName,
+            @PathParam("tapConfigurationName") String tapConfigurationName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkInterfaces/{networkInterfaceName}/tapConfigurations/{tapConfigurationName}")
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
+                + "/networkInterfaces/{networkInterfaceName}/tapConfigurations/{tapConfigurationName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkInterfaceTapConfigurationInner>> get(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("networkInterfaceName") String networkInterfaceName, @PathParam("tapConfigurationName") String tapConfigurationName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<NetworkInterfaceTapConfigurationInner>> get(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("networkInterfaceName") String networkInterfaceName,
+            @PathParam("tapConfigurationName") String tapConfigurationName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkInterfaces/{networkInterfaceName}/tapConfigurations/{tapConfigurationName}")
+        @Headers({"Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
+                + "/networkInterfaces/{networkInterfaceName}/tapConfigurations/{tapConfigurationName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("networkInterfaceName") String networkInterfaceName, @PathParam("tapConfigurationName") String tapConfigurationName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") NetworkInterfaceTapConfigurationInner tapConfigurationParameters, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("networkInterfaceName") String networkInterfaceName,
+            @PathParam("tapConfigurationName") String tapConfigurationName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") NetworkInterfaceTapConfigurationInner tapConfigurationParameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/networkInterfaces/{networkInterfaceName}/tapConfigurations")
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network"
+                + "/networkInterfaces/{networkInterfaceName}/tapConfigurations")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkInterfaceTapConfigurationListResult>> list(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("networkInterfaceName") String networkInterfaceName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<NetworkInterfaceTapConfigurationListResult>> list(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("networkInterfaceName") String networkInterfaceName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NetworkInterfaceTapConfigurationListResult>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<NetworkInterfaceTapConfigurationListResult>> listNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
      * Deletes the specified tap configuration from the NetworkInterface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -118,30 +159,51 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String networkInterfaceName, String tapConfigurationName) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String networkInterfaceName, String tapConfigurationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (networkInterfaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
         }
         if (tapConfigurationName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter tapConfigurationName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter tapConfigurationName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-11-01";
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, networkInterfaceName, tapConfigurationName, apiVersion, this.client.getSubscriptionId(), context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .delete(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            networkInterfaceName,
+                            tapConfigurationName,
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the specified tap configuration from the NetworkInterface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -152,30 +214,48 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String networkInterfaceName, String tapConfigurationName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String networkInterfaceName, String tapConfigurationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (networkInterfaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
         }
         if (tapConfigurationName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter tapConfigurationName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter tapConfigurationName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-11-01";
         context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), resourceGroupName, networkInterfaceName, tapConfigurationName, apiVersion, this.client.getSubscriptionId(), context);
+        return service
+            .delete(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                networkInterfaceName,
+                tapConfigurationName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                context);
     }
 
     /**
      * Deletes the specified tap configuration from the NetworkInterface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -185,14 +265,18 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkInterfaceName, String tapConfigurationName) {
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, networkInterfaceName, tapConfigurationName);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String networkInterfaceName, String tapConfigurationName) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, networkInterfaceName, tapConfigurationName);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
      * Deletes the specified tap configuration from the NetworkInterface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -203,15 +287,19 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkInterfaceName, String tapConfigurationName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String networkInterfaceName, String tapConfigurationName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, networkInterfaceName, tapConfigurationName, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, networkInterfaceName, tapConfigurationName, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
      * Deletes the specified tap configuration from the NetworkInterface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -221,13 +309,14 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkInterfaceName, String tapConfigurationName) {
-        return beginDeleteAsync(resourceGroupName, networkInterfaceName, tapConfigurationName)
-            .getSyncPoller();}
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String networkInterfaceName, String tapConfigurationName) {
+        return beginDeleteAsync(resourceGroupName, networkInterfaceName, tapConfigurationName).getSyncPoller();
+    }
 
     /**
      * Deletes the specified tap configuration from the NetworkInterface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -238,13 +327,14 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkInterfaceName, String tapConfigurationName, Context context) {
-        return beginDeleteAsync(resourceGroupName, networkInterfaceName, tapConfigurationName, context)
-            .getSyncPoller();}
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String networkInterfaceName, String tapConfigurationName, Context context) {
+        return beginDeleteAsync(resourceGroupName, networkInterfaceName, tapConfigurationName, context).getSyncPoller();
+    }
 
     /**
      * Deletes the specified tap configuration from the NetworkInterface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -262,7 +352,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
 
     /**
      * Deletes the specified tap configuration from the NetworkInterface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -273,7 +363,8 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(String resourceGroupName, String networkInterfaceName, String tapConfigurationName, Context context) {
+    private Mono<Void> deleteAsync(
+        String resourceGroupName, String networkInterfaceName, String tapConfigurationName, Context context) {
         return beginDeleteAsync(resourceGroupName, networkInterfaceName, tapConfigurationName, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -281,7 +372,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
 
     /**
      * Deletes the specified tap configuration from the NetworkInterface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -296,7 +387,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
 
     /**
      * Deletes the specified tap configuration from the NetworkInterface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -306,13 +397,14 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String resourceGroupName, String networkInterfaceName, String tapConfigurationName, Context context) {
+    public void delete(
+        String resourceGroupName, String networkInterfaceName, String tapConfigurationName, Context context) {
         deleteAsync(resourceGroupName, networkInterfaceName, tapConfigurationName, context).block();
     }
 
     /**
      * Get the specified tap configuration on a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -322,31 +414,53 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
      * @return the specified tap configuration on a network interface.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<NetworkInterfaceTapConfigurationInner>> getWithResponseAsync(String resourceGroupName, String networkInterfaceName, String tapConfigurationName) {
+    public Mono<Response<NetworkInterfaceTapConfigurationInner>> getWithResponseAsync(
+        String resourceGroupName, String networkInterfaceName, String tapConfigurationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (networkInterfaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
         }
         if (tapConfigurationName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter tapConfigurationName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter tapConfigurationName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-11-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, networkInterfaceName, tapConfigurationName, apiVersion, this.client.getSubscriptionId(), accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .get(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            networkInterfaceName,
+                            tapConfigurationName,
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the specified tap configuration on a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -357,31 +471,50 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
      * @return the specified tap configuration on a network interface.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NetworkInterfaceTapConfigurationInner>> getWithResponseAsync(String resourceGroupName, String networkInterfaceName, String tapConfigurationName, Context context) {
+    private Mono<Response<NetworkInterfaceTapConfigurationInner>> getWithResponseAsync(
+        String resourceGroupName, String networkInterfaceName, String tapConfigurationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (networkInterfaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
         }
         if (tapConfigurationName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter tapConfigurationName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter tapConfigurationName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), resourceGroupName, networkInterfaceName, tapConfigurationName, apiVersion, this.client.getSubscriptionId(), accept, context);
+        return service
+            .get(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                networkInterfaceName,
+                tapConfigurationName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                accept,
+                context);
     }
 
     /**
      * Get the specified tap configuration on a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -391,20 +524,22 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
      * @return the specified tap configuration on a network interface.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NetworkInterfaceTapConfigurationInner> getAsync(String resourceGroupName, String networkInterfaceName, String tapConfigurationName) {
+    public Mono<NetworkInterfaceTapConfigurationInner> getAsync(
+        String resourceGroupName, String networkInterfaceName, String tapConfigurationName) {
         return getWithResponseAsync(resourceGroupName, networkInterfaceName, tapConfigurationName)
-            .flatMap((Response<NetworkInterfaceTapConfigurationInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (Response<NetworkInterfaceTapConfigurationInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Get the specified tap configuration on a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -414,13 +549,14 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
      * @return the specified tap configuration on a network interface.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkInterfaceTapConfigurationInner get(String resourceGroupName, String networkInterfaceName, String tapConfigurationName) {
+    public NetworkInterfaceTapConfigurationInner get(
+        String resourceGroupName, String networkInterfaceName, String tapConfigurationName) {
         return getAsync(resourceGroupName, networkInterfaceName, tapConfigurationName).block();
     }
 
     /**
      * Get the specified tap configuration on a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -431,13 +567,14 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
      * @return the specified tap configuration on a network interface.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NetworkInterfaceTapConfigurationInner> getWithResponse(String resourceGroupName, String networkInterfaceName, String tapConfigurationName, Context context) {
+    public Response<NetworkInterfaceTapConfigurationInner> getWithResponse(
+        String resourceGroupName, String networkInterfaceName, String tapConfigurationName, Context context) {
         return getWithResponseAsync(resourceGroupName, networkInterfaceName, tapConfigurationName, context).block();
     }
 
     /**
      * Creates or updates a Tap configuration in the specified NetworkInterface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -448,36 +585,65 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
      * @return tap configuration in a Network Interface.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String networkInterfaceName, String tapConfigurationName, NetworkInterfaceTapConfigurationInner tapConfigurationParameters) {
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName,
+        String networkInterfaceName,
+        String tapConfigurationName,
+        NetworkInterfaceTapConfigurationInner tapConfigurationParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (networkInterfaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
         }
         if (tapConfigurationName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter tapConfigurationName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter tapConfigurationName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (tapConfigurationParameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter tapConfigurationParameters is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter tapConfigurationParameters is required and cannot be null."));
         } else {
             tapConfigurationParameters.validate();
         }
         final String apiVersion = "2018-11-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, networkInterfaceName, tapConfigurationName, apiVersion, this.client.getSubscriptionId(), tapConfigurationParameters, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .createOrUpdate(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            networkInterfaceName,
+                            tapConfigurationName,
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            tapConfigurationParameters,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a Tap configuration in the specified NetworkInterface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -489,36 +655,63 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
      * @return tap configuration in a Network Interface.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String networkInterfaceName, String tapConfigurationName, NetworkInterfaceTapConfigurationInner tapConfigurationParameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName,
+        String networkInterfaceName,
+        String tapConfigurationName,
+        NetworkInterfaceTapConfigurationInner tapConfigurationParameters,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (networkInterfaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
         }
         if (tapConfigurationName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter tapConfigurationName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter tapConfigurationName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (tapConfigurationParameters == null) {
-            return Mono.error(new IllegalArgumentException("Parameter tapConfigurationParameters is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter tapConfigurationParameters is required and cannot be null."));
         } else {
             tapConfigurationParameters.validate();
         }
         final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, networkInterfaceName, tapConfigurationName, apiVersion, this.client.getSubscriptionId(), tapConfigurationParameters, accept, context);
+        return service
+            .createOrUpdate(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                networkInterfaceName,
+                tapConfigurationName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                tapConfigurationParameters,
+                accept,
+                context);
     }
 
     /**
      * Creates or updates a Tap configuration in the specified NetworkInterface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -529,14 +722,28 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
      * @return tap configuration in a Network Interface.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<NetworkInterfaceTapConfigurationInner>, NetworkInterfaceTapConfigurationInner> beginCreateOrUpdateAsync(String resourceGroupName, String networkInterfaceName, String tapConfigurationName, NetworkInterfaceTapConfigurationInner tapConfigurationParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, networkInterfaceName, tapConfigurationName, tapConfigurationParameters);
-        return this.client.<NetworkInterfaceTapConfigurationInner, NetworkInterfaceTapConfigurationInner>getLroResult(mono, this.client.getHttpPipeline(), NetworkInterfaceTapConfigurationInner.class, NetworkInterfaceTapConfigurationInner.class, Context.NONE);
+    public PollerFlux<PollResult<NetworkInterfaceTapConfigurationInner>, NetworkInterfaceTapConfigurationInner>
+        beginCreateOrUpdateAsync(
+            String resourceGroupName,
+            String networkInterfaceName,
+            String tapConfigurationName,
+            NetworkInterfaceTapConfigurationInner tapConfigurationParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(
+                resourceGroupName, networkInterfaceName, tapConfigurationName, tapConfigurationParameters);
+        return this
+            .client
+            .<NetworkInterfaceTapConfigurationInner, NetworkInterfaceTapConfigurationInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                NetworkInterfaceTapConfigurationInner.class,
+                NetworkInterfaceTapConfigurationInner.class,
+                Context.NONE);
     }
 
     /**
      * Creates or updates a Tap configuration in the specified NetworkInterface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -548,15 +755,30 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
      * @return tap configuration in a Network Interface.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<NetworkInterfaceTapConfigurationInner>, NetworkInterfaceTapConfigurationInner> beginCreateOrUpdateAsync(String resourceGroupName, String networkInterfaceName, String tapConfigurationName, NetworkInterfaceTapConfigurationInner tapConfigurationParameters, Context context) {
+    private PollerFlux<PollResult<NetworkInterfaceTapConfigurationInner>, NetworkInterfaceTapConfigurationInner>
+        beginCreateOrUpdateAsync(
+            String resourceGroupName,
+            String networkInterfaceName,
+            String tapConfigurationName,
+            NetworkInterfaceTapConfigurationInner tapConfigurationParameters,
+            Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, networkInterfaceName, tapConfigurationName, tapConfigurationParameters, context);
-        return this.client.<NetworkInterfaceTapConfigurationInner, NetworkInterfaceTapConfigurationInner>getLroResult(mono, this.client.getHttpPipeline(), NetworkInterfaceTapConfigurationInner.class, NetworkInterfaceTapConfigurationInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(
+                resourceGroupName, networkInterfaceName, tapConfigurationName, tapConfigurationParameters, context);
+        return this
+            .client
+            .<NetworkInterfaceTapConfigurationInner, NetworkInterfaceTapConfigurationInner>getLroResult(
+                mono,
+                this.client.getHttpPipeline(),
+                NetworkInterfaceTapConfigurationInner.class,
+                NetworkInterfaceTapConfigurationInner.class,
+                context);
     }
 
     /**
      * Creates or updates a Tap configuration in the specified NetworkInterface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -567,13 +789,20 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
      * @return tap configuration in a Network Interface.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<NetworkInterfaceTapConfigurationInner>, NetworkInterfaceTapConfigurationInner> beginCreateOrUpdate(String resourceGroupName, String networkInterfaceName, String tapConfigurationName, NetworkInterfaceTapConfigurationInner tapConfigurationParameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, networkInterfaceName, tapConfigurationName, tapConfigurationParameters)
-            .getSyncPoller();}
+    public SyncPoller<PollResult<NetworkInterfaceTapConfigurationInner>, NetworkInterfaceTapConfigurationInner>
+        beginCreateOrUpdate(
+            String resourceGroupName,
+            String networkInterfaceName,
+            String tapConfigurationName,
+            NetworkInterfaceTapConfigurationInner tapConfigurationParameters) {
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, networkInterfaceName, tapConfigurationName, tapConfigurationParameters)
+            .getSyncPoller();
+    }
 
     /**
      * Creates or updates a Tap configuration in the specified NetworkInterface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -585,13 +814,21 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
      * @return tap configuration in a Network Interface.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<NetworkInterfaceTapConfigurationInner>, NetworkInterfaceTapConfigurationInner> beginCreateOrUpdate(String resourceGroupName, String networkInterfaceName, String tapConfigurationName, NetworkInterfaceTapConfigurationInner tapConfigurationParameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, networkInterfaceName, tapConfigurationName, tapConfigurationParameters, context)
-            .getSyncPoller();}
+    public SyncPoller<PollResult<NetworkInterfaceTapConfigurationInner>, NetworkInterfaceTapConfigurationInner>
+        beginCreateOrUpdate(
+            String resourceGroupName,
+            String networkInterfaceName,
+            String tapConfigurationName,
+            NetworkInterfaceTapConfigurationInner tapConfigurationParameters,
+            Context context) {
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, networkInterfaceName, tapConfigurationName, tapConfigurationParameters, context)
+            .getSyncPoller();
+    }
 
     /**
      * Creates or updates a Tap configuration in the specified NetworkInterface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -602,15 +839,20 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
      * @return tap configuration in a Network Interface.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<NetworkInterfaceTapConfigurationInner> createOrUpdateAsync(String resourceGroupName, String networkInterfaceName, String tapConfigurationName, NetworkInterfaceTapConfigurationInner tapConfigurationParameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, networkInterfaceName, tapConfigurationName, tapConfigurationParameters)
+    public Mono<NetworkInterfaceTapConfigurationInner> createOrUpdateAsync(
+        String resourceGroupName,
+        String networkInterfaceName,
+        String tapConfigurationName,
+        NetworkInterfaceTapConfigurationInner tapConfigurationParameters) {
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, networkInterfaceName, tapConfigurationName, tapConfigurationParameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a Tap configuration in the specified NetworkInterface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -622,15 +864,21 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
      * @return tap configuration in a Network Interface.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NetworkInterfaceTapConfigurationInner> createOrUpdateAsync(String resourceGroupName, String networkInterfaceName, String tapConfigurationName, NetworkInterfaceTapConfigurationInner tapConfigurationParameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, networkInterfaceName, tapConfigurationName, tapConfigurationParameters, context)
+    private Mono<NetworkInterfaceTapConfigurationInner> createOrUpdateAsync(
+        String resourceGroupName,
+        String networkInterfaceName,
+        String tapConfigurationName,
+        NetworkInterfaceTapConfigurationInner tapConfigurationParameters,
+        Context context) {
+        return beginCreateOrUpdateAsync(
+                resourceGroupName, networkInterfaceName, tapConfigurationName, tapConfigurationParameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates a Tap configuration in the specified NetworkInterface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -641,13 +889,19 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
      * @return tap configuration in a Network Interface.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkInterfaceTapConfigurationInner createOrUpdate(String resourceGroupName, String networkInterfaceName, String tapConfigurationName, NetworkInterfaceTapConfigurationInner tapConfigurationParameters) {
-        return createOrUpdateAsync(resourceGroupName, networkInterfaceName, tapConfigurationName, tapConfigurationParameters).block();
+    public NetworkInterfaceTapConfigurationInner createOrUpdate(
+        String resourceGroupName,
+        String networkInterfaceName,
+        String tapConfigurationName,
+        NetworkInterfaceTapConfigurationInner tapConfigurationParameters) {
+        return createOrUpdateAsync(
+                resourceGroupName, networkInterfaceName, tapConfigurationName, tapConfigurationParameters)
+            .block();
     }
 
     /**
      * Creates or updates a Tap configuration in the specified NetworkInterface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param tapConfigurationName The name of the tap configuration.
@@ -659,13 +913,20 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
      * @return tap configuration in a Network Interface.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NetworkInterfaceTapConfigurationInner createOrUpdate(String resourceGroupName, String networkInterfaceName, String tapConfigurationName, NetworkInterfaceTapConfigurationInner tapConfigurationParameters, Context context) {
-        return createOrUpdateAsync(resourceGroupName, networkInterfaceName, tapConfigurationName, tapConfigurationParameters, context).block();
+    public NetworkInterfaceTapConfigurationInner createOrUpdate(
+        String resourceGroupName,
+        String networkInterfaceName,
+        String tapConfigurationName,
+        NetworkInterfaceTapConfigurationInner tapConfigurationParameters,
+        Context context) {
+        return createOrUpdateAsync(
+                resourceGroupName, networkInterfaceName, tapConfigurationName, tapConfigurationParameters, context)
+            .block();
     }
 
     /**
      * Get all Tap configurations in a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -674,35 +935,57 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
      * @return all Tap configurations in a network interface.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkInterfaceTapConfigurationInner>> listSinglePageAsync(String resourceGroupName, String networkInterfaceName) {
+    private Mono<PagedResponse<NetworkInterfaceTapConfigurationInner>> listSinglePageAsync(
+        String resourceGroupName, String networkInterfaceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (networkInterfaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-11-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), resourceGroupName, networkInterfaceName, apiVersion, this.client.getSubscriptionId(), accept, context))
-            .<PagedResponse<NetworkInterfaceTapConfigurationInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .list(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            networkInterfaceName,
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            accept,
+                            context))
+            .<PagedResponse<NetworkInterfaceTapConfigurationInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get all Tap configurations in a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param context The context to associate with this operation.
@@ -712,35 +995,54 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
      * @return all Tap configurations in a network interface.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkInterfaceTapConfigurationInner>> listSinglePageAsync(String resourceGroupName, String networkInterfaceName, Context context) {
+    private Mono<PagedResponse<NetworkInterfaceTapConfigurationInner>> listSinglePageAsync(
+        String resourceGroupName, String networkInterfaceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (networkInterfaceName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2018-11-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.list(this.client.getEndpoint(), resourceGroupName, networkInterfaceName, apiVersion, this.client.getSubscriptionId(), accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return service
+            .list(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                networkInterfaceName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 
     /**
      * Get all Tap configurations in a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -749,7 +1051,8 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
      * @return all Tap configurations in a network interface.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<NetworkInterfaceTapConfigurationInner> listAsync(String resourceGroupName, String networkInterfaceName) {
+    public PagedFlux<NetworkInterfaceTapConfigurationInner> listAsync(
+        String resourceGroupName, String networkInterfaceName) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, networkInterfaceName),
             nextLink -> listNextSinglePageAsync(nextLink));
@@ -757,7 +1060,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
 
     /**
      * Get all Tap configurations in a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param context The context to associate with this operation.
@@ -767,7 +1070,8 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
      * @return all Tap configurations in a network interface.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<NetworkInterfaceTapConfigurationInner> listAsync(String resourceGroupName, String networkInterfaceName, Context context) {
+    private PagedFlux<NetworkInterfaceTapConfigurationInner> listAsync(
+        String resourceGroupName, String networkInterfaceName, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(resourceGroupName, networkInterfaceName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
@@ -775,7 +1079,7 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
 
     /**
      * Get all Tap configurations in a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -784,13 +1088,14 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
      * @return all Tap configurations in a network interface.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<NetworkInterfaceTapConfigurationInner> list(String resourceGroupName, String networkInterfaceName) {
+    public PagedIterable<NetworkInterfaceTapConfigurationInner> list(
+        String resourceGroupName, String networkInterfaceName) {
         return new PagedIterable<>(listAsync(resourceGroupName, networkInterfaceName));
     }
 
     /**
      * Get all Tap configurations in a network interface.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkInterfaceName The name of the network interface.
      * @param context The context to associate with this operation.
@@ -800,13 +1105,14 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
      * @return all Tap configurations in a network interface.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<NetworkInterfaceTapConfigurationInner> list(String resourceGroupName, String networkInterfaceName, Context context) {
+    public PagedIterable<NetworkInterfaceTapConfigurationInner> list(
+        String resourceGroupName, String networkInterfaceName, Context context) {
         return new PagedIterable<>(listAsync(resourceGroupName, networkInterfaceName, context));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -819,23 +1125,29 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<NetworkInterfaceTapConfigurationInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<NetworkInterfaceTapConfigurationInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -844,22 +1156,29 @@ public final class NetworkInterfaceTapConfigurationsClientImpl implements Networ
      * @return response for list tap configurations API service call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NetworkInterfaceTapConfigurationInner>> listNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<NetworkInterfaceTapConfigurationInner>> listNextSinglePageAsync(
+        String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return service
+            .listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 }

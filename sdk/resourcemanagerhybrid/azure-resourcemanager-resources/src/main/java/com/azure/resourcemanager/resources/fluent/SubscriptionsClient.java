@@ -8,22 +8,18 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.resources.fluent.models.LocationInner;
 import com.azure.resourcemanager.resources.fluent.models.SubscriptionInner;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * SubscriptionsClient.
- */
+/** An instance of this class provides access to all the operations defined in SubscriptionsClient. */
 public interface SubscriptionsClient {
     /**
-     * This operation provides all the locations that are available for resource providers; however, each resource provider may support a subset of this list.
-     * 
+     * This operation provides all the locations that are available for resource providers; however, each resource
+     * provider may support a subset of this list.
+     *
      * @param subscriptionId The ID of the target subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -34,8 +30,9 @@ public interface SubscriptionsClient {
     PagedFlux<LocationInner> listLocationsAsync(String subscriptionId);
 
     /**
-     * This operation provides all the locations that are available for resource providers; however, each resource provider may support a subset of this list.
-     * 
+     * This operation provides all the locations that are available for resource providers; however, each resource
+     * provider may support a subset of this list.
+     *
      * @param subscriptionId The ID of the target subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -46,8 +43,9 @@ public interface SubscriptionsClient {
     PagedIterable<LocationInner> listLocations(String subscriptionId);
 
     /**
-     * This operation provides all the locations that are available for resource providers; however, each resource provider may support a subset of this list.
-     * 
+     * This operation provides all the locations that are available for resource providers; however, each resource
+     * provider may support a subset of this list.
+     *
      * @param subscriptionId The ID of the target subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -60,7 +58,7 @@ public interface SubscriptionsClient {
 
     /**
      * Gets details about a specified subscription.
-     * 
+     *
      * @param subscriptionId The ID of the target subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -72,7 +70,7 @@ public interface SubscriptionsClient {
 
     /**
      * Gets details about a specified subscription.
-     * 
+     *
      * @param subscriptionId The ID of the target subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -84,7 +82,7 @@ public interface SubscriptionsClient {
 
     /**
      * Gets details about a specified subscription.
-     * 
+     *
      * @param subscriptionId The ID of the target subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -96,7 +94,7 @@ public interface SubscriptionsClient {
 
     /**
      * Gets details about a specified subscription.
-     * 
+     *
      * @param subscriptionId The ID of the target subscription.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -109,7 +107,7 @@ public interface SubscriptionsClient {
 
     /**
      * Gets all subscriptions for a tenant.
-     * 
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all subscriptions for a tenant.
@@ -119,7 +117,7 @@ public interface SubscriptionsClient {
 
     /**
      * Gets all subscriptions for a tenant.
-     * 
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all subscriptions for a tenant.
@@ -129,7 +127,7 @@ public interface SubscriptionsClient {
 
     /**
      * Gets all subscriptions for a tenant.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

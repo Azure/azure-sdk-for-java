@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ApplicationGatewayAutoscaleConfiguration;
@@ -22,20 +21,15 @@ import com.azure.resourcemanager.network.models.ApplicationGatewaySslPolicy;
 import com.azure.resourcemanager.network.models.ApplicationGatewayTrustedRootCertificate;
 import com.azure.resourcemanager.network.models.ApplicationGatewayWebApplicationFirewallConfiguration;
 import com.azure.resourcemanager.network.models.ManagedServiceIdentity;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Application gateway resource.
- */
+/** Application gateway resource. */
 @Fluent
 public final class ApplicationGatewayInner extends Resource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ApplicationGatewayInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayInner.class);
 
     /*
      * Properties of the application gateway.
@@ -70,7 +64,7 @@ public final class ApplicationGatewayInner extends Resource {
 
     /**
      * Get the innerProperties property: Properties of the application gateway.
-     * 
+     *
      * @return the innerProperties value.
      */
     private ApplicationGatewayPropertiesFormat innerProperties() {
@@ -78,9 +72,8 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Get the etag property: A unique read-only string that changes whenever
-     * the resource is updated.
-     * 
+     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -88,9 +81,8 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Set the etag property: A unique read-only string that changes whenever
-     * the resource is updated.
-     * 
+     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
      * @param etag the etag value to set.
      * @return the ApplicationGatewayInner object itself.
      */
@@ -100,9 +92,8 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Get the zones property: A list of availability zones denoting where the
-     * resource needs to come from.
-     * 
+     * Get the zones property: A list of availability zones denoting where the resource needs to come from.
+     *
      * @return the zones value.
      */
     public List<String> zones() {
@@ -110,9 +101,8 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Set the zones property: A list of availability zones denoting where the
-     * resource needs to come from.
-     * 
+     * Set the zones property: A list of availability zones denoting where the resource needs to come from.
+     *
      * @param zones the zones value to set.
      * @return the ApplicationGatewayInner object itself.
      */
@@ -122,9 +112,8 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Get the identity property: The identity of the application gateway, if
-     * configured.
-     * 
+     * Get the identity property: The identity of the application gateway, if configured.
+     *
      * @return the identity value.
      */
     public ManagedServiceIdentity identity() {
@@ -132,9 +121,8 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Set the identity property: The identity of the application gateway, if
-     * configured.
-     * 
+     * Set the identity property: The identity of the application gateway, if configured.
+     *
      * @param identity the identity value to set.
      * @return the ApplicationGatewayInner object itself.
      */
@@ -145,7 +133,7 @@ public final class ApplicationGatewayInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -154,7 +142,7 @@ public final class ApplicationGatewayInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     * 
+     *
      * @param id the id value to set.
      * @return the ApplicationGatewayInner object itself.
      */
@@ -163,18 +151,14 @@ public final class ApplicationGatewayInner extends Resource {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ApplicationGatewayInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ApplicationGatewayInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -183,7 +167,7 @@ public final class ApplicationGatewayInner extends Resource {
 
     /**
      * Get the sku property: SKU of the application gateway resource.
-     * 
+     *
      * @return the sku value.
      */
     public ApplicationGatewaySku sku() {
@@ -192,7 +176,7 @@ public final class ApplicationGatewayInner extends Resource {
 
     /**
      * Set the sku property: SKU of the application gateway resource.
-     * 
+     *
      * @param sku the sku value to set.
      * @return the ApplicationGatewayInner object itself.
      */
@@ -205,9 +189,8 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Get the sslPolicy property: SSL policy of the application gateway
-     * resource.
-     * 
+     * Get the sslPolicy property: SSL policy of the application gateway resource.
+     *
      * @return the sslPolicy value.
      */
     public ApplicationGatewaySslPolicy sslPolicy() {
@@ -215,9 +198,8 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Set the sslPolicy property: SSL policy of the application gateway
-     * resource.
-     * 
+     * Set the sslPolicy property: SSL policy of the application gateway resource.
+     *
      * @param sslPolicy the sslPolicy value to set.
      * @return the ApplicationGatewayInner object itself.
      */
@@ -230,9 +212,8 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Get the operationalState property: Operational state of the application
-     * gateway resource.
-     * 
+     * Get the operationalState property: Operational state of the application gateway resource.
+     *
      * @return the operationalState value.
      */
     public ApplicationGatewayOperationalState operationalState() {
@@ -240,9 +221,8 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Get the gatewayIpConfigurations property: Subnets of application the
-     * gateway resource.
-     * 
+     * Get the gatewayIpConfigurations property: Subnets of application the gateway resource.
+     *
      * @return the gatewayIpConfigurations value.
      */
     public List<ApplicationGatewayIpConfigurationInner> gatewayIpConfigurations() {
@@ -250,13 +230,13 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Set the gatewayIpConfigurations property: Subnets of application the
-     * gateway resource.
-     * 
+     * Set the gatewayIpConfigurations property: Subnets of application the gateway resource.
+     *
      * @param gatewayIpConfigurations the gatewayIpConfigurations value to set.
      * @return the ApplicationGatewayInner object itself.
      */
-    public ApplicationGatewayInner withGatewayIpConfigurations(List<ApplicationGatewayIpConfigurationInner> gatewayIpConfigurations) {
+    public ApplicationGatewayInner withGatewayIpConfigurations(
+        List<ApplicationGatewayIpConfigurationInner> gatewayIpConfigurations) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApplicationGatewayPropertiesFormat();
         }
@@ -265,9 +245,8 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Get the authenticationCertificates property: Authentication certificates
-     * of the application gateway resource.
-     * 
+     * Get the authenticationCertificates property: Authentication certificates of the application gateway resource.
+     *
      * @return the authenticationCertificates value.
      */
     public List<ApplicationGatewayAuthenticationCertificateInner> authenticationCertificates() {
@@ -275,14 +254,13 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Set the authenticationCertificates property: Authentication certificates
-     * of the application gateway resource.
-     * 
-     * @param authenticationCertificates the authenticationCertificates value
-     * to set.
+     * Set the authenticationCertificates property: Authentication certificates of the application gateway resource.
+     *
+     * @param authenticationCertificates the authenticationCertificates value to set.
      * @return the ApplicationGatewayInner object itself.
      */
-    public ApplicationGatewayInner withAuthenticationCertificates(List<ApplicationGatewayAuthenticationCertificateInner> authenticationCertificates) {
+    public ApplicationGatewayInner withAuthenticationCertificates(
+        List<ApplicationGatewayAuthenticationCertificateInner> authenticationCertificates) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApplicationGatewayPropertiesFormat();
         }
@@ -291,9 +269,8 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Get the trustedRootCertificates property: Trusted Root certificates of
-     * the application gateway resource.
-     * 
+     * Get the trustedRootCertificates property: Trusted Root certificates of the application gateway resource.
+     *
      * @return the trustedRootCertificates value.
      */
     public List<ApplicationGatewayTrustedRootCertificate> trustedRootCertificates() {
@@ -301,13 +278,13 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Set the trustedRootCertificates property: Trusted Root certificates of
-     * the application gateway resource.
-     * 
+     * Set the trustedRootCertificates property: Trusted Root certificates of the application gateway resource.
+     *
      * @param trustedRootCertificates the trustedRootCertificates value to set.
      * @return the ApplicationGatewayInner object itself.
      */
-    public ApplicationGatewayInner withTrustedRootCertificates(List<ApplicationGatewayTrustedRootCertificate> trustedRootCertificates) {
+    public ApplicationGatewayInner withTrustedRootCertificates(
+        List<ApplicationGatewayTrustedRootCertificate> trustedRootCertificates) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApplicationGatewayPropertiesFormat();
         }
@@ -316,9 +293,8 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Get the sslCertificates property: SSL certificates of the application
-     * gateway resource.
-     * 
+     * Get the sslCertificates property: SSL certificates of the application gateway resource.
+     *
      * @return the sslCertificates value.
      */
     public List<ApplicationGatewaySslCertificateInner> sslCertificates() {
@@ -326,9 +302,8 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Set the sslCertificates property: SSL certificates of the application
-     * gateway resource.
-     * 
+     * Set the sslCertificates property: SSL certificates of the application gateway resource.
+     *
      * @param sslCertificates the sslCertificates value to set.
      * @return the ApplicationGatewayInner object itself.
      */
@@ -341,9 +316,8 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Get the frontendIpConfigurations property: Frontend IP addresses of the
-     * application gateway resource.
-     * 
+     * Get the frontendIpConfigurations property: Frontend IP addresses of the application gateway resource.
+     *
      * @return the frontendIpConfigurations value.
      */
     public List<ApplicationGatewayFrontendIpConfiguration> frontendIpConfigurations() {
@@ -351,14 +325,13 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Set the frontendIpConfigurations property: Frontend IP addresses of the
-     * application gateway resource.
-     * 
-     * @param frontendIpConfigurations the frontendIpConfigurations value to
-     * set.
+     * Set the frontendIpConfigurations property: Frontend IP addresses of the application gateway resource.
+     *
+     * @param frontendIpConfigurations the frontendIpConfigurations value to set.
      * @return the ApplicationGatewayInner object itself.
      */
-    public ApplicationGatewayInner withFrontendIpConfigurations(List<ApplicationGatewayFrontendIpConfiguration> frontendIpConfigurations) {
+    public ApplicationGatewayInner withFrontendIpConfigurations(
+        List<ApplicationGatewayFrontendIpConfiguration> frontendIpConfigurations) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApplicationGatewayPropertiesFormat();
         }
@@ -367,9 +340,8 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Get the frontendPorts property: Frontend ports of the application
-     * gateway resource.
-     * 
+     * Get the frontendPorts property: Frontend ports of the application gateway resource.
+     *
      * @return the frontendPorts value.
      */
     public List<ApplicationGatewayFrontendPort> frontendPorts() {
@@ -377,9 +349,8 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Set the frontendPorts property: Frontend ports of the application
-     * gateway resource.
-     * 
+     * Set the frontendPorts property: Frontend ports of the application gateway resource.
+     *
      * @param frontendPorts the frontendPorts value to set.
      * @return the ApplicationGatewayInner object itself.
      */
@@ -393,7 +364,7 @@ public final class ApplicationGatewayInner extends Resource {
 
     /**
      * Get the probes property: Probes of the application gateway resource.
-     * 
+     *
      * @return the probes value.
      */
     public List<ApplicationGatewayProbeInner> probes() {
@@ -402,7 +373,7 @@ public final class ApplicationGatewayInner extends Resource {
 
     /**
      * Set the probes property: Probes of the application gateway resource.
-     * 
+     *
      * @param probes the probes value to set.
      * @return the ApplicationGatewayInner object itself.
      */
@@ -415,9 +386,8 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Get the backendAddressPools property: Backend address pool of the
-     * application gateway resource.
-     * 
+     * Get the backendAddressPools property: Backend address pool of the application gateway resource.
+     *
      * @return the backendAddressPools value.
      */
     public List<ApplicationGatewayBackendAddressPool> backendAddressPools() {
@@ -425,13 +395,13 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Set the backendAddressPools property: Backend address pool of the
-     * application gateway resource.
-     * 
+     * Set the backendAddressPools property: Backend address pool of the application gateway resource.
+     *
      * @param backendAddressPools the backendAddressPools value to set.
      * @return the ApplicationGatewayInner object itself.
      */
-    public ApplicationGatewayInner withBackendAddressPools(List<ApplicationGatewayBackendAddressPool> backendAddressPools) {
+    public ApplicationGatewayInner withBackendAddressPools(
+        List<ApplicationGatewayBackendAddressPool> backendAddressPools) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApplicationGatewayPropertiesFormat();
         }
@@ -440,9 +410,8 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Get the backendHttpSettingsCollection property: Backend http settings of
-     * the application gateway resource.
-     * 
+     * Get the backendHttpSettingsCollection property: Backend http settings of the application gateway resource.
+     *
      * @return the backendHttpSettingsCollection value.
      */
     public List<ApplicationGatewayBackendHttpSettings> backendHttpSettingsCollection() {
@@ -450,14 +419,13 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Set the backendHttpSettingsCollection property: Backend http settings of
-     * the application gateway resource.
-     * 
-     * @param backendHttpSettingsCollection the backendHttpSettingsCollection
-     * value to set.
+     * Set the backendHttpSettingsCollection property: Backend http settings of the application gateway resource.
+     *
+     * @param backendHttpSettingsCollection the backendHttpSettingsCollection value to set.
      * @return the ApplicationGatewayInner object itself.
      */
-    public ApplicationGatewayInner withBackendHttpSettingsCollection(List<ApplicationGatewayBackendHttpSettings> backendHttpSettingsCollection) {
+    public ApplicationGatewayInner withBackendHttpSettingsCollection(
+        List<ApplicationGatewayBackendHttpSettings> backendHttpSettingsCollection) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApplicationGatewayPropertiesFormat();
         }
@@ -466,9 +434,8 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Get the httpListeners property: Http listeners of the application
-     * gateway resource.
-     * 
+     * Get the httpListeners property: Http listeners of the application gateway resource.
+     *
      * @return the httpListeners value.
      */
     public List<ApplicationGatewayHttpListener> httpListeners() {
@@ -476,9 +443,8 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Set the httpListeners property: Http listeners of the application
-     * gateway resource.
-     * 
+     * Set the httpListeners property: Http listeners of the application gateway resource.
+     *
      * @param httpListeners the httpListeners value to set.
      * @return the ApplicationGatewayInner object itself.
      */
@@ -491,9 +457,8 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Get the urlPathMaps property: URL path map of the application gateway
-     * resource.
-     * 
+     * Get the urlPathMaps property: URL path map of the application gateway resource.
+     *
      * @return the urlPathMaps value.
      */
     public List<ApplicationGatewayUrlPathMapInner> urlPathMaps() {
@@ -501,9 +466,8 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Set the urlPathMaps property: URL path map of the application gateway
-     * resource.
-     * 
+     * Set the urlPathMaps property: URL path map of the application gateway resource.
+     *
      * @param urlPathMaps the urlPathMaps value to set.
      * @return the ApplicationGatewayInner object itself.
      */
@@ -516,9 +480,8 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Get the requestRoutingRules property: Request routing rules of the
-     * application gateway resource.
-     * 
+     * Get the requestRoutingRules property: Request routing rules of the application gateway resource.
+     *
      * @return the requestRoutingRules value.
      */
     public List<ApplicationGatewayRequestRoutingRuleInner> requestRoutingRules() {
@@ -526,13 +489,13 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Set the requestRoutingRules property: Request routing rules of the
-     * application gateway resource.
-     * 
+     * Set the requestRoutingRules property: Request routing rules of the application gateway resource.
+     *
      * @param requestRoutingRules the requestRoutingRules value to set.
      * @return the ApplicationGatewayInner object itself.
      */
-    public ApplicationGatewayInner withRequestRoutingRules(List<ApplicationGatewayRequestRoutingRuleInner> requestRoutingRules) {
+    public ApplicationGatewayInner withRequestRoutingRules(
+        List<ApplicationGatewayRequestRoutingRuleInner> requestRoutingRules) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApplicationGatewayPropertiesFormat();
         }
@@ -541,9 +504,8 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Get the rewriteRuleSets property: Rewrite rules for the application
-     * gateway resource.
-     * 
+     * Get the rewriteRuleSets property: Rewrite rules for the application gateway resource.
+     *
      * @return the rewriteRuleSets value.
      */
     public List<ApplicationGatewayRewriteRuleSet> rewriteRuleSets() {
@@ -551,9 +513,8 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Set the rewriteRuleSets property: Rewrite rules for the application
-     * gateway resource.
-     * 
+     * Set the rewriteRuleSets property: Rewrite rules for the application gateway resource.
+     *
      * @param rewriteRuleSets the rewriteRuleSets value to set.
      * @return the ApplicationGatewayInner object itself.
      */
@@ -566,9 +527,8 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Get the redirectConfigurations property: Redirect configurations of the
-     * application gateway resource.
-     * 
+     * Get the redirectConfigurations property: Redirect configurations of the application gateway resource.
+     *
      * @return the redirectConfigurations value.
      */
     public List<ApplicationGatewayRedirectConfigurationInner> redirectConfigurations() {
@@ -576,13 +536,13 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Set the redirectConfigurations property: Redirect configurations of the
-     * application gateway resource.
-     * 
+     * Set the redirectConfigurations property: Redirect configurations of the application gateway resource.
+     *
      * @param redirectConfigurations the redirectConfigurations value to set.
      * @return the ApplicationGatewayInner object itself.
      */
-    public ApplicationGatewayInner withRedirectConfigurations(List<ApplicationGatewayRedirectConfigurationInner> redirectConfigurations) {
+    public ApplicationGatewayInner withRedirectConfigurations(
+        List<ApplicationGatewayRedirectConfigurationInner> redirectConfigurations) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApplicationGatewayPropertiesFormat();
         }
@@ -591,9 +551,8 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Get the webApplicationFirewallConfiguration property: Web application
-     * firewall configuration.
-     * 
+     * Get the webApplicationFirewallConfiguration property: Web application firewall configuration.
+     *
      * @return the webApplicationFirewallConfiguration value.
      */
     public ApplicationGatewayWebApplicationFirewallConfiguration webApplicationFirewallConfiguration() {
@@ -601,14 +560,13 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Set the webApplicationFirewallConfiguration property: Web application
-     * firewall configuration.
-     * 
-     * @param webApplicationFirewallConfiguration the
-     * webApplicationFirewallConfiguration value to set.
+     * Set the webApplicationFirewallConfiguration property: Web application firewall configuration.
+     *
+     * @param webApplicationFirewallConfiguration the webApplicationFirewallConfiguration value to set.
      * @return the ApplicationGatewayInner object itself.
      */
-    public ApplicationGatewayInner withWebApplicationFirewallConfiguration(ApplicationGatewayWebApplicationFirewallConfiguration webApplicationFirewallConfiguration) {
+    public ApplicationGatewayInner withWebApplicationFirewallConfiguration(
+        ApplicationGatewayWebApplicationFirewallConfiguration webApplicationFirewallConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApplicationGatewayPropertiesFormat();
         }
@@ -617,9 +575,8 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Get the enableHttp2 property: Whether HTTP2 is enabled on the
-     * application gateway resource.
-     * 
+     * Get the enableHttp2 property: Whether HTTP2 is enabled on the application gateway resource.
+     *
      * @return the enableHttp2 value.
      */
     public Boolean enableHttp2() {
@@ -627,9 +584,8 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Set the enableHttp2 property: Whether HTTP2 is enabled on the
-     * application gateway resource.
-     * 
+     * Set the enableHttp2 property: Whether HTTP2 is enabled on the application gateway resource.
+     *
      * @param enableHttp2 the enableHttp2 value to set.
      * @return the ApplicationGatewayInner object itself.
      */
@@ -642,9 +598,8 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Get the enableFips property: Whether FIPS is enabled on the application
-     * gateway resource.
-     * 
+     * Get the enableFips property: Whether FIPS is enabled on the application gateway resource.
+     *
      * @return the enableFips value.
      */
     public Boolean enableFips() {
@@ -652,9 +607,8 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Set the enableFips property: Whether FIPS is enabled on the application
-     * gateway resource.
-     * 
+     * Set the enableFips property: Whether FIPS is enabled on the application gateway resource.
+     *
      * @param enableFips the enableFips value to set.
      * @return the ApplicationGatewayInner object itself.
      */
@@ -668,7 +622,7 @@ public final class ApplicationGatewayInner extends Resource {
 
     /**
      * Get the autoscaleConfiguration property: Autoscale Configuration.
-     * 
+     *
      * @return the autoscaleConfiguration value.
      */
     public ApplicationGatewayAutoscaleConfiguration autoscaleConfiguration() {
@@ -677,11 +631,12 @@ public final class ApplicationGatewayInner extends Resource {
 
     /**
      * Set the autoscaleConfiguration property: Autoscale Configuration.
-     * 
+     *
      * @param autoscaleConfiguration the autoscaleConfiguration value to set.
      * @return the ApplicationGatewayInner object itself.
      */
-    public ApplicationGatewayInner withAutoscaleConfiguration(ApplicationGatewayAutoscaleConfiguration autoscaleConfiguration) {
+    public ApplicationGatewayInner withAutoscaleConfiguration(
+        ApplicationGatewayAutoscaleConfiguration autoscaleConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApplicationGatewayPropertiesFormat();
         }
@@ -690,9 +645,8 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Get the resourceGuid property: Resource GUID property of the application
-     * gateway resource.
-     * 
+     * Get the resourceGuid property: Resource GUID property of the application gateway resource.
+     *
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -700,9 +654,8 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Set the resourceGuid property: Resource GUID property of the application
-     * gateway resource.
-     * 
+     * Set the resourceGuid property: Resource GUID property of the application gateway resource.
+     *
      * @param resourceGuid the resourceGuid value to set.
      * @return the ApplicationGatewayInner object itself.
      */
@@ -715,10 +668,9 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: Provisioning state of the
-     * application gateway resource. Possible values are: 'Updating',
-     * 'Deleting', and 'Failed'.
-     * 
+     * Get the provisioningState property: Provisioning state of the application gateway resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -726,10 +678,9 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Set the provisioningState property: Provisioning state of the
-     * application gateway resource. Possible values are: 'Updating',
-     * 'Deleting', and 'Failed'.
-     * 
+     * Set the provisioningState property: Provisioning state of the application gateway resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
      * @param provisioningState the provisioningState value to set.
      * @return the ApplicationGatewayInner object itself.
      */
@@ -742,9 +693,8 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Get the customErrorConfigurations property: Custom error configurations
-     * of the application gateway resource.
-     * 
+     * Get the customErrorConfigurations property: Custom error configurations of the application gateway resource.
+     *
      * @return the customErrorConfigurations value.
      */
     public List<ApplicationGatewayCustomError> customErrorConfigurations() {
@@ -752,14 +702,13 @@ public final class ApplicationGatewayInner extends Resource {
     }
 
     /**
-     * Set the customErrorConfigurations property: Custom error configurations
-     * of the application gateway resource.
-     * 
-     * @param customErrorConfigurations the customErrorConfigurations value to
-     * set.
+     * Set the customErrorConfigurations property: Custom error configurations of the application gateway resource.
+     *
+     * @param customErrorConfigurations the customErrorConfigurations value to set.
      * @return the ApplicationGatewayInner object itself.
      */
-    public ApplicationGatewayInner withCustomErrorConfigurations(List<ApplicationGatewayCustomError> customErrorConfigurations) {
+    public ApplicationGatewayInner withCustomErrorConfigurations(
+        List<ApplicationGatewayCustomError> customErrorConfigurations) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ApplicationGatewayPropertiesFormat();
         }
@@ -769,7 +718,7 @@ public final class ApplicationGatewayInner extends Resource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

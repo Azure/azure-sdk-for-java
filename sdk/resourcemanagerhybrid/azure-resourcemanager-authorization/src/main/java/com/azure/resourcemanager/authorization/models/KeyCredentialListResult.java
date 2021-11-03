@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.fluent.models.KeyCredentialInner;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * KeyCredential list operation result.
- */
+/** KeyCredential list operation result. */
 @Fluent
 public final class KeyCredentialListResult {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(KeyCredentialListResult.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyCredentialListResult.class);
 
     /*
      * A collection of KeyCredentials.
@@ -29,7 +24,7 @@ public final class KeyCredentialListResult {
 
     /**
      * Get the value property: A collection of KeyCredentials.
-     * 
+     *
      * @return the value value.
      */
     public List<KeyCredentialInner> value() {
@@ -38,7 +33,7 @@ public final class KeyCredentialListResult {
 
     /**
      * Set the value property: A collection of KeyCredentials.
-     * 
+     *
      * @param value the value value to set.
      * @return the KeyCredentialListResult object itself.
      */
@@ -49,7 +44,7 @@ public final class KeyCredentialListResult {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,20 +5,14 @@
 package com.azure.resourcemanager.eventhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Properties describing the storage account, blob container and archive name
- * format for capture destination.
- */
+/** Properties describing the storage account, blob container and archive name format for capture destination. */
 @Fluent
 public final class DestinationProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(DestinationProperties.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DestinationProperties.class);
 
     /*
      * Resource id of the storage account to be used to create the blobs
@@ -42,9 +36,8 @@ public final class DestinationProperties {
     private String archiveNameFormat;
 
     /**
-     * Get the storageAccountResourceId property: Resource id of the storage
-     * account to be used to create the blobs.
-     * 
+     * Get the storageAccountResourceId property: Resource id of the storage account to be used to create the blobs.
+     *
      * @return the storageAccountResourceId value.
      */
     public String storageAccountResourceId() {
@@ -52,11 +45,9 @@ public final class DestinationProperties {
     }
 
     /**
-     * Set the storageAccountResourceId property: Resource id of the storage
-     * account to be used to create the blobs.
-     * 
-     * @param storageAccountResourceId the storageAccountResourceId value to
-     * set.
+     * Set the storageAccountResourceId property: Resource id of the storage account to be used to create the blobs.
+     *
+     * @param storageAccountResourceId the storageAccountResourceId value to set.
      * @return the DestinationProperties object itself.
      */
     public DestinationProperties withStorageAccountResourceId(String storageAccountResourceId) {
@@ -66,7 +57,7 @@ public final class DestinationProperties {
 
     /**
      * Get the blobContainer property: Blob container Name.
-     * 
+     *
      * @return the blobContainer value.
      */
     public String blobContainer() {
@@ -75,7 +66,7 @@ public final class DestinationProperties {
 
     /**
      * Set the blobContainer property: Blob container Name.
-     * 
+     *
      * @param blobContainer the blobContainer value to set.
      * @return the DestinationProperties object itself.
      */
@@ -85,12 +76,10 @@ public final class DestinationProperties {
     }
 
     /**
-     * Get the archiveNameFormat property: Blob naming convention for archive,
-     * e.g.
-     * {Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}.
-     * Here all the parameters (Namespace,EventHub .. etc) are mandatory
-     * irrespective of order.
-     * 
+     * Get the archiveNameFormat property: Blob naming convention for archive, e.g.
+     * {Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}. Here all the parameters
+     * (Namespace,EventHub .. etc) are mandatory irrespective of order.
+     *
      * @return the archiveNameFormat value.
      */
     public String archiveNameFormat() {
@@ -98,12 +87,10 @@ public final class DestinationProperties {
     }
 
     /**
-     * Set the archiveNameFormat property: Blob naming convention for archive,
-     * e.g.
-     * {Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}.
-     * Here all the parameters (Namespace,EventHub .. etc) are mandatory
-     * irrespective of order.
-     * 
+     * Set the archiveNameFormat property: Blob naming convention for archive, e.g.
+     * {Namespace}/{EventHub}/{PartitionId}/{Year}/{Month}/{Day}/{Hour}/{Minute}/{Second}. Here all the parameters
+     * (Namespace,EventHub .. etc) are mandatory irrespective of order.
+     *
      * @param archiveNameFormat the archiveNameFormat value to set.
      * @return the DestinationProperties object itself.
      */
@@ -114,7 +101,7 @@ public final class DestinationProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

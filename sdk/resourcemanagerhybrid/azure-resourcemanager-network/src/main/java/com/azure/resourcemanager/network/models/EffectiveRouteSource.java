@@ -8,33 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for EffectiveRouteSource.
- */
+/** Defines values for EffectiveRouteSource. */
 public final class EffectiveRouteSource extends ExpandableStringEnum<EffectiveRouteSource> {
-    /**
-     * Static value Unknown for EffectiveRouteSource.
-     */
+    /** Static value Unknown for EffectiveRouteSource. */
     public static final EffectiveRouteSource UNKNOWN = fromString("Unknown");
 
-    /**
-     * Static value User for EffectiveRouteSource.
-     */
+    /** Static value User for EffectiveRouteSource. */
     public static final EffectiveRouteSource USER = fromString("User");
 
-    /**
-     * Static value VirtualNetworkGateway for EffectiveRouteSource.
-     */
+    /** Static value VirtualNetworkGateway for EffectiveRouteSource. */
     public static final EffectiveRouteSource VIRTUAL_NETWORK_GATEWAY = fromString("VirtualNetworkGateway");
 
-    /**
-     * Static value Default for EffectiveRouteSource.
-     */
+    /** Static value Default for EffectiveRouteSource. */
     public static final EffectiveRouteSource DEFAULT = fromString("Default");
 
     /**
      * Creates or finds a EffectiveRouteSource from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding EffectiveRouteSource.
      */
@@ -43,9 +33,7 @@ public final class EffectiveRouteSource extends ExpandableStringEnum<EffectiveRo
         return fromString(name, EffectiveRouteSource.class);
     }
 
-    /**
-     * @return known EffectiveRouteSource values.
-     */
+    /** @return known EffectiveRouteSource values. */
     public static Collection<EffectiveRouteSource> values() {
         return values(EffectiveRouteSource.class);
     }

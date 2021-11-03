@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Results of network security group evaluation.
- */
+/** Results of network security group evaluation. */
 @Fluent
 public final class EvaluatedNetworkSecurityGroup {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(EvaluatedNetworkSecurityGroup.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(EvaluatedNetworkSecurityGroup.class);
 
     /*
      * Network security group ID.
@@ -46,7 +41,7 @@ public final class EvaluatedNetworkSecurityGroup {
 
     /**
      * Get the networkSecurityGroupId property: Network security group ID.
-     * 
+     *
      * @return the networkSecurityGroupId value.
      */
     public String networkSecurityGroupId() {
@@ -55,7 +50,7 @@ public final class EvaluatedNetworkSecurityGroup {
 
     /**
      * Set the networkSecurityGroupId property: Network security group ID.
-     * 
+     *
      * @param networkSecurityGroupId the networkSecurityGroupId value to set.
      * @return the EvaluatedNetworkSecurityGroup object itself.
      */
@@ -65,9 +60,8 @@ public final class EvaluatedNetworkSecurityGroup {
     }
 
     /**
-     * Get the appliedTo property: Resource ID of nic or subnet to which
-     * network security group is applied.
-     * 
+     * Get the appliedTo property: Resource ID of nic or subnet to which network security group is applied.
+     *
      * @return the appliedTo value.
      */
     public String appliedTo() {
@@ -75,9 +69,8 @@ public final class EvaluatedNetworkSecurityGroup {
     }
 
     /**
-     * Set the appliedTo property: Resource ID of nic or subnet to which
-     * network security group is applied.
-     * 
+     * Set the appliedTo property: Resource ID of nic or subnet to which network security group is applied.
+     *
      * @param appliedTo the appliedTo value to set.
      * @return the EvaluatedNetworkSecurityGroup object itself.
      */
@@ -88,7 +81,7 @@ public final class EvaluatedNetworkSecurityGroup {
 
     /**
      * Get the matchedRule property: Matched rule.
-     * 
+     *
      * @return the matchedRule value.
      */
     public MatchedRule matchedRule() {
@@ -97,7 +90,7 @@ public final class EvaluatedNetworkSecurityGroup {
 
     /**
      * Set the matchedRule property: Matched rule.
-     * 
+     *
      * @param matchedRule the matchedRule value to set.
      * @return the EvaluatedNetworkSecurityGroup object itself.
      */
@@ -107,9 +100,8 @@ public final class EvaluatedNetworkSecurityGroup {
     }
 
     /**
-     * Get the rulesEvaluationResult property: List of network security rules
-     * evaluation results.
-     * 
+     * Get the rulesEvaluationResult property: List of network security rules evaluation results.
+     *
      * @return the rulesEvaluationResult value.
      */
     public List<NetworkSecurityRulesEvaluationResult> rulesEvaluationResult() {
@@ -118,7 +110,7 @@ public final class EvaluatedNetworkSecurityGroup {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

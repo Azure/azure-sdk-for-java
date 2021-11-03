@@ -8,8 +8,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
@@ -20,19 +18,19 @@ import com.azure.resourcemanager.containerservice.fluent.models.OrchestratorVers
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
-import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * ContainerServicesClient.
- */
-public interface ContainerServicesClient extends InnerSupportsGet<ContainerServiceInner>, InnerSupportsListing<ContainerServiceInner>, InnerSupportsDelete<Void> {
+/** An instance of this class provides access to all the operations defined in ContainerServicesClient. */
+public interface ContainerServicesClient
+    extends InnerSupportsGet<ContainerServiceInner>,
+        InnerSupportsListing<ContainerServiceInner>,
+        InnerSupportsDelete<Void> {
     /**
-     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each orchestrator including version, available upgrades and whether that version or upgrades are in preview.
-     * 
+     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each
+     * orchestrator including version, available upgrades and whether that version or upgrades are in preview.
+     *
      * @param location The name of a supported Azure region.
      * @param resourceType resource type for which the list of orchestrators needs to be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -41,11 +39,13 @@ public interface ContainerServicesClient extends InnerSupportsGet<ContainerServi
      * @return a list of supported orchestrators in the specified subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<OrchestratorVersionProfileListResultInner>> listOrchestratorsWithResponseAsync(String location, String resourceType);
+    Mono<Response<OrchestratorVersionProfileListResultInner>> listOrchestratorsWithResponseAsync(
+        String location, String resourceType);
 
     /**
-     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each orchestrator including version, available upgrades and whether that version or upgrades are in preview.
-     * 
+     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each
+     * orchestrator including version, available upgrades and whether that version or upgrades are in preview.
+     *
      * @param location The name of a supported Azure region.
      * @param resourceType resource type for which the list of orchestrators needs to be returned.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -57,8 +57,9 @@ public interface ContainerServicesClient extends InnerSupportsGet<ContainerServi
     Mono<OrchestratorVersionProfileListResultInner> listOrchestratorsAsync(String location, String resourceType);
 
     /**
-     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each orchestrator including version, available upgrades and whether that version or upgrades are in preview.
-     * 
+     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each
+     * orchestrator including version, available upgrades and whether that version or upgrades are in preview.
+     *
      * @param location The name of a supported Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -69,8 +70,9 @@ public interface ContainerServicesClient extends InnerSupportsGet<ContainerServi
     Mono<OrchestratorVersionProfileListResultInner> listOrchestratorsAsync(String location);
 
     /**
-     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each orchestrator including version, available upgrades and whether that version or upgrades are in preview.
-     * 
+     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each
+     * orchestrator including version, available upgrades and whether that version or upgrades are in preview.
+     *
      * @param location The name of a supported Azure region.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -81,8 +83,9 @@ public interface ContainerServicesClient extends InnerSupportsGet<ContainerServi
     OrchestratorVersionProfileListResultInner listOrchestrators(String location);
 
     /**
-     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each orchestrator including version, available upgrades and whether that version or upgrades are in preview.
-     * 
+     * Gets a list of supported orchestrators in the specified subscription. The operation returns properties of each
+     * orchestrator including version, available upgrades and whether that version or upgrades are in preview.
+     *
      * @param location The name of a supported Azure region.
      * @param resourceType resource type for which the list of orchestrators needs to be returned.
      * @param context The context to associate with this operation.
@@ -92,11 +95,13 @@ public interface ContainerServicesClient extends InnerSupportsGet<ContainerServi
      * @return a list of supported orchestrators in the specified subscription.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<OrchestratorVersionProfileListResultInner> listOrchestratorsWithResponse(String location, String resourceType, Context context);
+    Response<OrchestratorVersionProfileListResultInner> listOrchestratorsWithResponse(
+        String location, String resourceType, Context context);
 
     /**
-     * Gets a list of container services in the specified subscription. The operation returns properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
-     * 
+     * Gets a list of container services in the specified subscription. The operation returns properties of each
+     * container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of container services in the specified subscription.
@@ -105,8 +110,9 @@ public interface ContainerServicesClient extends InnerSupportsGet<ContainerServi
     PagedFlux<ContainerServiceInner> listAsync();
 
     /**
-     * Gets a list of container services in the specified subscription. The operation returns properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
-     * 
+     * Gets a list of container services in the specified subscription. The operation returns properties of each
+     * container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of container services in the specified subscription.
@@ -115,8 +121,9 @@ public interface ContainerServicesClient extends InnerSupportsGet<ContainerServi
     PagedIterable<ContainerServiceInner> list();
 
     /**
-     * Gets a list of container services in the specified subscription. The operation returns properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
-     * 
+     * Gets a list of container services in the specified subscription. The operation returns properties of each
+     * container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -128,7 +135,7 @@ public interface ContainerServicesClient extends InnerSupportsGet<ContainerServi
 
     /**
      * Creates or updates a container service with the specified configuration of orchestrator, masters, and agents.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @param parameters Parameters supplied to the Create or Update a Container Service operation.
@@ -138,11 +145,12 @@ public interface ContainerServicesClient extends InnerSupportsGet<ContainerServi
      * @return container service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String containerServiceName, ContainerServiceInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String containerServiceName, ContainerServiceInner parameters);
 
     /**
      * Creates or updates a container service with the specified configuration of orchestrator, masters, and agents.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @param parameters Parameters supplied to the Create or Update a Container Service operation.
@@ -152,11 +160,12 @@ public interface ContainerServicesClient extends InnerSupportsGet<ContainerServi
      * @return container service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<ContainerServiceInner>, ContainerServiceInner> beginCreateOrUpdateAsync(String resourceGroupName, String containerServiceName, ContainerServiceInner parameters);
+    PollerFlux<PollResult<ContainerServiceInner>, ContainerServiceInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String containerServiceName, ContainerServiceInner parameters);
 
     /**
      * Creates or updates a container service with the specified configuration of orchestrator, masters, and agents.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @param parameters Parameters supplied to the Create or Update a Container Service operation.
@@ -166,11 +175,12 @@ public interface ContainerServicesClient extends InnerSupportsGet<ContainerServi
      * @return container service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ContainerServiceInner>, ContainerServiceInner> beginCreateOrUpdate(String resourceGroupName, String containerServiceName, ContainerServiceInner parameters);
+    SyncPoller<PollResult<ContainerServiceInner>, ContainerServiceInner> beginCreateOrUpdate(
+        String resourceGroupName, String containerServiceName, ContainerServiceInner parameters);
 
     /**
      * Creates or updates a container service with the specified configuration of orchestrator, masters, and agents.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @param parameters Parameters supplied to the Create or Update a Container Service operation.
@@ -181,11 +191,12 @@ public interface ContainerServicesClient extends InnerSupportsGet<ContainerServi
      * @return container service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ContainerServiceInner>, ContainerServiceInner> beginCreateOrUpdate(String resourceGroupName, String containerServiceName, ContainerServiceInner parameters, Context context);
+    SyncPoller<PollResult<ContainerServiceInner>, ContainerServiceInner> beginCreateOrUpdate(
+        String resourceGroupName, String containerServiceName, ContainerServiceInner parameters, Context context);
 
     /**
      * Creates or updates a container service with the specified configuration of orchestrator, masters, and agents.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @param parameters Parameters supplied to the Create or Update a Container Service operation.
@@ -195,11 +206,12 @@ public interface ContainerServicesClient extends InnerSupportsGet<ContainerServi
      * @return container service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ContainerServiceInner> createOrUpdateAsync(String resourceGroupName, String containerServiceName, ContainerServiceInner parameters);
+    Mono<ContainerServiceInner> createOrUpdateAsync(
+        String resourceGroupName, String containerServiceName, ContainerServiceInner parameters);
 
     /**
      * Creates or updates a container service with the specified configuration of orchestrator, masters, and agents.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @param parameters Parameters supplied to the Create or Update a Container Service operation.
@@ -209,11 +221,12 @@ public interface ContainerServicesClient extends InnerSupportsGet<ContainerServi
      * @return container service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ContainerServiceInner createOrUpdate(String resourceGroupName, String containerServiceName, ContainerServiceInner parameters);
+    ContainerServiceInner createOrUpdate(
+        String resourceGroupName, String containerServiceName, ContainerServiceInner parameters);
 
     /**
      * Creates or updates a container service with the specified configuration of orchestrator, masters, and agents.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @param parameters Parameters supplied to the Create or Update a Container Service operation.
@@ -224,11 +237,14 @@ public interface ContainerServicesClient extends InnerSupportsGet<ContainerServi
      * @return container service.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ContainerServiceInner createOrUpdate(String resourceGroupName, String containerServiceName, ContainerServiceInner parameters, Context context);
+    ContainerServiceInner createOrUpdate(
+        String resourceGroupName, String containerServiceName, ContainerServiceInner parameters, Context context);
 
     /**
-     * Gets the properties of the specified container service in the specified subscription and resource group. The operation returns the properties including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
-     * 
+     * Gets the properties of the specified container service in the specified subscription and resource group. The
+     * operation returns the properties including state, orchestrator, number of masters and agents, and FQDNs of
+     * masters and agents.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -237,11 +253,14 @@ public interface ContainerServicesClient extends InnerSupportsGet<ContainerServi
      * @return the properties of the specified container service in the specified subscription and resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ContainerServiceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String containerServiceName);
+    Mono<Response<ContainerServiceInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String containerServiceName);
 
     /**
-     * Gets the properties of the specified container service in the specified subscription and resource group. The operation returns the properties including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
-     * 
+     * Gets the properties of the specified container service in the specified subscription and resource group. The
+     * operation returns the properties including state, orchestrator, number of masters and agents, and FQDNs of
+     * masters and agents.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -253,8 +272,10 @@ public interface ContainerServicesClient extends InnerSupportsGet<ContainerServi
     Mono<ContainerServiceInner> getByResourceGroupAsync(String resourceGroupName, String containerServiceName);
 
     /**
-     * Gets the properties of the specified container service in the specified subscription and resource group. The operation returns the properties including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
-     * 
+     * Gets the properties of the specified container service in the specified subscription and resource group. The
+     * operation returns the properties including state, orchestrator, number of masters and agents, and FQDNs of
+     * masters and agents.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -266,8 +287,10 @@ public interface ContainerServicesClient extends InnerSupportsGet<ContainerServi
     ContainerServiceInner getByResourceGroup(String resourceGroupName, String containerServiceName);
 
     /**
-     * Gets the properties of the specified container service in the specified subscription and resource group. The operation returns the properties including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
-     * 
+     * Gets the properties of the specified container service in the specified subscription and resource group. The
+     * operation returns the properties including state, orchestrator, number of masters and agents, and FQDNs of
+     * masters and agents.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @param context The context to associate with this operation.
@@ -277,11 +300,15 @@ public interface ContainerServicesClient extends InnerSupportsGet<ContainerServi
      * @return the properties of the specified container service in the specified subscription and resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ContainerServiceInner> getByResourceGroupWithResponse(String resourceGroupName, String containerServiceName, Context context);
+    Response<ContainerServiceInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String containerServiceName, Context context);
 
     /**
-     * Deletes the specified container service in the specified subscription and resource group. The operation does not delete other resources created as part of creating a container service, including storage accounts, VMs, and availability sets. All the other resources created with the container service are part of the same resource group and can be deleted individually.
-     * 
+     * Deletes the specified container service in the specified subscription and resource group. The operation does not
+     * delete other resources created as part of creating a container service, including storage accounts, VMs, and
+     * availability sets. All the other resources created with the container service are part of the same resource group
+     * and can be deleted individually.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -293,8 +320,11 @@ public interface ContainerServicesClient extends InnerSupportsGet<ContainerServi
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String containerServiceName);
 
     /**
-     * Deletes the specified container service in the specified subscription and resource group. The operation does not delete other resources created as part of creating a container service, including storage accounts, VMs, and availability sets. All the other resources created with the container service are part of the same resource group and can be deleted individually.
-     * 
+     * Deletes the specified container service in the specified subscription and resource group. The operation does not
+     * delete other resources created as part of creating a container service, including storage accounts, VMs, and
+     * availability sets. All the other resources created with the container service are part of the same resource group
+     * and can be deleted individually.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -306,8 +336,11 @@ public interface ContainerServicesClient extends InnerSupportsGet<ContainerServi
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String containerServiceName);
 
     /**
-     * Deletes the specified container service in the specified subscription and resource group. The operation does not delete other resources created as part of creating a container service, including storage accounts, VMs, and availability sets. All the other resources created with the container service are part of the same resource group and can be deleted individually.
-     * 
+     * Deletes the specified container service in the specified subscription and resource group. The operation does not
+     * delete other resources created as part of creating a container service, including storage accounts, VMs, and
+     * availability sets. All the other resources created with the container service are part of the same resource group
+     * and can be deleted individually.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -319,8 +352,11 @@ public interface ContainerServicesClient extends InnerSupportsGet<ContainerServi
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String containerServiceName);
 
     /**
-     * Deletes the specified container service in the specified subscription and resource group. The operation does not delete other resources created as part of creating a container service, including storage accounts, VMs, and availability sets. All the other resources created with the container service are part of the same resource group and can be deleted individually.
-     * 
+     * Deletes the specified container service in the specified subscription and resource group. The operation does not
+     * delete other resources created as part of creating a container service, including storage accounts, VMs, and
+     * availability sets. All the other resources created with the container service are part of the same resource group
+     * and can be deleted individually.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @param context The context to associate with this operation.
@@ -330,11 +366,15 @@ public interface ContainerServicesClient extends InnerSupportsGet<ContainerServi
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String containerServiceName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String containerServiceName, Context context);
 
     /**
-     * Deletes the specified container service in the specified subscription and resource group. The operation does not delete other resources created as part of creating a container service, including storage accounts, VMs, and availability sets. All the other resources created with the container service are part of the same resource group and can be deleted individually.
-     * 
+     * Deletes the specified container service in the specified subscription and resource group. The operation does not
+     * delete other resources created as part of creating a container service, including storage accounts, VMs, and
+     * availability sets. All the other resources created with the container service are part of the same resource group
+     * and can be deleted individually.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -346,8 +386,11 @@ public interface ContainerServicesClient extends InnerSupportsGet<ContainerServi
     Mono<Void> deleteAsync(String resourceGroupName, String containerServiceName);
 
     /**
-     * Deletes the specified container service in the specified subscription and resource group. The operation does not delete other resources created as part of creating a container service, including storage accounts, VMs, and availability sets. All the other resources created with the container service are part of the same resource group and can be deleted individually.
-     * 
+     * Deletes the specified container service in the specified subscription and resource group. The operation does not
+     * delete other resources created as part of creating a container service, including storage accounts, VMs, and
+     * availability sets. All the other resources created with the container service are part of the same resource group
+     * and can be deleted individually.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -358,8 +401,11 @@ public interface ContainerServicesClient extends InnerSupportsGet<ContainerServi
     void delete(String resourceGroupName, String containerServiceName);
 
     /**
-     * Deletes the specified container service in the specified subscription and resource group. The operation does not delete other resources created as part of creating a container service, including storage accounts, VMs, and availability sets. All the other resources created with the container service are part of the same resource group and can be deleted individually.
-     * 
+     * Deletes the specified container service in the specified subscription and resource group. The operation does not
+     * delete other resources created as part of creating a container service, including storage accounts, VMs, and
+     * availability sets. All the other resources created with the container service are part of the same resource group
+     * and can be deleted individually.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param containerServiceName The name of the container service in the specified subscription and resource group.
      * @param context The context to associate with this operation.
@@ -371,8 +417,10 @@ public interface ContainerServicesClient extends InnerSupportsGet<ContainerServi
     void delete(String resourceGroupName, String containerServiceName, Context context);
 
     /**
-     * Gets a list of container services in the specified subscription and resource group. The operation returns properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
-     * 
+     * Gets a list of container services in the specified subscription and resource group. The operation returns
+     * properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of
+     * masters and agents.
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -383,8 +431,10 @@ public interface ContainerServicesClient extends InnerSupportsGet<ContainerServi
     PagedFlux<ContainerServiceInner> listByResourceGroupAsync(String resourceGroupName);
 
     /**
-     * Gets a list of container services in the specified subscription and resource group. The operation returns properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
-     * 
+     * Gets a list of container services in the specified subscription and resource group. The operation returns
+     * properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of
+     * masters and agents.
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -395,8 +445,10 @@ public interface ContainerServicesClient extends InnerSupportsGet<ContainerServi
     PagedIterable<ContainerServiceInner> listByResourceGroup(String resourceGroupName);
 
     /**
-     * Gets a list of container services in the specified subscription and resource group. The operation returns properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of masters and agents.
-     * 
+     * Gets a list of container services in the specified subscription and resource group. The operation returns
+     * properties of each container service including state, orchestrator, number of masters and agents, and FQDNs of
+     * masters and agents.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

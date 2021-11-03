@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.eventhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.models.PrivateLinkResource;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Result of the List private link resources operation.
- */
+/** Result of the List private link resources operation. */
 @Fluent
 public final class PrivateLinkResourcesListResultInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(PrivateLinkResourcesListResultInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourcesListResultInner.class);
 
     /*
      * A collection of private link resources
@@ -35,7 +30,7 @@ public final class PrivateLinkResourcesListResultInner {
 
     /**
      * Get the value property: A collection of private link resources.
-     * 
+     *
      * @return the value value.
      */
     public List<PrivateLinkResource> value() {
@@ -44,7 +39,7 @@ public final class PrivateLinkResourcesListResultInner {
 
     /**
      * Set the value property: A collection of private link resources.
-     * 
+     *
      * @param value the value value to set.
      * @return the PrivateLinkResourcesListResultInner object itself.
      */
@@ -54,9 +49,8 @@ public final class PrivateLinkResourcesListResultInner {
     }
 
     /**
-     * Get the nextLink property: A link for the next page of private link
-     * resources.
-     * 
+     * Get the nextLink property: A link for the next page of private link resources.
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -64,9 +58,8 @@ public final class PrivateLinkResourcesListResultInner {
     }
 
     /**
-     * Set the nextLink property: A link for the next page of private link
-     * resources.
-     * 
+     * Set the nextLink property: A link for the next page of private link resources.
+     *
      * @param nextLink the nextLink value to set.
      * @return the PrivateLinkResourcesListResultInner object itself.
      */
@@ -77,7 +70,7 @@ public final class PrivateLinkResourcesListResultInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

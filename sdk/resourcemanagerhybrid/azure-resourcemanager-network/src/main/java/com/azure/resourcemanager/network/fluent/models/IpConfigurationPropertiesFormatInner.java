@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Properties of IP configuration.
- */
+/** Properties of IP configuration. */
 @Fluent
 public final class IpConfigurationPropertiesFormatInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(IpConfigurationPropertiesFormatInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(IpConfigurationPropertiesFormatInner.class);
 
     /*
      * The private IP address of the IP configuration.
@@ -53,9 +48,8 @@ public final class IpConfigurationPropertiesFormatInner {
     private String provisioningState;
 
     /**
-     * Get the privateIpAddress property: The private IP address of the IP
-     * configuration.
-     * 
+     * Get the privateIpAddress property: The private IP address of the IP configuration.
+     *
      * @return the privateIpAddress value.
      */
     public String privateIpAddress() {
@@ -63,9 +57,8 @@ public final class IpConfigurationPropertiesFormatInner {
     }
 
     /**
-     * Set the privateIpAddress property: The private IP address of the IP
-     * configuration.
-     * 
+     * Set the privateIpAddress property: The private IP address of the IP configuration.
+     *
      * @param privateIpAddress the privateIpAddress value to set.
      * @return the IpConfigurationPropertiesFormatInner object itself.
      */
@@ -75,9 +68,9 @@ public final class IpConfigurationPropertiesFormatInner {
     }
 
     /**
-     * Get the privateIpAllocationMethod property: The private IP allocation
-     * method. Possible values are 'Static' and 'Dynamic'.
-     * 
+     * Get the privateIpAllocationMethod property: The private IP allocation method. Possible values are 'Static' and
+     * 'Dynamic'.
+     *
      * @return the privateIpAllocationMethod value.
      */
     public IpAllocationMethod privateIpAllocationMethod() {
@@ -85,21 +78,21 @@ public final class IpConfigurationPropertiesFormatInner {
     }
 
     /**
-     * Set the privateIpAllocationMethod property: The private IP allocation
-     * method. Possible values are 'Static' and 'Dynamic'.
-     * 
-     * @param privateIpAllocationMethod the privateIpAllocationMethod value to
-     * set.
+     * Set the privateIpAllocationMethod property: The private IP allocation method. Possible values are 'Static' and
+     * 'Dynamic'.
+     *
+     * @param privateIpAllocationMethod the privateIpAllocationMethod value to set.
      * @return the IpConfigurationPropertiesFormatInner object itself.
      */
-    public IpConfigurationPropertiesFormatInner withPrivateIpAllocationMethod(IpAllocationMethod privateIpAllocationMethod) {
+    public IpConfigurationPropertiesFormatInner withPrivateIpAllocationMethod(
+        IpAllocationMethod privateIpAllocationMethod) {
         this.privateIpAllocationMethod = privateIpAllocationMethod;
         return this;
     }
 
     /**
      * Get the subnet property: The reference of the subnet resource.
-     * 
+     *
      * @return the subnet value.
      */
     public SubnetInner subnet() {
@@ -108,7 +101,7 @@ public final class IpConfigurationPropertiesFormatInner {
 
     /**
      * Set the subnet property: The reference of the subnet resource.
-     * 
+     *
      * @param subnet the subnet value to set.
      * @return the IpConfigurationPropertiesFormatInner object itself.
      */
@@ -118,9 +111,8 @@ public final class IpConfigurationPropertiesFormatInner {
     }
 
     /**
-     * Get the publicIpAddress property: The reference of the public IP
-     * resource.
-     * 
+     * Get the publicIpAddress property: The reference of the public IP resource.
+     *
      * @return the publicIpAddress value.
      */
     public PublicIpAddressInner publicIpAddress() {
@@ -128,9 +120,8 @@ public final class IpConfigurationPropertiesFormatInner {
     }
 
     /**
-     * Set the publicIpAddress property: The reference of the public IP
-     * resource.
-     * 
+     * Set the publicIpAddress property: The reference of the public IP resource.
+     *
      * @param publicIpAddress the publicIpAddress value to set.
      * @return the IpConfigurationPropertiesFormatInner object itself.
      */
@@ -140,10 +131,9 @@ public final class IpConfigurationPropertiesFormatInner {
     }
 
     /**
-     * Get the provisioningState property: Gets the provisioning state of the
-     * public IP resource. Possible values are: 'Updating', 'Deleting', and
-     * 'Failed'.
-     * 
+     * Get the provisioningState property: Gets the provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -151,10 +141,9 @@ public final class IpConfigurationPropertiesFormatInner {
     }
 
     /**
-     * Set the provisioningState property: Gets the provisioning state of the
-     * public IP resource. Possible values are: 'Updating', 'Deleting', and
-     * 'Failed'.
-     * 
+     * Set the provisioningState property: Gets the provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
      * @param provisioningState the provisioningState value to set.
      * @return the IpConfigurationPropertiesFormatInner object itself.
      */
@@ -165,7 +154,7 @@ public final class IpConfigurationPropertiesFormatInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,23 +5,18 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ConnectionMonitorDestination;
 import com.azure.resourcemanager.network.models.ConnectionMonitorSource;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/**
- * Parameters that define the operation to create a connection monitor.
- */
+/** Parameters that define the operation to create a connection monitor. */
 @Fluent
 public final class ConnectionMonitorInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ConnectionMonitorInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionMonitorInner.class);
 
     /*
      * Connection monitor location.
@@ -44,7 +39,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Get the location property: Connection monitor location.
-     * 
+     *
      * @return the location value.
      */
     public String location() {
@@ -53,7 +48,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Set the location property: Connection monitor location.
-     * 
+     *
      * @param location the location value to set.
      * @return the ConnectionMonitorInner object itself.
      */
@@ -64,7 +59,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Get the tags property: Connection monitor tags.
-     * 
+     *
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -73,7 +68,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Set the tags property: Connection monitor tags.
-     * 
+     *
      * @param tags the tags value to set.
      * @return the ConnectionMonitorInner object itself.
      */
@@ -83,9 +78,8 @@ public final class ConnectionMonitorInner {
     }
 
     /**
-     * Get the innerProperties property: Parameters that define the operation
-     * to create a connection monitor.
-     * 
+     * Get the innerProperties property: Parameters that define the operation to create a connection monitor.
+     *
      * @return the innerProperties value.
      */
     private ConnectionMonitorParameters innerProperties() {
@@ -94,7 +88,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Get the source property: Describes the source of connection monitor.
-     * 
+     *
      * @return the source value.
      */
     public ConnectionMonitorSource source() {
@@ -103,7 +97,7 @@ public final class ConnectionMonitorInner {
 
     /**
      * Set the source property: Describes the source of connection monitor.
-     * 
+     *
      * @param source the source value to set.
      * @return the ConnectionMonitorInner object itself.
      */
@@ -116,9 +110,8 @@ public final class ConnectionMonitorInner {
     }
 
     /**
-     * Get the destination property: Describes the destination of connection
-     * monitor.
-     * 
+     * Get the destination property: Describes the destination of connection monitor.
+     *
      * @return the destination value.
      */
     public ConnectionMonitorDestination destination() {
@@ -126,9 +119,8 @@ public final class ConnectionMonitorInner {
     }
 
     /**
-     * Set the destination property: Describes the destination of connection
-     * monitor.
-     * 
+     * Set the destination property: Describes the destination of connection monitor.
+     *
      * @param destination the destination value to set.
      * @return the ConnectionMonitorInner object itself.
      */
@@ -141,9 +133,8 @@ public final class ConnectionMonitorInner {
     }
 
     /**
-     * Get the autoStart property: Determines if the connection monitor will
-     * start automatically once created.
-     * 
+     * Get the autoStart property: Determines if the connection monitor will start automatically once created.
+     *
      * @return the autoStart value.
      */
     public Boolean autoStart() {
@@ -151,9 +142,8 @@ public final class ConnectionMonitorInner {
     }
 
     /**
-     * Set the autoStart property: Determines if the connection monitor will
-     * start automatically once created.
-     * 
+     * Set the autoStart property: Determines if the connection monitor will start automatically once created.
+     *
      * @param autoStart the autoStart value to set.
      * @return the ConnectionMonitorInner object itself.
      */
@@ -166,9 +156,8 @@ public final class ConnectionMonitorInner {
     }
 
     /**
-     * Get the monitoringIntervalInSeconds property: Monitoring interval in
-     * seconds.
-     * 
+     * Get the monitoringIntervalInSeconds property: Monitoring interval in seconds.
+     *
      * @return the monitoringIntervalInSeconds value.
      */
     public Integer monitoringIntervalInSeconds() {
@@ -176,11 +165,9 @@ public final class ConnectionMonitorInner {
     }
 
     /**
-     * Set the monitoringIntervalInSeconds property: Monitoring interval in
-     * seconds.
-     * 
-     * @param monitoringIntervalInSeconds the monitoringIntervalInSeconds value
-     * to set.
+     * Set the monitoringIntervalInSeconds property: Monitoring interval in seconds.
+     *
+     * @param monitoringIntervalInSeconds the monitoringIntervalInSeconds value to set.
      * @return the ConnectionMonitorInner object itself.
      */
     public ConnectionMonitorInner withMonitoringIntervalInSeconds(Integer monitoringIntervalInSeconds) {
@@ -193,12 +180,15 @@ public final class ConnectionMonitorInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property innerProperties in model ConnectionMonitorInner"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model ConnectionMonitorInner"));
         } else {
             innerProperties().validate();
         }

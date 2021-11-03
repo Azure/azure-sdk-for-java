@@ -8,21 +8,16 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.resources.fluent.models.FeatureResultInner;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * FeaturesClient.
- */
+/** An instance of this class provides access to all the operations defined in FeaturesClient. */
 public interface FeaturesClient {
     /**
      * Gets all the preview features that are available through AFEC for the subscription.
-     * 
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the preview features that are available through AFEC for the subscription.
@@ -32,7 +27,7 @@ public interface FeaturesClient {
 
     /**
      * Gets all the preview features that are available through AFEC for the subscription.
-     * 
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the preview features that are available through AFEC for the subscription.
@@ -42,7 +37,7 @@ public interface FeaturesClient {
 
     /**
      * Gets all the preview features that are available through AFEC for the subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -54,7 +49,7 @@ public interface FeaturesClient {
 
     /**
      * Gets all the preview features in a provider namespace that are available through AFEC for the subscription.
-     * 
+     *
      * @param resourceProviderNamespace The namespace of the resource provider for getting features.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -66,7 +61,7 @@ public interface FeaturesClient {
 
     /**
      * Gets all the preview features in a provider namespace that are available through AFEC for the subscription.
-     * 
+     *
      * @param resourceProviderNamespace The namespace of the resource provider for getting features.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -78,7 +73,7 @@ public interface FeaturesClient {
 
     /**
      * Gets all the preview features in a provider namespace that are available through AFEC for the subscription.
-     * 
+     *
      * @param resourceProviderNamespace The namespace of the resource provider for getting features.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -91,7 +86,7 @@ public interface FeaturesClient {
 
     /**
      * Gets the preview feature with the specified name.
-     * 
+     *
      * @param resourceProviderNamespace The resource provider namespace for the feature.
      * @param featureName The name of the feature to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -104,7 +99,7 @@ public interface FeaturesClient {
 
     /**
      * Gets the preview feature with the specified name.
-     * 
+     *
      * @param resourceProviderNamespace The resource provider namespace for the feature.
      * @param featureName The name of the feature to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -117,7 +112,7 @@ public interface FeaturesClient {
 
     /**
      * Gets the preview feature with the specified name.
-     * 
+     *
      * @param resourceProviderNamespace The resource provider namespace for the feature.
      * @param featureName The name of the feature to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -130,7 +125,7 @@ public interface FeaturesClient {
 
     /**
      * Gets the preview feature with the specified name.
-     * 
+     *
      * @param resourceProviderNamespace The resource provider namespace for the feature.
      * @param featureName The name of the feature to get.
      * @param context The context to associate with this operation.
@@ -144,7 +139,7 @@ public interface FeaturesClient {
 
     /**
      * Registers the preview feature for the subscription.
-     * 
+     *
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param featureName The name of the feature to register.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -157,7 +152,7 @@ public interface FeaturesClient {
 
     /**
      * Registers the preview feature for the subscription.
-     * 
+     *
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param featureName The name of the feature to register.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -170,7 +165,7 @@ public interface FeaturesClient {
 
     /**
      * Registers the preview feature for the subscription.
-     * 
+     *
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param featureName The name of the feature to register.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -183,7 +178,7 @@ public interface FeaturesClient {
 
     /**
      * Registers the preview feature for the subscription.
-     * 
+     *
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param featureName The name of the feature to register.
      * @param context The context to associate with this operation.
@@ -193,11 +188,12 @@ public interface FeaturesClient {
      * @return previewed feature information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<FeatureResultInner> registerWithResponse(String resourceProviderNamespace, String featureName, Context context);
+    Response<FeatureResultInner> registerWithResponse(
+        String resourceProviderNamespace, String featureName, Context context);
 
     /**
      * Unregisters the preview feature for the subscription.
-     * 
+     *
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param featureName The name of the feature to unregister.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -206,11 +202,12 @@ public interface FeaturesClient {
      * @return previewed feature information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<FeatureResultInner>> unregisterWithResponseAsync(String resourceProviderNamespace, String featureName);
+    Mono<Response<FeatureResultInner>> unregisterWithResponseAsync(
+        String resourceProviderNamespace, String featureName);
 
     /**
      * Unregisters the preview feature for the subscription.
-     * 
+     *
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param featureName The name of the feature to unregister.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -223,7 +220,7 @@ public interface FeaturesClient {
 
     /**
      * Unregisters the preview feature for the subscription.
-     * 
+     *
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param featureName The name of the feature to unregister.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -236,7 +233,7 @@ public interface FeaturesClient {
 
     /**
      * Unregisters the preview feature for the subscription.
-     * 
+     *
      * @param resourceProviderNamespace The namespace of the resource provider.
      * @param featureName The name of the feature to unregister.
      * @param context The context to associate with this operation.
@@ -246,5 +243,6 @@ public interface FeaturesClient {
      * @return previewed feature information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<FeatureResultInner> unregisterWithResponse(String resourceProviderNamespace, String featureName, Context context);
+    Response<FeatureResultInner> unregisterWithResponse(
+        String resourceProviderNamespace, String featureName, Context context);
 }

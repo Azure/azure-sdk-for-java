@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.VirtualWanSecurityProvider;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Collection of SecurityProviders.
- */
+/** Collection of SecurityProviders. */
 @Fluent
 public final class VirtualWanSecurityProvidersInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(VirtualWanSecurityProvidersInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualWanSecurityProvidersInner.class);
 
     /*
      * The supportedProviders property.
@@ -29,7 +24,7 @@ public final class VirtualWanSecurityProvidersInner {
 
     /**
      * Get the supportedProviders property: The supportedProviders property.
-     * 
+     *
      * @return the supportedProviders value.
      */
     public List<VirtualWanSecurityProvider> supportedProviders() {
@@ -38,18 +33,19 @@ public final class VirtualWanSecurityProvidersInner {
 
     /**
      * Set the supportedProviders property: The supportedProviders property.
-     * 
+     *
      * @param supportedProviders the supportedProviders value to set.
      * @return the VirtualWanSecurityProvidersInner object itself.
      */
-    public VirtualWanSecurityProvidersInner withSupportedProviders(List<VirtualWanSecurityProvider> supportedProviders) {
+    public VirtualWanSecurityProvidersInner withSupportedProviders(
+        List<VirtualWanSecurityProvider> supportedProviders) {
         this.supportedProviders = supportedProviders;
         return this;
     }
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

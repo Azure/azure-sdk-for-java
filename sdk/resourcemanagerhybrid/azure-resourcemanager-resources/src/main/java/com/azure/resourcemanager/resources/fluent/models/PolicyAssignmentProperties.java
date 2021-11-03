@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The policy assignment properties.
- */
+/** The policy assignment properties. */
 @Fluent
 public final class PolicyAssignmentProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(PolicyAssignmentProperties.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PolicyAssignmentProperties.class);
 
     /*
      * The display name of the policy assignment.
@@ -51,7 +46,7 @@ public final class PolicyAssignmentProperties {
 
     /**
      * Get the displayName property: The display name of the policy assignment.
-     * 
+     *
      * @return the displayName value.
      */
     public String displayName() {
@@ -60,7 +55,7 @@ public final class PolicyAssignmentProperties {
 
     /**
      * Set the displayName property: The display name of the policy assignment.
-     * 
+     *
      * @param displayName the displayName value to set.
      * @return the PolicyAssignmentProperties object itself.
      */
@@ -71,7 +66,7 @@ public final class PolicyAssignmentProperties {
 
     /**
      * Get the policyDefinitionId property: The ID of the policy definition.
-     * 
+     *
      * @return the policyDefinitionId value.
      */
     public String policyDefinitionId() {
@@ -80,7 +75,7 @@ public final class PolicyAssignmentProperties {
 
     /**
      * Set the policyDefinitionId property: The ID of the policy definition.
-     * 
+     *
      * @param policyDefinitionId the policyDefinitionId value to set.
      * @return the PolicyAssignmentProperties object itself.
      */
@@ -91,7 +86,7 @@ public final class PolicyAssignmentProperties {
 
     /**
      * Get the scope property: The scope for the policy assignment.
-     * 
+     *
      * @return the scope value.
      */
     public String scope() {
@@ -100,7 +95,7 @@ public final class PolicyAssignmentProperties {
 
     /**
      * Set the scope property: The scope for the policy assignment.
-     * 
+     *
      * @param scope the scope value to set.
      * @return the PolicyAssignmentProperties object itself.
      */
@@ -110,9 +105,8 @@ public final class PolicyAssignmentProperties {
     }
 
     /**
-     * Get the parameters property: Required if a parameter is used in policy
-     * rule.
-     * 
+     * Get the parameters property: Required if a parameter is used in policy rule.
+     *
      * @return the parameters value.
      */
     public Object parameters() {
@@ -120,9 +114,8 @@ public final class PolicyAssignmentProperties {
     }
 
     /**
-     * Set the parameters property: Required if a parameter is used in policy
-     * rule.
-     * 
+     * Set the parameters property: Required if a parameter is used in policy rule.
+     *
      * @param parameters the parameters value to set.
      * @return the PolicyAssignmentProperties object itself.
      */
@@ -132,9 +125,8 @@ public final class PolicyAssignmentProperties {
     }
 
     /**
-     * Get the description property: This message will be part of response in
-     * case of policy violation.
-     * 
+     * Get the description property: This message will be part of response in case of policy violation.
+     *
      * @return the description value.
      */
     public String description() {
@@ -142,9 +134,8 @@ public final class PolicyAssignmentProperties {
     }
 
     /**
-     * Set the description property: This message will be part of response in
-     * case of policy violation.
-     * 
+     * Set the description property: This message will be part of response in case of policy violation.
+     *
      * @param description the description value to set.
      * @return the PolicyAssignmentProperties object itself.
      */
@@ -155,7 +146,7 @@ public final class PolicyAssignmentProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

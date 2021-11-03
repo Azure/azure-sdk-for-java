@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.fluent.models.RoleAssignmentProperties;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Role assignment create parameters.
- */
+/** Role assignment create parameters. */
 @Fluent
 public final class RoleAssignmentCreateParameters {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(RoleAssignmentCreateParameters.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(RoleAssignmentCreateParameters.class);
 
     /*
      * Role assignment properties.
@@ -28,7 +23,7 @@ public final class RoleAssignmentCreateParameters {
 
     /**
      * Get the innerProperties property: Role assignment properties.
-     * 
+     *
      * @return the innerProperties value.
      */
     private RoleAssignmentProperties innerProperties() {
@@ -36,9 +31,8 @@ public final class RoleAssignmentCreateParameters {
     }
 
     /**
-     * Get the roleDefinitionId property: The role definition ID used in the
-     * role assignment.
-     * 
+     * Get the roleDefinitionId property: The role definition ID used in the role assignment.
+     *
      * @return the roleDefinitionId value.
      */
     public String roleDefinitionId() {
@@ -46,9 +40,8 @@ public final class RoleAssignmentCreateParameters {
     }
 
     /**
-     * Set the roleDefinitionId property: The role definition ID used in the
-     * role assignment.
-     * 
+     * Set the roleDefinitionId property: The role definition ID used in the role assignment.
+     *
      * @param roleDefinitionId the roleDefinitionId value to set.
      * @return the RoleAssignmentCreateParameters object itself.
      */
@@ -61,10 +54,9 @@ public final class RoleAssignmentCreateParameters {
     }
 
     /**
-     * Get the principalId property: The principal ID assigned to the role.
-     * This maps to the ID inside the Active Directory. It can point to a user,
-     * service principal, or security group.
-     * 
+     * Get the principalId property: The principal ID assigned to the role. This maps to the ID inside the Active
+     * Directory. It can point to a user, service principal, or security group.
+     *
      * @return the principalId value.
      */
     public String principalId() {
@@ -72,10 +64,9 @@ public final class RoleAssignmentCreateParameters {
     }
 
     /**
-     * Set the principalId property: The principal ID assigned to the role.
-     * This maps to the ID inside the Active Directory. It can point to a user,
-     * service principal, or security group.
-     * 
+     * Set the principalId property: The principal ID assigned to the role. This maps to the ID inside the Active
+     * Directory. It can point to a user, service principal, or security group.
+     *
      * @param principalId the principalId value to set.
      * @return the RoleAssignmentCreateParameters object itself.
      */
@@ -89,12 +80,15 @@ public final class RoleAssignmentCreateParameters {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property innerProperties in model RoleAssignmentCreateParameters"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model RoleAssignmentCreateParameters"));
         } else {
             innerProperties().validate();
         }

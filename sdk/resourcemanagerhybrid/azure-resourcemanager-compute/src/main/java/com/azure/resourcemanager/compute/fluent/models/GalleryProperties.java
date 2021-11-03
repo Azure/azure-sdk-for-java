@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.GalleryIdentifier;
 import com.azure.resourcemanager.compute.models.GalleryPropertiesProvisioningState;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Describes the properties of a Shared Image Gallery.
- */
+/** Describes the properties of a Shared Image Gallery. */
 @Fluent
 public final class GalleryProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(GalleryProperties.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(GalleryProperties.class);
 
     /*
      * The description of this Shared Image Gallery resource. This property is
@@ -42,9 +37,8 @@ public final class GalleryProperties {
     private GalleryPropertiesProvisioningState provisioningState;
 
     /**
-     * Get the description property: The description of this Shared Image
-     * Gallery resource. This property is updatable.
-     * 
+     * Get the description property: The description of this Shared Image Gallery resource. This property is updatable.
+     *
      * @return the description value.
      */
     public String description() {
@@ -52,9 +46,8 @@ public final class GalleryProperties {
     }
 
     /**
-     * Set the description property: The description of this Shared Image
-     * Gallery resource. This property is updatable.
-     * 
+     * Set the description property: The description of this Shared Image Gallery resource. This property is updatable.
+     *
      * @param description the description value to set.
      * @return the GalleryProperties object itself.
      */
@@ -65,7 +58,7 @@ public final class GalleryProperties {
 
     /**
      * Get the identifier property: Describes the gallery unique name.
-     * 
+     *
      * @return the identifier value.
      */
     public GalleryIdentifier identifier() {
@@ -74,7 +67,7 @@ public final class GalleryProperties {
 
     /**
      * Set the identifier property: Describes the gallery unique name.
-     * 
+     *
      * @param identifier the identifier value to set.
      * @return the GalleryProperties object itself.
      */
@@ -84,9 +77,9 @@ public final class GalleryProperties {
     }
 
     /**
-     * Get the provisioningState property: The current state of the gallery.
-     * The provisioning state, which only appears in the response.
-     * 
+     * Get the provisioningState property: The current state of the gallery. The provisioning state, which only appears
+     * in the response.
+     *
      * @return the provisioningState value.
      */
     public GalleryPropertiesProvisioningState provisioningState() {
@@ -95,7 +88,7 @@ public final class GalleryProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

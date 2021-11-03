@@ -12,14 +12,11 @@ import com.azure.resourcemanager.compute.fluent.models.VirtualMachineExtensionIm
 import java.util.List;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * VirtualMachineExtensionImagesClient.
- */
+/** An instance of this class provides access to all the operations defined in VirtualMachineExtensionImagesClient. */
 public interface VirtualMachineExtensionImagesClient {
     /**
      * Gets a virtual machine extension image.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName The publisherName parameter.
      * @param type The type parameter.
@@ -30,11 +27,12 @@ public interface VirtualMachineExtensionImagesClient {
      * @return a virtual machine extension image.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<VirtualMachineExtensionImageInner>> getWithResponseAsync(String location, String publisherName, String type, String version);
+    Mono<Response<VirtualMachineExtensionImageInner>> getWithResponseAsync(
+        String location, String publisherName, String type, String version);
 
     /**
      * Gets a virtual machine extension image.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName The publisherName parameter.
      * @param type The type parameter.
@@ -45,11 +43,12 @@ public interface VirtualMachineExtensionImagesClient {
      * @return a virtual machine extension image.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VirtualMachineExtensionImageInner> getAsync(String location, String publisherName, String type, String version);
+    Mono<VirtualMachineExtensionImageInner> getAsync(
+        String location, String publisherName, String type, String version);
 
     /**
      * Gets a virtual machine extension image.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName The publisherName parameter.
      * @param type The type parameter.
@@ -64,7 +63,7 @@ public interface VirtualMachineExtensionImagesClient {
 
     /**
      * Gets a virtual machine extension image.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName The publisherName parameter.
      * @param type The type parameter.
@@ -76,11 +75,12 @@ public interface VirtualMachineExtensionImagesClient {
      * @return a virtual machine extension image.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VirtualMachineExtensionImageInner> getWithResponse(String location, String publisherName, String type, String version, Context context);
+    Response<VirtualMachineExtensionImageInner> getWithResponse(
+        String location, String publisherName, String type, String version, Context context);
 
     /**
      * Gets a list of virtual machine extension image types.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName The publisherName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -89,11 +89,12 @@ public interface VirtualMachineExtensionImagesClient {
      * @return a list of virtual machine extension image types.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<List<VirtualMachineExtensionImageInner>>> listTypesWithResponseAsync(String location, String publisherName);
+    Mono<Response<List<VirtualMachineExtensionImageInner>>> listTypesWithResponseAsync(
+        String location, String publisherName);
 
     /**
      * Gets a list of virtual machine extension image types.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName The publisherName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -106,7 +107,7 @@ public interface VirtualMachineExtensionImagesClient {
 
     /**
      * Gets a list of virtual machine extension image types.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName The publisherName parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -119,7 +120,7 @@ public interface VirtualMachineExtensionImagesClient {
 
     /**
      * Gets a list of virtual machine extension image types.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName The publisherName parameter.
      * @param context The context to associate with this operation.
@@ -129,11 +130,12 @@ public interface VirtualMachineExtensionImagesClient {
      * @return a list of virtual machine extension image types.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<List<VirtualMachineExtensionImageInner>> listTypesWithResponse(String location, String publisherName, Context context);
+    Response<List<VirtualMachineExtensionImageInner>> listTypesWithResponse(
+        String location, String publisherName, Context context);
 
     /**
      * Gets a list of virtual machine extension image versions.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName The publisherName parameter.
      * @param type The type parameter.
@@ -146,11 +148,12 @@ public interface VirtualMachineExtensionImagesClient {
      * @return a list of virtual machine extension image versions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<List<VirtualMachineExtensionImageInner>>> listVersionsWithResponseAsync(String location, String publisherName, String type, String filter, Integer top, String orderby);
+    Mono<Response<List<VirtualMachineExtensionImageInner>>> listVersionsWithResponseAsync(
+        String location, String publisherName, String type, String filter, Integer top, String orderby);
 
     /**
      * Gets a list of virtual machine extension image versions.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName The publisherName parameter.
      * @param type The type parameter.
@@ -163,11 +166,12 @@ public interface VirtualMachineExtensionImagesClient {
      * @return a list of virtual machine extension image versions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<List<VirtualMachineExtensionImageInner>> listVersionsAsync(String location, String publisherName, String type, String filter, Integer top, String orderby);
+    Mono<List<VirtualMachineExtensionImageInner>> listVersionsAsync(
+        String location, String publisherName, String type, String filter, Integer top, String orderby);
 
     /**
      * Gets a list of virtual machine extension image versions.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName The publisherName parameter.
      * @param type The type parameter.
@@ -181,7 +185,7 @@ public interface VirtualMachineExtensionImagesClient {
 
     /**
      * Gets a list of virtual machine extension image versions.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName The publisherName parameter.
      * @param type The type parameter.
@@ -195,7 +199,7 @@ public interface VirtualMachineExtensionImagesClient {
 
     /**
      * Gets a list of virtual machine extension image versions.
-     * 
+     *
      * @param location The name of a supported Azure region.
      * @param publisherName The publisherName parameter.
      * @param type The type parameter.
@@ -209,5 +213,12 @@ public interface VirtualMachineExtensionImagesClient {
      * @return a list of virtual machine extension image versions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<List<VirtualMachineExtensionImageInner>> listVersionsWithResponse(String location, String publisherName, String type, String filter, Integer top, String orderby, Context context);
+    Response<List<VirtualMachineExtensionImageInner>> listVersionsWithResponse(
+        String location,
+        String publisherName,
+        String type,
+        String filter,
+        Integer top,
+        String orderby,
+        Context context);
 }

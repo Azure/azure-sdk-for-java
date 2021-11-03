@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * IP configuration profile properties.
- */
+/** IP configuration profile properties. */
 @Fluent
 public final class IpConfigurationProfilePropertiesFormatInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(IpConfigurationProfilePropertiesFormatInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(IpConfigurationProfilePropertiesFormatInner.class);
 
     /*
      * The reference of the subnet resource to create a container network
@@ -33,9 +28,9 @@ public final class IpConfigurationProfilePropertiesFormatInner {
     private String provisioningState;
 
     /**
-     * Get the subnet property: The reference of the subnet resource to create
-     * a container network interface ip configuration.
-     * 
+     * Get the subnet property: The reference of the subnet resource to create a container network interface ip
+     * configuration.
+     *
      * @return the subnet value.
      */
     public SubnetInner subnet() {
@@ -43,9 +38,9 @@ public final class IpConfigurationProfilePropertiesFormatInner {
     }
 
     /**
-     * Set the subnet property: The reference of the subnet resource to create
-     * a container network interface ip configuration.
-     * 
+     * Set the subnet property: The reference of the subnet resource to create a container network interface ip
+     * configuration.
+     *
      * @param subnet the subnet value to set.
      * @return the IpConfigurationProfilePropertiesFormatInner object itself.
      */
@@ -55,9 +50,8 @@ public final class IpConfigurationProfilePropertiesFormatInner {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the
-     * resource.
-     * 
+     * Get the provisioningState property: The provisioning state of the resource.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -66,7 +60,7 @@ public final class IpConfigurationProfilePropertiesFormatInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

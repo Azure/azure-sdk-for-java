@@ -8,8 +8,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
@@ -41,19 +39,18 @@ import com.azure.resourcemanager.network.models.VerificationIpFlowParameters;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
-import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * NetworkWatchersClient.
- */
-public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherInner>, InnerSupportsListing<NetworkWatcherInner>, InnerSupportsDelete<Void> {
+/** An instance of this class provides access to all the operations defined in NetworkWatchersClient. */
+public interface NetworkWatchersClient
+    extends InnerSupportsGet<NetworkWatcherInner>,
+        InnerSupportsListing<NetworkWatcherInner>,
+        InnerSupportsDelete<Void> {
     /**
      * Creates or updates a network watcher in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the network watcher resource.
@@ -63,11 +60,12 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return network watcher in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<NetworkWatcherInner>> createOrUpdateWithResponseAsync(String resourceGroupName, String networkWatcherName, NetworkWatcherInner parameters);
+    Mono<Response<NetworkWatcherInner>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String networkWatcherName, NetworkWatcherInner parameters);
 
     /**
      * Creates or updates a network watcher in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the network watcher resource.
@@ -77,11 +75,12 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return network watcher in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<NetworkWatcherInner> createOrUpdateAsync(String resourceGroupName, String networkWatcherName, NetworkWatcherInner parameters);
+    Mono<NetworkWatcherInner> createOrUpdateAsync(
+        String resourceGroupName, String networkWatcherName, NetworkWatcherInner parameters);
 
     /**
      * Creates or updates a network watcher in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the network watcher resource.
@@ -91,11 +90,12 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return network watcher in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkWatcherInner createOrUpdate(String resourceGroupName, String networkWatcherName, NetworkWatcherInner parameters);
+    NetworkWatcherInner createOrUpdate(
+        String resourceGroupName, String networkWatcherName, NetworkWatcherInner parameters);
 
     /**
      * Creates or updates a network watcher in the specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the network watcher resource.
@@ -106,11 +106,12 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return network watcher in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NetworkWatcherInner> createOrUpdateWithResponse(String resourceGroupName, String networkWatcherName, NetworkWatcherInner parameters, Context context);
+    Response<NetworkWatcherInner> createOrUpdateWithResponse(
+        String resourceGroupName, String networkWatcherName, NetworkWatcherInner parameters, Context context);
 
     /**
      * Gets the specified network watcher by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -119,11 +120,12 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return the specified network watcher by resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<NetworkWatcherInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String networkWatcherName);
+    Mono<Response<NetworkWatcherInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String networkWatcherName);
 
     /**
      * Gets the specified network watcher by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -136,7 +138,7 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
 
     /**
      * Gets the specified network watcher by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -149,7 +151,7 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
 
     /**
      * Gets the specified network watcher by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param context The context to associate with this operation.
@@ -159,11 +161,12 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return the specified network watcher by resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NetworkWatcherInner> getByResourceGroupWithResponse(String resourceGroupName, String networkWatcherName, Context context);
+    Response<NetworkWatcherInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String networkWatcherName, Context context);
 
     /**
      * Deletes the specified network watcher resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -176,7 +179,7 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
 
     /**
      * Deletes the specified network watcher resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -189,7 +192,7 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
 
     /**
      * Deletes the specified network watcher resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -202,7 +205,7 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
 
     /**
      * Deletes the specified network watcher resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param context The context to associate with this operation.
@@ -212,11 +215,12 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkWatcherName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String networkWatcherName, Context context);
 
     /**
      * Deletes the specified network watcher resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -229,7 +233,7 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
 
     /**
      * Deletes the specified network watcher resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -241,7 +245,7 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
 
     /**
      * Deletes the specified network watcher resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param context The context to associate with this operation.
@@ -254,7 +258,7 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
 
     /**
      * Updates a network watcher tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters supplied to update network watcher tags.
@@ -264,11 +268,12 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return network watcher in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<NetworkWatcherInner>> updateTagsWithResponseAsync(String resourceGroupName, String networkWatcherName, TagsObject parameters);
+    Mono<Response<NetworkWatcherInner>> updateTagsWithResponseAsync(
+        String resourceGroupName, String networkWatcherName, TagsObject parameters);
 
     /**
      * Updates a network watcher tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters supplied to update network watcher tags.
@@ -278,11 +283,12 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return network watcher in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<NetworkWatcherInner> updateTagsAsync(String resourceGroupName, String networkWatcherName, TagsObject parameters);
+    Mono<NetworkWatcherInner> updateTagsAsync(
+        String resourceGroupName, String networkWatcherName, TagsObject parameters);
 
     /**
      * Updates a network watcher tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters supplied to update network watcher tags.
@@ -296,7 +302,7 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
 
     /**
      * Updates a network watcher tags.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters supplied to update network watcher tags.
@@ -307,11 +313,12 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return network watcher in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NetworkWatcherInner> updateTagsWithResponse(String resourceGroupName, String networkWatcherName, TagsObject parameters, Context context);
+    Response<NetworkWatcherInner> updateTagsWithResponse(
+        String resourceGroupName, String networkWatcherName, TagsObject parameters, Context context);
 
     /**
      * Gets all network watchers by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -323,7 +330,7 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
 
     /**
      * Gets all network watchers by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -335,7 +342,7 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
 
     /**
      * Gets all network watchers by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -348,7 +355,7 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
 
     /**
      * Gets all network watchers by subscription.
-     * 
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all network watchers by subscription.
@@ -358,7 +365,7 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
 
     /**
      * Gets all network watchers by subscription.
-     * 
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all network watchers by subscription.
@@ -368,7 +375,7 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
 
     /**
      * Gets all network watchers by subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -380,7 +387,7 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
 
     /**
      * Gets the current network topology by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the representation of topology.
@@ -390,11 +397,12 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return the current network topology by resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<TopologyInner>> getTopologyWithResponseAsync(String resourceGroupName, String networkWatcherName, TopologyParameters parameters);
+    Mono<Response<TopologyInner>> getTopologyWithResponseAsync(
+        String resourceGroupName, String networkWatcherName, TopologyParameters parameters);
 
     /**
      * Gets the current network topology by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the representation of topology.
@@ -404,11 +412,12 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return the current network topology by resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<TopologyInner> getTopologyAsync(String resourceGroupName, String networkWatcherName, TopologyParameters parameters);
+    Mono<TopologyInner> getTopologyAsync(
+        String resourceGroupName, String networkWatcherName, TopologyParameters parameters);
 
     /**
      * Gets the current network topology by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the representation of topology.
@@ -422,7 +431,7 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
 
     /**
      * Gets the current network topology by resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the representation of topology.
@@ -433,11 +442,12 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return the current network topology by resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TopologyInner> getTopologyWithResponse(String resourceGroupName, String networkWatcherName, TopologyParameters parameters, Context context);
+    Response<TopologyInner> getTopologyWithResponse(
+        String resourceGroupName, String networkWatcherName, TopologyParameters parameters, Context context);
 
     /**
      * Verify IP flow from the specified VM to a location given the currently configured NSG rules.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the IP flow to be verified.
@@ -447,11 +457,12 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return results of IP flow verification on the target resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> verifyIpFlowWithResponseAsync(String resourceGroupName, String networkWatcherName, VerificationIpFlowParameters parameters);
+    Mono<Response<Flux<ByteBuffer>>> verifyIpFlowWithResponseAsync(
+        String resourceGroupName, String networkWatcherName, VerificationIpFlowParameters parameters);
 
     /**
      * Verify IP flow from the specified VM to a location given the currently configured NSG rules.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the IP flow to be verified.
@@ -461,11 +472,12 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return results of IP flow verification on the target resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<VerificationIpFlowResultInner>, VerificationIpFlowResultInner> beginVerifyIpFlowAsync(String resourceGroupName, String networkWatcherName, VerificationIpFlowParameters parameters);
+    PollerFlux<PollResult<VerificationIpFlowResultInner>, VerificationIpFlowResultInner> beginVerifyIpFlowAsync(
+        String resourceGroupName, String networkWatcherName, VerificationIpFlowParameters parameters);
 
     /**
      * Verify IP flow from the specified VM to a location given the currently configured NSG rules.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the IP flow to be verified.
@@ -475,54 +487,12 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return results of IP flow verification on the target resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<VerificationIpFlowResultInner>, VerificationIpFlowResultInner> beginVerifyIpFlow(String resourceGroupName, String networkWatcherName, VerificationIpFlowParameters parameters);
+    SyncPoller<PollResult<VerificationIpFlowResultInner>, VerificationIpFlowResultInner> beginVerifyIpFlow(
+        String resourceGroupName, String networkWatcherName, VerificationIpFlowParameters parameters);
 
     /**
      * Verify IP flow from the specified VM to a location given the currently configured NSG rules.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param networkWatcherName The name of the network watcher.
-     * @param parameters Parameters that define the IP flow to be verified.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of IP flow verification on the target resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<VerificationIpFlowResultInner>, VerificationIpFlowResultInner> beginVerifyIpFlow(String resourceGroupName, String networkWatcherName, VerificationIpFlowParameters parameters, Context context);
-
-    /**
-     * Verify IP flow from the specified VM to a location given the currently configured NSG rules.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param networkWatcherName The name of the network watcher.
-     * @param parameters Parameters that define the IP flow to be verified.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of IP flow verification on the target resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VerificationIpFlowResultInner> verifyIpFlowAsync(String resourceGroupName, String networkWatcherName, VerificationIpFlowParameters parameters);
-
-    /**
-     * Verify IP flow from the specified VM to a location given the currently configured NSG rules.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param networkWatcherName The name of the network watcher.
-     * @param parameters Parameters that define the IP flow to be verified.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of IP flow verification on the target resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VerificationIpFlowResultInner verifyIpFlow(String resourceGroupName, String networkWatcherName, VerificationIpFlowParameters parameters);
-
-    /**
-     * Verify IP flow from the specified VM to a location given the currently configured NSG rules.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the IP flow to be verified.
@@ -533,11 +503,58 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return results of IP flow verification on the target resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VerificationIpFlowResultInner verifyIpFlow(String resourceGroupName, String networkWatcherName, VerificationIpFlowParameters parameters, Context context);
+    SyncPoller<PollResult<VerificationIpFlowResultInner>, VerificationIpFlowResultInner> beginVerifyIpFlow(
+        String resourceGroupName, String networkWatcherName, VerificationIpFlowParameters parameters, Context context);
+
+    /**
+     * Verify IP flow from the specified VM to a location given the currently configured NSG rules.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param parameters Parameters that define the IP flow to be verified.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return results of IP flow verification on the target resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<VerificationIpFlowResultInner> verifyIpFlowAsync(
+        String resourceGroupName, String networkWatcherName, VerificationIpFlowParameters parameters);
+
+    /**
+     * Verify IP flow from the specified VM to a location given the currently configured NSG rules.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param parameters Parameters that define the IP flow to be verified.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return results of IP flow verification on the target resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VerificationIpFlowResultInner verifyIpFlow(
+        String resourceGroupName, String networkWatcherName, VerificationIpFlowParameters parameters);
+
+    /**
+     * Verify IP flow from the specified VM to a location given the currently configured NSG rules.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param parameters Parameters that define the IP flow to be verified.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return results of IP flow verification on the target resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VerificationIpFlowResultInner verifyIpFlow(
+        String resourceGroupName, String networkWatcherName, VerificationIpFlowParameters parameters, Context context);
 
     /**
      * Gets the next hop from the specified VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the source and destination endpoint.
@@ -547,11 +564,12 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return the next hop from the specified VM.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> getNextHopWithResponseAsync(String resourceGroupName, String networkWatcherName, NextHopParameters parameters);
+    Mono<Response<Flux<ByteBuffer>>> getNextHopWithResponseAsync(
+        String resourceGroupName, String networkWatcherName, NextHopParameters parameters);
 
     /**
      * Gets the next hop from the specified VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the source and destination endpoint.
@@ -561,11 +579,12 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return the next hop from the specified VM.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<NextHopResultInner>, NextHopResultInner> beginGetNextHopAsync(String resourceGroupName, String networkWatcherName, NextHopParameters parameters);
+    PollerFlux<PollResult<NextHopResultInner>, NextHopResultInner> beginGetNextHopAsync(
+        String resourceGroupName, String networkWatcherName, NextHopParameters parameters);
 
     /**
      * Gets the next hop from the specified VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the source and destination endpoint.
@@ -575,11 +594,12 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return the next hop from the specified VM.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<NextHopResultInner>, NextHopResultInner> beginGetNextHop(String resourceGroupName, String networkWatcherName, NextHopParameters parameters);
+    SyncPoller<PollResult<NextHopResultInner>, NextHopResultInner> beginGetNextHop(
+        String resourceGroupName, String networkWatcherName, NextHopParameters parameters);
 
     /**
      * Gets the next hop from the specified VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the source and destination endpoint.
@@ -590,11 +610,12 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return the next hop from the specified VM.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<NextHopResultInner>, NextHopResultInner> beginGetNextHop(String resourceGroupName, String networkWatcherName, NextHopParameters parameters, Context context);
+    SyncPoller<PollResult<NextHopResultInner>, NextHopResultInner> beginGetNextHop(
+        String resourceGroupName, String networkWatcherName, NextHopParameters parameters, Context context);
 
     /**
      * Gets the next hop from the specified VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the source and destination endpoint.
@@ -604,11 +625,12 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return the next hop from the specified VM.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<NextHopResultInner> getNextHopAsync(String resourceGroupName, String networkWatcherName, NextHopParameters parameters);
+    Mono<NextHopResultInner> getNextHopAsync(
+        String resourceGroupName, String networkWatcherName, NextHopParameters parameters);
 
     /**
      * Gets the next hop from the specified VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the source and destination endpoint.
@@ -622,7 +644,7 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
 
     /**
      * Gets the next hop from the specified VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the source and destination endpoint.
@@ -633,11 +655,12 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return the next hop from the specified VM.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NextHopResultInner getNextHop(String resourceGroupName, String networkWatcherName, NextHopParameters parameters, Context context);
+    NextHopResultInner getNextHop(
+        String resourceGroupName, String networkWatcherName, NextHopParameters parameters, Context context);
 
     /**
      * Gets the configured and effective security group rules on the specified VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the VM to check security groups for.
@@ -647,11 +670,12 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return the configured and effective security group rules on the specified VM.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> getVMSecurityRulesWithResponseAsync(String resourceGroupName, String networkWatcherName, SecurityGroupViewParameters parameters);
+    Mono<Response<Flux<ByteBuffer>>> getVMSecurityRulesWithResponseAsync(
+        String resourceGroupName, String networkWatcherName, SecurityGroupViewParameters parameters);
 
     /**
      * Gets the configured and effective security group rules on the specified VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the VM to check security groups for.
@@ -661,11 +685,12 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return the configured and effective security group rules on the specified VM.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<SecurityGroupViewResultInner>, SecurityGroupViewResultInner> beginGetVMSecurityRulesAsync(String resourceGroupName, String networkWatcherName, SecurityGroupViewParameters parameters);
+    PollerFlux<PollResult<SecurityGroupViewResultInner>, SecurityGroupViewResultInner> beginGetVMSecurityRulesAsync(
+        String resourceGroupName, String networkWatcherName, SecurityGroupViewParameters parameters);
 
     /**
      * Gets the configured and effective security group rules on the specified VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the VM to check security groups for.
@@ -675,54 +700,12 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return the configured and effective security group rules on the specified VM.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<SecurityGroupViewResultInner>, SecurityGroupViewResultInner> beginGetVMSecurityRules(String resourceGroupName, String networkWatcherName, SecurityGroupViewParameters parameters);
+    SyncPoller<PollResult<SecurityGroupViewResultInner>, SecurityGroupViewResultInner> beginGetVMSecurityRules(
+        String resourceGroupName, String networkWatcherName, SecurityGroupViewParameters parameters);
 
     /**
      * Gets the configured and effective security group rules on the specified VM.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param networkWatcherName The name of the network watcher.
-     * @param parameters Parameters that define the VM to check security groups for.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the configured and effective security group rules on the specified VM.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<SecurityGroupViewResultInner>, SecurityGroupViewResultInner> beginGetVMSecurityRules(String resourceGroupName, String networkWatcherName, SecurityGroupViewParameters parameters, Context context);
-
-    /**
-     * Gets the configured and effective security group rules on the specified VM.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param networkWatcherName The name of the network watcher.
-     * @param parameters Parameters that define the VM to check security groups for.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the configured and effective security group rules on the specified VM.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SecurityGroupViewResultInner> getVMSecurityRulesAsync(String resourceGroupName, String networkWatcherName, SecurityGroupViewParameters parameters);
-
-    /**
-     * Gets the configured and effective security group rules on the specified VM.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param networkWatcherName The name of the network watcher.
-     * @param parameters Parameters that define the VM to check security groups for.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the configured and effective security group rules on the specified VM.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SecurityGroupViewResultInner getVMSecurityRules(String resourceGroupName, String networkWatcherName, SecurityGroupViewParameters parameters);
-
-    /**
-     * Gets the configured and effective security group rules on the specified VM.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters that define the VM to check security groups for.
@@ -733,11 +716,58 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return the configured and effective security group rules on the specified VM.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SecurityGroupViewResultInner getVMSecurityRules(String resourceGroupName, String networkWatcherName, SecurityGroupViewParameters parameters, Context context);
+    SyncPoller<PollResult<SecurityGroupViewResultInner>, SecurityGroupViewResultInner> beginGetVMSecurityRules(
+        String resourceGroupName, String networkWatcherName, SecurityGroupViewParameters parameters, Context context);
+
+    /**
+     * Gets the configured and effective security group rules on the specified VM.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param parameters Parameters that define the VM to check security groups for.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the configured and effective security group rules on the specified VM.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<SecurityGroupViewResultInner> getVMSecurityRulesAsync(
+        String resourceGroupName, String networkWatcherName, SecurityGroupViewParameters parameters);
+
+    /**
+     * Gets the configured and effective security group rules on the specified VM.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param parameters Parameters that define the VM to check security groups for.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the configured and effective security group rules on the specified VM.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SecurityGroupViewResultInner getVMSecurityRules(
+        String resourceGroupName, String networkWatcherName, SecurityGroupViewParameters parameters);
+
+    /**
+     * Gets the configured and effective security group rules on the specified VM.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher.
+     * @param parameters Parameters that define the VM to check security groups for.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the configured and effective security group rules on the specified VM.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SecurityGroupViewResultInner getVMSecurityRules(
+        String resourceGroupName, String networkWatcherName, SecurityGroupViewParameters parameters, Context context);
 
     /**
      * Initiate troubleshooting on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the resource to troubleshoot.
@@ -747,11 +777,12 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return troubleshooting information gained from specified resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> getTroubleshootingWithResponseAsync(String resourceGroupName, String networkWatcherName, TroubleshootingParameters parameters);
+    Mono<Response<Flux<ByteBuffer>>> getTroubleshootingWithResponseAsync(
+        String resourceGroupName, String networkWatcherName, TroubleshootingParameters parameters);
 
     /**
      * Initiate troubleshooting on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the resource to troubleshoot.
@@ -761,11 +792,12 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return troubleshooting information gained from specified resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<TroubleshootingResultInner>, TroubleshootingResultInner> beginGetTroubleshootingAsync(String resourceGroupName, String networkWatcherName, TroubleshootingParameters parameters);
+    PollerFlux<PollResult<TroubleshootingResultInner>, TroubleshootingResultInner> beginGetTroubleshootingAsync(
+        String resourceGroupName, String networkWatcherName, TroubleshootingParameters parameters);
 
     /**
      * Initiate troubleshooting on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the resource to troubleshoot.
@@ -775,54 +807,12 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return troubleshooting information gained from specified resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<TroubleshootingResultInner>, TroubleshootingResultInner> beginGetTroubleshooting(String resourceGroupName, String networkWatcherName, TroubleshootingParameters parameters);
+    SyncPoller<PollResult<TroubleshootingResultInner>, TroubleshootingResultInner> beginGetTroubleshooting(
+        String resourceGroupName, String networkWatcherName, TroubleshootingParameters parameters);
 
     /**
      * Initiate troubleshooting on a specified resource.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param networkWatcherName The name of the network watcher resource.
-     * @param parameters Parameters that define the resource to troubleshoot.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return troubleshooting information gained from specified resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<TroubleshootingResultInner>, TroubleshootingResultInner> beginGetTroubleshooting(String resourceGroupName, String networkWatcherName, TroubleshootingParameters parameters, Context context);
-
-    /**
-     * Initiate troubleshooting on a specified resource.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param networkWatcherName The name of the network watcher resource.
-     * @param parameters Parameters that define the resource to troubleshoot.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return troubleshooting information gained from specified resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<TroubleshootingResultInner> getTroubleshootingAsync(String resourceGroupName, String networkWatcherName, TroubleshootingParameters parameters);
-
-    /**
-     * Initiate troubleshooting on a specified resource.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param networkWatcherName The name of the network watcher resource.
-     * @param parameters Parameters that define the resource to troubleshoot.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return troubleshooting information gained from specified resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    TroubleshootingResultInner getTroubleshooting(String resourceGroupName, String networkWatcherName, TroubleshootingParameters parameters);
-
-    /**
-     * Initiate troubleshooting on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the resource to troubleshoot.
@@ -833,11 +823,58 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return troubleshooting information gained from specified resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TroubleshootingResultInner getTroubleshooting(String resourceGroupName, String networkWatcherName, TroubleshootingParameters parameters, Context context);
+    SyncPoller<PollResult<TroubleshootingResultInner>, TroubleshootingResultInner> beginGetTroubleshooting(
+        String resourceGroupName, String networkWatcherName, TroubleshootingParameters parameters, Context context);
+
+    /**
+     * Initiate troubleshooting on a specified resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher resource.
+     * @param parameters Parameters that define the resource to troubleshoot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return troubleshooting information gained from specified resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<TroubleshootingResultInner> getTroubleshootingAsync(
+        String resourceGroupName, String networkWatcherName, TroubleshootingParameters parameters);
+
+    /**
+     * Initiate troubleshooting on a specified resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher resource.
+     * @param parameters Parameters that define the resource to troubleshoot.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return troubleshooting information gained from specified resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    TroubleshootingResultInner getTroubleshooting(
+        String resourceGroupName, String networkWatcherName, TroubleshootingParameters parameters);
+
+    /**
+     * Initiate troubleshooting on a specified resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher resource.
+     * @param parameters Parameters that define the resource to troubleshoot.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return troubleshooting information gained from specified resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    TroubleshootingResultInner getTroubleshooting(
+        String resourceGroupName, String networkWatcherName, TroubleshootingParameters parameters, Context context);
 
     /**
      * Get the last completed troubleshooting result on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the resource to query the troubleshooting result.
@@ -847,11 +884,12 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return the last completed troubleshooting result on a specified resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> getTroubleshootingResultWithResponseAsync(String resourceGroupName, String networkWatcherName, QueryTroubleshootingParameters parameters);
+    Mono<Response<Flux<ByteBuffer>>> getTroubleshootingResultWithResponseAsync(
+        String resourceGroupName, String networkWatcherName, QueryTroubleshootingParameters parameters);
 
     /**
      * Get the last completed troubleshooting result on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the resource to query the troubleshooting result.
@@ -861,11 +899,12 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return the last completed troubleshooting result on a specified resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<TroubleshootingResultInner>, TroubleshootingResultInner> beginGetTroubleshootingResultAsync(String resourceGroupName, String networkWatcherName, QueryTroubleshootingParameters parameters);
+    PollerFlux<PollResult<TroubleshootingResultInner>, TroubleshootingResultInner> beginGetTroubleshootingResultAsync(
+        String resourceGroupName, String networkWatcherName, QueryTroubleshootingParameters parameters);
 
     /**
      * Get the last completed troubleshooting result on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the resource to query the troubleshooting result.
@@ -875,54 +914,12 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return the last completed troubleshooting result on a specified resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<TroubleshootingResultInner>, TroubleshootingResultInner> beginGetTroubleshootingResult(String resourceGroupName, String networkWatcherName, QueryTroubleshootingParameters parameters);
+    SyncPoller<PollResult<TroubleshootingResultInner>, TroubleshootingResultInner> beginGetTroubleshootingResult(
+        String resourceGroupName, String networkWatcherName, QueryTroubleshootingParameters parameters);
 
     /**
      * Get the last completed troubleshooting result on a specified resource.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param networkWatcherName The name of the network watcher resource.
-     * @param parameters Parameters that define the resource to query the troubleshooting result.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the last completed troubleshooting result on a specified resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<TroubleshootingResultInner>, TroubleshootingResultInner> beginGetTroubleshootingResult(String resourceGroupName, String networkWatcherName, QueryTroubleshootingParameters parameters, Context context);
-
-    /**
-     * Get the last completed troubleshooting result on a specified resource.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param networkWatcherName The name of the network watcher resource.
-     * @param parameters Parameters that define the resource to query the troubleshooting result.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the last completed troubleshooting result on a specified resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<TroubleshootingResultInner> getTroubleshootingResultAsync(String resourceGroupName, String networkWatcherName, QueryTroubleshootingParameters parameters);
-
-    /**
-     * Get the last completed troubleshooting result on a specified resource.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param networkWatcherName The name of the network watcher resource.
-     * @param parameters Parameters that define the resource to query the troubleshooting result.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the last completed troubleshooting result on a specified resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    TroubleshootingResultInner getTroubleshootingResult(String resourceGroupName, String networkWatcherName, QueryTroubleshootingParameters parameters);
-
-    /**
-     * Get the last completed troubleshooting result on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the resource to query the troubleshooting result.
@@ -933,11 +930,64 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return the last completed troubleshooting result on a specified resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TroubleshootingResultInner getTroubleshootingResult(String resourceGroupName, String networkWatcherName, QueryTroubleshootingParameters parameters, Context context);
+    SyncPoller<PollResult<TroubleshootingResultInner>, TroubleshootingResultInner> beginGetTroubleshootingResult(
+        String resourceGroupName,
+        String networkWatcherName,
+        QueryTroubleshootingParameters parameters,
+        Context context);
 
     /**
-     * Configures flow log  and traffic analytics (optional) on a specified resource.
-     * 
+     * Get the last completed troubleshooting result on a specified resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher resource.
+     * @param parameters Parameters that define the resource to query the troubleshooting result.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the last completed troubleshooting result on a specified resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<TroubleshootingResultInner> getTroubleshootingResultAsync(
+        String resourceGroupName, String networkWatcherName, QueryTroubleshootingParameters parameters);
+
+    /**
+     * Get the last completed troubleshooting result on a specified resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher resource.
+     * @param parameters Parameters that define the resource to query the troubleshooting result.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the last completed troubleshooting result on a specified resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    TroubleshootingResultInner getTroubleshootingResult(
+        String resourceGroupName, String networkWatcherName, QueryTroubleshootingParameters parameters);
+
+    /**
+     * Get the last completed troubleshooting result on a specified resource.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param networkWatcherName The name of the network watcher resource.
+     * @param parameters Parameters that define the resource to query the troubleshooting result.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the last completed troubleshooting result on a specified resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    TroubleshootingResultInner getTroubleshootingResult(
+        String resourceGroupName,
+        String networkWatcherName,
+        QueryTroubleshootingParameters parameters,
+        Context context);
+
+    /**
+     * Configures flow log and traffic analytics (optional) on a specified resource.
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the configuration of flow log.
@@ -947,11 +997,12 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return information on the configuration of flow log and traffic analytics (optional).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> setFlowLogConfigurationWithResponseAsync(String resourceGroupName, String networkWatcherName, FlowLogInformationInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> setFlowLogConfigurationWithResponseAsync(
+        String resourceGroupName, String networkWatcherName, FlowLogInformationInner parameters);
 
     /**
-     * Configures flow log  and traffic analytics (optional) on a specified resource.
-     * 
+     * Configures flow log and traffic analytics (optional) on a specified resource.
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the configuration of flow log.
@@ -961,11 +1012,12 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return information on the configuration of flow log and traffic analytics (optional).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<FlowLogInformationInner>, FlowLogInformationInner> beginSetFlowLogConfigurationAsync(String resourceGroupName, String networkWatcherName, FlowLogInformationInner parameters);
+    PollerFlux<PollResult<FlowLogInformationInner>, FlowLogInformationInner> beginSetFlowLogConfigurationAsync(
+        String resourceGroupName, String networkWatcherName, FlowLogInformationInner parameters);
 
     /**
-     * Configures flow log  and traffic analytics (optional) on a specified resource.
-     * 
+     * Configures flow log and traffic analytics (optional) on a specified resource.
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the configuration of flow log.
@@ -975,54 +1027,12 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return information on the configuration of flow log and traffic analytics (optional).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<FlowLogInformationInner>, FlowLogInformationInner> beginSetFlowLogConfiguration(String resourceGroupName, String networkWatcherName, FlowLogInformationInner parameters);
+    SyncPoller<PollResult<FlowLogInformationInner>, FlowLogInformationInner> beginSetFlowLogConfiguration(
+        String resourceGroupName, String networkWatcherName, FlowLogInformationInner parameters);
 
     /**
-     * Configures flow log  and traffic analytics (optional) on a specified resource.
-     * 
-     * @param resourceGroupName The name of the network watcher resource group.
-     * @param networkWatcherName The name of the network watcher resource.
-     * @param parameters Parameters that define the configuration of flow log.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information on the configuration of flow log and traffic analytics (optional).
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<FlowLogInformationInner>, FlowLogInformationInner> beginSetFlowLogConfiguration(String resourceGroupName, String networkWatcherName, FlowLogInformationInner parameters, Context context);
-
-    /**
-     * Configures flow log  and traffic analytics (optional) on a specified resource.
-     * 
-     * @param resourceGroupName The name of the network watcher resource group.
-     * @param networkWatcherName The name of the network watcher resource.
-     * @param parameters Parameters that define the configuration of flow log.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information on the configuration of flow log and traffic analytics (optional).
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<FlowLogInformationInner> setFlowLogConfigurationAsync(String resourceGroupName, String networkWatcherName, FlowLogInformationInner parameters);
-
-    /**
-     * Configures flow log  and traffic analytics (optional) on a specified resource.
-     * 
-     * @param resourceGroupName The name of the network watcher resource group.
-     * @param networkWatcherName The name of the network watcher resource.
-     * @param parameters Parameters that define the configuration of flow log.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information on the configuration of flow log and traffic analytics (optional).
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    FlowLogInformationInner setFlowLogConfiguration(String resourceGroupName, String networkWatcherName, FlowLogInformationInner parameters);
-
-    /**
-     * Configures flow log  and traffic analytics (optional) on a specified resource.
-     * 
+     * Configures flow log and traffic analytics (optional) on a specified resource.
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that define the configuration of flow log.
@@ -1033,56 +1043,45 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return information on the configuration of flow log and traffic analytics (optional).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FlowLogInformationInner setFlowLogConfiguration(String resourceGroupName, String networkWatcherName, FlowLogInformationInner parameters, Context context);
+    SyncPoller<PollResult<FlowLogInformationInner>, FlowLogInformationInner> beginSetFlowLogConfiguration(
+        String resourceGroupName, String networkWatcherName, FlowLogInformationInner parameters, Context context);
 
     /**
-     * Queries status of flow log and traffic analytics (optional) on a specified resource.
-     * 
+     * Configures flow log and traffic analytics (optional) on a specified resource.
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
-     * @param parameters Parameters that define a resource to query flow log and traffic analytics (optional)  status.
+     * @param parameters Parameters that define the configuration of flow log.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information on the configuration of flow log and traffic analytics (optional).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> getFlowLogStatusWithResponseAsync(String resourceGroupName, String networkWatcherName, FlowLogStatusParameters parameters);
+    Mono<FlowLogInformationInner> setFlowLogConfigurationAsync(
+        String resourceGroupName, String networkWatcherName, FlowLogInformationInner parameters);
 
     /**
-     * Queries status of flow log and traffic analytics (optional) on a specified resource.
-     * 
+     * Configures flow log and traffic analytics (optional) on a specified resource.
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
-     * @param parameters Parameters that define a resource to query flow log and traffic analytics (optional)  status.
+     * @param parameters Parameters that define the configuration of flow log.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information on the configuration of flow log and traffic analytics (optional).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<FlowLogInformationInner>, FlowLogInformationInner> beginGetFlowLogStatusAsync(String resourceGroupName, String networkWatcherName, FlowLogStatusParameters parameters);
+    FlowLogInformationInner setFlowLogConfiguration(
+        String resourceGroupName, String networkWatcherName, FlowLogInformationInner parameters);
 
     /**
-     * Queries status of flow log and traffic analytics (optional) on a specified resource.
-     * 
+     * Configures flow log and traffic analytics (optional) on a specified resource.
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
-     * @param parameters Parameters that define a resource to query flow log and traffic analytics (optional)  status.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information on the configuration of flow log and traffic analytics (optional).
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<FlowLogInformationInner>, FlowLogInformationInner> beginGetFlowLogStatus(String resourceGroupName, String networkWatcherName, FlowLogStatusParameters parameters);
-
-    /**
-     * Queries status of flow log and traffic analytics (optional) on a specified resource.
-     * 
-     * @param resourceGroupName The name of the network watcher resource group.
-     * @param networkWatcherName The name of the network watcher resource.
-     * @param parameters Parameters that define a resource to query flow log and traffic analytics (optional)  status.
+     * @param parameters Parameters that define the configuration of flow log.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1090,42 +1089,60 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return information on the configuration of flow log and traffic analytics (optional).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<FlowLogInformationInner>, FlowLogInformationInner> beginGetFlowLogStatus(String resourceGroupName, String networkWatcherName, FlowLogStatusParameters parameters, Context context);
+    FlowLogInformationInner setFlowLogConfiguration(
+        String resourceGroupName, String networkWatcherName, FlowLogInformationInner parameters, Context context);
 
     /**
      * Queries status of flow log and traffic analytics (optional) on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
-     * @param parameters Parameters that define a resource to query flow log and traffic analytics (optional)  status.
+     * @param parameters Parameters that define a resource to query flow log and traffic analytics (optional) status.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information on the configuration of flow log and traffic analytics (optional).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<FlowLogInformationInner> getFlowLogStatusAsync(String resourceGroupName, String networkWatcherName, FlowLogStatusParameters parameters);
+    Mono<Response<Flux<ByteBuffer>>> getFlowLogStatusWithResponseAsync(
+        String resourceGroupName, String networkWatcherName, FlowLogStatusParameters parameters);
 
     /**
      * Queries status of flow log and traffic analytics (optional) on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
-     * @param parameters Parameters that define a resource to query flow log and traffic analytics (optional)  status.
+     * @param parameters Parameters that define a resource to query flow log and traffic analytics (optional) status.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information on the configuration of flow log and traffic analytics (optional).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FlowLogInformationInner getFlowLogStatus(String resourceGroupName, String networkWatcherName, FlowLogStatusParameters parameters);
+    PollerFlux<PollResult<FlowLogInformationInner>, FlowLogInformationInner> beginGetFlowLogStatusAsync(
+        String resourceGroupName, String networkWatcherName, FlowLogStatusParameters parameters);
 
     /**
      * Queries status of flow log and traffic analytics (optional) on a specified resource.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
-     * @param parameters Parameters that define a resource to query flow log and traffic analytics (optional)  status.
+     * @param parameters Parameters that define a resource to query flow log and traffic analytics (optional) status.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information on the configuration of flow log and traffic analytics (optional).
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SyncPoller<PollResult<FlowLogInformationInner>, FlowLogInformationInner> beginGetFlowLogStatus(
+        String resourceGroupName, String networkWatcherName, FlowLogStatusParameters parameters);
+
+    /**
+     * Queries status of flow log and traffic analytics (optional) on a specified resource.
+     *
+     * @param resourceGroupName The name of the network watcher resource group.
+     * @param networkWatcherName The name of the network watcher resource.
+     * @param parameters Parameters that define a resource to query flow log and traffic analytics (optional) status.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1133,11 +1150,59 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return information on the configuration of flow log and traffic analytics (optional).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    FlowLogInformationInner getFlowLogStatus(String resourceGroupName, String networkWatcherName, FlowLogStatusParameters parameters, Context context);
+    SyncPoller<PollResult<FlowLogInformationInner>, FlowLogInformationInner> beginGetFlowLogStatus(
+        String resourceGroupName, String networkWatcherName, FlowLogStatusParameters parameters, Context context);
 
     /**
-     * Verifies the possibility of establishing a direct TCP connection from a virtual machine to a given endpoint including another VM or an arbitrary remote server.
-     * 
+     * Queries status of flow log and traffic analytics (optional) on a specified resource.
+     *
+     * @param resourceGroupName The name of the network watcher resource group.
+     * @param networkWatcherName The name of the network watcher resource.
+     * @param parameters Parameters that define a resource to query flow log and traffic analytics (optional) status.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information on the configuration of flow log and traffic analytics (optional).
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<FlowLogInformationInner> getFlowLogStatusAsync(
+        String resourceGroupName, String networkWatcherName, FlowLogStatusParameters parameters);
+
+    /**
+     * Queries status of flow log and traffic analytics (optional) on a specified resource.
+     *
+     * @param resourceGroupName The name of the network watcher resource group.
+     * @param networkWatcherName The name of the network watcher resource.
+     * @param parameters Parameters that define a resource to query flow log and traffic analytics (optional) status.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information on the configuration of flow log and traffic analytics (optional).
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    FlowLogInformationInner getFlowLogStatus(
+        String resourceGroupName, String networkWatcherName, FlowLogStatusParameters parameters);
+
+    /**
+     * Queries status of flow log and traffic analytics (optional) on a specified resource.
+     *
+     * @param resourceGroupName The name of the network watcher resource group.
+     * @param networkWatcherName The name of the network watcher resource.
+     * @param parameters Parameters that define a resource to query flow log and traffic analytics (optional) status.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information on the configuration of flow log and traffic analytics (optional).
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    FlowLogInformationInner getFlowLogStatus(
+        String resourceGroupName, String networkWatcherName, FlowLogStatusParameters parameters, Context context);
+
+    /**
+     * Verifies the possibility of establishing a direct TCP connection from a virtual machine to a given endpoint
+     * including another VM or an arbitrary remote server.
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that determine how the connectivity check will be performed.
@@ -1147,11 +1212,13 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return information on the connectivity status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> checkConnectivityWithResponseAsync(String resourceGroupName, String networkWatcherName, ConnectivityParameters parameters);
+    Mono<Response<Flux<ByteBuffer>>> checkConnectivityWithResponseAsync(
+        String resourceGroupName, String networkWatcherName, ConnectivityParameters parameters);
 
     /**
-     * Verifies the possibility of establishing a direct TCP connection from a virtual machine to a given endpoint including another VM or an arbitrary remote server.
-     * 
+     * Verifies the possibility of establishing a direct TCP connection from a virtual machine to a given endpoint
+     * including another VM or an arbitrary remote server.
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that determine how the connectivity check will be performed.
@@ -1161,11 +1228,13 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return information on the connectivity status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<ConnectivityInformationInner>, ConnectivityInformationInner> beginCheckConnectivityAsync(String resourceGroupName, String networkWatcherName, ConnectivityParameters parameters);
+    PollerFlux<PollResult<ConnectivityInformationInner>, ConnectivityInformationInner> beginCheckConnectivityAsync(
+        String resourceGroupName, String networkWatcherName, ConnectivityParameters parameters);
 
     /**
-     * Verifies the possibility of establishing a direct TCP connection from a virtual machine to a given endpoint including another VM or an arbitrary remote server.
-     * 
+     * Verifies the possibility of establishing a direct TCP connection from a virtual machine to a given endpoint
+     * including another VM or an arbitrary remote server.
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that determine how the connectivity check will be performed.
@@ -1175,54 +1244,13 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return information on the connectivity status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ConnectivityInformationInner>, ConnectivityInformationInner> beginCheckConnectivity(String resourceGroupName, String networkWatcherName, ConnectivityParameters parameters);
+    SyncPoller<PollResult<ConnectivityInformationInner>, ConnectivityInformationInner> beginCheckConnectivity(
+        String resourceGroupName, String networkWatcherName, ConnectivityParameters parameters);
 
     /**
-     * Verifies the possibility of establishing a direct TCP connection from a virtual machine to a given endpoint including another VM or an arbitrary remote server.
-     * 
-     * @param resourceGroupName The name of the network watcher resource group.
-     * @param networkWatcherName The name of the network watcher resource.
-     * @param parameters Parameters that determine how the connectivity check will be performed.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information on the connectivity status.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ConnectivityInformationInner>, ConnectivityInformationInner> beginCheckConnectivity(String resourceGroupName, String networkWatcherName, ConnectivityParameters parameters, Context context);
-
-    /**
-     * Verifies the possibility of establishing a direct TCP connection from a virtual machine to a given endpoint including another VM or an arbitrary remote server.
-     * 
-     * @param resourceGroupName The name of the network watcher resource group.
-     * @param networkWatcherName The name of the network watcher resource.
-     * @param parameters Parameters that determine how the connectivity check will be performed.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information on the connectivity status.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ConnectivityInformationInner> checkConnectivityAsync(String resourceGroupName, String networkWatcherName, ConnectivityParameters parameters);
-
-    /**
-     * Verifies the possibility of establishing a direct TCP connection from a virtual machine to a given endpoint including another VM or an arbitrary remote server.
-     * 
-     * @param resourceGroupName The name of the network watcher resource group.
-     * @param networkWatcherName The name of the network watcher resource.
-     * @param parameters Parameters that determine how the connectivity check will be performed.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return information on the connectivity status.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    ConnectivityInformationInner checkConnectivity(String resourceGroupName, String networkWatcherName, ConnectivityParameters parameters);
-
-    /**
-     * Verifies the possibility of establishing a direct TCP connection from a virtual machine to a given endpoint including another VM or an arbitrary remote server.
-     * 
+     * Verifies the possibility of establishing a direct TCP connection from a virtual machine to a given endpoint
+     * including another VM or an arbitrary remote server.
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that determine how the connectivity check will be performed.
@@ -1233,11 +1261,61 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return information on the connectivity status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConnectivityInformationInner checkConnectivity(String resourceGroupName, String networkWatcherName, ConnectivityParameters parameters, Context context);
+    SyncPoller<PollResult<ConnectivityInformationInner>, ConnectivityInformationInner> beginCheckConnectivity(
+        String resourceGroupName, String networkWatcherName, ConnectivityParameters parameters, Context context);
+
+    /**
+     * Verifies the possibility of establishing a direct TCP connection from a virtual machine to a given endpoint
+     * including another VM or an arbitrary remote server.
+     *
+     * @param resourceGroupName The name of the network watcher resource group.
+     * @param networkWatcherName The name of the network watcher resource.
+     * @param parameters Parameters that determine how the connectivity check will be performed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information on the connectivity status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<ConnectivityInformationInner> checkConnectivityAsync(
+        String resourceGroupName, String networkWatcherName, ConnectivityParameters parameters);
+
+    /**
+     * Verifies the possibility of establishing a direct TCP connection from a virtual machine to a given endpoint
+     * including another VM or an arbitrary remote server.
+     *
+     * @param resourceGroupName The name of the network watcher resource group.
+     * @param networkWatcherName The name of the network watcher resource.
+     * @param parameters Parameters that determine how the connectivity check will be performed.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information on the connectivity status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ConnectivityInformationInner checkConnectivity(
+        String resourceGroupName, String networkWatcherName, ConnectivityParameters parameters);
+
+    /**
+     * Verifies the possibility of establishing a direct TCP connection from a virtual machine to a given endpoint
+     * including another VM or an arbitrary remote server.
+     *
+     * @param resourceGroupName The name of the network watcher resource group.
+     * @param networkWatcherName The name of the network watcher resource.
+     * @param parameters Parameters that determine how the connectivity check will be performed.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return information on the connectivity status.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    ConnectivityInformationInner checkConnectivity(
+        String resourceGroupName, String networkWatcherName, ConnectivityParameters parameters, Context context);
 
     /**
      * Gets the relative latency score for internet service providers from a specified location to Azure regions.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that determine Azure reachability report configuration.
@@ -1247,11 +1325,12 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return the relative latency score for internet service providers from a specified location to Azure regions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> getAzureReachabilityReportWithResponseAsync(String resourceGroupName, String networkWatcherName, AzureReachabilityReportParameters parameters);
+    Mono<Response<Flux<ByteBuffer>>> getAzureReachabilityReportWithResponseAsync(
+        String resourceGroupName, String networkWatcherName, AzureReachabilityReportParameters parameters);
 
     /**
      * Gets the relative latency score for internet service providers from a specified location to Azure regions.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that determine Azure reachability report configuration.
@@ -1261,11 +1340,13 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return the relative latency score for internet service providers from a specified location to Azure regions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<AzureReachabilityReportInner>, AzureReachabilityReportInner> beginGetAzureReachabilityReportAsync(String resourceGroupName, String networkWatcherName, AzureReachabilityReportParameters parameters);
+    PollerFlux<PollResult<AzureReachabilityReportInner>, AzureReachabilityReportInner>
+        beginGetAzureReachabilityReportAsync(
+            String resourceGroupName, String networkWatcherName, AzureReachabilityReportParameters parameters);
 
     /**
      * Gets the relative latency score for internet service providers from a specified location to Azure regions.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that determine Azure reachability report configuration.
@@ -1275,11 +1356,12 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return the relative latency score for internet service providers from a specified location to Azure regions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<AzureReachabilityReportInner>, AzureReachabilityReportInner> beginGetAzureReachabilityReport(String resourceGroupName, String networkWatcherName, AzureReachabilityReportParameters parameters);
+    SyncPoller<PollResult<AzureReachabilityReportInner>, AzureReachabilityReportInner> beginGetAzureReachabilityReport(
+        String resourceGroupName, String networkWatcherName, AzureReachabilityReportParameters parameters);
 
     /**
      * Gets the relative latency score for internet service providers from a specified location to Azure regions.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that determine Azure reachability report configuration.
@@ -1290,11 +1372,15 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return the relative latency score for internet service providers from a specified location to Azure regions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<AzureReachabilityReportInner>, AzureReachabilityReportInner> beginGetAzureReachabilityReport(String resourceGroupName, String networkWatcherName, AzureReachabilityReportParameters parameters, Context context);
+    SyncPoller<PollResult<AzureReachabilityReportInner>, AzureReachabilityReportInner> beginGetAzureReachabilityReport(
+        String resourceGroupName,
+        String networkWatcherName,
+        AzureReachabilityReportParameters parameters,
+        Context context);
 
     /**
      * Gets the relative latency score for internet service providers from a specified location to Azure regions.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that determine Azure reachability report configuration.
@@ -1304,11 +1390,12 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return the relative latency score for internet service providers from a specified location to Azure regions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<AzureReachabilityReportInner> getAzureReachabilityReportAsync(String resourceGroupName, String networkWatcherName, AzureReachabilityReportParameters parameters);
+    Mono<AzureReachabilityReportInner> getAzureReachabilityReportAsync(
+        String resourceGroupName, String networkWatcherName, AzureReachabilityReportParameters parameters);
 
     /**
      * Gets the relative latency score for internet service providers from a specified location to Azure regions.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that determine Azure reachability report configuration.
@@ -1318,11 +1405,12 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return the relative latency score for internet service providers from a specified location to Azure regions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AzureReachabilityReportInner getAzureReachabilityReport(String resourceGroupName, String networkWatcherName, AzureReachabilityReportParameters parameters);
+    AzureReachabilityReportInner getAzureReachabilityReport(
+        String resourceGroupName, String networkWatcherName, AzureReachabilityReportParameters parameters);
 
     /**
      * Gets the relative latency score for internet service providers from a specified location to Azure regions.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that determine Azure reachability report configuration.
@@ -1333,11 +1421,15 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return the relative latency score for internet service providers from a specified location to Azure regions.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AzureReachabilityReportInner getAzureReachabilityReport(String resourceGroupName, String networkWatcherName, AzureReachabilityReportParameters parameters, Context context);
+    AzureReachabilityReportInner getAzureReachabilityReport(
+        String resourceGroupName,
+        String networkWatcherName,
+        AzureReachabilityReportParameters parameters,
+        Context context);
 
     /**
      * Lists all available internet service providers for a specified Azure region.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that scope the list of available providers.
@@ -1347,11 +1439,12 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return list of available countries with details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> listAvailableProvidersWithResponseAsync(String resourceGroupName, String networkWatcherName, AvailableProvidersListParameters parameters);
+    Mono<Response<Flux<ByteBuffer>>> listAvailableProvidersWithResponseAsync(
+        String resourceGroupName, String networkWatcherName, AvailableProvidersListParameters parameters);
 
     /**
      * Lists all available internet service providers for a specified Azure region.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that scope the list of available providers.
@@ -1361,11 +1454,12 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return list of available countries with details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<AvailableProvidersListInner>, AvailableProvidersListInner> beginListAvailableProvidersAsync(String resourceGroupName, String networkWatcherName, AvailableProvidersListParameters parameters);
+    PollerFlux<PollResult<AvailableProvidersListInner>, AvailableProvidersListInner> beginListAvailableProvidersAsync(
+        String resourceGroupName, String networkWatcherName, AvailableProvidersListParameters parameters);
 
     /**
      * Lists all available internet service providers for a specified Azure region.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that scope the list of available providers.
@@ -1375,54 +1469,12 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return list of available countries with details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<AvailableProvidersListInner>, AvailableProvidersListInner> beginListAvailableProviders(String resourceGroupName, String networkWatcherName, AvailableProvidersListParameters parameters);
+    SyncPoller<PollResult<AvailableProvidersListInner>, AvailableProvidersListInner> beginListAvailableProviders(
+        String resourceGroupName, String networkWatcherName, AvailableProvidersListParameters parameters);
 
     /**
      * Lists all available internet service providers for a specified Azure region.
-     * 
-     * @param resourceGroupName The name of the network watcher resource group.
-     * @param networkWatcherName The name of the network watcher resource.
-     * @param parameters Parameters that scope the list of available providers.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of available countries with details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<AvailableProvidersListInner>, AvailableProvidersListInner> beginListAvailableProviders(String resourceGroupName, String networkWatcherName, AvailableProvidersListParameters parameters, Context context);
-
-    /**
-     * Lists all available internet service providers for a specified Azure region.
-     * 
-     * @param resourceGroupName The name of the network watcher resource group.
-     * @param networkWatcherName The name of the network watcher resource.
-     * @param parameters Parameters that scope the list of available providers.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of available countries with details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<AvailableProvidersListInner> listAvailableProvidersAsync(String resourceGroupName, String networkWatcherName, AvailableProvidersListParameters parameters);
-
-    /**
-     * Lists all available internet service providers for a specified Azure region.
-     * 
-     * @param resourceGroupName The name of the network watcher resource group.
-     * @param networkWatcherName The name of the network watcher resource.
-     * @param parameters Parameters that scope the list of available providers.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of available countries with details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    AvailableProvidersListInner listAvailableProviders(String resourceGroupName, String networkWatcherName, AvailableProvidersListParameters parameters);
-
-    /**
-     * Lists all available internet service providers for a specified Azure region.
-     * 
+     *
      * @param resourceGroupName The name of the network watcher resource group.
      * @param networkWatcherName The name of the network watcher resource.
      * @param parameters Parameters that scope the list of available providers.
@@ -1433,11 +1485,64 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return list of available countries with details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AvailableProvidersListInner listAvailableProviders(String resourceGroupName, String networkWatcherName, AvailableProvidersListParameters parameters, Context context);
+    SyncPoller<PollResult<AvailableProvidersListInner>, AvailableProvidersListInner> beginListAvailableProviders(
+        String resourceGroupName,
+        String networkWatcherName,
+        AvailableProvidersListParameters parameters,
+        Context context);
+
+    /**
+     * Lists all available internet service providers for a specified Azure region.
+     *
+     * @param resourceGroupName The name of the network watcher resource group.
+     * @param networkWatcherName The name of the network watcher resource.
+     * @param parameters Parameters that scope the list of available providers.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of available countries with details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<AvailableProvidersListInner> listAvailableProvidersAsync(
+        String resourceGroupName, String networkWatcherName, AvailableProvidersListParameters parameters);
+
+    /**
+     * Lists all available internet service providers for a specified Azure region.
+     *
+     * @param resourceGroupName The name of the network watcher resource group.
+     * @param networkWatcherName The name of the network watcher resource.
+     * @param parameters Parameters that scope the list of available providers.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of available countries with details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AvailableProvidersListInner listAvailableProviders(
+        String resourceGroupName, String networkWatcherName, AvailableProvidersListParameters parameters);
+
+    /**
+     * Lists all available internet service providers for a specified Azure region.
+     *
+     * @param resourceGroupName The name of the network watcher resource group.
+     * @param networkWatcherName The name of the network watcher resource.
+     * @param parameters Parameters that scope the list of available providers.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of available countries with details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AvailableProvidersListInner listAvailableProviders(
+        String resourceGroupName,
+        String networkWatcherName,
+        AvailableProvidersListParameters parameters,
+        Context context);
 
     /**
      * Get network configuration diagnostic.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters to get network configuration diagnostic.
@@ -1447,11 +1552,12 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return network configuration diagnostic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> getNetworkConfigurationDiagnosticWithResponseAsync(String resourceGroupName, String networkWatcherName, NetworkConfigurationDiagnosticParameters parameters);
+    Mono<Response<Flux<ByteBuffer>>> getNetworkConfigurationDiagnosticWithResponseAsync(
+        String resourceGroupName, String networkWatcherName, NetworkConfigurationDiagnosticParameters parameters);
 
     /**
      * Get network configuration diagnostic.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters to get network configuration diagnostic.
@@ -1461,11 +1567,13 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return network configuration diagnostic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<NetworkConfigurationDiagnosticResponseInner>, NetworkConfigurationDiagnosticResponseInner> beginGetNetworkConfigurationDiagnosticAsync(String resourceGroupName, String networkWatcherName, NetworkConfigurationDiagnosticParameters parameters);
+    PollerFlux<PollResult<NetworkConfigurationDiagnosticResponseInner>, NetworkConfigurationDiagnosticResponseInner>
+        beginGetNetworkConfigurationDiagnosticAsync(
+            String resourceGroupName, String networkWatcherName, NetworkConfigurationDiagnosticParameters parameters);
 
     /**
      * Get network configuration diagnostic.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters to get network configuration diagnostic.
@@ -1475,11 +1583,13 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return network configuration diagnostic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<NetworkConfigurationDiagnosticResponseInner>, NetworkConfigurationDiagnosticResponseInner> beginGetNetworkConfigurationDiagnostic(String resourceGroupName, String networkWatcherName, NetworkConfigurationDiagnosticParameters parameters);
+    SyncPoller<PollResult<NetworkConfigurationDiagnosticResponseInner>, NetworkConfigurationDiagnosticResponseInner>
+        beginGetNetworkConfigurationDiagnostic(
+            String resourceGroupName, String networkWatcherName, NetworkConfigurationDiagnosticParameters parameters);
 
     /**
      * Get network configuration diagnostic.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters to get network configuration diagnostic.
@@ -1490,11 +1600,16 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return network configuration diagnostic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<NetworkConfigurationDiagnosticResponseInner>, NetworkConfigurationDiagnosticResponseInner> beginGetNetworkConfigurationDiagnostic(String resourceGroupName, String networkWatcherName, NetworkConfigurationDiagnosticParameters parameters, Context context);
+    SyncPoller<PollResult<NetworkConfigurationDiagnosticResponseInner>, NetworkConfigurationDiagnosticResponseInner>
+        beginGetNetworkConfigurationDiagnostic(
+            String resourceGroupName,
+            String networkWatcherName,
+            NetworkConfigurationDiagnosticParameters parameters,
+            Context context);
 
     /**
      * Get network configuration diagnostic.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters to get network configuration diagnostic.
@@ -1504,11 +1619,12 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return network configuration diagnostic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<NetworkConfigurationDiagnosticResponseInner> getNetworkConfigurationDiagnosticAsync(String resourceGroupName, String networkWatcherName, NetworkConfigurationDiagnosticParameters parameters);
+    Mono<NetworkConfigurationDiagnosticResponseInner> getNetworkConfigurationDiagnosticAsync(
+        String resourceGroupName, String networkWatcherName, NetworkConfigurationDiagnosticParameters parameters);
 
     /**
      * Get network configuration diagnostic.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters to get network configuration diagnostic.
@@ -1518,11 +1634,12 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return network configuration diagnostic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkConfigurationDiagnosticResponseInner getNetworkConfigurationDiagnostic(String resourceGroupName, String networkWatcherName, NetworkConfigurationDiagnosticParameters parameters);
+    NetworkConfigurationDiagnosticResponseInner getNetworkConfigurationDiagnostic(
+        String resourceGroupName, String networkWatcherName, NetworkConfigurationDiagnosticParameters parameters);
 
     /**
      * Get network configuration diagnostic.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param networkWatcherName The name of the network watcher.
      * @param parameters Parameters to get network configuration diagnostic.
@@ -1533,5 +1650,9 @@ public interface NetworkWatchersClient extends InnerSupportsGet<NetworkWatcherIn
      * @return network configuration diagnostic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkConfigurationDiagnosticResponseInner getNetworkConfigurationDiagnostic(String resourceGroupName, String networkWatcherName, NetworkConfigurationDiagnosticParameters parameters, Context context);
+    NetworkConfigurationDiagnosticResponseInner getNetworkConfigurationDiagnostic(
+        String resourceGroupName,
+        String networkWatcherName,
+        NetworkConfigurationDiagnosticParameters parameters,
+        Context context);
 }

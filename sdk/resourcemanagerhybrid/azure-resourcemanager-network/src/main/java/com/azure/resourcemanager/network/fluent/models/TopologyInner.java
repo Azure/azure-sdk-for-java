@@ -5,22 +5,17 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.TopologyResource;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/**
- * Topology of the specified resource group.
- */
+/** Topology of the specified resource group. */
 @Fluent
 public final class TopologyInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(TopologyInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(TopologyInner.class);
 
     /*
      * GUID representing the operation id.
@@ -49,7 +44,7 @@ public final class TopologyInner {
 
     /**
      * Get the id property: GUID representing the operation id.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -57,9 +52,8 @@ public final class TopologyInner {
     }
 
     /**
-     * Get the createdDateTime property: The datetime when the topology was
-     * initially created for the resource group.
-     * 
+     * Get the createdDateTime property: The datetime when the topology was initially created for the resource group.
+     *
      * @return the createdDateTime value.
      */
     public OffsetDateTime createdDateTime() {
@@ -67,9 +61,8 @@ public final class TopologyInner {
     }
 
     /**
-     * Get the lastModified property: The datetime when the topology was last
-     * modified.
-     * 
+     * Get the lastModified property: The datetime when the topology was last modified.
+     *
      * @return the lastModified value.
      */
     public OffsetDateTime lastModified() {
@@ -78,7 +71,7 @@ public final class TopologyInner {
 
     /**
      * Get the resources property: The resources property.
-     * 
+     *
      * @return the resources value.
      */
     public List<TopologyResource> resources() {
@@ -87,7 +80,7 @@ public final class TopologyInner {
 
     /**
      * Set the resources property: The resources property.
-     * 
+     *
      * @param resources the resources value to set.
      * @return the TopologyInner object itself.
      */
@@ -98,7 +91,7 @@ public final class TopologyInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
@@ -13,20 +12,15 @@ import com.azure.resourcemanager.network.models.IpTag;
 import com.azure.resourcemanager.network.models.IpVersion;
 import com.azure.resourcemanager.network.models.PublicIpPrefixSku;
 import com.azure.resourcemanager.network.models.ReferencedPublicIpAddress;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Public IP prefix resource.
- */
+/** Public IP prefix resource. */
 @Fluent
 public final class PublicIpPrefixInner extends Resource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(PublicIpPrefixInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PublicIpPrefixInner.class);
 
     /*
      * The public IP prefix SKU.
@@ -61,7 +55,7 @@ public final class PublicIpPrefixInner extends Resource {
 
     /**
      * Get the sku property: The public IP prefix SKU.
-     * 
+     *
      * @return the sku value.
      */
     public PublicIpPrefixSku sku() {
@@ -70,7 +64,7 @@ public final class PublicIpPrefixInner extends Resource {
 
     /**
      * Set the sku property: The public IP prefix SKU.
-     * 
+     *
      * @param sku the sku value to set.
      * @return the PublicIpPrefixInner object itself.
      */
@@ -81,7 +75,7 @@ public final class PublicIpPrefixInner extends Resource {
 
     /**
      * Get the innerProperties property: Public IP prefix properties.
-     * 
+     *
      * @return the innerProperties value.
      */
     private PublicIpPrefixPropertiesFormat innerProperties() {
@@ -89,9 +83,8 @@ public final class PublicIpPrefixInner extends Resource {
     }
 
     /**
-     * Get the etag property: A unique read-only string that changes whenever
-     * the resource is updated.
-     * 
+     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -99,9 +92,8 @@ public final class PublicIpPrefixInner extends Resource {
     }
 
     /**
-     * Set the etag property: A unique read-only string that changes whenever
-     * the resource is updated.
-     * 
+     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
      * @param etag the etag value to set.
      * @return the PublicIpPrefixInner object itself.
      */
@@ -111,9 +103,9 @@ public final class PublicIpPrefixInner extends Resource {
     }
 
     /**
-     * Get the zones property: A list of availability zones denoting the IP
-     * allocated for the resource needs to come from.
-     * 
+     * Get the zones property: A list of availability zones denoting the IP allocated for the resource needs to come
+     * from.
+     *
      * @return the zones value.
      */
     public List<String> zones() {
@@ -121,9 +113,9 @@ public final class PublicIpPrefixInner extends Resource {
     }
 
     /**
-     * Set the zones property: A list of availability zones denoting the IP
-     * allocated for the resource needs to come from.
-     * 
+     * Set the zones property: A list of availability zones denoting the IP allocated for the resource needs to come
+     * from.
+     *
      * @param zones the zones value to set.
      * @return the PublicIpPrefixInner object itself.
      */
@@ -134,7 +126,7 @@ public final class PublicIpPrefixInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -143,7 +135,7 @@ public final class PublicIpPrefixInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     * 
+     *
      * @param id the id value to set.
      * @return the PublicIpPrefixInner object itself.
      */
@@ -152,18 +144,14 @@ public final class PublicIpPrefixInner extends Resource {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public PublicIpPrefixInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public PublicIpPrefixInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -171,9 +159,8 @@ public final class PublicIpPrefixInner extends Resource {
     }
 
     /**
-     * Get the publicIpAddressVersion property: The public IP address version.
-     * Possible values are: 'IPv4' and 'IPv6'.
-     * 
+     * Get the publicIpAddressVersion property: The public IP address version. Possible values are: 'IPv4' and 'IPv6'.
+     *
      * @return the publicIpAddressVersion value.
      */
     public IpVersion publicIpAddressVersion() {
@@ -181,9 +168,8 @@ public final class PublicIpPrefixInner extends Resource {
     }
 
     /**
-     * Set the publicIpAddressVersion property: The public IP address version.
-     * Possible values are: 'IPv4' and 'IPv6'.
-     * 
+     * Set the publicIpAddressVersion property: The public IP address version. Possible values are: 'IPv4' and 'IPv6'.
+     *
      * @param publicIpAddressVersion the publicIpAddressVersion value to set.
      * @return the PublicIpPrefixInner object itself.
      */
@@ -196,9 +182,8 @@ public final class PublicIpPrefixInner extends Resource {
     }
 
     /**
-     * Get the ipTags property: The list of tags associated with the public IP
-     * prefix.
-     * 
+     * Get the ipTags property: The list of tags associated with the public IP prefix.
+     *
      * @return the ipTags value.
      */
     public List<IpTag> ipTags() {
@@ -206,9 +191,8 @@ public final class PublicIpPrefixInner extends Resource {
     }
 
     /**
-     * Set the ipTags property: The list of tags associated with the public IP
-     * prefix.
-     * 
+     * Set the ipTags property: The list of tags associated with the public IP prefix.
+     *
      * @param ipTags the ipTags value to set.
      * @return the PublicIpPrefixInner object itself.
      */
@@ -222,7 +206,7 @@ public final class PublicIpPrefixInner extends Resource {
 
     /**
      * Get the prefixLength property: The Length of the Public IP Prefix.
-     * 
+     *
      * @return the prefixLength value.
      */
     public Integer prefixLength() {
@@ -231,7 +215,7 @@ public final class PublicIpPrefixInner extends Resource {
 
     /**
      * Set the prefixLength property: The Length of the Public IP Prefix.
-     * 
+     *
      * @param prefixLength the prefixLength value to set.
      * @return the PublicIpPrefixInner object itself.
      */
@@ -245,7 +229,7 @@ public final class PublicIpPrefixInner extends Resource {
 
     /**
      * Get the ipPrefix property: The allocated Prefix.
-     * 
+     *
      * @return the ipPrefix value.
      */
     public String ipPrefix() {
@@ -254,7 +238,7 @@ public final class PublicIpPrefixInner extends Resource {
 
     /**
      * Set the ipPrefix property: The allocated Prefix.
-     * 
+     *
      * @param ipPrefix the ipPrefix value to set.
      * @return the PublicIpPrefixInner object itself.
      */
@@ -267,9 +251,8 @@ public final class PublicIpPrefixInner extends Resource {
     }
 
     /**
-     * Get the publicIpAddresses property: The list of all referenced
-     * PublicIPAddresses.
-     * 
+     * Get the publicIpAddresses property: The list of all referenced PublicIPAddresses.
+     *
      * @return the publicIpAddresses value.
      */
     public List<ReferencedPublicIpAddress> publicIpAddresses() {
@@ -277,9 +260,8 @@ public final class PublicIpPrefixInner extends Resource {
     }
 
     /**
-     * Set the publicIpAddresses property: The list of all referenced
-     * PublicIPAddresses.
-     * 
+     * Set the publicIpAddresses property: The list of all referenced PublicIPAddresses.
+     *
      * @param publicIpAddresses the publicIpAddresses value to set.
      * @return the PublicIpPrefixInner object itself.
      */
@@ -292,10 +274,9 @@ public final class PublicIpPrefixInner extends Resource {
     }
 
     /**
-     * Get the loadBalancerFrontendIpConfiguration property: The reference to
-     * load balancer frontend IP configuration associated with the public IP
-     * prefix.
-     * 
+     * Get the loadBalancerFrontendIpConfiguration property: The reference to load balancer frontend IP configuration
+     * associated with the public IP prefix.
+     *
      * @return the loadBalancerFrontendIpConfiguration value.
      */
     public SubResource loadBalancerFrontendIpConfiguration() {
@@ -303,9 +284,8 @@ public final class PublicIpPrefixInner extends Resource {
     }
 
     /**
-     * Get the resourceGuid property: The resource GUID property of the public
-     * IP prefix resource.
-     * 
+     * Get the resourceGuid property: The resource GUID property of the public IP prefix resource.
+     *
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -313,9 +293,8 @@ public final class PublicIpPrefixInner extends Resource {
     }
 
     /**
-     * Set the resourceGuid property: The resource GUID property of the public
-     * IP prefix resource.
-     * 
+     * Set the resourceGuid property: The resource GUID property of the public IP prefix resource.
+     *
      * @param resourceGuid the resourceGuid value to set.
      * @return the PublicIpPrefixInner object itself.
      */
@@ -328,10 +307,9 @@ public final class PublicIpPrefixInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the Public
-     * IP prefix resource. Possible values are: 'Updating', 'Deleting', and
-     * 'Failed'.
-     * 
+     * Get the provisioningState property: The provisioning state of the Public IP prefix resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -339,10 +317,9 @@ public final class PublicIpPrefixInner extends Resource {
     }
 
     /**
-     * Set the provisioningState property: The provisioning state of the Public
-     * IP prefix resource. Possible values are: 'Updating', 'Deleting', and
-     * 'Failed'.
-     * 
+     * Set the provisioningState property: The provisioning state of the Public IP prefix resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
      * @param provisioningState the provisioningState value to set.
      * @return the PublicIpPrefixInner object itself.
      */
@@ -356,7 +333,7 @@ public final class PublicIpPrefixInner extends Resource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

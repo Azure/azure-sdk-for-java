@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.models.NetworkProfile;
@@ -14,20 +13,15 @@ import com.azure.resourcemanager.containerservice.models.OpenShiftManagedCluster
 import com.azure.resourcemanager.containerservice.models.OpenShiftManagedClusterMasterPoolProfile;
 import com.azure.resourcemanager.containerservice.models.OpenShiftRouterProfile;
 import com.azure.resourcemanager.containerservice.models.PurchasePlan;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/**
- * OpenShift Managed cluster.
- */
+/** OpenShift Managed cluster. */
 @Fluent
 public final class OpenShiftManagedClusterInner extends Resource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(OpenShiftManagedClusterInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(OpenShiftManagedClusterInner.class);
 
     /*
      * Define the resource plan as required by ARM for billing purposes
@@ -42,9 +36,8 @@ public final class OpenShiftManagedClusterInner extends Resource {
     private OpenShiftManagedClusterProperties innerProperties;
 
     /**
-     * Get the plan property: Define the resource plan as required by ARM for
-     * billing purposes.
-     * 
+     * Get the plan property: Define the resource plan as required by ARM for billing purposes.
+     *
      * @return the plan value.
      */
     public PurchasePlan plan() {
@@ -52,9 +45,8 @@ public final class OpenShiftManagedClusterInner extends Resource {
     }
 
     /**
-     * Set the plan property: Define the resource plan as required by ARM for
-     * billing purposes.
-     * 
+     * Set the plan property: Define the resource plan as required by ARM for billing purposes.
+     *
      * @param plan the plan value to set.
      * @return the OpenShiftManagedClusterInner object itself.
      */
@@ -64,27 +56,22 @@ public final class OpenShiftManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the innerProperties property: Properties of a OpenShift managed
-     * cluster.
-     * 
+     * Get the innerProperties property: Properties of a OpenShift managed cluster.
+     *
      * @return the innerProperties value.
      */
     private OpenShiftManagedClusterProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public OpenShiftManagedClusterInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public OpenShiftManagedClusterInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -92,9 +79,9 @@ public final class OpenShiftManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The current deployment or
-     * provisioning state, which only appears in the response.
-     * 
+     * Get the provisioningState property: The current deployment or provisioning state, which only appears in the
+     * response.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -102,9 +89,8 @@ public final class OpenShiftManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the openShiftVersion property: Version of OpenShift specified when
-     * creating the cluster.
-     * 
+     * Get the openShiftVersion property: Version of OpenShift specified when creating the cluster.
+     *
      * @return the openShiftVersion value.
      */
     public String openShiftVersion() {
@@ -112,9 +98,8 @@ public final class OpenShiftManagedClusterInner extends Resource {
     }
 
     /**
-     * Set the openShiftVersion property: Version of OpenShift specified when
-     * creating the cluster.
-     * 
+     * Set the openShiftVersion property: Version of OpenShift specified when creating the cluster.
+     *
      * @param openShiftVersion the openShiftVersion value to set.
      * @return the OpenShiftManagedClusterInner object itself.
      */
@@ -127,9 +112,8 @@ public final class OpenShiftManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the clusterVersion property: Version of OpenShift specified when
-     * creating the cluster.
-     * 
+     * Get the clusterVersion property: Version of OpenShift specified when creating the cluster.
+     *
      * @return the clusterVersion value.
      */
     public String clusterVersion() {
@@ -137,9 +121,8 @@ public final class OpenShiftManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the publicHostname property: Service generated FQDN for OpenShift
-     * API server.
-     * 
+     * Get the publicHostname property: Service generated FQDN for OpenShift API server.
+     *
      * @return the publicHostname value.
      */
     public String publicHostname() {
@@ -147,9 +130,8 @@ public final class OpenShiftManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the fqdn property: Service generated FQDN for OpenShift API server
-     * loadbalancer internal hostname.
-     * 
+     * Get the fqdn property: Service generated FQDN for OpenShift API server loadbalancer internal hostname.
+     *
      * @return the fqdn value.
      */
     public String fqdn() {
@@ -158,7 +140,7 @@ public final class OpenShiftManagedClusterInner extends Resource {
 
     /**
      * Get the networkProfile property: Configuration for OpenShift networking.
-     * 
+     *
      * @return the networkProfile value.
      */
     public NetworkProfile networkProfile() {
@@ -167,7 +149,7 @@ public final class OpenShiftManagedClusterInner extends Resource {
 
     /**
      * Set the networkProfile property: Configuration for OpenShift networking.
-     * 
+     *
      * @param networkProfile the networkProfile value to set.
      * @return the OpenShiftManagedClusterInner object itself.
      */
@@ -181,7 +163,7 @@ public final class OpenShiftManagedClusterInner extends Resource {
 
     /**
      * Get the routerProfiles property: Configuration for OpenShift router(s).
-     * 
+     *
      * @return the routerProfiles value.
      */
     public List<OpenShiftRouterProfile> routerProfiles() {
@@ -190,7 +172,7 @@ public final class OpenShiftManagedClusterInner extends Resource {
 
     /**
      * Set the routerProfiles property: Configuration for OpenShift router(s).
-     * 
+     *
      * @param routerProfiles the routerProfiles value to set.
      * @return the OpenShiftManagedClusterInner object itself.
      */
@@ -203,9 +185,8 @@ public final class OpenShiftManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the masterPoolProfile property: Configuration for OpenShift master
-     * VMs.
-     * 
+     * Get the masterPoolProfile property: Configuration for OpenShift master VMs.
+     *
      * @return the masterPoolProfile value.
      */
     public OpenShiftManagedClusterMasterPoolProfile masterPoolProfile() {
@@ -213,13 +194,13 @@ public final class OpenShiftManagedClusterInner extends Resource {
     }
 
     /**
-     * Set the masterPoolProfile property: Configuration for OpenShift master
-     * VMs.
-     * 
+     * Set the masterPoolProfile property: Configuration for OpenShift master VMs.
+     *
      * @param masterPoolProfile the masterPoolProfile value to set.
      * @return the OpenShiftManagedClusterInner object itself.
      */
-    public OpenShiftManagedClusterInner withMasterPoolProfile(OpenShiftManagedClusterMasterPoolProfile masterPoolProfile) {
+    public OpenShiftManagedClusterInner withMasterPoolProfile(
+        OpenShiftManagedClusterMasterPoolProfile masterPoolProfile) {
         if (this.innerProperties() == null) {
             this.innerProperties = new OpenShiftManagedClusterProperties();
         }
@@ -228,9 +209,8 @@ public final class OpenShiftManagedClusterInner extends Resource {
     }
 
     /**
-     * Get the agentPoolProfiles property: Configuration of OpenShift cluster
-     * VMs.
-     * 
+     * Get the agentPoolProfiles property: Configuration of OpenShift cluster VMs.
+     *
      * @return the agentPoolProfiles value.
      */
     public List<OpenShiftManagedClusterAgentPoolProfile> agentPoolProfiles() {
@@ -238,13 +218,13 @@ public final class OpenShiftManagedClusterInner extends Resource {
     }
 
     /**
-     * Set the agentPoolProfiles property: Configuration of OpenShift cluster
-     * VMs.
-     * 
+     * Set the agentPoolProfiles property: Configuration of OpenShift cluster VMs.
+     *
      * @param agentPoolProfiles the agentPoolProfiles value to set.
      * @return the OpenShiftManagedClusterInner object itself.
      */
-    public OpenShiftManagedClusterInner withAgentPoolProfiles(List<OpenShiftManagedClusterAgentPoolProfile> agentPoolProfiles) {
+    public OpenShiftManagedClusterInner withAgentPoolProfiles(
+        List<OpenShiftManagedClusterAgentPoolProfile> agentPoolProfiles) {
         if (this.innerProperties() == null) {
             this.innerProperties = new OpenShiftManagedClusterProperties();
         }
@@ -254,7 +234,7 @@ public final class OpenShiftManagedClusterInner extends Resource {
 
     /**
      * Get the authProfile property: Configures OpenShift authentication.
-     * 
+     *
      * @return the authProfile value.
      */
     public OpenShiftManagedClusterAuthProfile authProfile() {
@@ -263,7 +243,7 @@ public final class OpenShiftManagedClusterInner extends Resource {
 
     /**
      * Set the authProfile property: Configures OpenShift authentication.
-     * 
+     *
      * @param authProfile the authProfile value to set.
      * @return the OpenShiftManagedClusterInner object itself.
      */
@@ -277,7 +257,7 @@ public final class OpenShiftManagedClusterInner extends Resource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

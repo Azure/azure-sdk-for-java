@@ -8,8 +8,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
@@ -27,19 +25,23 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsLi
 import com.azure.resourcemanager.resources.models.DeploymentWhatIf;
 import com.azure.resourcemanager.resources.models.ScopedDeployment;
 import com.azure.resourcemanager.resources.models.ScopedDeploymentWhatIf;
-import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * DeploymentsClient.
- */
-public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedInner>, InnerSupportsListing<DeploymentExtendedInner>, InnerSupportsDelete<Void> {
+/** An instance of this class provides access to all the operations defined in DeploymentsClient. */
+public interface DeploymentsClient
+    extends InnerSupportsGet<DeploymentExtendedInner>,
+        InnerSupportsListing<DeploymentExtendedInner>,
+        InnerSupportsDelete<Void> {
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
+     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
+     * the status of the process. While the process is running, a call to the URI in the Location header returns a
+     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
+     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
+     *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -51,8 +53,13 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     Mono<Response<Flux<ByteBuffer>>> deleteAtScopeWithResponseAsync(String scope, String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
+     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
+     * the status of the process. While the process is running, a call to the URI in the Location header returns a
+     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
+     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
+     *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -64,8 +71,13 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     PollerFlux<PollResult<Void>, Void> beginDeleteAtScopeAsync(String scope, String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
+     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
+     * the status of the process. While the process is running, a call to the URI in the Location header returns a
+     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
+     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
+     *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -77,8 +89,13 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     SyncPoller<PollResult<Void>, Void> beginDeleteAtScope(String scope, String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
+     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
+     * the status of the process. While the process is running, a call to the URI in the Location header returns a
+     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
+     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
+     *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
@@ -91,8 +108,13 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     SyncPoller<PollResult<Void>, Void> beginDeleteAtScope(String scope, String deploymentName, Context context);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
+     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
+     * the status of the process. While the process is running, a call to the URI in the Location header returns a
+     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
+     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
+     *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -104,8 +126,13 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     Mono<Void> deleteAtScopeAsync(String scope, String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
+     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
+     * the status of the process. While the process is running, a call to the URI in the Location header returns a
+     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
+     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
+     *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -116,8 +143,13 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     void deleteAtScope(String scope, String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
+     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
+     * the status of the process. While the process is running, a call to the URI in the Location header returns a
+     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
+     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
+     *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
@@ -130,7 +162,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Checks whether the deployment exists.
-     * 
+     *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -143,7 +175,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Checks whether the deployment exists.
-     * 
+     *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -156,7 +188,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Checks whether the deployment exists.
-     * 
+     *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -169,7 +201,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Checks whether the deployment exists.
-     * 
+     *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
@@ -183,7 +215,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
+     *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
@@ -193,11 +225,12 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return deployment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateAtScopeWithResponseAsync(String scope, String deploymentName, DeploymentInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateAtScopeWithResponseAsync(
+        String scope, String deploymentName, DeploymentInner parameters);
 
     /**
      * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
+     *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
@@ -207,11 +240,12 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return deployment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdateAtScopeAsync(String scope, String deploymentName, DeploymentInner parameters);
+    PollerFlux<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdateAtScopeAsync(
+        String scope, String deploymentName, DeploymentInner parameters);
 
     /**
      * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
+     *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
@@ -221,11 +255,12 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return deployment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdateAtScope(String scope, String deploymentName, DeploymentInner parameters);
+    SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdateAtScope(
+        String scope, String deploymentName, DeploymentInner parameters);
 
     /**
      * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
+     *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
@@ -236,11 +271,12 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return deployment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdateAtScope(String scope, String deploymentName, DeploymentInner parameters, Context context);
+    SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdateAtScope(
+        String scope, String deploymentName, DeploymentInner parameters, Context context);
 
     /**
      * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
+     *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
@@ -250,11 +286,12 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return deployment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DeploymentExtendedInner> createOrUpdateAtScopeAsync(String scope, String deploymentName, DeploymentInner parameters);
+    Mono<DeploymentExtendedInner> createOrUpdateAtScopeAsync(
+        String scope, String deploymentName, DeploymentInner parameters);
 
     /**
      * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
+     *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
@@ -268,7 +305,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
+     *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
@@ -279,11 +316,12 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return deployment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DeploymentExtendedInner createOrUpdateAtScope(String scope, String deploymentName, DeploymentInner parameters, Context context);
+    DeploymentExtendedInner createOrUpdateAtScope(
+        String scope, String deploymentName, DeploymentInner parameters, Context context);
 
     /**
      * Gets a deployment.
-     * 
+     *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -296,7 +334,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Gets a deployment.
-     * 
+     *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -309,7 +347,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Gets a deployment.
-     * 
+     *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -322,7 +360,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Gets a deployment.
-     * 
+     *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
@@ -335,8 +373,10 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     Response<DeploymentExtendedInner> getAtScopeWithResponse(String scope, String deploymentName, Context context);
 
     /**
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running template deployment and leaves the resources partially deployed.
-     * 
+     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
+     * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
+     * template deployment and leaves the resources partially deployed.
+     *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -348,8 +388,10 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     Mono<Response<Void>> cancelAtScopeWithResponseAsync(String scope, String deploymentName);
 
     /**
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running template deployment and leaves the resources partially deployed.
-     * 
+     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
+     * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
+     * template deployment and leaves the resources partially deployed.
+     *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -361,8 +403,10 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     Mono<Void> cancelAtScopeAsync(String scope, String deploymentName);
 
     /**
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running template deployment and leaves the resources partially deployed.
-     * 
+     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
+     * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
+     * template deployment and leaves the resources partially deployed.
+     *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -373,8 +417,10 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     void cancelAtScope(String scope, String deploymentName);
 
     /**
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running template deployment and leaves the resources partially deployed.
-     * 
+     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
+     * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
+     * template deployment and leaves the resources partially deployed.
+     *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
@@ -387,8 +433,9 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     Response<Void> cancelAtScopeWithResponse(String scope, String deploymentName, Context context);
 
     /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
-     * 
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
@@ -398,11 +445,13 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return information from validate template deployment response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> validateAtScopeWithResponseAsync(String scope, String deploymentName, DeploymentInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> validateAtScopeWithResponseAsync(
+        String scope, String deploymentName, DeploymentInner parameters);
 
     /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
-     * 
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
@@ -412,11 +461,13 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return information from validate template deployment response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner> beginValidateAtScopeAsync(String scope, String deploymentName, DeploymentInner parameters);
+    PollerFlux<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner> beginValidateAtScopeAsync(
+        String scope, String deploymentName, DeploymentInner parameters);
 
     /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
-     * 
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
@@ -426,11 +477,13 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return information from validate template deployment response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner> beginValidateAtScope(String scope, String deploymentName, DeploymentInner parameters);
+    SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner> beginValidateAtScope(
+        String scope, String deploymentName, DeploymentInner parameters);
 
     /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
-     * 
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
@@ -441,11 +494,13 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return information from validate template deployment response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner> beginValidateAtScope(String scope, String deploymentName, DeploymentInner parameters, Context context);
+    SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner> beginValidateAtScope(
+        String scope, String deploymentName, DeploymentInner parameters, Context context);
 
     /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
-     * 
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
@@ -455,11 +510,13 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return information from validate template deployment response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DeploymentValidateResultInner> validateAtScopeAsync(String scope, String deploymentName, DeploymentInner parameters);
+    Mono<DeploymentValidateResultInner> validateAtScopeAsync(
+        String scope, String deploymentName, DeploymentInner parameters);
 
     /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
-     * 
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
@@ -472,8 +529,9 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     DeploymentValidateResultInner validateAtScope(String scope, String deploymentName, DeploymentInner parameters);
 
     /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
-     * 
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
@@ -484,11 +542,12 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return information from validate template deployment response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DeploymentValidateResultInner validateAtScope(String scope, String deploymentName, DeploymentInner parameters, Context context);
+    DeploymentValidateResultInner validateAtScope(
+        String scope, String deploymentName, DeploymentInner parameters, Context context);
 
     /**
      * Exports the template used for specified deployment.
-     * 
+     *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -497,11 +556,12 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return the deployment export result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DeploymentExportResultInner>> exportTemplateAtScopeWithResponseAsync(String scope, String deploymentName);
+    Mono<Response<DeploymentExportResultInner>> exportTemplateAtScopeWithResponseAsync(
+        String scope, String deploymentName);
 
     /**
      * Exports the template used for specified deployment.
-     * 
+     *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -514,7 +574,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Exports the template used for specified deployment.
-     * 
+     *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -527,7 +587,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Exports the template used for specified deployment.
-     * 
+     *
      * @param scope The resource scope.
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
@@ -537,13 +597,15 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return the deployment export result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DeploymentExportResultInner> exportTemplateAtScopeWithResponse(String scope, String deploymentName, Context context);
+    Response<DeploymentExportResultInner> exportTemplateAtScopeWithResponse(
+        String scope, String deploymentName, Context context);
 
     /**
      * Get all the deployments at the given scope.
-     * 
+     *
      * @param scope The resource scope.
-     * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq '{state}'.
+     * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq
+     *     '{state}'.
      * @param top The number of results to get. If null is passed, returns all deployments.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -555,7 +617,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Get all the deployments at the given scope.
-     * 
+     *
      * @param scope The resource scope.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -567,7 +629,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Get all the deployments at the given scope.
-     * 
+     *
      * @param scope The resource scope.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -579,9 +641,10 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Get all the deployments at the given scope.
-     * 
+     *
      * @param scope The resource scope.
-     * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq '{state}'.
+     * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq
+     *     '{state}'.
      * @param top The number of results to get. If null is passed, returns all deployments.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -593,8 +656,13 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     PagedIterable<DeploymentExtendedInner> listAtScope(String scope, String filter, Integer top, Context context);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
+     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
+     * the status of the process. While the process is running, a call to the URI in the Location header returns a
+     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
+     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
+     *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -605,8 +673,13 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     Mono<Response<Flux<ByteBuffer>>> deleteAtTenantScopeWithResponseAsync(String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
+     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
+     * the status of the process. While the process is running, a call to the URI in the Location header returns a
+     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
+     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
+     *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -617,8 +690,13 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     PollerFlux<PollResult<Void>, Void> beginDeleteAtTenantScopeAsync(String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
+     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
+     * the status of the process. While the process is running, a call to the URI in the Location header returns a
+     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
+     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
+     *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -629,8 +707,13 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     SyncPoller<PollResult<Void>, Void> beginDeleteAtTenantScope(String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
+     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
+     * the status of the process. While the process is running, a call to the URI in the Location header returns a
+     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
+     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
+     *
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -642,8 +725,13 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     SyncPoller<PollResult<Void>, Void> beginDeleteAtTenantScope(String deploymentName, Context context);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
+     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
+     * the status of the process. While the process is running, a call to the URI in the Location header returns a
+     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
+     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
+     *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -654,8 +742,13 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     Mono<Void> deleteAtTenantScopeAsync(String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
+     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
+     * the status of the process. While the process is running, a call to the URI in the Location header returns a
+     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
+     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
+     *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -665,8 +758,13 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     void deleteAtTenantScope(String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
+     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
+     * the status of the process. While the process is running, a call to the URI in the Location header returns a
+     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
+     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
+     *
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -678,7 +776,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Checks whether the deployment exists.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -690,7 +788,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Checks whether the deployment exists.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -702,7 +800,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Checks whether the deployment exists.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -714,7 +812,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Checks whether the deployment exists.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -727,7 +825,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -736,11 +834,12 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return deployment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateAtTenantScopeWithResponseAsync(String deploymentName, ScopedDeployment parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateAtTenantScopeWithResponseAsync(
+        String deploymentName, ScopedDeployment parameters);
 
     /**
      * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -749,11 +848,12 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return deployment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdateAtTenantScopeAsync(String deploymentName, ScopedDeployment parameters);
+    PollerFlux<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdateAtTenantScopeAsync(
+        String deploymentName, ScopedDeployment parameters);
 
     /**
      * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -762,11 +862,12 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return deployment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdateAtTenantScope(String deploymentName, ScopedDeployment parameters);
+    SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdateAtTenantScope(
+        String deploymentName, ScopedDeployment parameters);
 
     /**
      * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
      * @param context The context to associate with this operation.
@@ -776,11 +877,12 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return deployment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdateAtTenantScope(String deploymentName, ScopedDeployment parameters, Context context);
+    SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdateAtTenantScope(
+        String deploymentName, ScopedDeployment parameters, Context context);
 
     /**
      * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -793,7 +895,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -806,7 +908,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
      * @param context The context to associate with this operation.
@@ -816,11 +918,12 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return deployment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DeploymentExtendedInner createOrUpdateAtTenantScope(String deploymentName, ScopedDeployment parameters, Context context);
+    DeploymentExtendedInner createOrUpdateAtTenantScope(
+        String deploymentName, ScopedDeployment parameters, Context context);
 
     /**
      * Gets a deployment.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -832,7 +935,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Gets a deployment.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -844,7 +947,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Gets a deployment.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -856,7 +959,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Gets a deployment.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -868,8 +971,10 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     Response<DeploymentExtendedInner> getAtTenantScopeWithResponse(String deploymentName, Context context);
 
     /**
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running template deployment and leaves the resources partially deployed.
-     * 
+     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
+     * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
+     * template deployment and leaves the resources partially deployed.
+     *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -880,8 +985,10 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     Mono<Response<Void>> cancelAtTenantScopeWithResponseAsync(String deploymentName);
 
     /**
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running template deployment and leaves the resources partially deployed.
-     * 
+     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
+     * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
+     * template deployment and leaves the resources partially deployed.
+     *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -892,8 +999,10 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     Mono<Void> cancelAtTenantScopeAsync(String deploymentName);
 
     /**
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running template deployment and leaves the resources partially deployed.
-     * 
+     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
+     * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
+     * template deployment and leaves the resources partially deployed.
+     *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -903,8 +1012,10 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     void cancelAtTenantScope(String deploymentName);
 
     /**
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running template deployment and leaves the resources partially deployed.
-     * 
+     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
+     * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
+     * template deployment and leaves the resources partially deployed.
+     *
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -916,8 +1027,9 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     Response<Void> cancelAtTenantScopeWithResponse(String deploymentName, Context context);
 
     /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
-     * 
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -926,11 +1038,13 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return information from validate template deployment response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> validateAtTenantScopeWithResponseAsync(String deploymentName, ScopedDeployment parameters);
+    Mono<Response<Flux<ByteBuffer>>> validateAtTenantScopeWithResponseAsync(
+        String deploymentName, ScopedDeployment parameters);
 
     /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
-     * 
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -939,11 +1053,13 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return information from validate template deployment response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner> beginValidateAtTenantScopeAsync(String deploymentName, ScopedDeployment parameters);
+    PollerFlux<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
+        beginValidateAtTenantScopeAsync(String deploymentName, ScopedDeployment parameters);
 
     /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
-     * 
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -952,11 +1068,13 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return information from validate template deployment response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner> beginValidateAtTenantScope(String deploymentName, ScopedDeployment parameters);
+    SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner> beginValidateAtTenantScope(
+        String deploymentName, ScopedDeployment parameters);
 
     /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
-     * 
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
      * @param context The context to associate with this operation.
@@ -966,11 +1084,13 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return information from validate template deployment response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner> beginValidateAtTenantScope(String deploymentName, ScopedDeployment parameters, Context context);
+    SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner> beginValidateAtTenantScope(
+        String deploymentName, ScopedDeployment parameters, Context context);
 
     /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
-     * 
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -982,8 +1102,9 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     Mono<DeploymentValidateResultInner> validateAtTenantScopeAsync(String deploymentName, ScopedDeployment parameters);
 
     /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
-     * 
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -995,8 +1116,9 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     DeploymentValidateResultInner validateAtTenantScope(String deploymentName, ScopedDeployment parameters);
 
     /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
-     * 
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
      * @param context The context to associate with this operation.
@@ -1006,11 +1128,12 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return information from validate template deployment response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DeploymentValidateResultInner validateAtTenantScope(String deploymentName, ScopedDeployment parameters, Context context);
+    DeploymentValidateResultInner validateAtTenantScope(
+        String deploymentName, ScopedDeployment parameters, Context context);
 
     /**
      * Returns changes that will be made by the deployment if executed at the scope of the tenant group.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1019,11 +1142,12 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return result of the What-If operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> whatIfAtTenantScopeWithResponseAsync(String deploymentName, ScopedDeploymentWhatIf parameters);
+    Mono<Response<Flux<ByteBuffer>>> whatIfAtTenantScopeWithResponseAsync(
+        String deploymentName, ScopedDeploymentWhatIf parameters);
 
     /**
      * Returns changes that will be made by the deployment if executed at the scope of the tenant group.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1032,11 +1156,12 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return result of the What-If operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner> beginWhatIfAtTenantScopeAsync(String deploymentName, ScopedDeploymentWhatIf parameters);
+    PollerFlux<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner> beginWhatIfAtTenantScopeAsync(
+        String deploymentName, ScopedDeploymentWhatIf parameters);
 
     /**
      * Returns changes that will be made by the deployment if executed at the scope of the tenant group.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1045,11 +1170,12 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return result of the What-If operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner> beginWhatIfAtTenantScope(String deploymentName, ScopedDeploymentWhatIf parameters);
+    SyncPoller<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner> beginWhatIfAtTenantScope(
+        String deploymentName, ScopedDeploymentWhatIf parameters);
 
     /**
      * Returns changes that will be made by the deployment if executed at the scope of the tenant group.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
      * @param context The context to associate with this operation.
@@ -1059,11 +1185,12 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return result of the What-If operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner> beginWhatIfAtTenantScope(String deploymentName, ScopedDeploymentWhatIf parameters, Context context);
+    SyncPoller<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner> beginWhatIfAtTenantScope(
+        String deploymentName, ScopedDeploymentWhatIf parameters, Context context);
 
     /**
      * Returns changes that will be made by the deployment if executed at the scope of the tenant group.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1076,7 +1203,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Returns changes that will be made by the deployment if executed at the scope of the tenant group.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1089,7 +1216,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Returns changes that will be made by the deployment if executed at the scope of the tenant group.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
      * @param context The context to associate with this operation.
@@ -1099,11 +1226,12 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return result of the What-If operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WhatIfOperationResultInner whatIfAtTenantScope(String deploymentName, ScopedDeploymentWhatIf parameters, Context context);
+    WhatIfOperationResultInner whatIfAtTenantScope(
+        String deploymentName, ScopedDeploymentWhatIf parameters, Context context);
 
     /**
      * Exports the template used for specified deployment.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1115,7 +1243,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Exports the template used for specified deployment.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1127,7 +1255,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Exports the template used for specified deployment.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1139,7 +1267,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Exports the template used for specified deployment.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1148,12 +1276,14 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return the deployment export result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DeploymentExportResultInner> exportTemplateAtTenantScopeWithResponse(String deploymentName, Context context);
+    Response<DeploymentExportResultInner> exportTemplateAtTenantScopeWithResponse(
+        String deploymentName, Context context);
 
     /**
      * Get all the deployments at the tenant scope.
-     * 
-     * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq '{state}'.
+     *
+     * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq
+     *     '{state}'.
      * @param top The number of results to get. If null is passed, returns all deployments.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1165,7 +1295,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Get all the deployments at the tenant scope.
-     * 
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the deployments at the tenant scope.
@@ -1175,7 +1305,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Get all the deployments at the tenant scope.
-     * 
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the deployments at the tenant scope.
@@ -1185,8 +1315,9 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Get all the deployments at the tenant scope.
-     * 
-     * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq '{state}'.
+     *
+     * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq
+     *     '{state}'.
      * @param top The number of results to get. If null is passed, returns all deployments.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1198,8 +1329,13 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     PagedIterable<DeploymentExtendedInner> listAtTenantScope(String filter, Integer top, Context context);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
+     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
+     * the status of the process. While the process is running, a call to the URI in the Location header returns a
+     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
+     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1208,11 +1344,17 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteAtManagementGroupScopeWithResponseAsync(String groupId, String deploymentName);
+    Mono<Response<Flux<ByteBuffer>>> deleteAtManagementGroupScopeWithResponseAsync(
+        String groupId, String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
+     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
+     * the status of the process. While the process is running, a call to the URI in the Location header returns a
+     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
+     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1224,8 +1366,13 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     PollerFlux<PollResult<Void>, Void> beginDeleteAtManagementGroupScopeAsync(String groupId, String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
+     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
+     * the status of the process. While the process is running, a call to the URI in the Location header returns a
+     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
+     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1237,8 +1384,13 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     SyncPoller<PollResult<Void>, Void> beginDeleteAtManagementGroupScope(String groupId, String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
+     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
+     * the status of the process. While the process is running, a call to the URI in the Location header returns a
+     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
+     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
@@ -1248,11 +1400,17 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDeleteAtManagementGroupScope(String groupId, String deploymentName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDeleteAtManagementGroupScope(
+        String groupId, String deploymentName, Context context);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
+     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
+     * the status of the process. While the process is running, a call to the URI in the Location header returns a
+     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
+     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1264,8 +1422,13 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     Mono<Void> deleteAtManagementGroupScopeAsync(String groupId, String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
+     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
+     * the status of the process. While the process is running, a call to the URI in the Location header returns a
+     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
+     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1276,8 +1439,13 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     void deleteAtManagementGroupScope(String groupId, String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
+     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
+     * the status of the process. While the process is running, a call to the URI in the Location header returns a
+     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
+     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
@@ -1290,7 +1458,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Checks whether the deployment exists.
-     * 
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1299,11 +1467,12 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return whether resource exists.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Boolean>> checkExistenceAtManagementGroupScopeWithResponseAsync(String groupId, String deploymentName);
+    Mono<Response<Boolean>> checkExistenceAtManagementGroupScopeWithResponseAsync(
+        String groupId, String deploymentName);
 
     /**
      * Checks whether the deployment exists.
-     * 
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1316,7 +1485,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Checks whether the deployment exists.
-     * 
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1329,7 +1498,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Checks whether the deployment exists.
-     * 
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
@@ -1339,11 +1508,12 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Boolean> checkExistenceAtManagementGroupScopeWithResponse(String groupId, String deploymentName, Context context);
+    Response<Boolean> checkExistenceAtManagementGroupScopeWithResponse(
+        String groupId, String deploymentName, Context context);
 
     /**
      * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
@@ -1353,11 +1523,12 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return deployment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateAtManagementGroupScopeWithResponseAsync(String groupId, String deploymentName, ScopedDeployment parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateAtManagementGroupScopeWithResponseAsync(
+        String groupId, String deploymentName, ScopedDeployment parameters);
 
     /**
      * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
@@ -1367,11 +1538,13 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return deployment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdateAtManagementGroupScopeAsync(String groupId, String deploymentName, ScopedDeployment parameters);
+    PollerFlux<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner>
+        beginCreateOrUpdateAtManagementGroupScopeAsync(
+            String groupId, String deploymentName, ScopedDeployment parameters);
 
     /**
      * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
@@ -1381,54 +1554,12 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return deployment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdateAtManagementGroupScope(String groupId, String deploymentName, ScopedDeployment parameters);
+    SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdateAtManagementGroupScope(
+        String groupId, String deploymentName, ScopedDeployment parameters);
 
     /**
      * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Additional parameters supplied to the operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdateAtManagementGroupScope(String groupId, String deploymentName, ScopedDeployment parameters, Context context);
-
-    /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Additional parameters supplied to the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DeploymentExtendedInner> createOrUpdateAtManagementGroupScopeAsync(String groupId, String deploymentName, ScopedDeployment parameters);
-
-    /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Additional parameters supplied to the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return deployment information.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    DeploymentExtendedInner createOrUpdateAtManagementGroupScope(String groupId, String deploymentName, ScopedDeployment parameters);
-
-    /**
-     * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
@@ -1439,11 +1570,58 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return deployment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DeploymentExtendedInner createOrUpdateAtManagementGroupScope(String groupId, String deploymentName, ScopedDeployment parameters, Context context);
+    SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdateAtManagementGroupScope(
+        String groupId, String deploymentName, ScopedDeployment parameters, Context context);
+
+    /**
+     * You can provide the template and parameters directly in the request or link to JSON files.
+     *
+     * @param groupId The management group ID.
+     * @param deploymentName The name of the deployment.
+     * @param parameters Additional parameters supplied to the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return deployment information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<DeploymentExtendedInner> createOrUpdateAtManagementGroupScopeAsync(
+        String groupId, String deploymentName, ScopedDeployment parameters);
+
+    /**
+     * You can provide the template and parameters directly in the request or link to JSON files.
+     *
+     * @param groupId The management group ID.
+     * @param deploymentName The name of the deployment.
+     * @param parameters Additional parameters supplied to the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return deployment information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DeploymentExtendedInner createOrUpdateAtManagementGroupScope(
+        String groupId, String deploymentName, ScopedDeployment parameters);
+
+    /**
+     * You can provide the template and parameters directly in the request or link to JSON files.
+     *
+     * @param groupId The management group ID.
+     * @param deploymentName The name of the deployment.
+     * @param parameters Additional parameters supplied to the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return deployment information.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    DeploymentExtendedInner createOrUpdateAtManagementGroupScope(
+        String groupId, String deploymentName, ScopedDeployment parameters, Context context);
 
     /**
      * Gets a deployment.
-     * 
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1452,11 +1630,12 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return a deployment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DeploymentExtendedInner>> getAtManagementGroupScopeWithResponseAsync(String groupId, String deploymentName);
+    Mono<Response<DeploymentExtendedInner>> getAtManagementGroupScopeWithResponseAsync(
+        String groupId, String deploymentName);
 
     /**
      * Gets a deployment.
-     * 
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1469,7 +1648,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Gets a deployment.
-     * 
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1482,7 +1661,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Gets a deployment.
-     * 
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
@@ -1492,11 +1671,14 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return a deployment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DeploymentExtendedInner> getAtManagementGroupScopeWithResponse(String groupId, String deploymentName, Context context);
+    Response<DeploymentExtendedInner> getAtManagementGroupScopeWithResponse(
+        String groupId, String deploymentName, Context context);
 
     /**
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running template deployment and leaves the resources partially deployed.
-     * 
+     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
+     * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
+     * template deployment and leaves the resources partially deployed.
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1508,8 +1690,10 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     Mono<Response<Void>> cancelAtManagementGroupScopeWithResponseAsync(String groupId, String deploymentName);
 
     /**
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running template deployment and leaves the resources partially deployed.
-     * 
+     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
+     * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
+     * template deployment and leaves the resources partially deployed.
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1521,8 +1705,10 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     Mono<Void> cancelAtManagementGroupScopeAsync(String groupId, String deploymentName);
 
     /**
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running template deployment and leaves the resources partially deployed.
-     * 
+     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
+     * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
+     * template deployment and leaves the resources partially deployed.
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1533,8 +1719,10 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     void cancelAtManagementGroupScope(String groupId, String deploymentName);
 
     /**
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running template deployment and leaves the resources partially deployed.
-     * 
+     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
+     * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
+     * template deployment and leaves the resources partially deployed.
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
@@ -1547,8 +1735,9 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     Response<Void> cancelAtManagementGroupScopeWithResponse(String groupId, String deploymentName, Context context);
 
     /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
-     * 
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
@@ -1558,11 +1747,13 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return information from validate template deployment response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> validateAtManagementGroupScopeWithResponseAsync(String groupId, String deploymentName, ScopedDeployment parameters);
+    Mono<Response<Flux<ByteBuffer>>> validateAtManagementGroupScopeWithResponseAsync(
+        String groupId, String deploymentName, ScopedDeployment parameters);
 
     /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
-     * 
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
@@ -1572,11 +1763,13 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return information from validate template deployment response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner> beginValidateAtManagementGroupScopeAsync(String groupId, String deploymentName, ScopedDeployment parameters);
+    PollerFlux<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
+        beginValidateAtManagementGroupScopeAsync(String groupId, String deploymentName, ScopedDeployment parameters);
 
     /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
-     * 
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
@@ -1586,11 +1779,13 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return information from validate template deployment response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner> beginValidateAtManagementGroupScope(String groupId, String deploymentName, ScopedDeployment parameters);
+    SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
+        beginValidateAtManagementGroupScope(String groupId, String deploymentName, ScopedDeployment parameters);
 
     /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
-     * 
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
@@ -1601,11 +1796,14 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return information from validate template deployment response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner> beginValidateAtManagementGroupScope(String groupId, String deploymentName, ScopedDeployment parameters, Context context);
+    SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
+        beginValidateAtManagementGroupScope(
+            String groupId, String deploymentName, ScopedDeployment parameters, Context context);
 
     /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
-     * 
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
@@ -1615,11 +1813,13 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return information from validate template deployment response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DeploymentValidateResultInner> validateAtManagementGroupScopeAsync(String groupId, String deploymentName, ScopedDeployment parameters);
+    Mono<DeploymentValidateResultInner> validateAtManagementGroupScopeAsync(
+        String groupId, String deploymentName, ScopedDeployment parameters);
 
     /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
-     * 
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
@@ -1629,11 +1829,13 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return information from validate template deployment response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DeploymentValidateResultInner validateAtManagementGroupScope(String groupId, String deploymentName, ScopedDeployment parameters);
+    DeploymentValidateResultInner validateAtManagementGroupScope(
+        String groupId, String deploymentName, ScopedDeployment parameters);
 
     /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
-     * 
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
@@ -1644,11 +1846,12 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return information from validate template deployment response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DeploymentValidateResultInner validateAtManagementGroupScope(String groupId, String deploymentName, ScopedDeployment parameters, Context context);
+    DeploymentValidateResultInner validateAtManagementGroupScope(
+        String groupId, String deploymentName, ScopedDeployment parameters, Context context);
 
     /**
      * Returns changes that will be made by the deployment if executed at the scope of the management group.
-     * 
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
@@ -1658,11 +1861,12 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return result of the What-If operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> whatIfAtManagementGroupScopeWithResponseAsync(String groupId, String deploymentName, ScopedDeploymentWhatIf parameters);
+    Mono<Response<Flux<ByteBuffer>>> whatIfAtManagementGroupScopeWithResponseAsync(
+        String groupId, String deploymentName, ScopedDeploymentWhatIf parameters);
 
     /**
      * Returns changes that will be made by the deployment if executed at the scope of the management group.
-     * 
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
@@ -1672,11 +1876,13 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return result of the What-If operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner> beginWhatIfAtManagementGroupScopeAsync(String groupId, String deploymentName, ScopedDeploymentWhatIf parameters);
+    PollerFlux<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner>
+        beginWhatIfAtManagementGroupScopeAsync(
+            String groupId, String deploymentName, ScopedDeploymentWhatIf parameters);
 
     /**
      * Returns changes that will be made by the deployment if executed at the scope of the management group.
-     * 
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
@@ -1686,54 +1892,12 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return result of the What-If operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner> beginWhatIfAtManagementGroupScope(String groupId, String deploymentName, ScopedDeploymentWhatIf parameters);
+    SyncPoller<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner> beginWhatIfAtManagementGroupScope(
+        String groupId, String deploymentName, ScopedDeploymentWhatIf parameters);
 
     /**
      * Returns changes that will be made by the deployment if executed at the scope of the management group.
-     * 
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Parameters to validate.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the What-If operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner> beginWhatIfAtManagementGroupScope(String groupId, String deploymentName, ScopedDeploymentWhatIf parameters, Context context);
-
-    /**
-     * Returns changes that will be made by the deployment if executed at the scope of the management group.
-     * 
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Parameters to validate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the What-If operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<WhatIfOperationResultInner> whatIfAtManagementGroupScopeAsync(String groupId, String deploymentName, ScopedDeploymentWhatIf parameters);
-
-    /**
-     * Returns changes that will be made by the deployment if executed at the scope of the management group.
-     * 
-     * @param groupId The management group ID.
-     * @param deploymentName The name of the deployment.
-     * @param parameters Parameters to validate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the What-If operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    WhatIfOperationResultInner whatIfAtManagementGroupScope(String groupId, String deploymentName, ScopedDeploymentWhatIf parameters);
-
-    /**
-     * Returns changes that will be made by the deployment if executed at the scope of the management group.
-     * 
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
@@ -1744,11 +1908,58 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return result of the What-If operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WhatIfOperationResultInner whatIfAtManagementGroupScope(String groupId, String deploymentName, ScopedDeploymentWhatIf parameters, Context context);
+    SyncPoller<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner> beginWhatIfAtManagementGroupScope(
+        String groupId, String deploymentName, ScopedDeploymentWhatIf parameters, Context context);
+
+    /**
+     * Returns changes that will be made by the deployment if executed at the scope of the management group.
+     *
+     * @param groupId The management group ID.
+     * @param deploymentName The name of the deployment.
+     * @param parameters Parameters to validate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the What-If operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<WhatIfOperationResultInner> whatIfAtManagementGroupScopeAsync(
+        String groupId, String deploymentName, ScopedDeploymentWhatIf parameters);
+
+    /**
+     * Returns changes that will be made by the deployment if executed at the scope of the management group.
+     *
+     * @param groupId The management group ID.
+     * @param deploymentName The name of the deployment.
+     * @param parameters Parameters to validate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the What-If operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WhatIfOperationResultInner whatIfAtManagementGroupScope(
+        String groupId, String deploymentName, ScopedDeploymentWhatIf parameters);
+
+    /**
+     * Returns changes that will be made by the deployment if executed at the scope of the management group.
+     *
+     * @param groupId The management group ID.
+     * @param deploymentName The name of the deployment.
+     * @param parameters Parameters to validate.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return result of the What-If operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    WhatIfOperationResultInner whatIfAtManagementGroupScope(
+        String groupId, String deploymentName, ScopedDeploymentWhatIf parameters, Context context);
 
     /**
      * Exports the template used for specified deployment.
-     * 
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1757,11 +1968,12 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return the deployment export result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DeploymentExportResultInner>> exportTemplateAtManagementGroupScopeWithResponseAsync(String groupId, String deploymentName);
+    Mono<Response<DeploymentExportResultInner>> exportTemplateAtManagementGroupScopeWithResponseAsync(
+        String groupId, String deploymentName);
 
     /**
      * Exports the template used for specified deployment.
-     * 
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1774,7 +1986,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Exports the template used for specified deployment.
-     * 
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1787,7 +1999,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Exports the template used for specified deployment.
-     * 
+     *
      * @param groupId The management group ID.
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
@@ -1797,13 +2009,15 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return the deployment export result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DeploymentExportResultInner> exportTemplateAtManagementGroupScopeWithResponse(String groupId, String deploymentName, Context context);
+    Response<DeploymentExportResultInner> exportTemplateAtManagementGroupScopeWithResponse(
+        String groupId, String deploymentName, Context context);
 
     /**
      * Get all the deployments for a management group.
-     * 
+     *
      * @param groupId The management group ID.
-     * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq '{state}'.
+     * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq
+     *     '{state}'.
      * @param top The number of results to get. If null is passed, returns all deployments.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1815,7 +2029,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Get all the deployments for a management group.
-     * 
+     *
      * @param groupId The management group ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1827,7 +2041,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Get all the deployments for a management group.
-     * 
+     *
      * @param groupId The management group ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1839,9 +2053,10 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Get all the deployments for a management group.
-     * 
+     *
      * @param groupId The management group ID.
-     * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq '{state}'.
+     * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq
+     *     '{state}'.
      * @param top The number of results to get. If null is passed, returns all deployments.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1850,11 +2065,17 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return all the deployments for a management group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DeploymentExtendedInner> listAtManagementGroupScope(String groupId, String filter, Integer top, Context context);
+    PagedIterable<DeploymentExtendedInner> listAtManagementGroupScope(
+        String groupId, String filter, Integer top, Context context);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
+     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
+     * the status of the process. While the process is running, a call to the URI in the Location header returns a
+     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
+     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
+     *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1865,8 +2086,13 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     Mono<Response<Flux<ByteBuffer>>> deleteAtSubscriptionScopeWithResponseAsync(String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
+     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
+     * the status of the process. While the process is running, a call to the URI in the Location header returns a
+     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
+     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
+     *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1877,8 +2103,13 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     PollerFlux<PollResult<Void>, Void> beginDeleteAtSubscriptionScopeAsync(String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
+     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
+     * the status of the process. While the process is running, a call to the URI in the Location header returns a
+     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
+     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
+     *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1889,8 +2120,13 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     SyncPoller<PollResult<Void>, Void> beginDeleteAtSubscriptionScope(String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
+     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
+     * the status of the process. While the process is running, a call to the URI in the Location header returns a
+     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
+     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
+     *
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1902,8 +2138,13 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     SyncPoller<PollResult<Void>, Void> beginDeleteAtSubscriptionScope(String deploymentName, Context context);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
+     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
+     * the status of the process. While the process is running, a call to the URI in the Location header returns a
+     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
+     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
+     *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1914,8 +2155,13 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     Mono<Void> deleteAtSubscriptionScopeAsync(String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
+     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
+     * the status of the process. While the process is running, a call to the URI in the Location header returns a
+     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
+     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
+     *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1925,8 +2171,13 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     void deleteAtSubscriptionScope(String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. This is an asynchronous operation that returns a status of 202 until the
+     * template deployment is successfully deleted. The Location response header contains the URI that is used to obtain
+     * the status of the process. While the process is running, a call to the URI in the Location header returns a
+     * status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If
+     * the asynchronous request failed, the URI in the Location header returns an error-level status code.
+     *
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1938,7 +2189,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Checks whether the deployment exists.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1950,7 +2201,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Checks whether the deployment exists.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1962,7 +2213,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Checks whether the deployment exists.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -1974,7 +2225,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Checks whether the deployment exists.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1987,7 +2238,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1996,11 +2247,12 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return deployment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateAtSubscriptionScopeWithResponseAsync(String deploymentName, DeploymentInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateAtSubscriptionScopeWithResponseAsync(
+        String deploymentName, DeploymentInner parameters);
 
     /**
      * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2009,11 +2261,12 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return deployment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdateAtSubscriptionScopeAsync(String deploymentName, DeploymentInner parameters);
+    PollerFlux<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner>
+        beginCreateOrUpdateAtSubscriptionScopeAsync(String deploymentName, DeploymentInner parameters);
 
     /**
      * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2022,11 +2275,12 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return deployment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdateAtSubscriptionScope(String deploymentName, DeploymentInner parameters);
+    SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdateAtSubscriptionScope(
+        String deploymentName, DeploymentInner parameters);
 
     /**
      * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
      * @param context The context to associate with this operation.
@@ -2036,11 +2290,12 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return deployment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdateAtSubscriptionScope(String deploymentName, DeploymentInner parameters, Context context);
+    SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdateAtSubscriptionScope(
+        String deploymentName, DeploymentInner parameters, Context context);
 
     /**
      * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2049,11 +2304,12 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return deployment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DeploymentExtendedInner> createOrUpdateAtSubscriptionScopeAsync(String deploymentName, DeploymentInner parameters);
+    Mono<DeploymentExtendedInner> createOrUpdateAtSubscriptionScopeAsync(
+        String deploymentName, DeploymentInner parameters);
 
     /**
      * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2066,7 +2322,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
      * @param context The context to associate with this operation.
@@ -2076,11 +2332,12 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return deployment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DeploymentExtendedInner createOrUpdateAtSubscriptionScope(String deploymentName, DeploymentInner parameters, Context context);
+    DeploymentExtendedInner createOrUpdateAtSubscriptionScope(
+        String deploymentName, DeploymentInner parameters, Context context);
 
     /**
      * Gets a deployment.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -2092,7 +2349,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Gets a deployment.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -2104,7 +2361,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Gets a deployment.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -2116,7 +2373,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Gets a deployment.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2128,8 +2385,10 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     Response<DeploymentExtendedInner> getAtSubscriptionScopeWithResponse(String deploymentName, Context context);
 
     /**
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running template deployment and leaves the resources partially deployed.
-     * 
+     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
+     * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
+     * template deployment and leaves the resources partially deployed.
+     *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -2140,8 +2399,10 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     Mono<Response<Void>> cancelAtSubscriptionScopeWithResponseAsync(String deploymentName);
 
     /**
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running template deployment and leaves the resources partially deployed.
-     * 
+     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
+     * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
+     * template deployment and leaves the resources partially deployed.
+     *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -2152,8 +2413,10 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     Mono<Void> cancelAtSubscriptionScopeAsync(String deploymentName);
 
     /**
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running template deployment and leaves the resources partially deployed.
-     * 
+     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
+     * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
+     * template deployment and leaves the resources partially deployed.
+     *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -2163,8 +2426,10 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     void cancelAtSubscriptionScope(String deploymentName);
 
     /**
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running template deployment and leaves the resources partially deployed.
-     * 
+     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
+     * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
+     * template deployment and leaves the resources partially deployed.
+     *
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2176,8 +2441,9 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     Response<Void> cancelAtSubscriptionScopeWithResponse(String deploymentName, Context context);
 
     /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
-     * 
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2186,11 +2452,13 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return information from validate template deployment response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> validateAtSubscriptionScopeWithResponseAsync(String deploymentName, DeploymentInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> validateAtSubscriptionScopeWithResponseAsync(
+        String deploymentName, DeploymentInner parameters);
 
     /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
-     * 
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2199,11 +2467,13 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return information from validate template deployment response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner> beginValidateAtSubscriptionScopeAsync(String deploymentName, DeploymentInner parameters);
+    PollerFlux<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
+        beginValidateAtSubscriptionScopeAsync(String deploymentName, DeploymentInner parameters);
 
     /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
-     * 
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2212,11 +2482,13 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return information from validate template deployment response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner> beginValidateAtSubscriptionScope(String deploymentName, DeploymentInner parameters);
+    SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
+        beginValidateAtSubscriptionScope(String deploymentName, DeploymentInner parameters);
 
     /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
-     * 
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
      * @param context The context to associate with this operation.
@@ -2226,11 +2498,13 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return information from validate template deployment response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner> beginValidateAtSubscriptionScope(String deploymentName, DeploymentInner parameters, Context context);
+    SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner>
+        beginValidateAtSubscriptionScope(String deploymentName, DeploymentInner parameters, Context context);
 
     /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
-     * 
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2239,11 +2513,13 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return information from validate template deployment response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DeploymentValidateResultInner> validateAtSubscriptionScopeAsync(String deploymentName, DeploymentInner parameters);
+    Mono<DeploymentValidateResultInner> validateAtSubscriptionScopeAsync(
+        String deploymentName, DeploymentInner parameters);
 
     /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
-     * 
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2255,8 +2531,9 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     DeploymentValidateResultInner validateAtSubscriptionScope(String deploymentName, DeploymentInner parameters);
 
     /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
-     * 
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
      * @param context The context to associate with this operation.
@@ -2266,11 +2543,12 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return information from validate template deployment response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DeploymentValidateResultInner validateAtSubscriptionScope(String deploymentName, DeploymentInner parameters, Context context);
+    DeploymentValidateResultInner validateAtSubscriptionScope(
+        String deploymentName, DeploymentInner parameters, Context context);
 
     /**
      * Returns changes that will be made by the deployment if executed at the scope of the subscription.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to What If.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2279,11 +2557,12 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return result of the What-If operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> whatIfAtSubscriptionScopeWithResponseAsync(String deploymentName, DeploymentWhatIf parameters);
+    Mono<Response<Flux<ByteBuffer>>> whatIfAtSubscriptionScopeWithResponseAsync(
+        String deploymentName, DeploymentWhatIf parameters);
 
     /**
      * Returns changes that will be made by the deployment if executed at the scope of the subscription.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to What If.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2292,11 +2571,12 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return result of the What-If operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner> beginWhatIfAtSubscriptionScopeAsync(String deploymentName, DeploymentWhatIf parameters);
+    PollerFlux<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner> beginWhatIfAtSubscriptionScopeAsync(
+        String deploymentName, DeploymentWhatIf parameters);
 
     /**
      * Returns changes that will be made by the deployment if executed at the scope of the subscription.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to What If.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2305,11 +2585,12 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return result of the What-If operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner> beginWhatIfAtSubscriptionScope(String deploymentName, DeploymentWhatIf parameters);
+    SyncPoller<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner> beginWhatIfAtSubscriptionScope(
+        String deploymentName, DeploymentWhatIf parameters);
 
     /**
      * Returns changes that will be made by the deployment if executed at the scope of the subscription.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to What If.
      * @param context The context to associate with this operation.
@@ -2319,11 +2600,12 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return result of the What-If operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner> beginWhatIfAtSubscriptionScope(String deploymentName, DeploymentWhatIf parameters, Context context);
+    SyncPoller<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner> beginWhatIfAtSubscriptionScope(
+        String deploymentName, DeploymentWhatIf parameters, Context context);
 
     /**
      * Returns changes that will be made by the deployment if executed at the scope of the subscription.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to What If.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2336,7 +2618,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Returns changes that will be made by the deployment if executed at the scope of the subscription.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to What If.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2349,7 +2631,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Returns changes that will be made by the deployment if executed at the scope of the subscription.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to What If.
      * @param context The context to associate with this operation.
@@ -2359,11 +2641,12 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return result of the What-If operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WhatIfOperationResultInner whatIfAtSubscriptionScope(String deploymentName, DeploymentWhatIf parameters, Context context);
+    WhatIfOperationResultInner whatIfAtSubscriptionScope(
+        String deploymentName, DeploymentWhatIf parameters, Context context);
 
     /**
      * Exports the template used for specified deployment.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -2371,11 +2654,12 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return the deployment export result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DeploymentExportResultInner>> exportTemplateAtSubscriptionScopeWithResponseAsync(String deploymentName);
+    Mono<Response<DeploymentExportResultInner>> exportTemplateAtSubscriptionScopeWithResponseAsync(
+        String deploymentName);
 
     /**
      * Exports the template used for specified deployment.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -2387,7 +2671,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Exports the template used for specified deployment.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -2399,7 +2683,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Exports the template used for specified deployment.
-     * 
+     *
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2408,12 +2692,14 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return the deployment export result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DeploymentExportResultInner> exportTemplateAtSubscriptionScopeWithResponse(String deploymentName, Context context);
+    Response<DeploymentExportResultInner> exportTemplateAtSubscriptionScopeWithResponse(
+        String deploymentName, Context context);
 
     /**
      * Get all the deployments for a subscription.
-     * 
-     * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq '{state}'.
+     *
+     * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq
+     *     '{state}'.
      * @param top The number of results to get. If null is passed, returns all deployments.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -2425,7 +2711,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Get all the deployments for a subscription.
-     * 
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the deployments for a subscription.
@@ -2435,7 +2721,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Get all the deployments for a subscription.
-     * 
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the deployments for a subscription.
@@ -2445,8 +2731,9 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Get all the deployments for a subscription.
-     * 
-     * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq '{state}'.
+     *
+     * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq
+     *     '{state}'.
      * @param top The number of results to get. If null is passed, returns all deployments.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2458,9 +2745,16 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     PagedIterable<DeploymentExtendedInner> list(String filter, Integer top, Context context);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. Deleting a template deployment does not affect the state of the resource group. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
-     * @param resourceGroupName The name of the resource group with the deployment to delete. The name is case insensitive.
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. Deleting a template deployment does not affect the state of the resource group.
+     * This is an asynchronous operation that returns a status of 202 until the template deployment is successfully
+     * deleted. The Location response header contains the URI that is used to obtain the status of the process. While
+     * the process is running, a call to the URI in the Location header returns a status of 202. When the process
+     * finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed,
+     * the URI in the Location header returns an error-level status code.
+     *
+     * @param resourceGroupName The name of the resource group with the deployment to delete. The name is case
+     *     insensitive.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -2471,9 +2765,16 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. Deleting a template deployment does not affect the state of the resource group. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
-     * @param resourceGroupName The name of the resource group with the deployment to delete. The name is case insensitive.
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. Deleting a template deployment does not affect the state of the resource group.
+     * This is an asynchronous operation that returns a status of 202 until the template deployment is successfully
+     * deleted. The Location response header contains the URI that is used to obtain the status of the process. While
+     * the process is running, a call to the URI in the Location header returns a status of 202. When the process
+     * finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed,
+     * the URI in the Location header returns an error-level status code.
+     *
+     * @param resourceGroupName The name of the resource group with the deployment to delete. The name is case
+     *     insensitive.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -2484,9 +2785,16 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. Deleting a template deployment does not affect the state of the resource group. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
-     * @param resourceGroupName The name of the resource group with the deployment to delete. The name is case insensitive.
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. Deleting a template deployment does not affect the state of the resource group.
+     * This is an asynchronous operation that returns a status of 202 until the template deployment is successfully
+     * deleted. The Location response header contains the URI that is used to obtain the status of the process. While
+     * the process is running, a call to the URI in the Location header returns a status of 202. When the process
+     * finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed,
+     * the URI in the Location header returns an error-level status code.
+     *
+     * @param resourceGroupName The name of the resource group with the deployment to delete. The name is case
+     *     insensitive.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -2497,9 +2805,16 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. Deleting a template deployment does not affect the state of the resource group. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
-     * @param resourceGroupName The name of the resource group with the deployment to delete. The name is case insensitive.
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. Deleting a template deployment does not affect the state of the resource group.
+     * This is an asynchronous operation that returns a status of 202 until the template deployment is successfully
+     * deleted. The Location response header contains the URI that is used to obtain the status of the process. While
+     * the process is running, a call to the URI in the Location header returns a status of 202. When the process
+     * finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed,
+     * the URI in the Location header returns an error-level status code.
+     *
+     * @param resourceGroupName The name of the resource group with the deployment to delete. The name is case
+     *     insensitive.
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2511,9 +2826,16 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String deploymentName, Context context);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. Deleting a template deployment does not affect the state of the resource group. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
-     * @param resourceGroupName The name of the resource group with the deployment to delete. The name is case insensitive.
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. Deleting a template deployment does not affect the state of the resource group.
+     * This is an asynchronous operation that returns a status of 202 until the template deployment is successfully
+     * deleted. The Location response header contains the URI that is used to obtain the status of the process. While
+     * the process is running, a call to the URI in the Location header returns a status of 202. When the process
+     * finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed,
+     * the URI in the Location header returns an error-level status code.
+     *
+     * @param resourceGroupName The name of the resource group with the deployment to delete. The name is case
+     *     insensitive.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -2524,9 +2846,16 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     Mono<Void> deleteAsync(String resourceGroupName, String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. Deleting a template deployment does not affect the state of the resource group. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
-     * @param resourceGroupName The name of the resource group with the deployment to delete. The name is case insensitive.
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. Deleting a template deployment does not affect the state of the resource group.
+     * This is an asynchronous operation that returns a status of 202 until the template deployment is successfully
+     * deleted. The Location response header contains the URI that is used to obtain the status of the process. While
+     * the process is running, a call to the URI in the Location header returns a status of 202. When the process
+     * finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed,
+     * the URI in the Location header returns an error-level status code.
+     *
+     * @param resourceGroupName The name of the resource group with the deployment to delete. The name is case
+     *     insensitive.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -2536,9 +2865,16 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     void delete(String resourceGroupName, String deploymentName);
 
     /**
-     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the associated deployment operations. Deleting a template deployment does not affect the state of the resource group. This is an asynchronous operation that returns a status of 202 until the template deployment is successfully deleted. The Location response header contains the URI that is used to obtain the status of the process. While the process is running, a call to the URI in the Location header returns a status of 202. When the process finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed, the URI in the Location header returns an error-level status code.
-     * 
-     * @param resourceGroupName The name of the resource group with the deployment to delete. The name is case insensitive.
+     * A template deployment that is currently running cannot be deleted. Deleting a template deployment removes the
+     * associated deployment operations. Deleting a template deployment does not affect the state of the resource group.
+     * This is an asynchronous operation that returns a status of 202 until the template deployment is successfully
+     * deleted. The Location response header contains the URI that is used to obtain the status of the process. While
+     * the process is running, a call to the URI in the Location header returns a status of 202. When the process
+     * finishes, the URI in the Location header returns a status of 204 on success. If the asynchronous request failed,
+     * the URI in the Location header returns an error-level status code.
+     *
+     * @param resourceGroupName The name of the resource group with the deployment to delete. The name is case
+     *     insensitive.
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2550,8 +2886,9 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Checks whether the deployment exists.
-     * 
-     * @param resourceGroupName The name of the resource group with the deployment to check. The name is case insensitive.
+     *
+     * @param resourceGroupName The name of the resource group with the deployment to check. The name is case
+     *     insensitive.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -2563,8 +2900,9 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Checks whether the deployment exists.
-     * 
-     * @param resourceGroupName The name of the resource group with the deployment to check. The name is case insensitive.
+     *
+     * @param resourceGroupName The name of the resource group with the deployment to check. The name is case
+     *     insensitive.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -2576,8 +2914,9 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Checks whether the deployment exists.
-     * 
-     * @param resourceGroupName The name of the resource group with the deployment to check. The name is case insensitive.
+     *
+     * @param resourceGroupName The name of the resource group with the deployment to check. The name is case
+     *     insensitive.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -2589,8 +2928,9 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Checks whether the deployment exists.
-     * 
-     * @param resourceGroupName The name of the resource group with the deployment to check. The name is case insensitive.
+     *
+     * @param resourceGroupName The name of the resource group with the deployment to check. The name is case
+     *     insensitive.
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2603,8 +2943,9 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
-     * @param resourceGroupName The name of the resource group to deploy the resources to. The name is case insensitive. The resource group must already exist.
+     *
+     * @param resourceGroupName The name of the resource group to deploy the resources to. The name is case insensitive.
+     *     The resource group must already exist.
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2613,12 +2954,14 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return deployment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String deploymentName, DeploymentInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String deploymentName, DeploymentInner parameters);
 
     /**
      * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
-     * @param resourceGroupName The name of the resource group to deploy the resources to. The name is case insensitive. The resource group must already exist.
+     *
+     * @param resourceGroupName The name of the resource group to deploy the resources to. The name is case insensitive.
+     *     The resource group must already exist.
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2627,12 +2970,14 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return deployment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdateAsync(String resourceGroupName, String deploymentName, DeploymentInner parameters);
+    PollerFlux<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String deploymentName, DeploymentInner parameters);
 
     /**
      * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
-     * @param resourceGroupName The name of the resource group to deploy the resources to. The name is case insensitive. The resource group must already exist.
+     *
+     * @param resourceGroupName The name of the resource group to deploy the resources to. The name is case insensitive.
+     *     The resource group must already exist.
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2641,12 +2986,14 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return deployment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdate(String resourceGroupName, String deploymentName, DeploymentInner parameters);
+    SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdate(
+        String resourceGroupName, String deploymentName, DeploymentInner parameters);
 
     /**
      * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
-     * @param resourceGroupName The name of the resource group to deploy the resources to. The name is case insensitive. The resource group must already exist.
+     *
+     * @param resourceGroupName The name of the resource group to deploy the resources to. The name is case insensitive.
+     *     The resource group must already exist.
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
      * @param context The context to associate with this operation.
@@ -2656,12 +3003,14 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return deployment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdate(String resourceGroupName, String deploymentName, DeploymentInner parameters, Context context);
+    SyncPoller<PollResult<DeploymentExtendedInner>, DeploymentExtendedInner> beginCreateOrUpdate(
+        String resourceGroupName, String deploymentName, DeploymentInner parameters, Context context);
 
     /**
      * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
-     * @param resourceGroupName The name of the resource group to deploy the resources to. The name is case insensitive. The resource group must already exist.
+     *
+     * @param resourceGroupName The name of the resource group to deploy the resources to. The name is case insensitive.
+     *     The resource group must already exist.
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2670,12 +3019,14 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return deployment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DeploymentExtendedInner> createOrUpdateAsync(String resourceGroupName, String deploymentName, DeploymentInner parameters);
+    Mono<DeploymentExtendedInner> createOrUpdateAsync(
+        String resourceGroupName, String deploymentName, DeploymentInner parameters);
 
     /**
      * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
-     * @param resourceGroupName The name of the resource group to deploy the resources to. The name is case insensitive. The resource group must already exist.
+     *
+     * @param resourceGroupName The name of the resource group to deploy the resources to. The name is case insensitive.
+     *     The resource group must already exist.
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2688,8 +3039,9 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * You can provide the template and parameters directly in the request or link to JSON files.
-     * 
-     * @param resourceGroupName The name of the resource group to deploy the resources to. The name is case insensitive. The resource group must already exist.
+     *
+     * @param resourceGroupName The name of the resource group to deploy the resources to. The name is case insensitive.
+     *     The resource group must already exist.
      * @param deploymentName The name of the deployment.
      * @param parameters Additional parameters supplied to the operation.
      * @param context The context to associate with this operation.
@@ -2699,11 +3051,12 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return deployment information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DeploymentExtendedInner createOrUpdate(String resourceGroupName, String deploymentName, DeploymentInner parameters, Context context);
+    DeploymentExtendedInner createOrUpdate(
+        String resourceGroupName, String deploymentName, DeploymentInner parameters, Context context);
 
     /**
      * Gets a deployment.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2712,11 +3065,12 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return a deployment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DeploymentExtendedInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String deploymentName);
+    Mono<Response<DeploymentExtendedInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String deploymentName);
 
     /**
      * Gets a deployment.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2729,7 +3083,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Gets a deployment.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2742,7 +3096,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Gets a deployment.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
@@ -2752,11 +3106,14 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return a deployment.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DeploymentExtendedInner> getByResourceGroupWithResponse(String resourceGroupName, String deploymentName, Context context);
+    Response<DeploymentExtendedInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String deploymentName, Context context);
 
     /**
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running template deployment and leaves the resource group partially deployed.
-     * 
+     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
+     * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
+     * template deployment and leaves the resource group partially deployed.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2768,8 +3125,10 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     Mono<Response<Void>> cancelWithResponseAsync(String resourceGroupName, String deploymentName);
 
     /**
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running template deployment and leaves the resource group partially deployed.
-     * 
+     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
+     * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
+     * template deployment and leaves the resource group partially deployed.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2781,8 +3140,10 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     Mono<Void> cancelAsync(String resourceGroupName, String deploymentName);
 
     /**
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running template deployment and leaves the resource group partially deployed.
-     * 
+     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
+     * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
+     * template deployment and leaves the resource group partially deployed.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2793,8 +3154,10 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     void cancel(String resourceGroupName, String deploymentName);
 
     /**
-     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running template deployment and leaves the resource group partially deployed.
-     * 
+     * You can cancel a deployment only if the provisioningState is Accepted or Running. After the deployment is
+     * canceled, the provisioningState is set to Canceled. Canceling a template deployment stops the currently running
+     * template deployment and leaves the resource group partially deployed.
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
@@ -2807,9 +3170,11 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     Response<Void> cancelWithResponse(String resourceGroupName, String deploymentName, Context context);
 
     /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
-     * 
-     * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case insensitive.
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
+     * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case
+     *     insensitive.
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2818,12 +3183,15 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return information from validate template deployment response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> validateWithResponseAsync(String resourceGroupName, String deploymentName, DeploymentInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> validateWithResponseAsync(
+        String resourceGroupName, String deploymentName, DeploymentInner parameters);
 
     /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
-     * 
-     * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case insensitive.
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
+     * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case
+     *     insensitive.
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2832,12 +3200,15 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return information from validate template deployment response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner> beginValidateAsync(String resourceGroupName, String deploymentName, DeploymentInner parameters);
+    PollerFlux<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner> beginValidateAsync(
+        String resourceGroupName, String deploymentName, DeploymentInner parameters);
 
     /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
-     * 
-     * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case insensitive.
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
+     * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case
+     *     insensitive.
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2846,12 +3217,15 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return information from validate template deployment response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner> beginValidate(String resourceGroupName, String deploymentName, DeploymentInner parameters);
+    SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner> beginValidate(
+        String resourceGroupName, String deploymentName, DeploymentInner parameters);
 
     /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
-     * 
-     * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case insensitive.
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
+     * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case
+     *     insensitive.
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
      * @param context The context to associate with this operation.
@@ -2861,12 +3235,15 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return information from validate template deployment response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner> beginValidate(String resourceGroupName, String deploymentName, DeploymentInner parameters, Context context);
+    SyncPoller<PollResult<DeploymentValidateResultInner>, DeploymentValidateResultInner> beginValidate(
+        String resourceGroupName, String deploymentName, DeploymentInner parameters, Context context);
 
     /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
-     * 
-     * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case insensitive.
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
+     * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case
+     *     insensitive.
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2875,12 +3252,15 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return information from validate template deployment response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DeploymentValidateResultInner> validateAsync(String resourceGroupName, String deploymentName, DeploymentInner parameters);
+    Mono<DeploymentValidateResultInner> validateAsync(
+        String resourceGroupName, String deploymentName, DeploymentInner parameters);
 
     /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
-     * 
-     * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case insensitive.
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
+     * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case
+     *     insensitive.
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2892,9 +3272,11 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
     DeploymentValidateResultInner validate(String resourceGroupName, String deploymentName, DeploymentInner parameters);
 
     /**
-     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource Manager..
-     * 
-     * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case insensitive.
+     * Validates whether the specified template is syntactically correct and will be accepted by Azure Resource
+     * Manager..
+     *
+     * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case
+     *     insensitive.
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
      * @param context The context to associate with this operation.
@@ -2904,12 +3286,14 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return information from validate template deployment response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DeploymentValidateResultInner validate(String resourceGroupName, String deploymentName, DeploymentInner parameters, Context context);
+    DeploymentValidateResultInner validate(
+        String resourceGroupName, String deploymentName, DeploymentInner parameters, Context context);
 
     /**
      * Returns changes that will be made by the deployment if executed at the scope of the resource group.
-     * 
-     * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case insensitive.
+     *
+     * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case
+     *     insensitive.
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2918,12 +3302,14 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return result of the What-If operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> whatIfWithResponseAsync(String resourceGroupName, String deploymentName, DeploymentWhatIf parameters);
+    Mono<Response<Flux<ByteBuffer>>> whatIfWithResponseAsync(
+        String resourceGroupName, String deploymentName, DeploymentWhatIf parameters);
 
     /**
      * Returns changes that will be made by the deployment if executed at the scope of the resource group.
-     * 
-     * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case insensitive.
+     *
+     * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case
+     *     insensitive.
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2932,12 +3318,14 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return result of the What-If operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner> beginWhatIfAsync(String resourceGroupName, String deploymentName, DeploymentWhatIf parameters);
+    PollerFlux<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner> beginWhatIfAsync(
+        String resourceGroupName, String deploymentName, DeploymentWhatIf parameters);
 
     /**
      * Returns changes that will be made by the deployment if executed at the scope of the resource group.
-     * 
-     * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case insensitive.
+     *
+     * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case
+     *     insensitive.
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2946,12 +3334,14 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return result of the What-If operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner> beginWhatIf(String resourceGroupName, String deploymentName, DeploymentWhatIf parameters);
+    SyncPoller<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner> beginWhatIf(
+        String resourceGroupName, String deploymentName, DeploymentWhatIf parameters);
 
     /**
      * Returns changes that will be made by the deployment if executed at the scope of the resource group.
-     * 
-     * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case insensitive.
+     *
+     * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case
+     *     insensitive.
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
      * @param context The context to associate with this operation.
@@ -2961,12 +3351,14 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return result of the What-If operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner> beginWhatIf(String resourceGroupName, String deploymentName, DeploymentWhatIf parameters, Context context);
+    SyncPoller<PollResult<WhatIfOperationResultInner>, WhatIfOperationResultInner> beginWhatIf(
+        String resourceGroupName, String deploymentName, DeploymentWhatIf parameters, Context context);
 
     /**
      * Returns changes that will be made by the deployment if executed at the scope of the resource group.
-     * 
-     * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case insensitive.
+     *
+     * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case
+     *     insensitive.
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2975,12 +3367,14 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return result of the What-If operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<WhatIfOperationResultInner> whatIfAsync(String resourceGroupName, String deploymentName, DeploymentWhatIf parameters);
+    Mono<WhatIfOperationResultInner> whatIfAsync(
+        String resourceGroupName, String deploymentName, DeploymentWhatIf parameters);
 
     /**
      * Returns changes that will be made by the deployment if executed at the scope of the resource group.
-     * 
-     * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case insensitive.
+     *
+     * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case
+     *     insensitive.
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -2993,8 +3387,9 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Returns changes that will be made by the deployment if executed at the scope of the resource group.
-     * 
-     * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case insensitive.
+     *
+     * @param resourceGroupName The name of the resource group the template will be deployed to. The name is case
+     *     insensitive.
      * @param deploymentName The name of the deployment.
      * @param parameters Parameters to validate.
      * @param context The context to associate with this operation.
@@ -3004,11 +3399,12 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return result of the What-If operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    WhatIfOperationResultInner whatIf(String resourceGroupName, String deploymentName, DeploymentWhatIf parameters, Context context);
+    WhatIfOperationResultInner whatIf(
+        String resourceGroupName, String deploymentName, DeploymentWhatIf parameters, Context context);
 
     /**
      * Exports the template used for specified deployment.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3017,11 +3413,12 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return the deployment export result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DeploymentExportResultInner>> exportTemplateWithResponseAsync(String resourceGroupName, String deploymentName);
+    Mono<Response<DeploymentExportResultInner>> exportTemplateWithResponseAsync(
+        String resourceGroupName, String deploymentName);
 
     /**
      * Exports the template used for specified deployment.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3034,7 +3431,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Exports the template used for specified deployment.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3047,7 +3444,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Exports the template used for specified deployment.
-     * 
+     *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param deploymentName The name of the deployment.
      * @param context The context to associate with this operation.
@@ -3057,13 +3454,16 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return the deployment export result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DeploymentExportResultInner> exportTemplateWithResponse(String resourceGroupName, String deploymentName, Context context);
+    Response<DeploymentExportResultInner> exportTemplateWithResponse(
+        String resourceGroupName, String deploymentName, Context context);
 
     /**
      * Get all the deployments for a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group with the deployments to get. The name is case insensitive.
-     * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq '{state}'.
+     *
+     * @param resourceGroupName The name of the resource group with the deployments to get. The name is case
+     *     insensitive.
+     * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq
+     *     '{state}'.
      * @param top The number of results to get. If null is passed, returns all deployments.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -3075,8 +3475,9 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Get all the deployments for a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group with the deployments to get. The name is case insensitive.
+     *
+     * @param resourceGroupName The name of the resource group with the deployments to get. The name is case
+     *     insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3087,8 +3488,9 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Get all the deployments for a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group with the deployments to get. The name is case insensitive.
+     *
+     * @param resourceGroupName The name of the resource group with the deployments to get. The name is case
+     *     insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -3099,9 +3501,11 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Get all the deployments for a resource group.
-     * 
-     * @param resourceGroupName The name of the resource group with the deployments to get. The name is case insensitive.
-     * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq '{state}'.
+     *
+     * @param resourceGroupName The name of the resource group with the deployments to get. The name is case
+     *     insensitive.
+     * @param filter The filter to apply on the operation. For example, you can use $filter=provisioningState eq
+     *     '{state}'.
      * @param top The number of results to get. If null is passed, returns all deployments.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -3110,11 +3514,12 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
      * @return all the deployments for a resource group.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DeploymentExtendedInner> listByResourceGroup(String resourceGroupName, String filter, Integer top, Context context);
+    PagedIterable<DeploymentExtendedInner> listByResourceGroup(
+        String resourceGroupName, String filter, Integer top, Context context);
 
     /**
      * Calculate the hash of the given template.
-     * 
+     *
      * @param template The template provided to calculate hash.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -3126,7 +3531,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Calculate the hash of the given template.
-     * 
+     *
      * @param template The template provided to calculate hash.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -3138,7 +3543,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Calculate the hash of the given template.
-     * 
+     *
      * @param template The template provided to calculate hash.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -3150,7 +3555,7 @@ public interface DeploymentsClient extends InnerSupportsGet<DeploymentExtendedIn
 
     /**
      * Calculate the hash of the given template.
-     * 
+     *
      * @param template The template provided to calculate hash.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

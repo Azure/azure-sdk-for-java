@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.BgpSettings;
@@ -13,18 +12,14 @@ import com.azure.resourcemanager.network.models.VirtualNetworkGatewaySku;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayType;
 import com.azure.resourcemanager.network.models.VpnClientConfiguration;
 import com.azure.resourcemanager.network.models.VpnType;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * VirtualNetworkGateway properties.
- */
+/** VirtualNetworkGateway properties. */
 @Fluent
 public final class VirtualNetworkGatewayPropertiesFormat {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(VirtualNetworkGatewayPropertiesFormat.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualNetworkGatewayPropertiesFormat.class);
 
     /*
      * IP configurations for virtual network gateway.
@@ -100,9 +95,8 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     private String provisioningState;
 
     /**
-     * Get the ipConfigurations property: IP configurations for virtual network
-     * gateway.
-     * 
+     * Get the ipConfigurations property: IP configurations for virtual network gateway.
+     *
      * @return the ipConfigurations value.
      */
     public List<VirtualNetworkGatewayIpConfigurationInner> ipConfigurations() {
@@ -110,21 +104,21 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     }
 
     /**
-     * Set the ipConfigurations property: IP configurations for virtual network
-     * gateway.
-     * 
+     * Set the ipConfigurations property: IP configurations for virtual network gateway.
+     *
      * @param ipConfigurations the ipConfigurations value to set.
      * @return the VirtualNetworkGatewayPropertiesFormat object itself.
      */
-    public VirtualNetworkGatewayPropertiesFormat withIpConfigurations(List<VirtualNetworkGatewayIpConfigurationInner> ipConfigurations) {
+    public VirtualNetworkGatewayPropertiesFormat withIpConfigurations(
+        List<VirtualNetworkGatewayIpConfigurationInner> ipConfigurations) {
         this.ipConfigurations = ipConfigurations;
         return this;
     }
 
     /**
-     * Get the gatewayType property: The type of this virtual network gateway.
-     * Possible values are: 'Vpn' and 'ExpressRoute'.
-     * 
+     * Get the gatewayType property: The type of this virtual network gateway. Possible values are: 'Vpn' and
+     * 'ExpressRoute'.
+     *
      * @return the gatewayType value.
      */
     public VirtualNetworkGatewayType gatewayType() {
@@ -132,9 +126,9 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     }
 
     /**
-     * Set the gatewayType property: The type of this virtual network gateway.
-     * Possible values are: 'Vpn' and 'ExpressRoute'.
-     * 
+     * Set the gatewayType property: The type of this virtual network gateway. Possible values are: 'Vpn' and
+     * 'ExpressRoute'.
+     *
      * @param gatewayType the gatewayType value to set.
      * @return the VirtualNetworkGatewayPropertiesFormat object itself.
      */
@@ -144,9 +138,9 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     }
 
     /**
-     * Get the vpnType property: The type of this virtual network gateway.
-     * Possible values are: 'PolicyBased' and 'RouteBased'.
-     * 
+     * Get the vpnType property: The type of this virtual network gateway. Possible values are: 'PolicyBased' and
+     * 'RouteBased'.
+     *
      * @return the vpnType value.
      */
     public VpnType vpnType() {
@@ -154,9 +148,9 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     }
 
     /**
-     * Set the vpnType property: The type of this virtual network gateway.
-     * Possible values are: 'PolicyBased' and 'RouteBased'.
-     * 
+     * Set the vpnType property: The type of this virtual network gateway. Possible values are: 'PolicyBased' and
+     * 'RouteBased'.
+     *
      * @param vpnType the vpnType value to set.
      * @return the VirtualNetworkGatewayPropertiesFormat object itself.
      */
@@ -166,9 +160,8 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     }
 
     /**
-     * Get the enableBgp property: Whether BGP is enabled for this virtual
-     * network gateway or not.
-     * 
+     * Get the enableBgp property: Whether BGP is enabled for this virtual network gateway or not.
+     *
      * @return the enableBgp value.
      */
     public Boolean enableBgp() {
@@ -176,9 +169,8 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     }
 
     /**
-     * Set the enableBgp property: Whether BGP is enabled for this virtual
-     * network gateway or not.
-     * 
+     * Set the enableBgp property: Whether BGP is enabled for this virtual network gateway or not.
+     *
      * @param enableBgp the enableBgp value to set.
      * @return the VirtualNetworkGatewayPropertiesFormat object itself.
      */
@@ -189,7 +181,7 @@ public final class VirtualNetworkGatewayPropertiesFormat {
 
     /**
      * Get the active property: ActiveActive flag.
-     * 
+     *
      * @return the active value.
      */
     public Boolean active() {
@@ -198,7 +190,7 @@ public final class VirtualNetworkGatewayPropertiesFormat {
 
     /**
      * Set the active property: ActiveActive flag.
-     * 
+     *
      * @param active the active value to set.
      * @return the VirtualNetworkGatewayPropertiesFormat object itself.
      */
@@ -208,11 +200,9 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     }
 
     /**
-     * Get the gatewayDefaultSite property: The reference of the
-     * LocalNetworkGateway resource which represents local network site having
-     * default routes. Assign Null value in case of removing existing default
-     * site setting.
-     * 
+     * Get the gatewayDefaultSite property: The reference of the LocalNetworkGateway resource which represents local
+     * network site having default routes. Assign Null value in case of removing existing default site setting.
+     *
      * @return the gatewayDefaultSite value.
      */
     public SubResource gatewayDefaultSite() {
@@ -220,11 +210,9 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     }
 
     /**
-     * Set the gatewayDefaultSite property: The reference of the
-     * LocalNetworkGateway resource which represents local network site having
-     * default routes. Assign Null value in case of removing existing default
-     * site setting.
-     * 
+     * Set the gatewayDefaultSite property: The reference of the LocalNetworkGateway resource which represents local
+     * network site having default routes. Assign Null value in case of removing existing default site setting.
+     *
      * @param gatewayDefaultSite the gatewayDefaultSite value to set.
      * @return the VirtualNetworkGatewayPropertiesFormat object itself.
      */
@@ -234,9 +222,9 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     }
 
     /**
-     * Get the sku property: The reference of the VirtualNetworkGatewaySku
-     * resource which represents the SKU selected for Virtual network gateway.
-     * 
+     * Get the sku property: The reference of the VirtualNetworkGatewaySku resource which represents the SKU selected
+     * for Virtual network gateway.
+     *
      * @return the sku value.
      */
     public VirtualNetworkGatewaySku sku() {
@@ -244,9 +232,9 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     }
 
     /**
-     * Set the sku property: The reference of the VirtualNetworkGatewaySku
-     * resource which represents the SKU selected for Virtual network gateway.
-     * 
+     * Set the sku property: The reference of the VirtualNetworkGatewaySku resource which represents the SKU selected
+     * for Virtual network gateway.
+     *
      * @param sku the sku value to set.
      * @return the VirtualNetworkGatewayPropertiesFormat object itself.
      */
@@ -256,10 +244,9 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     }
 
     /**
-     * Get the vpnClientConfiguration property: The reference of the
-     * VpnClientConfiguration resource which represents the P2S VpnClient
-     * configurations.
-     * 
+     * Get the vpnClientConfiguration property: The reference of the VpnClientConfiguration resource which represents
+     * the P2S VpnClient configurations.
+     *
      * @return the vpnClientConfiguration value.
      */
     public VpnClientConfiguration vpnClientConfiguration() {
@@ -267,22 +254,21 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     }
 
     /**
-     * Set the vpnClientConfiguration property: The reference of the
-     * VpnClientConfiguration resource which represents the P2S VpnClient
-     * configurations.
-     * 
+     * Set the vpnClientConfiguration property: The reference of the VpnClientConfiguration resource which represents
+     * the P2S VpnClient configurations.
+     *
      * @param vpnClientConfiguration the vpnClientConfiguration value to set.
      * @return the VirtualNetworkGatewayPropertiesFormat object itself.
      */
-    public VirtualNetworkGatewayPropertiesFormat withVpnClientConfiguration(VpnClientConfiguration vpnClientConfiguration) {
+    public VirtualNetworkGatewayPropertiesFormat withVpnClientConfiguration(
+        VpnClientConfiguration vpnClientConfiguration) {
         this.vpnClientConfiguration = vpnClientConfiguration;
         return this;
     }
 
     /**
-     * Get the bgpSettings property: Virtual network gateway's BGP speaker
-     * settings.
-     * 
+     * Get the bgpSettings property: Virtual network gateway's BGP speaker settings.
+     *
      * @return the bgpSettings value.
      */
     public BgpSettings bgpSettings() {
@@ -290,9 +276,8 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     }
 
     /**
-     * Set the bgpSettings property: Virtual network gateway's BGP speaker
-     * settings.
-     * 
+     * Set the bgpSettings property: Virtual network gateway's BGP speaker settings.
+     *
      * @param bgpSettings the bgpSettings value to set.
      * @return the VirtualNetworkGatewayPropertiesFormat object itself.
      */
@@ -302,9 +287,8 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     }
 
     /**
-     * Get the resourceGuid property: The resource GUID property of the
-     * VirtualNetworkGateway resource.
-     * 
+     * Get the resourceGuid property: The resource GUID property of the VirtualNetworkGateway resource.
+     *
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -312,9 +296,8 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     }
 
     /**
-     * Set the resourceGuid property: The resource GUID property of the
-     * VirtualNetworkGateway resource.
-     * 
+     * Set the resourceGuid property: The resource GUID property of the VirtualNetworkGateway resource.
+     *
      * @param resourceGuid the resourceGuid value to set.
      * @return the VirtualNetworkGatewayPropertiesFormat object itself.
      */
@@ -324,10 +307,9 @@ public final class VirtualNetworkGatewayPropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the
-     * VirtualNetworkGateway resource. Possible values are: 'Updating',
-     * 'Deleting', and 'Failed'.
-     * 
+     * Get the provisioningState property: The provisioning state of the VirtualNetworkGateway resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -336,7 +318,7 @@ public final class VirtualNetworkGatewayPropertiesFormat {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

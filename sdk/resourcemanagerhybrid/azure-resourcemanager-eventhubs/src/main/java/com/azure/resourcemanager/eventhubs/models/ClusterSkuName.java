@@ -8,18 +8,14 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for ClusterSkuName.
- */
+/** Defines values for ClusterSkuName. */
 public final class ClusterSkuName extends ExpandableStringEnum<ClusterSkuName> {
-    /**
-     * Static value Dedicated for ClusterSkuName.
-     */
+    /** Static value Dedicated for ClusterSkuName. */
     public static final ClusterSkuName DEDICATED = fromString("Dedicated");
 
     /**
      * Creates or finds a ClusterSkuName from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding ClusterSkuName.
      */
@@ -28,9 +24,7 @@ public final class ClusterSkuName extends ExpandableStringEnum<ClusterSkuName> {
         return fromString(name, ClusterSkuName.class);
     }
 
-    /**
-     * @return known ClusterSkuName values.
-     */
+    /** @return known ClusterSkuName values. */
     public static Collection<ClusterSkuName> values() {
         return values(ClusterSkuName.class);
     }

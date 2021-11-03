@@ -4,25 +4,20 @@
 
 package com.azure.resourcemanager.compute.fluent.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.ApiError;
 import com.azure.resourcemanager.compute.models.PatchOperationStatus;
 import com.azure.resourcemanager.compute.models.VirtualMachineSoftwarePatchProperties;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/**
- * Describes the properties of an AssessPatches result.
- */
+/** Describes the properties of an AssessPatches result. */
 @Immutable
 public final class VirtualMachineAssessPatchesResultInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(VirtualMachineAssessPatchesResultInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineAssessPatchesResultInner.class);
 
     /*
      * The overall success or failure status of the operation. It remains
@@ -81,11 +76,9 @@ public final class VirtualMachineAssessPatchesResultInner {
     private ApiError error;
 
     /**
-     * Get the status property: The overall success or failure status of the
-     * operation. It remains "InProgress" until the operation completes. At
-     * that point it will become "Failed", "Succeeded", or
-     * "CompletedWithWarnings.".
-     * 
+     * Get the status property: The overall success or failure status of the operation. It remains "InProgress" until
+     * the operation completes. At that point it will become "Failed", "Succeeded", or "CompletedWithWarnings.".
+     *
      * @return the status value.
      */
     public PatchOperationStatus status() {
@@ -93,10 +86,9 @@ public final class VirtualMachineAssessPatchesResultInner {
     }
 
     /**
-     * Get the assessmentActivityId property: The activity ID of the operation
-     * that produced this result. It is used to correlate across CRP and
-     * extension logs.
-     * 
+     * Get the assessmentActivityId property: The activity ID of the operation that produced this result. It is used to
+     * correlate across CRP and extension logs.
+     *
      * @return the assessmentActivityId value.
      */
     public String assessmentActivityId() {
@@ -104,10 +96,9 @@ public final class VirtualMachineAssessPatchesResultInner {
     }
 
     /**
-     * Get the rebootPending property: The overall reboot status of the VM. It
-     * will be true when partially installed patches require a reboot to
-     * complete installation but the reboot has not yet occurred.
-     * 
+     * Get the rebootPending property: The overall reboot status of the VM. It will be true when partially installed
+     * patches require a reboot to complete installation but the reboot has not yet occurred.
+     *
      * @return the rebootPending value.
      */
     public Boolean rebootPending() {
@@ -115,10 +106,9 @@ public final class VirtualMachineAssessPatchesResultInner {
     }
 
     /**
-     * Get the criticalAndSecurityPatchCount property: The number of critical
-     * or security patches that have been detected as available and not yet
-     * installed.
-     * 
+     * Get the criticalAndSecurityPatchCount property: The number of critical or security patches that have been
+     * detected as available and not yet installed.
+     *
      * @return the criticalAndSecurityPatchCount value.
      */
     public Integer criticalAndSecurityPatchCount() {
@@ -126,9 +116,8 @@ public final class VirtualMachineAssessPatchesResultInner {
     }
 
     /**
-     * Get the otherPatchCount property: The number of all available patches
-     * excluding critical and security.
-     * 
+     * Get the otherPatchCount property: The number of all available patches excluding critical and security.
+     *
      * @return the otherPatchCount value.
      */
     public Integer otherPatchCount() {
@@ -136,9 +125,8 @@ public final class VirtualMachineAssessPatchesResultInner {
     }
 
     /**
-     * Get the startDateTime property: The UTC timestamp when the operation
-     * began.
-     * 
+     * Get the startDateTime property: The UTC timestamp when the operation began.
+     *
      * @return the startDateTime value.
      */
     public OffsetDateTime startDateTime() {
@@ -146,9 +134,8 @@ public final class VirtualMachineAssessPatchesResultInner {
     }
 
     /**
-     * Get the patches property: The list of patches that have been detected as
-     * available for installation.
-     * 
+     * Get the patches property: The list of patches that have been detected as available for installation.
+     *
      * @return the patches value.
      */
     public List<VirtualMachineSoftwarePatchProperties> patches() {
@@ -156,9 +143,9 @@ public final class VirtualMachineAssessPatchesResultInner {
     }
 
     /**
-     * Get the error property: The errors that were encountered during
-     * execution of the operation. The details array contains the list of them.
-     * 
+     * Get the error property: The errors that were encountered during execution of the operation. The details array
+     * contains the list of them.
+     *
      * @return the error value.
      */
     public ApiError error() {
@@ -167,7 +154,7 @@ public final class VirtualMachineAssessPatchesResultInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

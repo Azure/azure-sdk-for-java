@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.exception.ManagementError;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Resource group export result.
- */
+/** Resource group export result. */
 @Fluent
 public final class ResourceGroupExportResultInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ResourceGroupExportResultInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ResourceGroupExportResultInner.class);
 
     /*
      * The template content.
@@ -34,7 +29,7 @@ public final class ResourceGroupExportResultInner {
 
     /**
      * Get the template property: The template content.
-     * 
+     *
      * @return the template value.
      */
     public Object template() {
@@ -43,7 +38,7 @@ public final class ResourceGroupExportResultInner {
 
     /**
      * Set the template property: The template content.
-     * 
+     *
      * @param template the template value to set.
      * @return the ResourceGroupExportResultInner object itself.
      */
@@ -54,7 +49,7 @@ public final class ResourceGroupExportResultInner {
 
     /**
      * Get the error property: Error Response The template export error.
-     * 
+     *
      * @return the error value.
      */
     public ManagementError error() {
@@ -63,7 +58,7 @@ public final class ResourceGroupExportResultInner {
 
     /**
      * Set the error property: Error Response The template export error.
-     * 
+     *
      * @param error the error value to set.
      * @return the ResourceGroupExportResultInner object itself.
      */
@@ -74,7 +69,7 @@ public final class ResourceGroupExportResultInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Describes a virtual machine scale set data disk.
- */
+/** Describes a virtual machine scale set data disk. */
 @Fluent
 public final class VirtualMachineScaleSetDataDisk {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetDataDisk.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachineScaleSetDataDisk.class);
 
     /*
      * The disk name.
@@ -86,7 +81,7 @@ public final class VirtualMachineScaleSetDataDisk {
 
     /**
      * Get the name property: The disk name.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -95,7 +90,7 @@ public final class VirtualMachineScaleSetDataDisk {
 
     /**
      * Set the name property: The disk name.
-     * 
+     *
      * @param name the name value to set.
      * @return the VirtualMachineScaleSetDataDisk object itself.
      */
@@ -105,10 +100,9 @@ public final class VirtualMachineScaleSetDataDisk {
     }
 
     /**
-     * Get the lun property: Specifies the logical unit number of the data
-     * disk. This value is used to identify data disks within the VM and
-     * therefore must be unique for each data disk attached to a VM.
-     * 
+     * Get the lun property: Specifies the logical unit number of the data disk. This value is used to identify data
+     * disks within the VM and therefore must be unique for each data disk attached to a VM.
+     *
      * @return the lun value.
      */
     public int lun() {
@@ -116,10 +110,9 @@ public final class VirtualMachineScaleSetDataDisk {
     }
 
     /**
-     * Set the lun property: Specifies the logical unit number of the data
-     * disk. This value is used to identify data disks within the VM and
-     * therefore must be unique for each data disk attached to a VM.
-     * 
+     * Set the lun property: Specifies the logical unit number of the data disk. This value is used to identify data
+     * disks within the VM and therefore must be unique for each data disk attached to a VM.
+     *
      * @param lun the lun value to set.
      * @return the VirtualMachineScaleSetDataDisk object itself.
      */
@@ -129,12 +122,10 @@ public final class VirtualMachineScaleSetDataDisk {
     }
 
     /**
-     * Get the caching property: Specifies the caching requirements.
-     * &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **None**
-     * &lt;br&gt;&lt;br&gt; **ReadOnly** &lt;br&gt;&lt;br&gt; **ReadWrite**
-     * &lt;br&gt;&lt;br&gt; Default: **None for Standard storage. ReadOnly for
-     * Premium storage**.
-     * 
+     * Get the caching property: Specifies the caching requirements. &lt;br&gt;&lt;br&gt; Possible values are:
+     * &lt;br&gt;&lt;br&gt; **None** &lt;br&gt;&lt;br&gt; **ReadOnly** &lt;br&gt;&lt;br&gt; **ReadWrite**
+     * &lt;br&gt;&lt;br&gt; Default: **None for Standard storage. ReadOnly for Premium storage**.
+     *
      * @return the caching value.
      */
     public CachingTypes caching() {
@@ -142,12 +133,10 @@ public final class VirtualMachineScaleSetDataDisk {
     }
 
     /**
-     * Set the caching property: Specifies the caching requirements.
-     * &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **None**
-     * &lt;br&gt;&lt;br&gt; **ReadOnly** &lt;br&gt;&lt;br&gt; **ReadWrite**
-     * &lt;br&gt;&lt;br&gt; Default: **None for Standard storage. ReadOnly for
-     * Premium storage**.
-     * 
+     * Set the caching property: Specifies the caching requirements. &lt;br&gt;&lt;br&gt; Possible values are:
+     * &lt;br&gt;&lt;br&gt; **None** &lt;br&gt;&lt;br&gt; **ReadOnly** &lt;br&gt;&lt;br&gt; **ReadWrite**
+     * &lt;br&gt;&lt;br&gt; Default: **None for Standard storage. ReadOnly for Premium storage**.
+     *
      * @param caching the caching value to set.
      * @return the VirtualMachineScaleSetDataDisk object itself.
      */
@@ -157,9 +146,9 @@ public final class VirtualMachineScaleSetDataDisk {
     }
 
     /**
-     * Get the writeAcceleratorEnabled property: Specifies whether
-     * writeAccelerator should be enabled or disabled on the disk.
-     * 
+     * Get the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on the
+     * disk.
+     *
      * @return the writeAcceleratorEnabled value.
      */
     public Boolean writeAcceleratorEnabled() {
@@ -167,9 +156,9 @@ public final class VirtualMachineScaleSetDataDisk {
     }
 
     /**
-     * Set the writeAcceleratorEnabled property: Specifies whether
-     * writeAccelerator should be enabled or disabled on the disk.
-     * 
+     * Set the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on the
+     * disk.
+     *
      * @param writeAcceleratorEnabled the writeAcceleratorEnabled value to set.
      * @return the VirtualMachineScaleSetDataDisk object itself.
      */
@@ -180,7 +169,7 @@ public final class VirtualMachineScaleSetDataDisk {
 
     /**
      * Get the createOption property: The create option.
-     * 
+     *
      * @return the createOption value.
      */
     public DiskCreateOptionTypes createOption() {
@@ -189,7 +178,7 @@ public final class VirtualMachineScaleSetDataDisk {
 
     /**
      * Set the createOption property: The create option.
-     * 
+     *
      * @param createOption the createOption value to set.
      * @return the VirtualMachineScaleSetDataDisk object itself.
      */
@@ -199,11 +188,10 @@ public final class VirtualMachineScaleSetDataDisk {
     }
 
     /**
-     * Get the diskSizeGB property: Specifies the size of an empty data disk in
-     * gigabytes. This element can be used to overwrite the size of the disk in
-     * a virtual machine image. &lt;br&gt;&lt;br&gt; This value cannot be
-     * larger than 1023 GB.
-     * 
+     * Get the diskSizeGB property: Specifies the size of an empty data disk in gigabytes. This element can be used to
+     * overwrite the size of the disk in a virtual machine image. &lt;br&gt;&lt;br&gt; This value cannot be larger than
+     * 1023 GB.
+     *
      * @return the diskSizeGB value.
      */
     public Integer diskSizeGB() {
@@ -211,11 +199,10 @@ public final class VirtualMachineScaleSetDataDisk {
     }
 
     /**
-     * Set the diskSizeGB property: Specifies the size of an empty data disk in
-     * gigabytes. This element can be used to overwrite the size of the disk in
-     * a virtual machine image. &lt;br&gt;&lt;br&gt; This value cannot be
-     * larger than 1023 GB.
-     * 
+     * Set the diskSizeGB property: Specifies the size of an empty data disk in gigabytes. This element can be used to
+     * overwrite the size of the disk in a virtual machine image. &lt;br&gt;&lt;br&gt; This value cannot be larger than
+     * 1023 GB.
+     *
      * @param diskSizeGB the diskSizeGB value to set.
      * @return the VirtualMachineScaleSetDataDisk object itself.
      */
@@ -226,7 +213,7 @@ public final class VirtualMachineScaleSetDataDisk {
 
     /**
      * Get the managedDisk property: The managed disk parameters.
-     * 
+     *
      * @return the managedDisk value.
      */
     public VirtualMachineScaleSetManagedDiskParameters managedDisk() {
@@ -235,7 +222,7 @@ public final class VirtualMachineScaleSetDataDisk {
 
     /**
      * Set the managedDisk property: The managed disk parameters.
-     * 
+     *
      * @param managedDisk the managedDisk value to set.
      * @return the VirtualMachineScaleSetDataDisk object itself.
      */
@@ -245,11 +232,9 @@ public final class VirtualMachineScaleSetDataDisk {
     }
 
     /**
-     * Get the diskIopsReadWrite property: Specifies the Read-Write IOPS for
-     * the managed disk. Should be used only when StorageAccountType is
-     * UltraSSD_LRS. If not specified, a default value would be assigned based
-     * on diskSizeGB.
-     * 
+     * Get the diskIopsReadWrite property: Specifies the Read-Write IOPS for the managed disk. Should be used only when
+     * StorageAccountType is UltraSSD_LRS. If not specified, a default value would be assigned based on diskSizeGB.
+     *
      * @return the diskIopsReadWrite value.
      */
     public Long diskIopsReadWrite() {
@@ -257,11 +242,9 @@ public final class VirtualMachineScaleSetDataDisk {
     }
 
     /**
-     * Set the diskIopsReadWrite property: Specifies the Read-Write IOPS for
-     * the managed disk. Should be used only when StorageAccountType is
-     * UltraSSD_LRS. If not specified, a default value would be assigned based
-     * on diskSizeGB.
-     * 
+     * Set the diskIopsReadWrite property: Specifies the Read-Write IOPS for the managed disk. Should be used only when
+     * StorageAccountType is UltraSSD_LRS. If not specified, a default value would be assigned based on diskSizeGB.
+     *
      * @param diskIopsReadWrite the diskIopsReadWrite value to set.
      * @return the VirtualMachineScaleSetDataDisk object itself.
      */
@@ -271,11 +254,10 @@ public final class VirtualMachineScaleSetDataDisk {
     }
 
     /**
-     * Get the diskMBpsReadWrite property: Specifies the bandwidth in MB per
-     * second for the managed disk. Should be used only when StorageAccountType
-     * is UltraSSD_LRS. If not specified, a default value would be assigned
-     * based on diskSizeGB.
-     * 
+     * Get the diskMBpsReadWrite property: Specifies the bandwidth in MB per second for the managed disk. Should be used
+     * only when StorageAccountType is UltraSSD_LRS. If not specified, a default value would be assigned based on
+     * diskSizeGB.
+     *
      * @return the diskMBpsReadWrite value.
      */
     public Long diskMBpsReadWrite() {
@@ -283,11 +265,10 @@ public final class VirtualMachineScaleSetDataDisk {
     }
 
     /**
-     * Set the diskMBpsReadWrite property: Specifies the bandwidth in MB per
-     * second for the managed disk. Should be used only when StorageAccountType
-     * is UltraSSD_LRS. If not specified, a default value would be assigned
-     * based on diskSizeGB.
-     * 
+     * Set the diskMBpsReadWrite property: Specifies the bandwidth in MB per second for the managed disk. Should be used
+     * only when StorageAccountType is UltraSSD_LRS. If not specified, a default value would be assigned based on
+     * diskSizeGB.
+     *
      * @param diskMBpsReadWrite the diskMBpsReadWrite value to set.
      * @return the VirtualMachineScaleSetDataDisk object itself.
      */
@@ -298,12 +279,15 @@ public final class VirtualMachineScaleSetDataDisk {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (createOption() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property createOption in model VirtualMachineScaleSetDataDisk"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property createOption in model VirtualMachineScaleSetDataDisk"));
         }
         if (managedDisk() != null) {
             managedDisk().validate();

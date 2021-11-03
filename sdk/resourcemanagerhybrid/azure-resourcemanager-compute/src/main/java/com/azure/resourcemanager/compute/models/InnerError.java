@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Inner error details.
- */
+/** Inner error details. */
 @Fluent
 public final class InnerError {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(InnerError.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(InnerError.class);
 
     /*
      * The exception type.
@@ -33,7 +28,7 @@ public final class InnerError {
 
     /**
      * Get the exceptiontype property: The exception type.
-     * 
+     *
      * @return the exceptiontype value.
      */
     public String exceptiontype() {
@@ -42,7 +37,7 @@ public final class InnerError {
 
     /**
      * Set the exceptiontype property: The exception type.
-     * 
+     *
      * @param exceptiontype the exceptiontype value to set.
      * @return the InnerError object itself.
      */
@@ -52,9 +47,8 @@ public final class InnerError {
     }
 
     /**
-     * Get the errordetail property: The internal error message or exception
-     * dump.
-     * 
+     * Get the errordetail property: The internal error message or exception dump.
+     *
      * @return the errordetail value.
      */
     public String errordetail() {
@@ -62,9 +56,8 @@ public final class InnerError {
     }
 
     /**
-     * Set the errordetail property: The internal error message or exception
-     * dump.
-     * 
+     * Set the errordetail property: The internal error message or exception dump.
+     *
      * @param errordetail the errordetail value to set.
      * @return the InnerError object itself.
      */
@@ -75,7 +68,7 @@ public final class InnerError {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

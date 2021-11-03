@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.fluent.models.OpenShiftManagedClusterInner;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The response from the List OpenShift Managed Clusters operation.
- */
+/** The response from the List OpenShift Managed Clusters operation. */
 @Fluent
 public final class OpenShiftManagedClusterListResult {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(OpenShiftManagedClusterListResult.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(OpenShiftManagedClusterListResult.class);
 
     /*
      * The list of OpenShift managed clusters.
@@ -35,7 +30,7 @@ public final class OpenShiftManagedClusterListResult {
 
     /**
      * Get the value property: The list of OpenShift managed clusters.
-     * 
+     *
      * @return the value value.
      */
     public List<OpenShiftManagedClusterInner> value() {
@@ -44,7 +39,7 @@ public final class OpenShiftManagedClusterListResult {
 
     /**
      * Set the value property: The list of OpenShift managed clusters.
-     * 
+     *
      * @param value the value value to set.
      * @return the OpenShiftManagedClusterListResult object itself.
      */
@@ -54,9 +49,8 @@ public final class OpenShiftManagedClusterListResult {
     }
 
     /**
-     * Get the nextLink property: The URL to get the next set of OpenShift
-     * managed cluster results.
-     * 
+     * Get the nextLink property: The URL to get the next set of OpenShift managed cluster results.
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -65,7 +59,7 @@ public final class OpenShiftManagedClusterListResult {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.fluent.models.ContainerServiceInner;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The response from the List Container Services operation.
- */
+/** The response from the List Container Services operation. */
 @Fluent
 public final class ContainerServiceListResult {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ContainerServiceListResult.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerServiceListResult.class);
 
     /*
      * The list of container services.
@@ -35,7 +30,7 @@ public final class ContainerServiceListResult {
 
     /**
      * Get the value property: The list of container services.
-     * 
+     *
      * @return the value value.
      */
     public List<ContainerServiceInner> value() {
@@ -44,7 +39,7 @@ public final class ContainerServiceListResult {
 
     /**
      * Set the value property: The list of container services.
-     * 
+     *
      * @param value the value value to set.
      * @return the ContainerServiceListResult object itself.
      */
@@ -54,9 +49,8 @@ public final class ContainerServiceListResult {
     }
 
     /**
-     * Get the nextLink property: The URL to get the next set of container
-     * service results.
-     * 
+     * Get the nextLink property: The URL to get the next set of container service results.
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -65,7 +59,7 @@ public final class ContainerServiceListResult {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

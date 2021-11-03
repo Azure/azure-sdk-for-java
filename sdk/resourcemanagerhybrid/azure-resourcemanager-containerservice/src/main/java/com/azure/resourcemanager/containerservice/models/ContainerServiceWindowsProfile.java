@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Profile for Windows VMs in the container service cluster.
- */
+/** Profile for Windows VMs in the container service cluster. */
 @Fluent
 public final class ContainerServiceWindowsProfile {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ContainerServiceWindowsProfile.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerServiceWindowsProfile.class);
 
     /*
      * The administrator username to use for Windows VMs.
@@ -32,9 +27,8 @@ public final class ContainerServiceWindowsProfile {
     private String adminPassword;
 
     /**
-     * Get the adminUsername property: The administrator username to use for
-     * Windows VMs.
-     * 
+     * Get the adminUsername property: The administrator username to use for Windows VMs.
+     *
      * @return the adminUsername value.
      */
     public String adminUsername() {
@@ -42,9 +36,8 @@ public final class ContainerServiceWindowsProfile {
     }
 
     /**
-     * Set the adminUsername property: The administrator username to use for
-     * Windows VMs.
-     * 
+     * Set the adminUsername property: The administrator username to use for Windows VMs.
+     *
      * @param adminUsername the adminUsername value to set.
      * @return the ContainerServiceWindowsProfile object itself.
      */
@@ -54,9 +47,8 @@ public final class ContainerServiceWindowsProfile {
     }
 
     /**
-     * Get the adminPassword property: The administrator password to use for
-     * Windows VMs.
-     * 
+     * Get the adminPassword property: The administrator password to use for Windows VMs.
+     *
      * @return the adminPassword value.
      */
     public String adminPassword() {
@@ -64,9 +56,8 @@ public final class ContainerServiceWindowsProfile {
     }
 
     /**
-     * Set the adminPassword property: The administrator password to use for
-     * Windows VMs.
-     * 
+     * Set the adminPassword property: The administrator password to use for Windows VMs.
+     *
      * @param adminPassword the adminPassword value to set.
      * @return the ContainerServiceWindowsProfile object itself.
      */
@@ -77,15 +68,21 @@ public final class ContainerServiceWindowsProfile {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (adminUsername() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property adminUsername in model ContainerServiceWindowsProfile"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property adminUsername in model ContainerServiceWindowsProfile"));
         }
         if (adminPassword() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property adminPassword in model ContainerServiceWindowsProfile"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property adminPassword in model ContainerServiceWindowsProfile"));
         }
     }
 }

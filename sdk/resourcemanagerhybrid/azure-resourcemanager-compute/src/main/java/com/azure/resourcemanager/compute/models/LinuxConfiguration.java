@@ -5,25 +5,20 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Specifies the Linux operating system settings on the virtual machine.
- * &lt;br&gt;&lt;br&gt;For a list of supported Linux distributions, see [Linux
- * on Azure-Endorsed
+ * Specifies the Linux operating system settings on the virtual machine. &lt;br&gt;&lt;br&gt;For a list of supported
+ * Linux distributions, see [Linux on Azure-Endorsed
  * Distributions](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-endorsed-distros?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json)
- * &lt;br&gt;&lt;br&gt; For running non-endorsed distributions, see
- * [Information for Non-Endorsed
+ * &lt;br&gt;&lt;br&gt; For running non-endorsed distributions, see [Information for Non-Endorsed
  * Distributions](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-create-upload-generic?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json).
  */
 @Fluent
 public final class LinuxConfiguration {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(LinuxConfiguration.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(LinuxConfiguration.class);
 
     /*
      * Specifies whether password authentication should be disabled.
@@ -48,9 +43,8 @@ public final class LinuxConfiguration {
     private Boolean provisionVMAgent;
 
     /**
-     * Get the disablePasswordAuthentication property: Specifies whether
-     * password authentication should be disabled.
-     * 
+     * Get the disablePasswordAuthentication property: Specifies whether password authentication should be disabled.
+     *
      * @return the disablePasswordAuthentication value.
      */
     public Boolean disablePasswordAuthentication() {
@@ -58,11 +52,9 @@ public final class LinuxConfiguration {
     }
 
     /**
-     * Set the disablePasswordAuthentication property: Specifies whether
-     * password authentication should be disabled.
-     * 
-     * @param disablePasswordAuthentication the disablePasswordAuthentication
-     * value to set.
+     * Set the disablePasswordAuthentication property: Specifies whether password authentication should be disabled.
+     *
+     * @param disablePasswordAuthentication the disablePasswordAuthentication value to set.
      * @return the LinuxConfiguration object itself.
      */
     public LinuxConfiguration withDisablePasswordAuthentication(Boolean disablePasswordAuthentication) {
@@ -71,9 +63,8 @@ public final class LinuxConfiguration {
     }
 
     /**
-     * Get the ssh property: Specifies the ssh key configuration for a Linux
-     * OS.
-     * 
+     * Get the ssh property: Specifies the ssh key configuration for a Linux OS.
+     *
      * @return the ssh value.
      */
     public SshConfiguration ssh() {
@@ -81,9 +72,8 @@ public final class LinuxConfiguration {
     }
 
     /**
-     * Set the ssh property: Specifies the ssh key configuration for a Linux
-     * OS.
-     * 
+     * Set the ssh property: Specifies the ssh key configuration for a Linux OS.
+     *
      * @param ssh the ssh value to set.
      * @return the LinuxConfiguration object itself.
      */
@@ -93,12 +83,11 @@ public final class LinuxConfiguration {
     }
 
     /**
-     * Get the provisionVMAgent property: Indicates whether virtual machine
-     * agent should be provisioned on the virtual machine. &lt;br&gt;&lt;br&gt;
-     * When this property is not specified in the request body, default
-     * behavior is to set it to true.  This will ensure that VM Agent is
-     * installed on the VM so that extensions can be added to the VM later.
-     * 
+     * Get the provisionVMAgent property: Indicates whether virtual machine agent should be provisioned on the virtual
+     * machine. &lt;br&gt;&lt;br&gt; When this property is not specified in the request body, default behavior is to set
+     * it to true. This will ensure that VM Agent is installed on the VM so that extensions can be added to the VM
+     * later.
+     *
      * @return the provisionVMAgent value.
      */
     public Boolean provisionVMAgent() {
@@ -106,12 +95,11 @@ public final class LinuxConfiguration {
     }
 
     /**
-     * Set the provisionVMAgent property: Indicates whether virtual machine
-     * agent should be provisioned on the virtual machine. &lt;br&gt;&lt;br&gt;
-     * When this property is not specified in the request body, default
-     * behavior is to set it to true.  This will ensure that VM Agent is
-     * installed on the VM so that extensions can be added to the VM later.
-     * 
+     * Set the provisionVMAgent property: Indicates whether virtual machine agent should be provisioned on the virtual
+     * machine. &lt;br&gt;&lt;br&gt; When this property is not specified in the request body, default behavior is to set
+     * it to true. This will ensure that VM Agent is installed on the VM so that extensions can be added to the VM
+     * later.
+     *
      * @param provisionVMAgent the provisionVMAgent value to set.
      * @return the LinuxConfiguration object itself.
      */
@@ -122,7 +110,7 @@ public final class LinuxConfiguration {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

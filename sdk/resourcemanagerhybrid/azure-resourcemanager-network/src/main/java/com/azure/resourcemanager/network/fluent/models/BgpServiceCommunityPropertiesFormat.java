@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.BgpCommunity;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Properties of Service Community.
- */
+/** Properties of Service Community. */
 @Fluent
 public final class BgpServiceCommunityPropertiesFormat {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(BgpServiceCommunityPropertiesFormat.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(BgpServiceCommunityPropertiesFormat.class);
 
     /*
      * The name of the bgp community. e.g. Skype.
@@ -35,7 +30,7 @@ public final class BgpServiceCommunityPropertiesFormat {
 
     /**
      * Get the serviceName property: The name of the bgp community. e.g. Skype.
-     * 
+     *
      * @return the serviceName value.
      */
     public String serviceName() {
@@ -44,7 +39,7 @@ public final class BgpServiceCommunityPropertiesFormat {
 
     /**
      * Set the serviceName property: The name of the bgp community. e.g. Skype.
-     * 
+     *
      * @param serviceName the serviceName value to set.
      * @return the BgpServiceCommunityPropertiesFormat object itself.
      */
@@ -55,7 +50,7 @@ public final class BgpServiceCommunityPropertiesFormat {
 
     /**
      * Get the bgpCommunities property: Get a list of bgp communities.
-     * 
+     *
      * @return the bgpCommunities value.
      */
     public List<BgpCommunity> bgpCommunities() {
@@ -64,7 +59,7 @@ public final class BgpServiceCommunityPropertiesFormat {
 
     /**
      * Set the bgpCommunities property: Get a list of bgp communities.
-     * 
+     *
      * @param bgpCommunities the bgpCommunities value to set.
      * @return the BgpServiceCommunityPropertiesFormat object itself.
      */
@@ -75,7 +70,7 @@ public final class BgpServiceCommunityPropertiesFormat {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

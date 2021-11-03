@@ -8,28 +8,20 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for ConnectionState.
- */
+/** Defines values for ConnectionState. */
 public final class ConnectionState extends ExpandableStringEnum<ConnectionState> {
-    /**
-     * Static value Reachable for ConnectionState.
-     */
+    /** Static value Reachable for ConnectionState. */
     public static final ConnectionState REACHABLE = fromString("Reachable");
 
-    /**
-     * Static value Unreachable for ConnectionState.
-     */
+    /** Static value Unreachable for ConnectionState. */
     public static final ConnectionState UNREACHABLE = fromString("Unreachable");
 
-    /**
-     * Static value Unknown for ConnectionState.
-     */
+    /** Static value Unknown for ConnectionState. */
     public static final ConnectionState UNKNOWN = fromString("Unknown");
 
     /**
      * Creates or finds a ConnectionState from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding ConnectionState.
      */
@@ -38,9 +30,7 @@ public final class ConnectionState extends ExpandableStringEnum<ConnectionState>
         return fromString(name, ConnectionState.class);
     }
 
-    /**
-     * @return known ConnectionState values.
-     */
+    /** @return known ConnectionState values. */
     public static Collection<ConnectionState> values() {
         return values(ConnectionState.class);
     }

@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ConnectionMonitorDestination;
 import com.azure.resourcemanager.network.models.ConnectionMonitorSource;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Parameters that define the operation to create a connection monitor.
- */
+/** Parameters that define the operation to create a connection monitor. */
 @Fluent
 public class ConnectionMonitorParameters {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ConnectionMonitorParameters.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ConnectionMonitorParameters.class);
 
     /*
      * Describes the source of connection monitor.
@@ -48,7 +43,7 @@ public class ConnectionMonitorParameters {
 
     /**
      * Get the source property: Describes the source of connection monitor.
-     * 
+     *
      * @return the source value.
      */
     public ConnectionMonitorSource source() {
@@ -57,7 +52,7 @@ public class ConnectionMonitorParameters {
 
     /**
      * Set the source property: Describes the source of connection monitor.
-     * 
+     *
      * @param source the source value to set.
      * @return the ConnectionMonitorParameters object itself.
      */
@@ -67,9 +62,8 @@ public class ConnectionMonitorParameters {
     }
 
     /**
-     * Get the destination property: Describes the destination of connection
-     * monitor.
-     * 
+     * Get the destination property: Describes the destination of connection monitor.
+     *
      * @return the destination value.
      */
     public ConnectionMonitorDestination destination() {
@@ -77,9 +71,8 @@ public class ConnectionMonitorParameters {
     }
 
     /**
-     * Set the destination property: Describes the destination of connection
-     * monitor.
-     * 
+     * Set the destination property: Describes the destination of connection monitor.
+     *
      * @param destination the destination value to set.
      * @return the ConnectionMonitorParameters object itself.
      */
@@ -89,9 +82,8 @@ public class ConnectionMonitorParameters {
     }
 
     /**
-     * Get the autoStart property: Determines if the connection monitor will
-     * start automatically once created.
-     * 
+     * Get the autoStart property: Determines if the connection monitor will start automatically once created.
+     *
      * @return the autoStart value.
      */
     public Boolean autoStart() {
@@ -99,9 +91,8 @@ public class ConnectionMonitorParameters {
     }
 
     /**
-     * Set the autoStart property: Determines if the connection monitor will
-     * start automatically once created.
-     * 
+     * Set the autoStart property: Determines if the connection monitor will start automatically once created.
+     *
      * @param autoStart the autoStart value to set.
      * @return the ConnectionMonitorParameters object itself.
      */
@@ -111,9 +102,8 @@ public class ConnectionMonitorParameters {
     }
 
     /**
-     * Get the monitoringIntervalInSeconds property: Monitoring interval in
-     * seconds.
-     * 
+     * Get the monitoringIntervalInSeconds property: Monitoring interval in seconds.
+     *
      * @return the monitoringIntervalInSeconds value.
      */
     public Integer monitoringIntervalInSeconds() {
@@ -121,11 +111,9 @@ public class ConnectionMonitorParameters {
     }
 
     /**
-     * Set the monitoringIntervalInSeconds property: Monitoring interval in
-     * seconds.
-     * 
-     * @param monitoringIntervalInSeconds the monitoringIntervalInSeconds value
-     * to set.
+     * Set the monitoringIntervalInSeconds property: Monitoring interval in seconds.
+     *
+     * @param monitoringIntervalInSeconds the monitoringIntervalInSeconds value to set.
      * @return the ConnectionMonitorParameters object itself.
      */
     public ConnectionMonitorParameters withMonitoringIntervalInSeconds(Integer monitoringIntervalInSeconds) {
@@ -135,17 +123,23 @@ public class ConnectionMonitorParameters {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (source() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property source in model ConnectionMonitorParameters"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property source in model ConnectionMonitorParameters"));
         } else {
             source().validate();
         }
         if (destination() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property destination in model ConnectionMonitorParameters"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property destination in model ConnectionMonitorParameters"));
         } else {
             destination().validate();
         }

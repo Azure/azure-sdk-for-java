@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.storage.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The replication policy rule between two containers.
- */
+/** The replication policy rule between two containers. */
 @Fluent
 public final class ObjectReplicationPolicyRule {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ObjectReplicationPolicyRule.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ObjectReplicationPolicyRule.class);
 
     /*
      * Rule Id is auto-generated for each new rule on destination account. It
@@ -45,9 +40,9 @@ public final class ObjectReplicationPolicyRule {
     private ObjectReplicationPolicyFilter filters;
 
     /**
-     * Get the ruleId property: Rule Id is auto-generated for each new rule on
-     * destination account. It is required for put policy on source account.
-     * 
+     * Get the ruleId property: Rule Id is auto-generated for each new rule on destination account. It is required for
+     * put policy on source account.
+     *
      * @return the ruleId value.
      */
     public String ruleId() {
@@ -55,9 +50,9 @@ public final class ObjectReplicationPolicyRule {
     }
 
     /**
-     * Set the ruleId property: Rule Id is auto-generated for each new rule on
-     * destination account. It is required for put policy on source account.
-     * 
+     * Set the ruleId property: Rule Id is auto-generated for each new rule on destination account. It is required for
+     * put policy on source account.
+     *
      * @param ruleId the ruleId value to set.
      * @return the ObjectReplicationPolicyRule object itself.
      */
@@ -68,7 +63,7 @@ public final class ObjectReplicationPolicyRule {
 
     /**
      * Get the sourceContainer property: Required. Source container name.
-     * 
+     *
      * @return the sourceContainer value.
      */
     public String sourceContainer() {
@@ -77,7 +72,7 @@ public final class ObjectReplicationPolicyRule {
 
     /**
      * Set the sourceContainer property: Required. Source container name.
-     * 
+     *
      * @param sourceContainer the sourceContainer value to set.
      * @return the ObjectReplicationPolicyRule object itself.
      */
@@ -87,9 +82,8 @@ public final class ObjectReplicationPolicyRule {
     }
 
     /**
-     * Get the destinationContainer property: Required. Destination container
-     * name.
-     * 
+     * Get the destinationContainer property: Required. Destination container name.
+     *
      * @return the destinationContainer value.
      */
     public String destinationContainer() {
@@ -97,9 +91,8 @@ public final class ObjectReplicationPolicyRule {
     }
 
     /**
-     * Set the destinationContainer property: Required. Destination container
-     * name.
-     * 
+     * Set the destinationContainer property: Required. Destination container name.
+     *
      * @param destinationContainer the destinationContainer value to set.
      * @return the ObjectReplicationPolicyRule object itself.
      */
@@ -109,9 +102,8 @@ public final class ObjectReplicationPolicyRule {
     }
 
     /**
-     * Get the filters property: Optional. An object that defines the filter
-     * set.
-     * 
+     * Get the filters property: Optional. An object that defines the filter set.
+     *
      * @return the filters value.
      */
     public ObjectReplicationPolicyFilter filters() {
@@ -119,9 +111,8 @@ public final class ObjectReplicationPolicyRule {
     }
 
     /**
-     * Set the filters property: Optional. An object that defines the filter
-     * set.
-     * 
+     * Set the filters property: Optional. An object that defines the filter set.
+     *
      * @param filters the filters value to set.
      * @return the ObjectReplicationPolicyRule object itself.
      */
@@ -132,15 +123,21 @@ public final class ObjectReplicationPolicyRule {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sourceContainer() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property sourceContainer in model ObjectReplicationPolicyRule"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property sourceContainer in model ObjectReplicationPolicyRule"));
         }
         if (destinationContainer() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property destinationContainer in model ObjectReplicationPolicyRule"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property destinationContainer in model ObjectReplicationPolicyRule"));
         }
         if (filters() != null) {
             filters().validate();

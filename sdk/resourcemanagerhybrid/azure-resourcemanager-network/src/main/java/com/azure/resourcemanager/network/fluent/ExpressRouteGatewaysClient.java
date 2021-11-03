@@ -15,19 +15,16 @@ import com.azure.resourcemanager.network.fluent.models.ExpressRouteGatewayInner;
 import com.azure.resourcemanager.network.fluent.models.ExpressRouteGatewayListInner;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
-import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * ExpressRouteGatewaysClient.
- */
-public interface ExpressRouteGatewaysClient extends InnerSupportsGet<ExpressRouteGatewayInner>, InnerSupportsDelete<Void> {
+/** An instance of this class provides access to all the operations defined in ExpressRouteGatewaysClient. */
+public interface ExpressRouteGatewaysClient
+    extends InnerSupportsGet<ExpressRouteGatewayInner>, InnerSupportsDelete<Void> {
     /**
      * Lists ExpressRoute gateways under a given subscription.
-     * 
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of ExpressRoute gateways.
@@ -37,7 +34,7 @@ public interface ExpressRouteGatewaysClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Lists ExpressRoute gateways under a given subscription.
-     * 
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of ExpressRoute gateways.
@@ -47,7 +44,7 @@ public interface ExpressRouteGatewaysClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Lists ExpressRoute gateways under a given subscription.
-     * 
+     *
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of ExpressRoute gateways.
@@ -57,7 +54,7 @@ public interface ExpressRouteGatewaysClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Lists ExpressRoute gateways under a given subscription.
-     * 
+     *
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -69,7 +66,7 @@ public interface ExpressRouteGatewaysClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Lists ExpressRoute gateways in a given resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -81,7 +78,7 @@ public interface ExpressRouteGatewaysClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Lists ExpressRoute gateways in a given resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -93,7 +90,7 @@ public interface ExpressRouteGatewaysClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Lists ExpressRoute gateways in a given resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -105,7 +102,7 @@ public interface ExpressRouteGatewaysClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Lists ExpressRoute gateways in a given resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -118,7 +115,7 @@ public interface ExpressRouteGatewaysClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Creates or updates a ExpressRoute gateway in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param putExpressRouteGatewayParameters Parameters required in an ExpressRoute gateway PUT operation.
@@ -128,11 +125,14 @@ public interface ExpressRouteGatewaysClient extends InnerSupportsGet<ExpressRout
      * @return expressRoute gateway resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String expressRouteGatewayName, ExpressRouteGatewayInner putExpressRouteGatewayParameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName,
+        String expressRouteGatewayName,
+        ExpressRouteGatewayInner putExpressRouteGatewayParameters);
 
     /**
      * Creates or updates a ExpressRoute gateway in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param putExpressRouteGatewayParameters Parameters required in an ExpressRoute gateway PUT operation.
@@ -142,11 +142,14 @@ public interface ExpressRouteGatewaysClient extends InnerSupportsGet<ExpressRout
      * @return expressRoute gateway resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<ExpressRouteGatewayInner>, ExpressRouteGatewayInner> beginCreateOrUpdateAsync(String resourceGroupName, String expressRouteGatewayName, ExpressRouteGatewayInner putExpressRouteGatewayParameters);
+    PollerFlux<PollResult<ExpressRouteGatewayInner>, ExpressRouteGatewayInner> beginCreateOrUpdateAsync(
+        String resourceGroupName,
+        String expressRouteGatewayName,
+        ExpressRouteGatewayInner putExpressRouteGatewayParameters);
 
     /**
      * Creates or updates a ExpressRoute gateway in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param putExpressRouteGatewayParameters Parameters required in an ExpressRoute gateway PUT operation.
@@ -156,11 +159,14 @@ public interface ExpressRouteGatewaysClient extends InnerSupportsGet<ExpressRout
      * @return expressRoute gateway resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ExpressRouteGatewayInner>, ExpressRouteGatewayInner> beginCreateOrUpdate(String resourceGroupName, String expressRouteGatewayName, ExpressRouteGatewayInner putExpressRouteGatewayParameters);
+    SyncPoller<PollResult<ExpressRouteGatewayInner>, ExpressRouteGatewayInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String expressRouteGatewayName,
+        ExpressRouteGatewayInner putExpressRouteGatewayParameters);
 
     /**
      * Creates or updates a ExpressRoute gateway in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param putExpressRouteGatewayParameters Parameters required in an ExpressRoute gateway PUT operation.
@@ -171,11 +177,15 @@ public interface ExpressRouteGatewaysClient extends InnerSupportsGet<ExpressRout
      * @return expressRoute gateway resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<ExpressRouteGatewayInner>, ExpressRouteGatewayInner> beginCreateOrUpdate(String resourceGroupName, String expressRouteGatewayName, ExpressRouteGatewayInner putExpressRouteGatewayParameters, Context context);
+    SyncPoller<PollResult<ExpressRouteGatewayInner>, ExpressRouteGatewayInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String expressRouteGatewayName,
+        ExpressRouteGatewayInner putExpressRouteGatewayParameters,
+        Context context);
 
     /**
      * Creates or updates a ExpressRoute gateway in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param putExpressRouteGatewayParameters Parameters required in an ExpressRoute gateway PUT operation.
@@ -185,11 +195,14 @@ public interface ExpressRouteGatewaysClient extends InnerSupportsGet<ExpressRout
      * @return expressRoute gateway resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ExpressRouteGatewayInner> createOrUpdateAsync(String resourceGroupName, String expressRouteGatewayName, ExpressRouteGatewayInner putExpressRouteGatewayParameters);
+    Mono<ExpressRouteGatewayInner> createOrUpdateAsync(
+        String resourceGroupName,
+        String expressRouteGatewayName,
+        ExpressRouteGatewayInner putExpressRouteGatewayParameters);
 
     /**
      * Creates or updates a ExpressRoute gateway in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param putExpressRouteGatewayParameters Parameters required in an ExpressRoute gateway PUT operation.
@@ -199,11 +212,14 @@ public interface ExpressRouteGatewaysClient extends InnerSupportsGet<ExpressRout
      * @return expressRoute gateway resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExpressRouteGatewayInner createOrUpdate(String resourceGroupName, String expressRouteGatewayName, ExpressRouteGatewayInner putExpressRouteGatewayParameters);
+    ExpressRouteGatewayInner createOrUpdate(
+        String resourceGroupName,
+        String expressRouteGatewayName,
+        ExpressRouteGatewayInner putExpressRouteGatewayParameters);
 
     /**
      * Creates or updates a ExpressRoute gateway in a specified resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param putExpressRouteGatewayParameters Parameters required in an ExpressRoute gateway PUT operation.
@@ -214,11 +230,15 @@ public interface ExpressRouteGatewaysClient extends InnerSupportsGet<ExpressRout
      * @return expressRoute gateway resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ExpressRouteGatewayInner createOrUpdate(String resourceGroupName, String expressRouteGatewayName, ExpressRouteGatewayInner putExpressRouteGatewayParameters, Context context);
+    ExpressRouteGatewayInner createOrUpdate(
+        String resourceGroupName,
+        String expressRouteGatewayName,
+        ExpressRouteGatewayInner putExpressRouteGatewayParameters,
+        Context context);
 
     /**
      * Fetches the details of a ExpressRoute gateway in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -227,11 +247,12 @@ public interface ExpressRouteGatewaysClient extends InnerSupportsGet<ExpressRout
      * @return expressRoute gateway resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ExpressRouteGatewayInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String expressRouteGatewayName);
+    Mono<Response<ExpressRouteGatewayInner>> getByResourceGroupWithResponseAsync(
+        String resourceGroupName, String expressRouteGatewayName);
 
     /**
      * Fetches the details of a ExpressRoute gateway in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -244,7 +265,7 @@ public interface ExpressRouteGatewaysClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Fetches the details of a ExpressRoute gateway in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -257,7 +278,7 @@ public interface ExpressRouteGatewaysClient extends InnerSupportsGet<ExpressRout
 
     /**
      * Fetches the details of a ExpressRoute gateway in a resource group.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param context The context to associate with this operation.
@@ -267,11 +288,13 @@ public interface ExpressRouteGatewaysClient extends InnerSupportsGet<ExpressRout
      * @return expressRoute gateway resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ExpressRouteGatewayInner> getByResourceGroupWithResponse(String resourceGroupName, String expressRouteGatewayName, Context context);
+    Response<ExpressRouteGatewayInner> getByResourceGroupWithResponse(
+        String resourceGroupName, String expressRouteGatewayName, Context context);
 
     /**
-     * Deletes the specified ExpressRoute gateway in a resource group. An ExpressRoute gateway resource can only be deleted when there are no connection subresources.
-     * 
+     * Deletes the specified ExpressRoute gateway in a resource group. An ExpressRoute gateway resource can only be
+     * deleted when there are no connection subresources.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -283,8 +306,9 @@ public interface ExpressRouteGatewaysClient extends InnerSupportsGet<ExpressRout
     Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String expressRouteGatewayName);
 
     /**
-     * Deletes the specified ExpressRoute gateway in a resource group. An ExpressRoute gateway resource can only be deleted when there are no connection subresources.
-     * 
+     * Deletes the specified ExpressRoute gateway in a resource group. An ExpressRoute gateway resource can only be
+     * deleted when there are no connection subresources.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -296,8 +320,9 @@ public interface ExpressRouteGatewaysClient extends InnerSupportsGet<ExpressRout
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String expressRouteGatewayName);
 
     /**
-     * Deletes the specified ExpressRoute gateway in a resource group. An ExpressRoute gateway resource can only be deleted when there are no connection subresources.
-     * 
+     * Deletes the specified ExpressRoute gateway in a resource group. An ExpressRoute gateway resource can only be
+     * deleted when there are no connection subresources.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -309,8 +334,9 @@ public interface ExpressRouteGatewaysClient extends InnerSupportsGet<ExpressRout
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String expressRouteGatewayName);
 
     /**
-     * Deletes the specified ExpressRoute gateway in a resource group. An ExpressRoute gateway resource can only be deleted when there are no connection subresources.
-     * 
+     * Deletes the specified ExpressRoute gateway in a resource group. An ExpressRoute gateway resource can only be
+     * deleted when there are no connection subresources.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param context The context to associate with this operation.
@@ -320,11 +346,13 @@ public interface ExpressRouteGatewaysClient extends InnerSupportsGet<ExpressRout
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String expressRouteGatewayName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String expressRouteGatewayName, Context context);
 
     /**
-     * Deletes the specified ExpressRoute gateway in a resource group. An ExpressRoute gateway resource can only be deleted when there are no connection subresources.
-     * 
+     * Deletes the specified ExpressRoute gateway in a resource group. An ExpressRoute gateway resource can only be
+     * deleted when there are no connection subresources.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -336,8 +364,9 @@ public interface ExpressRouteGatewaysClient extends InnerSupportsGet<ExpressRout
     Mono<Void> deleteAsync(String resourceGroupName, String expressRouteGatewayName);
 
     /**
-     * Deletes the specified ExpressRoute gateway in a resource group. An ExpressRoute gateway resource can only be deleted when there are no connection subresources.
-     * 
+     * Deletes the specified ExpressRoute gateway in a resource group. An ExpressRoute gateway resource can only be
+     * deleted when there are no connection subresources.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -348,8 +377,9 @@ public interface ExpressRouteGatewaysClient extends InnerSupportsGet<ExpressRout
     void delete(String resourceGroupName, String expressRouteGatewayName);
 
     /**
-     * Deletes the specified ExpressRoute gateway in a resource group. An ExpressRoute gateway resource can only be deleted when there are no connection subresources.
-     * 
+     * Deletes the specified ExpressRoute gateway in a resource group. An ExpressRoute gateway resource can only be
+     * deleted when there are no connection subresources.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param expressRouteGatewayName The name of the ExpressRoute gateway.
      * @param context The context to associate with this operation.

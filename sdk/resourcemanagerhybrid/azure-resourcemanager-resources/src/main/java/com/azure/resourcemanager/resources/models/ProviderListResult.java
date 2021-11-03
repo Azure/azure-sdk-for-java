@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.fluent.models.ProviderInner;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * List of resource providers.
- */
+/** List of resource providers. */
 @Fluent
 public final class ProviderListResult {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ProviderListResult.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ProviderListResult.class);
 
     /*
      * An array of resource providers.
@@ -35,7 +30,7 @@ public final class ProviderListResult {
 
     /**
      * Get the value property: An array of resource providers.
-     * 
+     *
      * @return the value value.
      */
     public List<ProviderInner> value() {
@@ -44,7 +39,7 @@ public final class ProviderListResult {
 
     /**
      * Set the value property: An array of resource providers.
-     * 
+     *
      * @param value the value value to set.
      * @return the ProviderListResult object itself.
      */
@@ -54,9 +49,8 @@ public final class ProviderListResult {
     }
 
     /**
-     * Get the nextLink property: The URL to use for getting the next set of
-     * results.
-     * 
+     * Get the nextLink property: The URL to use for getting the next set of results.
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -65,7 +59,7 @@ public final class ProviderListResult {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

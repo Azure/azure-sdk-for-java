@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ApplicationGatewayCustomError;
 import com.azure.resourcemanager.network.models.ApplicationGatewayProtocol;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Properties of HTTP listener of an application gateway.
- */
+/** Properties of HTTP listener of an application gateway. */
 @Fluent
 public final class ApplicationGatewayHttpListenerPropertiesFormat {
     @JsonIgnore
@@ -73,9 +69,8 @@ public final class ApplicationGatewayHttpListenerPropertiesFormat {
     private List<ApplicationGatewayCustomError> customErrorConfigurations;
 
     /**
-     * Get the frontendIpConfiguration property: Frontend IP configuration
-     * resource of an application gateway.
-     * 
+     * Get the frontendIpConfiguration property: Frontend IP configuration resource of an application gateway.
+     *
      * @return the frontendIpConfiguration value.
      */
     public SubResource frontendIpConfiguration() {
@@ -83,22 +78,20 @@ public final class ApplicationGatewayHttpListenerPropertiesFormat {
     }
 
     /**
-     * Set the frontendIpConfiguration property: Frontend IP configuration
-     * resource of an application gateway.
-     * 
+     * Set the frontendIpConfiguration property: Frontend IP configuration resource of an application gateway.
+     *
      * @param frontendIpConfiguration the frontendIpConfiguration value to set.
-     * @return the ApplicationGatewayHttpListenerPropertiesFormat object
-     * itself.
+     * @return the ApplicationGatewayHttpListenerPropertiesFormat object itself.
      */
-    public ApplicationGatewayHttpListenerPropertiesFormat withFrontendIpConfiguration(SubResource frontendIpConfiguration) {
+    public ApplicationGatewayHttpListenerPropertiesFormat withFrontendIpConfiguration(
+        SubResource frontendIpConfiguration) {
         this.frontendIpConfiguration = frontendIpConfiguration;
         return this;
     }
 
     /**
-     * Get the frontendPort property: Frontend port resource of an application
-     * gateway.
-     * 
+     * Get the frontendPort property: Frontend port resource of an application gateway.
+     *
      * @return the frontendPort value.
      */
     public SubResource frontendPort() {
@@ -106,12 +99,10 @@ public final class ApplicationGatewayHttpListenerPropertiesFormat {
     }
 
     /**
-     * Set the frontendPort property: Frontend port resource of an application
-     * gateway.
-     * 
+     * Set the frontendPort property: Frontend port resource of an application gateway.
+     *
      * @param frontendPort the frontendPort value to set.
-     * @return the ApplicationGatewayHttpListenerPropertiesFormat object
-     * itself.
+     * @return the ApplicationGatewayHttpListenerPropertiesFormat object itself.
      */
     public ApplicationGatewayHttpListenerPropertiesFormat withFrontendPort(SubResource frontendPort) {
         this.frontendPort = frontendPort;
@@ -119,9 +110,8 @@ public final class ApplicationGatewayHttpListenerPropertiesFormat {
     }
 
     /**
-     * Get the protocol property: Protocol of the HTTP listener. Possible
-     * values are 'Http' and 'Https'.
-     * 
+     * Get the protocol property: Protocol of the HTTP listener. Possible values are 'Http' and 'Https'.
+     *
      * @return the protocol value.
      */
     public ApplicationGatewayProtocol protocol() {
@@ -129,12 +119,10 @@ public final class ApplicationGatewayHttpListenerPropertiesFormat {
     }
 
     /**
-     * Set the protocol property: Protocol of the HTTP listener. Possible
-     * values are 'Http' and 'Https'.
-     * 
+     * Set the protocol property: Protocol of the HTTP listener. Possible values are 'Http' and 'Https'.
+     *
      * @param protocol the protocol value to set.
-     * @return the ApplicationGatewayHttpListenerPropertiesFormat object
-     * itself.
+     * @return the ApplicationGatewayHttpListenerPropertiesFormat object itself.
      */
     public ApplicationGatewayHttpListenerPropertiesFormat withProtocol(ApplicationGatewayProtocol protocol) {
         this.protocol = protocol;
@@ -143,7 +131,7 @@ public final class ApplicationGatewayHttpListenerPropertiesFormat {
 
     /**
      * Get the hostname property: Host name of HTTP listener.
-     * 
+     *
      * @return the hostname value.
      */
     public String hostname() {
@@ -152,10 +140,9 @@ public final class ApplicationGatewayHttpListenerPropertiesFormat {
 
     /**
      * Set the hostname property: Host name of HTTP listener.
-     * 
+     *
      * @param hostname the hostname value to set.
-     * @return the ApplicationGatewayHttpListenerPropertiesFormat object
-     * itself.
+     * @return the ApplicationGatewayHttpListenerPropertiesFormat object itself.
      */
     public ApplicationGatewayHttpListenerPropertiesFormat withHostname(String hostname) {
         this.hostname = hostname;
@@ -163,9 +150,8 @@ public final class ApplicationGatewayHttpListenerPropertiesFormat {
     }
 
     /**
-     * Get the sslCertificate property: SSL certificate resource of an
-     * application gateway.
-     * 
+     * Get the sslCertificate property: SSL certificate resource of an application gateway.
+     *
      * @return the sslCertificate value.
      */
     public SubResource sslCertificate() {
@@ -173,12 +159,10 @@ public final class ApplicationGatewayHttpListenerPropertiesFormat {
     }
 
     /**
-     * Set the sslCertificate property: SSL certificate resource of an
-     * application gateway.
-     * 
+     * Set the sslCertificate property: SSL certificate resource of an application gateway.
+     *
      * @param sslCertificate the sslCertificate value to set.
-     * @return the ApplicationGatewayHttpListenerPropertiesFormat object
-     * itself.
+     * @return the ApplicationGatewayHttpListenerPropertiesFormat object itself.
      */
     public ApplicationGatewayHttpListenerPropertiesFormat withSslCertificate(SubResource sslCertificate) {
         this.sslCertificate = sslCertificate;
@@ -186,9 +170,9 @@ public final class ApplicationGatewayHttpListenerPropertiesFormat {
     }
 
     /**
-     * Get the requireServerNameIndication property: Applicable only if
-     * protocol is https. Enables SNI for multi-hosting.
-     * 
+     * Get the requireServerNameIndication property: Applicable only if protocol is https. Enables SNI for
+     * multi-hosting.
+     *
      * @return the requireServerNameIndication value.
      */
     public Boolean requireServerNameIndication() {
@@ -196,24 +180,22 @@ public final class ApplicationGatewayHttpListenerPropertiesFormat {
     }
 
     /**
-     * Set the requireServerNameIndication property: Applicable only if
-     * protocol is https. Enables SNI for multi-hosting.
-     * 
-     * @param requireServerNameIndication the requireServerNameIndication value
-     * to set.
-     * @return the ApplicationGatewayHttpListenerPropertiesFormat object
-     * itself.
+     * Set the requireServerNameIndication property: Applicable only if protocol is https. Enables SNI for
+     * multi-hosting.
+     *
+     * @param requireServerNameIndication the requireServerNameIndication value to set.
+     * @return the ApplicationGatewayHttpListenerPropertiesFormat object itself.
      */
-    public ApplicationGatewayHttpListenerPropertiesFormat withRequireServerNameIndication(Boolean requireServerNameIndication) {
+    public ApplicationGatewayHttpListenerPropertiesFormat withRequireServerNameIndication(
+        Boolean requireServerNameIndication) {
         this.requireServerNameIndication = requireServerNameIndication;
         return this;
     }
 
     /**
-     * Get the provisioningState property: Provisioning state of the HTTP
-     * listener resource. Possible values are: 'Updating', 'Deleting', and
-     * 'Failed'.
-     * 
+     * Get the provisioningState property: Provisioning state of the HTTP listener resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -221,13 +203,11 @@ public final class ApplicationGatewayHttpListenerPropertiesFormat {
     }
 
     /**
-     * Set the provisioningState property: Provisioning state of the HTTP
-     * listener resource. Possible values are: 'Updating', 'Deleting', and
-     * 'Failed'.
-     * 
+     * Set the provisioningState property: Provisioning state of the HTTP listener resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
      * @param provisioningState the provisioningState value to set.
-     * @return the ApplicationGatewayHttpListenerPropertiesFormat object
-     * itself.
+     * @return the ApplicationGatewayHttpListenerPropertiesFormat object itself.
      */
     public ApplicationGatewayHttpListenerPropertiesFormat withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
@@ -235,9 +215,8 @@ public final class ApplicationGatewayHttpListenerPropertiesFormat {
     }
 
     /**
-     * Get the customErrorConfigurations property: Custom error configurations
-     * of the HTTP listener.
-     * 
+     * Get the customErrorConfigurations property: Custom error configurations of the HTTP listener.
+     *
      * @return the customErrorConfigurations value.
      */
     public List<ApplicationGatewayCustomError> customErrorConfigurations() {
@@ -245,22 +224,20 @@ public final class ApplicationGatewayHttpListenerPropertiesFormat {
     }
 
     /**
-     * Set the customErrorConfigurations property: Custom error configurations
-     * of the HTTP listener.
-     * 
-     * @param customErrorConfigurations the customErrorConfigurations value to
-     * set.
-     * @return the ApplicationGatewayHttpListenerPropertiesFormat object
-     * itself.
+     * Set the customErrorConfigurations property: Custom error configurations of the HTTP listener.
+     *
+     * @param customErrorConfigurations the customErrorConfigurations value to set.
+     * @return the ApplicationGatewayHttpListenerPropertiesFormat object itself.
      */
-    public ApplicationGatewayHttpListenerPropertiesFormat withCustomErrorConfigurations(List<ApplicationGatewayCustomError> customErrorConfigurations) {
+    public ApplicationGatewayHttpListenerPropertiesFormat withCustomErrorConfigurations(
+        List<ApplicationGatewayCustomError> customErrorConfigurations) {
         this.customErrorConfigurations = customErrorConfigurations;
         return this;
     }
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

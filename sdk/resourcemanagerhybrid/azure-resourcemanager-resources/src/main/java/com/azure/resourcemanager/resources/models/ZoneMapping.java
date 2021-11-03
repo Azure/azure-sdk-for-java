@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The ZoneMapping model.
- */
+/** The ZoneMapping model. */
 @Fluent
 public final class ZoneMapping {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ZoneMapping.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ZoneMapping.class);
 
     /*
      * The location of the zone mapping.
@@ -34,7 +29,7 @@ public final class ZoneMapping {
 
     /**
      * Get the location property: The location of the zone mapping.
-     * 
+     *
      * @return the location value.
      */
     public String location() {
@@ -43,7 +38,7 @@ public final class ZoneMapping {
 
     /**
      * Set the location property: The location of the zone mapping.
-     * 
+     *
      * @param location the location value to set.
      * @return the ZoneMapping object itself.
      */
@@ -54,7 +49,7 @@ public final class ZoneMapping {
 
     /**
      * Get the zones property: The zones property.
-     * 
+     *
      * @return the zones value.
      */
     public List<String> zones() {
@@ -63,7 +58,7 @@ public final class ZoneMapping {
 
     /**
      * Set the zones property: The zones property.
-     * 
+     *
      * @param zones the zones value to set.
      * @return the ZoneMapping object itself.
      */
@@ -74,7 +69,7 @@ public final class ZoneMapping {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

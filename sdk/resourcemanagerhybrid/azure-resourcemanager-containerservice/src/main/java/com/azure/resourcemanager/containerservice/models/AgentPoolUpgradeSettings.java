@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Settings for upgrading an agentpool.
- */
+/** Settings for upgrading an agentpool. */
 @Fluent
 public final class AgentPoolUpgradeSettings {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(AgentPoolUpgradeSettings.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AgentPoolUpgradeSettings.class);
 
     /*
      * Count or percentage of additional nodes to be added during upgrade. If
@@ -27,9 +22,9 @@ public final class AgentPoolUpgradeSettings {
     private String maxSurge;
 
     /**
-     * Get the maxSurge property: Count or percentage of additional nodes to be
-     * added during upgrade. If empty uses AKS default.
-     * 
+     * Get the maxSurge property: Count or percentage of additional nodes to be added during upgrade. If empty uses AKS
+     * default.
+     *
      * @return the maxSurge value.
      */
     public String maxSurge() {
@@ -37,9 +32,9 @@ public final class AgentPoolUpgradeSettings {
     }
 
     /**
-     * Set the maxSurge property: Count or percentage of additional nodes to be
-     * added during upgrade. If empty uses AKS default.
-     * 
+     * Set the maxSurge property: Count or percentage of additional nodes to be added during upgrade. If empty uses AKS
+     * default.
+     *
      * @param maxSurge the maxSurge value to set.
      * @return the AgentPoolUpgradeSettings object itself.
      */
@@ -50,7 +45,7 @@ public final class AgentPoolUpgradeSettings {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

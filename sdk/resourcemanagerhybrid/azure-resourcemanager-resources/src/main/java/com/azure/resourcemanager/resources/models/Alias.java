@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The alias type.
- */
+/** The alias type. */
 @Fluent
 public final class Alias {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(Alias.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(Alias.class);
 
     /*
      * The alias name.
@@ -52,7 +47,7 @@ public final class Alias {
 
     /**
      * Get the name property: The alias name.
-     * 
+     *
      * @return the name value.
      */
     public String name() {
@@ -61,7 +56,7 @@ public final class Alias {
 
     /**
      * Set the name property: The alias name.
-     * 
+     *
      * @param name the name value to set.
      * @return the Alias object itself.
      */
@@ -72,7 +67,7 @@ public final class Alias {
 
     /**
      * Get the paths property: The paths for an alias.
-     * 
+     *
      * @return the paths value.
      */
     public List<AliasPath> paths() {
@@ -81,7 +76,7 @@ public final class Alias {
 
     /**
      * Set the paths property: The paths for an alias.
-     * 
+     *
      * @param paths the paths value to set.
      * @return the Alias object itself.
      */
@@ -92,7 +87,7 @@ public final class Alias {
 
     /**
      * Get the type property: The type of the alias.
-     * 
+     *
      * @return the type value.
      */
     public AliasType type() {
@@ -101,7 +96,7 @@ public final class Alias {
 
     /**
      * Set the type property: The type of the alias.
-     * 
+     *
      * @param type the type value to set.
      * @return the Alias object itself.
      */
@@ -112,7 +107,7 @@ public final class Alias {
 
     /**
      * Get the defaultPath property: The default path for an alias.
-     * 
+     *
      * @return the defaultPath value.
      */
     public String defaultPath() {
@@ -121,7 +116,7 @@ public final class Alias {
 
     /**
      * Set the defaultPath property: The default path for an alias.
-     * 
+     *
      * @param defaultPath the defaultPath value to set.
      * @return the Alias object itself.
      */
@@ -132,7 +127,7 @@ public final class Alias {
 
     /**
      * Get the defaultPattern property: The default pattern for an alias.
-     * 
+     *
      * @return the defaultPattern value.
      */
     public AliasPattern defaultPattern() {
@@ -141,7 +136,7 @@ public final class Alias {
 
     /**
      * Set the defaultPattern property: The default pattern for an alias.
-     * 
+     *
      * @param defaultPattern the defaultPattern value to set.
      * @return the Alias object itself.
      */
@@ -152,7 +147,7 @@ public final class Alias {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

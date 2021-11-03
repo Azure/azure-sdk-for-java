@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.fluent.models.UserInner;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Server response for Get tenant users API call.
- */
+/** Server response for Get tenant users API call. */
 @Fluent
 public final class UserListResult {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(UserListResult.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(UserListResult.class);
 
     /*
      * the list of users.
@@ -35,7 +30,7 @@ public final class UserListResult {
 
     /**
      * Get the value property: the list of users.
-     * 
+     *
      * @return the value value.
      */
     public List<UserInner> value() {
@@ -44,7 +39,7 @@ public final class UserListResult {
 
     /**
      * Set the value property: the list of users.
-     * 
+     *
      * @param value the value value to set.
      * @return the UserListResult object itself.
      */
@@ -55,7 +50,7 @@ public final class UserListResult {
 
     /**
      * Get the odataNextLink property: The URL to get the next set of results.
-     * 
+     *
      * @return the odataNextLink value.
      */
     public String odataNextLink() {
@@ -64,7 +59,7 @@ public final class UserListResult {
 
     /**
      * Set the odataNextLink property: The URL to get the next set of results.
-     * 
+     *
      * @param odataNextLink the odataNextLink value to set.
      * @return the UserListResult object itself.
      */
@@ -75,7 +70,7 @@ public final class UserListResult {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

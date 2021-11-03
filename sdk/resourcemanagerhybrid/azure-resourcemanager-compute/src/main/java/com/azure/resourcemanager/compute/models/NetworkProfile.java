@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Specifies the network interfaces of the virtual machine.
- */
+/** Specifies the network interfaces of the virtual machine. */
 @Fluent
 public final class NetworkProfile {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(NetworkProfile.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkProfile.class);
 
     /*
      * Specifies the list of resource Ids for the network interfaces associated
@@ -28,9 +23,9 @@ public final class NetworkProfile {
     private List<NetworkInterfaceReference> networkInterfaces;
 
     /**
-     * Get the networkInterfaces property: Specifies the list of resource Ids
-     * for the network interfaces associated with the virtual machine.
-     * 
+     * Get the networkInterfaces property: Specifies the list of resource Ids for the network interfaces associated with
+     * the virtual machine.
+     *
      * @return the networkInterfaces value.
      */
     public List<NetworkInterfaceReference> networkInterfaces() {
@@ -38,9 +33,9 @@ public final class NetworkProfile {
     }
 
     /**
-     * Set the networkInterfaces property: Specifies the list of resource Ids
-     * for the network interfaces associated with the virtual machine.
-     * 
+     * Set the networkInterfaces property: Specifies the list of resource Ids for the network interfaces associated with
+     * the virtual machine.
+     *
      * @param networkInterfaces the networkInterfaces value to set.
      * @return the NetworkProfile object itself.
      */
@@ -51,7 +46,7 @@ public final class NetworkProfile {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.TroubleshootingProperties;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Parameters that define the resource to troubleshoot.
- */
+/** Parameters that define the resource to troubleshoot. */
 @Fluent
 public final class TroubleshootingParameters {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(TroubleshootingParameters.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(TroubleshootingParameters.class);
 
     /*
      * The target resource to troubleshoot.
@@ -34,7 +29,7 @@ public final class TroubleshootingParameters {
 
     /**
      * Get the targetResourceId property: The target resource to troubleshoot.
-     * 
+     *
      * @return the targetResourceId value.
      */
     public String targetResourceId() {
@@ -43,7 +38,7 @@ public final class TroubleshootingParameters {
 
     /**
      * Set the targetResourceId property: The target resource to troubleshoot.
-     * 
+     *
      * @param targetResourceId the targetResourceId value to set.
      * @return the TroubleshootingParameters object itself.
      */
@@ -53,9 +48,8 @@ public final class TroubleshootingParameters {
     }
 
     /**
-     * Get the innerProperties property: Storage location provided for
-     * troubleshoot.
-     * 
+     * Get the innerProperties property: Storage location provided for troubleshoot.
+     *
      * @return the innerProperties value.
      */
     private TroubleshootingProperties innerProperties() {
@@ -63,9 +57,8 @@ public final class TroubleshootingParameters {
     }
 
     /**
-     * Get the storageId property: The ID for the storage account to save the
-     * troubleshoot result.
-     * 
+     * Get the storageId property: The ID for the storage account to save the troubleshoot result.
+     *
      * @return the storageId value.
      */
     public String storageId() {
@@ -73,9 +66,8 @@ public final class TroubleshootingParameters {
     }
 
     /**
-     * Set the storageId property: The ID for the storage account to save the
-     * troubleshoot result.
-     * 
+     * Set the storageId property: The ID for the storage account to save the troubleshoot result.
+     *
      * @param storageId the storageId value to set.
      * @return the TroubleshootingParameters object itself.
      */
@@ -88,9 +80,8 @@ public final class TroubleshootingParameters {
     }
 
     /**
-     * Get the storagePath property: The path to the blob to save the
-     * troubleshoot result in.
-     * 
+     * Get the storagePath property: The path to the blob to save the troubleshoot result in.
+     *
      * @return the storagePath value.
      */
     public String storagePath() {
@@ -98,9 +89,8 @@ public final class TroubleshootingParameters {
     }
 
     /**
-     * Set the storagePath property: The path to the blob to save the
-     * troubleshoot result in.
-     * 
+     * Set the storagePath property: The path to the blob to save the troubleshoot result in.
+     *
      * @param storagePath the storagePath value to set.
      * @return the TroubleshootingParameters object itself.
      */
@@ -114,15 +104,21 @@ public final class TroubleshootingParameters {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (targetResourceId() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property targetResourceId in model TroubleshootingParameters"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property targetResourceId in model TroubleshootingParameters"));
         }
         if (innerProperties() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property innerProperties in model TroubleshootingParameters"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model TroubleshootingParameters"));
         } else {
             innerProperties().validate();
         }

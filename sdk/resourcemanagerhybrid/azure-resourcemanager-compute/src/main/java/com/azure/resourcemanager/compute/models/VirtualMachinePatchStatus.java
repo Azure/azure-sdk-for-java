@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The status of virtual machine patch operations.
- */
+/** The status of virtual machine patch operations. */
 @Fluent
 public final class VirtualMachinePatchStatus {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(VirtualMachinePatchStatus.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualMachinePatchStatus.class);
 
     /*
      * The available patch summary of the latest assessment operation for the
@@ -34,9 +29,9 @@ public final class VirtualMachinePatchStatus {
     private LastPatchInstallationSummary lastPatchInstallationSummary;
 
     /**
-     * Get the availablePatchSummary property: The available patch summary of
-     * the latest assessment operation for the virtual machine.
-     * 
+     * Get the availablePatchSummary property: The available patch summary of the latest assessment operation for the
+     * virtual machine.
+     *
      * @return the availablePatchSummary value.
      */
     public AvailablePatchSummary availablePatchSummary() {
@@ -44,9 +39,9 @@ public final class VirtualMachinePatchStatus {
     }
 
     /**
-     * Set the availablePatchSummary property: The available patch summary of
-     * the latest assessment operation for the virtual machine.
-     * 
+     * Set the availablePatchSummary property: The available patch summary of the latest assessment operation for the
+     * virtual machine.
+     *
      * @param availablePatchSummary the availablePatchSummary value to set.
      * @return the VirtualMachinePatchStatus object itself.
      */
@@ -56,9 +51,9 @@ public final class VirtualMachinePatchStatus {
     }
 
     /**
-     * Get the lastPatchInstallationSummary property: The installation summary
-     * of the latest installation operation for the virtual machine.
-     * 
+     * Get the lastPatchInstallationSummary property: The installation summary of the latest installation operation for
+     * the virtual machine.
+     *
      * @return the lastPatchInstallationSummary value.
      */
     public LastPatchInstallationSummary lastPatchInstallationSummary() {
@@ -66,21 +61,21 @@ public final class VirtualMachinePatchStatus {
     }
 
     /**
-     * Set the lastPatchInstallationSummary property: The installation summary
-     * of the latest installation operation for the virtual machine.
-     * 
-     * @param lastPatchInstallationSummary the lastPatchInstallationSummary
-     * value to set.
+     * Set the lastPatchInstallationSummary property: The installation summary of the latest installation operation for
+     * the virtual machine.
+     *
+     * @param lastPatchInstallationSummary the lastPatchInstallationSummary value to set.
      * @return the VirtualMachinePatchStatus object itself.
      */
-    public VirtualMachinePatchStatus withLastPatchInstallationSummary(LastPatchInstallationSummary lastPatchInstallationSummary) {
+    public VirtualMachinePatchStatus withLastPatchInstallationSummary(
+        LastPatchInstallationSummary lastPatchInstallationSummary) {
         this.lastPatchInstallationSummary = lastPatchInstallationSummary;
         return this;
     }
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

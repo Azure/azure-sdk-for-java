@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/**
- * Instance view status.
- */
+/** Instance view status. */
 @Fluent
 public final class InstanceViewStatus {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(InstanceViewStatus.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(InstanceViewStatus.class);
 
     /*
      * The status code.
@@ -52,7 +47,7 @@ public final class InstanceViewStatus {
 
     /**
      * Get the code property: The status code.
-     * 
+     *
      * @return the code value.
      */
     public String code() {
@@ -61,7 +56,7 @@ public final class InstanceViewStatus {
 
     /**
      * Set the code property: The status code.
-     * 
+     *
      * @param code the code value to set.
      * @return the InstanceViewStatus object itself.
      */
@@ -72,7 +67,7 @@ public final class InstanceViewStatus {
 
     /**
      * Get the level property: The level code.
-     * 
+     *
      * @return the level value.
      */
     public StatusLevelTypes level() {
@@ -81,7 +76,7 @@ public final class InstanceViewStatus {
 
     /**
      * Set the level property: The level code.
-     * 
+     *
      * @param level the level value to set.
      * @return the InstanceViewStatus object itself.
      */
@@ -91,9 +86,8 @@ public final class InstanceViewStatus {
     }
 
     /**
-     * Get the displayStatus property: The short localizable label for the
-     * status.
-     * 
+     * Get the displayStatus property: The short localizable label for the status.
+     *
      * @return the displayStatus value.
      */
     public String displayStatus() {
@@ -101,9 +95,8 @@ public final class InstanceViewStatus {
     }
 
     /**
-     * Set the displayStatus property: The short localizable label for the
-     * status.
-     * 
+     * Set the displayStatus property: The short localizable label for the status.
+     *
      * @param displayStatus the displayStatus value to set.
      * @return the InstanceViewStatus object itself.
      */
@@ -113,9 +106,8 @@ public final class InstanceViewStatus {
     }
 
     /**
-     * Get the message property: The detailed status message, including for
-     * alerts and error messages.
-     * 
+     * Get the message property: The detailed status message, including for alerts and error messages.
+     *
      * @return the message value.
      */
     public String message() {
@@ -123,9 +115,8 @@ public final class InstanceViewStatus {
     }
 
     /**
-     * Set the message property: The detailed status message, including for
-     * alerts and error messages.
-     * 
+     * Set the message property: The detailed status message, including for alerts and error messages.
+     *
      * @param message the message value to set.
      * @return the InstanceViewStatus object itself.
      */
@@ -136,7 +127,7 @@ public final class InstanceViewStatus {
 
     /**
      * Get the time property: The time of the status.
-     * 
+     *
      * @return the time value.
      */
     public OffsetDateTime time() {
@@ -145,7 +136,7 @@ public final class InstanceViewStatus {
 
     /**
      * Set the time property: The time of the status.
-     * 
+     *
      * @param time the time value to set.
      * @return the InstanceViewStatus object itself.
      */
@@ -156,7 +147,7 @@ public final class InstanceViewStatus {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

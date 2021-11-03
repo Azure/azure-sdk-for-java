@@ -38,86 +38,133 @@ import com.azure.resourcemanager.compute.fluent.models.DedicatedHostInner;
 import com.azure.resourcemanager.compute.models.DedicatedHostListResult;
 import com.azure.resourcemanager.compute.models.DedicatedHostUpdate;
 import com.azure.resourcemanager.compute.models.InstanceViewTypes;
-import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * DedicatedHostsClient.
- */
+/** An instance of this class provides access to all the operations defined in DedicatedHostsClient. */
 public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     private final ClientLogger logger = new ClientLogger(DedicatedHostsClientImpl.class);
 
-    /**
-     * The proxy service used to perform REST calls.
-     */
+    /** The proxy service used to perform REST calls. */
     private final DedicatedHostsService service;
 
-    /**
-     * The service client containing this operation class.
-     */
+    /** The service client containing this operation class. */
     private final ComputeManagementClientImpl client;
 
     /**
      * Initializes an instance of DedicatedHostsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     DedicatedHostsClientImpl(ComputeManagementClientImpl client) {
-        this.service = RestProxy.create(DedicatedHostsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service =
+            RestProxy.create(DedicatedHostsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for
-     * ComputeManagementClientDedicatedHosts to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for ComputeManagementClientDedicatedHosts to be used by the proxy service
+     * to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "ComputeManagementCli")
     private interface DedicatedHostsService {
-        @Headers({ "Content-Type: application/json" })
-        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}/hosts/{hostName}")
+        @Headers({"Content-Type: application/json"})
+        @Put(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups"
+                + "/{hostGroupName}/hosts/{hostName}")
         @ExpectedResponses({200, 201})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hostGroupName") String hostGroupName, @PathParam("hostName") String hostname, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") DedicatedHostInner parameters, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("hostGroupName") String hostGroupName,
+            @PathParam("hostName") String hostname,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") DedicatedHostInner parameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}/hosts/{hostName}")
+        @Headers({"Content-Type: application/json"})
+        @Patch(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups"
+                + "/{hostGroupName}/hosts/{hostName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hostGroupName") String hostGroupName, @PathParam("hostName") String hostname, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") DedicatedHostUpdate parameters, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Flux<ByteBuffer>>> update(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("hostGroupName") String hostGroupName,
+            @PathParam("hostName") String hostname,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") DedicatedHostUpdate parameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
-        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}/hosts/{hostName}")
+        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Delete(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups"
+                + "/{hostGroupName}/hosts/{hostName}")
         @ExpectedResponses({200, 202, 204})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hostGroupName") String hostGroupName, @PathParam("hostName") String hostname, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("hostGroupName") String hostGroupName,
+            @PathParam("hostName") String hostname,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}/hosts/{hostName}")
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups"
+                + "/{hostGroupName}/hosts/{hostName}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DedicatedHostInner>> get(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hostGroupName") String hostGroupName, @PathParam("hostName") String hostname, @QueryParam("$expand") InstanceViewTypes expand, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<DedicatedHostInner>> get(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("hostGroupName") String hostGroupName,
+            @PathParam("hostName") String hostname,
+            @QueryParam("$expand") InstanceViewTypes expand,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
-        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups/{hostGroupName}/hosts")
+        @Headers({"Content-Type: application/json"})
+        @Get(
+            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/hostGroups"
+                + "/{hostGroupName}/hosts")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DedicatedHostListResult>> listByHostGroup(@HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("hostGroupName") String hostGroupName, @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<DedicatedHostListResult>> listByHostGroup(
+            @HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("hostGroupName") String hostGroupName,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<DedicatedHostListResult>> listByHostGroupNext(@PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<DedicatedHostListResult>> listByHostGroupNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
      * Create or update a dedicated host .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host .
@@ -128,12 +175,17 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * @return specifies information about the Dedicated host.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String hostGroupName, String hostname, DedicatedHostInner parameters) {
+    public Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName, String hostGroupName, String hostname, DedicatedHostInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (hostGroupName == null) {
             return Mono.error(new IllegalArgumentException("Parameter hostGroupName is required and cannot be null."));
@@ -142,7 +194,10 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             return Mono.error(new IllegalArgumentException("Parameter hostname is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -151,13 +206,26 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
         }
         final String apiVersion = "2020-06-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, hostGroupName, hostname, apiVersion, this.client.getSubscriptionId(), parameters, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .createOrUpdate(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            hostGroupName,
+                            hostname,
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            parameters,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update a dedicated host .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host .
@@ -169,12 +237,21 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * @return specifies information about the Dedicated host.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String hostGroupName, String hostname, DedicatedHostInner parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName,
+        String hostGroupName,
+        String hostname,
+        DedicatedHostInner parameters,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (hostGroupName == null) {
             return Mono.error(new IllegalArgumentException("Parameter hostGroupName is required and cannot be null."));
@@ -183,7 +260,10 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             return Mono.error(new IllegalArgumentException("Parameter hostname is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -193,12 +273,22 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
         final String apiVersion = "2020-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, hostGroupName, hostname, apiVersion, this.client.getSubscriptionId(), parameters, accept, context);
+        return service
+            .createOrUpdate(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                hostGroupName,
+                hostname,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                parameters,
+                accept,
+                context);
     }
 
     /**
      * Create or update a dedicated host .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host .
@@ -209,14 +299,19 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * @return specifies information about the Dedicated host.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<DedicatedHostInner>, DedicatedHostInner> beginCreateOrUpdateAsync(String resourceGroupName, String hostGroupName, String hostname, DedicatedHostInner parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, hostGroupName, hostname, parameters);
-        return this.client.<DedicatedHostInner, DedicatedHostInner>getLroResult(mono, this.client.getHttpPipeline(), DedicatedHostInner.class, DedicatedHostInner.class, Context.NONE);
+    public PollerFlux<PollResult<DedicatedHostInner>, DedicatedHostInner> beginCreateOrUpdateAsync(
+        String resourceGroupName, String hostGroupName, String hostname, DedicatedHostInner parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, hostGroupName, hostname, parameters);
+        return this
+            .client
+            .<DedicatedHostInner, DedicatedHostInner>getLroResult(
+                mono, this.client.getHttpPipeline(), DedicatedHostInner.class, DedicatedHostInner.class, Context.NONE);
     }
 
     /**
      * Create or update a dedicated host .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host .
@@ -228,15 +323,24 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * @return specifies information about the Dedicated host.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<DedicatedHostInner>, DedicatedHostInner> beginCreateOrUpdateAsync(String resourceGroupName, String hostGroupName, String hostname, DedicatedHostInner parameters, Context context) {
+    private PollerFlux<PollResult<DedicatedHostInner>, DedicatedHostInner> beginCreateOrUpdateAsync(
+        String resourceGroupName,
+        String hostGroupName,
+        String hostname,
+        DedicatedHostInner parameters,
+        Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, hostGroupName, hostname, parameters, context);
-        return this.client.<DedicatedHostInner, DedicatedHostInner>getLroResult(mono, this.client.getHttpPipeline(), DedicatedHostInner.class, DedicatedHostInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            createOrUpdateWithResponseAsync(resourceGroupName, hostGroupName, hostname, parameters, context);
+        return this
+            .client
+            .<DedicatedHostInner, DedicatedHostInner>getLroResult(
+                mono, this.client.getHttpPipeline(), DedicatedHostInner.class, DedicatedHostInner.class, context);
     }
 
     /**
      * Create or update a dedicated host .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host .
@@ -247,13 +351,14 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * @return specifies information about the Dedicated host.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<DedicatedHostInner>, DedicatedHostInner> beginCreateOrUpdate(String resourceGroupName, String hostGroupName, String hostname, DedicatedHostInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, hostGroupName, hostname, parameters)
-            .getSyncPoller();}
+    public SyncPoller<PollResult<DedicatedHostInner>, DedicatedHostInner> beginCreateOrUpdate(
+        String resourceGroupName, String hostGroupName, String hostname, DedicatedHostInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, hostGroupName, hostname, parameters).getSyncPoller();
+    }
 
     /**
      * Create or update a dedicated host .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host .
@@ -265,13 +370,19 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * @return specifies information about the Dedicated host.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<DedicatedHostInner>, DedicatedHostInner> beginCreateOrUpdate(String resourceGroupName, String hostGroupName, String hostname, DedicatedHostInner parameters, Context context) {
+    public SyncPoller<PollResult<DedicatedHostInner>, DedicatedHostInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String hostGroupName,
+        String hostname,
+        DedicatedHostInner parameters,
+        Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, hostGroupName, hostname, parameters, context)
-            .getSyncPoller();}
+            .getSyncPoller();
+    }
 
     /**
      * Create or update a dedicated host .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host .
@@ -282,7 +393,8 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * @return specifies information about the Dedicated host.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DedicatedHostInner> createOrUpdateAsync(String resourceGroupName, String hostGroupName, String hostname, DedicatedHostInner parameters) {
+    public Mono<DedicatedHostInner> createOrUpdateAsync(
+        String resourceGroupName, String hostGroupName, String hostname, DedicatedHostInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, hostGroupName, hostname, parameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -290,7 +402,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
     /**
      * Create or update a dedicated host .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host .
@@ -302,7 +414,12 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * @return specifies information about the Dedicated host.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DedicatedHostInner> createOrUpdateAsync(String resourceGroupName, String hostGroupName, String hostname, DedicatedHostInner parameters, Context context) {
+    private Mono<DedicatedHostInner> createOrUpdateAsync(
+        String resourceGroupName,
+        String hostGroupName,
+        String hostname,
+        DedicatedHostInner parameters,
+        Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, hostGroupName, hostname, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -310,7 +427,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
     /**
      * Create or update a dedicated host .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host .
@@ -321,13 +438,14 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * @return specifies information about the Dedicated host.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DedicatedHostInner createOrUpdate(String resourceGroupName, String hostGroupName, String hostname, DedicatedHostInner parameters) {
+    public DedicatedHostInner createOrUpdate(
+        String resourceGroupName, String hostGroupName, String hostname, DedicatedHostInner parameters) {
         return createOrUpdateAsync(resourceGroupName, hostGroupName, hostname, parameters).block();
     }
 
     /**
      * Create or update a dedicated host .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host .
@@ -339,13 +457,18 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * @return specifies information about the Dedicated host.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DedicatedHostInner createOrUpdate(String resourceGroupName, String hostGroupName, String hostname, DedicatedHostInner parameters, Context context) {
+    public DedicatedHostInner createOrUpdate(
+        String resourceGroupName,
+        String hostGroupName,
+        String hostname,
+        DedicatedHostInner parameters,
+        Context context) {
         return createOrUpdateAsync(resourceGroupName, hostGroupName, hostname, parameters, context).block();
     }
 
     /**
      * Update an dedicated host .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host .
@@ -356,12 +479,17 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * @return specifies information about the Dedicated host.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String hostGroupName, String hostname, DedicatedHostUpdate parameters) {
+    public Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
+        String resourceGroupName, String hostGroupName, String hostname, DedicatedHostUpdate parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (hostGroupName == null) {
             return Mono.error(new IllegalArgumentException("Parameter hostGroupName is required and cannot be null."));
@@ -370,7 +498,10 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             return Mono.error(new IllegalArgumentException("Parameter hostname is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -379,13 +510,26 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
         }
         final String apiVersion = "2020-06-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, hostGroupName, hostname, apiVersion, this.client.getSubscriptionId(), parameters, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .update(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            hostGroupName,
+                            hostname,
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            parameters,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update an dedicated host .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host .
@@ -397,12 +541,21 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * @return specifies information about the Dedicated host.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String hostGroupName, String hostname, DedicatedHostUpdate parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
+        String resourceGroupName,
+        String hostGroupName,
+        String hostname,
+        DedicatedHostUpdate parameters,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (hostGroupName == null) {
             return Mono.error(new IllegalArgumentException("Parameter hostGroupName is required and cannot be null."));
@@ -411,7 +564,10 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             return Mono.error(new IllegalArgumentException("Parameter hostname is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -421,12 +577,22 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
         final String apiVersion = "2020-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.update(this.client.getEndpoint(), resourceGroupName, hostGroupName, hostname, apiVersion, this.client.getSubscriptionId(), parameters, accept, context);
+        return service
+            .update(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                hostGroupName,
+                hostname,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                parameters,
+                accept,
+                context);
     }
 
     /**
      * Update an dedicated host .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host .
@@ -437,14 +603,19 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * @return specifies information about the Dedicated host.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<DedicatedHostInner>, DedicatedHostInner> beginUpdateAsync(String resourceGroupName, String hostGroupName, String hostname, DedicatedHostUpdate parameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, hostGroupName, hostname, parameters);
-        return this.client.<DedicatedHostInner, DedicatedHostInner>getLroResult(mono, this.client.getHttpPipeline(), DedicatedHostInner.class, DedicatedHostInner.class, Context.NONE);
+    public PollerFlux<PollResult<DedicatedHostInner>, DedicatedHostInner> beginUpdateAsync(
+        String resourceGroupName, String hostGroupName, String hostname, DedicatedHostUpdate parameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, hostGroupName, hostname, parameters);
+        return this
+            .client
+            .<DedicatedHostInner, DedicatedHostInner>getLroResult(
+                mono, this.client.getHttpPipeline(), DedicatedHostInner.class, DedicatedHostInner.class, Context.NONE);
     }
 
     /**
      * Update an dedicated host .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host .
@@ -456,15 +627,24 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * @return specifies information about the Dedicated host.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<DedicatedHostInner>, DedicatedHostInner> beginUpdateAsync(String resourceGroupName, String hostGroupName, String hostname, DedicatedHostUpdate parameters, Context context) {
+    private PollerFlux<PollResult<DedicatedHostInner>, DedicatedHostInner> beginUpdateAsync(
+        String resourceGroupName,
+        String hostGroupName,
+        String hostname,
+        DedicatedHostUpdate parameters,
+        Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, hostGroupName, hostname, parameters, context);
-        return this.client.<DedicatedHostInner, DedicatedHostInner>getLroResult(mono, this.client.getHttpPipeline(), DedicatedHostInner.class, DedicatedHostInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            updateWithResponseAsync(resourceGroupName, hostGroupName, hostname, parameters, context);
+        return this
+            .client
+            .<DedicatedHostInner, DedicatedHostInner>getLroResult(
+                mono, this.client.getHttpPipeline(), DedicatedHostInner.class, DedicatedHostInner.class, context);
     }
 
     /**
      * Update an dedicated host .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host .
@@ -475,13 +655,14 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * @return specifies information about the Dedicated host.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<DedicatedHostInner>, DedicatedHostInner> beginUpdate(String resourceGroupName, String hostGroupName, String hostname, DedicatedHostUpdate parameters) {
-        return beginUpdateAsync(resourceGroupName, hostGroupName, hostname, parameters)
-            .getSyncPoller();}
+    public SyncPoller<PollResult<DedicatedHostInner>, DedicatedHostInner> beginUpdate(
+        String resourceGroupName, String hostGroupName, String hostname, DedicatedHostUpdate parameters) {
+        return beginUpdateAsync(resourceGroupName, hostGroupName, hostname, parameters).getSyncPoller();
+    }
 
     /**
      * Update an dedicated host .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host .
@@ -493,13 +674,18 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * @return specifies information about the Dedicated host.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<DedicatedHostInner>, DedicatedHostInner> beginUpdate(String resourceGroupName, String hostGroupName, String hostname, DedicatedHostUpdate parameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, hostGroupName, hostname, parameters, context)
-            .getSyncPoller();}
+    public SyncPoller<PollResult<DedicatedHostInner>, DedicatedHostInner> beginUpdate(
+        String resourceGroupName,
+        String hostGroupName,
+        String hostname,
+        DedicatedHostUpdate parameters,
+        Context context) {
+        return beginUpdateAsync(resourceGroupName, hostGroupName, hostname, parameters, context).getSyncPoller();
+    }
 
     /**
      * Update an dedicated host .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host .
@@ -510,7 +696,8 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * @return specifies information about the Dedicated host.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DedicatedHostInner> updateAsync(String resourceGroupName, String hostGroupName, String hostname, DedicatedHostUpdate parameters) {
+    public Mono<DedicatedHostInner> updateAsync(
+        String resourceGroupName, String hostGroupName, String hostname, DedicatedHostUpdate parameters) {
         return beginUpdateAsync(resourceGroupName, hostGroupName, hostname, parameters)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -518,7 +705,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
     /**
      * Update an dedicated host .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host .
@@ -530,7 +717,12 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * @return specifies information about the Dedicated host.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DedicatedHostInner> updateAsync(String resourceGroupName, String hostGroupName, String hostname, DedicatedHostUpdate parameters, Context context) {
+    private Mono<DedicatedHostInner> updateAsync(
+        String resourceGroupName,
+        String hostGroupName,
+        String hostname,
+        DedicatedHostUpdate parameters,
+        Context context) {
         return beginUpdateAsync(resourceGroupName, hostGroupName, hostname, parameters, context)
             .last()
             .flatMap(this.client::getLroFinalResultOrError);
@@ -538,7 +730,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
     /**
      * Update an dedicated host .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host .
@@ -549,13 +741,14 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * @return specifies information about the Dedicated host.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DedicatedHostInner update(String resourceGroupName, String hostGroupName, String hostname, DedicatedHostUpdate parameters) {
+    public DedicatedHostInner update(
+        String resourceGroupName, String hostGroupName, String hostname, DedicatedHostUpdate parameters) {
         return updateAsync(resourceGroupName, hostGroupName, hostname, parameters).block();
     }
 
     /**
      * Update an dedicated host .
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host .
@@ -567,13 +760,18 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * @return specifies information about the Dedicated host.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DedicatedHostInner update(String resourceGroupName, String hostGroupName, String hostname, DedicatedHostUpdate parameters, Context context) {
+    public DedicatedHostInner update(
+        String resourceGroupName,
+        String hostGroupName,
+        String hostname,
+        DedicatedHostUpdate parameters,
+        Context context) {
         return updateAsync(resourceGroupName, hostGroupName, hostname, parameters, context).block();
     }
 
     /**
      * Delete a dedicated host.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -583,12 +781,17 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String hostGroupName, String hostname) {
+    public Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String hostGroupName, String hostname) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (hostGroupName == null) {
             return Mono.error(new IllegalArgumentException("Parameter hostGroupName is required and cannot be null."));
@@ -597,16 +800,30 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             return Mono.error(new IllegalArgumentException("Parameter hostname is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-06-01";
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, hostGroupName, hostname, apiVersion, this.client.getSubscriptionId(), context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .delete(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            hostGroupName,
+                            hostname,
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a dedicated host.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -617,12 +834,17 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String hostGroupName, String hostname, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String hostGroupName, String hostname, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (hostGroupName == null) {
             return Mono.error(new IllegalArgumentException("Parameter hostGroupName is required and cannot be null."));
@@ -631,16 +853,27 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             return Mono.error(new IllegalArgumentException("Parameter hostname is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-06-01";
         context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), resourceGroupName, hostGroupName, hostname, apiVersion, this.client.getSubscriptionId(), context);
+        return service
+            .delete(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                hostGroupName,
+                hostname,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                context);
     }
 
     /**
      * Delete a dedicated host.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -650,14 +883,17 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String hostGroupName, String hostname) {
+    public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String hostGroupName, String hostname) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, hostGroupName, hostname);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
     }
 
     /**
      * Delete a dedicated host.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -668,15 +904,19 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String hostGroupName, String hostname, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String hostGroupName, String hostname, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, hostGroupName, hostname, context);
-        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono =
+            deleteWithResponseAsync(resourceGroupName, hostGroupName, hostname, context);
+        return this
+            .client
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
     }
 
     /**
      * Delete a dedicated host.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -686,13 +926,14 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String hostGroupName, String hostname) {
-        return beginDeleteAsync(resourceGroupName, hostGroupName, hostname)
-            .getSyncPoller();}
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String hostGroupName, String hostname) {
+        return beginDeleteAsync(resourceGroupName, hostGroupName, hostname).getSyncPoller();
+    }
 
     /**
      * Delete a dedicated host.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -703,13 +944,14 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String hostGroupName, String hostname, Context context) {
-        return beginDeleteAsync(resourceGroupName, hostGroupName, hostname, context)
-            .getSyncPoller();}
+    public SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String hostGroupName, String hostname, Context context) {
+        return beginDeleteAsync(resourceGroupName, hostGroupName, hostname, context).getSyncPoller();
+    }
 
     /**
      * Delete a dedicated host.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -727,7 +969,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
     /**
      * Delete a dedicated host.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -746,7 +988,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
     /**
      * Delete a dedicated host.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -761,7 +1003,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
     /**
      * Delete a dedicated host.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -777,7 +1019,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
     /**
      * Retrieves information about a dedicated host.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -788,12 +1030,17 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * @return specifies information about the Dedicated host.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<DedicatedHostInner>> getWithResponseAsync(String resourceGroupName, String hostGroupName, String hostname, InstanceViewTypes expand) {
+    public Mono<Response<DedicatedHostInner>> getWithResponseAsync(
+        String resourceGroupName, String hostGroupName, String hostname, InstanceViewTypes expand) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (hostGroupName == null) {
             return Mono.error(new IllegalArgumentException("Parameter hostGroupName is required and cannot be null."));
@@ -802,17 +1049,33 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             return Mono.error(new IllegalArgumentException("Parameter hostname is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-06-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName, hostGroupName, hostname, expand, apiVersion, this.client.getSubscriptionId(), accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .get(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            hostGroupName,
+                            hostname,
+                            expand,
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Retrieves information about a dedicated host.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -824,12 +1087,17 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * @return specifies information about the Dedicated host.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DedicatedHostInner>> getWithResponseAsync(String resourceGroupName, String hostGroupName, String hostname, InstanceViewTypes expand, Context context) {
+    private Mono<Response<DedicatedHostInner>> getWithResponseAsync(
+        String resourceGroupName, String hostGroupName, String hostname, InstanceViewTypes expand, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (hostGroupName == null) {
             return Mono.error(new IllegalArgumentException("Parameter hostGroupName is required and cannot be null."));
@@ -838,17 +1106,30 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             return Mono.error(new IllegalArgumentException("Parameter hostname is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.get(this.client.getEndpoint(), resourceGroupName, hostGroupName, hostname, expand, apiVersion, this.client.getSubscriptionId(), accept, context);
+        return service
+            .get(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                hostGroupName,
+                hostname,
+                expand,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                accept,
+                context);
     }
 
     /**
      * Retrieves information about a dedicated host.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -859,20 +1140,22 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * @return specifies information about the Dedicated host.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<DedicatedHostInner> getAsync(String resourceGroupName, String hostGroupName, String hostname, InstanceViewTypes expand) {
+    public Mono<DedicatedHostInner> getAsync(
+        String resourceGroupName, String hostGroupName, String hostname, InstanceViewTypes expand) {
         return getWithResponseAsync(resourceGroupName, hostGroupName, hostname, expand)
-            .flatMap((Response<DedicatedHostInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (Response<DedicatedHostInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Retrieves information about a dedicated host.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -885,18 +1168,19 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     public Mono<DedicatedHostInner> getAsync(String resourceGroupName, String hostGroupName, String hostname) {
         final InstanceViewTypes expand = null;
         return getWithResponseAsync(resourceGroupName, hostGroupName, hostname, expand)
-            .flatMap((Response<DedicatedHostInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (Response<DedicatedHostInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Retrieves information about a dedicated host.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -913,7 +1197,7 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
 
     /**
      * Retrieves information about a dedicated host.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param hostname The name of the dedicated host.
@@ -925,13 +1209,15 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * @return specifies information about the Dedicated host.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DedicatedHostInner> getWithResponse(String resourceGroupName, String hostGroupName, String hostname, InstanceViewTypes expand, Context context) {
+    public Response<DedicatedHostInner> getWithResponse(
+        String resourceGroupName, String hostGroupName, String hostname, InstanceViewTypes expand, Context context) {
         return getWithResponseAsync(resourceGroupName, hostGroupName, hostname, expand, context).block();
     }
 
     /**
-     * Lists all of the dedicated hosts in the specified dedicated host group. Use the nextLink property in the response to get the next page of dedicated hosts.
-     * 
+     * Lists all of the dedicated hosts in the specified dedicated host group. Use the nextLink property in the response
+     * to get the next page of dedicated hosts.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -940,35 +1226,57 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * @return the list dedicated host operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DedicatedHostInner>> listByHostGroupSinglePageAsync(String resourceGroupName, String hostGroupName) {
+    private Mono<PagedResponse<DedicatedHostInner>> listByHostGroupSinglePageAsync(
+        String resourceGroupName, String hostGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (hostGroupName == null) {
             return Mono.error(new IllegalArgumentException("Parameter hostGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-06-01";
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listByHostGroup(this.client.getEndpoint(), resourceGroupName, hostGroupName, apiVersion, this.client.getSubscriptionId(), accept, context))
-            .<PagedResponse<DedicatedHostInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listByHostGroup(
+                            this.client.getEndpoint(),
+                            resourceGroupName,
+                            hostGroupName,
+                            apiVersion,
+                            this.client.getSubscriptionId(),
+                            accept,
+                            context))
+            .<PagedResponse<DedicatedHostInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Lists all of the dedicated hosts in the specified dedicated host group. Use the nextLink property in the response to get the next page of dedicated hosts.
-     * 
+     * Lists all of the dedicated hosts in the specified dedicated host group. Use the nextLink property in the response
+     * to get the next page of dedicated hosts.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param context The context to associate with this operation.
@@ -978,35 +1286,54 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * @return the list dedicated host operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DedicatedHostInner>> listByHostGroupSinglePageAsync(String resourceGroupName, String hostGroupName, Context context) {
+    private Mono<PagedResponse<DedicatedHostInner>> listByHostGroupSinglePageAsync(
+        String resourceGroupName, String hostGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
-            return Mono.error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (hostGroupName == null) {
             return Mono.error(new IllegalArgumentException("Parameter hostGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String apiVersion = "2020-06-01";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listByHostGroup(this.client.getEndpoint(), resourceGroupName, hostGroupName, apiVersion, this.client.getSubscriptionId(), accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return service
+            .listByHostGroup(
+                this.client.getEndpoint(),
+                resourceGroupName,
+                hostGroupName,
+                apiVersion,
+                this.client.getSubscriptionId(),
+                accept,
+                context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 
     /**
-     * Lists all of the dedicated hosts in the specified dedicated host group. Use the nextLink property in the response to get the next page of dedicated hosts.
-     * 
+     * Lists all of the dedicated hosts in the specified dedicated host group. Use the nextLink property in the response
+     * to get the next page of dedicated hosts.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1022,8 +1349,9 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     }
 
     /**
-     * Lists all of the dedicated hosts in the specified dedicated host group. Use the nextLink property in the response to get the next page of dedicated hosts.
-     * 
+     * Lists all of the dedicated hosts in the specified dedicated host group. Use the nextLink property in the response
+     * to get the next page of dedicated hosts.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param context The context to associate with this operation.
@@ -1033,15 +1361,17 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * @return the list dedicated host operation response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DedicatedHostInner> listByHostGroupAsync(String resourceGroupName, String hostGroupName, Context context) {
+    private PagedFlux<DedicatedHostInner> listByHostGroupAsync(
+        String resourceGroupName, String hostGroupName, Context context) {
         return new PagedFlux<>(
             () -> listByHostGroupSinglePageAsync(resourceGroupName, hostGroupName, context),
             nextLink -> listByHostGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
-     * Lists all of the dedicated hosts in the specified dedicated host group. Use the nextLink property in the response to get the next page of dedicated hosts.
-     * 
+     * Lists all of the dedicated hosts in the specified dedicated host group. Use the nextLink property in the response
+     * to get the next page of dedicated hosts.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1055,8 +1385,9 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
     }
 
     /**
-     * Lists all of the dedicated hosts in the specified dedicated host group. Use the nextLink property in the response to get the next page of dedicated hosts.
-     * 
+     * Lists all of the dedicated hosts in the specified dedicated host group. Use the nextLink property in the response
+     * to get the next page of dedicated hosts.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param context The context to associate with this operation.
@@ -1066,13 +1397,14 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * @return the list dedicated host operation response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DedicatedHostInner> listByHostGroup(String resourceGroupName, String hostGroupName, Context context) {
+    public PagedIterable<DedicatedHostInner> listByHostGroup(
+        String resourceGroupName, String hostGroupName, Context context) {
         return new PagedIterable<>(listByHostGroupAsync(resourceGroupName, hostGroupName, context));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1085,23 +1417,29 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil.withContext(context -> service.listByHostGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DedicatedHostInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null))
+        return FluxUtil
+            .withContext(context -> service.listByHostGroupNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<DedicatedHostInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1110,22 +1448,29 @@ public final class DedicatedHostsClientImpl implements DedicatedHostsClient {
      * @return the list dedicated host operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DedicatedHostInner>> listByHostGroupNextSinglePageAsync(String nextLink, Context context) {
+    private Mono<PagedResponse<DedicatedHostInner>> listByHostGroupNextSinglePageAsync(
+        String nextLink, Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service.listByHostGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().nextLink(),
-                null));
+        return service
+            .listByHostGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().nextLink(),
+                        null));
     }
 }

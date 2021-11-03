@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Reference to a secret stored in Azure Key Vault.
- */
+/** Reference to a secret stored in Azure Key Vault. */
 @Fluent
 public final class KeyVaultSecretRef {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(KeyVaultSecretRef.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(KeyVaultSecretRef.class);
 
     /*
      * Key vault identifier.
@@ -39,7 +34,7 @@ public final class KeyVaultSecretRef {
 
     /**
      * Get the vaultId property: Key vault identifier.
-     * 
+     *
      * @return the vaultId value.
      */
     public String vaultId() {
@@ -48,7 +43,7 @@ public final class KeyVaultSecretRef {
 
     /**
      * Set the vaultId property: Key vault identifier.
-     * 
+     *
      * @param vaultId the vaultId value to set.
      * @return the KeyVaultSecretRef object itself.
      */
@@ -59,7 +54,7 @@ public final class KeyVaultSecretRef {
 
     /**
      * Get the secretName property: The secret name.
-     * 
+     *
      * @return the secretName value.
      */
     public String secretName() {
@@ -68,7 +63,7 @@ public final class KeyVaultSecretRef {
 
     /**
      * Set the secretName property: The secret name.
-     * 
+     *
      * @param secretName the secretName value to set.
      * @return the KeyVaultSecretRef object itself.
      */
@@ -79,7 +74,7 @@ public final class KeyVaultSecretRef {
 
     /**
      * Get the version property: The secret version.
-     * 
+     *
      * @return the version value.
      */
     public String version() {
@@ -88,7 +83,7 @@ public final class KeyVaultSecretRef {
 
     /**
      * Set the version property: The secret version.
-     * 
+     *
      * @param version the version value to set.
      * @return the KeyVaultSecretRef object itself.
      */
@@ -99,15 +94,19 @@ public final class KeyVaultSecretRef {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (vaultId() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property vaultId in model KeyVaultSecretRef"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property vaultId in model KeyVaultSecretRef"));
         }
         if (secretName() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property secretName in model KeyVaultSecretRef"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property secretName in model KeyVaultSecretRef"));
         }
     }
 }

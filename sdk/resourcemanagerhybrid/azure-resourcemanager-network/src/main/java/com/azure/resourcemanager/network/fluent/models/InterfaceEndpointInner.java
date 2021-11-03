@@ -5,24 +5,18 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.EndpointService;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Interface endpoint resource.
- */
+/** Interface endpoint resource. */
 @Fluent
 public final class InterfaceEndpointInner extends Resource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(InterfaceEndpointInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(InterfaceEndpointInner.class);
 
     /*
      * Properties of the interface endpoint.
@@ -45,7 +39,7 @@ public final class InterfaceEndpointInner extends Resource {
 
     /**
      * Get the innerProperties property: Properties of the interface endpoint.
-     * 
+     *
      * @return the innerProperties value.
      */
     private InterfaceEndpointPropertiesInner innerProperties() {
@@ -53,9 +47,8 @@ public final class InterfaceEndpointInner extends Resource {
     }
 
     /**
-     * Get the etag property: Gets a unique read-only string that changes
-     * whenever the resource is updated.
-     * 
+     * Get the etag property: Gets a unique read-only string that changes whenever the resource is updated.
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -63,9 +56,8 @@ public final class InterfaceEndpointInner extends Resource {
     }
 
     /**
-     * Set the etag property: Gets a unique read-only string that changes
-     * whenever the resource is updated.
-     * 
+     * Set the etag property: Gets a unique read-only string that changes whenever the resource is updated.
+     *
      * @param etag the etag value to set.
      * @return the InterfaceEndpointInner object itself.
      */
@@ -76,7 +68,7 @@ public final class InterfaceEndpointInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -85,7 +77,7 @@ public final class InterfaceEndpointInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     * 
+     *
      * @param id the id value to set.
      * @return the InterfaceEndpointInner object itself.
      */
@@ -94,18 +86,14 @@ public final class InterfaceEndpointInner extends Resource {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public InterfaceEndpointInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public InterfaceEndpointInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -113,9 +101,9 @@ public final class InterfaceEndpointInner extends Resource {
     }
 
     /**
-     * Get the fqdn property: A first-party service's FQDN that is mapped to
-     * the private IP allocated via this interface endpoint.
-     * 
+     * Get the fqdn property: A first-party service's FQDN that is mapped to the private IP allocated via this interface
+     * endpoint.
+     *
      * @return the fqdn value.
      */
     public String fqdn() {
@@ -123,9 +111,9 @@ public final class InterfaceEndpointInner extends Resource {
     }
 
     /**
-     * Set the fqdn property: A first-party service's FQDN that is mapped to
-     * the private IP allocated via this interface endpoint.
-     * 
+     * Set the fqdn property: A first-party service's FQDN that is mapped to the private IP allocated via this interface
+     * endpoint.
+     *
      * @param fqdn the fqdn value to set.
      * @return the InterfaceEndpointInner object itself.
      */
@@ -138,9 +126,8 @@ public final class InterfaceEndpointInner extends Resource {
     }
 
     /**
-     * Get the endpointService property: A reference to the service being
-     * brought into the virtual network.
-     * 
+     * Get the endpointService property: A reference to the service being brought into the virtual network.
+     *
      * @return the endpointService value.
      */
     public EndpointService endpointService() {
@@ -148,9 +135,8 @@ public final class InterfaceEndpointInner extends Resource {
     }
 
     /**
-     * Set the endpointService property: A reference to the service being
-     * brought into the virtual network.
-     * 
+     * Set the endpointService property: A reference to the service being brought into the virtual network.
+     *
      * @param endpointService the endpointService value to set.
      * @return the InterfaceEndpointInner object itself.
      */
@@ -163,9 +149,8 @@ public final class InterfaceEndpointInner extends Resource {
     }
 
     /**
-     * Get the subnet property: The ID of the subnet from which the private IP
-     * will be allocated.
-     * 
+     * Get the subnet property: The ID of the subnet from which the private IP will be allocated.
+     *
      * @return the subnet value.
      */
     public SubnetInner subnet() {
@@ -173,9 +158,8 @@ public final class InterfaceEndpointInner extends Resource {
     }
 
     /**
-     * Set the subnet property: The ID of the subnet from which the private IP
-     * will be allocated.
-     * 
+     * Set the subnet property: The ID of the subnet from which the private IP will be allocated.
+     *
      * @param subnet the subnet value to set.
      * @return the InterfaceEndpointInner object itself.
      */
@@ -188,9 +172,9 @@ public final class InterfaceEndpointInner extends Resource {
     }
 
     /**
-     * Get the networkInterfaces property: Gets an array of references to the
-     * network interfaces created for this interface endpoint.
-     * 
+     * Get the networkInterfaces property: Gets an array of references to the network interfaces created for this
+     * interface endpoint.
+     *
      * @return the networkInterfaces value.
      */
     public List<NetworkInterfaceInner> networkInterfaces() {
@@ -198,9 +182,8 @@ public final class InterfaceEndpointInner extends Resource {
     }
 
     /**
-     * Get the owner property: A read-only property that identifies who created
-     * this interface endpoint.
-     * 
+     * Get the owner property: A read-only property that identifies who created this interface endpoint.
+     *
      * @return the owner value.
      */
     public String owner() {
@@ -208,10 +191,9 @@ public final class InterfaceEndpointInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the
-     * interface endpoint. Possible values are: 'Updating', 'Deleting', and
-     * 'Failed'.
-     * 
+     * Get the provisioningState property: The provisioning state of the interface endpoint. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -220,7 +202,7 @@ public final class InterfaceEndpointInner extends Resource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

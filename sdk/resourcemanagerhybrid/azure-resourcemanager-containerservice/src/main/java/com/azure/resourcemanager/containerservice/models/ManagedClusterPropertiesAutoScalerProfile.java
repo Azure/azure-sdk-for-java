@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Parameters to be applied to the cluster-autoscaler when enabled.
- */
+/** Parameters to be applied to the cluster-autoscaler when enabled. */
 @Fluent
 public final class ManagedClusterPropertiesAutoScalerProfile {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ManagedClusterPropertiesAutoScalerProfile.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterPropertiesAutoScalerProfile.class);
 
     /*
      * The balance-similar-node-groups property.
@@ -116,9 +111,8 @@ public final class ManagedClusterPropertiesAutoScalerProfile {
     private String skipNodesWithSystemPods;
 
     /**
-     * Get the balanceSimilarNodeGroups property: The
-     * balance-similar-node-groups property.
-     * 
+     * Get the balanceSimilarNodeGroups property: The balance-similar-node-groups property.
+     *
      * @return the balanceSimilarNodeGroups value.
      */
     public String balanceSimilarNodeGroups() {
@@ -126,11 +120,9 @@ public final class ManagedClusterPropertiesAutoScalerProfile {
     }
 
     /**
-     * Set the balanceSimilarNodeGroups property: The
-     * balance-similar-node-groups property.
-     * 
-     * @param balanceSimilarNodeGroups the balanceSimilarNodeGroups value to
-     * set.
+     * Set the balanceSimilarNodeGroups property: The balance-similar-node-groups property.
+     *
+     * @param balanceSimilarNodeGroups the balanceSimilarNodeGroups value to set.
      * @return the ManagedClusterPropertiesAutoScalerProfile object itself.
      */
     public ManagedClusterPropertiesAutoScalerProfile withBalanceSimilarNodeGroups(String balanceSimilarNodeGroups) {
@@ -140,7 +132,7 @@ public final class ManagedClusterPropertiesAutoScalerProfile {
 
     /**
      * Get the expander property: The expander property.
-     * 
+     *
      * @return the expander value.
      */
     public Expander expander() {
@@ -149,7 +141,7 @@ public final class ManagedClusterPropertiesAutoScalerProfile {
 
     /**
      * Set the expander property: The expander property.
-     * 
+     *
      * @param expander the expander value to set.
      * @return the ManagedClusterPropertiesAutoScalerProfile object itself.
      */
@@ -160,7 +152,7 @@ public final class ManagedClusterPropertiesAutoScalerProfile {
 
     /**
      * Get the maxEmptyBulkDelete property: The max-empty-bulk-delete property.
-     * 
+     *
      * @return the maxEmptyBulkDelete value.
      */
     public String maxEmptyBulkDelete() {
@@ -169,7 +161,7 @@ public final class ManagedClusterPropertiesAutoScalerProfile {
 
     /**
      * Set the maxEmptyBulkDelete property: The max-empty-bulk-delete property.
-     * 
+     *
      * @param maxEmptyBulkDelete the maxEmptyBulkDelete value to set.
      * @return the ManagedClusterPropertiesAutoScalerProfile object itself.
      */
@@ -179,9 +171,8 @@ public final class ManagedClusterPropertiesAutoScalerProfile {
     }
 
     /**
-     * Get the maxGracefulTerminationSec property: The
-     * max-graceful-termination-sec property.
-     * 
+     * Get the maxGracefulTerminationSec property: The max-graceful-termination-sec property.
+     *
      * @return the maxGracefulTerminationSec value.
      */
     public String maxGracefulTerminationSec() {
@@ -189,11 +180,9 @@ public final class ManagedClusterPropertiesAutoScalerProfile {
     }
 
     /**
-     * Set the maxGracefulTerminationSec property: The
-     * max-graceful-termination-sec property.
-     * 
-     * @param maxGracefulTerminationSec the maxGracefulTerminationSec value to
-     * set.
+     * Set the maxGracefulTerminationSec property: The max-graceful-termination-sec property.
+     *
+     * @param maxGracefulTerminationSec the maxGracefulTerminationSec value to set.
      * @return the ManagedClusterPropertiesAutoScalerProfile object itself.
      */
     public ManagedClusterPropertiesAutoScalerProfile withMaxGracefulTerminationSec(String maxGracefulTerminationSec) {
@@ -202,9 +191,8 @@ public final class ManagedClusterPropertiesAutoScalerProfile {
     }
 
     /**
-     * Get the maxTotalUnreadyPercentage property: The
-     * max-total-unready-percentage property.
-     * 
+     * Get the maxTotalUnreadyPercentage property: The max-total-unready-percentage property.
+     *
      * @return the maxTotalUnreadyPercentage value.
      */
     public String maxTotalUnreadyPercentage() {
@@ -212,11 +200,9 @@ public final class ManagedClusterPropertiesAutoScalerProfile {
     }
 
     /**
-     * Set the maxTotalUnreadyPercentage property: The
-     * max-total-unready-percentage property.
-     * 
-     * @param maxTotalUnreadyPercentage the maxTotalUnreadyPercentage value to
-     * set.
+     * Set the maxTotalUnreadyPercentage property: The max-total-unready-percentage property.
+     *
+     * @param maxTotalUnreadyPercentage the maxTotalUnreadyPercentage value to set.
      * @return the ManagedClusterPropertiesAutoScalerProfile object itself.
      */
     public ManagedClusterPropertiesAutoScalerProfile withMaxTotalUnreadyPercentage(String maxTotalUnreadyPercentage) {
@@ -225,9 +211,8 @@ public final class ManagedClusterPropertiesAutoScalerProfile {
     }
 
     /**
-     * Get the newPodScaleUpDelay property: The new-pod-scale-up-delay
-     * property.
-     * 
+     * Get the newPodScaleUpDelay property: The new-pod-scale-up-delay property.
+     *
      * @return the newPodScaleUpDelay value.
      */
     public String newPodScaleUpDelay() {
@@ -235,9 +220,8 @@ public final class ManagedClusterPropertiesAutoScalerProfile {
     }
 
     /**
-     * Set the newPodScaleUpDelay property: The new-pod-scale-up-delay
-     * property.
-     * 
+     * Set the newPodScaleUpDelay property: The new-pod-scale-up-delay property.
+     *
      * @param newPodScaleUpDelay the newPodScaleUpDelay value to set.
      * @return the ManagedClusterPropertiesAutoScalerProfile object itself.
      */
@@ -247,9 +231,8 @@ public final class ManagedClusterPropertiesAutoScalerProfile {
     }
 
     /**
-     * Get the okTotalUnreadyCount property: The ok-total-unready-count
-     * property.
-     * 
+     * Get the okTotalUnreadyCount property: The ok-total-unready-count property.
+     *
      * @return the okTotalUnreadyCount value.
      */
     public String okTotalUnreadyCount() {
@@ -257,9 +240,8 @@ public final class ManagedClusterPropertiesAutoScalerProfile {
     }
 
     /**
-     * Set the okTotalUnreadyCount property: The ok-total-unready-count
-     * property.
-     * 
+     * Set the okTotalUnreadyCount property: The ok-total-unready-count property.
+     *
      * @param okTotalUnreadyCount the okTotalUnreadyCount value to set.
      * @return the ManagedClusterPropertiesAutoScalerProfile object itself.
      */
@@ -270,7 +252,7 @@ public final class ManagedClusterPropertiesAutoScalerProfile {
 
     /**
      * Get the scanInterval property: The scan-interval property.
-     * 
+     *
      * @return the scanInterval value.
      */
     public String scanInterval() {
@@ -279,7 +261,7 @@ public final class ManagedClusterPropertiesAutoScalerProfile {
 
     /**
      * Set the scanInterval property: The scan-interval property.
-     * 
+     *
      * @param scanInterval the scanInterval value to set.
      * @return the ManagedClusterPropertiesAutoScalerProfile object itself.
      */
@@ -289,9 +271,8 @@ public final class ManagedClusterPropertiesAutoScalerProfile {
     }
 
     /**
-     * Get the scaleDownDelayAfterAdd property: The scale-down-delay-after-add
-     * property.
-     * 
+     * Get the scaleDownDelayAfterAdd property: The scale-down-delay-after-add property.
+     *
      * @return the scaleDownDelayAfterAdd value.
      */
     public String scaleDownDelayAfterAdd() {
@@ -299,9 +280,8 @@ public final class ManagedClusterPropertiesAutoScalerProfile {
     }
 
     /**
-     * Set the scaleDownDelayAfterAdd property: The scale-down-delay-after-add
-     * property.
-     * 
+     * Set the scaleDownDelayAfterAdd property: The scale-down-delay-after-add property.
+     *
      * @param scaleDownDelayAfterAdd the scaleDownDelayAfterAdd value to set.
      * @return the ManagedClusterPropertiesAutoScalerProfile object itself.
      */
@@ -311,9 +291,8 @@ public final class ManagedClusterPropertiesAutoScalerProfile {
     }
 
     /**
-     * Get the scaleDownDelayAfterDelete property: The
-     * scale-down-delay-after-delete property.
-     * 
+     * Get the scaleDownDelayAfterDelete property: The scale-down-delay-after-delete property.
+     *
      * @return the scaleDownDelayAfterDelete value.
      */
     public String scaleDownDelayAfterDelete() {
@@ -321,11 +300,9 @@ public final class ManagedClusterPropertiesAutoScalerProfile {
     }
 
     /**
-     * Set the scaleDownDelayAfterDelete property: The
-     * scale-down-delay-after-delete property.
-     * 
-     * @param scaleDownDelayAfterDelete the scaleDownDelayAfterDelete value to
-     * set.
+     * Set the scaleDownDelayAfterDelete property: The scale-down-delay-after-delete property.
+     *
+     * @param scaleDownDelayAfterDelete the scaleDownDelayAfterDelete value to set.
      * @return the ManagedClusterPropertiesAutoScalerProfile object itself.
      */
     public ManagedClusterPropertiesAutoScalerProfile withScaleDownDelayAfterDelete(String scaleDownDelayAfterDelete) {
@@ -334,9 +311,8 @@ public final class ManagedClusterPropertiesAutoScalerProfile {
     }
 
     /**
-     * Get the scaleDownDelayAfterFailure property: The
-     * scale-down-delay-after-failure property.
-     * 
+     * Get the scaleDownDelayAfterFailure property: The scale-down-delay-after-failure property.
+     *
      * @return the scaleDownDelayAfterFailure value.
      */
     public String scaleDownDelayAfterFailure() {
@@ -344,11 +320,9 @@ public final class ManagedClusterPropertiesAutoScalerProfile {
     }
 
     /**
-     * Set the scaleDownDelayAfterFailure property: The
-     * scale-down-delay-after-failure property.
-     * 
-     * @param scaleDownDelayAfterFailure the scaleDownDelayAfterFailure value
-     * to set.
+     * Set the scaleDownDelayAfterFailure property: The scale-down-delay-after-failure property.
+     *
+     * @param scaleDownDelayAfterFailure the scaleDownDelayAfterFailure value to set.
      * @return the ManagedClusterPropertiesAutoScalerProfile object itself.
      */
     public ManagedClusterPropertiesAutoScalerProfile withScaleDownDelayAfterFailure(String scaleDownDelayAfterFailure) {
@@ -357,9 +331,8 @@ public final class ManagedClusterPropertiesAutoScalerProfile {
     }
 
     /**
-     * Get the scaleDownUnneededTime property: The scale-down-unneeded-time
-     * property.
-     * 
+     * Get the scaleDownUnneededTime property: The scale-down-unneeded-time property.
+     *
      * @return the scaleDownUnneededTime value.
      */
     public String scaleDownUnneededTime() {
@@ -367,9 +340,8 @@ public final class ManagedClusterPropertiesAutoScalerProfile {
     }
 
     /**
-     * Set the scaleDownUnneededTime property: The scale-down-unneeded-time
-     * property.
-     * 
+     * Set the scaleDownUnneededTime property: The scale-down-unneeded-time property.
+     *
      * @param scaleDownUnneededTime the scaleDownUnneededTime value to set.
      * @return the ManagedClusterPropertiesAutoScalerProfile object itself.
      */
@@ -379,9 +351,8 @@ public final class ManagedClusterPropertiesAutoScalerProfile {
     }
 
     /**
-     * Get the scaleDownUnreadyTime property: The scale-down-unready-time
-     * property.
-     * 
+     * Get the scaleDownUnreadyTime property: The scale-down-unready-time property.
+     *
      * @return the scaleDownUnreadyTime value.
      */
     public String scaleDownUnreadyTime() {
@@ -389,9 +360,8 @@ public final class ManagedClusterPropertiesAutoScalerProfile {
     }
 
     /**
-     * Set the scaleDownUnreadyTime property: The scale-down-unready-time
-     * property.
-     * 
+     * Set the scaleDownUnreadyTime property: The scale-down-unready-time property.
+     *
      * @param scaleDownUnreadyTime the scaleDownUnreadyTime value to set.
      * @return the ManagedClusterPropertiesAutoScalerProfile object itself.
      */
@@ -401,9 +371,8 @@ public final class ManagedClusterPropertiesAutoScalerProfile {
     }
 
     /**
-     * Get the scaleDownUtilizationThreshold property: The
-     * scale-down-utilization-threshold property.
-     * 
+     * Get the scaleDownUtilizationThreshold property: The scale-down-utilization-threshold property.
+     *
      * @return the scaleDownUtilizationThreshold value.
      */
     public String scaleDownUtilizationThreshold() {
@@ -411,22 +380,20 @@ public final class ManagedClusterPropertiesAutoScalerProfile {
     }
 
     /**
-     * Set the scaleDownUtilizationThreshold property: The
-     * scale-down-utilization-threshold property.
-     * 
-     * @param scaleDownUtilizationThreshold the scaleDownUtilizationThreshold
-     * value to set.
+     * Set the scaleDownUtilizationThreshold property: The scale-down-utilization-threshold property.
+     *
+     * @param scaleDownUtilizationThreshold the scaleDownUtilizationThreshold value to set.
      * @return the ManagedClusterPropertiesAutoScalerProfile object itself.
      */
-    public ManagedClusterPropertiesAutoScalerProfile withScaleDownUtilizationThreshold(String scaleDownUtilizationThreshold) {
+    public ManagedClusterPropertiesAutoScalerProfile withScaleDownUtilizationThreshold(
+        String scaleDownUtilizationThreshold) {
         this.scaleDownUtilizationThreshold = scaleDownUtilizationThreshold;
         return this;
     }
 
     /**
-     * Get the skipNodesWithLocalStorage property: The
-     * skip-nodes-with-local-storage property.
-     * 
+     * Get the skipNodesWithLocalStorage property: The skip-nodes-with-local-storage property.
+     *
      * @return the skipNodesWithLocalStorage value.
      */
     public String skipNodesWithLocalStorage() {
@@ -434,11 +401,9 @@ public final class ManagedClusterPropertiesAutoScalerProfile {
     }
 
     /**
-     * Set the skipNodesWithLocalStorage property: The
-     * skip-nodes-with-local-storage property.
-     * 
-     * @param skipNodesWithLocalStorage the skipNodesWithLocalStorage value to
-     * set.
+     * Set the skipNodesWithLocalStorage property: The skip-nodes-with-local-storage property.
+     *
+     * @param skipNodesWithLocalStorage the skipNodesWithLocalStorage value to set.
      * @return the ManagedClusterPropertiesAutoScalerProfile object itself.
      */
     public ManagedClusterPropertiesAutoScalerProfile withSkipNodesWithLocalStorage(String skipNodesWithLocalStorage) {
@@ -447,9 +412,8 @@ public final class ManagedClusterPropertiesAutoScalerProfile {
     }
 
     /**
-     * Get the skipNodesWithSystemPods property: The
-     * skip-nodes-with-system-pods property.
-     * 
+     * Get the skipNodesWithSystemPods property: The skip-nodes-with-system-pods property.
+     *
      * @return the skipNodesWithSystemPods value.
      */
     public String skipNodesWithSystemPods() {
@@ -457,9 +421,8 @@ public final class ManagedClusterPropertiesAutoScalerProfile {
     }
 
     /**
-     * Set the skipNodesWithSystemPods property: The
-     * skip-nodes-with-system-pods property.
-     * 
+     * Set the skipNodesWithSystemPods property: The skip-nodes-with-system-pods property.
+     *
      * @param skipNodesWithSystemPods the skipNodesWithSystemPods value to set.
      * @return the ManagedClusterPropertiesAutoScalerProfile object itself.
      */
@@ -470,7 +433,7 @@ public final class ManagedClusterPropertiesAutoScalerProfile {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

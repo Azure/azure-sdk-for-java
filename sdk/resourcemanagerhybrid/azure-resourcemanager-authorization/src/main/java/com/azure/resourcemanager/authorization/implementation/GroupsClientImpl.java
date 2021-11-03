@@ -44,26 +44,19 @@ import com.azure.resourcemanager.authorization.models.GroupListResult;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * GroupsClient.
- */
+/** An instance of this class provides access to all the operations defined in GroupsClient. */
 public final class GroupsClientImpl implements InnerSupportsDelete<Void>, GroupsClient {
     private final ClientLogger logger = new ClientLogger(GroupsClientImpl.class);
 
-    /**
-     * The proxy service used to perform REST calls.
-     */
+    /** The proxy service used to perform REST calls. */
     private final GroupsService service;
 
-    /**
-     * The service client containing this operation class.
-     */
+    /** The service client containing this operation class. */
     private final GraphRbacManagementClientImpl client;
 
     /**
      * Initializes an instance of GroupsClientImpl.
-     * 
+     *
      * @param client the instance of the service client containing this operation class.
      */
     GroupsClientImpl(GraphRbacManagementClientImpl client) {
@@ -72,107 +65,200 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
     }
 
     /**
-     * The interface defining all the services for
-     * GraphRbacManagementClientGroups to be used by the proxy service to
+     * The interface defining all the services for GraphRbacManagementClientGroups to be used by the proxy service to
      * perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "GraphRbacManagementC")
     private interface GroupsService {
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Post("/{tenantID}/isMemberOf")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<CheckGroupMembershipResultInner>> isMemberOf(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @BodyParam("application/json") CheckGroupMembershipParameters parameters, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<CheckGroupMembershipResultInner>> isMemberOf(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("tenantID") String tenantId,
+            @BodyParam("application/json") CheckGroupMembershipParameters parameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Delete("/{tenantID}/groups/{groupObjectId}/$links/members/{memberObjectId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<Void>> removeMember(@HostParam("$host") String endpoint, @PathParam("groupObjectId") String groupObjectId, @PathParam("memberObjectId") String memberObjectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Void>> removeMember(
+            @HostParam("$host") String endpoint,
+            @PathParam("groupObjectId") String groupObjectId,
+            @PathParam("memberObjectId") String memberObjectId,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("tenantID") String tenantId,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Post("/{tenantID}/groups/{groupObjectId}/$links/members")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<Void>> addMember(@HostParam("$host") String endpoint, @PathParam("groupObjectId") String groupObjectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @BodyParam("application/json") GroupAddMemberParameters parameters, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Void>> addMember(
+            @HostParam("$host") String endpoint,
+            @PathParam("groupObjectId") String groupObjectId,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("tenantID") String tenantId,
+            @BodyParam("application/json") GroupAddMemberParameters parameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Post("/{tenantID}/groups")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<ADGroupInner>> create(@HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @BodyParam("application/json") GroupCreateParameters parameters, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<ADGroupInner>> create(
+            @HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("tenantID") String tenantId,
+            @BodyParam("application/json") GroupCreateParameters parameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Get("/{tenantID}/groups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<GroupListResult>> list(@HostParam("$host") String endpoint, @QueryParam("$filter") String filter, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<GroupListResult>> list(
+            @HostParam("$host") String endpoint,
+            @QueryParam("$filter") String filter,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("tenantID") String tenantId,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Get("/{tenantID}/groups/{objectId}/members")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<DirectoryObjectListResult>> getGroupMembers(@HostParam("$host") String endpoint, @PathParam("objectId") String objectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<DirectoryObjectListResult>> getGroupMembers(
+            @HostParam("$host") String endpoint,
+            @PathParam("objectId") String objectId,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("tenantID") String tenantId,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Get("/{tenantID}/groups/{objectId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<ADGroupInner>> get(@HostParam("$host") String endpoint, @PathParam("objectId") String objectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<ADGroupInner>> get(
+            @HostParam("$host") String endpoint,
+            @PathParam("objectId") String objectId,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("tenantID") String tenantId,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Delete("/{tenantID}/groups/{objectId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<Void>> delete(@HostParam("$host") String endpoint, @PathParam("objectId") String objectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Void>> delete(
+            @HostParam("$host") String endpoint,
+            @PathParam("objectId") String objectId,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("tenantID") String tenantId,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Post("/{tenantID}/groups/{objectId}/getMemberGroups")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<GroupGetMemberGroupsResult>> getMemberGroups(@HostParam("$host") String endpoint, @PathParam("objectId") String objectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @BodyParam("application/json") GroupGetMemberGroupsParameters parameters, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<GroupGetMemberGroupsResult>> getMemberGroups(
+            @HostParam("$host") String endpoint,
+            @PathParam("objectId") String objectId,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("tenantID") String tenantId,
+            @BodyParam("application/json") GroupGetMemberGroupsParameters parameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Get("/{tenantID}/groups/{objectId}/owners")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<DirectoryObjectListResult>> listOwners(@HostParam("$host") String endpoint, @PathParam("objectId") String objectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<DirectoryObjectListResult>> listOwners(
+            @HostParam("$host") String endpoint,
+            @PathParam("objectId") String objectId,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("tenantID") String tenantId,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Post("/{tenantID}/groups/{objectId}/$links/owners")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<Void>> addOwner(@HostParam("$host") String endpoint, @PathParam("objectId") String objectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @BodyParam("application/json") AddOwnerParameters parameters, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Void>> addOwner(
+            @HostParam("$host") String endpoint,
+            @PathParam("objectId") String objectId,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("tenantID") String tenantId,
+            @BodyParam("application/json") AddOwnerParameters parameters,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Delete("/{tenantID}/groups/{objectId}/$links/owners/{ownerObjectId}")
         @ExpectedResponses({204})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<Void>> removeOwner(@HostParam("$host") String endpoint, @PathParam("objectId") String objectId, @PathParam("ownerObjectId") String ownerObjectId, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<Void>> removeOwner(
+            @HostParam("$host") String endpoint,
+            @PathParam("objectId") String objectId,
+            @PathParam("ownerObjectId") String ownerObjectId,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("tenantID") String tenantId,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Get("/{tenantID}/{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<GroupListResult>> listNext(@HostParam("$host") String endpoint, @PathParam(value = "nextLink", encoded = true) String nextLink, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<GroupListResult>> listNext(
+            @HostParam("$host") String endpoint,
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("tenantID") String tenantId,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Get("/{tenantID}/{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<DirectoryObjectListResult>> getGroupMembersNext(@HostParam("$host") String endpoint, @PathParam(value = "nextLink", encoded = true) String nextLink, @QueryParam("api-version") String apiVersion, @PathParam("tenantID") String tenantId, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<DirectoryObjectListResult>> getGroupMembersNext(
+            @HostParam("$host") String endpoint,
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @QueryParam("api-version") String apiVersion,
+            @PathParam("tenantID") String tenantId,
+            @HeaderParam("Accept") String accept,
+            Context context);
 
-        @Headers({ "Content-Type: application/json" })
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(GraphErrorException.class)
-        Mono<Response<DirectoryObjectListResult>> listOwnersNext(@PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
+        Mono<Response<DirectoryObjectListResult>> listOwnersNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
-     * Checks whether the specified user, group, contact, or service principal is a direct or transitive member of the specified group.
-     * 
+     * Checks whether the specified user, group, contact, or service principal is a direct or transitive member of the
+     * specified group.
+     *
      * @param tenantId The tenant ID.
      * @param parameters The check group membership parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -181,9 +267,13 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
      * @return server response for IsMemberOf API call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<CheckGroupMembershipResultInner>> isMemberOfWithResponseAsync(String tenantId, CheckGroupMembershipParameters parameters) {
+    public Mono<Response<CheckGroupMembershipResultInner>> isMemberOfWithResponseAsync(
+        String tenantId, CheckGroupMembershipParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (tenantId == null) {
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
@@ -194,13 +284,24 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
             parameters.validate();
         }
         final String accept = "application/json, text/json";
-        return FluxUtil.withContext(context -> service.isMemberOf(this.client.getEndpoint(), this.client.getApiVersion(), tenantId, parameters, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .isMemberOf(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            tenantId,
+                            parameters,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Checks whether the specified user, group, contact, or service principal is a direct or transitive member of the specified group.
-     * 
+     * Checks whether the specified user, group, contact, or service principal is a direct or transitive member of the
+     * specified group.
+     *
      * @param tenantId The tenant ID.
      * @param parameters The check group membership parameters.
      * @param context The context to associate with this operation.
@@ -210,9 +311,13 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
      * @return server response for IsMemberOf API call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckGroupMembershipResultInner>> isMemberOfWithResponseAsync(String tenantId, CheckGroupMembershipParameters parameters, Context context) {
+    private Mono<Response<CheckGroupMembershipResultInner>> isMemberOfWithResponseAsync(
+        String tenantId, CheckGroupMembershipParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (tenantId == null) {
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
@@ -224,12 +329,14 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service.isMemberOf(this.client.getEndpoint(), this.client.getApiVersion(), tenantId, parameters, accept, context);
+        return service
+            .isMemberOf(this.client.getEndpoint(), this.client.getApiVersion(), tenantId, parameters, accept, context);
     }
 
     /**
-     * Checks whether the specified user, group, contact, or service principal is a direct or transitive member of the specified group.
-     * 
+     * Checks whether the specified user, group, contact, or service principal is a direct or transitive member of the
+     * specified group.
+     *
      * @param tenantId The tenant ID.
      * @param parameters The check group membership parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -238,20 +345,23 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
      * @return server response for IsMemberOf API call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<CheckGroupMembershipResultInner> isMemberOfAsync(String tenantId, CheckGroupMembershipParameters parameters) {
+    public Mono<CheckGroupMembershipResultInner> isMemberOfAsync(
+        String tenantId, CheckGroupMembershipParameters parameters) {
         return isMemberOfWithResponseAsync(tenantId, parameters)
-            .flatMap((Response<CheckGroupMembershipResultInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (Response<CheckGroupMembershipResultInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
-     * Checks whether the specified user, group, contact, or service principal is a direct or transitive member of the specified group.
-     * 
+     * Checks whether the specified user, group, contact, or service principal is a direct or transitive member of the
+     * specified group.
+     *
      * @param tenantId The tenant ID.
      * @param parameters The check group membership parameters.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -265,8 +375,9 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
     }
 
     /**
-     * Checks whether the specified user, group, contact, or service principal is a direct or transitive member of the specified group.
-     * 
+     * Checks whether the specified user, group, contact, or service principal is a direct or transitive member of the
+     * specified group.
+     *
      * @param tenantId The tenant ID.
      * @param parameters The check group membership parameters.
      * @param context The context to associate with this operation.
@@ -276,13 +387,14 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
      * @return server response for IsMemberOf API call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CheckGroupMembershipResultInner> isMemberOfWithResponse(String tenantId, CheckGroupMembershipParameters parameters, Context context) {
+    public Response<CheckGroupMembershipResultInner> isMemberOfWithResponse(
+        String tenantId, CheckGroupMembershipParameters parameters, Context context) {
         return isMemberOfWithResponseAsync(tenantId, parameters, context).block();
     }
 
     /**
      * Remove a member from a group.
-     * 
+     *
      * @param groupObjectId The object ID of the group from which to remove the member.
      * @param memberObjectId Member object id.
      * @param tenantId The tenant ID.
@@ -292,9 +404,13 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> removeMemberWithResponseAsync(String groupObjectId, String memberObjectId, String tenantId) {
+    public Mono<Response<Void>> removeMemberWithResponseAsync(
+        String groupObjectId, String memberObjectId, String tenantId) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupObjectId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupObjectId is required and cannot be null."));
@@ -306,13 +422,24 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
-        return FluxUtil.withContext(context -> service.removeMember(this.client.getEndpoint(), groupObjectId, memberObjectId, this.client.getApiVersion(), tenantId, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .removeMember(
+                            this.client.getEndpoint(),
+                            groupObjectId,
+                            memberObjectId,
+                            this.client.getApiVersion(),
+                            tenantId,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Remove a member from a group.
-     * 
+     *
      * @param groupObjectId The object ID of the group from which to remove the member.
      * @param memberObjectId Member object id.
      * @param tenantId The tenant ID.
@@ -323,9 +450,13 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> removeMemberWithResponseAsync(String groupObjectId, String memberObjectId, String tenantId, Context context) {
+    private Mono<Response<Void>> removeMemberWithResponseAsync(
+        String groupObjectId, String memberObjectId, String tenantId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupObjectId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupObjectId is required and cannot be null."));
@@ -338,12 +469,20 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service.removeMember(this.client.getEndpoint(), groupObjectId, memberObjectId, this.client.getApiVersion(), tenantId, accept, context);
+        return service
+            .removeMember(
+                this.client.getEndpoint(),
+                groupObjectId,
+                memberObjectId,
+                this.client.getApiVersion(),
+                tenantId,
+                accept,
+                context);
     }
 
     /**
      * Remove a member from a group.
-     * 
+     *
      * @param groupObjectId The object ID of the group from which to remove the member.
      * @param memberObjectId Member object id.
      * @param tenantId The tenant ID.
@@ -360,7 +499,7 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
 
     /**
      * Remove a member from a group.
-     * 
+     *
      * @param groupObjectId The object ID of the group from which to remove the member.
      * @param memberObjectId Member object id.
      * @param tenantId The tenant ID.
@@ -375,7 +514,7 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
 
     /**
      * Remove a member from a group.
-     * 
+     *
      * @param groupObjectId The object ID of the group from which to remove the member.
      * @param memberObjectId Member object id.
      * @param tenantId The tenant ID.
@@ -386,25 +525,31 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> removeMemberWithResponse(String groupObjectId, String memberObjectId, String tenantId, Context context) {
+    public Response<Void> removeMemberWithResponse(
+        String groupObjectId, String memberObjectId, String tenantId, Context context) {
         return removeMemberWithResponseAsync(groupObjectId, memberObjectId, tenantId, context).block();
     }
 
     /**
      * Add a member to a group.
-     * 
+     *
      * @param groupObjectId The object ID of the group to which to add the member.
      * @param tenantId The tenant ID.
-     * @param parameters The URL of the member object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
+     * @param parameters The URL of the member object, such as
+     *     https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> addMemberWithResponseAsync(String groupObjectId, String tenantId, GroupAddMemberParameters parameters) {
+    public Mono<Response<Void>> addMemberWithResponseAsync(
+        String groupObjectId, String tenantId, GroupAddMemberParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupObjectId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupObjectId is required and cannot be null."));
@@ -418,16 +563,28 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
             parameters.validate();
         }
         final String accept = "application/json, text/json";
-        return FluxUtil.withContext(context -> service.addMember(this.client.getEndpoint(), groupObjectId, this.client.getApiVersion(), tenantId, parameters, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .addMember(
+                            this.client.getEndpoint(),
+                            groupObjectId,
+                            this.client.getApiVersion(),
+                            tenantId,
+                            parameters,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Add a member to a group.
-     * 
+     *
      * @param groupObjectId The object ID of the group to which to add the member.
      * @param tenantId The tenant ID.
-     * @param parameters The URL of the member object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
+     * @param parameters The URL of the member object, such as
+     *     https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -435,9 +592,13 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> addMemberWithResponseAsync(String groupObjectId, String tenantId, GroupAddMemberParameters parameters, Context context) {
+    private Mono<Response<Void>> addMemberWithResponseAsync(
+        String groupObjectId, String tenantId, GroupAddMemberParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (groupObjectId == null) {
             return Mono.error(new IllegalArgumentException("Parameter groupObjectId is required and cannot be null."));
@@ -452,15 +613,24 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service.addMember(this.client.getEndpoint(), groupObjectId, this.client.getApiVersion(), tenantId, parameters, accept, context);
+        return service
+            .addMember(
+                this.client.getEndpoint(),
+                groupObjectId,
+                this.client.getApiVersion(),
+                tenantId,
+                parameters,
+                accept,
+                context);
     }
 
     /**
      * Add a member to a group.
-     * 
+     *
      * @param groupObjectId The object ID of the group to which to add the member.
      * @param tenantId The tenant ID.
-     * @param parameters The URL of the member object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
+     * @param parameters The URL of the member object, such as
+     *     https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -474,10 +644,11 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
 
     /**
      * Add a member to a group.
-     * 
+     *
      * @param groupObjectId The object ID of the group to which to add the member.
      * @param tenantId The tenant ID.
-     * @param parameters The URL of the member object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
+     * @param parameters The URL of the member object, such as
+     *     https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -489,10 +660,11 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
 
     /**
      * Add a member to a group.
-     * 
+     *
      * @param groupObjectId The object ID of the group to which to add the member.
      * @param tenantId The tenant ID.
-     * @param parameters The URL of the member object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
+     * @param parameters The URL of the member object, such as
+     *     https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -500,13 +672,14 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> addMemberWithResponse(String groupObjectId, String tenantId, GroupAddMemberParameters parameters, Context context) {
+    public Response<Void> addMemberWithResponse(
+        String groupObjectId, String tenantId, GroupAddMemberParameters parameters, Context context) {
         return addMemberWithResponseAsync(groupObjectId, tenantId, parameters, context).block();
     }
 
     /**
      * Create a group in the directory.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param parameters The parameters for the group to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -517,7 +690,10 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ADGroupInner>> createWithResponseAsync(String tenantId, GroupCreateParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (tenantId == null) {
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
@@ -528,13 +704,23 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
             parameters.validate();
         }
         final String accept = "application/json, text/json";
-        return FluxUtil.withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(), tenantId, parameters, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .create(
+                            this.client.getEndpoint(),
+                            this.client.getApiVersion(),
+                            tenantId,
+                            parameters,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create a group in the directory.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param parameters The parameters for the group to create.
      * @param context The context to associate with this operation.
@@ -544,9 +730,13 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
      * @return active Directory group information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ADGroupInner>> createWithResponseAsync(String tenantId, GroupCreateParameters parameters, Context context) {
+    private Mono<Response<ADGroupInner>> createWithResponseAsync(
+        String tenantId, GroupCreateParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (tenantId == null) {
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
@@ -558,12 +748,13 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), tenantId, parameters, accept, context);
+        return service
+            .create(this.client.getEndpoint(), this.client.getApiVersion(), tenantId, parameters, accept, context);
     }
 
     /**
      * Create a group in the directory.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param parameters The parameters for the group to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -574,18 +765,19 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ADGroupInner> createAsync(String tenantId, GroupCreateParameters parameters) {
         return createWithResponseAsync(tenantId, parameters)
-            .flatMap((Response<ADGroupInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (Response<ADGroupInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Create a group in the directory.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param parameters The parameters for the group to create.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -600,7 +792,7 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
 
     /**
      * Create a group in the directory.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param parameters The parameters for the group to create.
      * @param context The context to associate with this operation.
@@ -610,13 +802,14 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
      * @return active Directory group information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ADGroupInner> createWithResponse(String tenantId, GroupCreateParameters parameters, Context context) {
+    public Response<ADGroupInner> createWithResponse(
+        String tenantId, GroupCreateParameters parameters, Context context) {
         return createWithResponseAsync(tenantId, parameters, context).block();
     }
 
     /**
      * Gets list of groups for the current tenant.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param filter The filter to apply to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -627,26 +820,36 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ADGroupInner>> listSinglePageAsync(String tenantId, String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (tenantId == null) {
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
-        return FluxUtil.withContext(context -> service.list(this.client.getEndpoint(), filter, this.client.getApiVersion(), tenantId, accept, context))
-            .<PagedResponse<ADGroupInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().odataNextLink(),
-                null))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .list(
+                            this.client.getEndpoint(), filter, this.client.getApiVersion(), tenantId, accept, context))
+            .<PagedResponse<ADGroupInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().odataNextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets list of groups for the current tenant.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param filter The filter to apply to the operation.
      * @param context The context to associate with this operation.
@@ -658,26 +861,32 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ADGroupInner>> listSinglePageAsync(String tenantId, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (tenantId == null) {
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service.list(this.client.getEndpoint(), filter, this.client.getApiVersion(), tenantId, accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().odataNextLink(),
-                null));
+        return service
+            .list(this.client.getEndpoint(), filter, this.client.getApiVersion(), tenantId, accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().odataNextLink(),
+                        null));
     }
 
     /**
      * Gets list of groups for the current tenant.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param filter The filter to apply to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -688,13 +897,12 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<ADGroupInner> listAsync(String tenantId, String filter) {
         return new PagedFlux<>(
-            () -> listSinglePageAsync(tenantId, filter),
-            nextLink -> listNextSinglePageAsync(nextLink, tenantId));
+            () -> listSinglePageAsync(tenantId, filter), nextLink -> listNextSinglePageAsync(nextLink, tenantId));
     }
 
     /**
      * Gets list of groups for the current tenant.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -705,13 +913,12 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
     public PagedFlux<ADGroupInner> listAsync(String tenantId) {
         final String filter = null;
         return new PagedFlux<>(
-            () -> listSinglePageAsync(tenantId, filter),
-            nextLink -> listNextSinglePageAsync(nextLink, tenantId));
+            () -> listSinglePageAsync(tenantId, filter), nextLink -> listNextSinglePageAsync(nextLink, tenantId));
     }
 
     /**
      * Gets list of groups for the current tenant.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param filter The filter to apply to the operation.
      * @param context The context to associate with this operation.
@@ -729,7 +936,7 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
 
     /**
      * Gets list of groups for the current tenant.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -744,7 +951,7 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
 
     /**
      * Gets list of groups for the current tenant.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param filter The filter to apply to the operation.
      * @param context The context to associate with this operation.
@@ -760,7 +967,7 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
 
     /**
      * Gets the members of a group.
-     * 
+     *
      * @param objectId The object ID of the group whose members should be retrieved.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -771,7 +978,10 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DirectoryObjectInner>> getGroupMembersSinglePageAsync(String objectId, String tenantId) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (objectId == null) {
             return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
@@ -780,20 +990,32 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
-        return FluxUtil.withContext(context -> service.getGroupMembers(this.client.getEndpoint(), objectId, this.client.getApiVersion(), tenantId, accept, context))
-            .<PagedResponse<DirectoryObjectInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().odataNextLink(),
-                null))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getGroupMembers(
+                            this.client.getEndpoint(),
+                            objectId,
+                            this.client.getApiVersion(),
+                            tenantId,
+                            accept,
+                            context))
+            .<PagedResponse<DirectoryObjectInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().odataNextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the members of a group.
-     * 
+     *
      * @param objectId The object ID of the group whose members should be retrieved.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
@@ -803,9 +1025,13 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
      * @return the members of a group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DirectoryObjectInner>> getGroupMembersSinglePageAsync(String objectId, String tenantId, Context context) {
+    private Mono<PagedResponse<DirectoryObjectInner>> getGroupMembersSinglePageAsync(
+        String objectId, String tenantId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (objectId == null) {
             return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
@@ -815,19 +1041,23 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service.getGroupMembers(this.client.getEndpoint(), objectId, this.client.getApiVersion(), tenantId, accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().odataNextLink(),
-                null));
+        return service
+            .getGroupMembers(
+                this.client.getEndpoint(), objectId, this.client.getApiVersion(), tenantId, accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().odataNextLink(),
+                        null));
     }
 
     /**
      * Gets the members of a group.
-     * 
+     *
      * @param objectId The object ID of the group whose members should be retrieved.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -844,7 +1074,7 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
 
     /**
      * Gets the members of a group.
-     * 
+     *
      * @param objectId The object ID of the group whose members should be retrieved.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
@@ -862,7 +1092,7 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
 
     /**
      * Gets the members of a group.
-     * 
+     *
      * @param objectId The object ID of the group whose members should be retrieved.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -877,7 +1107,7 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
 
     /**
      * Gets the members of a group.
-     * 
+     *
      * @param objectId The object ID of the group whose members should be retrieved.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
@@ -893,7 +1123,7 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
 
     /**
      * Gets group information from the directory.
-     * 
+     *
      * @param objectId The object ID of the user for which to get group information.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -904,7 +1134,10 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<ADGroupInner>> getWithResponseAsync(String objectId, String tenantId) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (objectId == null) {
             return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
@@ -913,13 +1146,23 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
-        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), objectId, this.client.getApiVersion(), tenantId, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .get(
+                            this.client.getEndpoint(),
+                            objectId,
+                            this.client.getApiVersion(),
+                            tenantId,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets group information from the directory.
-     * 
+     *
      * @param objectId The object ID of the user for which to get group information.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
@@ -931,7 +1174,10 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<ADGroupInner>> getWithResponseAsync(String objectId, String tenantId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (objectId == null) {
             return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
@@ -946,7 +1192,7 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
 
     /**
      * Gets group information from the directory.
-     * 
+     *
      * @param objectId The object ID of the user for which to get group information.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -957,18 +1203,19 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ADGroupInner> getAsync(String objectId, String tenantId) {
         return getWithResponseAsync(objectId, tenantId)
-            .flatMap((Response<ADGroupInner> res) -> {
-                if (res.getValue() != null) {
-                    return Mono.just(res.getValue());
-                } else {
-                    return Mono.empty();
-                }
-            });
+            .flatMap(
+                (Response<ADGroupInner> res) -> {
+                    if (res.getValue() != null) {
+                        return Mono.just(res.getValue());
+                    } else {
+                        return Mono.empty();
+                    }
+                });
     }
 
     /**
      * Gets group information from the directory.
-     * 
+     *
      * @param objectId The object ID of the user for which to get group information.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -983,7 +1230,7 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
 
     /**
      * Gets group information from the directory.
-     * 
+     *
      * @param objectId The object ID of the user for which to get group information.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
@@ -999,7 +1246,7 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
 
     /**
      * Delete a group from the directory.
-     * 
+     *
      * @param objectId The object ID of the group to delete.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1010,7 +1257,10 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String objectId, String tenantId) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (objectId == null) {
             return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
@@ -1019,13 +1269,23 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
-        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), objectId, this.client.getApiVersion(), tenantId, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .delete(
+                            this.client.getEndpoint(),
+                            objectId,
+                            this.client.getApiVersion(),
+                            tenantId,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a group from the directory.
-     * 
+     *
      * @param objectId The object ID of the group to delete.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
@@ -1037,7 +1297,10 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Void>> deleteWithResponseAsync(String objectId, String tenantId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (objectId == null) {
             return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
@@ -1047,12 +1310,13 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service.delete(this.client.getEndpoint(), objectId, this.client.getApiVersion(), tenantId, accept, context);
+        return service
+            .delete(this.client.getEndpoint(), objectId, this.client.getApiVersion(), tenantId, accept, context);
     }
 
     /**
      * Delete a group from the directory.
-     * 
+     *
      * @param objectId The object ID of the group to delete.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1062,13 +1326,12 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String objectId, String tenantId) {
-        return deleteWithResponseAsync(objectId, tenantId)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return deleteWithResponseAsync(objectId, tenantId).flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Delete a group from the directory.
-     * 
+     *
      * @param objectId The object ID of the group to delete.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1082,7 +1345,7 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
 
     /**
      * Delete a group from the directory.
-     * 
+     *
      * @param objectId The object ID of the group to delete.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
@@ -1098,7 +1361,7 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
 
     /**
      * Gets a collection of object IDs of groups of which the specified group is a member.
-     * 
+     *
      * @param objectId The object ID of the group for which to get group membership.
      * @param tenantId The tenant ID.
      * @param parameters Group filtering parameters.
@@ -1108,9 +1371,13 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
      * @return a collection of object IDs of groups of which the specified group is a member.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<String>> getMemberGroupsSinglePageAsync(String objectId, String tenantId, GroupGetMemberGroupsParameters parameters) {
+    private Mono<PagedResponse<String>> getMemberGroupsSinglePageAsync(
+        String objectId, String tenantId, GroupGetMemberGroupsParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (objectId == null) {
             return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
@@ -1124,20 +1391,28 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
             parameters.validate();
         }
         final String accept = "application/json, text/json";
-        return FluxUtil.withContext(context -> service.getMemberGroups(this.client.getEndpoint(), objectId, this.client.getApiVersion(), tenantId, parameters, accept, context))
-            .<PagedResponse<String>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                null,
-                null))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getMemberGroups(
+                            this.client.getEndpoint(),
+                            objectId,
+                            this.client.getApiVersion(),
+                            tenantId,
+                            parameters,
+                            accept,
+                            context))
+            .<PagedResponse<String>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a collection of object IDs of groups of which the specified group is a member.
-     * 
+     *
      * @param objectId The object ID of the group for which to get group membership.
      * @param tenantId The tenant ID.
      * @param parameters Group filtering parameters.
@@ -1148,9 +1423,13 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
      * @return a collection of object IDs of groups of which the specified group is a member.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<String>> getMemberGroupsSinglePageAsync(String objectId, String tenantId, GroupGetMemberGroupsParameters parameters, Context context) {
+    private Mono<PagedResponse<String>> getMemberGroupsSinglePageAsync(
+        String objectId, String tenantId, GroupGetMemberGroupsParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (objectId == null) {
             return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
@@ -1165,19 +1444,18 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service.getMemberGroups(this.client.getEndpoint(), objectId, this.client.getApiVersion(), tenantId, parameters, accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                null,
-                null));
+        return service
+            .getMemberGroups(
+                this.client.getEndpoint(), objectId, this.client.getApiVersion(), tenantId, parameters, accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
     }
 
     /**
      * Gets a collection of object IDs of groups of which the specified group is a member.
-     * 
+     *
      * @param objectId The object ID of the group for which to get group membership.
      * @param tenantId The tenant ID.
      * @param parameters Group filtering parameters.
@@ -1187,14 +1465,14 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
      * @return a collection of object IDs of groups of which the specified group is a member.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<String> getMemberGroupsAsync(String objectId, String tenantId, GroupGetMemberGroupsParameters parameters) {
-        return new PagedFlux<>(
-            () -> getMemberGroupsSinglePageAsync(objectId, tenantId, parameters));
+    public PagedFlux<String> getMemberGroupsAsync(
+        String objectId, String tenantId, GroupGetMemberGroupsParameters parameters) {
+        return new PagedFlux<>(() -> getMemberGroupsSinglePageAsync(objectId, tenantId, parameters));
     }
 
     /**
      * Gets a collection of object IDs of groups of which the specified group is a member.
-     * 
+     *
      * @param objectId The object ID of the group for which to get group membership.
      * @param tenantId The tenant ID.
      * @param parameters Group filtering parameters.
@@ -1205,14 +1483,14 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
      * @return a collection of object IDs of groups of which the specified group is a member.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<String> getMemberGroupsAsync(String objectId, String tenantId, GroupGetMemberGroupsParameters parameters, Context context) {
-        return new PagedFlux<>(
-            () -> getMemberGroupsSinglePageAsync(objectId, tenantId, parameters, context));
+    private PagedFlux<String> getMemberGroupsAsync(
+        String objectId, String tenantId, GroupGetMemberGroupsParameters parameters, Context context) {
+        return new PagedFlux<>(() -> getMemberGroupsSinglePageAsync(objectId, tenantId, parameters, context));
     }
 
     /**
      * Gets a collection of object IDs of groups of which the specified group is a member.
-     * 
+     *
      * @param objectId The object ID of the group for which to get group membership.
      * @param tenantId The tenant ID.
      * @param parameters Group filtering parameters.
@@ -1222,13 +1500,14 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
      * @return a collection of object IDs of groups of which the specified group is a member.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> getMemberGroups(String objectId, String tenantId, GroupGetMemberGroupsParameters parameters) {
+    public PagedIterable<String> getMemberGroups(
+        String objectId, String tenantId, GroupGetMemberGroupsParameters parameters) {
         return new PagedIterable<>(getMemberGroupsAsync(objectId, tenantId, parameters));
     }
 
     /**
      * Gets a collection of object IDs of groups of which the specified group is a member.
-     * 
+     *
      * @param objectId The object ID of the group for which to get group membership.
      * @param tenantId The tenant ID.
      * @param parameters Group filtering parameters.
@@ -1239,13 +1518,14 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
      * @return a collection of object IDs of groups of which the specified group is a member.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<String> getMemberGroups(String objectId, String tenantId, GroupGetMemberGroupsParameters parameters, Context context) {
+    public PagedIterable<String> getMemberGroups(
+        String objectId, String tenantId, GroupGetMemberGroupsParameters parameters, Context context) {
         return new PagedIterable<>(getMemberGroupsAsync(objectId, tenantId, parameters, context));
     }
 
     /**
      * The owners are a set of non-admin users who are allowed to modify this object.
-     * 
+     *
      * @param objectId The object ID of the group for which to get owners.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1256,7 +1536,10 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DirectoryObjectInner>> listOwnersSinglePageAsync(String objectId, String tenantId) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (objectId == null) {
             return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
@@ -1265,20 +1548,32 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
-        return FluxUtil.withContext(context -> service.listOwners(this.client.getEndpoint(), objectId, this.client.getApiVersion(), tenantId, accept, context))
-            .<PagedResponse<DirectoryObjectInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().odataNextLink(),
-                null))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listOwners(
+                            this.client.getEndpoint(),
+                            objectId,
+                            this.client.getApiVersion(),
+                            tenantId,
+                            accept,
+                            context))
+            .<PagedResponse<DirectoryObjectInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().odataNextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * The owners are a set of non-admin users who are allowed to modify this object.
-     * 
+     *
      * @param objectId The object ID of the group for which to get owners.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
@@ -1288,9 +1583,13 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
      * @return directoryObject list operation result.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DirectoryObjectInner>> listOwnersSinglePageAsync(String objectId, String tenantId, Context context) {
+    private Mono<PagedResponse<DirectoryObjectInner>> listOwnersSinglePageAsync(
+        String objectId, String tenantId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (objectId == null) {
             return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
@@ -1300,19 +1599,22 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service.listOwners(this.client.getEndpoint(), objectId, this.client.getApiVersion(), tenantId, accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().odataNextLink(),
-                null));
+        return service
+            .listOwners(this.client.getEndpoint(), objectId, this.client.getApiVersion(), tenantId, accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().odataNextLink(),
+                        null));
     }
 
     /**
      * The owners are a set of non-admin users who are allowed to modify this object.
-     * 
+     *
      * @param objectId The object ID of the group for which to get owners.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1323,13 +1625,12 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DirectoryObjectInner> listOwnersAsync(String objectId, String tenantId) {
         return new PagedFlux<>(
-            () -> listOwnersSinglePageAsync(objectId, tenantId),
-            nextLink -> listOwnersNextSinglePageAsync(nextLink));
+            () -> listOwnersSinglePageAsync(objectId, tenantId), nextLink -> listOwnersNextSinglePageAsync(nextLink));
     }
 
     /**
      * The owners are a set of non-admin users who are allowed to modify this object.
-     * 
+     *
      * @param objectId The object ID of the group for which to get owners.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
@@ -1347,7 +1648,7 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
 
     /**
      * The owners are a set of non-admin users who are allowed to modify this object.
-     * 
+     *
      * @param objectId The object ID of the group for which to get owners.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1362,7 +1663,7 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
 
     /**
      * The owners are a set of non-admin users who are allowed to modify this object.
-     * 
+     *
      * @param objectId The object ID of the group for which to get owners.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
@@ -1378,19 +1679,24 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
 
     /**
      * Add an owner to a group.
-     * 
+     *
      * @param objectId The object ID of the application to which to add the owner.
      * @param tenantId The tenant ID.
-     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
+     * @param parameters The URL of the owner object, such as
+     *     https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> addOwnerWithResponseAsync(String objectId, String tenantId, AddOwnerParameters parameters) {
+    public Mono<Response<Void>> addOwnerWithResponseAsync(
+        String objectId, String tenantId, AddOwnerParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (objectId == null) {
             return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
@@ -1404,16 +1710,28 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
             parameters.validate();
         }
         final String accept = "application/json, text/json";
-        return FluxUtil.withContext(context -> service.addOwner(this.client.getEndpoint(), objectId, this.client.getApiVersion(), tenantId, parameters, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .addOwner(
+                            this.client.getEndpoint(),
+                            objectId,
+                            this.client.getApiVersion(),
+                            tenantId,
+                            parameters,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Add an owner to a group.
-     * 
+     *
      * @param objectId The object ID of the application to which to add the owner.
      * @param tenantId The tenant ID.
-     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
+     * @param parameters The URL of the owner object, such as
+     *     https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -1421,9 +1739,13 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> addOwnerWithResponseAsync(String objectId, String tenantId, AddOwnerParameters parameters, Context context) {
+    private Mono<Response<Void>> addOwnerWithResponseAsync(
+        String objectId, String tenantId, AddOwnerParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (objectId == null) {
             return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
@@ -1438,15 +1760,24 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service.addOwner(this.client.getEndpoint(), objectId, this.client.getApiVersion(), tenantId, parameters, accept, context);
+        return service
+            .addOwner(
+                this.client.getEndpoint(),
+                objectId,
+                this.client.getApiVersion(),
+                tenantId,
+                parameters,
+                accept,
+                context);
     }
 
     /**
      * Add an owner to a group.
-     * 
+     *
      * @param objectId The object ID of the application to which to add the owner.
      * @param tenantId The tenant ID.
-     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
+     * @param parameters The URL of the owner object, such as
+     *     https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1454,16 +1785,16 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> addOwnerAsync(String objectId, String tenantId, AddOwnerParameters parameters) {
-        return addOwnerWithResponseAsync(objectId, tenantId, parameters)
-            .flatMap((Response<Void> res) -> Mono.empty());
+        return addOwnerWithResponseAsync(objectId, tenantId, parameters).flatMap((Response<Void> res) -> Mono.empty());
     }
 
     /**
      * Add an owner to a group.
-     * 
+     *
      * @param objectId The object ID of the application to which to add the owner.
      * @param tenantId The tenant ID.
-     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
+     * @param parameters The URL of the owner object, such as
+     *     https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1475,10 +1806,11 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
 
     /**
      * Add an owner to a group.
-     * 
+     *
      * @param objectId The object ID of the application to which to add the owner.
      * @param tenantId The tenant ID.
-     * @param parameters The URL of the owner object, such as https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
+     * @param parameters The URL of the owner object, such as
+     *     https://graph.windows.net/0b1f9851-1bf0-433f-aec3-cb9272f093dc/directoryObjects/f260bbc4-c254-447b-94cf-293b5ec434dd.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -1486,13 +1818,14 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> addOwnerWithResponse(String objectId, String tenantId, AddOwnerParameters parameters, Context context) {
+    public Response<Void> addOwnerWithResponse(
+        String objectId, String tenantId, AddOwnerParameters parameters, Context context) {
         return addOwnerWithResponseAsync(objectId, tenantId, parameters, context).block();
     }
 
     /**
      * Remove a member from owners.
-     * 
+     *
      * @param objectId The object ID of the group from which to remove the owner.
      * @param ownerObjectId Owner object id.
      * @param tenantId The tenant ID.
@@ -1504,7 +1837,10 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeOwnerWithResponseAsync(String objectId, String ownerObjectId, String tenantId) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (objectId == null) {
             return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
@@ -1516,13 +1852,24 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
-        return FluxUtil.withContext(context -> service.removeOwner(this.client.getEndpoint(), objectId, ownerObjectId, this.client.getApiVersion(), tenantId, accept, context))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .removeOwner(
+                            this.client.getEndpoint(),
+                            objectId,
+                            ownerObjectId,
+                            this.client.getApiVersion(),
+                            tenantId,
+                            accept,
+                            context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Remove a member from owners.
-     * 
+     *
      * @param objectId The object ID of the group from which to remove the owner.
      * @param ownerObjectId Owner object id.
      * @param tenantId The tenant ID.
@@ -1533,9 +1880,13 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> removeOwnerWithResponseAsync(String objectId, String ownerObjectId, String tenantId, Context context) {
+    private Mono<Response<Void>> removeOwnerWithResponseAsync(
+        String objectId, String ownerObjectId, String tenantId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (objectId == null) {
             return Mono.error(new IllegalArgumentException("Parameter objectId is required and cannot be null."));
@@ -1548,12 +1899,20 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service.removeOwner(this.client.getEndpoint(), objectId, ownerObjectId, this.client.getApiVersion(), tenantId, accept, context);
+        return service
+            .removeOwner(
+                this.client.getEndpoint(),
+                objectId,
+                ownerObjectId,
+                this.client.getApiVersion(),
+                tenantId,
+                accept,
+                context);
     }
 
     /**
      * Remove a member from owners.
-     * 
+     *
      * @param objectId The object ID of the group from which to remove the owner.
      * @param ownerObjectId Owner object id.
      * @param tenantId The tenant ID.
@@ -1570,7 +1929,7 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
 
     /**
      * Remove a member from owners.
-     * 
+     *
      * @param objectId The object ID of the group from which to remove the owner.
      * @param ownerObjectId Owner object id.
      * @param tenantId The tenant ID.
@@ -1585,7 +1944,7 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
 
     /**
      * Remove a member from owners.
-     * 
+     *
      * @param objectId The object ID of the group from which to remove the owner.
      * @param ownerObjectId Owner object id.
      * @param tenantId The tenant ID.
@@ -1596,13 +1955,14 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> removeOwnerWithResponse(String objectId, String ownerObjectId, String tenantId, Context context) {
+    public Response<Void> removeOwnerWithResponse(
+        String objectId, String ownerObjectId, String tenantId, Context context) {
         return removeOwnerWithResponseAsync(objectId, ownerObjectId, tenantId, context).block();
     }
 
     /**
      * Gets a list of groups for the current tenant.
-     * 
+     *
      * @param nextLink Next link for the list operation.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1613,7 +1973,10 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<ADGroupInner>> listNextSinglePageAsync(String nextLink, String tenantId) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
@@ -1622,20 +1985,32 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
-        return FluxUtil.withContext(context -> service.listNext(this.client.getEndpoint(), nextLink, this.client.getApiVersion(), tenantId, accept, context))
-            .<PagedResponse<ADGroupInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().odataNextLink(),
-                null))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .listNext(
+                            this.client.getEndpoint(),
+                            nextLink,
+                            this.client.getApiVersion(),
+                            tenantId,
+                            accept,
+                            context))
+            .<PagedResponse<ADGroupInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().odataNextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a list of groups for the current tenant.
-     * 
+     *
      * @param nextLink Next link for the list operation.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
@@ -1645,9 +2020,13 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
      * @return a list of groups for the current tenant.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<ADGroupInner>> listNextSinglePageAsync(String nextLink, String tenantId, Context context) {
+    private Mono<PagedResponse<ADGroupInner>> listNextSinglePageAsync(
+        String nextLink, String tenantId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
@@ -1657,19 +2036,22 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service.listNext(this.client.getEndpoint(), nextLink, this.client.getApiVersion(), tenantId, accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().odataNextLink(),
-                null));
+        return service
+            .listNext(this.client.getEndpoint(), nextLink, this.client.getApiVersion(), tenantId, accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().odataNextLink(),
+                        null));
     }
 
     /**
      * Gets the members of a group.
-     * 
+     *
      * @param nextLink Next link for the list operation.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1678,9 +2060,13 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
      * @return the members of a group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DirectoryObjectInner>> getGroupMembersNextSinglePageAsync(String nextLink, String tenantId) {
+    private Mono<PagedResponse<DirectoryObjectInner>> getGroupMembersNextSinglePageAsync(
+        String nextLink, String tenantId) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
@@ -1689,20 +2075,32 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
             return Mono.error(new IllegalArgumentException("Parameter tenantId is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
-        return FluxUtil.withContext(context -> service.getGroupMembersNext(this.client.getEndpoint(), nextLink, this.client.getApiVersion(), tenantId, accept, context))
-            .<PagedResponse<DirectoryObjectInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().odataNextLink(),
-                null))
+        return FluxUtil
+            .withContext(
+                context ->
+                    service
+                        .getGroupMembersNext(
+                            this.client.getEndpoint(),
+                            nextLink,
+                            this.client.getApiVersion(),
+                            tenantId,
+                            accept,
+                            context))
+            .<PagedResponse<DirectoryObjectInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().odataNextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the members of a group.
-     * 
+     *
      * @param nextLink Next link for the list operation.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.
@@ -1712,9 +2110,13 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
      * @return the members of a group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DirectoryObjectInner>> getGroupMembersNextSinglePageAsync(String nextLink, String tenantId, Context context) {
+    private Mono<PagedResponse<DirectoryObjectInner>> getGroupMembersNextSinglePageAsync(
+        String nextLink, String tenantId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
@@ -1724,19 +2126,23 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service.getGroupMembersNext(this.client.getEndpoint(), nextLink, this.client.getApiVersion(), tenantId, accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().odataNextLink(),
-                null));
+        return service
+            .getGroupMembersNext(
+                this.client.getEndpoint(), nextLink, this.client.getApiVersion(), tenantId, accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().odataNextLink(),
+                        null));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws GraphErrorException thrown if the request is rejected by server.
@@ -1749,23 +2155,29 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
-        return FluxUtil.withContext(context -> service.listOwnersNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DirectoryObjectInner>>map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().odataNextLink(),
-                null))
+        return FluxUtil
+            .withContext(context -> service.listOwnersNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<DirectoryObjectInner>>map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().odataNextLink(),
+                        null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     * 
+     *
      * @param nextLink The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1779,17 +2191,23 @@ public final class GroupsClientImpl implements InnerSupportsDelete<Void>, Groups
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono.error(new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json, text/json";
         context = this.client.mergeContext(context);
-        return service.listOwnersNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(res -> new PagedResponseBase<>(
-                res.getRequest(),
-                res.getStatusCode(),
-                res.getHeaders(),
-                res.getValue().value(),
-                res.getValue().odataNextLink(),
-                null));
+        return service
+            .listOwnersNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(
+                res ->
+                    new PagedResponseBase<>(
+                        res.getRequest(),
+                        res.getStatusCode(),
+                        res.getHeaders(),
+                        res.getValue().value(),
+                        res.getValue().odataNextLink(),
+                        null));
     }
 }

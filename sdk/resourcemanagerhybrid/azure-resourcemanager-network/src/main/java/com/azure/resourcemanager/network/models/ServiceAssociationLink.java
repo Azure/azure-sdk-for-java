@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.ServiceAssociationLinkPropertiesFormat;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * ServiceAssociationLink resource.
- */
+/** ServiceAssociationLink resource. */
 @Fluent
 public final class ServiceAssociationLink extends SubResource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ServiceAssociationLink.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceAssociationLink.class);
 
     /*
      * Resource navigation link properties format.
@@ -41,9 +36,8 @@ public final class ServiceAssociationLink extends SubResource {
     private String etag;
 
     /**
-     * Get the innerProperties property: Resource navigation link properties
-     * format.
-     * 
+     * Get the innerProperties property: Resource navigation link properties format.
+     *
      * @return the innerProperties value.
      */
     private ServiceAssociationLinkPropertiesFormat innerProperties() {
@@ -51,9 +45,9 @@ public final class ServiceAssociationLink extends SubResource {
     }
 
     /**
-     * Get the name property: Name of the resource that is unique within a
-     * resource group. This name can be used to access the resource.
-     * 
+     * Get the name property: Name of the resource that is unique within a resource group. This name can be used to
+     * access the resource.
+     *
      * @return the name value.
      */
     public String name() {
@@ -61,9 +55,9 @@ public final class ServiceAssociationLink extends SubResource {
     }
 
     /**
-     * Set the name property: Name of the resource that is unique within a
-     * resource group. This name can be used to access the resource.
-     * 
+     * Set the name property: Name of the resource that is unique within a resource group. This name can be used to
+     * access the resource.
+     *
      * @param name the name value to set.
      * @return the ServiceAssociationLink object itself.
      */
@@ -73,18 +67,15 @@ public final class ServiceAssociationLink extends SubResource {
     }
 
     /**
-     * Get the etag property: A unique read-only string that changes whenever
-     * the resource is updated.
-     * 
+     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
      * @return the etag value.
      */
     public String etag() {
         return this.etag;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public ServiceAssociationLink withId(String id) {
         super.withId(id);
@@ -92,9 +83,8 @@ public final class ServiceAssociationLink extends SubResource {
     }
 
     /**
-     * Get the linkedResourceType property: Resource type of the linked
-     * resource.
-     * 
+     * Get the linkedResourceType property: Resource type of the linked resource.
+     *
      * @return the linkedResourceType value.
      */
     public String linkedResourceType() {
@@ -102,9 +92,8 @@ public final class ServiceAssociationLink extends SubResource {
     }
 
     /**
-     * Set the linkedResourceType property: Resource type of the linked
-     * resource.
-     * 
+     * Set the linkedResourceType property: Resource type of the linked resource.
+     *
      * @param linkedResourceType the linkedResourceType value to set.
      * @return the ServiceAssociationLink object itself.
      */
@@ -118,7 +107,7 @@ public final class ServiceAssociationLink extends SubResource {
 
     /**
      * Get the link property: Link to the external resource.
-     * 
+     *
      * @return the link value.
      */
     public String link() {
@@ -127,7 +116,7 @@ public final class ServiceAssociationLink extends SubResource {
 
     /**
      * Set the link property: Link to the external resource.
-     * 
+     *
      * @param link the link value to set.
      * @return the ServiceAssociationLink object itself.
      */
@@ -140,9 +129,8 @@ public final class ServiceAssociationLink extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: Provisioning state of the
-     * ServiceAssociationLink resource.
-     * 
+     * Get the provisioningState property: Provisioning state of the ServiceAssociationLink resource.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -151,7 +139,7 @@ public final class ServiceAssociationLink extends SubResource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.eventhubs.fluent.models.ClusterInner;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The response of the List Event Hubs Clusters operation.
- */
+/** The response of the List Event Hubs Clusters operation. */
 @Fluent
 public final class ClusterListResult {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ClusterListResult.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterListResult.class);
 
     /*
      * The Event Hubs Clusters present in the List Event Hubs operation
@@ -36,9 +31,8 @@ public final class ClusterListResult {
     private String nextLink;
 
     /**
-     * Get the value property: The Event Hubs Clusters present in the List
-     * Event Hubs operation results.
-     * 
+     * Get the value property: The Event Hubs Clusters present in the List Event Hubs operation results.
+     *
      * @return the value value.
      */
     public List<ClusterInner> value() {
@@ -46,9 +40,8 @@ public final class ClusterListResult {
     }
 
     /**
-     * Set the value property: The Event Hubs Clusters present in the List
-     * Event Hubs operation results.
-     * 
+     * Set the value property: The Event Hubs Clusters present in the List Event Hubs operation results.
+     *
      * @param value the value value to set.
      * @return the ClusterListResult object itself.
      */
@@ -58,9 +51,9 @@ public final class ClusterListResult {
     }
 
     /**
-     * Get the nextLink property: Link to the next set of results. Empty unless
-     * the value parameter contains an incomplete list of Event Hubs Clusters.
-     * 
+     * Get the nextLink property: Link to the next set of results. Empty unless the value parameter contains an
+     * incomplete list of Event Hubs Clusters.
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -68,9 +61,9 @@ public final class ClusterListResult {
     }
 
     /**
-     * Set the nextLink property: Link to the next set of results. Empty unless
-     * the value parameter contains an incomplete list of Event Hubs Clusters.
-     * 
+     * Set the nextLink property: Link to the next set of results. Empty unless the value parameter contains an
+     * incomplete list of Event Hubs Clusters.
+     *
      * @param nextLink the nextLink value to set.
      * @return the ClusterListResult object itself.
      */
@@ -81,7 +74,7 @@ public final class ClusterListResult {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

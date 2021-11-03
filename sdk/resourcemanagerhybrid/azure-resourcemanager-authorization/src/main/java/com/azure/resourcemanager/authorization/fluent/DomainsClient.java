@@ -8,21 +8,16 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.authorization.fluent.models.DomainInner;
 import reactor.core.publisher.Mono;
 
-/**
- * An instance of this class provides access to all the operations defined in
- * DomainsClient.
- */
+/** An instance of this class provides access to all the operations defined in DomainsClient. */
 public interface DomainsClient {
     /**
      * Gets a list of domains for the current tenant.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param filter The filter to apply to the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -35,7 +30,7 @@ public interface DomainsClient {
 
     /**
      * Gets a list of domains for the current tenant.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -47,7 +42,7 @@ public interface DomainsClient {
 
     /**
      * Gets a list of domains for the current tenant.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -59,7 +54,7 @@ public interface DomainsClient {
 
     /**
      * Gets a list of domains for the current tenant.
-     * 
+     *
      * @param tenantId The tenant ID.
      * @param filter The filter to apply to the operation.
      * @param context The context to associate with this operation.
@@ -73,7 +68,7 @@ public interface DomainsClient {
 
     /**
      * Gets a specific domain in the current tenant.
-     * 
+     *
      * @param domainName name of the domain.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -86,7 +81,7 @@ public interface DomainsClient {
 
     /**
      * Gets a specific domain in the current tenant.
-     * 
+     *
      * @param domainName name of the domain.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -99,7 +94,7 @@ public interface DomainsClient {
 
     /**
      * Gets a specific domain in the current tenant.
-     * 
+     *
      * @param domainName name of the domain.
      * @param tenantId The tenant ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -112,7 +107,7 @@ public interface DomainsClient {
 
     /**
      * Gets a specific domain in the current tenant.
-     * 
+     *
      * @param domainName name of the domain.
      * @param tenantId The tenant ID.
      * @param context The context to associate with this operation.

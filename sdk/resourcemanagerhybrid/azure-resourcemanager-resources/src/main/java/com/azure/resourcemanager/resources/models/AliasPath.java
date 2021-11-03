@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.resources.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * The type of the paths for alias.
- */
+/** The type of the paths for alias. */
 @Fluent
 public final class AliasPath {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(AliasPath.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AliasPath.class);
 
     /*
      * The path of an alias.
@@ -40,7 +35,7 @@ public final class AliasPath {
 
     /**
      * Get the path property: The path of an alias.
-     * 
+     *
      * @return the path value.
      */
     public String path() {
@@ -49,7 +44,7 @@ public final class AliasPath {
 
     /**
      * Set the path property: The path of an alias.
-     * 
+     *
      * @param path the path value to set.
      * @return the AliasPath object itself.
      */
@@ -60,7 +55,7 @@ public final class AliasPath {
 
     /**
      * Get the apiVersions property: The API versions.
-     * 
+     *
      * @return the apiVersions value.
      */
     public List<String> apiVersions() {
@@ -69,7 +64,7 @@ public final class AliasPath {
 
     /**
      * Set the apiVersions property: The API versions.
-     * 
+     *
      * @param apiVersions the apiVersions value to set.
      * @return the AliasPath object itself.
      */
@@ -80,7 +75,7 @@ public final class AliasPath {
 
     /**
      * Get the pattern property: The pattern for an alias path.
-     * 
+     *
      * @return the pattern value.
      */
     public AliasPattern pattern() {
@@ -89,7 +84,7 @@ public final class AliasPath {
 
     /**
      * Set the pattern property: The pattern for an alias path.
-     * 
+     *
      * @param pattern the pattern value to set.
      * @return the AliasPath object itself.
      */
@@ -100,7 +95,7 @@ public final class AliasPath {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

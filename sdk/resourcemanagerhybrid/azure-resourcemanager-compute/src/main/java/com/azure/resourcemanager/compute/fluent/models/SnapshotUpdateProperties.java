@@ -5,22 +5,17 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.Encryption;
 import com.azure.resourcemanager.compute.models.EncryptionSettingsCollection;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Snapshot resource update properties.
- */
+/** Snapshot resource update properties. */
 @Fluent
 public final class SnapshotUpdateProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(SnapshotUpdateProperties.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SnapshotUpdateProperties.class);
 
     /*
      * the Operating System type.
@@ -54,7 +49,7 @@ public final class SnapshotUpdateProperties {
 
     /**
      * Get the osType property: the Operating System type.
-     * 
+     *
      * @return the osType value.
      */
     public OperatingSystemTypes osType() {
@@ -63,7 +58,7 @@ public final class SnapshotUpdateProperties {
 
     /**
      * Set the osType property: the Operating System type.
-     * 
+     *
      * @param osType the osType value to set.
      * @return the SnapshotUpdateProperties object itself.
      */
@@ -73,12 +68,11 @@ public final class SnapshotUpdateProperties {
     }
 
     /**
-     * Get the diskSizeGB property: If creationData.createOption is Empty, this
-     * field is mandatory and it indicates the size of the disk to create. If
-     * this field is present for updates or creation with other options, it
-     * indicates a resize. Resizes are only allowed if the disk is not attached
-     * to a running VM, and can only increase the disk's size.
-     * 
+     * Get the diskSizeGB property: If creationData.createOption is Empty, this field is mandatory and it indicates the
+     * size of the disk to create. If this field is present for updates or creation with other options, it indicates a
+     * resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's
+     * size.
+     *
      * @return the diskSizeGB value.
      */
     public Integer diskSizeGB() {
@@ -86,12 +80,11 @@ public final class SnapshotUpdateProperties {
     }
 
     /**
-     * Set the diskSizeGB property: If creationData.createOption is Empty, this
-     * field is mandatory and it indicates the size of the disk to create. If
-     * this field is present for updates or creation with other options, it
-     * indicates a resize. Resizes are only allowed if the disk is not attached
-     * to a running VM, and can only increase the disk's size.
-     * 
+     * Set the diskSizeGB property: If creationData.createOption is Empty, this field is mandatory and it indicates the
+     * size of the disk to create. If this field is present for updates or creation with other options, it indicates a
+     * resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's
+     * size.
+     *
      * @param diskSizeGB the diskSizeGB value to set.
      * @return the SnapshotUpdateProperties object itself.
      */
@@ -101,10 +94,9 @@ public final class SnapshotUpdateProperties {
     }
 
     /**
-     * Get the encryptionSettingsCollection property: Encryption settings
-     * collection used be Azure Disk Encryption, can contain multiple
-     * encryption settings per disk or snapshot.
-     * 
+     * Get the encryptionSettingsCollection property: Encryption settings collection used be Azure Disk Encryption, can
+     * contain multiple encryption settings per disk or snapshot.
+     *
      * @return the encryptionSettingsCollection value.
      */
     public EncryptionSettingsCollection encryptionSettingsCollection() {
@@ -112,23 +104,22 @@ public final class SnapshotUpdateProperties {
     }
 
     /**
-     * Set the encryptionSettingsCollection property: Encryption settings
-     * collection used be Azure Disk Encryption, can contain multiple
-     * encryption settings per disk or snapshot.
-     * 
-     * @param encryptionSettingsCollection the encryptionSettingsCollection
-     * value to set.
+     * Set the encryptionSettingsCollection property: Encryption settings collection used be Azure Disk Encryption, can
+     * contain multiple encryption settings per disk or snapshot.
+     *
+     * @param encryptionSettingsCollection the encryptionSettingsCollection value to set.
      * @return the SnapshotUpdateProperties object itself.
      */
-    public SnapshotUpdateProperties withEncryptionSettingsCollection(EncryptionSettingsCollection encryptionSettingsCollection) {
+    public SnapshotUpdateProperties withEncryptionSettingsCollection(
+        EncryptionSettingsCollection encryptionSettingsCollection) {
         this.encryptionSettingsCollection = encryptionSettingsCollection;
         return this;
     }
 
     /**
-     * Get the encryption property: Encryption property can be used to encrypt
-     * data at rest with customer managed keys or platform managed keys.
-     * 
+     * Get the encryption property: Encryption property can be used to encrypt data at rest with customer managed keys
+     * or platform managed keys.
+     *
      * @return the encryption value.
      */
     public Encryption encryption() {
@@ -136,9 +127,9 @@ public final class SnapshotUpdateProperties {
     }
 
     /**
-     * Set the encryption property: Encryption property can be used to encrypt
-     * data at rest with customer managed keys or platform managed keys.
-     * 
+     * Set the encryption property: Encryption property can be used to encrypt data at rest with customer managed keys
+     * or platform managed keys.
+     *
      * @param encryption the encryption value to set.
      * @return the SnapshotUpdateProperties object itself.
      */
@@ -149,7 +140,7 @@ public final class SnapshotUpdateProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

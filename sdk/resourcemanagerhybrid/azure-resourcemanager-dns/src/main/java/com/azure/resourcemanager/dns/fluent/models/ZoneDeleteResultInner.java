@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.dns.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.dns.models.HttpStatusCode;
 import com.azure.resourcemanager.dns.models.OperationStatus;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * The response to a Zone Delete operation.
- */
+/** The response to a Zone Delete operation. */
 @Fluent
 public final class ZoneDeleteResultInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ZoneDeleteResultInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ZoneDeleteResultInner.class);
 
     /*
      * Users can perform a Get on Azure-AsyncOperation to get the status of
@@ -47,9 +42,9 @@ public final class ZoneDeleteResultInner {
     private String requestId;
 
     /**
-     * Get the azureAsyncOperation property: Users can perform a Get on
-     * Azure-AsyncOperation to get the status of their delete Zone operations.
-     * 
+     * Get the azureAsyncOperation property: Users can perform a Get on Azure-AsyncOperation to get the status of their
+     * delete Zone operations.
+     *
      * @return the azureAsyncOperation value.
      */
     public String azureAsyncOperation() {
@@ -57,9 +52,9 @@ public final class ZoneDeleteResultInner {
     }
 
     /**
-     * Set the azureAsyncOperation property: Users can perform a Get on
-     * Azure-AsyncOperation to get the status of their delete Zone operations.
-     * 
+     * Set the azureAsyncOperation property: Users can perform a Get on Azure-AsyncOperation to get the status of their
+     * delete Zone operations.
+     *
      * @param azureAsyncOperation the azureAsyncOperation value to set.
      * @return the ZoneDeleteResultInner object itself.
      */
@@ -70,7 +65,7 @@ public final class ZoneDeleteResultInner {
 
     /**
      * Get the status property: The status property.
-     * 
+     *
      * @return the status value.
      */
     public OperationStatus status() {
@@ -79,7 +74,7 @@ public final class ZoneDeleteResultInner {
 
     /**
      * Set the status property: The status property.
-     * 
+     *
      * @param status the status value to set.
      * @return the ZoneDeleteResultInner object itself.
      */
@@ -90,7 +85,7 @@ public final class ZoneDeleteResultInner {
 
     /**
      * Get the statusCode property: The statusCode property.
-     * 
+     *
      * @return the statusCode value.
      */
     public HttpStatusCode statusCode() {
@@ -99,7 +94,7 @@ public final class ZoneDeleteResultInner {
 
     /**
      * Set the statusCode property: The statusCode property.
-     * 
+     *
      * @param statusCode the statusCode value to set.
      * @return the ZoneDeleteResultInner object itself.
      */
@@ -110,7 +105,7 @@ public final class ZoneDeleteResultInner {
 
     /**
      * Get the requestId property: The requestId property.
-     * 
+     *
      * @return the requestId value.
      */
     public String requestId() {
@@ -119,7 +114,7 @@ public final class ZoneDeleteResultInner {
 
     /**
      * Set the requestId property: The requestId property.
-     * 
+     *
      * @param requestId the requestId value to set.
      * @return the ZoneDeleteResultInner object itself.
      */
@@ -130,7 +125,7 @@ public final class ZoneDeleteResultInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

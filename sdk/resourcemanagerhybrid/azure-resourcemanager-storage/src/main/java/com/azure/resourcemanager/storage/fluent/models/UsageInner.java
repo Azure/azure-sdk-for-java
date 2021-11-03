@@ -4,22 +4,17 @@
 
 package com.azure.resourcemanager.storage.fluent.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.storage.models.UsageName;
 import com.azure.resourcemanager.storage.models.UsageUnit;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Describes Storage Resource Usage.
- */
+/** Describes Storage Resource Usage. */
 @Immutable
 public final class UsageInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(UsageInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(UsageInner.class);
 
     /*
      * Gets the unit of measurement.
@@ -48,7 +43,7 @@ public final class UsageInner {
 
     /**
      * Get the unit property: Gets the unit of measurement.
-     * 
+     *
      * @return the unit value.
      */
     public UsageUnit unit() {
@@ -56,9 +51,8 @@ public final class UsageInner {
     }
 
     /**
-     * Get the currentValue property: Gets the current count of the allocated
-     * resources in the subscription.
-     * 
+     * Get the currentValue property: Gets the current count of the allocated resources in the subscription.
+     *
      * @return the currentValue value.
      */
     public Integer currentValue() {
@@ -66,9 +60,8 @@ public final class UsageInner {
     }
 
     /**
-     * Get the limit property: Gets the maximum count of the resources that can
-     * be allocated in the subscription.
-     * 
+     * Get the limit property: Gets the maximum count of the resources that can be allocated in the subscription.
+     *
      * @return the limit value.
      */
     public Integer limit() {
@@ -77,7 +70,7 @@ public final class UsageInner {
 
     /**
      * Get the name property: Gets the name of the type of usage.
-     * 
+     *
      * @return the name value.
      */
     public UsageName name() {
@@ -86,7 +79,7 @@ public final class UsageInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

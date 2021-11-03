@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.CreationData;
@@ -15,21 +14,16 @@ import com.azure.resourcemanager.compute.models.Encryption;
 import com.azure.resourcemanager.compute.models.EncryptionSettingsCollection;
 import com.azure.resourcemanager.compute.models.HyperVGeneration;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Disk resource.
- */
+/** Disk resource. */
 @Fluent
 public final class DiskInner extends Resource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(DiskInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DiskInner.class);
 
     /*
      * A relative URI containing the ID of the VM that has the disk attached.
@@ -57,9 +51,8 @@ public final class DiskInner extends Resource {
     private DiskProperties innerProperties;
 
     /**
-     * Get the managedBy property: A relative URI containing the ID of the VM
-     * that has the disk attached.
-     * 
+     * Get the managedBy property: A relative URI containing the ID of the VM that has the disk attached.
+     *
      * @return the managedBy value.
      */
     public String managedBy() {
@@ -67,9 +60,8 @@ public final class DiskInner extends Resource {
     }
 
     /**
-     * Get the sku property: The disks sku name. Can be Standard_LRS,
-     * Premium_LRS, StandardSSD_LRS, or UltraSSD_LRS.
-     * 
+     * Get the sku property: The disks sku name. Can be Standard_LRS, Premium_LRS, StandardSSD_LRS, or UltraSSD_LRS.
+     *
      * @return the sku value.
      */
     public DiskSku sku() {
@@ -77,9 +69,8 @@ public final class DiskInner extends Resource {
     }
 
     /**
-     * Set the sku property: The disks sku name. Can be Standard_LRS,
-     * Premium_LRS, StandardSSD_LRS, or UltraSSD_LRS.
-     * 
+     * Set the sku property: The disks sku name. Can be Standard_LRS, Premium_LRS, StandardSSD_LRS, or UltraSSD_LRS.
+     *
      * @param sku the sku value to set.
      * @return the DiskInner object itself.
      */
@@ -90,7 +81,7 @@ public final class DiskInner extends Resource {
 
     /**
      * Get the zones property: The Logical zone list for Disk.
-     * 
+     *
      * @return the zones value.
      */
     public List<String> zones() {
@@ -99,7 +90,7 @@ public final class DiskInner extends Resource {
 
     /**
      * Set the zones property: The Logical zone list for Disk.
-     * 
+     *
      * @param zones the zones value to set.
      * @return the DiskInner object itself.
      */
@@ -110,25 +101,21 @@ public final class DiskInner extends Resource {
 
     /**
      * Get the innerProperties property: Disk resource properties.
-     * 
+     *
      * @return the innerProperties value.
      */
     private DiskProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public DiskInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public DiskInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -137,7 +124,7 @@ public final class DiskInner extends Resource {
 
     /**
      * Get the timeCreated property: The time when the disk was created.
-     * 
+     *
      * @return the timeCreated value.
      */
     public OffsetDateTime timeCreated() {
@@ -146,7 +133,7 @@ public final class DiskInner extends Resource {
 
     /**
      * Get the osType property: The Operating System type.
-     * 
+     *
      * @return the osType value.
      */
     public OperatingSystemTypes osType() {
@@ -155,7 +142,7 @@ public final class DiskInner extends Resource {
 
     /**
      * Set the osType property: The Operating System type.
-     * 
+     *
      * @param osType the osType value to set.
      * @return the DiskInner object itself.
      */
@@ -168,9 +155,8 @@ public final class DiskInner extends Resource {
     }
 
     /**
-     * Get the hyperVGeneration property: The hypervisor generation of the
-     * Virtual Machine. Applicable to OS disks only.
-     * 
+     * Get the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks only.
+     *
      * @return the hyperVGeneration value.
      */
     public HyperVGeneration hyperVGeneration() {
@@ -178,9 +164,8 @@ public final class DiskInner extends Resource {
     }
 
     /**
-     * Set the hyperVGeneration property: The hypervisor generation of the
-     * Virtual Machine. Applicable to OS disks only.
-     * 
+     * Set the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks only.
+     *
      * @param hyperVGeneration the hyperVGeneration value to set.
      * @return the DiskInner object itself.
      */
@@ -193,9 +178,9 @@ public final class DiskInner extends Resource {
     }
 
     /**
-     * Get the creationData property: Disk source information. CreationData
-     * information cannot be changed after the disk has been created.
-     * 
+     * Get the creationData property: Disk source information. CreationData information cannot be changed after the disk
+     * has been created.
+     *
      * @return the creationData value.
      */
     public CreationData creationData() {
@@ -203,9 +188,9 @@ public final class DiskInner extends Resource {
     }
 
     /**
-     * Set the creationData property: Disk source information. CreationData
-     * information cannot be changed after the disk has been created.
-     * 
+     * Set the creationData property: Disk source information. CreationData information cannot be changed after the disk
+     * has been created.
+     *
      * @param creationData the creationData value to set.
      * @return the DiskInner object itself.
      */
@@ -218,12 +203,11 @@ public final class DiskInner extends Resource {
     }
 
     /**
-     * Get the diskSizeGB property: If creationData.createOption is Empty, this
-     * field is mandatory and it indicates the size of the disk to create. If
-     * this field is present for updates or creation with other options, it
-     * indicates a resize. Resizes are only allowed if the disk is not attached
-     * to a running VM, and can only increase the disk's size.
-     * 
+     * Get the diskSizeGB property: If creationData.createOption is Empty, this field is mandatory and it indicates the
+     * size of the disk to create. If this field is present for updates or creation with other options, it indicates a
+     * resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's
+     * size.
+     *
      * @return the diskSizeGB value.
      */
     public Integer diskSizeGB() {
@@ -231,12 +215,11 @@ public final class DiskInner extends Resource {
     }
 
     /**
-     * Set the diskSizeGB property: If creationData.createOption is Empty, this
-     * field is mandatory and it indicates the size of the disk to create. If
-     * this field is present for updates or creation with other options, it
-     * indicates a resize. Resizes are only allowed if the disk is not attached
-     * to a running VM, and can only increase the disk's size.
-     * 
+     * Set the diskSizeGB property: If creationData.createOption is Empty, this field is mandatory and it indicates the
+     * size of the disk to create. If this field is present for updates or creation with other options, it indicates a
+     * resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's
+     * size.
+     *
      * @param diskSizeGB the diskSizeGB value to set.
      * @return the DiskInner object itself.
      */
@@ -249,9 +232,8 @@ public final class DiskInner extends Resource {
     }
 
     /**
-     * Get the diskSizeBytes property: The size of the disk in bytes. This
-     * field is read only.
-     * 
+     * Get the diskSizeBytes property: The size of the disk in bytes. This field is read only.
+     *
      * @return the diskSizeBytes value.
      */
     public Long diskSizeBytes() {
@@ -260,7 +242,7 @@ public final class DiskInner extends Resource {
 
     /**
      * Get the uniqueId property: Unique Guid identifying the resource.
-     * 
+     *
      * @return the uniqueId value.
      */
     public String uniqueId() {
@@ -268,10 +250,9 @@ public final class DiskInner extends Resource {
     }
 
     /**
-     * Get the encryptionSettingsCollection property: Encryption settings
-     * collection used for Azure Disk Encryption, can contain multiple
-     * encryption settings per disk or snapshot.
-     * 
+     * Get the encryptionSettingsCollection property: Encryption settings collection used for Azure Disk Encryption, can
+     * contain multiple encryption settings per disk or snapshot.
+     *
      * @return the encryptionSettingsCollection value.
      */
     public EncryptionSettingsCollection encryptionSettingsCollection() {
@@ -279,12 +260,10 @@ public final class DiskInner extends Resource {
     }
 
     /**
-     * Set the encryptionSettingsCollection property: Encryption settings
-     * collection used for Azure Disk Encryption, can contain multiple
-     * encryption settings per disk or snapshot.
-     * 
-     * @param encryptionSettingsCollection the encryptionSettingsCollection
-     * value to set.
+     * Set the encryptionSettingsCollection property: Encryption settings collection used for Azure Disk Encryption, can
+     * contain multiple encryption settings per disk or snapshot.
+     *
+     * @param encryptionSettingsCollection the encryptionSettingsCollection value to set.
      * @return the DiskInner object itself.
      */
     public DiskInner withEncryptionSettingsCollection(EncryptionSettingsCollection encryptionSettingsCollection) {
@@ -297,7 +276,7 @@ public final class DiskInner extends Resource {
 
     /**
      * Get the provisioningState property: The disk provisioning state.
-     * 
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -305,10 +284,9 @@ public final class DiskInner extends Resource {
     }
 
     /**
-     * Get the diskIopsReadWrite property: The number of IOPS allowed for this
-     * disk; only settable for UltraSSD disks. One operation can transfer
-     * between 4k and 256k bytes.
-     * 
+     * Get the diskIopsReadWrite property: The number of IOPS allowed for this disk; only settable for UltraSSD disks.
+     * One operation can transfer between 4k and 256k bytes.
+     *
      * @return the diskIopsReadWrite value.
      */
     public Long diskIopsReadWrite() {
@@ -316,10 +294,9 @@ public final class DiskInner extends Resource {
     }
 
     /**
-     * Set the diskIopsReadWrite property: The number of IOPS allowed for this
-     * disk; only settable for UltraSSD disks. One operation can transfer
-     * between 4k and 256k bytes.
-     * 
+     * Set the diskIopsReadWrite property: The number of IOPS allowed for this disk; only settable for UltraSSD disks.
+     * One operation can transfer between 4k and 256k bytes.
+     *
      * @param diskIopsReadWrite the diskIopsReadWrite value to set.
      * @return the DiskInner object itself.
      */
@@ -332,10 +309,9 @@ public final class DiskInner extends Resource {
     }
 
     /**
-     * Get the diskMBpsReadWrite property: The bandwidth allowed for this disk;
-     * only settable for UltraSSD disks. MBps means millions of bytes per
-     * second - MB here uses the ISO notation, of powers of 10.
-     * 
+     * Get the diskMBpsReadWrite property: The bandwidth allowed for this disk; only settable for UltraSSD disks. MBps
+     * means millions of bytes per second - MB here uses the ISO notation, of powers of 10.
+     *
      * @return the diskMBpsReadWrite value.
      */
     public Integer diskMBpsReadWrite() {
@@ -343,10 +319,9 @@ public final class DiskInner extends Resource {
     }
 
     /**
-     * Set the diskMBpsReadWrite property: The bandwidth allowed for this disk;
-     * only settable for UltraSSD disks. MBps means millions of bytes per
-     * second - MB here uses the ISO notation, of powers of 10.
-     * 
+     * Set the diskMBpsReadWrite property: The bandwidth allowed for this disk; only settable for UltraSSD disks. MBps
+     * means millions of bytes per second - MB here uses the ISO notation, of powers of 10.
+     *
      * @param diskMBpsReadWrite the diskMBpsReadWrite value to set.
      * @return the DiskInner object itself.
      */
@@ -360,7 +335,7 @@ public final class DiskInner extends Resource {
 
     /**
      * Get the diskState property: The state of the disk.
-     * 
+     *
      * @return the diskState value.
      */
     public DiskState diskState() {
@@ -368,9 +343,9 @@ public final class DiskInner extends Resource {
     }
 
     /**
-     * Get the encryption property: Encryption property can be used to encrypt
-     * data at rest with customer managed keys or platform managed keys.
-     * 
+     * Get the encryption property: Encryption property can be used to encrypt data at rest with customer managed keys
+     * or platform managed keys.
+     *
      * @return the encryption value.
      */
     public Encryption encryption() {
@@ -378,9 +353,9 @@ public final class DiskInner extends Resource {
     }
 
     /**
-     * Set the encryption property: Encryption property can be used to encrypt
-     * data at rest with customer managed keys or platform managed keys.
-     * 
+     * Set the encryption property: Encryption property can be used to encrypt data at rest with customer managed keys
+     * or platform managed keys.
+     *
      * @param encryption the encryption value to set.
      * @return the DiskInner object itself.
      */
@@ -394,7 +369,7 @@ public final class DiskInner extends Resource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

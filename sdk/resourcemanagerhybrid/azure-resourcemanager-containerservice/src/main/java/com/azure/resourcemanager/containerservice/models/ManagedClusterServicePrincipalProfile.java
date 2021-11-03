@@ -5,20 +5,14 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Information about a service principal identity for the cluster to use for
- * manipulating Azure APIs.
- */
+/** Information about a service principal identity for the cluster to use for manipulating Azure APIs. */
 @Fluent
 public final class ManagedClusterServicePrincipalProfile {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ManagedClusterServicePrincipalProfile.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ManagedClusterServicePrincipalProfile.class);
 
     /*
      * The ID for the service principal.
@@ -34,7 +28,7 @@ public final class ManagedClusterServicePrincipalProfile {
 
     /**
      * Get the clientId property: The ID for the service principal.
-     * 
+     *
      * @return the clientId value.
      */
     public String clientId() {
@@ -43,7 +37,7 @@ public final class ManagedClusterServicePrincipalProfile {
 
     /**
      * Set the clientId property: The ID for the service principal.
-     * 
+     *
      * @param clientId the clientId value to set.
      * @return the ManagedClusterServicePrincipalProfile object itself.
      */
@@ -53,9 +47,8 @@ public final class ManagedClusterServicePrincipalProfile {
     }
 
     /**
-     * Get the secret property: The secret password associated with the service
-     * principal in plain text.
-     * 
+     * Get the secret property: The secret password associated with the service principal in plain text.
+     *
      * @return the secret value.
      */
     public String secret() {
@@ -63,9 +56,8 @@ public final class ManagedClusterServicePrincipalProfile {
     }
 
     /**
-     * Set the secret property: The secret password associated with the service
-     * principal in plain text.
-     * 
+     * Set the secret property: The secret password associated with the service principal in plain text.
+     *
      * @param secret the secret value to set.
      * @return the ManagedClusterServicePrincipalProfile object itself.
      */
@@ -76,12 +68,15 @@ public final class ManagedClusterServicePrincipalProfile {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (clientId() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property clientId in model ManagedClusterServicePrincipalProfile"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property clientId in model ManagedClusterServicePrincipalProfile"));
         }
     }
 }

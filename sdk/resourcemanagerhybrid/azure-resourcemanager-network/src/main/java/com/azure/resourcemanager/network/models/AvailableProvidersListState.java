@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * State details.
- */
+/** State details. */
 @Fluent
 public final class AvailableProvidersListState {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(AvailableProvidersListState.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(AvailableProvidersListState.class);
 
     /*
      * The state name.
@@ -40,7 +35,7 @@ public final class AvailableProvidersListState {
 
     /**
      * Get the stateName property: The state name.
-     * 
+     *
      * @return the stateName value.
      */
     public String stateName() {
@@ -49,7 +44,7 @@ public final class AvailableProvidersListState {
 
     /**
      * Set the stateName property: The state name.
-     * 
+     *
      * @param stateName the stateName value to set.
      * @return the AvailableProvidersListState object itself.
      */
@@ -60,7 +55,7 @@ public final class AvailableProvidersListState {
 
     /**
      * Get the providers property: A list of Internet service providers.
-     * 
+     *
      * @return the providers value.
      */
     public List<String> providers() {
@@ -69,7 +64,7 @@ public final class AvailableProvidersListState {
 
     /**
      * Set the providers property: A list of Internet service providers.
-     * 
+     *
      * @param providers the providers value to set.
      * @return the AvailableProvidersListState object itself.
      */
@@ -80,7 +75,7 @@ public final class AvailableProvidersListState {
 
     /**
      * Get the cities property: List of available cities or towns in the state.
-     * 
+     *
      * @return the cities value.
      */
     public List<AvailableProvidersListCity> cities() {
@@ -89,7 +84,7 @@ public final class AvailableProvidersListState {
 
     /**
      * Set the cities property: List of available cities or towns in the state.
-     * 
+     *
      * @param cities the cities value to set.
      * @return the AvailableProvidersListState object itself.
      */
@@ -100,7 +95,7 @@ public final class AvailableProvidersListState {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

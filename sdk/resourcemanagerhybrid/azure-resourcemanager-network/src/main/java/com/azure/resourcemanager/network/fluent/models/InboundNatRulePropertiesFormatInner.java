@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.TransportProtocol;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Properties of the inbound NAT rule.
- */
+/** Properties of the inbound NAT rule. */
 @Fluent
 public final class InboundNatRulePropertiesFormatInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(InboundNatRulePropertiesFormatInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(InboundNatRulePropertiesFormatInner.class);
 
     /*
      * A reference to frontend IP addresses.
@@ -90,9 +85,8 @@ public final class InboundNatRulePropertiesFormatInner {
     private String provisioningState;
 
     /**
-     * Get the frontendIpConfiguration property: A reference to frontend IP
-     * addresses.
-     * 
+     * Get the frontendIpConfiguration property: A reference to frontend IP addresses.
+     *
      * @return the frontendIpConfiguration value.
      */
     public SubResource frontendIpConfiguration() {
@@ -100,9 +94,8 @@ public final class InboundNatRulePropertiesFormatInner {
     }
 
     /**
-     * Set the frontendIpConfiguration property: A reference to frontend IP
-     * addresses.
-     * 
+     * Set the frontendIpConfiguration property: A reference to frontend IP addresses.
+     *
      * @param frontendIpConfiguration the frontendIpConfiguration value to set.
      * @return the InboundNatRulePropertiesFormatInner object itself.
      */
@@ -112,11 +105,9 @@ public final class InboundNatRulePropertiesFormatInner {
     }
 
     /**
-     * Get the backendIpConfiguration property: A reference to a private IP
-     * address defined on a network interface of a VM. Traffic sent to the
-     * frontend port of each of the frontend IP configurations is forwarded to
-     * the backend IP.
-     * 
+     * Get the backendIpConfiguration property: A reference to a private IP address defined on a network interface of a
+     * VM. Traffic sent to the frontend port of each of the frontend IP configurations is forwarded to the backend IP.
+     *
      * @return the backendIpConfiguration value.
      */
     public NetworkInterfaceIpConfigurationInner backendIpConfiguration() {
@@ -124,9 +115,8 @@ public final class InboundNatRulePropertiesFormatInner {
     }
 
     /**
-     * Get the protocol property: The transport protocol for the endpoint.
-     * Possible values are 'Udp' or 'Tcp' or 'All'.
-     * 
+     * Get the protocol property: The transport protocol for the endpoint. Possible values are 'Udp' or 'Tcp' or 'All'.
+     *
      * @return the protocol value.
      */
     public TransportProtocol protocol() {
@@ -134,9 +124,8 @@ public final class InboundNatRulePropertiesFormatInner {
     }
 
     /**
-     * Set the protocol property: The transport protocol for the endpoint.
-     * Possible values are 'Udp' or 'Tcp' or 'All'.
-     * 
+     * Set the protocol property: The transport protocol for the endpoint. Possible values are 'Udp' or 'Tcp' or 'All'.
+     *
      * @param protocol the protocol value to set.
      * @return the InboundNatRulePropertiesFormatInner object itself.
      */
@@ -146,10 +135,9 @@ public final class InboundNatRulePropertiesFormatInner {
     }
 
     /**
-     * Get the frontendPort property: The port for the external endpoint. Port
-     * numbers for each rule must be unique within the Load Balancer.
-     * Acceptable values range from 1 to 65534.
-     * 
+     * Get the frontendPort property: The port for the external endpoint. Port numbers for each rule must be unique
+     * within the Load Balancer. Acceptable values range from 1 to 65534.
+     *
      * @return the frontendPort value.
      */
     public Integer frontendPort() {
@@ -157,10 +145,9 @@ public final class InboundNatRulePropertiesFormatInner {
     }
 
     /**
-     * Set the frontendPort property: The port for the external endpoint. Port
-     * numbers for each rule must be unique within the Load Balancer.
-     * Acceptable values range from 1 to 65534.
-     * 
+     * Set the frontendPort property: The port for the external endpoint. Port numbers for each rule must be unique
+     * within the Load Balancer. Acceptable values range from 1 to 65534.
+     *
      * @param frontendPort the frontendPort value to set.
      * @return the InboundNatRulePropertiesFormatInner object itself.
      */
@@ -170,9 +157,8 @@ public final class InboundNatRulePropertiesFormatInner {
     }
 
     /**
-     * Get the backendPort property: The port used for the internal endpoint.
-     * Acceptable values range from 1 to 65535.
-     * 
+     * Get the backendPort property: The port used for the internal endpoint. Acceptable values range from 1 to 65535.
+     *
      * @return the backendPort value.
      */
     public Integer backendPort() {
@@ -180,9 +166,8 @@ public final class InboundNatRulePropertiesFormatInner {
     }
 
     /**
-     * Set the backendPort property: The port used for the internal endpoint.
-     * Acceptable values range from 1 to 65535.
-     * 
+     * Set the backendPort property: The port used for the internal endpoint. Acceptable values range from 1 to 65535.
+     *
      * @param backendPort the backendPort value to set.
      * @return the InboundNatRulePropertiesFormatInner object itself.
      */
@@ -192,11 +177,9 @@ public final class InboundNatRulePropertiesFormatInner {
     }
 
     /**
-     * Get the idleTimeoutInMinutes property: The timeout for the TCP idle
-     * connection. The value can be set between 4 and 30 minutes. The default
-     * value is 4 minutes. This element is only used when the protocol is set
-     * to TCP.
-     * 
+     * Get the idleTimeoutInMinutes property: The timeout for the TCP idle connection. The value can be set between 4
+     * and 30 minutes. The default value is 4 minutes. This element is only used when the protocol is set to TCP.
+     *
      * @return the idleTimeoutInMinutes value.
      */
     public Integer idleTimeoutInMinutes() {
@@ -204,11 +187,9 @@ public final class InboundNatRulePropertiesFormatInner {
     }
 
     /**
-     * Set the idleTimeoutInMinutes property: The timeout for the TCP idle
-     * connection. The value can be set between 4 and 30 minutes. The default
-     * value is 4 minutes. This element is only used when the protocol is set
-     * to TCP.
-     * 
+     * Set the idleTimeoutInMinutes property: The timeout for the TCP idle connection. The value can be set between 4
+     * and 30 minutes. The default value is 4 minutes. This element is only used when the protocol is set to TCP.
+     *
      * @param idleTimeoutInMinutes the idleTimeoutInMinutes value to set.
      * @return the InboundNatRulePropertiesFormatInner object itself.
      */
@@ -218,12 +199,10 @@ public final class InboundNatRulePropertiesFormatInner {
     }
 
     /**
-     * Get the enableFloatingIp property: Configures a virtual machine's
-     * endpoint for the floating IP capability required to configure a SQL
-     * AlwaysOn Availability Group. This setting is required when using the SQL
-     * AlwaysOn Availability Groups in SQL server. This setting can't be
-     * changed after you create the endpoint.
-     * 
+     * Get the enableFloatingIp property: Configures a virtual machine's endpoint for the floating IP capability
+     * required to configure a SQL AlwaysOn Availability Group. This setting is required when using the SQL AlwaysOn
+     * Availability Groups in SQL server. This setting can't be changed after you create the endpoint.
+     *
      * @return the enableFloatingIp value.
      */
     public Boolean enableFloatingIp() {
@@ -231,12 +210,10 @@ public final class InboundNatRulePropertiesFormatInner {
     }
 
     /**
-     * Set the enableFloatingIp property: Configures a virtual machine's
-     * endpoint for the floating IP capability required to configure a SQL
-     * AlwaysOn Availability Group. This setting is required when using the SQL
-     * AlwaysOn Availability Groups in SQL server. This setting can't be
-     * changed after you create the endpoint.
-     * 
+     * Set the enableFloatingIp property: Configures a virtual machine's endpoint for the floating IP capability
+     * required to configure a SQL AlwaysOn Availability Group. This setting is required when using the SQL AlwaysOn
+     * Availability Groups in SQL server. This setting can't be changed after you create the endpoint.
+     *
      * @param enableFloatingIp the enableFloatingIp value to set.
      * @return the InboundNatRulePropertiesFormatInner object itself.
      */
@@ -246,10 +223,9 @@ public final class InboundNatRulePropertiesFormatInner {
     }
 
     /**
-     * Get the enableTcpReset property: Receive bidirectional TCP Reset on TCP
-     * flow idle timeout or unexpected connection termination. This element is
-     * only used when the protocol is set to TCP.
-     * 
+     * Get the enableTcpReset property: Receive bidirectional TCP Reset on TCP flow idle timeout or unexpected
+     * connection termination. This element is only used when the protocol is set to TCP.
+     *
      * @return the enableTcpReset value.
      */
     public Boolean enableTcpReset() {
@@ -257,10 +233,9 @@ public final class InboundNatRulePropertiesFormatInner {
     }
 
     /**
-     * Set the enableTcpReset property: Receive bidirectional TCP Reset on TCP
-     * flow idle timeout or unexpected connection termination. This element is
-     * only used when the protocol is set to TCP.
-     * 
+     * Set the enableTcpReset property: Receive bidirectional TCP Reset on TCP flow idle timeout or unexpected
+     * connection termination. This element is only used when the protocol is set to TCP.
+     *
      * @param enableTcpReset the enableTcpReset value to set.
      * @return the InboundNatRulePropertiesFormatInner object itself.
      */
@@ -270,10 +245,9 @@ public final class InboundNatRulePropertiesFormatInner {
     }
 
     /**
-     * Get the provisioningState property: Gets the provisioning state of the
-     * public IP resource. Possible values are: 'Updating', 'Deleting', and
-     * 'Failed'.
-     * 
+     * Get the provisioningState property: Gets the provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -281,10 +255,9 @@ public final class InboundNatRulePropertiesFormatInner {
     }
 
     /**
-     * Set the provisioningState property: Gets the provisioning state of the
-     * public IP resource. Possible values are: 'Updating', 'Deleting', and
-     * 'Failed'.
-     * 
+     * Set the provisioningState property: Gets the provisioning state of the public IP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
      * @param provisioningState the provisioningState value to set.
      * @return the InboundNatRulePropertiesFormatInner object itself.
      */
@@ -295,7 +268,7 @@ public final class InboundNatRulePropertiesFormatInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

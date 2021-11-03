@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.SecurityRuleInner;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Network interface and its custom security rules.
- */
+/** Network interface and its custom security rules. */
 @Fluent
 public final class SubnetAssociation {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(SubnetAssociation.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SubnetAssociation.class);
 
     /*
      * Subnet ID.
@@ -35,7 +30,7 @@ public final class SubnetAssociation {
 
     /**
      * Get the id property: Subnet ID.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -44,7 +39,7 @@ public final class SubnetAssociation {
 
     /**
      * Get the securityRules property: Collection of custom security rules.
-     * 
+     *
      * @return the securityRules value.
      */
     public List<SecurityRuleInner> securityRules() {
@@ -53,7 +48,7 @@ public final class SubnetAssociation {
 
     /**
      * Set the securityRules property: Collection of custom security rules.
-     * 
+     *
      * @param securityRules the securityRules value to set.
      * @return the SubnetAssociation object itself.
      */
@@ -64,7 +59,7 @@ public final class SubnetAssociation {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

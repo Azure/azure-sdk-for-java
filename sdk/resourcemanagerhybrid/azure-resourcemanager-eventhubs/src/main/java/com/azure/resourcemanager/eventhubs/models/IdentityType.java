@@ -7,18 +7,12 @@ package com.azure.resourcemanager.eventhubs.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/**
- * Defines values for IdentityType.
- */
+/** Defines values for IdentityType. */
 public enum IdentityType {
-    /**
-     * Enum value SystemAssigned.
-     */
+    /** Enum value SystemAssigned. */
     SYSTEM_ASSIGNED("SystemAssigned");
 
-    /**
-     * The actual serialized value for a IdentityType instance.
-     */
+    /** The actual serialized value for a IdentityType instance. */
     private final String value;
 
     IdentityType(String value) {
@@ -27,7 +21,7 @@ public enum IdentityType {
 
     /**
      * Parses a serialized value to a IdentityType instance.
-     * 
+     *
      * @param value the serialized value to parse.
      * @return the parsed IdentityType object, or null if unable to parse.
      */

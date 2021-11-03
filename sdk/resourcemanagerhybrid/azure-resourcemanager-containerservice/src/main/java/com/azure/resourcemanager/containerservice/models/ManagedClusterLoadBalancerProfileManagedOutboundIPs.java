@@ -5,15 +5,11 @@
 package com.azure.resourcemanager.containerservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Desired managed outbound IPs for the cluster load balancer.
- */
+/** Desired managed outbound IPs for the cluster load balancer. */
 @Fluent
 public final class ManagedClusterLoadBalancerProfileManagedOutboundIPs {
     @JsonIgnore
@@ -28,10 +24,9 @@ public final class ManagedClusterLoadBalancerProfileManagedOutboundIPs {
     private Integer count;
 
     /**
-     * Get the count property: Desired number of outbound IP created/managed by
-     * Azure for the cluster load balancer. Allowed values must be in the range
-     * of 1 to 100 (inclusive). The default value is 1.
-     * 
+     * Get the count property: Desired number of outbound IP created/managed by Azure for the cluster load balancer.
+     * Allowed values must be in the range of 1 to 100 (inclusive). The default value is 1.
+     *
      * @return the count value.
      */
     public Integer count() {
@@ -39,13 +34,11 @@ public final class ManagedClusterLoadBalancerProfileManagedOutboundIPs {
     }
 
     /**
-     * Set the count property: Desired number of outbound IP created/managed by
-     * Azure for the cluster load balancer. Allowed values must be in the range
-     * of 1 to 100 (inclusive). The default value is 1.
-     * 
+     * Set the count property: Desired number of outbound IP created/managed by Azure for the cluster load balancer.
+     * Allowed values must be in the range of 1 to 100 (inclusive). The default value is 1.
+     *
      * @param count the count value to set.
-     * @return the ManagedClusterLoadBalancerProfileManagedOutboundIPs object
-     * itself.
+     * @return the ManagedClusterLoadBalancerProfileManagedOutboundIPs object itself.
      */
     public ManagedClusterLoadBalancerProfileManagedOutboundIPs withCount(Integer count) {
         this.count = count;
@@ -54,7 +47,7 @@ public final class ManagedClusterLoadBalancerProfileManagedOutboundIPs {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

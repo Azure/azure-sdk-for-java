@@ -5,19 +5,14 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Rewrite rule of an application gateway.
- */
+/** Rewrite rule of an application gateway. */
 @Fluent
 public final class ApplicationGatewayRewriteRule {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ApplicationGatewayRewriteRule.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayRewriteRule.class);
 
     /*
      * Name of the rewrite rule that is unique within an Application Gateway.
@@ -32,9 +27,8 @@ public final class ApplicationGatewayRewriteRule {
     private ApplicationGatewayRewriteRuleActionSet actionSet;
 
     /**
-     * Get the name property: Name of the rewrite rule that is unique within an
-     * Application Gateway.
-     * 
+     * Get the name property: Name of the rewrite rule that is unique within an Application Gateway.
+     *
      * @return the name value.
      */
     public String name() {
@@ -42,9 +36,8 @@ public final class ApplicationGatewayRewriteRule {
     }
 
     /**
-     * Set the name property: Name of the rewrite rule that is unique within an
-     * Application Gateway.
-     * 
+     * Set the name property: Name of the rewrite rule that is unique within an Application Gateway.
+     *
      * @param name the name value to set.
      * @return the ApplicationGatewayRewriteRule object itself.
      */
@@ -54,9 +47,8 @@ public final class ApplicationGatewayRewriteRule {
     }
 
     /**
-     * Get the actionSet property: Set of actions to be done as part of the
-     * rewrite Rule.
-     * 
+     * Get the actionSet property: Set of actions to be done as part of the rewrite Rule.
+     *
      * @return the actionSet value.
      */
     public ApplicationGatewayRewriteRuleActionSet actionSet() {
@@ -64,9 +56,8 @@ public final class ApplicationGatewayRewriteRule {
     }
 
     /**
-     * Set the actionSet property: Set of actions to be done as part of the
-     * rewrite Rule.
-     * 
+     * Set the actionSet property: Set of actions to be done as part of the rewrite Rule.
+     *
      * @param actionSet the actionSet value to set.
      * @return the ApplicationGatewayRewriteRule object itself.
      */
@@ -77,7 +68,7 @@ public final class ApplicationGatewayRewriteRule {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

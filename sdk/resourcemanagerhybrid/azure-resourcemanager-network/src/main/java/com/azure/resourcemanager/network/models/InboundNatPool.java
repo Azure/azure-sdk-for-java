@@ -5,21 +5,16 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.InboundNatPoolPropertiesFormat;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Inbound NAT pool of the load balancer.
- */
+/** Inbound NAT pool of the load balancer. */
 @Fluent
 public final class InboundNatPool extends SubResource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(InboundNatPool.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(InboundNatPool.class);
 
     /*
      * Properties of load balancer inbound nat pool.
@@ -41,9 +36,8 @@ public final class InboundNatPool extends SubResource {
     private String etag;
 
     /**
-     * Get the innerProperties property: Properties of load balancer inbound
-     * nat pool.
-     * 
+     * Get the innerProperties property: Properties of load balancer inbound nat pool.
+     *
      * @return the innerProperties value.
      */
     private InboundNatPoolPropertiesFormat innerProperties() {
@@ -51,9 +45,9 @@ public final class InboundNatPool extends SubResource {
     }
 
     /**
-     * Get the name property: The name of the resource that is unique within a
-     * resource group. This name can be used to access the resource.
-     * 
+     * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
+     * access the resource.
+     *
      * @return the name value.
      */
     public String name() {
@@ -61,9 +55,9 @@ public final class InboundNatPool extends SubResource {
     }
 
     /**
-     * Set the name property: The name of the resource that is unique within a
-     * resource group. This name can be used to access the resource.
-     * 
+     * Set the name property: The name of the resource that is unique within a resource group. This name can be used to
+     * access the resource.
+     *
      * @param name the name value to set.
      * @return the InboundNatPool object itself.
      */
@@ -73,9 +67,8 @@ public final class InboundNatPool extends SubResource {
     }
 
     /**
-     * Get the etag property: A unique read-only string that changes whenever
-     * the resource is updated.
-     * 
+     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -83,9 +76,8 @@ public final class InboundNatPool extends SubResource {
     }
 
     /**
-     * Set the etag property: A unique read-only string that changes whenever
-     * the resource is updated.
-     * 
+     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
      * @param etag the etag value to set.
      * @return the InboundNatPool object itself.
      */
@@ -94,9 +86,7 @@ public final class InboundNatPool extends SubResource {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public InboundNatPool withId(String id) {
         super.withId(id);
@@ -104,9 +94,8 @@ public final class InboundNatPool extends SubResource {
     }
 
     /**
-     * Get the frontendIpConfiguration property: A reference to frontend IP
-     * addresses.
-     * 
+     * Get the frontendIpConfiguration property: A reference to frontend IP addresses.
+     *
      * @return the frontendIpConfiguration value.
      */
     public SubResource frontendIpConfiguration() {
@@ -114,9 +103,8 @@ public final class InboundNatPool extends SubResource {
     }
 
     /**
-     * Set the frontendIpConfiguration property: A reference to frontend IP
-     * addresses.
-     * 
+     * Set the frontendIpConfiguration property: A reference to frontend IP addresses.
+     *
      * @param frontendIpConfiguration the frontendIpConfiguration value to set.
      * @return the InboundNatPool object itself.
      */
@@ -129,9 +117,8 @@ public final class InboundNatPool extends SubResource {
     }
 
     /**
-     * Get the protocol property: The transport protocol for the endpoint.
-     * Possible values are 'Udp' or 'Tcp' or 'All'.
-     * 
+     * Get the protocol property: The transport protocol for the endpoint. Possible values are 'Udp' or 'Tcp' or 'All'.
+     *
      * @return the protocol value.
      */
     public TransportProtocol protocol() {
@@ -139,9 +126,8 @@ public final class InboundNatPool extends SubResource {
     }
 
     /**
-     * Set the protocol property: The transport protocol for the endpoint.
-     * Possible values are 'Udp' or 'Tcp' or 'All'.
-     * 
+     * Set the protocol property: The transport protocol for the endpoint. Possible values are 'Udp' or 'Tcp' or 'All'.
+     *
      * @param protocol the protocol value to set.
      * @return the InboundNatPool object itself.
      */
@@ -154,11 +140,9 @@ public final class InboundNatPool extends SubResource {
     }
 
     /**
-     * Get the frontendPortRangeStart property: The first port number in the
-     * range of external ports that will be used to provide Inbound Nat to NICs
-     * associated with a load balancer. Acceptable values range between 1 and
-     * 65534.
-     * 
+     * Get the frontendPortRangeStart property: The first port number in the range of external ports that will be used
+     * to provide Inbound Nat to NICs associated with a load balancer. Acceptable values range between 1 and 65534.
+     *
      * @return the frontendPortRangeStart value.
      */
     public Integer frontendPortRangeStart() {
@@ -166,11 +150,9 @@ public final class InboundNatPool extends SubResource {
     }
 
     /**
-     * Set the frontendPortRangeStart property: The first port number in the
-     * range of external ports that will be used to provide Inbound Nat to NICs
-     * associated with a load balancer. Acceptable values range between 1 and
-     * 65534.
-     * 
+     * Set the frontendPortRangeStart property: The first port number in the range of external ports that will be used
+     * to provide Inbound Nat to NICs associated with a load balancer. Acceptable values range between 1 and 65534.
+     *
      * @param frontendPortRangeStart the frontendPortRangeStart value to set.
      * @return the InboundNatPool object itself.
      */
@@ -183,11 +165,9 @@ public final class InboundNatPool extends SubResource {
     }
 
     /**
-     * Get the frontendPortRangeEnd property: The last port number in the range
-     * of external ports that will be used to provide Inbound Nat to NICs
-     * associated with a load balancer. Acceptable values range between 1 and
-     * 65535.
-     * 
+     * Get the frontendPortRangeEnd property: The last port number in the range of external ports that will be used to
+     * provide Inbound Nat to NICs associated with a load balancer. Acceptable values range between 1 and 65535.
+     *
      * @return the frontendPortRangeEnd value.
      */
     public Integer frontendPortRangeEnd() {
@@ -195,11 +175,9 @@ public final class InboundNatPool extends SubResource {
     }
 
     /**
-     * Set the frontendPortRangeEnd property: The last port number in the range
-     * of external ports that will be used to provide Inbound Nat to NICs
-     * associated with a load balancer. Acceptable values range between 1 and
-     * 65535.
-     * 
+     * Set the frontendPortRangeEnd property: The last port number in the range of external ports that will be used to
+     * provide Inbound Nat to NICs associated with a load balancer. Acceptable values range between 1 and 65535.
+     *
      * @param frontendPortRangeEnd the frontendPortRangeEnd value to set.
      * @return the InboundNatPool object itself.
      */
@@ -212,9 +190,9 @@ public final class InboundNatPool extends SubResource {
     }
 
     /**
-     * Get the backendPort property: The port used for internal connections on
-     * the endpoint. Acceptable values are between 1 and 65535.
-     * 
+     * Get the backendPort property: The port used for internal connections on the endpoint. Acceptable values are
+     * between 1 and 65535.
+     *
      * @return the backendPort value.
      */
     public Integer backendPort() {
@@ -222,9 +200,9 @@ public final class InboundNatPool extends SubResource {
     }
 
     /**
-     * Set the backendPort property: The port used for internal connections on
-     * the endpoint. Acceptable values are between 1 and 65535.
-     * 
+     * Set the backendPort property: The port used for internal connections on the endpoint. Acceptable values are
+     * between 1 and 65535.
+     *
      * @param backendPort the backendPort value to set.
      * @return the InboundNatPool object itself.
      */
@@ -237,11 +215,9 @@ public final class InboundNatPool extends SubResource {
     }
 
     /**
-     * Get the idleTimeoutInMinutes property: The timeout for the TCP idle
-     * connection. The value can be set between 4 and 30 minutes. The default
-     * value is 4 minutes. This element is only used when the protocol is set
-     * to TCP.
-     * 
+     * Get the idleTimeoutInMinutes property: The timeout for the TCP idle connection. The value can be set between 4
+     * and 30 minutes. The default value is 4 minutes. This element is only used when the protocol is set to TCP.
+     *
      * @return the idleTimeoutInMinutes value.
      */
     public Integer idleTimeoutInMinutes() {
@@ -249,11 +225,9 @@ public final class InboundNatPool extends SubResource {
     }
 
     /**
-     * Set the idleTimeoutInMinutes property: The timeout for the TCP idle
-     * connection. The value can be set between 4 and 30 minutes. The default
-     * value is 4 minutes. This element is only used when the protocol is set
-     * to TCP.
-     * 
+     * Set the idleTimeoutInMinutes property: The timeout for the TCP idle connection. The value can be set between 4
+     * and 30 minutes. The default value is 4 minutes. This element is only used when the protocol is set to TCP.
+     *
      * @param idleTimeoutInMinutes the idleTimeoutInMinutes value to set.
      * @return the InboundNatPool object itself.
      */
@@ -266,12 +240,10 @@ public final class InboundNatPool extends SubResource {
     }
 
     /**
-     * Get the enableFloatingIp property: Configures a virtual machine's
-     * endpoint for the floating IP capability required to configure a SQL
-     * AlwaysOn Availability Group. This setting is required when using the SQL
-     * AlwaysOn Availability Groups in SQL server. This setting can't be
-     * changed after you create the endpoint.
-     * 
+     * Get the enableFloatingIp property: Configures a virtual machine's endpoint for the floating IP capability
+     * required to configure a SQL AlwaysOn Availability Group. This setting is required when using the SQL AlwaysOn
+     * Availability Groups in SQL server. This setting can't be changed after you create the endpoint.
+     *
      * @return the enableFloatingIp value.
      */
     public Boolean enableFloatingIp() {
@@ -279,12 +251,10 @@ public final class InboundNatPool extends SubResource {
     }
 
     /**
-     * Set the enableFloatingIp property: Configures a virtual machine's
-     * endpoint for the floating IP capability required to configure a SQL
-     * AlwaysOn Availability Group. This setting is required when using the SQL
-     * AlwaysOn Availability Groups in SQL server. This setting can't be
-     * changed after you create the endpoint.
-     * 
+     * Set the enableFloatingIp property: Configures a virtual machine's endpoint for the floating IP capability
+     * required to configure a SQL AlwaysOn Availability Group. This setting is required when using the SQL AlwaysOn
+     * Availability Groups in SQL server. This setting can't be changed after you create the endpoint.
+     *
      * @param enableFloatingIp the enableFloatingIp value to set.
      * @return the InboundNatPool object itself.
      */
@@ -297,10 +267,9 @@ public final class InboundNatPool extends SubResource {
     }
 
     /**
-     * Get the enableTcpReset property: Receive bidirectional TCP Reset on TCP
-     * flow idle timeout or unexpected connection termination. This element is
-     * only used when the protocol is set to TCP.
-     * 
+     * Get the enableTcpReset property: Receive bidirectional TCP Reset on TCP flow idle timeout or unexpected
+     * connection termination. This element is only used when the protocol is set to TCP.
+     *
      * @return the enableTcpReset value.
      */
     public Boolean enableTcpReset() {
@@ -308,10 +277,9 @@ public final class InboundNatPool extends SubResource {
     }
 
     /**
-     * Set the enableTcpReset property: Receive bidirectional TCP Reset on TCP
-     * flow idle timeout or unexpected connection termination. This element is
-     * only used when the protocol is set to TCP.
-     * 
+     * Set the enableTcpReset property: Receive bidirectional TCP Reset on TCP flow idle timeout or unexpected
+     * connection termination. This element is only used when the protocol is set to TCP.
+     *
      * @param enableTcpReset the enableTcpReset value to set.
      * @return the InboundNatPool object itself.
      */
@@ -324,10 +292,9 @@ public final class InboundNatPool extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: Gets the provisioning state of the
-     * PublicIP resource. Possible values are: 'Updating', 'Deleting', and
-     * 'Failed'.
-     * 
+     * Get the provisioningState property: Gets the provisioning state of the PublicIP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -335,10 +302,9 @@ public final class InboundNatPool extends SubResource {
     }
 
     /**
-     * Set the provisioningState property: Gets the provisioning state of the
-     * PublicIP resource. Possible values are: 'Updating', 'Deleting', and
-     * 'Failed'.
-     * 
+     * Set the provisioningState property: Gets the provisioning state of the PublicIP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
      * @param provisioningState the provisioningState value to set.
      * @return the InboundNatPool object itself.
      */
@@ -352,7 +318,7 @@ public final class InboundNatPool extends SubResource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

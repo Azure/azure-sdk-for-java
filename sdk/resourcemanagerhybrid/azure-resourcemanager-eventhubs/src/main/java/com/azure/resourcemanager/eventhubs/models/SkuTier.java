@@ -8,23 +8,17 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/**
- * Defines values for SkuTier.
- */
+/** Defines values for SkuTier. */
 public final class SkuTier extends ExpandableStringEnum<SkuTier> {
-    /**
-     * Static value Basic for SkuTier.
-     */
+    /** Static value Basic for SkuTier. */
     public static final SkuTier BASIC = fromString("Basic");
 
-    /**
-     * Static value Standard for SkuTier.
-     */
+    /** Static value Standard for SkuTier. */
     public static final SkuTier STANDARD = fromString("Standard");
 
     /**
      * Creates or finds a SkuTier from its string representation.
-     * 
+     *
      * @param name a name to look for.
      * @return the corresponding SkuTier.
      */
@@ -33,9 +27,7 @@ public final class SkuTier extends ExpandableStringEnum<SkuTier> {
         return fromString(name, SkuTier.class);
     }
 
-    /**
-     * @return known SkuTier values.
-     */
+    /** @return known SkuTier values. */
     public static Collection<SkuTier> values() {
         return values(SkuTier.class);
     }

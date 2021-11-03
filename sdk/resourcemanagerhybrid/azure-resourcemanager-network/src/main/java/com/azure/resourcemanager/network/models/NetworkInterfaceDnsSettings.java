@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * DNS settings of a network interface.
- */
+/** DNS settings of a network interface. */
 @Fluent
 public final class NetworkInterfaceDnsSettings {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(NetworkInterfaceDnsSettings.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkInterfaceDnsSettings.class);
 
     /*
      * List of DNS servers IP addresses. Use 'AzureProvidedDNS' to switch to
@@ -61,11 +56,10 @@ public final class NetworkInterfaceDnsSettings {
     private String internalDomainNameSuffix;
 
     /**
-     * Get the dnsServers property: List of DNS servers IP addresses. Use
-     * 'AzureProvidedDNS' to switch to azure provided DNS resolution.
-     * 'AzureProvidedDNS' value cannot be combined with other IPs, it must be
-     * the only value in dnsServers collection.
-     * 
+     * Get the dnsServers property: List of DNS servers IP addresses. Use 'AzureProvidedDNS' to switch to azure provided
+     * DNS resolution. 'AzureProvidedDNS' value cannot be combined with other IPs, it must be the only value in
+     * dnsServers collection.
+     *
      * @return the dnsServers value.
      */
     public List<String> dnsServers() {
@@ -73,11 +67,10 @@ public final class NetworkInterfaceDnsSettings {
     }
 
     /**
-     * Set the dnsServers property: List of DNS servers IP addresses. Use
-     * 'AzureProvidedDNS' to switch to azure provided DNS resolution.
-     * 'AzureProvidedDNS' value cannot be combined with other IPs, it must be
-     * the only value in dnsServers collection.
-     * 
+     * Set the dnsServers property: List of DNS servers IP addresses. Use 'AzureProvidedDNS' to switch to azure provided
+     * DNS resolution. 'AzureProvidedDNS' value cannot be combined with other IPs, it must be the only value in
+     * dnsServers collection.
+     *
      * @param dnsServers the dnsServers value to set.
      * @return the NetworkInterfaceDnsSettings object itself.
      */
@@ -87,11 +80,10 @@ public final class NetworkInterfaceDnsSettings {
     }
 
     /**
-     * Get the appliedDnsServers property: If the VM that uses this NIC is part
-     * of an Availability Set, then this list will have the union of all DNS
-     * servers from all NICs that are part of the Availability Set. This
-     * property is what is configured on each of those VMs.
-     * 
+     * Get the appliedDnsServers property: If the VM that uses this NIC is part of an Availability Set, then this list
+     * will have the union of all DNS servers from all NICs that are part of the Availability Set. This property is what
+     * is configured on each of those VMs.
+     *
      * @return the appliedDnsServers value.
      */
     public List<String> appliedDnsServers() {
@@ -99,11 +91,10 @@ public final class NetworkInterfaceDnsSettings {
     }
 
     /**
-     * Set the appliedDnsServers property: If the VM that uses this NIC is part
-     * of an Availability Set, then this list will have the union of all DNS
-     * servers from all NICs that are part of the Availability Set. This
-     * property is what is configured on each of those VMs.
-     * 
+     * Set the appliedDnsServers property: If the VM that uses this NIC is part of an Availability Set, then this list
+     * will have the union of all DNS servers from all NICs that are part of the Availability Set. This property is what
+     * is configured on each of those VMs.
+     *
      * @param appliedDnsServers the appliedDnsServers value to set.
      * @return the NetworkInterfaceDnsSettings object itself.
      */
@@ -113,10 +104,9 @@ public final class NetworkInterfaceDnsSettings {
     }
 
     /**
-     * Get the internalDnsNameLabel property: Relative DNS name for this NIC
-     * used for internal communications between VMs in the same virtual
-     * network.
-     * 
+     * Get the internalDnsNameLabel property: Relative DNS name for this NIC used for internal communications between
+     * VMs in the same virtual network.
+     *
      * @return the internalDnsNameLabel value.
      */
     public String internalDnsNameLabel() {
@@ -124,10 +114,9 @@ public final class NetworkInterfaceDnsSettings {
     }
 
     /**
-     * Set the internalDnsNameLabel property: Relative DNS name for this NIC
-     * used for internal communications between VMs in the same virtual
-     * network.
-     * 
+     * Set the internalDnsNameLabel property: Relative DNS name for this NIC used for internal communications between
+     * VMs in the same virtual network.
+     *
      * @param internalDnsNameLabel the internalDnsNameLabel value to set.
      * @return the NetworkInterfaceDnsSettings object itself.
      */
@@ -137,9 +126,9 @@ public final class NetworkInterfaceDnsSettings {
     }
 
     /**
-     * Get the internalFqdn property: Fully qualified DNS name supporting
-     * internal communications between VMs in the same virtual network.
-     * 
+     * Get the internalFqdn property: Fully qualified DNS name supporting internal communications between VMs in the
+     * same virtual network.
+     *
      * @return the internalFqdn value.
      */
     public String internalFqdn() {
@@ -147,9 +136,9 @@ public final class NetworkInterfaceDnsSettings {
     }
 
     /**
-     * Set the internalFqdn property: Fully qualified DNS name supporting
-     * internal communications between VMs in the same virtual network.
-     * 
+     * Set the internalFqdn property: Fully qualified DNS name supporting internal communications between VMs in the
+     * same virtual network.
+     *
      * @param internalFqdn the internalFqdn value to set.
      * @return the NetworkInterfaceDnsSettings object itself.
      */
@@ -159,11 +148,10 @@ public final class NetworkInterfaceDnsSettings {
     }
 
     /**
-     * Get the internalDomainNameSuffix property: Even if internalDnsNameLabel
-     * is not specified, a DNS entry is created for the primary NIC of the VM.
-     * This DNS name can be constructed by concatenating the VM name with the
-     * value of internalDomainNameSuffix.
-     * 
+     * Get the internalDomainNameSuffix property: Even if internalDnsNameLabel is not specified, a DNS entry is created
+     * for the primary NIC of the VM. This DNS name can be constructed by concatenating the VM name with the value of
+     * internalDomainNameSuffix.
+     *
      * @return the internalDomainNameSuffix value.
      */
     public String internalDomainNameSuffix() {
@@ -171,13 +159,11 @@ public final class NetworkInterfaceDnsSettings {
     }
 
     /**
-     * Set the internalDomainNameSuffix property: Even if internalDnsNameLabel
-     * is not specified, a DNS entry is created for the primary NIC of the VM.
-     * This DNS name can be constructed by concatenating the VM name with the
-     * value of internalDomainNameSuffix.
-     * 
-     * @param internalDomainNameSuffix the internalDomainNameSuffix value to
-     * set.
+     * Set the internalDomainNameSuffix property: Even if internalDnsNameLabel is not specified, a DNS entry is created
+     * for the primary NIC of the VM. This DNS name can be constructed by concatenating the VM name with the value of
+     * internalDomainNameSuffix.
+     *
+     * @param internalDomainNameSuffix the internalDomainNameSuffix value to set.
      * @return the NetworkInterfaceDnsSettings object itself.
      */
     public NetworkInterfaceDnsSettings withInternalDomainNameSuffix(String internalDomainNameSuffix) {
@@ -187,7 +173,7 @@ public final class NetworkInterfaceDnsSettings {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

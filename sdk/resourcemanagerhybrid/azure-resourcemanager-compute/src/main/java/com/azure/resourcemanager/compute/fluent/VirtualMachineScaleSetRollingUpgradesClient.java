@@ -12,7 +12,6 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.fluent.models.RollingUpgradeStatusInfoInner;
-import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -24,7 +23,7 @@ import reactor.core.publisher.Mono;
 public interface VirtualMachineScaleSetRollingUpgradesClient {
     /**
      * Cancels the current virtual machine scale set rolling upgrade.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -37,7 +36,7 @@ public interface VirtualMachineScaleSetRollingUpgradesClient {
 
     /**
      * Cancels the current virtual machine scale set rolling upgrade.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -50,7 +49,7 @@ public interface VirtualMachineScaleSetRollingUpgradesClient {
 
     /**
      * Cancels the current virtual machine scale set rolling upgrade.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -63,7 +62,7 @@ public interface VirtualMachineScaleSetRollingUpgradesClient {
 
     /**
      * Cancels the current virtual machine scale set rolling upgrade.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -77,7 +76,7 @@ public interface VirtualMachineScaleSetRollingUpgradesClient {
 
     /**
      * Cancels the current virtual machine scale set rolling upgrade.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -90,7 +89,7 @@ public interface VirtualMachineScaleSetRollingUpgradesClient {
 
     /**
      * Cancels the current virtual machine scale set rolling upgrade.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -102,7 +101,7 @@ public interface VirtualMachineScaleSetRollingUpgradesClient {
 
     /**
      * Cancels the current virtual machine scale set rolling upgrade.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -114,8 +113,9 @@ public interface VirtualMachineScaleSetRollingUpgradesClient {
     void cancel(String resourceGroupName, String vmScaleSetName, Context context);
 
     /**
-     * Starts a rolling upgrade to move all virtual machine scale set instances to the latest available Platform Image OS version. Instances which are already running the latest available OS version are not affected.
-     * 
+     * Starts a rolling upgrade to move all virtual machine scale set instances to the latest available Platform Image
+     * OS version. Instances which are already running the latest available OS version are not affected.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -127,8 +127,9 @@ public interface VirtualMachineScaleSetRollingUpgradesClient {
     Mono<Response<Flux<ByteBuffer>>> startOSUpgradeWithResponseAsync(String resourceGroupName, String vmScaleSetName);
 
     /**
-     * Starts a rolling upgrade to move all virtual machine scale set instances to the latest available Platform Image OS version. Instances which are already running the latest available OS version are not affected.
-     * 
+     * Starts a rolling upgrade to move all virtual machine scale set instances to the latest available Platform Image
+     * OS version. Instances which are already running the latest available OS version are not affected.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -140,8 +141,9 @@ public interface VirtualMachineScaleSetRollingUpgradesClient {
     PollerFlux<PollResult<Void>, Void> beginStartOSUpgradeAsync(String resourceGroupName, String vmScaleSetName);
 
     /**
-     * Starts a rolling upgrade to move all virtual machine scale set instances to the latest available Platform Image OS version. Instances which are already running the latest available OS version are not affected.
-     * 
+     * Starts a rolling upgrade to move all virtual machine scale set instances to the latest available Platform Image
+     * OS version. Instances which are already running the latest available OS version are not affected.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -153,8 +155,9 @@ public interface VirtualMachineScaleSetRollingUpgradesClient {
     SyncPoller<PollResult<Void>, Void> beginStartOSUpgrade(String resourceGroupName, String vmScaleSetName);
 
     /**
-     * Starts a rolling upgrade to move all virtual machine scale set instances to the latest available Platform Image OS version. Instances which are already running the latest available OS version are not affected.
-     * 
+     * Starts a rolling upgrade to move all virtual machine scale set instances to the latest available Platform Image
+     * OS version. Instances which are already running the latest available OS version are not affected.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -164,11 +167,13 @@ public interface VirtualMachineScaleSetRollingUpgradesClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginStartOSUpgrade(String resourceGroupName, String vmScaleSetName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginStartOSUpgrade(
+        String resourceGroupName, String vmScaleSetName, Context context);
 
     /**
-     * Starts a rolling upgrade to move all virtual machine scale set instances to the latest available Platform Image OS version. Instances which are already running the latest available OS version are not affected.
-     * 
+     * Starts a rolling upgrade to move all virtual machine scale set instances to the latest available Platform Image
+     * OS version. Instances which are already running the latest available OS version are not affected.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -180,8 +185,9 @@ public interface VirtualMachineScaleSetRollingUpgradesClient {
     Mono<Void> startOSUpgradeAsync(String resourceGroupName, String vmScaleSetName);
 
     /**
-     * Starts a rolling upgrade to move all virtual machine scale set instances to the latest available Platform Image OS version. Instances which are already running the latest available OS version are not affected.
-     * 
+     * Starts a rolling upgrade to move all virtual machine scale set instances to the latest available Platform Image
+     * OS version. Instances which are already running the latest available OS version are not affected.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -192,8 +198,9 @@ public interface VirtualMachineScaleSetRollingUpgradesClient {
     void startOSUpgrade(String resourceGroupName, String vmScaleSetName);
 
     /**
-     * Starts a rolling upgrade to move all virtual machine scale set instances to the latest available Platform Image OS version. Instances which are already running the latest available OS version are not affected.
-     * 
+     * Starts a rolling upgrade to move all virtual machine scale set instances to the latest available Platform Image
+     * OS version. Instances which are already running the latest available OS version are not affected.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -205,8 +212,9 @@ public interface VirtualMachineScaleSetRollingUpgradesClient {
     void startOSUpgrade(String resourceGroupName, String vmScaleSetName, Context context);
 
     /**
-     * Starts a rolling upgrade to move all extensions for all virtual machine scale set instances to the latest available extension version. Instances which are already running the latest extension versions are not affected.
-     * 
+     * Starts a rolling upgrade to move all extensions for all virtual machine scale set instances to the latest
+     * available extension version. Instances which are already running the latest extension versions are not affected.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -215,11 +223,13 @@ public interface VirtualMachineScaleSetRollingUpgradesClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> startExtensionUpgradeWithResponseAsync(String resourceGroupName, String vmScaleSetName);
+    Mono<Response<Flux<ByteBuffer>>> startExtensionUpgradeWithResponseAsync(
+        String resourceGroupName, String vmScaleSetName);
 
     /**
-     * Starts a rolling upgrade to move all extensions for all virtual machine scale set instances to the latest available extension version. Instances which are already running the latest extension versions are not affected.
-     * 
+     * Starts a rolling upgrade to move all extensions for all virtual machine scale set instances to the latest
+     * available extension version. Instances which are already running the latest extension versions are not affected.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -231,8 +241,9 @@ public interface VirtualMachineScaleSetRollingUpgradesClient {
     PollerFlux<PollResult<Void>, Void> beginStartExtensionUpgradeAsync(String resourceGroupName, String vmScaleSetName);
 
     /**
-     * Starts a rolling upgrade to move all extensions for all virtual machine scale set instances to the latest available extension version. Instances which are already running the latest extension versions are not affected.
-     * 
+     * Starts a rolling upgrade to move all extensions for all virtual machine scale set instances to the latest
+     * available extension version. Instances which are already running the latest extension versions are not affected.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -244,8 +255,9 @@ public interface VirtualMachineScaleSetRollingUpgradesClient {
     SyncPoller<PollResult<Void>, Void> beginStartExtensionUpgrade(String resourceGroupName, String vmScaleSetName);
 
     /**
-     * Starts a rolling upgrade to move all extensions for all virtual machine scale set instances to the latest available extension version. Instances which are already running the latest extension versions are not affected.
-     * 
+     * Starts a rolling upgrade to move all extensions for all virtual machine scale set instances to the latest
+     * available extension version. Instances which are already running the latest extension versions are not affected.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -255,11 +267,13 @@ public interface VirtualMachineScaleSetRollingUpgradesClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginStartExtensionUpgrade(String resourceGroupName, String vmScaleSetName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginStartExtensionUpgrade(
+        String resourceGroupName, String vmScaleSetName, Context context);
 
     /**
-     * Starts a rolling upgrade to move all extensions for all virtual machine scale set instances to the latest available extension version. Instances which are already running the latest extension versions are not affected.
-     * 
+     * Starts a rolling upgrade to move all extensions for all virtual machine scale set instances to the latest
+     * available extension version. Instances which are already running the latest extension versions are not affected.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -271,8 +285,9 @@ public interface VirtualMachineScaleSetRollingUpgradesClient {
     Mono<Void> startExtensionUpgradeAsync(String resourceGroupName, String vmScaleSetName);
 
     /**
-     * Starts a rolling upgrade to move all extensions for all virtual machine scale set instances to the latest available extension version. Instances which are already running the latest extension versions are not affected.
-     * 
+     * Starts a rolling upgrade to move all extensions for all virtual machine scale set instances to the latest
+     * available extension version. Instances which are already running the latest extension versions are not affected.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -283,8 +298,9 @@ public interface VirtualMachineScaleSetRollingUpgradesClient {
     void startExtensionUpgrade(String resourceGroupName, String vmScaleSetName);
 
     /**
-     * Starts a rolling upgrade to move all extensions for all virtual machine scale set instances to the latest available extension version. Instances which are already running the latest extension versions are not affected.
-     * 
+     * Starts a rolling upgrade to move all extensions for all virtual machine scale set instances to the latest
+     * available extension version. Instances which are already running the latest extension versions are not affected.
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -297,7 +313,7 @@ public interface VirtualMachineScaleSetRollingUpgradesClient {
 
     /**
      * Gets the status of the latest virtual machine scale set rolling upgrade.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -306,11 +322,12 @@ public interface VirtualMachineScaleSetRollingUpgradesClient {
      * @return the status of the latest virtual machine scale set rolling upgrade.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<RollingUpgradeStatusInfoInner>> getLatestWithResponseAsync(String resourceGroupName, String vmScaleSetName);
+    Mono<Response<RollingUpgradeStatusInfoInner>> getLatestWithResponseAsync(
+        String resourceGroupName, String vmScaleSetName);
 
     /**
      * Gets the status of the latest virtual machine scale set rolling upgrade.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -323,7 +340,7 @@ public interface VirtualMachineScaleSetRollingUpgradesClient {
 
     /**
      * Gets the status of the latest virtual machine scale set rolling upgrade.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -336,7 +353,7 @@ public interface VirtualMachineScaleSetRollingUpgradesClient {
 
     /**
      * Gets the status of the latest virtual machine scale set rolling upgrade.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param context The context to associate with this operation.
@@ -346,5 +363,6 @@ public interface VirtualMachineScaleSetRollingUpgradesClient {
      * @return the status of the latest virtual machine scale set rolling upgrade.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RollingUpgradeStatusInfoInner> getLatestWithResponse(String resourceGroupName, String vmScaleSetName, Context context);
+    Response<RollingUpgradeStatusInfoInner> getLatestWithResponse(
+        String resourceGroupName, String vmScaleSetName, Context context);
 }

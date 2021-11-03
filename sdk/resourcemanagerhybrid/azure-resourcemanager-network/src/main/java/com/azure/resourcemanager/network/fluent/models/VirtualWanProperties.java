@@ -5,23 +5,18 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.OfficeTrafficCategory;
 import com.azure.resourcemanager.network.models.ProvisioningState;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Parameters for VirtualWAN.
- */
+/** Parameters for VirtualWAN. */
 @Fluent
 public final class VirtualWanProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(VirtualWanProperties.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VirtualWanProperties.class);
 
     /*
      * Vpn encryption to be disabled or not.
@@ -78,9 +73,8 @@ public final class VirtualWanProperties {
     private ProvisioningState provisioningState;
 
     /**
-     * Get the disableVpnEncryption property: Vpn encryption to be disabled or
-     * not.
-     * 
+     * Get the disableVpnEncryption property: Vpn encryption to be disabled or not.
+     *
      * @return the disableVpnEncryption value.
      */
     public Boolean disableVpnEncryption() {
@@ -88,9 +82,8 @@ public final class VirtualWanProperties {
     }
 
     /**
-     * Set the disableVpnEncryption property: Vpn encryption to be disabled or
-     * not.
-     * 
+     * Set the disableVpnEncryption property: Vpn encryption to be disabled or not.
+     *
      * @param disableVpnEncryption the disableVpnEncryption value to set.
      * @return the VirtualWanProperties object itself.
      */
@@ -101,7 +94,7 @@ public final class VirtualWanProperties {
 
     /**
      * Get the virtualHubs property: List of VirtualHubs in the VirtualWAN.
-     * 
+     *
      * @return the virtualHubs value.
      */
     public List<SubResource> virtualHubs() {
@@ -110,7 +103,7 @@ public final class VirtualWanProperties {
 
     /**
      * Get the vpnSites property: The vpnSites property.
-     * 
+     *
      * @return the vpnSites value.
      */
     public List<SubResource> vpnSites() {
@@ -119,7 +112,7 @@ public final class VirtualWanProperties {
 
     /**
      * Get the securityProviderName property: The Security Provider name.
-     * 
+     *
      * @return the securityProviderName value.
      */
     public String securityProviderName() {
@@ -128,7 +121,7 @@ public final class VirtualWanProperties {
 
     /**
      * Set the securityProviderName property: The Security Provider name.
-     * 
+     *
      * @param securityProviderName the securityProviderName value to set.
      * @return the VirtualWanProperties object itself.
      */
@@ -138,9 +131,8 @@ public final class VirtualWanProperties {
     }
 
     /**
-     * Get the allowBranchToBranchTraffic property: True if branch to branch
-     * traffic is allowed.
-     * 
+     * Get the allowBranchToBranchTraffic property: True if branch to branch traffic is allowed.
+     *
      * @return the allowBranchToBranchTraffic value.
      */
     public Boolean allowBranchToBranchTraffic() {
@@ -148,11 +140,9 @@ public final class VirtualWanProperties {
     }
 
     /**
-     * Set the allowBranchToBranchTraffic property: True if branch to branch
-     * traffic is allowed.
-     * 
-     * @param allowBranchToBranchTraffic the allowBranchToBranchTraffic value
-     * to set.
+     * Set the allowBranchToBranchTraffic property: True if branch to branch traffic is allowed.
+     *
+     * @param allowBranchToBranchTraffic the allowBranchToBranchTraffic value to set.
      * @return the VirtualWanProperties object itself.
      */
     public VirtualWanProperties withAllowBranchToBranchTraffic(Boolean allowBranchToBranchTraffic) {
@@ -161,9 +151,8 @@ public final class VirtualWanProperties {
     }
 
     /**
-     * Get the allowVnetToVnetTraffic property: True if Vnet to Vnet traffic is
-     * allowed.
-     * 
+     * Get the allowVnetToVnetTraffic property: True if Vnet to Vnet traffic is allowed.
+     *
      * @return the allowVnetToVnetTraffic value.
      */
     public Boolean allowVnetToVnetTraffic() {
@@ -171,9 +160,8 @@ public final class VirtualWanProperties {
     }
 
     /**
-     * Set the allowVnetToVnetTraffic property: True if Vnet to Vnet traffic is
-     * allowed.
-     * 
+     * Set the allowVnetToVnetTraffic property: True if Vnet to Vnet traffic is allowed.
+     *
      * @param allowVnetToVnetTraffic the allowVnetToVnetTraffic value to set.
      * @return the VirtualWanProperties object itself.
      */
@@ -183,9 +171,8 @@ public final class VirtualWanProperties {
     }
 
     /**
-     * Get the office365LocalBreakoutCategory property: The office local
-     * breakout category.
-     * 
+     * Get the office365LocalBreakoutCategory property: The office local breakout category.
+     *
      * @return the office365LocalBreakoutCategory value.
      */
     public OfficeTrafficCategory office365LocalBreakoutCategory() {
@@ -193,9 +180,9 @@ public final class VirtualWanProperties {
     }
 
     /**
-     * Get the p2SVpnServerConfigurations property: list of all
-     * P2SVpnServerConfigurations associated with the virtual wan.
-     * 
+     * Get the p2SVpnServerConfigurations property: list of all P2SVpnServerConfigurations associated with the virtual
+     * wan.
+     *
      * @return the p2SVpnServerConfigurations value.
      */
     public List<P2SVpnServerConfigurationInner> p2SVpnServerConfigurations() {
@@ -203,22 +190,21 @@ public final class VirtualWanProperties {
     }
 
     /**
-     * Set the p2SVpnServerConfigurations property: list of all
-     * P2SVpnServerConfigurations associated with the virtual wan.
-     * 
-     * @param p2SVpnServerConfigurations the p2SVpnServerConfigurations value
-     * to set.
+     * Set the p2SVpnServerConfigurations property: list of all P2SVpnServerConfigurations associated with the virtual
+     * wan.
+     *
+     * @param p2SVpnServerConfigurations the p2SVpnServerConfigurations value to set.
      * @return the VirtualWanProperties object itself.
      */
-    public VirtualWanProperties withP2SVpnServerConfigurations(List<P2SVpnServerConfigurationInner> p2SVpnServerConfigurations) {
+    public VirtualWanProperties withP2SVpnServerConfigurations(
+        List<P2SVpnServerConfigurationInner> p2SVpnServerConfigurations) {
         this.p2SVpnServerConfigurations = p2SVpnServerConfigurations;
         return this;
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the
-     * resource.
-     * 
+     * Get the provisioningState property: The provisioning state of the resource.
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -226,9 +212,8 @@ public final class VirtualWanProperties {
     }
 
     /**
-     * Set the provisioningState property: The provisioning state of the
-     * resource.
-     * 
+     * Set the provisioningState property: The provisioning state of the resource.
+     *
      * @param provisioningState the provisioningState value to set.
      * @return the VirtualWanProperties object itself.
      */
@@ -239,7 +224,7 @@ public final class VirtualWanProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,25 +5,20 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.IpsecPolicy;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VirtualNetworkGatewayConnectionProtocol;
 import com.azure.resourcemanager.network.models.VpnConnectionStatus;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Parameters for VpnConnection.
- */
+/** Parameters for VpnConnection. */
 @Fluent
 public final class VpnConnectionProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(VpnConnectionProperties.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnConnectionProperties.class);
 
     /*
      * Id of the connected vpn site.
@@ -105,7 +100,7 @@ public final class VpnConnectionProperties {
 
     /**
      * Get the remoteVpnSite property: Id of the connected vpn site.
-     * 
+     *
      * @return the remoteVpnSite value.
      */
     public SubResource remoteVpnSite() {
@@ -114,7 +109,7 @@ public final class VpnConnectionProperties {
 
     /**
      * Set the remoteVpnSite property: Id of the connected vpn site.
-     * 
+     *
      * @param remoteVpnSite the remoteVpnSite value to set.
      * @return the VpnConnectionProperties object itself.
      */
@@ -125,7 +120,7 @@ public final class VpnConnectionProperties {
 
     /**
      * Get the routingWeight property: routing weight for vpn connection.
-     * 
+     *
      * @return the routingWeight value.
      */
     public Integer routingWeight() {
@@ -134,7 +129,7 @@ public final class VpnConnectionProperties {
 
     /**
      * Set the routingWeight property: routing weight for vpn connection.
-     * 
+     *
      * @param routingWeight the routingWeight value to set.
      * @return the VpnConnectionProperties object itself.
      */
@@ -145,7 +140,7 @@ public final class VpnConnectionProperties {
 
     /**
      * Get the connectionStatus property: The connection status.
-     * 
+     *
      * @return the connectionStatus value.
      */
     public VpnConnectionStatus connectionStatus() {
@@ -153,9 +148,8 @@ public final class VpnConnectionProperties {
     }
 
     /**
-     * Get the vpnConnectionProtocolType property: Connection protocol used for
-     * this connection.
-     * 
+     * Get the vpnConnectionProtocolType property: Connection protocol used for this connection.
+     *
      * @return the vpnConnectionProtocolType value.
      */
     public VirtualNetworkGatewayConnectionProtocol vpnConnectionProtocolType() {
@@ -163,21 +157,20 @@ public final class VpnConnectionProperties {
     }
 
     /**
-     * Set the vpnConnectionProtocolType property: Connection protocol used for
-     * this connection.
-     * 
-     * @param vpnConnectionProtocolType the vpnConnectionProtocolType value to
-     * set.
+     * Set the vpnConnectionProtocolType property: Connection protocol used for this connection.
+     *
+     * @param vpnConnectionProtocolType the vpnConnectionProtocolType value to set.
      * @return the VpnConnectionProperties object itself.
      */
-    public VpnConnectionProperties withVpnConnectionProtocolType(VirtualNetworkGatewayConnectionProtocol vpnConnectionProtocolType) {
+    public VpnConnectionProperties withVpnConnectionProtocolType(
+        VirtualNetworkGatewayConnectionProtocol vpnConnectionProtocolType) {
         this.vpnConnectionProtocolType = vpnConnectionProtocolType;
         return this;
     }
 
     /**
      * Get the ingressBytesTransferred property: Ingress bytes transferred.
-     * 
+     *
      * @return the ingressBytesTransferred value.
      */
     public Long ingressBytesTransferred() {
@@ -186,7 +179,7 @@ public final class VpnConnectionProperties {
 
     /**
      * Get the egressBytesTransferred property: Egress bytes transferred.
-     * 
+     *
      * @return the egressBytesTransferred value.
      */
     public Long egressBytesTransferred() {
@@ -195,7 +188,7 @@ public final class VpnConnectionProperties {
 
     /**
      * Get the connectionBandwidth property: Expected bandwidth in MBPS.
-     * 
+     *
      * @return the connectionBandwidth value.
      */
     public Integer connectionBandwidth() {
@@ -204,7 +197,7 @@ public final class VpnConnectionProperties {
 
     /**
      * Set the connectionBandwidth property: Expected bandwidth in MBPS.
-     * 
+     *
      * @param connectionBandwidth the connectionBandwidth value to set.
      * @return the VpnConnectionProperties object itself.
      */
@@ -215,7 +208,7 @@ public final class VpnConnectionProperties {
 
     /**
      * Get the sharedKey property: SharedKey for the vpn connection.
-     * 
+     *
      * @return the sharedKey value.
      */
     public String sharedKey() {
@@ -224,7 +217,7 @@ public final class VpnConnectionProperties {
 
     /**
      * Set the sharedKey property: SharedKey for the vpn connection.
-     * 
+     *
      * @param sharedKey the sharedKey value to set.
      * @return the VpnConnectionProperties object itself.
      */
@@ -235,7 +228,7 @@ public final class VpnConnectionProperties {
 
     /**
      * Get the enableBgp property: EnableBgp flag.
-     * 
+     *
      * @return the enableBgp value.
      */
     public Boolean enableBgp() {
@@ -244,7 +237,7 @@ public final class VpnConnectionProperties {
 
     /**
      * Set the enableBgp property: EnableBgp flag.
-     * 
+     *
      * @param enableBgp the enableBgp value to set.
      * @return the VpnConnectionProperties object itself.
      */
@@ -254,9 +247,8 @@ public final class VpnConnectionProperties {
     }
 
     /**
-     * Get the ipsecPolicies property: The IPSec Policies to be considered by
-     * this connection.
-     * 
+     * Get the ipsecPolicies property: The IPSec Policies to be considered by this connection.
+     *
      * @return the ipsecPolicies value.
      */
     public List<IpsecPolicy> ipsecPolicies() {
@@ -264,9 +256,8 @@ public final class VpnConnectionProperties {
     }
 
     /**
-     * Set the ipsecPolicies property: The IPSec Policies to be considered by
-     * this connection.
-     * 
+     * Set the ipsecPolicies property: The IPSec Policies to be considered by this connection.
+     *
      * @param ipsecPolicies the ipsecPolicies value to set.
      * @return the VpnConnectionProperties object itself.
      */
@@ -277,7 +268,7 @@ public final class VpnConnectionProperties {
 
     /**
      * Get the enableRateLimiting property: EnableBgp flag.
-     * 
+     *
      * @return the enableRateLimiting value.
      */
     public Boolean enableRateLimiting() {
@@ -286,7 +277,7 @@ public final class VpnConnectionProperties {
 
     /**
      * Set the enableRateLimiting property: EnableBgp flag.
-     * 
+     *
      * @param enableRateLimiting the enableRateLimiting value to set.
      * @return the VpnConnectionProperties object itself.
      */
@@ -297,7 +288,7 @@ public final class VpnConnectionProperties {
 
     /**
      * Get the enableInternetSecurity property: Enable internet security.
-     * 
+     *
      * @return the enableInternetSecurity value.
      */
     public Boolean enableInternetSecurity() {
@@ -306,7 +297,7 @@ public final class VpnConnectionProperties {
 
     /**
      * Set the enableInternetSecurity property: Enable internet security.
-     * 
+     *
      * @param enableInternetSecurity the enableInternetSecurity value to set.
      * @return the VpnConnectionProperties object itself.
      */
@@ -316,9 +307,8 @@ public final class VpnConnectionProperties {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the
-     * resource.
-     * 
+     * Get the provisioningState property: The provisioning state of the resource.
+     *
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -326,9 +316,8 @@ public final class VpnConnectionProperties {
     }
 
     /**
-     * Set the provisioningState property: The provisioning state of the
-     * resource.
-     * 
+     * Set the provisioningState property: The provisioning state of the resource.
+     *
      * @param provisioningState the provisioningState value to set.
      * @return the VpnConnectionProperties object itself.
      */
@@ -339,7 +328,7 @@ public final class VpnConnectionProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,8 +8,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
@@ -17,19 +15,17 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineRunCommandInner;
 import com.azure.resourcemanager.compute.models.VirtualMachineRunCommandUpdate;
-import com.fasterxml.jackson.core.type.TypeReference;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * An instance of this class provides access to all the operations defined in
- * VirtualMachineScaleSetVMRunCommandsClient.
+ * An instance of this class provides access to all the operations defined in VirtualMachineScaleSetVMRunCommandsClient.
  */
 public interface VirtualMachineScaleSetVMRunCommandsClient {
     /**
      * The operation to create or update the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -41,11 +37,16 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
      * @return describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName, VirtualMachineRunCommandInner runCommand);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        String runCommandName,
+        VirtualMachineRunCommandInner runCommand);
 
     /**
      * The operation to create or update the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -57,11 +58,16 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
      * @return describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginCreateOrUpdateAsync(String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName, VirtualMachineRunCommandInner runCommand);
+    PollerFlux<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginCreateOrUpdateAsync(
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        String runCommandName,
+        VirtualMachineRunCommandInner runCommand);
 
     /**
      * The operation to create or update the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -73,11 +79,16 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
      * @return describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginCreateOrUpdate(String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName, VirtualMachineRunCommandInner runCommand);
+    SyncPoller<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        String runCommandName,
+        VirtualMachineRunCommandInner runCommand);
 
     /**
      * The operation to create or update the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -90,11 +101,17 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
      * @return describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginCreateOrUpdate(String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName, VirtualMachineRunCommandInner runCommand, Context context);
+    SyncPoller<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginCreateOrUpdate(
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        String runCommandName,
+        VirtualMachineRunCommandInner runCommand,
+        Context context);
 
     /**
      * The operation to create or update the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -106,11 +123,16 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
      * @return describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VirtualMachineRunCommandInner> createOrUpdateAsync(String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName, VirtualMachineRunCommandInner runCommand);
+    Mono<VirtualMachineRunCommandInner> createOrUpdateAsync(
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        String runCommandName,
+        VirtualMachineRunCommandInner runCommand);
 
     /**
      * The operation to create or update the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -122,11 +144,16 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
      * @return describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualMachineRunCommandInner createOrUpdate(String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName, VirtualMachineRunCommandInner runCommand);
+    VirtualMachineRunCommandInner createOrUpdate(
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        String runCommandName,
+        VirtualMachineRunCommandInner runCommand);
 
     /**
      * The operation to create or update the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -139,11 +166,17 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
      * @return describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualMachineRunCommandInner createOrUpdate(String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName, VirtualMachineRunCommandInner runCommand, Context context);
+    VirtualMachineRunCommandInner createOrUpdate(
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        String runCommandName,
+        VirtualMachineRunCommandInner runCommand,
+        Context context);
 
     /**
      * The operation to update the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -155,11 +188,16 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
      * @return describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName, VirtualMachineRunCommandUpdate runCommand);
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        String runCommandName,
+        VirtualMachineRunCommandUpdate runCommand);
 
     /**
      * The operation to update the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -171,11 +209,16 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
      * @return describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginUpdateAsync(String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName, VirtualMachineRunCommandUpdate runCommand);
+    PollerFlux<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginUpdateAsync(
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        String runCommandName,
+        VirtualMachineRunCommandUpdate runCommand);
 
     /**
      * The operation to update the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -187,60 +230,16 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
      * @return describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginUpdate(String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName, VirtualMachineRunCommandUpdate runCommand);
+    SyncPoller<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginUpdate(
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        String runCommandName,
+        VirtualMachineRunCommandUpdate runCommand);
 
     /**
      * The operation to update the VMSS VM run command.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param runCommandName The name of the virtual machine run command.
-     * @param runCommand Parameters supplied to the Update Virtual Machine RunCommand operation.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginUpdate(String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName, VirtualMachineRunCommandUpdate runCommand, Context context);
-
-    /**
-     * The operation to update the VMSS VM run command.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param runCommandName The name of the virtual machine run command.
-     * @param runCommand Parameters supplied to the Update Virtual Machine RunCommand operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VirtualMachineRunCommandInner> updateAsync(String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName, VirtualMachineRunCommandUpdate runCommand);
-
-    /**
-     * The operation to update the VMSS VM run command.
-     * 
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param runCommandName The name of the virtual machine run command.
-     * @param runCommand Parameters supplied to the Update Virtual Machine RunCommand operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes a Virtual Machine run command.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualMachineRunCommandInner update(String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName, VirtualMachineRunCommandUpdate runCommand);
-
-    /**
-     * The operation to update the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -253,11 +252,82 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
      * @return describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualMachineRunCommandInner update(String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName, VirtualMachineRunCommandUpdate runCommand, Context context);
+    SyncPoller<PollResult<VirtualMachineRunCommandInner>, VirtualMachineRunCommandInner> beginUpdate(
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        String runCommandName,
+        VirtualMachineRunCommandUpdate runCommand,
+        Context context);
+
+    /**
+     * The operation to update the VMSS VM run command.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @param runCommandName The name of the virtual machine run command.
+     * @param runCommand Parameters supplied to the Update Virtual Machine RunCommand operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a Virtual Machine run command.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<VirtualMachineRunCommandInner> updateAsync(
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        String runCommandName,
+        VirtualMachineRunCommandUpdate runCommand);
+
+    /**
+     * The operation to update the VMSS VM run command.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @param runCommandName The name of the virtual machine run command.
+     * @param runCommand Parameters supplied to the Update Virtual Machine RunCommand operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a Virtual Machine run command.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VirtualMachineRunCommandInner update(
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        String runCommandName,
+        VirtualMachineRunCommandUpdate runCommand);
+
+    /**
+     * The operation to update the VMSS VM run command.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @param instanceId The instance ID of the virtual machine.
+     * @param runCommandName The name of the virtual machine run command.
+     * @param runCommand Parameters supplied to the Update Virtual Machine RunCommand operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return describes a Virtual Machine run command.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VirtualMachineRunCommandInner update(
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        String runCommandName,
+        VirtualMachineRunCommandUpdate runCommand,
+        Context context);
 
     /**
      * The operation to delete the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -268,11 +338,12 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
+        String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName);
 
     /**
      * The operation to delete the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -283,11 +354,12 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
+        String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName);
 
     /**
      * The operation to delete the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -298,11 +370,12 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName);
 
     /**
      * The operation to delete the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -314,11 +387,12 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(
+        String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName, Context context);
 
     /**
      * The operation to delete the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -333,7 +407,7 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
 
     /**
      * The operation to delete the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -347,7 +421,7 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
 
     /**
      * The operation to delete the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -358,11 +432,12 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName, Context context);
+    void delete(
+        String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName, Context context);
 
     /**
      * The operation to get the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -374,11 +449,12 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
      * @return describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<VirtualMachineRunCommandInner>> getWithResponseAsync(String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName, String expand);
+    Mono<Response<VirtualMachineRunCommandInner>> getWithResponseAsync(
+        String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName, String expand);
 
     /**
      * The operation to get the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -390,11 +466,12 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
      * @return describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VirtualMachineRunCommandInner> getAsync(String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName, String expand);
+    Mono<VirtualMachineRunCommandInner> getAsync(
+        String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName, String expand);
 
     /**
      * The operation to get the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -405,11 +482,12 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
      * @return describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VirtualMachineRunCommandInner> getAsync(String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName);
+    Mono<VirtualMachineRunCommandInner> getAsync(
+        String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName);
 
     /**
      * The operation to get the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -420,11 +498,12 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
      * @return describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualMachineRunCommandInner get(String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName);
+    VirtualMachineRunCommandInner get(
+        String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName);
 
     /**
      * The operation to get the VMSS VM run command.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -437,11 +516,17 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
      * @return describes a Virtual Machine run command.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VirtualMachineRunCommandInner> getWithResponse(String resourceGroupName, String vmScaleSetName, String instanceId, String runCommandName, String expand, Context context);
+    Response<VirtualMachineRunCommandInner> getWithResponse(
+        String resourceGroupName,
+        String vmScaleSetName,
+        String instanceId,
+        String runCommandName,
+        String expand,
+        Context context);
 
     /**
      * The operation to get all run commands of an instance in Virtual Machine Scaleset.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -452,11 +537,12 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
      * @return the List run command operation response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<VirtualMachineRunCommandInner> listAsync(String resourceGroupName, String vmScaleSetName, String instanceId, String expand);
+    PagedFlux<VirtualMachineRunCommandInner> listAsync(
+        String resourceGroupName, String vmScaleSetName, String instanceId, String expand);
 
     /**
      * The operation to get all run commands of an instance in Virtual Machine Scaleset.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -466,11 +552,12 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
      * @return the List run command operation response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<VirtualMachineRunCommandInner> listAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
+    PagedFlux<VirtualMachineRunCommandInner> listAsync(
+        String resourceGroupName, String vmScaleSetName, String instanceId);
 
     /**
      * The operation to get all run commands of an instance in Virtual Machine Scaleset.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -480,11 +567,12 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
      * @return the List run command operation response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VirtualMachineRunCommandInner> list(String resourceGroupName, String vmScaleSetName, String instanceId);
+    PagedIterable<VirtualMachineRunCommandInner> list(
+        String resourceGroupName, String vmScaleSetName, String instanceId);
 
     /**
      * The operation to get all run commands of an instance in Virtual Machine Scaleset.
-     * 
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -496,5 +584,6 @@ public interface VirtualMachineScaleSetVMRunCommandsClient {
      * @return the List run command operation response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<VirtualMachineRunCommandInner> list(String resourceGroupName, String vmScaleSetName, String instanceId, String expand, Context context);
+    PagedIterable<VirtualMachineRunCommandInner> list(
+        String resourceGroupName, String vmScaleSetName, String instanceId, String expand, Context context);
 }

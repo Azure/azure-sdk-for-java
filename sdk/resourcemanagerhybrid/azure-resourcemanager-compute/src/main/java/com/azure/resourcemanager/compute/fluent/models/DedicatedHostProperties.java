@@ -5,24 +5,19 @@
 package com.azure.resourcemanager.compute.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.compute.models.DedicatedHostInstanceView;
 import com.azure.resourcemanager.compute.models.DedicatedHostLicenseTypes;
 import com.azure.resourcemanager.compute.models.SubResourceReadOnly;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/**
- * Properties of the dedicated host.
- */
+/** Properties of the dedicated host. */
 @Fluent
 public final class DedicatedHostProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(DedicatedHostProperties.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DedicatedHostProperties.class);
 
     /*
      * Fault domain of the dedicated host within a dedicated host group.
@@ -78,9 +73,8 @@ public final class DedicatedHostProperties {
     private DedicatedHostInstanceView instanceView;
 
     /**
-     * Get the platformFaultDomain property: Fault domain of the dedicated host
-     * within a dedicated host group.
-     * 
+     * Get the platformFaultDomain property: Fault domain of the dedicated host within a dedicated host group.
+     *
      * @return the platformFaultDomain value.
      */
     public Integer platformFaultDomain() {
@@ -88,9 +82,8 @@ public final class DedicatedHostProperties {
     }
 
     /**
-     * Set the platformFaultDomain property: Fault domain of the dedicated host
-     * within a dedicated host group.
-     * 
+     * Set the platformFaultDomain property: Fault domain of the dedicated host within a dedicated host group.
+     *
      * @param platformFaultDomain the platformFaultDomain value to set.
      * @return the DedicatedHostProperties object itself.
      */
@@ -100,10 +93,9 @@ public final class DedicatedHostProperties {
     }
 
     /**
-     * Get the autoReplaceOnFailure property: Specifies whether the dedicated
-     * host should be replaced automatically in case of a failure. The value is
-     * defaulted to 'true' when not provided.
-     * 
+     * Get the autoReplaceOnFailure property: Specifies whether the dedicated host should be replaced automatically in
+     * case of a failure. The value is defaulted to 'true' when not provided.
+     *
      * @return the autoReplaceOnFailure value.
      */
     public Boolean autoReplaceOnFailure() {
@@ -111,10 +103,9 @@ public final class DedicatedHostProperties {
     }
 
     /**
-     * Set the autoReplaceOnFailure property: Specifies whether the dedicated
-     * host should be replaced automatically in case of a failure. The value is
-     * defaulted to 'true' when not provided.
-     * 
+     * Set the autoReplaceOnFailure property: Specifies whether the dedicated host should be replaced automatically in
+     * case of a failure. The value is defaulted to 'true' when not provided.
+     *
      * @param autoReplaceOnFailure the autoReplaceOnFailure value to set.
      * @return the DedicatedHostProperties object itself.
      */
@@ -124,10 +115,9 @@ public final class DedicatedHostProperties {
     }
 
     /**
-     * Get the hostId property: A unique id generated and assigned to the
-     * dedicated host by the platform. &lt;br&gt;&lt;br&gt; Does not change
-     * throughout the lifetime of the host.
-     * 
+     * Get the hostId property: A unique id generated and assigned to the dedicated host by the platform.
+     * &lt;br&gt;&lt;br&gt; Does not change throughout the lifetime of the host.
+     *
      * @return the hostId value.
      */
     public String hostId() {
@@ -135,9 +125,8 @@ public final class DedicatedHostProperties {
     }
 
     /**
-     * Get the virtualMachines property: A list of references to all virtual
-     * machines in the Dedicated Host.
-     * 
+     * Get the virtualMachines property: A list of references to all virtual machines in the Dedicated Host.
+     *
      * @return the virtualMachines value.
      */
     public List<SubResourceReadOnly> virtualMachines() {
@@ -145,12 +134,11 @@ public final class DedicatedHostProperties {
     }
 
     /**
-     * Get the licenseType property: Specifies the software license type that
-     * will be applied to the VMs deployed on the dedicated host.
-     * &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **None**
-     * &lt;br&gt;&lt;br&gt; **Windows_Server_Hybrid** &lt;br&gt;&lt;br&gt;
-     * **Windows_Server_Perpetual** &lt;br&gt;&lt;br&gt; Default: **None**.
-     * 
+     * Get the licenseType property: Specifies the software license type that will be applied to the VMs deployed on the
+     * dedicated host. &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **None** &lt;br&gt;&lt;br&gt;
+     * **Windows_Server_Hybrid** &lt;br&gt;&lt;br&gt; **Windows_Server_Perpetual** &lt;br&gt;&lt;br&gt; Default:
+     * **None**.
+     *
      * @return the licenseType value.
      */
     public DedicatedHostLicenseTypes licenseType() {
@@ -158,12 +146,11 @@ public final class DedicatedHostProperties {
     }
 
     /**
-     * Set the licenseType property: Specifies the software license type that
-     * will be applied to the VMs deployed on the dedicated host.
-     * &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **None**
-     * &lt;br&gt;&lt;br&gt; **Windows_Server_Hybrid** &lt;br&gt;&lt;br&gt;
-     * **Windows_Server_Perpetual** &lt;br&gt;&lt;br&gt; Default: **None**.
-     * 
+     * Set the licenseType property: Specifies the software license type that will be applied to the VMs deployed on the
+     * dedicated host. &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **None** &lt;br&gt;&lt;br&gt;
+     * **Windows_Server_Hybrid** &lt;br&gt;&lt;br&gt; **Windows_Server_Perpetual** &lt;br&gt;&lt;br&gt; Default:
+     * **None**.
+     *
      * @param licenseType the licenseType value to set.
      * @return the DedicatedHostProperties object itself.
      */
@@ -173,9 +160,8 @@ public final class DedicatedHostProperties {
     }
 
     /**
-     * Get the provisioningTime property: The date when the host was first
-     * provisioned.
-     * 
+     * Get the provisioningTime property: The date when the host was first provisioned.
+     *
      * @return the provisioningTime value.
      */
     public OffsetDateTime provisioningTime() {
@@ -183,9 +169,8 @@ public final class DedicatedHostProperties {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state, which only
-     * appears in the response.
-     * 
+     * Get the provisioningState property: The provisioning state, which only appears in the response.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -194,7 +179,7 @@ public final class DedicatedHostProperties {
 
     /**
      * Get the instanceView property: The dedicated host instance view.
-     * 
+     *
      * @return the instanceView value.
      */
     public DedicatedHostInstanceView instanceView() {
@@ -203,7 +188,7 @@ public final class DedicatedHostProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

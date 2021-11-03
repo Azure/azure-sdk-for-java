@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.resources.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.resources.models.DeploymentOperationProperties;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Deployment operation information.
- */
+/** Deployment operation information. */
 @Fluent
 public final class DeploymentOperationInner {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(DeploymentOperationInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(DeploymentOperationInner.class);
 
     /*
      * Full deployment operation ID.
@@ -40,7 +35,7 @@ public final class DeploymentOperationInner {
 
     /**
      * Get the id property: Full deployment operation ID.
-     * 
+     *
      * @return the id value.
      */
     public String id() {
@@ -49,7 +44,7 @@ public final class DeploymentOperationInner {
 
     /**
      * Get the operationId property: Deployment operation ID.
-     * 
+     *
      * @return the operationId value.
      */
     public String operationId() {
@@ -58,7 +53,7 @@ public final class DeploymentOperationInner {
 
     /**
      * Get the properties property: Deployment properties.
-     * 
+     *
      * @return the properties value.
      */
     public DeploymentOperationProperties properties() {
@@ -67,7 +62,7 @@ public final class DeploymentOperationInner {
 
     /**
      * Set the properties property: Deployment properties.
-     * 
+     *
      * @param properties the properties value to set.
      * @return the DeploymentOperationInner object itself.
      */
@@ -78,7 +73,7 @@ public final class DeploymentOperationInner {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

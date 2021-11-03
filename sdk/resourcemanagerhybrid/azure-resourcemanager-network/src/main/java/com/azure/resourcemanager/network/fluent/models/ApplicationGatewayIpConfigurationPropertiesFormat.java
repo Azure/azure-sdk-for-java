@@ -5,16 +5,12 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Properties of IP configuration of an application gateway.
- */
+/** Properties of IP configuration of an application gateway. */
 @Fluent
 public final class ApplicationGatewayIpConfigurationPropertiesFormat {
     @JsonIgnore
@@ -35,9 +31,9 @@ public final class ApplicationGatewayIpConfigurationPropertiesFormat {
     private String provisioningState;
 
     /**
-     * Get the subnet property: Reference of the subnet resource. A subnet from
-     * where application gateway gets its private address.
-     * 
+     * Get the subnet property: Reference of the subnet resource. A subnet from where application gateway gets its
+     * private address.
+     *
      * @return the subnet value.
      */
     public SubResource subnet() {
@@ -45,12 +41,11 @@ public final class ApplicationGatewayIpConfigurationPropertiesFormat {
     }
 
     /**
-     * Set the subnet property: Reference of the subnet resource. A subnet from
-     * where application gateway gets its private address.
-     * 
+     * Set the subnet property: Reference of the subnet resource. A subnet from where application gateway gets its
+     * private address.
+     *
      * @param subnet the subnet value to set.
-     * @return the ApplicationGatewayIpConfigurationPropertiesFormat object
-     * itself.
+     * @return the ApplicationGatewayIpConfigurationPropertiesFormat object itself.
      */
     public ApplicationGatewayIpConfigurationPropertiesFormat withSubnet(SubResource subnet) {
         this.subnet = subnet;
@@ -58,10 +53,9 @@ public final class ApplicationGatewayIpConfigurationPropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: Provisioning state of the
-     * application gateway subnet resource. Possible values are: 'Updating',
-     * 'Deleting', and 'Failed'.
-     * 
+     * Get the provisioningState property: Provisioning state of the application gateway subnet resource. Possible
+     * values are: 'Updating', 'Deleting', and 'Failed'.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -69,13 +63,11 @@ public final class ApplicationGatewayIpConfigurationPropertiesFormat {
     }
 
     /**
-     * Set the provisioningState property: Provisioning state of the
-     * application gateway subnet resource. Possible values are: 'Updating',
-     * 'Deleting', and 'Failed'.
-     * 
+     * Set the provisioningState property: Provisioning state of the application gateway subnet resource. Possible
+     * values are: 'Updating', 'Deleting', and 'Failed'.
+     *
      * @param provisioningState the provisioningState value to set.
-     * @return the ApplicationGatewayIpConfigurationPropertiesFormat object
-     * itself.
+     * @return the ApplicationGatewayIpConfigurationPropertiesFormat object itself.
      */
     public ApplicationGatewayIpConfigurationPropertiesFormat withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
@@ -84,7 +76,7 @@ public final class ApplicationGatewayIpConfigurationPropertiesFormat {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

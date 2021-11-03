@@ -5,22 +5,18 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRouteCrossConnectionRoutesTableSummary;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Response for ListRoutesTable associated with the Express Route Cross
- * Connections.
- */
+/** Response for ListRoutesTable associated with the Express Route Cross Connections. */
 @Fluent
 public final class ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner {
     @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner.class);
+    private final ClientLogger logger =
+        new ClientLogger(ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner.class);
 
     /*
      * A list of the routes table.
@@ -36,7 +32,7 @@ public final class ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner
 
     /**
      * Get the value property: A list of the routes table.
-     * 
+     *
      * @return the value value.
      */
     public List<ExpressRouteCrossConnectionRoutesTableSummary> value() {
@@ -45,20 +41,19 @@ public final class ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner
 
     /**
      * Set the value property: A list of the routes table.
-     * 
+     *
      * @param value the value value to set.
-     * @return the
-     * ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner object
-     * itself.
+     * @return the ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner object itself.
      */
-    public ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner withValue(List<ExpressRouteCrossConnectionRoutesTableSummary> value) {
+    public ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner withValue(
+        List<ExpressRouteCrossConnectionRoutesTableSummary> value) {
         this.value = value;
         return this;
     }
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     * 
+     *
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -67,7 +62,7 @@ public final class ExpressRouteCrossConnectionsRoutesTableSummaryListResultInner
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

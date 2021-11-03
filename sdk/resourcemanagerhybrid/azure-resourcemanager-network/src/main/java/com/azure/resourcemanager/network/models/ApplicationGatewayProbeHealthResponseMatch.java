@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Application gateway probe health response match.
- */
+/** Application gateway probe health response match. */
 @Fluent
 public final class ApplicationGatewayProbeHealthResponseMatch {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ApplicationGatewayProbeHealthResponseMatch.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ApplicationGatewayProbeHealthResponseMatch.class);
 
     /*
      * Body that must be contained in the health response. Default value is
@@ -35,9 +30,8 @@ public final class ApplicationGatewayProbeHealthResponseMatch {
     private List<String> statusCodes;
 
     /**
-     * Get the body property: Body that must be contained in the health
-     * response. Default value is empty.
-     * 
+     * Get the body property: Body that must be contained in the health response. Default value is empty.
+     *
      * @return the body value.
      */
     public String body() {
@@ -45,9 +39,8 @@ public final class ApplicationGatewayProbeHealthResponseMatch {
     }
 
     /**
-     * Set the body property: Body that must be contained in the health
-     * response. Default value is empty.
-     * 
+     * Set the body property: Body that must be contained in the health response. Default value is empty.
+     *
      * @param body the body value to set.
      * @return the ApplicationGatewayProbeHealthResponseMatch object itself.
      */
@@ -57,9 +50,9 @@ public final class ApplicationGatewayProbeHealthResponseMatch {
     }
 
     /**
-     * Get the statusCodes property: Allowed ranges of healthy status codes.
-     * Default range of healthy status codes is 200-399.
-     * 
+     * Get the statusCodes property: Allowed ranges of healthy status codes. Default range of healthy status codes is
+     * 200-399.
+     *
      * @return the statusCodes value.
      */
     public List<String> statusCodes() {
@@ -67,9 +60,9 @@ public final class ApplicationGatewayProbeHealthResponseMatch {
     }
 
     /**
-     * Set the statusCodes property: Allowed ranges of healthy status codes.
-     * Default range of healthy status codes is 200-399.
-     * 
+     * Set the statusCodes property: Allowed ranges of healthy status codes. Default range of healthy status codes is
+     * 200-399.
+     *
      * @param statusCodes the statusCodes value to set.
      * @return the ApplicationGatewayProbeHealthResponseMatch object itself.
      */
@@ -80,7 +73,7 @@ public final class ApplicationGatewayProbeHealthResponseMatch {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,23 +5,17 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRoutePortsEncapsulation;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * ExpressRoutePort Properties Properties specific to ExpressRoutePort
- * resources.
- */
+/** ExpressRoutePort Properties Properties specific to ExpressRoutePort resources. */
 @Fluent
 public final class ExpressRoutePortPropertiesFormat {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ExpressRoutePortPropertiesFormat.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRoutePortPropertiesFormat.class);
 
     /*
      * The name of the peering location that the ExpressRoutePort is mapped to
@@ -95,9 +89,9 @@ public final class ExpressRoutePortPropertiesFormat {
     private String resourceGuid;
 
     /**
-     * Get the peeringLocation property: The name of the peering location that
-     * the ExpressRoutePort is mapped to physically.
-     * 
+     * Get the peeringLocation property: The name of the peering location that the ExpressRoutePort is mapped to
+     * physically.
+     *
      * @return the peeringLocation value.
      */
     public String peeringLocation() {
@@ -105,9 +99,9 @@ public final class ExpressRoutePortPropertiesFormat {
     }
 
     /**
-     * Set the peeringLocation property: The name of the peering location that
-     * the ExpressRoutePort is mapped to physically.
-     * 
+     * Set the peeringLocation property: The name of the peering location that the ExpressRoutePort is mapped to
+     * physically.
+     *
      * @param peeringLocation the peeringLocation value to set.
      * @return the ExpressRoutePortPropertiesFormat object itself.
      */
@@ -118,7 +112,7 @@ public final class ExpressRoutePortPropertiesFormat {
 
     /**
      * Get the bandwidthInGbps property: Bandwidth of procured ports in Gbps.
-     * 
+     *
      * @return the bandwidthInGbps value.
      */
     public Integer bandwidthInGbps() {
@@ -127,7 +121,7 @@ public final class ExpressRoutePortPropertiesFormat {
 
     /**
      * Set the bandwidthInGbps property: Bandwidth of procured ports in Gbps.
-     * 
+     *
      * @param bandwidthInGbps the bandwidthInGbps value to set.
      * @return the ExpressRoutePortPropertiesFormat object itself.
      */
@@ -137,9 +131,8 @@ public final class ExpressRoutePortPropertiesFormat {
     }
 
     /**
-     * Get the provisionedBandwidthInGbps property: Aggregate Gbps of
-     * associated circuit bandwidths.
-     * 
+     * Get the provisionedBandwidthInGbps property: Aggregate Gbps of associated circuit bandwidths.
+     *
      * @return the provisionedBandwidthInGbps value.
      */
     public Float provisionedBandwidthInGbps() {
@@ -147,9 +140,8 @@ public final class ExpressRoutePortPropertiesFormat {
     }
 
     /**
-     * Get the mtu property: Maximum transmission unit of the physical port
-     * pair(s).
-     * 
+     * Get the mtu property: Maximum transmission unit of the physical port pair(s).
+     *
      * @return the mtu value.
      */
     public String mtu() {
@@ -158,7 +150,7 @@ public final class ExpressRoutePortPropertiesFormat {
 
     /**
      * Get the encapsulation property: Encapsulation method on physical ports.
-     * 
+     *
      * @return the encapsulation value.
      */
     public ExpressRoutePortsEncapsulation encapsulation() {
@@ -167,7 +159,7 @@ public final class ExpressRoutePortPropertiesFormat {
 
     /**
      * Set the encapsulation property: Encapsulation method on physical ports.
-     * 
+     *
      * @param encapsulation the encapsulation value to set.
      * @return the ExpressRoutePortPropertiesFormat object itself.
      */
@@ -178,7 +170,7 @@ public final class ExpressRoutePortPropertiesFormat {
 
     /**
      * Get the etherType property: Ether type of the physical port.
-     * 
+     *
      * @return the etherType value.
      */
     public String etherType() {
@@ -186,9 +178,8 @@ public final class ExpressRoutePortPropertiesFormat {
     }
 
     /**
-     * Get the allocationDate property: Date of the physical port allocation to
-     * be used in Letter of Authorization.
-     * 
+     * Get the allocationDate property: Date of the physical port allocation to be used in Letter of Authorization.
+     *
      * @return the allocationDate value.
      */
     public String allocationDate() {
@@ -196,9 +187,9 @@ public final class ExpressRoutePortPropertiesFormat {
     }
 
     /**
-     * Get the links property: ExpressRouteLink Sub-Resources The set of
-     * physical links of the ExpressRoutePort resource.
-     * 
+     * Get the links property: ExpressRouteLink Sub-Resources The set of physical links of the ExpressRoutePort
+     * resource.
+     *
      * @return the links value.
      */
     public List<ExpressRouteLinkInner> links() {
@@ -206,9 +197,9 @@ public final class ExpressRoutePortPropertiesFormat {
     }
 
     /**
-     * Set the links property: ExpressRouteLink Sub-Resources The set of
-     * physical links of the ExpressRoutePort resource.
-     * 
+     * Set the links property: ExpressRouteLink Sub-Resources The set of physical links of the ExpressRoutePort
+     * resource.
+     *
      * @param links the links value to set.
      * @return the ExpressRoutePortPropertiesFormat object itself.
      */
@@ -218,9 +209,9 @@ public final class ExpressRoutePortPropertiesFormat {
     }
 
     /**
-     * Get the circuits property: Reference the ExpressRoute circuit(s) that
-     * are provisioned on this ExpressRoutePort resource.
-     * 
+     * Get the circuits property: Reference the ExpressRoute circuit(s) that are provisioned on this ExpressRoutePort
+     * resource.
+     *
      * @return the circuits value.
      */
     public List<SubResource> circuits() {
@@ -228,10 +219,9 @@ public final class ExpressRoutePortPropertiesFormat {
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the
-     * ExpressRoutePort resource. Possible values are: 'Succeeded', 'Updating',
-     * 'Deleting', and 'Failed'.
-     * 
+     * Get the provisioningState property: The provisioning state of the ExpressRoutePort resource. Possible values are:
+     * 'Succeeded', 'Updating', 'Deleting', and 'Failed'.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -239,9 +229,8 @@ public final class ExpressRoutePortPropertiesFormat {
     }
 
     /**
-     * Get the resourceGuid property: The resource GUID property of the
-     * ExpressRoutePort resource.
-     * 
+     * Get the resourceGuid property: The resource GUID property of the ExpressRoutePort resource.
+     *
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -249,9 +238,8 @@ public final class ExpressRoutePortPropertiesFormat {
     }
 
     /**
-     * Set the resourceGuid property: The resource GUID property of the
-     * ExpressRoutePort resource.
-     * 
+     * Set the resourceGuid property: The resource GUID property of the ExpressRoutePort resource.
+     *
      * @param resourceGuid the resourceGuid value to set.
      * @return the ExpressRoutePortPropertiesFormat object itself.
      */
@@ -262,7 +250,7 @@ public final class ExpressRoutePortPropertiesFormat {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

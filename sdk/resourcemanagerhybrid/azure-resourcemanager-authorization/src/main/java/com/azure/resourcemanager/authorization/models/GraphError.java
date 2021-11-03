@@ -5,20 +5,15 @@
 package com.azure.resourcemanager.authorization.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.fluent.models.OdataError;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Active Directory error information.
- */
+/** Active Directory error information. */
 @Fluent
 public final class GraphError {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(GraphError.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(GraphError.class);
 
     /*
      * A Graph API error.
@@ -28,7 +23,7 @@ public final class GraphError {
 
     /**
      * Get the innerOdataError property: A Graph API error.
-     * 
+     *
      * @return the innerOdataError value.
      */
     private OdataError innerOdataError() {
@@ -37,7 +32,7 @@ public final class GraphError {
 
     /**
      * Get the code property: Error code.
-     * 
+     *
      * @return the code value.
      */
     public String code() {
@@ -46,7 +41,7 @@ public final class GraphError {
 
     /**
      * Set the code property: Error code.
-     * 
+     *
      * @param code the code value to set.
      * @return the GraphError object itself.
      */
@@ -60,7 +55,7 @@ public final class GraphError {
 
     /**
      * Get the message property: Error message value.
-     * 
+     *
      * @return the message value.
      */
     public String message() {
@@ -69,7 +64,7 @@ public final class GraphError {
 
     /**
      * Set the message property: Error message value.
-     * 
+     *
      * @param message the message value to set.
      * @return the GraphError object itself.
      */
@@ -83,7 +78,7 @@ public final class GraphError {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

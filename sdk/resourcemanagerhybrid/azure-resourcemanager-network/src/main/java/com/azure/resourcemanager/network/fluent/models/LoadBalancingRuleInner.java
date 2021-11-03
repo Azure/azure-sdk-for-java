@@ -5,22 +5,17 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.LoadDistribution;
 import com.azure.resourcemanager.network.models.TransportProtocol;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * A load balancing rule for a load balancer.
- */
+/** A load balancing rule for a load balancer. */
 @Fluent
 public final class LoadBalancingRuleInner extends SubResource {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(LoadBalancingRuleInner.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(LoadBalancingRuleInner.class);
 
     /*
      * Properties of load balancer load balancing rule.
@@ -42,9 +37,8 @@ public final class LoadBalancingRuleInner extends SubResource {
     private String etag;
 
     /**
-     * Get the innerProperties property: Properties of load balancer load
-     * balancing rule.
-     * 
+     * Get the innerProperties property: Properties of load balancer load balancing rule.
+     *
      * @return the innerProperties value.
      */
     private LoadBalancingRulePropertiesFormat innerProperties() {
@@ -52,9 +46,9 @@ public final class LoadBalancingRuleInner extends SubResource {
     }
 
     /**
-     * Get the name property: The name of the resource that is unique within a
-     * resource group. This name can be used to access the resource.
-     * 
+     * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
+     * access the resource.
+     *
      * @return the name value.
      */
     public String name() {
@@ -62,9 +56,9 @@ public final class LoadBalancingRuleInner extends SubResource {
     }
 
     /**
-     * Set the name property: The name of the resource that is unique within a
-     * resource group. This name can be used to access the resource.
-     * 
+     * Set the name property: The name of the resource that is unique within a resource group. This name can be used to
+     * access the resource.
+     *
      * @param name the name value to set.
      * @return the LoadBalancingRuleInner object itself.
      */
@@ -74,9 +68,8 @@ public final class LoadBalancingRuleInner extends SubResource {
     }
 
     /**
-     * Get the etag property: A unique read-only string that changes whenever
-     * the resource is updated.
-     * 
+     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -84,9 +77,8 @@ public final class LoadBalancingRuleInner extends SubResource {
     }
 
     /**
-     * Set the etag property: A unique read-only string that changes whenever
-     * the resource is updated.
-     * 
+     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
      * @param etag the etag value to set.
      * @return the LoadBalancingRuleInner object itself.
      */
@@ -95,9 +87,7 @@ public final class LoadBalancingRuleInner extends SubResource {
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public LoadBalancingRuleInner withId(String id) {
         super.withId(id);
@@ -105,9 +95,8 @@ public final class LoadBalancingRuleInner extends SubResource {
     }
 
     /**
-     * Get the frontendIpConfiguration property: A reference to frontend IP
-     * addresses.
-     * 
+     * Get the frontendIpConfiguration property: A reference to frontend IP addresses.
+     *
      * @return the frontendIpConfiguration value.
      */
     public SubResource frontendIpConfiguration() {
@@ -115,9 +104,8 @@ public final class LoadBalancingRuleInner extends SubResource {
     }
 
     /**
-     * Set the frontendIpConfiguration property: A reference to frontend IP
-     * addresses.
-     * 
+     * Set the frontendIpConfiguration property: A reference to frontend IP addresses.
+     *
      * @param frontendIpConfiguration the frontendIpConfiguration value to set.
      * @return the LoadBalancingRuleInner object itself.
      */
@@ -130,9 +118,9 @@ public final class LoadBalancingRuleInner extends SubResource {
     }
 
     /**
-     * Get the backendAddressPool property: A reference to a pool of DIPs.
-     * Inbound traffic is randomly load balanced across IPs in the backend IPs.
-     * 
+     * Get the backendAddressPool property: A reference to a pool of DIPs. Inbound traffic is randomly load balanced
+     * across IPs in the backend IPs.
+     *
      * @return the backendAddressPool value.
      */
     public SubResource backendAddressPool() {
@@ -140,9 +128,9 @@ public final class LoadBalancingRuleInner extends SubResource {
     }
 
     /**
-     * Set the backendAddressPool property: A reference to a pool of DIPs.
-     * Inbound traffic is randomly load balanced across IPs in the backend IPs.
-     * 
+     * Set the backendAddressPool property: A reference to a pool of DIPs. Inbound traffic is randomly load balanced
+     * across IPs in the backend IPs.
+     *
      * @param backendAddressPool the backendAddressPool value to set.
      * @return the LoadBalancingRuleInner object itself.
      */
@@ -155,9 +143,8 @@ public final class LoadBalancingRuleInner extends SubResource {
     }
 
     /**
-     * Get the probe property: The reference of the load balancer probe used by
-     * the load balancing rule.
-     * 
+     * Get the probe property: The reference of the load balancer probe used by the load balancing rule.
+     *
      * @return the probe value.
      */
     public SubResource probe() {
@@ -165,9 +152,8 @@ public final class LoadBalancingRuleInner extends SubResource {
     }
 
     /**
-     * Set the probe property: The reference of the load balancer probe used by
-     * the load balancing rule.
-     * 
+     * Set the probe property: The reference of the load balancer probe used by the load balancing rule.
+     *
      * @param probe the probe value to set.
      * @return the LoadBalancingRuleInner object itself.
      */
@@ -180,9 +166,8 @@ public final class LoadBalancingRuleInner extends SubResource {
     }
 
     /**
-     * Get the protocol property: The transport protocol for the endpoint.
-     * Possible values are 'Udp' or 'Tcp' or 'All'.
-     * 
+     * Get the protocol property: The transport protocol for the endpoint. Possible values are 'Udp' or 'Tcp' or 'All'.
+     *
      * @return the protocol value.
      */
     public TransportProtocol protocol() {
@@ -190,9 +175,8 @@ public final class LoadBalancingRuleInner extends SubResource {
     }
 
     /**
-     * Set the protocol property: The transport protocol for the endpoint.
-     * Possible values are 'Udp' or 'Tcp' or 'All'.
-     * 
+     * Set the protocol property: The transport protocol for the endpoint. Possible values are 'Udp' or 'Tcp' or 'All'.
+     *
      * @param protocol the protocol value to set.
      * @return the LoadBalancingRuleInner object itself.
      */
@@ -205,9 +189,9 @@ public final class LoadBalancingRuleInner extends SubResource {
     }
 
     /**
-     * Get the loadDistribution property: The load distribution policy for this
-     * rule. Possible values are 'Default', 'SourceIP', and 'SourceIPProtocol'.
-     * 
+     * Get the loadDistribution property: The load distribution policy for this rule. Possible values are 'Default',
+     * 'SourceIP', and 'SourceIPProtocol'.
+     *
      * @return the loadDistribution value.
      */
     public LoadDistribution loadDistribution() {
@@ -215,9 +199,9 @@ public final class LoadBalancingRuleInner extends SubResource {
     }
 
     /**
-     * Set the loadDistribution property: The load distribution policy for this
-     * rule. Possible values are 'Default', 'SourceIP', and 'SourceIPProtocol'.
-     * 
+     * Set the loadDistribution property: The load distribution policy for this rule. Possible values are 'Default',
+     * 'SourceIP', and 'SourceIPProtocol'.
+     *
      * @param loadDistribution the loadDistribution value to set.
      * @return the LoadBalancingRuleInner object itself.
      */
@@ -230,11 +214,9 @@ public final class LoadBalancingRuleInner extends SubResource {
     }
 
     /**
-     * Get the frontendPort property: The port for the external endpoint. Port
-     * numbers for each rule must be unique within the Load Balancer.
-     * Acceptable values are between 0 and 65534. Note that value 0 enables
-     * "Any Port".
-     * 
+     * Get the frontendPort property: The port for the external endpoint. Port numbers for each rule must be unique
+     * within the Load Balancer. Acceptable values are between 0 and 65534. Note that value 0 enables "Any Port".
+     *
      * @return the frontendPort value.
      */
     public Integer frontendPort() {
@@ -242,11 +224,9 @@ public final class LoadBalancingRuleInner extends SubResource {
     }
 
     /**
-     * Set the frontendPort property: The port for the external endpoint. Port
-     * numbers for each rule must be unique within the Load Balancer.
-     * Acceptable values are between 0 and 65534. Note that value 0 enables
-     * "Any Port".
-     * 
+     * Set the frontendPort property: The port for the external endpoint. Port numbers for each rule must be unique
+     * within the Load Balancer. Acceptable values are between 0 and 65534. Note that value 0 enables "Any Port".
+     *
      * @param frontendPort the frontendPort value to set.
      * @return the LoadBalancingRuleInner object itself.
      */
@@ -259,10 +239,9 @@ public final class LoadBalancingRuleInner extends SubResource {
     }
 
     /**
-     * Get the backendPort property: The port used for internal connections on
-     * the endpoint. Acceptable values are between 0 and 65535. Note that value
-     * 0 enables "Any Port".
-     * 
+     * Get the backendPort property: The port used for internal connections on the endpoint. Acceptable values are
+     * between 0 and 65535. Note that value 0 enables "Any Port".
+     *
      * @return the backendPort value.
      */
     public Integer backendPort() {
@@ -270,10 +249,9 @@ public final class LoadBalancingRuleInner extends SubResource {
     }
 
     /**
-     * Set the backendPort property: The port used for internal connections on
-     * the endpoint. Acceptable values are between 0 and 65535. Note that value
-     * 0 enables "Any Port".
-     * 
+     * Set the backendPort property: The port used for internal connections on the endpoint. Acceptable values are
+     * between 0 and 65535. Note that value 0 enables "Any Port".
+     *
      * @param backendPort the backendPort value to set.
      * @return the LoadBalancingRuleInner object itself.
      */
@@ -286,11 +264,9 @@ public final class LoadBalancingRuleInner extends SubResource {
     }
 
     /**
-     * Get the idleTimeoutInMinutes property: The timeout for the TCP idle
-     * connection. The value can be set between 4 and 30 minutes. The default
-     * value is 4 minutes. This element is only used when the protocol is set
-     * to TCP.
-     * 
+     * Get the idleTimeoutInMinutes property: The timeout for the TCP idle connection. The value can be set between 4
+     * and 30 minutes. The default value is 4 minutes. This element is only used when the protocol is set to TCP.
+     *
      * @return the idleTimeoutInMinutes value.
      */
     public Integer idleTimeoutInMinutes() {
@@ -298,11 +274,9 @@ public final class LoadBalancingRuleInner extends SubResource {
     }
 
     /**
-     * Set the idleTimeoutInMinutes property: The timeout for the TCP idle
-     * connection. The value can be set between 4 and 30 minutes. The default
-     * value is 4 minutes. This element is only used when the protocol is set
-     * to TCP.
-     * 
+     * Set the idleTimeoutInMinutes property: The timeout for the TCP idle connection. The value can be set between 4
+     * and 30 minutes. The default value is 4 minutes. This element is only used when the protocol is set to TCP.
+     *
      * @param idleTimeoutInMinutes the idleTimeoutInMinutes value to set.
      * @return the LoadBalancingRuleInner object itself.
      */
@@ -315,12 +289,10 @@ public final class LoadBalancingRuleInner extends SubResource {
     }
 
     /**
-     * Get the enableFloatingIp property: Configures a virtual machine's
-     * endpoint for the floating IP capability required to configure a SQL
-     * AlwaysOn Availability Group. This setting is required when using the SQL
-     * AlwaysOn Availability Groups in SQL server. This setting can't be
-     * changed after you create the endpoint.
-     * 
+     * Get the enableFloatingIp property: Configures a virtual machine's endpoint for the floating IP capability
+     * required to configure a SQL AlwaysOn Availability Group. This setting is required when using the SQL AlwaysOn
+     * Availability Groups in SQL server. This setting can't be changed after you create the endpoint.
+     *
      * @return the enableFloatingIp value.
      */
     public Boolean enableFloatingIp() {
@@ -328,12 +300,10 @@ public final class LoadBalancingRuleInner extends SubResource {
     }
 
     /**
-     * Set the enableFloatingIp property: Configures a virtual machine's
-     * endpoint for the floating IP capability required to configure a SQL
-     * AlwaysOn Availability Group. This setting is required when using the SQL
-     * AlwaysOn Availability Groups in SQL server. This setting can't be
-     * changed after you create the endpoint.
-     * 
+     * Set the enableFloatingIp property: Configures a virtual machine's endpoint for the floating IP capability
+     * required to configure a SQL AlwaysOn Availability Group. This setting is required when using the SQL AlwaysOn
+     * Availability Groups in SQL server. This setting can't be changed after you create the endpoint.
+     *
      * @param enableFloatingIp the enableFloatingIp value to set.
      * @return the LoadBalancingRuleInner object itself.
      */
@@ -346,10 +316,9 @@ public final class LoadBalancingRuleInner extends SubResource {
     }
 
     /**
-     * Get the enableTcpReset property: Receive bidirectional TCP Reset on TCP
-     * flow idle timeout or unexpected connection termination. This element is
-     * only used when the protocol is set to TCP.
-     * 
+     * Get the enableTcpReset property: Receive bidirectional TCP Reset on TCP flow idle timeout or unexpected
+     * connection termination. This element is only used when the protocol is set to TCP.
+     *
      * @return the enableTcpReset value.
      */
     public Boolean enableTcpReset() {
@@ -357,10 +326,9 @@ public final class LoadBalancingRuleInner extends SubResource {
     }
 
     /**
-     * Set the enableTcpReset property: Receive bidirectional TCP Reset on TCP
-     * flow idle timeout or unexpected connection termination. This element is
-     * only used when the protocol is set to TCP.
-     * 
+     * Set the enableTcpReset property: Receive bidirectional TCP Reset on TCP flow idle timeout or unexpected
+     * connection termination. This element is only used when the protocol is set to TCP.
+     *
      * @param enableTcpReset the enableTcpReset value to set.
      * @return the LoadBalancingRuleInner object itself.
      */
@@ -373,10 +341,9 @@ public final class LoadBalancingRuleInner extends SubResource {
     }
 
     /**
-     * Get the disableOutboundSnat property: Configures SNAT for the VMs in the
-     * backend pool to use the publicIP address specified in the frontend of
-     * the load balancing rule.
-     * 
+     * Get the disableOutboundSnat property: Configures SNAT for the VMs in the backend pool to use the publicIP address
+     * specified in the frontend of the load balancing rule.
+     *
      * @return the disableOutboundSnat value.
      */
     public Boolean disableOutboundSnat() {
@@ -384,10 +351,9 @@ public final class LoadBalancingRuleInner extends SubResource {
     }
 
     /**
-     * Set the disableOutboundSnat property: Configures SNAT for the VMs in the
-     * backend pool to use the publicIP address specified in the frontend of
-     * the load balancing rule.
-     * 
+     * Set the disableOutboundSnat property: Configures SNAT for the VMs in the backend pool to use the publicIP address
+     * specified in the frontend of the load balancing rule.
+     *
      * @param disableOutboundSnat the disableOutboundSnat value to set.
      * @return the LoadBalancingRuleInner object itself.
      */
@@ -400,10 +366,9 @@ public final class LoadBalancingRuleInner extends SubResource {
     }
 
     /**
-     * Get the provisioningState property: Gets the provisioning state of the
-     * PublicIP resource. Possible values are: 'Updating', 'Deleting', and
-     * 'Failed'.
-     * 
+     * Get the provisioningState property: Gets the provisioning state of the PublicIP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -411,10 +376,9 @@ public final class LoadBalancingRuleInner extends SubResource {
     }
 
     /**
-     * Set the provisioningState property: Gets the provisioning state of the
-     * PublicIP resource. Possible values are: 'Updating', 'Deleting', and
-     * 'Failed'.
-     * 
+     * Set the provisioningState property: Gets the provisioning state of the PublicIP resource. Possible values are:
+     * 'Updating', 'Deleting', and 'Failed'.
+     *
      * @param provisioningState the provisioningState value to set.
      * @return the LoadBalancingRuleInner object itself.
      */
@@ -428,7 +392,7 @@ public final class LoadBalancingRuleInner extends SubResource {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

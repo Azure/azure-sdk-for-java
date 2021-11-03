@@ -4,21 +4,18 @@
 
 package com.azure.resourcemanager.storage.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The URIs that are used to perform a retrieval of a public blob, file, web or
- * dfs object via a internet routing endpoint.
+ * The URIs that are used to perform a retrieval of a public blob, file, web or dfs object via a internet routing
+ * endpoint.
  */
 @Immutable
 public final class StorageAccountInternetEndpoints {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(StorageAccountInternetEndpoints.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageAccountInternetEndpoints.class);
 
     /*
      * Gets the blob endpoint.
@@ -46,7 +43,7 @@ public final class StorageAccountInternetEndpoints {
 
     /**
      * Get the blob property: Gets the blob endpoint.
-     * 
+     *
      * @return the blob value.
      */
     public String blob() {
@@ -55,7 +52,7 @@ public final class StorageAccountInternetEndpoints {
 
     /**
      * Get the file property: Gets the file endpoint.
-     * 
+     *
      * @return the file value.
      */
     public String file() {
@@ -64,7 +61,7 @@ public final class StorageAccountInternetEndpoints {
 
     /**
      * Get the web property: Gets the web endpoint.
-     * 
+     *
      * @return the web value.
      */
     public String web() {
@@ -73,7 +70,7 @@ public final class StorageAccountInternetEndpoints {
 
     /**
      * Get the dfs property: Gets the dfs endpoint.
-     * 
+     *
      * @return the dfs value.
      */
     public String dfs() {
@@ -82,7 +79,7 @@ public final class StorageAccountInternetEndpoints {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

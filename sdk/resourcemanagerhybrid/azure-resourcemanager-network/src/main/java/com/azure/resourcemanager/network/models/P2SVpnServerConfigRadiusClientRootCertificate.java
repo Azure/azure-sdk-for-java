@@ -5,17 +5,13 @@
 package com.azure.resourcemanager.network.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.fluent.models.P2SVpnServerConfigRadiusClientRootCertificatePropertiesFormat;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/**
- * Radius client root certificate of P2SVpnServerConfiguration.
- */
+/** Radius client root certificate of P2SVpnServerConfiguration. */
 @Fluent
 public final class P2SVpnServerConfigRadiusClientRootCertificate extends SubResource {
     @JsonIgnore
@@ -41,9 +37,8 @@ public final class P2SVpnServerConfigRadiusClientRootCertificate extends SubReso
     private String etag;
 
     /**
-     * Get the innerProperties property: Properties of the Radius client root
-     * certificate.
-     * 
+     * Get the innerProperties property: Properties of the Radius client root certificate.
+     *
      * @return the innerProperties value.
      */
     private P2SVpnServerConfigRadiusClientRootCertificatePropertiesFormat innerProperties() {
@@ -51,9 +46,9 @@ public final class P2SVpnServerConfigRadiusClientRootCertificate extends SubReso
     }
 
     /**
-     * Get the name property: The name of the resource that is unique within a
-     * resource group. This name can be used to access the resource.
-     * 
+     * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
+     * access the resource.
+     *
      * @return the name value.
      */
     public String name() {
@@ -61,9 +56,9 @@ public final class P2SVpnServerConfigRadiusClientRootCertificate extends SubReso
     }
 
     /**
-     * Set the name property: The name of the resource that is unique within a
-     * resource group. This name can be used to access the resource.
-     * 
+     * Set the name property: The name of the resource that is unique within a resource group. This name can be used to
+     * access the resource.
+     *
      * @param name the name value to set.
      * @return the P2SVpnServerConfigRadiusClientRootCertificate object itself.
      */
@@ -73,9 +68,8 @@ public final class P2SVpnServerConfigRadiusClientRootCertificate extends SubReso
     }
 
     /**
-     * Get the etag property: A unique read-only string that changes whenever
-     * the resource is updated.
-     * 
+     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
      * @return the etag value.
      */
     public String etag() {
@@ -83,9 +77,8 @@ public final class P2SVpnServerConfigRadiusClientRootCertificate extends SubReso
     }
 
     /**
-     * Set the etag property: A unique read-only string that changes whenever
-     * the resource is updated.
-     * 
+     * Set the etag property: A unique read-only string that changes whenever the resource is updated.
+     *
      * @param etag the etag value to set.
      * @return the P2SVpnServerConfigRadiusClientRootCertificate object itself.
      */
@@ -94,9 +87,7 @@ public final class P2SVpnServerConfigRadiusClientRootCertificate extends SubReso
         return this;
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public P2SVpnServerConfigRadiusClientRootCertificate withId(String id) {
         super.withId(id);
@@ -104,9 +95,8 @@ public final class P2SVpnServerConfigRadiusClientRootCertificate extends SubReso
     }
 
     /**
-     * Get the thumbprint property: The Radius client root certificate
-     * thumbprint.
-     * 
+     * Get the thumbprint property: The Radius client root certificate thumbprint.
+     *
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -114,9 +104,8 @@ public final class P2SVpnServerConfigRadiusClientRootCertificate extends SubReso
     }
 
     /**
-     * Set the thumbprint property: The Radius client root certificate
-     * thumbprint.
-     * 
+     * Set the thumbprint property: The Radius client root certificate thumbprint.
+     *
      * @param thumbprint the thumbprint value to set.
      * @return the P2SVpnServerConfigRadiusClientRootCertificate object itself.
      */
@@ -129,10 +118,9 @@ public final class P2SVpnServerConfigRadiusClientRootCertificate extends SubReso
     }
 
     /**
-     * Get the provisioningState property: The provisioning state of the Radius
-     * client root certificate resource. Possible values are: 'Updating',
-     * 'Deleting', and 'Failed'.
-     * 
+     * Get the provisioningState property: The provisioning state of the Radius client root certificate resource.
+     * Possible values are: 'Updating', 'Deleting', and 'Failed'.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -141,7 +129,7 @@ public final class P2SVpnServerConfigRadiusClientRootCertificate extends SubReso
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

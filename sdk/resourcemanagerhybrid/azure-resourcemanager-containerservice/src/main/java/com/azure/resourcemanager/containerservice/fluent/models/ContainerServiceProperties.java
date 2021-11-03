@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceAgentPoolProfile;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceCustomProfile;
@@ -15,18 +14,14 @@ import com.azure.resourcemanager.containerservice.models.ContainerServiceMasterP
 import com.azure.resourcemanager.containerservice.models.ContainerServiceOrchestratorProfile;
 import com.azure.resourcemanager.containerservice.models.ContainerServicePrincipalProfile;
 import com.azure.resourcemanager.containerservice.models.ContainerServiceWindowsProfile;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/**
- * Properties of the container service.
- */
+/** Properties of the container service. */
 @Fluent
 public final class ContainerServiceProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(ContainerServiceProperties.class);
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(ContainerServiceProperties.class);
 
     /*
      * The current deployment or provisioning state, which only appears in the
@@ -86,9 +81,9 @@ public final class ContainerServiceProperties {
     private ContainerServiceDiagnosticsProfile diagnosticsProfile;
 
     /**
-     * Get the provisioningState property: The current deployment or
-     * provisioning state, which only appears in the response.
-     * 
+     * Get the provisioningState property: The current deployment or provisioning state, which only appears in the
+     * response.
+     *
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -96,9 +91,8 @@ public final class ContainerServiceProperties {
     }
 
     /**
-     * Get the orchestratorProfile property: Profile for the container service
-     * orchestrator.
-     * 
+     * Get the orchestratorProfile property: Profile for the container service orchestrator.
+     *
      * @return the orchestratorProfile value.
      */
     public ContainerServiceOrchestratorProfile orchestratorProfile() {
@@ -106,9 +100,8 @@ public final class ContainerServiceProperties {
     }
 
     /**
-     * Set the orchestratorProfile property: Profile for the container service
-     * orchestrator.
-     * 
+     * Set the orchestratorProfile property: Profile for the container service orchestrator.
+     *
      * @param orchestratorProfile the orchestratorProfile value to set.
      * @return the ContainerServiceProperties object itself.
      */
@@ -118,9 +111,8 @@ public final class ContainerServiceProperties {
     }
 
     /**
-     * Get the customProfile property: Properties to configure a custom
-     * container service cluster.
-     * 
+     * Get the customProfile property: Properties to configure a custom container service cluster.
+     *
      * @return the customProfile value.
      */
     public ContainerServiceCustomProfile customProfile() {
@@ -128,9 +120,8 @@ public final class ContainerServiceProperties {
     }
 
     /**
-     * Set the customProfile property: Properties to configure a custom
-     * container service cluster.
-     * 
+     * Set the customProfile property: Properties to configure a custom container service cluster.
+     *
      * @param customProfile the customProfile value to set.
      * @return the ContainerServiceProperties object itself.
      */
@@ -140,10 +131,9 @@ public final class ContainerServiceProperties {
     }
 
     /**
-     * Get the servicePrincipalProfile property: Information about a service
-     * principal identity for the cluster to use for manipulating Azure APIs.
-     * Exact one of secret or keyVaultSecretRef need to be specified.
-     * 
+     * Get the servicePrincipalProfile property: Information about a service principal identity for the cluster to use
+     * for manipulating Azure APIs. Exact one of secret or keyVaultSecretRef need to be specified.
+     *
      * @return the servicePrincipalProfile value.
      */
     public ContainerServicePrincipalProfile servicePrincipalProfile() {
@@ -151,22 +141,21 @@ public final class ContainerServiceProperties {
     }
 
     /**
-     * Set the servicePrincipalProfile property: Information about a service
-     * principal identity for the cluster to use for manipulating Azure APIs.
-     * Exact one of secret or keyVaultSecretRef need to be specified.
-     * 
+     * Set the servicePrincipalProfile property: Information about a service principal identity for the cluster to use
+     * for manipulating Azure APIs. Exact one of secret or keyVaultSecretRef need to be specified.
+     *
      * @param servicePrincipalProfile the servicePrincipalProfile value to set.
      * @return the ContainerServiceProperties object itself.
      */
-    public ContainerServiceProperties withServicePrincipalProfile(ContainerServicePrincipalProfile servicePrincipalProfile) {
+    public ContainerServiceProperties withServicePrincipalProfile(
+        ContainerServicePrincipalProfile servicePrincipalProfile) {
         this.servicePrincipalProfile = servicePrincipalProfile;
         return this;
     }
 
     /**
-     * Get the masterProfile property: Profile for the container service
-     * master.
-     * 
+     * Get the masterProfile property: Profile for the container service master.
+     *
      * @return the masterProfile value.
      */
     public ContainerServiceMasterProfile masterProfile() {
@@ -174,9 +163,8 @@ public final class ContainerServiceProperties {
     }
 
     /**
-     * Set the masterProfile property: Profile for the container service
-     * master.
-     * 
+     * Set the masterProfile property: Profile for the container service master.
+     *
      * @param masterProfile the masterProfile value to set.
      * @return the ContainerServiceProperties object itself.
      */
@@ -187,7 +175,7 @@ public final class ContainerServiceProperties {
 
     /**
      * Get the agentPoolProfiles property: Properties of the agent pool.
-     * 
+     *
      * @return the agentPoolProfiles value.
      */
     public List<ContainerServiceAgentPoolProfile> agentPoolProfiles() {
@@ -196,7 +184,7 @@ public final class ContainerServiceProperties {
 
     /**
      * Set the agentPoolProfiles property: Properties of the agent pool.
-     * 
+     *
      * @param agentPoolProfiles the agentPoolProfiles value to set.
      * @return the ContainerServiceProperties object itself.
      */
@@ -206,9 +194,8 @@ public final class ContainerServiceProperties {
     }
 
     /**
-     * Get the windowsProfile property: Profile for Windows VMs in the
-     * container service cluster.
-     * 
+     * Get the windowsProfile property: Profile for Windows VMs in the container service cluster.
+     *
      * @return the windowsProfile value.
      */
     public ContainerServiceWindowsProfile windowsProfile() {
@@ -216,9 +203,8 @@ public final class ContainerServiceProperties {
     }
 
     /**
-     * Set the windowsProfile property: Profile for Windows VMs in the
-     * container service cluster.
-     * 
+     * Set the windowsProfile property: Profile for Windows VMs in the container service cluster.
+     *
      * @param windowsProfile the windowsProfile value to set.
      * @return the ContainerServiceProperties object itself.
      */
@@ -228,9 +214,8 @@ public final class ContainerServiceProperties {
     }
 
     /**
-     * Get the linuxProfile property: Profile for Linux VMs in the container
-     * service cluster.
-     * 
+     * Get the linuxProfile property: Profile for Linux VMs in the container service cluster.
+     *
      * @return the linuxProfile value.
      */
     public ContainerServiceLinuxProfile linuxProfile() {
@@ -238,9 +223,8 @@ public final class ContainerServiceProperties {
     }
 
     /**
-     * Set the linuxProfile property: Profile for Linux VMs in the container
-     * service cluster.
-     * 
+     * Set the linuxProfile property: Profile for Linux VMs in the container service cluster.
+     *
      * @param linuxProfile the linuxProfile value to set.
      * @return the ContainerServiceProperties object itself.
      */
@@ -250,9 +234,8 @@ public final class ContainerServiceProperties {
     }
 
     /**
-     * Get the diagnosticsProfile property: Profile for diagnostics in the
-     * container service cluster.
-     * 
+     * Get the diagnosticsProfile property: Profile for diagnostics in the container service cluster.
+     *
      * @return the diagnosticsProfile value.
      */
     public ContainerServiceDiagnosticsProfile diagnosticsProfile() {
@@ -260,9 +243,8 @@ public final class ContainerServiceProperties {
     }
 
     /**
-     * Set the diagnosticsProfile property: Profile for diagnostics in the
-     * container service cluster.
-     * 
+     * Set the diagnosticsProfile property: Profile for diagnostics in the container service cluster.
+     *
      * @param diagnosticsProfile the diagnosticsProfile value to set.
      * @return the ContainerServiceProperties object itself.
      */
@@ -273,12 +255,15 @@ public final class ContainerServiceProperties {
 
     /**
      * Validates the instance.
-     * 
+     *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (orchestratorProfile() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property orchestratorProfile in model ContainerServiceProperties"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property orchestratorProfile in model ContainerServiceProperties"));
         } else {
             orchestratorProfile().validate();
         }
@@ -289,7 +274,10 @@ public final class ContainerServiceProperties {
             servicePrincipalProfile().validate();
         }
         if (masterProfile() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property masterProfile in model ContainerServiceProperties"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property masterProfile in model ContainerServiceProperties"));
         } else {
             masterProfile().validate();
         }
@@ -300,7 +288,10 @@ public final class ContainerServiceProperties {
             windowsProfile().validate();
         }
         if (linuxProfile() == null) {
-            throw logger.logExceptionAsError(new IllegalArgumentException("Missing required property linuxProfile in model ContainerServiceProperties"));
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property linuxProfile in model ContainerServiceProperties"));
         } else {
             linuxProfile().validate();
         }
