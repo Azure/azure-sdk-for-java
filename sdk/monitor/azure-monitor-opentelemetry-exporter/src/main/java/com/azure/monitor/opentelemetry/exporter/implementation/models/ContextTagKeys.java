@@ -85,14 +85,14 @@ public final class ContextTagKeys extends ExpandableStringEnum<ContextTagKeys> {
     /** Static value ai.cloud.location for ContextTagKeys. */
     public static final ContextTagKeys AI_CLOUD_LOCATION = fromString("ai.cloud.location");
 
-    /** Static value ai.implementation.sdkVersion for ContextTagKeys. */
-    public static final ContextTagKeys AI_INTERNAL_SDK_VERSION = fromString("ai.implementation.sdkVersion");
+    /** Static value ai.internal.sdkVersion for ContextTagKeys. */
+    public static final ContextTagKeys AI_INTERNAL_SDK_VERSION = fromString("ai.internal.sdkVersion");
 
-    /** Static value ai.implementation.agentVersion for ContextTagKeys. */
-    public static final ContextTagKeys AI_INTERNAL_AGENT_VERSION = fromString("ai.implementation.agentVersion");
+    /** Static value ai.internal.agentVersion for ContextTagKeys. */
+    public static final ContextTagKeys AI_INTERNAL_AGENT_VERSION = fromString("ai.internal.agentVersion");
 
-    /** Static value ai.implementation.nodeName for ContextTagKeys. */
-    public static final ContextTagKeys AI_INTERNAL_NODE_NAME = fromString("ai.implementation.nodeName");
+    /** Static value ai.internal.nodeName for ContextTagKeys. */
+    public static final ContextTagKeys AI_INTERNAL_NODE_NAME = fromString("ai.internal.nodeName");
 
     /**
      * Creates or finds a ContextTagKeys from its string representation.
