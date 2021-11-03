@@ -101,9 +101,7 @@ public abstract class ServiceBusMessageChannelBinder<T extends ServiceBusExtende
     protected CheckpointConfig buildCheckpointConfig(
         ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
 
-        return CheckpointConfig.builder()
-                               .checkpointMode(properties.getExtension().getCheckpointMode())
-                               .build();
+        return new CheckpointConfig(properties.getExtension().getCheckpointMode());
     }
 
     protected ServiceBusClientConfig buildClientConfig(

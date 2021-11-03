@@ -12,7 +12,6 @@ import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubPr
 import com.azure.spring.core.ApplicationId;
 import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.core.service.AzureServiceType;
-import com.azure.spring.eventhubs.core.EventHubOperation;
 import com.azure.spring.service.eventhubs.factory.EventHubClientBuilderFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -24,7 +23,8 @@ import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.EVE
 import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.EVENT_HUB_PRODUCER_CLIENT_BUILDER_FACTORY_BEAN_NAME;
 
 /**
- * An auto-configuration for Event Hub, which provides {@link EventHubOperation}
+ * An auto-configuration for Event Hub, which provides {@link EventHubProducerAsyncClient} and
+ * {@link EventHubProducerClient}.
  *
  */
 @Configuration(proxyBeanMethods = false)

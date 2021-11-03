@@ -6,13 +6,10 @@ package com.azure.spring.cloud.autoconfigure.eventhubs;
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
-import com.azure.messaging.eventhubs.models.CloseContext;
-import com.azure.messaging.eventhubs.models.ErrorContext;
-import com.azure.messaging.eventhubs.models.EventBatchContext;
 import com.azure.messaging.eventhubs.models.EventContext;
-import com.azure.messaging.eventhubs.models.InitializationContext;
-import com.azure.spring.service.eventhubs.EventProcessorListener;
 import com.azure.spring.service.eventhubs.factory.EventProcessorClientBuilderFactory;
+import com.azure.spring.service.eventhubs.processor.EventProcessingListener;
+import com.azure.spring.service.eventhubs.processor.RecordEventProcessingListener;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -41,7 +38,7 @@ class AzureEventProcessorClientConfigurationTest {
     @Test
     void eventHubNameAndConsumerGroupProvidedShouldConfigure() {
         contextRunner
-            .withBean(EventProcessorListener.class, TestEventProcessorListener::new)
+            .withBean(EventProcessingListener.class, TestEventProcessorListener::new)
             .withBean(CheckpointStore.class, TestCheckpointStore::new)
             .withUserConfiguration(AzureEventHubPropertiesTestConfiguration.class)
             .withPropertyValues(
@@ -57,30 +54,10 @@ class AzureEventProcessorClientConfigurationTest {
             });
     }
 
-    private static class TestEventProcessorListener implements EventProcessorListener {
-
-        @Override
-        public void onError(ErrorContext errorContext) {
-
-        }
+    private static class TestEventProcessorListener implements RecordEventProcessingListener {
 
         @Override
         public void onEvent(EventContext eventContext) {
-
-        }
-
-        @Override
-        public void onEventBatch(EventBatchContext eventBatchContext) {
-
-        }
-
-        @Override
-        public void onPartitionClose(CloseContext closeContext) {
-
-        }
-
-        @Override
-        public void onInitialization(InitializationContext initializationContext) {
 
         }
     }

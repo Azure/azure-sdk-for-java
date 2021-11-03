@@ -3,28 +3,30 @@
 
 package com.azure.spring.cloud.autoconfigure.messaging;
 
-import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubOperationAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubMessagingAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusTopicOperationAutoConfiguration;
 import com.azure.spring.messaging.annotation.EnableAzureMessaging;
 import com.azure.spring.messaging.config.AzureListenerAnnotationBeanPostProcessor;
-import com.azure.spring.messaging.core.SubscribeByGroupOperation;
 import com.azure.spring.messaging.container.DefaultAzureListenerContainerFactory;
 import com.azure.spring.messaging.container.ListenerContainerFactory;
 import com.azure.spring.messaging.container.MessageListenerContainer;
+import com.azure.spring.messaging.core.SubscribeByGroupOperation;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 /**
- * @author Warren Zhu
+ *
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(EnableAzureMessaging.class)
-@AutoConfigureAfter(value = { AzureEventHubOperationAutoConfiguration.class,
-    AzureServiceBusTopicOperationAutoConfiguration.class })
+@AutoConfigureAfter({
+    AzureEventHubMessagingAutoConfiguration.class,
+    AzureServiceBusTopicOperationAutoConfiguration.class
+})
 @ConditionalOnBean(SubscribeByGroupOperation.class)
 public class AzureMessagingListenerAutoConfiguration {
 

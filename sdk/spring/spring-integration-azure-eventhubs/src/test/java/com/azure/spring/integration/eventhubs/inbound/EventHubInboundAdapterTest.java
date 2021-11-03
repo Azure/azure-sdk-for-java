@@ -3,36 +3,88 @@
 
 package com.azure.spring.integration.eventhubs.inbound;
 
-import com.azure.messaging.eventhubs.CheckpointStore;
-import com.azure.messaging.eventhubs.models.EventContext;
-import com.azure.spring.eventhubs.support.EventHubTestOperation;
-import com.azure.spring.integration.endpoint.InboundChannelAdapterTest;
-import org.junit.jupiter.api.AfterEach;
+import com.azure.spring.eventhubs.core.EventHubProcessorContainer;
+import com.azure.spring.messaging.checkpoint.CheckpointConfig;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.junit.jupiter.api.Test;
+import org.springframework.integration.channel.DirectChannel;
+import org.springframework.integration.support.MessageBuilder;
+import org.springframework.messaging.Message;
 
-public class EventHubInboundAdapterTest extends InboundChannelAdapterTest<EventHubInboundChannelAdapter> {
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
-    @Mock
-    EventContext partitionContext;
+import static org.mockito.Mockito.mock;
 
-    @Mock
-    CheckpointStore checkpointStore;
+class EventHubInboundAdapterTest {
 
-    private AutoCloseable closeable;
+    private TestEventHubInboundChannelAdapter adapter;
+
+    private final String consumerGroup = "group";
+    private final String eventHub = "dest";
+    private final String[] payloads = { "payload1", "payload2" };
+    private final List<Message<?>> messages = Arrays.stream(payloads)
+                                                    .map(p -> MessageBuilder.withPayload(p).build())
+                                                    .collect(Collectors.toList());
+
 
     @BeforeEach
-    @Override
-    public void setUp() {
-        this.closeable = MockitoAnnotations.openMocks(this);
-        this.adapter = new EventHubInboundChannelAdapter(destination, new EventHubTestOperation(null,
-            () -> partitionContext),
-            consumerGroup);
+    void setUp() {
+        EventHubProcessorContainer processorsContainer = mock(EventHubProcessorContainer.class);
+        //        EventProcessorClient processorClient = mock(EventProcessorClient.class);
+        //        when(processorsContainer.subscribe(eventHub, consumerGroup, processorProperties)).thenReturn
+        //        (processorClient);
+        //
+
+        this.adapter = new TestEventHubInboundChannelAdapter(processorsContainer, this.eventHub, this.consumerGroup,
+            new CheckpointConfig());
     }
 
-    @AfterEach
-    public void close() throws Exception {
-        closeable.close();
+    @Test
+    void sendAndReceive() throws InterruptedException {
+        DirectChannel channel = new DirectChannel();
+        channel.setBeanName("output");
+        this.adapter.doStart();
+        this.adapter.setOutputChannel(channel);
+
+        final CountDownLatch latch = new CountDownLatch(1);
+        final List<String> receivedMessages = new CopyOnWriteArrayList<>();
+        channel.subscribe(message -> {
+            try {
+                receivedMessages.add((String) message.getPayload());
+            } finally {
+                latch.countDown();
+            }
+
+        });
+        this.messages.forEach(this.adapter::sendMessage);
+
+        Assertions.assertTrue(latch.await(5L, TimeUnit.SECONDS), "Failed to receive message");
+
+        for (int i = 0; i < receivedMessages.size(); i++) {
+            Assertions.assertEquals(receivedMessages.get(i), payloads[i]);
+        }
     }
+
+    static class TestEventHubInboundChannelAdapter extends EventHubInboundChannelAdapter {
+
+
+        TestEventHubInboundChannelAdapter(EventHubProcessorContainer eventProcessorsContainer,
+                                          String eventHubName, String consumerGroup,
+                                          CheckpointConfig checkpointConfig) {
+            super(eventProcessorsContainer, eventHubName, consumerGroup, checkpointConfig);
+        }
+
+        @Override
+        public void sendMessage(Message<?> messageArg) {
+            super.sendMessage(messageArg);
+        }
+    }
+
+
 }
