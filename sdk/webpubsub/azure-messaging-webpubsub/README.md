@@ -13,6 +13,7 @@ Use this library to:
 - Close connections
 - Grant, revoke, and check permissions for an existing connection
 
+Details about the terms used here are described in [Key concepts](#key-concepts) section.
 
 [Source code][source_code] | [API reference documentation][api] | [Product Documentation][product_documentation] | [Samples][samples_readme]
 
