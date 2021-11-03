@@ -15,6 +15,7 @@ import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryE
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryExceptionDetails;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 import com.azure.monitor.opentelemetry.exporter.utils.FormattedDuration;
+import com.azure.monitor.opentelemetry.exporter.utils.PropertyHelper;
 import io.opentelemetry.api.common.AttributeKey;
 import io.opentelemetry.api.common.Attributes;
 import io.opentelemetry.api.trace.SpanId;
@@ -691,7 +692,8 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
         telemetry.setName(telemetryName);
         telemetry.setInstrumentationKey(instrumentationKey);
         telemetry.setTags(new HashMap<>());
-
+        // Set AI Internal SDK Version
+        telemetry.getTags().put(ContextTagKeys.AI_INTERNAL_SDK_VERSION.toString(), PropertyHelper.getQualifiedSdkVersionString());
         data.setVersion(2);
 
         MonitorBase monitorBase = new MonitorBase();

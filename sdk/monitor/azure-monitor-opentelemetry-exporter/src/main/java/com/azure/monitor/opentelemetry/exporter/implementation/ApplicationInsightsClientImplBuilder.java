@@ -21,10 +21,10 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.monitor.opentelemetry.exporter.AzureMonitorRedirectPolicy;
+import com.azure.monitor.opentelemetry.exporter.utils.PropertyHelper;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.List;;
 
 /** A builder for creating a new instance of the ApplicationInsightsClient type. */
 @ServiceClientBuilder(serviceClients = {ApplicationInsightsClientImpl.class})
@@ -33,8 +33,6 @@ public final class ApplicationInsightsClientImplBuilder {
 
     private static final String SDK_VERSION = "version";
 
-    private final Map<String, String> properties =
-            CoreUtils.getProperties("azure-monitor-opentelemetry-exporter.properties");
     private ClientOptions clientOptions;
 
     /** Create an instance of the ApplicationInsightsClientImplBuilder. */
@@ -213,8 +211,8 @@ public final class ApplicationInsightsClientImplBuilder {
             clientOptions = new ClientOptions();
         }
         List<HttpPipelinePolicy> policies = new ArrayList<>();
-        String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
-        String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
+        String clientName = PropertyHelper.getPropertyValue(SDK_NAME, "UnknownName");
+        String clientVersion = PropertyHelper.getPropertyValue(SDK_VERSION, "UnknownVersion");
 
         String applicationId = CoreUtils.getApplicationId(clientOptions, httpLogOptions);
 
