@@ -736,7 +736,7 @@ public final class AzureMonitorTraceExporter implements SpanExporter {
                                            Attributes attributes) {
         attributes.forEach((key, value) -> {
             String stringKey = key.getKey();
-            if (stringKey.startsWith("applicationinsights.implementation.")) {
+            if (stringKey.startsWith("applicationinsights.internal.")) {
                 return;
             }
             // TODO (trask) use az.namespace for something?
