@@ -7,6 +7,7 @@ import com.azure.core.annotation.QueryParam;
 import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Context;
 
 import java.util.function.Consumer;
 
@@ -113,6 +114,7 @@ import java.util.function.Consumer;
 public final class RequestOptions {
     private Consumer<HttpRequest> requestCallback = request -> { };
     private boolean throwOnError = true;
+    private Context context;
 
     /**
      * Gets the request callback, applying all the configurations set on this RequestOptions.
@@ -130,6 +132,15 @@ public final class RequestOptions {
      */
     boolean isThrowOnError() {
         return this.throwOnError;
+    }
+
+    /**
+     * Gets the additional context on the request that is passed during the service call.
+     *
+     * @return The additional context that is passed during the service call.
+     */
+    Context getContext() {
+        return context;
     }
 
     /**
@@ -216,6 +227,17 @@ public final class RequestOptions {
      */
     public RequestOptions setThrowOnError(boolean throwOnError) {
         this.throwOnError = throwOnError;
+        return this;
+    }
+
+    /**
+     * Sets the additional context on the request that is passed during the service call.
+     *
+     * @param context Additional context that is passed during the service call.
+     * @return the modified RequestOptions object
+     */
+    public RequestOptions setContext(Context context) {
+        this.context = context;
         return this;
     }
 }
