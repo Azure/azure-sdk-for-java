@@ -11,7 +11,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import java.util.Stack;
 
 /**
  * {@code Context} offers a means of passing arbitrary data (key-value pairs) to pipeline policies.
@@ -25,12 +24,14 @@ import java.util.Stack;
 public class Context {
     private static final ClientLogger LOGGER = new ClientLogger(Context.class);
 
+    private static final Context[] EMPTY_CHAIN = new Context[0];
+
     // All fields must be immutable.
     //
     /**
      * Signifies that no data needs to be passed to the pipeline.
      */
-    public static final Context NONE = new Context(null, null, null) {
+    public static final Context NONE = new Context(null, null, null, 0) {
         @Override
         public Optional<Object> getData(Object key) {
             if (key == null) {
@@ -44,11 +45,17 @@ public class Context {
         public Map<Object, Object> getValues() {
             return Collections.emptyMap();
         }
+
+        @Override
+        Context[] getContextChain() {
+            return EMPTY_CHAIN;
+        }
     };
 
     private final Context parent;
     private final Object key;
     private final Object value;
+    private final int contextCount;
 
     /**
      * Constructs a new {@link Context} object.
@@ -80,12 +87,14 @@ public class Context {
         this.parent = null;
         this.key = Objects.requireNonNull(key, "'key' cannot be null.");
         this.value = value;
+        this.contextCount = 1;
     }
 
-    private Context(Context parent, Object key, Object value) {
+    private Context(Context parent, Object key, Object value, int contextCount) {
         this.parent = parent;
         this.key = key;
         this.value = value;
+        this.contextCount = contextCount;
     }
 
     Object getKey() {
@@ -132,7 +141,7 @@ public class Context {
         if (key == null) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("key cannot be null"));
         }
-        return new Context(this, key, value);
+        return new Context(this, key, value, contextCount + 1);
     }
 
     /**
@@ -263,19 +272,16 @@ public class Context {
      *
      * @return The Contexts, in oldest to newest order, in the chain of Contexts that this Context is the tail.
      */
-    Stack<Context> getValueStack() {
-        Stack<Context> valueStack = new Stack<>();
-
-        if (this == Context.NONE) {
-            return valueStack;
-        }
+    Context[] getContextChain() {
+        Context[] chain = new Context[contextCount];
 
         Context pointer = this;
+        int chainPosition = contextCount - 1;
         while (pointer != null) {
-            valueStack.push(pointer);
+            chain[chainPosition--] = pointer;
             pointer = pointer.parent;
         }
 
-        return valueStack;
+        return chain;
     }
 }

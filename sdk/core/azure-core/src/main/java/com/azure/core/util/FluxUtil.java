@@ -30,7 +30,6 @@ import java.nio.file.StandardOpenOption;
 import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Stack;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 import java.util.concurrent.atomic.AtomicLongFieldUpdater;
 import java.util.function.BiFunction;
@@ -395,12 +394,10 @@ public final class FluxUtil {
 
         reactor.util.context.Context returnContext = reactor.util.context.Context.empty();
 
-        Stack<Context> contextStack = context.getValueStack();
-        while (!contextStack.empty()) {
-            Context toAdd = contextStack.pop();
-
+        Context[] contextChain = context.getContextChain();
+        for (Context toAdd : contextChain) {
             // Filter out null value entries as Reactor's context doesn't allow null values.
-            if (toAdd.getValue() == null) {
+            if (toAdd == null || toAdd.getValue() == null) {
                 continue;
             }
 

@@ -26,7 +26,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
-import java.util.Stack;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.regex.Matcher;
@@ -366,12 +365,13 @@ public final class CoreUtils {
         Objects.requireNonNull(into, "'into' cannot be null.");
         Objects.requireNonNull(from, "'from' cannot be null.");
 
-        Stack<Context> fromContextStack = from.getValueStack();
+        Context[] contextChain = from.getContextChain();
 
         Context returnContext = into;
-        while (!fromContextStack.empty()) {
-            Context toAdd = fromContextStack.pop();
-            returnContext = returnContext.addData(toAdd.getKey(), toAdd.getValue());
+        for (Context toAdd : contextChain) {
+            if (toAdd != null) {
+                returnContext = returnContext.addData(toAdd.getKey(), toAdd.getValue());
+            }
         }
 
         return returnContext;
