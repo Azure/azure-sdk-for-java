@@ -29,8 +29,12 @@ public class JacksonAdapter implements SerializerAdapter {
     private static final Pattern PATTERN = Pattern.compile("^\"*|\"*$");
     private static final ClientLogger LOGGER = new ClientLogger(JacksonAdapter.class);
 
-    private static final boolean USE_ACCESS_HELPER = Boolean.parseBoolean(Configuration.getGlobalConfiguration()
-        .get("AZURE_JACKSON_ADAPTER_USE_ACCESS_HELPER"));
+    private static boolean useAccessHelper;
+
+    static {
+        useAccessHelper = Boolean.parseBoolean(Configuration.getGlobalConfiguration()
+            .get("AZURE_JACKSON_ADAPTER_USE_ACCESS_HELPER"));
+    }
 
     /**
      * An instance of {@link ObjectMapperShim} to serialize/deserialize objects.
@@ -241,12 +245,20 @@ public class JacksonAdapter implements SerializerAdapter {
 
     @SuppressWarnings("removal")
     private static Object useAccessHelper(IOExceptionCallable serializationCall) throws IOException {
-        if (USE_ACCESS_HELPER) {
+        if (useAccessHelper) {
             try {
                 return java.security.AccessController.doPrivileged((PrivilegedExceptionAction<Object>)
                     serializationCall::call);
             } catch (PrivilegedActionException ex) {
-                throw LOGGER.logExceptionAsError(new RuntimeException(ex));
+                Throwable cause = ex.getCause();
+                // If the privileged call failed due to an IOException unwrap it.
+                if (cause instanceof IOException) {
+                    throw (IOException) cause;
+                } else if (cause instanceof RuntimeException) {
+                    throw (RuntimeException) cause;
+                }
+
+                throw LOGGER.logExceptionAsError(new RuntimeException(cause));
             }
         } else {
             return serializationCall.call();
@@ -256,5 +268,13 @@ public class JacksonAdapter implements SerializerAdapter {
     @FunctionalInterface
     private interface IOExceptionCallable {
         Object call() throws IOException;
+    }
+
+    static boolean isUseAccessHelper() {
+        return useAccessHelper;
+    }
+
+    static void setUseAccessHelper(boolean useAccessHelper) {
+        JacksonAdapter.useAccessHelper = useAccessHelper;
     }
 }
