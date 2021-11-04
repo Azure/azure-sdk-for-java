@@ -550,7 +550,7 @@ class ServiceBusAdministrationAsyncClientTest {
                 if (argument.getContent() == null || argument.getContent().getQueueDescription() == null) {
                     return false;
                 }
-                assertEquals(argument.getContent().getQueueDescription().getForwardTo(), FORWARD_TO_ENTITY,
+                assertEquals(FORWARD_TO_ENTITY, argument.getContent().getQueueDescription().getForwardTo(),
                     "Update queue does not set the forward-to-entity to an absolute URL");
                 return true;
             }),
@@ -647,14 +647,15 @@ class ServiceBusAdministrationAsyncClientTest {
 
     private static boolean verifyAdditionalAuthHeaderPresent(Context context, String requiredHeader, String entity) {
         return context.getData(AZURE_REQUEST_HTTP_HEADERS_KEY).map(headers -> {
-            if (headers instanceof HttpHeaders) {
-                HttpHeaders customHttpHeaders = (HttpHeaders) headers;
-                // loop through customHttpHeaders and check if the required Header is present
-                for (HttpHeader httpHeader : customHttpHeaders) {
-                    if (!Objects.isNull(httpHeader.getName()) && !Objects.isNull(httpHeader.getValue())) {
-                        if (httpHeader.getName().equals(requiredHeader) && httpHeader.getValue().equals(entity)) {
-                            return true;
-                        }
+            if (!(headers instanceof HttpHeaders)) {
+                return false;
+            }
+            HttpHeaders customHttpHeaders = (HttpHeaders) headers;
+            // loop through customHttpHeaders and check if the required Header is present
+            for (HttpHeader httpHeader : customHttpHeaders) {
+                if (!Objects.isNull(httpHeader.getName()) && !Objects.isNull(httpHeader.getValue())) {
+                    if (httpHeader.getName().equals(requiredHeader) && httpHeader.getValue().equals(entity)) {
+                        return true;
                     }
                 }
             }

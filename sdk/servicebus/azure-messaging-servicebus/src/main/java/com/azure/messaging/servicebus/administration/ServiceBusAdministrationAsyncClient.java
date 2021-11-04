@@ -137,7 +137,7 @@ public final class ServiceBusAdministrationAsyncClient {
      * @throws NullPointerException if any one of {@code managementClient, serializer, credential} is null.
      */
     ServiceBusAdministrationAsyncClient(ServiceBusManagementClientImpl managementClient,
-        ServiceBusManagementSerializer serializer) throws NullPointerException {
+        ServiceBusManagementSerializer serializer) {
         this.serializer = Objects.requireNonNull(serializer, "'serializer' cannot be null.");
         this.managementClient = Objects.requireNonNull(managementClient, "'managementClient' cannot be null.");
         this.entityClient = managementClient.getEntities();
