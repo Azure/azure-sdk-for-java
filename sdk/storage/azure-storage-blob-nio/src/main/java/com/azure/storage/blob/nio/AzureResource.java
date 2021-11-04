@@ -123,7 +123,9 @@ final class AzureResource {
                 }
                 // Metadata marker
                 if (item.getMetadata() != null && item.getMetadata().containsKey(DIR_METADATA_MARKER)) {
-                    if (blobIterator.hasNext()) { // More than one item with dir path as prefix. Must be a dir.
+                    String targetBlobItemNamePrefix = this.blobClient.getBlobName() + AzureFileSystem.PATH_SEPARATOR;
+
+                    if (blobIterator.hasNext() && targetBlobItemNamePrefix.equals(blobIterator.next().getName())) { // More than one item with dir path as prefix. Must be a dir.
                         return DirectoryStatus.NOT_EMPTY;
                     } else {
                         return DirectoryStatus.EMPTY;
