@@ -28,6 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CoreUtilsTests {
@@ -275,5 +276,60 @@ public class CoreUtilsTests {
             Arguments.of(new Configuration().put(TIMEOUT_PROPERTY_NAME, "42"), Duration.ofMillis(10000), logger,
                 Duration.ofMillis(42))
         );
+    }
+
+    @ParameterizedTest
+    @MethodSource("invalidContextMergeSupplier")
+    public void invalidContextMerge(Context into, Context from) {
+        assertThrows(NullPointerException.class, () -> CoreUtils.mergeContexts(into, from));
+    }
+
+    private static Stream<Arguments> invalidContextMergeSupplier() {
+        return Stream.of(
+            Arguments.of(null, Context.NONE),
+            Arguments.of(Context.NONE, null)
+        );
+    }
+
+    @Test
+    public void mergingContextNoneReturnsIntoContext() {
+        Context into = new Context("key", "value");
+
+        Context merged = CoreUtils.mergeContexts(into, Context.NONE);
+        assertEquals(into, merged);
+    }
+
+    @Test
+    public void mergingReturnsTheExpectedResult() {
+        List<Context> expectedMergedContextChain = new ArrayList<>();
+        Context into = new Context("key1", "value1");
+        expectedMergedContextChain.add(into);
+
+        into = into.addData("key2", "value2");
+        expectedMergedContextChain.add(into);
+
+        into = into.addData("key3", "value3");
+        expectedMergedContextChain.add(into);
+
+        Context from = new Context("key4", "value4");
+        expectedMergedContextChain.add(from);
+
+        from = from.addData("key5", "value5");
+        expectedMergedContextChain.add(from);
+
+        from = from.addData("key6", "value6");
+        expectedMergedContextChain.add(from);
+
+        Context merged = CoreUtils.mergeContexts(into, from);
+        Context[] mergedContextChain = merged.getContextChain();
+
+        assertEquals(expectedMergedContextChain.size(), mergedContextChain.length);
+        for (int i = 0; i < expectedMergedContextChain.size(); i++) {
+            Context expected = expectedMergedContextChain.get(i);
+            Context actual = mergedContextChain[i];
+
+            assertEquals(expected.getKey(), actual.getKey());
+            assertEquals(expected.getValue(), actual.getValue());
+        }
     }
 }
