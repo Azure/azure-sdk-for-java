@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.core.properties.credential;
+package com.azure.spring.core.properties.authentication;
 
 /**
  * Represents a pojo containing the key and the name of the key.

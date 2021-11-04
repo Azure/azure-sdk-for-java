@@ -5,8 +5,8 @@ package com.azure.spring.core.credential.resolver;
 
 import com.azure.spring.core.credential.provider.AzureNamedKeyCredentialProvider;
 import com.azure.spring.core.properties.AzureProperties;
-import com.azure.spring.core.properties.aware.credential.NamedKeyAware;
-import com.azure.spring.core.properties.credential.NamedKeyProperties;
+import com.azure.spring.core.aware.authentication.NamedKeyAware;
+import com.azure.spring.core.properties.authentication.NamedKeyProperties;
 import org.springframework.util.StringUtils;
 
 /**

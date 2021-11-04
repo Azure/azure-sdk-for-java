@@ -7,15 +7,15 @@ import com.azure.core.amqp.AmqpRetryOptions;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.util.ClientOptions;
-import com.azure.spring.core.converter.AzureAmqpProxyOptionsConverter;
-import com.azure.spring.core.converter.AzureAmqpRetryOptionsConverter;
-import com.azure.spring.core.properties.client.AmqpClientProperties;
-import com.azure.spring.core.properties.client.ClientProperties;
-import com.azure.spring.core.properties.retry.RetryProperties;
+import com.azure.spring.core.aware.ClientAware;
+import com.azure.spring.core.aware.RetryAware;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.function.BiConsumer;
+
+import static com.azure.spring.core.converter.AzureAmqpProxyOptionsConverter.AMQP_PROXY_CONVERTER;
+import static com.azure.spring.core.converter.AzureAmqpRetryOptionsConverter.AMQP_RETRY_CONVERTER;
 
 /**
  * Abstract factory of an AMQP client builder.
@@ -26,8 +26,6 @@ public abstract class AbstractAzureAmqpClientBuilderFactory<T> extends AbstractA
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractAzureAmqpClientBuilderFactory.class);
     private ClientOptions clientOptions = new ClientOptions();
-    private final AzureAmqpProxyOptionsConverter proxyOptionsConverter = new AzureAmqpProxyOptionsConverter();
-    private final AzureAmqpRetryOptionsConverter retryOptionsConverter = new AzureAmqpRetryOptionsConverter();
     protected abstract BiConsumer<T, ProxyOptions> consumeProxyOptions();
     protected abstract BiConsumer<T, AmqpTransportType> consumeAmqpTransportType();
     protected abstract BiConsumer<T, AmqpRetryOptions> consumeAmqpRetryOptions();
@@ -45,15 +43,15 @@ public abstract class AbstractAzureAmqpClientBuilderFactory<T> extends AbstractA
     }
 
     protected void configureAmqpTransportProperties(T builder) {
-        final ClientProperties clientProperties = getAzureProperties().getClient();
-        if (clientProperties == null) {
+        final ClientAware.Client client = getAzureProperties().getClient();
+        if (client == null) {
             return;
         }
 
-        final AmqpClientProperties properties;
-        if (clientProperties instanceof AmqpClientProperties) {
-            properties = (AmqpClientProperties) clientProperties;
-            consumeAmqpTransportType().accept(builder, properties.getTransportType());
+        final ClientAware.AmqpClient amqpClient;
+        if (client instanceof ClientAware.AmqpClient) {
+            amqpClient = (ClientAware.AmqpClient) client;
+            consumeAmqpTransportType().accept(builder, amqpClient.getTransportType());
         }
     }
 
@@ -68,11 +66,11 @@ public abstract class AbstractAzureAmqpClientBuilderFactory<T> extends AbstractA
 
     @Override
     protected void configureRetry(T builder) {
-        final RetryProperties retry = getAzureProperties().getRetry();
+        final RetryAware.Retry retry = getAzureProperties().getRetry();
         if (retry == null) {
             return;
         }
-        AmqpRetryOptions retryOptions = retryOptionsConverter.convert(retry);
+        AmqpRetryOptions retryOptions = AMQP_RETRY_CONVERTER.convert(retry);
         consumeAmqpRetryOptions().accept(builder, retryOptions);
     }
 
@@ -82,7 +80,7 @@ public abstract class AbstractAzureAmqpClientBuilderFactory<T> extends AbstractA
             return;
         }
 
-        final ProxyOptions proxyOptions = proxyOptionsConverter.convert(getAzureProperties().getProxy());
+        final ProxyOptions proxyOptions = AMQP_PROXY_CONVERTER.convert(getAzureProperties().getProxy());
         if (proxyOptions != null) {
             consumeProxyOptions().accept(builder, proxyOptions);
         } else {

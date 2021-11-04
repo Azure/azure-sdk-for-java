@@ -15,6 +15,7 @@ import com.azure.spring.service.core.http.TestHttpClientProvider;
 import com.azure.spring.service.core.http.TestPerCallHttpPipelinePolicy;
 import com.azure.spring.service.core.http.TestPerRetryHttpPipelinePolicy;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.queue.QueueServiceClient;
 import com.azure.storage.queue.QueueServiceClientBuilder;
 import org.junit.jupiter.api.Test;
@@ -22,20 +23,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Xiaolu Dai, 2021/8/25.
  */
 class AzureStorageQueueClientBuilderFactoryTest extends AzureServiceClientBuilderFactoryTestBase<QueueServiceClientBuilder,
-        TestAzureStorageQueueProperties, QueueServiceClientBuilderFactory> {
+    TestAzureStorageQueueHttpProperties, QueueServiceClientBuilderFactory> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureStorageQueueClientBuilderFactoryTest.class);
     private static final String ENDPOINT = "https://abc.queue.core.windows.net/";
 
     @Test
     void testStorageSharedKeyCredentialConfigured() {
-        TestAzureStorageQueueProperties properties = createMinimalServiceProperties();
+        TestAzureStorageQueueHttpProperties properties = createMinimalServiceProperties();
         properties.setAccountName("test_account_name");
         properties.setAccountKey("test_account_key");
         final QueueServiceClientBuilder builder = new QueueServiceClientBuilderFactoryExt(properties).build();
@@ -45,7 +49,7 @@ class AzureStorageQueueClientBuilderFactoryTest extends AzureServiceClientBuilde
 
     @Test
     void testAzureSasCredentialConfigured() {
-        TestAzureStorageQueueProperties properties = createMinimalServiceProperties();
+        TestAzureStorageQueueHttpProperties properties = createMinimalServiceProperties();
         properties.setSasToken("test");
         final QueueServiceClientBuilder builder = new QueueServiceClientBuilderFactoryExt(properties).build();
         final QueueServiceClient client = builder.buildClient();
@@ -54,7 +58,7 @@ class AzureStorageQueueClientBuilderFactoryTest extends AzureServiceClientBuilde
 
     @Test
     void testHttpClientConfigured() {
-        TestAzureStorageQueueProperties properties = createMinimalServiceProperties();
+        TestAzureStorageQueueHttpProperties properties = createMinimalServiceProperties();
 
         final QueueServiceClientBuilderFactory builderFactory = new QueueServiceClientBuilderFactoryExt(properties);
 
@@ -68,7 +72,7 @@ class AzureStorageQueueClientBuilderFactoryTest extends AzureServiceClientBuilde
 
     @Test
     void testDefaultHttpPipelinePoliciesConfigured() {
-        TestAzureStorageQueueProperties properties = createMinimalServiceProperties();
+        TestAzureStorageQueueHttpProperties properties = createMinimalServiceProperties();
 
         final QueueServiceClientBuilderFactory builderFactory = new QueueServiceClientBuilderFactoryExt(properties);
 
@@ -85,7 +89,7 @@ class AzureStorageQueueClientBuilderFactoryTest extends AzureServiceClientBuilde
 
     @Test
     void testProxyPropertiesConfigured() {
-        TestAzureStorageQueueProperties properties = createMinimalServiceProperties();
+        TestAzureStorageQueueHttpProperties properties = createMinimalServiceProperties();
         ProxyProperties proxyProperties = properties.getProxy();
         proxyProperties.setHostname("localhost");
         proxyProperties.setPort(8080);
@@ -99,16 +103,25 @@ class AzureStorageQueueClientBuilderFactoryTest extends AzureServiceClientBuilde
         verify(defaultHttpClientProvider, times(1)).createInstance(any(HttpClientOptions.class));
     }
 
+    @Test
+    void testRetryOptionsConfigured() {
+        TestAzureStorageQueueHttpProperties properties = createMinimalServiceProperties();
+        final QueueServiceClientBuilderFactoryExt builderFactory = new QueueServiceClientBuilderFactoryExt(properties);
+        final QueueServiceClientBuilder builder = builderFactory.build();
+        final QueueServiceClient client = builder.buildClient();
+        verify(builder, times(1)).retryOptions(any(RequestRetryOptions.class));
+    }
+
     @Override
-    protected TestAzureStorageQueueProperties createMinimalServiceProperties() {
-        TestAzureStorageQueueProperties properties = new TestAzureStorageQueueProperties();
+    protected TestAzureStorageQueueHttpProperties createMinimalServiceProperties() {
+        TestAzureStorageQueueHttpProperties properties = new TestAzureStorageQueueHttpProperties();
         properties.setEndpoint(ENDPOINT);
         return properties;
     }
 
     static class QueueServiceClientBuilderFactoryExt extends QueueServiceClientBuilderFactory {
 
-        QueueServiceClientBuilderFactoryExt(TestAzureStorageQueueProperties blobProperties) {
+        QueueServiceClientBuilderFactoryExt(TestAzureStorageQueueHttpProperties blobProperties) {
             super(blobProperties);
         }
 
@@ -122,7 +135,7 @@ class AzureStorageQueueClientBuilderFactoryTest extends AzureServiceClientBuilde
 
         private HttpClientProvider httpClientProvider = mock(DefaultHttpProvider.class);
 
-        QueueServiceClientBuilderFactoryProxyExt(TestAzureStorageQueueProperties blobProperties) {
+        QueueServiceClientBuilderFactoryProxyExt(TestAzureStorageQueueHttpProperties blobProperties) {
             super(blobProperties);
 
             HttpClient httpClient = mock(HttpClient.class);
