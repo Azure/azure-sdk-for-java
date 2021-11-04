@@ -3,11 +3,11 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.models.AnalyzeDocumentOptions;
-import com.azure.ai.formrecognizer.models.DocumentAnalysisException;
 import com.azure.ai.formrecognizer.implementation.models.AnalyzeResultOperation;
 import com.azure.ai.formrecognizer.implementation.models.OperationStatus;
+import com.azure.ai.formrecognizer.models.AnalyzeDocumentOptions;
 import com.azure.ai.formrecognizer.models.AnalyzeResult;
+import com.azure.ai.formrecognizer.models.DocumentModelOperationException;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -54,13 +54,13 @@ public final class DocumentAnalysisClient {
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.DocumentAnalysisClient.beginAnalyzeDocumentFromUrl#string-string}
      *
-     * @param modelId The unique model ID to be used or the supported prebuilt models - "prebuilt-receipt",
-     * "prebuilt-businessCard", "prebuilt-idDocument", "prebuilt-document", "prebuilt-invoice", "prebuilt-layout".
+     * @param modelId The unique model ID to be used. Use this to specify the custom model ID or prebuilt model ID.
+     * Prebuilt model IDs supported can be found <a href="https://aka.ms/azsdk/formrecognizer/models">here</a>
      * @param documentUrl The URL of the document to analyze.
      *
      * @return A {@link SyncPoller} to poll the progress of the analyze document operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
-     * @throws DocumentAnalysisException If analyze operation fails and the {@link AnalyzeResultOperation} returns
+     * @throws DocumentModelOperationException If analyze operation fails and the {@link AnalyzeResultOperation} returns
      * with an {@link OperationStatus#FAILED}..
      * @throws IllegalArgumentException If {@code documentUrl} or {@code modelId} is null.
      */
@@ -79,8 +79,8 @@ public final class DocumentAnalysisClient {
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.DocumentAnalysisClient.beginAnalyzeDocumentFromUrl#string-string-AnalyzeDocumentOptions-Context}
      *
-     * @param modelId The unique model ID to be used or the supported prebuilt models - "prebuilt-receipt",
-     * "prebuilt-businessCard", "prebuilt-idDocument", "prebuilt-document", "prebuilt-invoice", "prebuilt-layout".
+     * @param modelId The unique model ID to be used.  Use this to specify the custom model ID or prebuilt model ID.
+     * Prebuilt model IDs supported can be found <a href="https://aka.ms/azsdk/formrecognizer/models">here</a>
      * @param documentUrl The source URL to the input document.
      * @param analyzeDocumentOptions The additional configurable {@link AnalyzeDocumentOptions options} that may be
      * passed when analyzing documents.
@@ -88,7 +88,7 @@ public final class DocumentAnalysisClient {
      *
      * @return A {@link SyncPoller} to poll the progress of the analyze document operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
-     * @throws DocumentAnalysisException If analyze operation fails and the {@link AnalyzeResultOperation}returns
+     * @throws DocumentModelOperationException If analyze operation fails and the {@link AnalyzeResultOperation} returns
      * with an {@link OperationStatus#FAILED}.
      * @throws IllegalArgumentException If {@code documentUrl} or {@code modelId} is null.
      */
@@ -109,14 +109,14 @@ public final class DocumentAnalysisClient {
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.DocumentAnalysisClient.beginAnalyzeDocument#string-InputStream-long}
      *
-     * @param modelId The unique model ID to be used or the supported prebuilt models - "prebuilt-receipt",
-     * "prebuilt-businessCard", "prebuilt-idDocument", "prebuilt-document", "prebuilt-invoice", "prebuilt-layout".
+     * @param modelId The unique model ID to be used. Use this to specify the custom model ID or prebuilt model ID.
+     * Prebuilt model IDs supported can be found <a href="https://aka.ms/azsdk/formrecognizer/models">here</a>
      * @param document The data of the document to analyze information from.
      * @param length The exact length of the data.
      *
      * @return A {@link SyncPoller} that polls the of progress of analyze document operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
-     * @throws DocumentAnalysisException If analyze operation fails and the {@link AnalyzeResultOperation}returns
+     * @throws DocumentModelOperationException If analyze operation fails and the {@link AnalyzeResultOperation}returns
      * with an {@link OperationStatus#FAILED}.
      * @throws IllegalArgumentException If {@code document} or {@code modelId} is null.
      */
@@ -135,8 +135,8 @@ public final class DocumentAnalysisClient {
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.DocumentAnalysisClient.beginAnalyzeDocument#string-InputStream-long-AnalyzeDocumentOptions-Context}
      *
-     * @param modelId The unique model ID to be used or the supported prebuilt models - "prebuilt-receipt",
-     * "prebuilt-businessCard", "prebuilt-idDocument", "prebuilt-document", "prebuilt-invoice", "prebuilt-layout".
+     * @param modelId The unique model ID to be used. Use this to specify the custom model ID or prebuilt model ID.
+     * Prebuilt model IDs supported can be found <a href="https://aka.ms/azsdk/formrecognizer/models">here</a>
      * @param document The data of the document to analyze information from.
      * @param length The exact length of the data.
      * @param analyzeDocumentOptions The additional configurable {@link AnalyzeDocumentOptions options} that may be
@@ -145,7 +145,7 @@ public final class DocumentAnalysisClient {
      *
      * @return A {@link SyncPoller} that polls the of progress of analyze document operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
-     * @throws DocumentAnalysisException If analyze operation fails and the {@link AnalyzeResultOperation} returns
+     * @throws DocumentModelOperationException If analyze operation fails and the {@link AnalyzeResultOperation} returns
      * with an {@link OperationStatus#FAILED}.
      * @throws IllegalArgumentException If {@code document} or {@code modelId} is null.
      */

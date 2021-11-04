@@ -11,7 +11,7 @@ import com.azure.ai.formrecognizer.implementation.models.StringIndexType;
 import com.azure.ai.formrecognizer.implementation.util.Transforms;
 import com.azure.ai.formrecognizer.models.AnalyzeDocumentOptions;
 import com.azure.ai.formrecognizer.models.AnalyzeResult;
-import com.azure.ai.formrecognizer.models.DocumentAnalysisException;
+import com.azure.ai.formrecognizer.models.DocumentModelOperationException;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -73,13 +73,13 @@ public final class DocumentAnalysisAsyncClient {
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.DocumentAnalysisAsyncClient.beginAnalyzeDocumentFromUrl#string-string}
      *
-     * @param modelId The unique model ID to be used or the supported prebuilt models - "prebuilt-receipt",
-     * "prebuilt-businessCard", "prebuilt-idDocument", "prebuilt-document", "prebuilt-invoice", "prebuilt-layout".
+     * @param modelId The unique model ID to be used. Use this to specify the custom model ID or prebuilt model ID.
+     * Prebuilt model IDs supported can be found <a href="https://aka.ms/azsdk/formrecognizer/models">here</a>
      * @param documentUrl The URL of the document to analyze.
      *
      * @return A {@link PollerFlux} that polls the progress of the analyze document operation until it has completed, has failed,
      * or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
-     * @throws DocumentAnalysisException If analyze operation fails and the {@link AnalyzeResultOperation} returns
+     * @throws DocumentModelOperationException If analyze operation fails and the {@link AnalyzeResultOperation} returns
      * with an {@link OperationStatus#FAILED}..
      * @throws IllegalArgumentException If {@code documentUrl} or {@code modelId} is null.
      */
@@ -98,14 +98,14 @@ public final class DocumentAnalysisAsyncClient {
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.DocumentAnalysisAsyncClient.beginAnalyzeDocumentFromUrl#string-string-AnalyzeDocumentOptions}
      *
-     * @param modelId The unique model ID to be used or the supported prebuilt models - "prebuilt-receipt",
-     * "prebuilt-businessCard", "prebuilt-idDocument", "prebuilt-document", "prebuilt-invoice", "prebuilt-layout".
+     * @param modelId The unique model ID to be used. Use this to specify the custom model ID or prebuilt model ID.
+     * Prebuilt model IDs supported can be found <a href="https://aka.ms/azsdk/formrecognizer/models">here</a>
      * @param documentUrl The source URL to the input form.
      * @param analyzeDocumentOptions The additional configurable {@link AnalyzeDocumentOptions options}
      * that may be passed when analyzing documents.
      * @return A {@link PollerFlux} that polls progress of the analyze document operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
-     * @throws DocumentAnalysisException If analyze operation fails and the {@link AnalyzeResultOperation} returns
+     * @throws DocumentModelOperationException If analyze operation fails and the {@link AnalyzeResultOperation} returns
      * with an {@link OperationStatus#FAILED}.
      * @throws IllegalArgumentException If {@code documentUrl} or {@code modelId} is null.
      */
@@ -124,7 +124,8 @@ public final class DocumentAnalysisAsyncClient {
             if (CoreUtils.isNullOrEmpty(documentUrl)) {
                 throw logger.logExceptionAsError(new IllegalArgumentException("'documentUrl' is required and cannot"
                     + " be null or empty"));
-            }            if (CoreUtils.isNullOrEmpty(modelId)) {
+            }
+            if (CoreUtils.isNullOrEmpty(modelId)) {
                 throw logger.logExceptionAsError(new IllegalArgumentException("'modelId' is required and cannot"
                     + " be null or empty"));
             }
@@ -142,7 +143,7 @@ public final class DocumentAnalysisAsyncClient {
                                 new AnalyzeDocumentRequest().setUrlSource(documentUrl),
                                 context)
                             .map(analyzeDocumentResponse ->
-                                Transforms.toFormRecognizerOperationResult(
+                                Transforms.toDocumentOperationResult(
                                     analyzeDocumentResponse.getDeserializedHeaders().getOperationLocation())),
                     logger),
                 pollingOperation(resultId ->
@@ -175,14 +176,14 @@ public final class DocumentAnalysisAsyncClient {
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.DocumentAnalysisAsyncClient.beginAnalyzeDocument#string-Flux-long}
      *
-     * @param modelId The unique model ID to be used or the supported prebuilt models - "prebuilt-receipt",
-     * "prebuilt-businessCard", "prebuilt-idDocument", "prebuilt-document", "prebuilt-invoice", "prebuilt-layout".
+     * @param modelId The unique model ID to be used. Use this to specify the custom model ID or prebuilt model ID.
+     * Prebuilt model IDs supported can be found <a href="https://aka.ms/azsdk/formrecognizer/models">here</a>
      * @param document The data of the document to analyze information from.
      * @param length The exact length of the data.
      *
      * @return A {@link PollerFlux} that polls the progress of the analyze document operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
-     * @throws DocumentAnalysisException If analyze operation fails and the {@link AnalyzeResultOperation} returns
+     * @throws DocumentModelOperationException If analyze operation fails and the {@link AnalyzeResultOperation} returns
      * with an {@link OperationStatus#FAILED}.
      * @throws IllegalArgumentException If {@code document} or {@code modelId} is null.
      */
@@ -204,8 +205,8 @@ public final class DocumentAnalysisAsyncClient {
      * <p><strong>Code sample</strong></p>
      * {@codesnippet com.azure.ai.formrecognizer.DocumentAnalysisAsyncClient.beginAnalyzeDocument#string-Flux-long-AnalyzeDocumentOptions}
      *
-     * @param modelId The unique model ID to be used or the supported prebuilt models - "prebuilt-receipt",
-     * "prebuilt-businessCard", "prebuilt-idDocument", "prebuilt-document", "prebuilt-invoice", "prebuilt-layout".
+     * @param modelId The unique model ID to be used. Use this to specify the custom model ID or prebuilt model ID.
+     * Prebuilt model IDs supported can be found <a href="https://aka.ms/azsdk/formrecognizer/models">here</a>
      * @param document The data of the document to analyze information from.
      * @param length The exact length of the data.
      * @param analyzeDocumentOptions The additional configurable {@link AnalyzeDocumentOptions options} that may be
@@ -213,8 +214,8 @@ public final class DocumentAnalysisAsyncClient {
      *
      * @return A {@link PollerFlux} that polls the progress of the analyze document operation until it has completed,
      * has failed, or has been cancelled. The completed operation returns an {@link AnalyzeResult}.
-     * @throws DocumentAnalysisException If analyze operation fails and the {@link AnalyzeResultOperation} returns
-     * with an {@link OperationStatus#FAILED}..
+     * @throws DocumentModelOperationException If analyze operation fails and the {@link AnalyzeResultOperation} returns
+     * with an {@link OperationStatus#FAILED}.
      * @throws IllegalArgumentException If {@code document} or {@code modelId} is null.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
@@ -250,7 +251,7 @@ public final class DocumentAnalysisAsyncClient {
                             document,
                             length,
                             context)
-                        .map(analyzeDocumentResponse -> Transforms.toFormRecognizerOperationResult(
+                        .map(analyzeDocumentResponse -> Transforms.toDocumentOperationResult(
                             analyzeDocumentResponse.getDeserializedHeaders().getOperationLocation())),
                     logger),
                 pollingOperation(
@@ -319,7 +320,7 @@ public final class DocumentAnalysisAsyncClient {
             case FAILED:
                 // TODO (Revisit error logic https://github.com/Azure/azure-sdk-for-java-pr/issues/1337)
                 throw logger.logExceptionAsError(
-                    Transforms.toDocumentAnalysisException(analyzeResultOperationResponse.getValue().getError()));
+                    Transforms.toDocumentModelOperationException(analyzeResultOperationResponse.getValue().getError()));
             default:
                 status = LongRunningOperationStatus.fromString(
                     analyzeResultOperationResponse.getValue().getStatus().toString(), true);

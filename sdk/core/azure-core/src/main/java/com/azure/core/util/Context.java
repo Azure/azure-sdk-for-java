@@ -59,11 +59,15 @@ public class Context {
      * &#47;&#47; Create an empty context having no data
      * Context emptyContext = Context.NONE;
      *
-     * &#47;&#47; Tracing spans created by users can be passed to calling methods in sdk clients using Context object
-     * final String userParentSpan = &quot;user-parent-span&quot;;
+     * &#47;&#47; Tracing spans or other properties defined by users can be passed
+     * &#47;&#47; to calling methods in sdk clients using Context object.
+     * Context keyValueContext = new Context&#40;USER_SPAN_NAME_KEY, &quot;span-name&quot;&#41;;
      *
-     * &#47;&#47; Create a context using the provided key and user parent span
-     * Context keyValueContext = new Context&#40;PARENT_SPAN_KEY, userParentSpan&#41;;
+     * &#47;&#47; OpenTelemetry context can be optionally passed using PARENT_TRACE_CONTEXT_KEY
+     * &#47;&#47; when OpenTelemetry context is not provided explicitly, ambient
+     * &#47;&#47; io.opentelemetry.context.Context.current&#40;&#41; is used
+     *
+     * &#47;&#47; Context contextWithSpan = new Context&#40;PARENT_TRACE_CONTEXT_KEY, openTelemetryContext&#41;;
      * </pre>
      * <!-- end com.azure.core.util.context#object-object -->
      *
@@ -91,12 +95,14 @@ public class Context {
      *
      * <!-- src_embed com.azure.core.util.context.addData#object-object -->
      * <pre>
-     * &#47;&#47; Users can send parent span information and pass additional metadata to attach to spans of the calling methods
-     * &#47;&#47; using the Context object
+     * &#47;&#47; Users can pass parent trace context information and additional metadata to attach to spans created by SDKs
+     * &#47;&#47; using the com.azure.core.util.Context object.
      * final String hostNameValue = &quot;host-name-value&quot;;
      * final String entityPathValue = &quot;entity-path-value&quot;;
-     * final String userParentSpan = &quot;user-parent-span&quot;;
-     * Context parentSpanContext = new Context&#40;PARENT_SPAN_KEY, userParentSpan&#41;;
+     *
+     * &#47;&#47; TraceContext represents a tracing solution context type - io.opentelemetry.context.Context for OpenTelemetry.
+     * final TraceContext parentContext = TraceContext.root&#40;&#41;;
+     * Context parentSpanContext = new Context&#40;PARENT_TRACE_CONTEXT_KEY, parentContext&#41;;
      *
      * &#47;&#47; Add a new key value pair to the existing context object.
      * Context updatedContext = parentSpanContext.addData&#40;HOST_NAME_KEY, hostNameValue&#41;
