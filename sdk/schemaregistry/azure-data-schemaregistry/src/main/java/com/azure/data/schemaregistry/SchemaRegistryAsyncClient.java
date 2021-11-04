@@ -6,6 +6,7 @@ package com.azure.data.schemaregistry;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
@@ -22,6 +23,8 @@ import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;
+
+import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * HTTP-based client that interacts with Azure Schema Registry service to store and retrieve schemas on demand.
@@ -69,8 +72,9 @@ public final class SchemaRegistryAsyncClient {
      *
      * @return The {@link SchemaProperties} of a successfully registered schema.
      *
-     * @throws NullPointerException if {@code groupName}, {@code name}, {@code format}, or
-     *     {@code schemaDefinition} are null.
+     * @throws NullPointerException if {@code groupName}, {@code name}, {@code format}, or {@code schemaDefinition}
+     *     are null.
+     * @throws HttpResponseException if an issue was encountered while registering the schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SchemaProperties> registerSchema(String groupName, String name, String schemaDefinition,
@@ -90,8 +94,9 @@ public final class SchemaRegistryAsyncClient {
      *
      * @return The schema properties on successful registration of the schema.
      *
-     * @throws NullPointerException if {@code groupName}, {@code name}, {@code format}, or
-     *     {@code schemaDefinition} are null.
+     * @throws NullPointerException if {@code groupName}, {@code name}, {@code format}, or {@code schemaDefinition}
+     *     are null.
+     * @throws HttpResponseException if an issue was encountered while registering the schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SchemaProperties>> registerSchemaWithResponse(String groupName, String name,
@@ -104,13 +109,13 @@ public final class SchemaRegistryAsyncClient {
         SchemaFormat format, Context context) {
 
         if (Objects.isNull(groupName)) {
-            return FluxUtil.monoError(logger, new NullPointerException("'groupName' should not be null."));
+            return monoError(logger, new NullPointerException("'groupName' should not be null."));
         } else if (Objects.isNull(name)) {
-            return FluxUtil.monoError(logger, new NullPointerException("'name' should not be null."));
+            return monoError(logger, new NullPointerException("'name' should not be null."));
         } else if (Objects.isNull(schemaDefinition)) {
-            return FluxUtil.monoError(logger, new NullPointerException("'schemaDefinition' should not be null."));
+            return monoError(logger, new NullPointerException("'schemaDefinition' should not be null."));
         } else if (Objects.isNull(format)) {
-            return FluxUtil.monoError(logger, new NullPointerException("'format' should not be null."));
+            return monoError(logger, new NullPointerException("'format' should not be null."));
         }
 
         logger.verbose("Registering schema. Group: '{}', name: '{}', serialization type: '{}', payload: '{}'",
@@ -134,7 +139,9 @@ public final class SchemaRegistryAsyncClient {
      *
      * @return The {@link SchemaProperties} associated with the given {@code schemaId}.
      *
-     * @throws IllegalArgumentException if {@code schemaId} is null.
+     * @throws NullPointerException if {@code schemaId} is null.
+     * @throws ResourceNotFoundException if a schema with the matching {@code schemaId} could not be found.
+     * @throws HttpResponseException if an issue was encountered while fetching the schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SchemaRegistrySchema> getSchema(String schemaId) {
@@ -149,6 +156,8 @@ public final class SchemaRegistryAsyncClient {
      * @return The {@link SchemaProperties} associated with the given {@code schemaId} along with the HTTP response.
      *
      * @throws NullPointerException if {@code schemaId} is null.
+     * @throws ResourceNotFoundException if a schema with the matching {@code schemaId} could not be found.
+     * @throws HttpResponseException if an issue was encountered while fetching the schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SchemaRegistrySchema>> getSchemaWithResponse(String schemaId) {
@@ -157,7 +166,7 @@ public final class SchemaRegistryAsyncClient {
 
     Mono<Response<SchemaRegistrySchema>> getSchemaWithResponse(String schemaId, Context context) {
         if (Objects.isNull(schemaId)) {
-            return FluxUtil.monoError(logger, new NullPointerException("'schemaId' should not be null."));
+            return monoError(logger, new NullPointerException("'schemaId' should not be null."));
         }
 
         return this.restService.getSchemas().getByIdWithResponseAsync(schemaId, context)
@@ -182,7 +191,12 @@ public final class SchemaRegistryAsyncClient {
      * @param schemaDefinition The string representation of the schema.
      * @param format The serialization type of this schema.
      *
-     * @return The unique identifier for this schema.
+     * @return A mono that completes with the properties for a matching schema.
+     *
+     * @throws NullPointerException if {@code groupName}, {@code name}, {@code schemaDefinition}, or {@code format} is
+     *     null.
+     * @throws ResourceNotFoundException if a schema with matching parameters could not be located.
+     * @throws HttpResponseException if an issue was encountered while finding a matching schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SchemaProperties> getSchemaProperties(String groupName, String name, String schemaDefinition,
@@ -200,7 +214,12 @@ public final class SchemaRegistryAsyncClient {
      * @param schemaDefinition The string representation of the schema.
      * @param format The serialization type of this schema.
      *
-     * @return The unique identifier for this schema.
+     * @return A mono that completes with the properties for a matching schema.
+     *
+     * @throws NullPointerException if {@code groupName}, {@code name}, {@code schemaDefinition}, or {@code format} is
+     *     null.
+     * @throws ResourceNotFoundException if a schema with matching parameters could not be located.
+     * @throws HttpResponseException if an issue was encountered while finding a matching schema.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SchemaProperties>> getSchemaPropertiesWithResponse(String groupName, String name,
@@ -219,10 +238,29 @@ public final class SchemaRegistryAsyncClient {
      * @param format The serialization type of this schema.
      * @param context Context to pass along with this request.
      *
-     * @return A mono that completes with the schema id.
+     * @return A mono that completes with the properties for a matching schema.
+     *
+     * @throws NullPointerException if {@code groupName}, {@code name}, {@code schemaDefinition}, or {@code format} is
+     *     null.
+     * @throws ResourceNotFoundException if a schema with matching parameters could not be located.
+     * @throws HttpResponseException if an issue was encountered while finding a matching schema.
      */
     Mono<Response<SchemaProperties>> getSchemaPropertiesWithResponse(String groupName, String name,
         String schemaDefinition, SchemaFormat format, Context context) {
+
+        if (Objects.isNull(groupName)) {
+            return monoError(logger, new NullPointerException("'groupName' cannot be null."));
+        } else if (Objects.isNull(name)) {
+            return monoError(logger, new NullPointerException("'name' cannot be null."));
+        } else if (Objects.isNull(schemaDefinition)) {
+            return monoError(logger, new NullPointerException("'schemaDefinition' cannot be null."));
+        } else if (Objects.isNull(format)) {
+            return monoError(logger, new NullPointerException("'format' cannot be null."));
+        }
+
+        if (context == null) {
+            context = Context.NONE;
+        }
 
         return restService.getSchemas()
             .queryIdByContentWithResponseAsync(groupName, name, schemaDefinition, context)
