@@ -8,9 +8,6 @@ import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.spring.messaging.PartitionSupplier;
 import com.azure.spring.messaging.core.SendOperation;
 import com.azure.spring.servicebus.core.producer.ServiceBusProducerFactory;
-import com.azure.spring.cloud.stream.binder.servicebus.health.Instrumentation;
-import com.azure.spring.cloud.stream.binder.servicebus.health.InstrumentationManager;
-import com.azure.spring.servicebus.support.ServiceBusRuntimeException;
 import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,9 +25,7 @@ import java.util.Objects;
  */
 public class ServiceBusTemplate implements SendOperation {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusTemplate.class);
     private static final ServiceBusMessageConverter DEFAULT_CONVERTER = new ServiceBusMessageConverter();
-    protected InstrumentationManager instrumentationManager = new InstrumentationManager();
     private final ServiceBusProducerFactory producerFactory;
     private ServiceBusMessageConverter messageConverter = DEFAULT_CONVERTER;
 
@@ -43,24 +38,13 @@ public class ServiceBusTemplate implements SendOperation {
                                     Message<U> message,
                                     PartitionSupplier partitionSupplier) {
         Assert.hasText(destination, "destination can't be null or empty");
-        ServiceBusSenderAsyncClient senderAsyncClient = null;
+        ServiceBusSenderAsyncClient senderAsyncClient = this.producerFactory.createProducer(destination);
         ServiceBusMessage serviceBusMessage = messageConverter.fromMessage(message, ServiceBusMessage.class);
 
         if (Objects.nonNull(serviceBusMessage) && !StringUtils.hasText(serviceBusMessage.getPartitionKey())) {
             String partitionKey = getPartitionKey(partitionSupplier);
             serviceBusMessage.setPartitionKey(partitionKey);
         }
-        Instrumentation instrumentation = new Instrumentation(destination, Instrumentation.Type.PRODUCER);
-        try {
-            instrumentationManager.addHealthInstrumentation(instrumentation);
-            senderAsyncClient = this.producerFactory.createProducer(destination);
-            instrumentationManager.getHealthInstrumentation(instrumentation).markStartedSuccessfully();
-        } catch (Exception e) {
-            instrumentationManager.getHealthInstrumentation(instrumentation).markStartFailed(e);
-            LOGGER.error("ServiceBus senderAsyncClient startup failed, Caused by " + e.getMessage());
-            throw new ServiceBusRuntimeException("ServiceBus send client startup failed, Caused by " + e.getMessage(), e);
-        }
-
         return senderAsyncClient.sendMessage(serviceBusMessage);
     }
 
@@ -84,7 +68,4 @@ public class ServiceBusTemplate implements SendOperation {
         return "";
     }
 
-    public InstrumentationManager getInstrumentationManager() {
-        return instrumentationManager;
-    }
 }

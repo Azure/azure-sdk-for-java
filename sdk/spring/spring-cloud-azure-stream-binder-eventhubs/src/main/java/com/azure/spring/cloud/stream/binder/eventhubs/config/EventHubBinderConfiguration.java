@@ -3,9 +3,10 @@
 
 package com.azure.spring.cloud.stream.binder.eventhubs.config;
 
+import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubOperationAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubMessagingAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubProperties;
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureEventHubResourceManagerAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureResourceManagerAutoConfiguration;
@@ -14,7 +15,8 @@ import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubExtende
 import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubChannelProvisioner;
 import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubChannelResourceManagerProvisioner;
 import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubProvisioner;
-import com.azure.spring.eventhubs.core.EventHubOperation;
+import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -33,7 +35,7 @@ import org.springframework.context.annotation.Import;
     AzureResourceManagerAutoConfiguration.class,
     AzureEventHubResourceManagerAutoConfiguration.class,
     AzureEventHubAutoConfiguration.class,
-    AzureEventHubOperationAutoConfiguration.class,
+    AzureEventHubMessagingAutoConfiguration.class,
     EventHubBinderHealthIndicatorConfiguration.class
 })
 @EnableConfigurationProperties(EventHubExtendedBindingProperties.class)
@@ -42,7 +44,7 @@ public class EventHubBinderConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    @ConditionalOnBean(EventHubProvisioner.class)
+    @ConditionalOnBean({ EventHubProvisioner.class, AzureEventHubProperties.class })
     public EventHubChannelProvisioner eventHubChannelArmProvisioner(AzureEventHubProperties eventHubProperties,
                                                                     EventHubProvisioner eventHubProvisioner) {
 
@@ -59,11 +61,13 @@ public class EventHubBinderConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public EventHubMessageChannelBinder eventHubBinder(EventHubChannelProvisioner eventHubChannelProvisioner,
-                                                       EventHubOperation eventHubOperation,
-                                                       EventHubExtendedBindingProperties bindingProperties) {
-        EventHubMessageChannelBinder binder =
-            new EventHubMessageChannelBinder(null, eventHubChannelProvisioner, eventHubOperation);
+                                                       EventHubExtendedBindingProperties bindingProperties,
+                                                       ObjectProvider<NamespaceProperties> namespaceProperties,
+                                                       CheckpointStore checkpointStore) {
+        EventHubMessageChannelBinder binder = new EventHubMessageChannelBinder(null, eventHubChannelProvisioner);
         binder.setBindingProperties(bindingProperties);
+        binder.setNamespaceProperties(namespaceProperties.getIfAvailable());
+        binder.setCheckpointStore(checkpointStore);
         return binder;
     }
 

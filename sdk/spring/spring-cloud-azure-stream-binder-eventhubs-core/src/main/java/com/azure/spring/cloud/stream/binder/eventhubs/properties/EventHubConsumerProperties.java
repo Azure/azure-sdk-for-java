@@ -3,77 +3,37 @@
 
 package com.azure.spring.cloud.stream.binder.eventhubs.properties;
 
-import com.azure.spring.messaging.checkpoint.CheckpointMode;
-import com.azure.spring.eventhubs.support.StartPosition;
-
-import java.time.Duration;
+import com.azure.spring.eventhubs.core.properties.ProcessorProperties;
+import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 
 /**
- * @author Warren Zhu
+ *
  */
 public class EventHubConsumerProperties {
-    /**
-     * Whether the consumer receives messages from the beginning or end of event hub.
-     * If {@link StartPosition#EARLIEST}, from beginning. If {@link StartPosition#LATEST}, from end.
-     * <p>
-     * Default: {@link StartPosition#LATEST}
-     */
-    private StartPosition startPosition = StartPosition.LATEST;
+//    /**
+//     * Whether the consumer receives messages from the beginning or end of event hub.
+//     * If {@link StartPosition#EARLIEST}, from beginning. If {@link StartPosition#LATEST}, from end.
+//     * <p>
+//     * Default: {@link StartPosition#LATEST}
+//     */
+//    private EventProcessingProperties.StartPosition startPosition = EventProcessingProperties.StartPosition.LATEST;
+    private final CheckpointConfig checkpoint = new CheckpointConfig();
+    private final ProcessorProperties processor = new ProcessorProperties();
 
-    /**
-     * Checkpoint mode used when consumer decide how to checkpoint message
-     * <p>
-     * Default: {@link CheckpointMode#BATCH}
-     */
-    private CheckpointMode checkpointMode = CheckpointMode.BATCH;
-
-    /**
-     * Effectively only when {@link CheckpointMode#PARTITION_COUNT}.
-     * Decides the amount of message for each partition to do one checkpoint
-     *
-     * <p>
-     * Default : 10
-     */
-    private int checkpointCount = 10;
-
-    /**
-     * Effectively only when {@link CheckpointMode#TIME}.
-     * Decides the time interval to do one checkpoint
-     *
-     * <p>
-     * Default : 5s
-     */
-    private Duration checkpointInterval = Duration.ofSeconds(5);
-
-    public StartPosition getStartPosition() {
-        return startPosition;
+//    public EventProcessingProperties.StartPosition getStartPosition() {
+//        return startPosition;
+//    }
+//
+//    public void setStartPosition(EventProcessingProperties.StartPosition startPosition) {
+//        this.startPosition = startPosition;
+//    }
+//
+    public CheckpointConfig getCheckpoint() {
+        return checkpoint;
     }
 
-    public void setStartPosition(StartPosition startPosition) {
-        this.startPosition = startPosition;
+    public ProcessorProperties getProcessor() {
+        return processor;
     }
 
-    public CheckpointMode getCheckpointMode() {
-        return checkpointMode;
-    }
-
-    public void setCheckpointMode(CheckpointMode checkpointMode) {
-        this.checkpointMode = checkpointMode;
-    }
-
-    public int getCheckpointCount() {
-        return checkpointCount;
-    }
-
-    public void setCheckpointCount(int checkpointCount) {
-        this.checkpointCount = checkpointCount;
-    }
-
-    public Duration getCheckpointInterval() {
-        return checkpointInterval;
-    }
-
-    public void setCheckpointInterval(Duration checkpointInterval) {
-        this.checkpointInterval = checkpointInterval;
-    }
 }

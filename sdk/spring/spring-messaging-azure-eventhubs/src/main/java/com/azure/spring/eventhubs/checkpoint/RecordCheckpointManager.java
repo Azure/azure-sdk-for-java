@@ -22,7 +22,7 @@ class RecordCheckpointManager extends CheckpointManager {
 
     RecordCheckpointManager(CheckpointConfig checkpointConfig) {
         super(checkpointConfig);
-        Assert.isTrue(this.checkpointConfig.getCheckpointMode() == CheckpointMode.RECORD,
+        Assert.isTrue(this.checkpointConfig.getMode() == CheckpointMode.RECORD,
             () -> "RecordCheckpointManager should have checkpointMode record");
     }
 

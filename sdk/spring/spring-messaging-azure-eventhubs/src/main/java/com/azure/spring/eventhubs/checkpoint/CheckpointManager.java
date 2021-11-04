@@ -32,7 +32,7 @@ public abstract class CheckpointManager {
      * @throws IllegalArgumentException If no checkpoint manager could be found.
      */
     public static CheckpointManager of(CheckpointConfig checkpointConfig) {
-        switch (checkpointConfig.getCheckpointMode()) {
+        switch (checkpointConfig.getMode()) {
             case TIME:
                 return new TimeCheckpointManager(checkpointConfig);
             case RECORD:
@@ -45,7 +45,7 @@ public abstract class CheckpointManager {
                 return new ManualCheckpointManager(checkpointConfig);
             default:
                 LOG.warn("Does not support checkpoint mode: "
-                    + checkpointConfig.getCheckpointMode().name());
+                    + checkpointConfig.getMode().name());
         }
 
         throw new IllegalArgumentException("Illegal checkpoint mode when building CheckpointManager");
@@ -75,7 +75,7 @@ public abstract class CheckpointManager {
                 .format(CHECKPOINT_SUCCESS_MSG, context.getPartitionContext().getConsumerGroup(),
                     EventDataHelper.toString(eventData),
                     context.getPartitionContext().getPartitionId(),
-                    this.checkpointConfig.getCheckpointMode()));
+                    this.checkpointConfig.getMode()));
         }
     }
 

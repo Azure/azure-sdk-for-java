@@ -3,10 +3,9 @@
 
 package com.azure.spring.cloud.stream.binder.eventhubs;
 
+import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubConsumerProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubProducerProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubChannelProvisioner;
-import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubConsumerProperties;
-import com.azure.spring.eventhubs.core.EventHubOperation;
 import org.springframework.cloud.stream.binder.AbstractTestBinder;
 import org.springframework.cloud.stream.binder.BinderHeaders;
 import org.springframework.cloud.stream.binder.ExtendedConsumerProperties;
@@ -21,12 +20,11 @@ public class EventHubTestBinder extends
         AbstractTestBinder<EventHubMessageChannelBinder, ExtendedConsumerProperties<EventHubConsumerProperties>,
                 ExtendedProducerProperties<EventHubProducerProperties>> {
 
-    EventHubTestBinder(EventHubOperation eventHubOperation) {
-        EventHubMessageChannelBinder binder =
-                new EventHubMessageChannelBinder(BinderHeaders.STANDARD_HEADERS, new EventHubChannelProvisioner(),
-                        eventHubOperation);
-        GenericApplicationContext context = new GenericApplicationContext();
-        binder.setApplicationContext(context);
+    EventHubTestBinder() {
+        EventHubMessageChannelBinder binder = new EventHubMessageChannelBinder(BinderHeaders.STANDARD_HEADERS,
+            new EventHubChannelProvisioner());
+
+        binder.setApplicationContext(new GenericApplicationContext());
         this.setBinder(binder);
     }
 
