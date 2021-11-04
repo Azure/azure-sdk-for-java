@@ -3,7 +3,11 @@
 
 package com.azure.spring.core.resource;
 
+import com.azure.storage.file.share.ShareClient;
 import com.azure.storage.file.share.ShareServiceClient;
+import com.azure.storage.file.share.models.ListSharesOptions;
+import com.azure.storage.file.share.models.ShareItem;
+import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -19,42 +23,63 @@ import org.springframework.core.io.ResourceLoader;
  * A {@link ProtocolResolver} implementation for the {@code azure-file://} protocol.
  *
  */
-public class AzureStorageFileProtocolResolver implements ProtocolResolver, ResourceLoaderAware,
-                                                         BeanFactoryPostProcessor {
+public class AzureStorageFileProtocolResolver extends AbstractAzureStorageProtocolResolver {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AzureStorageFileProtocolResolver.class);
+    private final ShareServiceClient shareServiceClient;
 
-    private ConfigurableListableBeanFactory beanFactory;
-    private ShareServiceClient shareServiceClient;
-
-    @Override
-    public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
-        this.beanFactory = beanFactory;
+    public AzureStorageFileProtocolResolver(ShareServiceClient shareServiceClient) {
+        this.shareServiceClient = shareServiceClient;
     }
 
     @Override
-    public void setResourceLoader(ResourceLoader resourceLoader) {
-        if (resourceLoader instanceof DefaultResourceLoader) {
-            ((DefaultResourceLoader) resourceLoader).addProtocolResolver(this);
-        } else {
-            LOGGER.warn("Custom Protocol using azure-file:// prefix will not be enabled.");
-        }
-    }
-
-    private ShareServiceClient getShareServiceClient() {
-        if (shareServiceClient == null) {
-            this.shareServiceClient = this.beanFactory.getBean(ShareServiceClient.class);
-        }
-
-        return shareServiceClient;
+    protected StorageType getStorageType() {
+        return StorageType.FILE;
     }
 
     @Override
-    public Resource resolve(String location, ResourceLoader resourceLoader) {
-        if (AzureStorageUtils.isAzureStorageResource(location, StorageType.FILE)) {
-            return new StorageFileResource(getShareServiceClient(), location, true);
+    protected Stream<StorageContainerItem> listStorageContainers(String containerPrefix) {
+        ListSharesOptions options = new ListSharesOptions();
+
+        options.setPrefix(containerPrefix);
+        options.setIncludeDeleted(false);
+        options.setIncludeMetadata(false);
+        options.setIncludeSnapshots(false);
+        return shareServiceClient.listShares(options, null, null)
+                                 .stream()
+                                 .map(ShareItem::getName)
+                                 .map(StorageContainerItem::new);
+    }
+
+    @Override
+    protected StorageContainerClient getStorageContainerClient(String name) {
+        return new StorageFileContainerClient(name);
+    }
+
+    private class StorageFileContainerClient implements StorageContainerClient {
+
+        private final String name;
+
+        public StorageFileContainerClient(String name) {
+            this.name = name;
         }
 
-        return null;
+        @Override
+        public String getName() {
+            return name;
+        }
+
+        @Override
+        public Stream<StorageItem> listItems(String itemPrefix) {
+            ShareClient shareClient = shareServiceClient.getShareClient(name);
+            return shareClient.getRootDirectoryClient().listFilesAndDirectories(itemPrefix, null, null, null)
+                              .stream()
+                              .filter(file -> !file.isDirectory())
+                              .map(file -> new StorageItem(name, file.getName(), getStorageType()));
+        }
+    }
+
+    @Override
+    protected Resource getStorageResource(String location, Boolean autoCreate) {
+        return new StorageFileResource(shareServiceClient, location, autoCreate);
     }
 }

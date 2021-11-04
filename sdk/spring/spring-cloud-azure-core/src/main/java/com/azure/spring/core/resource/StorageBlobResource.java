@@ -3,9 +3,13 @@
 
 package com.azure.spring.core.resource;
 
+import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceClient;
+import com.azure.storage.blob.models.BlobHttpHeaders;
+import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobStorageException;
+import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +22,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 /**
  * Implements {@link WritableResource} for reading and writing objects in Azure
@@ -36,19 +42,43 @@ public class StorageBlobResource extends AzureStorageResource {
     private final BlobContainerClient blobContainerClient;
     private final BlockBlobClient blockBlobClient;
     private final boolean autoCreateFiles;
+    private BlobProperties blobProperties;
+    private final String snapshot;
+    private final String versionId;
+    private final String contentType;
 
     public StorageBlobResource(BlobServiceClient blobServiceClient, String location) {
-        this(blobServiceClient, location, false);
+        this(blobServiceClient, location, true);
     }
 
-    public StorageBlobResource(BlobServiceClient blobServiceClient, String location, boolean autoCreateFiles) {
+    public StorageBlobResource(BlobServiceClient blobServiceClient, String location, Boolean autoCreateFiles) {
+        this(blobServiceClient, location, autoCreateFiles, null, null, null);
+    }
+
+    public StorageBlobResource(BlobServiceClient blobServiceClient, String location, Boolean autoCreateFiles,
+                               String snapshot, String versionId, String contentType) {
         assertIsAzureStorageLocation(location);
-        this.autoCreateFiles = autoCreateFiles;
+        this.autoCreateFiles = autoCreateFiles == null? getAutoCreateFiles(location) : autoCreateFiles;
         this.blobServiceClient = blobServiceClient;
         this.location = location;
-
+        this.snapshot = snapshot;
+        this.versionId = versionId;
+        this.contentType = StringUtils.hasText(contentType) ? contentType : getContentType(location);
+        Assert.isTrue(!(StringUtils.hasText(versionId) && StringUtils.hasText(snapshot)),
+            "'versionId' and 'snapshot' can not be both set");
         this.blobContainerClient = blobServiceClient.getBlobContainerClient(getContainerName(location));
-        this.blockBlobClient = blobContainerClient.getBlobClient(getFilename(location)).getBlockBlobClient();
+        BlobClient blobClient = blobContainerClient.getBlobClient(getFilename(location));
+        if (StringUtils.hasText(versionId)) {
+            blobClient = blobClient.getVersionClient(versionId);
+        }
+        if (StringUtils.hasText(snapshot)) {
+            blobClient = blobClient.getSnapshotClient(snapshot);
+        }
+        this.blockBlobClient = blobClient.getBlockBlobClient();
+    }
+
+    private boolean getAutoCreateFiles(String location) {
+        return true;
     }
 
     @Override
@@ -61,7 +91,13 @@ public class StorageBlobResource extends AzureStorageResource {
                     throw new FileNotFoundException("The blob was not found: " + this.location);
                 }
             }
-            return this.blockBlobClient.getBlobOutputStream(true);
+            BlockBlobOutputStreamOptions options = new BlockBlobOutputStreamOptions();
+            if (StringUtils.hasText(contentType)) {
+                BlobHttpHeaders blobHttpHeaders = new BlobHttpHeaders();
+                blobHttpHeaders.setContentType(contentType);
+                options.setHeaders(blobHttpHeaders);
+            }
+            return this.blockBlobClient.getBlobOutputStream(options);
         } catch (BlobStorageException e) {
             LOGGER.error(MSG_FAIL_OPEN_OUTPUT, e);
             throw new IOException(MSG_FAIL_OPEN_OUTPUT, e);
@@ -83,14 +119,21 @@ public class StorageBlobResource extends AzureStorageResource {
         throw new UnsupportedOperationException(getDescription() + " cannot be resolved to absolute file path");
     }
 
+    private BlobProperties getBlobProperties() {
+        if (blobProperties == null) {
+            blobProperties = blockBlobClient.getProperties();
+        }
+        return blobProperties;
+    }
+
     @Override
     public long contentLength() throws IOException {
-        return this.blockBlobClient.getProperties().getBlobSize();
+        return getBlobProperties().getBlobSize();
     }
 
     @Override
     public long lastModified() throws IOException {
-        return this.blockBlobClient.getProperties().getLastModified().toEpochSecond();
+        return getBlobProperties().getLastModified().toEpochSecond();
     }
 
     @Override
@@ -106,8 +149,20 @@ public class StorageBlobResource extends AzureStorageResource {
 
     @Override
     public String getDescription() {
-        return String.format("Azure storage account blob resource [container='%s', blob='%s']",
-                             this.blockBlobClient.getContainerName(), this.blockBlobClient.getBlobName());
+        StringBuilder sb = new StringBuilder();
+        sb.append("Azure storage account blob resource [container='")
+          .append(this.blockBlobClient.getContainerName())
+          .append("', blob='")
+          .append(blockBlobClient.getBlobName())
+          .append("'");
+        if (versionId != null) {
+            sb.append(", versionId='").append(versionId).append("'");
+        }
+        if (snapshot != null) {
+            sb.append(", snapshot='").append(snapshot).append("'");
+        }
+        sb.append("]");
+        return sb.toString();
     }
 
     @Override
@@ -134,8 +189,9 @@ public class StorageBlobResource extends AzureStorageResource {
 
     private void create() {
         if (!this.blobContainerClient.exists()) {
+            LOGGER.debug("Blob container {} doesn't exist, now creating it",
+                blobContainerClient.getBlobContainerName());
             this.blobContainerClient.create();
         }
     }
-
 }

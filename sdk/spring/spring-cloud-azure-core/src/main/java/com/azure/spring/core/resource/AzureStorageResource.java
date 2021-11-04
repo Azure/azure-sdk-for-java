@@ -3,17 +3,18 @@
 
 package com.azure.spring.core.resource;
 
+import java.net.URLConnection;
 import org.springframework.core.io.AbstractResource;
 import org.springframework.core.io.WritableResource;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 
 import java.util.Locale;
+import org.springframework.util.StringUtils;
 
 /**
  * Abstract implementation of {@link WritableResource} for reading and writing objects in Azure
  * StorageAccount.
- *
  * @author Warren Zhu
  */
 abstract class AzureStorageResource extends AbstractResource implements WritableResource {
@@ -28,6 +29,14 @@ abstract class AzureStorageResource extends AbstractResource implements Writable
         assertIsAzureStorageLocation(location);
         int containerEndIndex = assertContainerValid(location);
         return location.substring(getProtocolPrefix().length(), containerEndIndex);
+    }
+
+    String getContentType(String location) {
+        String objectName = getFilename(location);
+        if (StringUtils.hasText(objectName)) {
+            return URLConnection.guessContentTypeFromName(objectName);
+        }
+        return null;
     }
 
     String getFilename(String location) {
