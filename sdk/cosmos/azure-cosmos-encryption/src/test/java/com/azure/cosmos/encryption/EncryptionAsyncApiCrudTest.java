@@ -23,10 +23,9 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.models.CosmosPatchOperations;
+import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.util.CosmosPagedFlux;
-import com.azure.cosmos.util.CosmosPagedIterable;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.microsoft.data.encryption.cryptography.EncryptionKeyStoreProvider;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.testng.annotations.AfterClass;
@@ -521,6 +520,48 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
         } catch (IllegalArgumentException ex) {
             assertThat(ex.getMessage()).isEqualTo("Invalid Encryption Algorithm 'InvalidAlgorithm'");
         }
+    }
+
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT)
+    public void patchItem() {
+        String itemId = UUID.randomUUID().toString();
+        EncryptionPojo createPojo = getItem(itemId);
+
+        int originalSensitiveInt = createPojo.getSensitiveInt();
+        int newSensitiveInt = originalSensitiveInt + 1;
+
+        CosmosPatchOperations cosmosPatchOperations = CosmosPatchOperations.create();
+        cosmosPatchOperations.add("/sensitiveString", "patched");
+        cosmosPatchOperations.remove("/sensitiveDouble");
+        cosmosPatchOperations.replace("/sensitiveInt", newSensitiveInt);
+        cosmosPatchOperations.set("/sensitiveBoolean", false);
+
+        CosmosPatchItemRequestOptions options = new CosmosPatchItemRequestOptions();
+        CosmosItemResponse<EncryptionPojo> response = this.cosmosEncryptionAsyncContainer.getCosmosAsyncContainer().patchItem(
+            createPojo.getId(),
+            new PartitionKey(createPojo.getMypk()),
+            cosmosPatchOperations,
+            options,
+            EncryptionPojo.class).block();
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+
+        EncryptionPojo patchedItem = response.getItem();
+        assertThat(patchedItem).isNotNull();
+
+        assertThat(patchedItem.getSensitiveString()).isEqualTo("patched");
+        assertThat(patchedItem.getSensitiveDouble()).isNull();
+        assertThat(patchedItem.getSensitiveInt()).isEqualTo(newSensitiveInt);
+        assertThat(patchedItem.isSensitiveBoolean()).isEqualTo(false);
+
+        response = this.cosmosEncryptionAsyncContainer.readItem(
+            createPojo.getId(),
+            new PartitionKey(createPojo.getMypk()),
+            options,
+            EncryptionPojo.class).block();
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+        assertThat(response.getItem()).isEqualTo(patchedItem);
     }
 
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
