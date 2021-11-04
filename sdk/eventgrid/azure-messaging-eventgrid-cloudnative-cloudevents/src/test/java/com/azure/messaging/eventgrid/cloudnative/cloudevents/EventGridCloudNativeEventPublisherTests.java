@@ -6,25 +6,19 @@ package com.azure.messaging.eventgrid.cloudnative.cloudevents;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
-import com.azure.core.util.BinaryData;
-import com.azure.messaging.eventgrid.EventGridEvent;
 import com.azure.messaging.eventgrid.EventGridPublisherAsyncClient;
+import com.azure.messaging.eventgrid.EventGridPublisherClient;
 import com.azure.messaging.eventgrid.EventGridPublisherClientBuilder;
 import io.cloudevents.CloudEvent;
-import io.cloudevents.CloudEventData;
-import io.cloudevents.SpecVersion;
+import io.cloudevents.core.builder.CloudEventBuilder;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -32,12 +26,9 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class EventGridCloudNativeEventPublisherTests extends TestBase {
     // Event Grid endpoint for a topic accepting CloudEvents schema events
     private static final String CLOUD_ENDPOINT = "AZURE_EVENTGRID_CLOUDEVENT_ENDPOINT";
-
     // Event Grid access key for a topic accepting CloudEvents schema events
     private static final String CLOUD_KEY = "AZURE_EVENTGRID_CLOUDEVENT_KEY";
-
     private static final String DUMMY_ENDPOINT = "https://www.dummyEndpoint.com/api/events";
-
     private static final String DUMMY_KEY = "dummyKey";
 
     private EventGridPublisherClientBuilder builder;
@@ -55,6 +46,8 @@ public class EventGridCloudNativeEventPublisherTests extends TestBase {
             builder.addPolicy(interceptorManager.getRecordPolicy())
                 .retryPolicy(new RetryPolicy());
         }
+
+        builder.endpoint(getEndpoint(CLOUD_ENDPOINT)).credential(getKey(CLOUD_KEY));
     }
 
     @Override
@@ -62,26 +55,61 @@ public class EventGridCloudNativeEventPublisherTests extends TestBase {
         StepVerifier.resetDefaultTimeout();
     }
 
-
     @Test
-    public void publishEventGridEvent() throws URISyntaxException {
-        EventGridPublisherAsyncClient<com.azure.core.models.CloudEvent> egClient = builder
-                                                                     .endpoint(getEndpoint(CLOUD_ENDPOINT))
-                                                                     .credential(getKey(CLOUD_KEY))
-                                                                     .buildCloudEventPublisherAsyncClient();
-
-        final CloudEvent cloudEvent = getCloudEvent("1.0", UUID.randomUUID().toString(),  "User.Created.Text",
-            new URI("http://localHost"), null, null, null, OffsetDateTime.now(),
-            () -> "name".getBytes(StandardCharsets.UTF_8));
-
-        StepVerifier.create(EventGridCloudNativeEventPublisher.sendEventAsync(egClient, cloudEvent))
-            .verifyComplete();
-
-
+    public void publishEventGridEvents() {
+        EventGridPublisherAsyncClient<com.azure.core.models.CloudEvent> egClientAsync =
+            builder.buildCloudEventPublisherAsyncClient();
+        EventGridPublisherClient<com.azure.core.models.CloudEvent> egClient =
+            builder.buildCloudEventPublisherClient();
+        // Single Event
+        CloudEvent cloudEvent = CloudEventBuilder.v1()
+                                    .withData("{\"name\": \"joe\"}".getBytes(StandardCharsets.UTF_8))
+                                    .withId(UUID.randomUUID().toString())
+                                    .withType("User.Created.Text")
+                                    .withSource(URI.create("http://localHost"))
+                                    .withDataContentType("application/json")
+                                    .build();
+        // Multiple Events
         final List<CloudEvent> cloudEvents = new ArrayList<>();
         cloudEvents.add(cloudEvent);
-        StepVerifier.create(EventGridCloudNativeEventPublisher.sendEventsAsync(egClient, cloudEvents))
+
+        // Async publishing
+        StepVerifier.create(EventGridCloudNativeEventPublisher.sendEventAsync(egClientAsync, cloudEvent))
             .verifyComplete();
+        StepVerifier.create(EventGridCloudNativeEventPublisher.sendEventsAsync(egClientAsync, cloudEvents))
+            .verifyComplete();
+
+        // Sync publishing
+        EventGridCloudNativeEventPublisher.sendEvent(egClient, cloudEvent);
+        EventGridCloudNativeEventPublisher.sendEvents(egClient, cloudEvents);
+    }
+
+    @Test
+    public void publishEventGridEventsWithoutContentType() {
+        EventGridPublisherAsyncClient<com.azure.core.models.CloudEvent> egClientAsync =
+            builder.buildCloudEventPublisherAsyncClient();
+        EventGridPublisherClient<com.azure.core.models.CloudEvent> egClient =
+            builder.buildCloudEventPublisherClient();
+        // Single Event
+        CloudEvent cloudEvent = CloudEventBuilder.v1()
+                               .withData("{\"name\": \"joe\"}".getBytes(StandardCharsets.UTF_8))
+                               .withId(UUID.randomUUID().toString())
+                               .withType("User.Created.Text")
+                               .withSource(URI.create("http://localHost"))
+                               .build();
+        // Multiple Events
+        final List<CloudEvent> cloudEvents = new ArrayList<>();
+        cloudEvents.add(cloudEvent);
+
+        // Async publishing
+        StepVerifier.create(EventGridCloudNativeEventPublisher.sendEventAsync(egClientAsync, cloudEvent))
+            .verifyComplete();
+        StepVerifier.create(EventGridCloudNativeEventPublisher.sendEventsAsync(egClientAsync, cloudEvents))
+            .verifyComplete();
+
+        // Sync publishing
+        EventGridCloudNativeEventPublisher.sendEvent(egClient, cloudEvent);
+        EventGridCloudNativeEventPublisher.sendEvents(egClient, cloudEvents);
     }
 
     private String getEndpoint(String liveEnvName) {
@@ -101,74 +129,4 @@ public class EventGridCloudNativeEventPublisherTests extends TestBase {
         assertNotNull(key.getKey(), "System environment variable " + liveEnvName + "is null");
         return key;
     }
-
-    CloudEvent getCloudEvent(String specVersion, String id, String type, URI source, String dataContentType, URI dataSchema,
-        String subject, OffsetDateTime time, CloudEventData data) {
-
-        return new CloudEvent() {
-            // Not supported
-            @Override
-            public Object getExtension(String s) {
-                return null;
-            }
-            // Not supported
-            @Override
-            public Set<String> getExtensionNames() {
-                return null;
-            }
-
-            @Override
-            public SpecVersion getSpecVersion() {
-                return SpecVersion.valueOf(specVersion);
-            }
-
-            @Override
-            public String getId() {
-                return id;
-            }
-
-            @Override
-            public String getType() {
-                return type;
-            }
-
-            @Override
-            public URI getSource() {
-                return source;
-            }
-
-            @Override
-            public String getDataContentType() {
-                return dataContentType;
-            }
-
-            @Override
-            public URI getDataSchema() {
-                return dataSchema;
-            }
-
-            @Override
-            public String getSubject() {
-                return subject;
-            }
-
-            @Override
-            public OffsetDateTime getTime() {
-                return time;
-            }
-
-            // Not supported
-            @Override
-            public Object getAttribute(String s) throws IllegalArgumentException {
-                return null;
-            }
-
-            @Override
-            public CloudEventData getData() {
-                return data;
-            }
-        };
-
-    }
-
 }

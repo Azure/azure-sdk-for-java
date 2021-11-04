@@ -42,6 +42,27 @@
     <tag>HEAD</tag>
   </scm>
 
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-enforcer-plugin</artifactId>
+        <version>3.0.0-M3</version> <!-- {x-version-update;org.apache.maven.plugins:maven-enforcer-plugin;external_dependency} -->
+        <configuration>
+          <rules>
+            <bannedDependencies>
+              <includes>
+                <include>io.cloudevents:cloudevents-api:[2.2.0]</include> <!-- {x-include-update;io.cloudevents:cloudevents-api;external_dependency} -->
+                <include>io.cloudevents:cloudevents-json-jackson:[2.2.0]</include> <!-- {x-include-update;io.cloudevents:cloudevents-json-jackson;external_dependency} -->
+                <include>io.cloudevents:cloudevents-core:[2.2.0]</include> <!-- {x-include-update;io.cloudevents:cloudevents-core;external_dependency} -->
+              </includes>
+            </bannedDependencies>
+          </rules>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+
   <developers>
     <developer>
       <id>microsoft</id>
@@ -87,14 +108,10 @@
       <version>2.2.0</version>
     </dependency>
     <dependency>
-          <groupId>io.cloudevents</groupId>
-          <artifactId>cloudevents-core</artifactId>
-          <version>2.2.0</version>
-        </dependency>
-    <dependency>
       <groupId>io.cloudevents</groupId>
-      <artifactId>cloudevents-json-jackson</artifactId>
+      <artifactId>cloudevents-core</artifactId>
       <version>2.2.0</version>
+      <scope>test</scope>
     </dependency>
   </dependencies>
 </project>
