@@ -6,10 +6,10 @@ package com.azure.data.schemaregistry;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
-import com.azure.data.schemaregistry.implementation.models.ErrorException;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
@@ -214,9 +214,9 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         // Act & Assert
         StepVerifier.create(client1.registerSchema(schemaGroup, schemaName, invalidContent, SchemaFormat.AVRO))
             .expectErrorSatisfies(error -> {
-                assertTrue(error instanceof ErrorException);
+                assertTrue(error instanceof HttpResponseException);
 
-                final ErrorException exception = (ErrorException) error;
+                final HttpResponseException exception = (HttpResponseException) error;
                 assertEquals(400, exception.getResponse().getStatusCode());
             }).verify();
     }

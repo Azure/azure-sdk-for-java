@@ -6,10 +6,10 @@ package com.azure.data.schemaregistry;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
-import com.azure.data.schemaregistry.implementation.models.ErrorException;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
@@ -186,7 +186,7 @@ public class SchemaRegistryClientTests extends TestBase {
         final SchemaRegistryClient client1 = builder.buildClient();
 
         // Act
-        final ErrorException exception = assertThrows(ErrorException.class,
+        final HttpResponseException exception = assertThrows(HttpResponseException.class,
             () -> client1.registerSchema(schemaGroup, schemaName, invalidContent, SchemaFormat.AVRO));
 
         // Assert
