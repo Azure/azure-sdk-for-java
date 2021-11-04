@@ -13,11 +13,6 @@ spring:
       bindings:
         consume-in-0:
           group: $Default
-      eventhub:
-        bindings:
-          consume-in-0:
-            consumer:
-              checkpoint-mode: MANUAL
       default:
         producer:
           errorChannelEnabled: true

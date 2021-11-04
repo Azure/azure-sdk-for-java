@@ -29,7 +29,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(classes = EventHubBinderSyncModeIT.TestConfig.class)
 @TestPropertySource(properties =
     {
-    "spring.cloud.stream.eventhub.bindings.input.producer.sync=true",
+    "spring.cloud.stream.eventhub.bindings.supply-out-0.producer.sync=true",
     "spring.cloud.stream.bindings.consume-in-0.destination=test-eventhub-sync",
     "spring.cloud.stream.bindings.supply-out-0.destination=test-eventhub-sync",
     "spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name=test-eventhub-sync"

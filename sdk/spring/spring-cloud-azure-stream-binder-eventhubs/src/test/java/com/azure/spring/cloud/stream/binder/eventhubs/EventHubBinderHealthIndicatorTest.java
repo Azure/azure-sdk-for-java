@@ -5,7 +5,7 @@ package com.azure.spring.cloud.stream.binder.eventhubs;
 
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubProperties;
-import com.azure.spring.eventhubs.core.EventHubClientFactory;
+import com.azure.spring.eventhubs.core.producer.EventHubProducerFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Timeout;
@@ -29,7 +29,7 @@ public class EventHubBinderHealthIndicatorTest {
     private EventHubMessageChannelBinder binder;
 
     @Mock
-    private EventHubClientFactory clientFactory;
+    private EventHubProducerFactory producerFactory;
 
     @Mock
     private EventHubProducerAsyncClient producerAsyncClient;
@@ -39,8 +39,8 @@ public class EventHubBinderHealthIndicatorTest {
     @BeforeEach
     public void init() {
         MockitoAnnotations.openMocks(this);
-        when(clientFactory.getOrCreateProducerClient(anyString())).thenReturn(producerAsyncClient);
-        healthIndicator = new EventHubHealthIndicator(binder, clientFactory);
+        when(producerFactory.createProducer(anyString())).thenReturn(producerAsyncClient);
+        healthIndicator = new EventHubHealthIndicator(binder, producerFactory);
     }
 
     @Test

@@ -51,8 +51,7 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties i
 
         Producer properties = new Producer();
 
-        AzurePropertiesUtils.copyAzureCommonProperties(this.producer, properties);
-        AzurePropertiesUtils.copyAzureCommonPropertiesIgnoreNull(this, properties);
+        AzurePropertiesUtils.mergeAzureCommonProperties(this, this.producer, properties);
 
         propertyMapper.from(this.getDomainName()).to(properties::setDomainName);
         propertyMapper.from(this.getNamespace()).to(properties::setNamespace);
@@ -72,8 +71,7 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties i
 
         Consumer properties = new Consumer();
 
-        AzurePropertiesUtils.copyAzureCommonProperties(this.consumer, properties);
-        AzurePropertiesUtils.copyAzureCommonPropertiesIgnoreNull(this, properties);
+        AzurePropertiesUtils.mergeAzureCommonProperties(this, this.consumer, properties);
 
         propertyMapper.from(this.getDomainName()).to(properties::setDomainName);
         propertyMapper.from(this.getNamespace()).to(properties::setNamespace);
@@ -101,8 +99,7 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties i
 
         Processor properties = new Processor();
 
-        AzurePropertiesUtils.copyAzureCommonProperties(this.processor, properties);
-        AzurePropertiesUtils.copyAzureCommonPropertiesIgnoreNull(this, properties);
+        AzurePropertiesUtils.mergeAzureCommonProperties(this, this.processor, properties);
 
         propertyMapper.from(this.getDomainName()).to(properties::setDomainName);
         propertyMapper.from(this.getNamespace()).to(properties::setNamespace);

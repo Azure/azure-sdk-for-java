@@ -5,7 +5,7 @@ package com.azure.spring.cloud.stream.binder.eventhubs.config;
 
 import com.azure.spring.cloud.stream.binder.eventhubs.EventHubHealthIndicator;
 import com.azure.spring.cloud.stream.binder.eventhubs.EventHubMessageChannelBinder;
-import com.azure.spring.eventhubs.core.EventHubClientFactory;
+import com.azure.spring.eventhubs.core.producer.EventHubProducerFactory;
 import org.springframework.boot.actuate.autoconfigure.health.ConditionalOnEnabledHealthIndicator;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -19,8 +19,8 @@ class EventHubBinderHealthIndicatorConfiguration {
 
     @Bean
     EventHubHealthIndicator eventHubHealthIndicator(EventHubMessageChannelBinder binder,
-                                                    EventHubClientFactory clientFactory) {
-        return new EventHubHealthIndicator(binder, clientFactory);
+                                                    EventHubProducerFactory producerFactory) {
+        return new EventHubHealthIndicator(binder, producerFactory);
     }
 
 

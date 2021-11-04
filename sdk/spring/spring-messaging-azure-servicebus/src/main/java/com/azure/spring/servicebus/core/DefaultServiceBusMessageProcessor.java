@@ -6,8 +6,8 @@ package com.azure.spring.servicebus.core;
 
 import com.azure.messaging.servicebus.ServiceBusErrorContext;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
-import com.azure.spring.messaging.checkpoint.AzureCheckpointer;
 import com.azure.spring.messaging.AzureHeaders;
+import com.azure.spring.messaging.checkpoint.AzureCheckpointer;
 import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 import com.azure.spring.messaging.checkpoint.CheckpointMode;
 import com.azure.spring.messaging.checkpoint.Checkpointer;
@@ -61,7 +61,7 @@ public class DefaultServiceBusMessageProcessor implements ServiceBusMessageProce
                                                               () -> Mono.fromRunnable(context::abandon));
             headers.put(ServiceBusMessageHeaders.RECEIVED_MESSAGE_CONTEXT, context);
 
-            if (this.checkpointConfig.getCheckpointMode() == CheckpointMode.MANUAL) {
+            if (CheckpointMode.MANUAL.equals(this.checkpointConfig.getMode())) {
                 headers.put(AzureHeaders.CHECKPOINTER, checkpointer);
             }
 
@@ -69,7 +69,7 @@ public class DefaultServiceBusMessageProcessor implements ServiceBusMessageProce
                                                             payloadType);
             consumer.accept(message);
 
-            if (this.checkpointConfig.getCheckpointMode() == CheckpointMode.RECORD) {
+            if (CheckpointMode.RECORD.equals(this.checkpointConfig.getMode())) {
                 checkpointer.success()
                             .doOnSuccess(t -> logCheckpointSuccess(message))
                             .doOnError(t -> logCheckpointFail(message, t))
@@ -86,7 +86,7 @@ public class DefaultServiceBusMessageProcessor implements ServiceBusMessageProce
 
     protected void logCheckpointSuccess(Message<?> message) {
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug(String.format(MSG_SUCCESS_CHECKPOINT, message, this.checkpointConfig.getCheckpointMode()));
+            LOGGER.debug(String.format(MSG_SUCCESS_CHECKPOINT, message, this.checkpointConfig.getMode()));
         }
     }
 

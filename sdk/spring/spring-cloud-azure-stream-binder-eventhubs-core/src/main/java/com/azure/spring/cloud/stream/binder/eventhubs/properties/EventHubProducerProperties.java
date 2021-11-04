@@ -3,6 +3,8 @@
 
 package com.azure.spring.cloud.stream.binder.eventhubs.properties;
 
+import com.azure.spring.eventhubs.core.properties.ProducerProperties;
+
 /**
  * @author Warren Zhu
  */
@@ -24,6 +26,9 @@ public class EventHubProducerProperties {
      */
     private long sendTimeout = 10000;
 
+    private final ProducerProperties producer = new ProducerProperties();
+
+
     public boolean isSync() {
         return sync;
     }
@@ -38,5 +43,9 @@ public class EventHubProducerProperties {
 
     public void setSendTimeout(long sendTimeout) {
         this.sendTimeout = sendTimeout;
+    }
+
+    public ProducerProperties getProducer() {
+        return producer;
     }
 }

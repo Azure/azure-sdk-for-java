@@ -42,6 +42,13 @@ public class AzurePropertiesUtils {
         copyPropertiesIgnoreNull(source.getCredential(), target.getCredential());
     }
 
+    public static <T extends AzureProperties> void mergeAzureCommonProperties(AzureProperties defaultProperties,
+                                                                              AzureProperties properties,
+                                                                              T target) {
+        copyAzureCommonProperties(defaultProperties, target);
+        copyAzureCommonPropertiesIgnoreNull(properties, target);
+    }
+
     private static void copyPropertiesIgnoreNull(Object source, Object target) {
         BeanUtils.copyProperties(source, target, findNullPropertyNames(source));
     }

@@ -11,8 +11,8 @@ import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubPr
 import com.azure.spring.cloud.resourcemanager.connectionstring.AbstractArmConnectionStringProvider;
 import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.core.service.AzureServiceType;
-import com.azure.spring.service.eventhubs.EventProcessorListener;
 import com.azure.spring.service.eventhubs.factory.EventProcessorClientBuilderFactory;
+import com.azure.spring.service.eventhubs.processor.EventProcessingListener;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.AllNestedConditions;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
@@ -29,7 +29,7 @@ import org.springframework.util.StringUtils;
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(EventProcessorClientBuilder.class)
-@ConditionalOnBean({ EventProcessorListener.class, CheckpointStore.class })
+@ConditionalOnBean({ EventProcessingListener.class, CheckpointStore.class })
 @Conditional(AzureEventProcessorClientConfiguration.ProcessorAvailableCondition.class)
 class AzureEventProcessorClientConfiguration {
 
@@ -49,7 +49,7 @@ class AzureEventProcessorClientConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public EventProcessorClientBuilderFactory factory(CheckpointStore checkpointStore,
-                                                      EventProcessorListener listener,
+                                                      EventProcessingListener listener,
                                                       ObjectProvider<AbstractArmConnectionStringProvider<AzureServiceType.EventHub>> connectionStringProviders) {
         final EventProcessorClientBuilderFactory factory = new EventProcessorClientBuilderFactory(this.processorProperties,
                                                                                                   checkpointStore,
