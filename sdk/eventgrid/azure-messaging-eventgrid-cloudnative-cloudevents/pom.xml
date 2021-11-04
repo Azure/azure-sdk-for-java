@@ -53,8 +53,6 @@
             <bannedDependencies>
               <includes>
                 <include>io.cloudevents:cloudevents-api:[2.2.0]</include> <!-- {x-include-update;io.cloudevents:cloudevents-api;external_dependency} -->
-                <include>io.cloudevents:cloudevents-json-jackson:[2.2.0]</include> <!-- {x-include-update;io.cloudevents:cloudevents-json-jackson;external_dependency} -->
-                <include>io.cloudevents:cloudevents-core:[2.2.0]</include> <!-- {x-include-update;io.cloudevents:cloudevents-core;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
