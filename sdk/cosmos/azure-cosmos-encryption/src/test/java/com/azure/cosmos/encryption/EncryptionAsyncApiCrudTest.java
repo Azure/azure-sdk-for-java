@@ -537,7 +537,7 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
         cosmosPatchOperations.set("/sensitiveBoolean", false);
 
         CosmosPatchItemRequestOptions options = new CosmosPatchItemRequestOptions();
-        CosmosItemResponse<EncryptionPojo> response = this.cosmosEncryptionAsyncContainer.getCosmosAsyncContainer().patchItem(
+        CosmosItemResponse<EncryptionPojo> response = this.cosmosEncryptionAsyncContainer.patchItem(
             createPojo.getId(),
             new PartitionKey(createPojo.getMypk()),
             cosmosPatchOperations,
