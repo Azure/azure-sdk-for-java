@@ -2675,8 +2675,9 @@ public final class ServiceBusAdministrationAsyncClient {
         } else {
             scope = ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE;
         }
-        tokenCredential.getToken(new TokenRequestContext().addScopes(scope)).subscribe(
-            accessToken -> {headers.add(headerName, accessToken.getToken());});
+        tokenCredential.getToken(new TokenRequestContext().addScopes(scope)).subscribe(accessToken -> {
+            headers.add(headerName, accessToken.getToken());
+        });
     }
 
     /**
