@@ -71,7 +71,6 @@ class AzureStorageBlobProtocolResolverTest extends AbstractAzureStorageProtocolR
         when(nonExistingBlockBlob.getBlobName()).thenReturn(NON_EXISTING);
 
 
-
     }
 
     @Override
@@ -104,7 +103,6 @@ class AzureStorageBlobProtocolResolverTest extends AbstractAzureStorageProtocolR
         super.testValidObject();
         verify(blockBlobClient, times(1)).getProperties();
     }
-
 
 
 }

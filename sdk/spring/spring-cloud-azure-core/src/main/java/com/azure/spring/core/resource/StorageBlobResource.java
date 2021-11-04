@@ -11,23 +11,22 @@ import com.azure.storage.blob.models.BlobProperties;
 import com.azure.storage.blob.models.BlobStorageException;
 import com.azure.storage.blob.options.BlockBlobOutputStreamOptions;
 import com.azure.storage.blob.specialized.BlockBlobClient;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.WritableResource;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.WritableResource;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 /**
- * Implements {@link WritableResource} for reading and writing objects in Azure
- * StorageAccount blob. An instance of this class represents a handle to a blob.
+ * Implements {@link WritableResource} for reading and writing objects in Azure StorageAccount blob. An instance of this
+ * class represents a handle to a blob.
  *
  * @author Warren Zhu
  */
@@ -58,7 +57,7 @@ public class StorageBlobResource extends AzureStorageResource {
     public StorageBlobResource(BlobServiceClient blobServiceClient, String location, Boolean autoCreateFiles,
                                String snapshot, String versionId, String contentType) {
         assertIsAzureStorageLocation(location);
-        this.autoCreateFiles = autoCreateFiles == null? getAutoCreateFiles(location) : autoCreateFiles;
+        this.autoCreateFiles = autoCreateFiles == null ? getAutoCreateFiles(location) : autoCreateFiles;
         this.blobServiceClient = blobServiceClient;
         this.location = location;
         this.snapshot = snapshot;

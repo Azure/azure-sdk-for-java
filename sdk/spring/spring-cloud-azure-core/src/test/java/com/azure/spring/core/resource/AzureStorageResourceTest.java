@@ -50,7 +50,7 @@ public class AzureStorageResourceTest {
 
     /**
      * Provides a list of valid locations as parameters in the format of:
-     *
+     * <p>
      * location -- container name -- blob name
      */
     static Stream<Arguments> contentTypeProvider() {
@@ -64,7 +64,7 @@ public class AzureStorageResourceTest {
 
     /**
      * Provides a list of valid locations as parameters in the format of:
-     *
+     * <p>
      * location -- container name -- blob name
      */
     static Stream<Arguments> validLocationsProvider() {

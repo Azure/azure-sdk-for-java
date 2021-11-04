@@ -56,7 +56,7 @@ public abstract class AbstractAzureStorageProtocolResolver implements ProtocolRe
                 String filePattern = AzureStorageUtils.getFilename(pattern, getStorageType());
                 resources = resolveResources(containerPattern, filePattern);
             } else {
-                return new Resource[]{getResource(pattern)};
+                return new Resource[] { getResource(pattern) };
             }
         }
         if (null == resources) {
@@ -141,7 +141,7 @@ public abstract class AbstractAzureStorageProtocolResolver implements ProtocolRe
         /**
          * List all storage items with the given prefix, or all items if the underlying system doesn't support prefix
          * matching.
-         *
+         * <p>
          * Normally, a cloud storage system doesn't support wildcard pattern matching, but support prefix match
          */
         Stream<StorageItem> listItems(String itemPrefix);
@@ -161,11 +161,11 @@ public abstract class AbstractAzureStorageProtocolResolver implements ProtocolRe
 
     /**
      * List all storage containers.
-     *
+     * <p>
      * The underlying storage system may support 'prefix' filter, for example, Azure Storage Blob supports this
-     *
+     * <p>
      * https://docs.microsoft.com/en-us/rest/api/storageservices/list-blobs
-     *
+     * <p>
      * In this case, we can avoid load all containers to do client side filtering.
      *
      * @param containerPrefix container name prefix, without any wildcard characters.

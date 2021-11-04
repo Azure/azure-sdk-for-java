@@ -61,6 +61,7 @@ public abstract class AbstractAzureStorageProtocolResolverTest {
     void testSlashPath() {
         Assertions.assertThrows(IllegalArgumentException.class, () -> getResource("/"));
     }
+
     @Test
     void testGetResourceWithExistingResource() {
         String resourceName = CONTAINER_NAME + "/" + EXISTING_ITEM_NAME;
@@ -76,6 +77,7 @@ public abstract class AbstractAzureStorageProtocolResolverTest {
         assertTrue(resource.exists());
         assertEquals(CONTENT_LENGTH, resource.contentLength());
     }
+
     @Test
     void testWritable() throws Exception {
         WritableResource writableResource = getWritableResource("container/blob");

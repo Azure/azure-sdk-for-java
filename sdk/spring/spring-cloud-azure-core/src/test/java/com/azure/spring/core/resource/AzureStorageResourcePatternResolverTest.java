@@ -131,12 +131,12 @@ class AzureStorageResourcePatternResolverTest {
     }
 
     static String[] locationsProvider() {
-        return new String[]{
+        return new String[] {
             "mycontainer/myblob",
             "mycon*/mybl*",
             "mycontaine?/myblo?",
             "mycontainer/*",
             "*/myblob",
-            "*/*"};
+            "*/*" };
     }
 }

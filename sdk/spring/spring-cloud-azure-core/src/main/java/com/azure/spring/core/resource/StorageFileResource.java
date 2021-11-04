@@ -9,23 +9,21 @@ import com.azure.storage.file.share.ShareFileClient;
 import com.azure.storage.file.share.ShareServiceClient;
 import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareStorageException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.WritableResource;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.WritableResource;
 import org.springframework.util.StringUtils;
 
 /**
- * Implements {@link WritableResource} for reading and writing objects in Azure
- * StorageAccount file. An instance of this class represents a handle to a file.
- *
+ * Implements {@link WritableResource} for reading and writing objects in Azure StorageAccount file. An instance of this
+ * class represents a handle to a file.
  */
 public class StorageFileResource extends AzureStorageResource {
     private static final Logger LOGGER = LoggerFactory.getLogger(StorageFileResource.class);
@@ -43,10 +41,13 @@ public class StorageFileResource extends AzureStorageResource {
     public StorageFileResource(ShareServiceClient shareServiceClient, String location) {
         this(shareServiceClient, location, false);
     }
+
     public StorageFileResource(ShareServiceClient shareServiceClient, String location, boolean autoCreateFiles) {
         this(shareServiceClient, location, autoCreateFiles, null);
     }
-    public StorageFileResource(ShareServiceClient shareServiceClient, String location, boolean autoCreateFiles,String contentType) {
+
+    public StorageFileResource(ShareServiceClient shareServiceClient, String location, boolean autoCreateFiles,
+                               String contentType) {
         assertIsAzureStorageLocation(location);
         this.autoCreateFiles = autoCreateFiles;
         this.location = location;
@@ -145,7 +146,7 @@ public class StorageFileResource extends AzureStorageResource {
         }
         if (!shareFileClient.exists()) {
             ShareFileHttpHeaders header = null;
-            if(StringUtils.hasText(contentType)){
+            if (StringUtils.hasText(contentType)) {
                 header = new ShareFileHttpHeaders();
                 header.setContentType(contentType);
             }
