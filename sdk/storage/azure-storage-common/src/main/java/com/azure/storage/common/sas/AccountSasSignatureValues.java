@@ -25,9 +25,16 @@ public final class AccountSasSignatureValues {
     /**
      * Pin down to highest version that worked with string to sign defined here.
      */
-    private static final String VERSION_DEPRECATED_SHARED_KEY_SAS_STRING_TO_SIGN =
-        Configuration.getGlobalConfiguration()
+    private static final String VERSION_DEPRECATED_SHARED_KEY_SAS_STRING_TO_SIGN;
+
+    static {
+        String version = Configuration.getGlobalConfiguration()
             .get(Constants.PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, "2020-10-02");
+        if (version.compareTo("2020-10-02") > 0) {
+            version = "2020-10-02";
+        }
+        VERSION_DEPRECATED_SHARED_KEY_SAS_STRING_TO_SIGN = version;
+    }
 
     private SasProtocol protocol;
 
