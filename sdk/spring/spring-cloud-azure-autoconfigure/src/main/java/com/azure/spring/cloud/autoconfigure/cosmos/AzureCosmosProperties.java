@@ -33,7 +33,6 @@ public class AzureCosmosProperties extends AbstractAzureServiceConfigurationProp
     private final HttpProxyProperties proxy = new HttpProxyProperties();
 
     @NotEmpty
-    @Pattern(regexp = "http[s]{0,1}://.*.documents.azure.com.*")
     private String endpoint;
 
     private String key;
