@@ -3,12 +3,13 @@
 
 package com.azure.messaging.servicebus.administration;
 
-import com.azure.core.credential.AccessToken;
-import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.*;
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
@@ -95,9 +96,6 @@ class ServiceBusAdministrationAsyncClientTest {
     private Response<Object> objectResponse;
     @Mock
     private Response<Object> secondObjectResponse;
-    @Mock
-    private TokenCredential credential;
-    private AutoCloseable mockClosable;
 
     private final String queueName = "some-queue";
     private final String responseString = "some-xml-response-string";
@@ -108,6 +106,7 @@ class ServiceBusAdministrationAsyncClientTest {
     private final HttpHeaders httpHeaders = new HttpHeaders().put("foo", "baz");
     private final HttpRequest httpRequest;
 
+    private AutoCloseable mockClosable;
     private ServiceBusAdministrationAsyncClient client;
 
     ServiceBusAdministrationAsyncClientTest() {
@@ -147,7 +146,7 @@ class ServiceBusAdministrationAsyncClientTest {
         when(serviceClient.getEndpoint()).thenReturn(dummyEndpoint);
         when(serviceClient.getSubscriptions()).thenReturn(subscriptions);
 
-        client = new ServiceBusAdministrationAsyncClient(serviceClient, serializer, credential);
+        client = new ServiceBusAdministrationAsyncClient(serviceClient, serializer);
     }
 
     @AfterEach
@@ -214,16 +213,14 @@ class ServiceBusAdministrationAsyncClientTest {
         final QueueDescriptionEntry expected = new QueueDescriptionEntry()
             .setTitle(getResponseTitle(updatedName))
             .setContent(new QueueDescriptionEntryContent().setQueueDescription(expectedDescription));
-        final AccessToken token = new AccessToken(validToken, OffsetDateTime.now());
 
         when(entitys.putWithResponseAsync(eq(queueName),
             argThat(arg -> createBodyContentEquals(arg, description)), isNull(),
             argThat(ctx -> (verifyAdditionalAuthHeaderPresent(ctx,
-                SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME, validToken)
+                SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME, forwardToEntity)
                 && verifyAdditionalAuthHeaderPresent(ctx,
-                SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME, validToken)))))
+                SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME, forwardToEntity)))))
             .thenReturn(Mono.just(objectResponse));
-        when(credential.getToken(any(TokenRequestContext.class))).thenReturn(Mono.just(token));
         when(serializer.deserialize(responseString, QueueDescriptionEntry.class)).thenReturn(expected);
 
         // Act & Assert
@@ -542,7 +539,6 @@ class ServiceBusAdministrationAsyncClientTest {
         final QueueDescriptionEntry expected = new QueueDescriptionEntry()
             .setTitle(getResponseTitle(updatedName))
             .setContent(new QueueDescriptionEntryContent().setQueueDescription(expectedDescription));
-        final AccessToken token = new AccessToken(validToken, OffsetDateTime.now());
 
         when(entitys.putWithResponseAsync(eq(queueName),
             argThat(arg -> {
@@ -560,10 +556,9 @@ class ServiceBusAdministrationAsyncClientTest {
             }),
             eq("*"),
             argThat(ctx -> verifyAdditionalAuthHeaderPresent(ctx,
-                SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME, validToken))))
+                SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME, forwardToEntity))))
             .thenReturn(Mono.just(objectResponse));
 
-        when(credential.getToken(any(TokenRequestContext.class))).thenReturn(Mono.just(token));
         when(serializer.deserialize(responseString, QueueDescriptionEntry.class)).thenReturn(expected);
 
         // Act & Assert
@@ -650,14 +645,14 @@ class ServiceBusAdministrationAsyncClientTest {
             && "application/xml".equals(content.getType());
     }
 
-    private static boolean verifyAdditionalAuthHeaderPresent(Context context, String requiredHeader, String token) {
+    private static boolean verifyAdditionalAuthHeaderPresent(Context context, String requiredHeader, String entity) {
         return context.getData(AZURE_REQUEST_HTTP_HEADERS_KEY).map(headers -> {
             if (headers instanceof HttpHeaders) {
                 HttpHeaders customHttpHeaders = (HttpHeaders) headers;
                 // loop through customHttpHeaders and check if the required Header is present
                 for (HttpHeader httpHeader : customHttpHeaders) {
                     if (!Objects.isNull(httpHeader.getName()) && !Objects.isNull(httpHeader.getValue())) {
-                        if (httpHeader.getName().equals(requiredHeader) && httpHeader.getValue().equals(token)) {
+                        if (httpHeader.getName().equals(requiredHeader) && httpHeader.getValue().equals(entity)) {
                             return true;
                         }
                     }

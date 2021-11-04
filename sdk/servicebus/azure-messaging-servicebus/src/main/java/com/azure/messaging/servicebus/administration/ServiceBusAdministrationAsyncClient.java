@@ -6,8 +6,6 @@ package com.azure.messaging.servicebus.administration;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.AzureException;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
@@ -42,9 +40,7 @@ import com.azure.messaging.servicebus.implementation.EntityHelper;
 import com.azure.messaging.servicebus.implementation.EntitiesImpl;
 import com.azure.messaging.servicebus.implementation.RulesImpl;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementClientImpl;
-import com.azure.messaging.servicebus.implementation.ServiceBusSharedKeyCredential;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementSerializer;
-import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.models.CreateQueueBody;
 import com.azure.messaging.servicebus.implementation.models.CreateQueueBodyContent;
 import com.azure.messaging.servicebus.implementation.models.CreateRuleBody;
@@ -131,24 +127,21 @@ public final class ServiceBusAdministrationAsyncClient {
     private final ClientLogger logger = new ClientLogger(ServiceBusAdministrationAsyncClient.class);
     private final ServiceBusManagementSerializer serializer;
     private final RulesImpl rulesClient;
-    private final TokenCredential tokenCredential;
 
     /**
      * Creates a new instance with the given management client and serializer.
      *
      * @param managementClient Client to make management calls.
      * @param serializer Serializer to deserialize ATOM XML responses.
-     * @param credential Credential to get additional tokens if necessary
      *
      * @throws NullPointerException if any one of {@code managementClient, serializer, credential} is null.
      */
     ServiceBusAdministrationAsyncClient(ServiceBusManagementClientImpl managementClient,
-        ServiceBusManagementSerializer serializer, TokenCredential credential) throws NullPointerException {
+        ServiceBusManagementSerializer serializer) throws NullPointerException {
         this.serializer = Objects.requireNonNull(serializer, "'serializer' cannot be null.");
         this.managementClient = Objects.requireNonNull(managementClient, "'managementClient' cannot be null.");
         this.entityClient = managementClient.getEntities();
         this.rulesClient = managementClient.getRules();
-        this.tokenCredential = Objects.requireNonNull(credential, "'credential' cannot be null.");
     }
 
     /**
@@ -1393,17 +1386,21 @@ public final class ServiceBusAdministrationAsyncClient {
         } else if (context == null) {
             return monoError(logger, new NullPointerException("'context' cannot be null."));
         }
-
         final Context contextWithTrace = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
         final Context contextWithHeaders = contextWithTrace.addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders());
-        if (!CoreUtils.isNullOrEmpty(createQueueOptions.getForwardTo())) {
-            addForwardToHeader(contextWithHeaders);
-            createQueueOptions.setForwardTo(getAbsoluteUrlFromEntity(createQueueOptions.getForwardTo()));
+
+        final String forwardToEntity = createQueueOptions.getForwardTo();
+        if (!CoreUtils.isNullOrEmpty(forwardToEntity)) {
+            addSupplementaryAuthHeader(SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
+                forwardToEntity, contextWithHeaders);
+            createQueueOptions.setForwardTo(getAbsoluteUrlFromEntity(forwardToEntity));
         }
-        if (!CoreUtils.isNullOrEmpty(createQueueOptions.getForwardDeadLetteredMessagesTo())) {
-            addDlqForwardToHeader(contextWithHeaders);
-            createQueueOptions.setForwardDeadLetteredMessagesTo(getAbsoluteUrlFromEntity(
-                createQueueOptions.getForwardDeadLetteredMessagesTo()));
+
+        final String forwardDlqToEntity = createQueueOptions.getForwardDeadLetteredMessagesTo();
+        if (!CoreUtils.isNullOrEmpty(forwardDlqToEntity)) {
+            addSupplementaryAuthHeader(SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
+                forwardDlqToEntity, contextWithHeaders);
+            createQueueOptions.setForwardDeadLetteredMessagesTo(getAbsoluteUrlFromEntity(forwardDlqToEntity));
         }
 
         final QueueDescription description = EntityHelper.getQueueDescription(createQueueOptions);
@@ -1427,6 +1424,7 @@ public final class ServiceBusAdministrationAsyncClient {
      *
      * @param ruleOptions Rule to create.
      * @param context Context to pass into request.
+     *
      *
      * @return A Mono that completes with the created {@link RuleProperties}.
      */
@@ -1510,14 +1508,18 @@ public final class ServiceBusAdministrationAsyncClient {
 
         final Context contextWithTrace = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
         final Context contextWithHeaders = contextWithTrace.addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders());
-        if (!CoreUtils.isNullOrEmpty(subscriptionOptions.getForwardTo())) {
-            addForwardToHeader(contextWithHeaders);
-            subscriptionOptions.setForwardTo(getAbsoluteUrlFromEntity(subscriptionOptions.getForwardTo()));
+        final String forwardToEntity = subscriptionOptions.getForwardTo();
+        if (!CoreUtils.isNullOrEmpty(forwardToEntity)) {
+            addSupplementaryAuthHeader(SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
+                forwardToEntity, contextWithHeaders);
+            subscriptionOptions.setForwardTo(getAbsoluteUrlFromEntity(forwardToEntity));
         }
-        if (!CoreUtils.isNullOrEmpty(subscriptionOptions.getForwardDeadLetteredMessagesTo())) {
-            addDlqForwardToHeader(contextWithHeaders);
-            subscriptionOptions.setForwardDeadLetteredMessagesTo(getAbsoluteUrlFromEntity(
-                subscriptionOptions.getForwardDeadLetteredMessagesTo()));
+
+        final String forwardDlqToEntity = subscriptionOptions.getForwardDeadLetteredMessagesTo();
+        if (!CoreUtils.isNullOrEmpty(forwardDlqToEntity)) {
+            addSupplementaryAuthHeader(SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
+                forwardDlqToEntity, contextWithHeaders);
+            subscriptionOptions.setForwardDeadLetteredMessagesTo(getAbsoluteUrlFromEntity(forwardDlqToEntity));
         }
 
         final SubscriptionDescription subscription = EntityHelper.getSubscriptionDescription(subscriptionOptions);
@@ -2086,13 +2088,18 @@ public final class ServiceBusAdministrationAsyncClient {
 
         final Context contextWithTrace = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
         final Context contextWithHeaders = contextWithTrace.addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders());
-        if (!CoreUtils.isNullOrEmpty(queue.getForwardTo())) {
-            addForwardToHeader(contextWithHeaders);
-            queue.setForwardTo(getAbsoluteUrlFromEntity(queue.getForwardTo()));
+        final String forwardToEntity = queue.getForwardTo();
+        if (!CoreUtils.isNullOrEmpty(forwardToEntity)) {
+            addSupplementaryAuthHeader(SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
+                forwardToEntity, contextWithHeaders);
+            queue.setForwardTo(getAbsoluteUrlFromEntity(forwardToEntity));
         }
-        if (!CoreUtils.isNullOrEmpty(queue.getForwardDeadLetteredMessagesTo())) {
-            addDlqForwardToHeader(contextWithHeaders);
-            queue.setForwardDeadLetteredMessagesTo(getAbsoluteUrlFromEntity(queue.getForwardDeadLetteredMessagesTo()));
+
+        final String forwardDlqToEntity = queue.getForwardDeadLetteredMessagesTo();
+        if (!CoreUtils.isNullOrEmpty(forwardDlqToEntity)) {
+            addSupplementaryAuthHeader(SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
+                forwardDlqToEntity, contextWithHeaders);
+            queue.setForwardDeadLetteredMessagesTo(getAbsoluteUrlFromEntity(forwardDlqToEntity));
         }
 
         final QueueDescription queueDescription = EntityHelper.toImplementation(queue);
@@ -2166,14 +2173,18 @@ public final class ServiceBusAdministrationAsyncClient {
         }
         final Context contextWithTrace = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
         final Context contextWithHeaders = contextWithTrace.addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders());
-        if (!CoreUtils.isNullOrEmpty(subscription.getForwardTo())) {
-            addForwardToHeader(contextWithHeaders);
-            subscription.setForwardTo(getAbsoluteUrlFromEntity(subscription.getForwardTo()));
+        final String forwardToEntity = subscription.getForwardTo();
+        if (!CoreUtils.isNullOrEmpty(forwardToEntity)) {
+            addSupplementaryAuthHeader(SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
+                forwardToEntity, contextWithHeaders);
+            subscription.setForwardTo(getAbsoluteUrlFromEntity(forwardToEntity));
         }
-        if (!CoreUtils.isNullOrEmpty(subscription.getForwardDeadLetteredMessagesTo())) {
-            addDlqForwardToHeader(contextWithHeaders);
-            subscription.setForwardDeadLetteredMessagesTo(getAbsoluteUrlFromEntity(
-                subscription.getForwardDeadLetteredMessagesTo()));
+
+        final String forwardDlqToEntity = subscription.getForwardDeadLetteredMessagesTo();
+        if (!CoreUtils.isNullOrEmpty(forwardDlqToEntity)) {
+            addSupplementaryAuthHeader(SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
+                forwardDlqToEntity, contextWithHeaders);
+            subscription.setForwardDeadLetteredMessagesTo(getAbsoluteUrlFromEntity(forwardDlqToEntity));
         }
 
         final String topicName = subscription.getTopicName();
@@ -2586,28 +2597,6 @@ public final class ServiceBusAdministrationAsyncClient {
     }
 
     /**
-     * Add auth headers necessary when forward to property is set.
-     *
-     * @param context request context which contains additional headers field already included
-     */
-    private void addForwardToHeader(Context context) {
-        if (!addSupplementaryAuthHeader(SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME, context)) {
-            logger.error("Failed to add forwarding auth header");
-        }
-    }
-
-    /**
-     * Add auth headers necessary when forward dead letter messages to property is set.
-     *
-     * @param context request context which contains additional headers field already included
-     */
-    private void addDlqForwardToHeader(Context context) {
-        if (!addSupplementaryAuthHeader(SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME, context)) {
-            logger.error("Failed to add dlq forwarding auth header");
-        }
-    }
-
-    /**
      * Check that the additional headers field is present and add the additional auth header
      *
      * @param headerName name of the header to be added
@@ -2615,17 +2604,15 @@ public final class ServiceBusAdministrationAsyncClient {
      *
      * @return boolean representing the outcome of adding header operation
      */
-    private boolean addSupplementaryAuthHeader(String headerName, Context context) {
-        return context.getData(AZURE_REQUEST_HTTP_HEADERS_KEY).map(headers -> {
-            if (headers instanceof HttpHeaders) {
-                HttpHeaders customHttpHeaders = (HttpHeaders) headers;
-                addSupplementaryAuthToken(headerName, customHttpHeaders);
-                return true;
-            }
-            // context does not have http headers key
-            logger.error("Context does not have the required http headers key");
-            return false;
-        }).orElse(false);
+    private void addSupplementaryAuthHeader(String headerName, String entity, Context context) {
+        context.getData(AZURE_REQUEST_HTTP_HEADERS_KEY)
+            .map(headers -> {
+                if (headers instanceof HttpHeaders) {
+                    HttpHeaders customHttpHeaders = (HttpHeaders) headers;
+                    customHttpHeaders.add(headerName, entity);
+                }
+                return null;
+            });
     }
 
     /**
@@ -2659,25 +2646,6 @@ public final class ServiceBusAdministrationAsyncClient {
             logger.logThrowableAsError(ex);
         }
         return null;
-    }
-
-    /**
-     * Add the additional authentication token needed for various types of forwarding options.
-     *
-     * @param headerName name of the header to be added
-     * @param headers HttpHeaders object to which the supplementary auth header should be added
-     */
-    private void addSupplementaryAuthToken(String headerName, HttpHeaders headers) {
-        final String scope;
-
-        if (tokenCredential instanceof ServiceBusSharedKeyCredential) {
-            scope = String.format("https://%s", managementClient.getEndpoint());
-        } else {
-            scope = ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE;
-        }
-        tokenCredential.getToken(new TokenRequestContext().addScopes(scope)).subscribe(accessToken -> {
-            headers.add(headerName, accessToken.getToken());
-        });
     }
 
     /**
