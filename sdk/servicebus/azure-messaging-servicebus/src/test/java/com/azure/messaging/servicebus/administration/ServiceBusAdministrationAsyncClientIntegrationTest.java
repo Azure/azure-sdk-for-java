@@ -170,7 +170,7 @@ class ServiceBusAdministrationAsyncClientIntegrationTest extends TestBase {
     void createQueueWithForwarding(HttpClient httpClient) {
         // Arrange
         final ServiceBusAdministrationAsyncClient client = createClient(httpClient);
-        final String queueName = testResourceNamer.randomName("test", 99);
+        final String queueName = testResourceNamer.randomName("test", 10);
         final String forwardToEntityName = interceptorManager.isPlaybackMode()
             ? "queue-5"
             : getEntityName(TestUtils.getQueueBaseName(), 5);
