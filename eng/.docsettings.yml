@@ -165,6 +165,7 @@ known_content_issues:
   - ['sdk/search/azure-search-documents/swagger/README.md', '#3113']
   - ['sdk/search/azure-search-documents/src/test/README.md', '#3113']
   - ['sdk/search/open-api/readme.md', '#3113']
+  - ['sdk/servicebus/azure-messaging-servicebus/swagger/README.md', '#3113']
   - ['sdk/servicebus/microsoft-azure-servicebus/README.md', '#3113']
   - ['sdk/storage/azure-storage-blob/swagger/README.md', '#3113']
   - ['sdk/storage/azure-storage-blob-nio/README.md', '#3113']
