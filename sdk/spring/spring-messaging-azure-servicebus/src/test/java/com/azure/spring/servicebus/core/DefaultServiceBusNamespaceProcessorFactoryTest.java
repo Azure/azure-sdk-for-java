@@ -1,0 +1,100 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+package com.azure.spring.servicebus.core;
+
+import com.azure.messaging.servicebus.ServiceBusProcessorClient;
+import com.azure.spring.servicebus.core.processor.DefaultServiceBusNamespaceProcessorFactory;
+import com.azure.spring.servicebus.core.processor.ServiceBusProcessorFactory;
+import com.azure.spring.servicebus.core.properties.NamespaceProperties;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.stubbing.Answer;
+import org.springframework.util.StringUtils;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
+public class DefaultServiceBusNamespaceProcessorFactoryTest {
+    private ServiceBusProcessorFactory processorFactory;
+    private final String entityName = "eventHub";
+    private final String subscription = "group";
+    private final String anotherSubscription = "group2";
+    private final RecordMessageProcessingListenerImpl listener = new RecordMessageProcessingListenerImpl();
+    private int queueProcessorAddedTimes = 0;
+    private int topicProcessorAddedTimes = 0;
+
+    @BeforeEach
+    void setUp() {
+        NamespaceProperties namespaceProperties = new NamespaceProperties();
+        namespaceProperties.setNamespace("test-namespace");
+        this.processorFactory = new DefaultServiceBusNamespaceProcessorFactory(namespaceProperties);
+        queueProcessorAddedTimes = 0;
+        topicProcessorAddedTimes = 0;
+        this.processorFactory.addListener(new ServiceBusProcessorFactory.Listener() {
+            @Override
+            public void processorAdded(String name, String subscription) {
+                if (StringUtils.hasText(subscription)) {
+                    topicProcessorAddedTimes++;
+                } else {
+                    queueProcessorAddedTimes++;
+                }
+            }
+        });
+    }
+
+    @Test
+    void testGetServiceBusProcessorClientForQueue() {
+        ServiceBusProcessorClient processorClient = processorFactory.createProcessor(entityName, listener);
+        assertNotNull(processorClient);
+        assertEquals(0, topicProcessorAddedTimes);
+        assertEquals(1, queueProcessorAddedTimes);
+    }
+
+    @Test
+    void testGetServiceBusProcessorClientForTopic() {
+        ServiceBusProcessorClient processorClient = processorFactory.createProcessor(entityName, subscription, listener);
+
+        assertNotNull(processorClient);
+        assertEquals(1, topicProcessorAddedTimes);
+        assertEquals(0, queueProcessorAddedTimes);
+    }
+
+    @Test
+    void testCreateServiceBusProcessorClientQueueTwice() {
+        ServiceBusProcessorClient client = processorFactory.createProcessor(entityName, this.listener);
+        assertNotNull(client);
+
+        processorFactory.createProcessor(entityName, subscription, this.listener);
+        assertEquals(1, queueProcessorAddedTimes);
+    }
+
+    @Test
+    void testCreateServiceBusProcessorClientTopicTwice() {
+        ServiceBusProcessorClient client = processorFactory.createProcessor(entityName, subscription, this.listener);
+        assertNotNull(client);
+
+        processorFactory.createProcessor(entityName, subscription, this.listener);
+        assertEquals(1, topicProcessorAddedTimes);
+    }
+
+    @Test
+    void testRecreateServiceBusProcessorClient() {
+        final ServiceBusProcessorClient client = processorFactory.createProcessor(entityName, subscription, this.listener);
+        assertNotNull(client);
+
+        ServiceBusProcessorClient anotherClient = processorFactory.createProcessor(entityName, anotherSubscription, this.listener);
+        assertNotNull(anotherClient);
+        assertEquals(2, queueProcessorAddedTimes);
+    }
+
+    static class BuilderReturn {
+        private static Answer<?> self = (Answer<Object>) invocation -> {
+            if (invocation.getMethod().getReturnType().isAssignableFrom(invocation.getMock().getClass())) {
+                return invocation.getMock();
+            }
+
+            return null;
+        };
+    }
+}

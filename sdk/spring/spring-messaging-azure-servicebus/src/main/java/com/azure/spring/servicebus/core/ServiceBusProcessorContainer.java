@@ -78,34 +78,4 @@ public class ServiceBusProcessorContainer implements Lifecycle, DisposableBean {
         // TODO: stop and remove
         return false;
     }
-
-    //    public <T> void deadLetter(String destination,
-    //                               Message<T> message,
-    //                               String deadLetterReason,
-    //                               String deadLetterErrorDescription) {
-    //        Assert.hasText(destination, "destination can't be null or empty");
-    //
-    //
-    //        final ServiceBusReceivedMessageContext messageContext = (ServiceBusReceivedMessageContext) message.getHeaders()
-    //                                                                                                          .get(
-    //                                                                                                              ServiceBusMessageHeaders.RECEIVED_MESSAGE_CONTEXT);
-    //
-    //        if (messageContext != null) {
-    //            messageContext.deadLetter();
-    //        }
-    //    }
-    //
-    //    public <T> void abandon(String destination, Message<T> message) {
-    //        Assert.hasText(destination, "destination can't be null or empty");
-    //
-    //
-    //        final ServiceBusReceivedMessageContext messageContext = (ServiceBusReceivedMessageContext) message.getHeaders()
-    //                                                                                                          .get(
-    //                                                                                                              ServiceBusMessageHeaders.RECEIVED_MESSAGE_CONTEXT);
-    //
-    //        if (messageContext != null) {
-    //            messageContext.abandon();
-    //        }
-    //    }
-
 }

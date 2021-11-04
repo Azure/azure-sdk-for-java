@@ -33,11 +33,10 @@ public interface ServiceBusProducerFactory {
     /**
      * Called whenever a producer is added or removed.
      */
+    @FunctionalInterface
     interface Listener {
 
-        default void producerAdded(String name) {
-
-        }
+        void producerAdded(String name);
 
         default void producerRemoved(String name) {
         }

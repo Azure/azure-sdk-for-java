@@ -10,6 +10,8 @@ import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.service.servicebus.properties.ServiceBusProcessorDescriptor;
 import org.springframework.util.Assert;
 
+import static com.azure.spring.service.servicebus.properties.ServiceBusEntityType.TOPIC;
+
 /**
  * Service Bus client builder factory, it builds the {@link ServiceBusClientBuilder}.
  */
@@ -41,13 +43,17 @@ public class ServiceBusProcessorClientBuilderFactory extends AbstractServiceBusS
         Assert.notNull(processorDescriptor.getName(), "Entity name cannot be null.");
         final PropertyMapper propertyMapper = new PropertyMapper();
 
+        if (TOPIC.equals(processorDescriptor.getType())) {
+            Assert.notNull(processorDescriptor.getSubscriptionName(), "Subscription cannot be null.");
+        }
+
         if (ServiceBusEntityType.QUEUE.equals(processorDescriptor.getType())) {
             propertyMapper.from(processorDescriptor.getName()).to(builder::queueName);
         } else if (ServiceBusEntityType.TOPIC.equals(processorDescriptor.getType())) {
             propertyMapper.from(processorDescriptor.getName()).to(builder::topicName);
+            propertyMapper.from(processorDescriptor.getSubscriptionName()).to(builder::subscriptionName);
         }
 
-        propertyMapper.from(processorDescriptor.getSubscriptionName()).to(builder::subscriptionName);
         propertyMapper.from(processorDescriptor.getReceiveMode()).to(builder::receiveMode);
         propertyMapper.from(processorDescriptor.getSubQueue()).to(builder::subQueue);
         propertyMapper.from(processorDescriptor.getPrefetchCount()).to(builder::prefetchCount);

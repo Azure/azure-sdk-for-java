@@ -3,8 +3,9 @@
 
 package com.azure.spring.cloud.stream.binder.servicebus.properties;
 
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.cloud.stream.binder.AbstractExtendedBindingProperties;
 import org.springframework.cloud.stream.binder.BinderSpecificPropertiesProvider;
-import org.springframework.cloud.stream.binder.ExtendedBindingProperties;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -12,18 +13,15 @@ import java.util.concurrent.ConcurrentHashMap;
 /**
  * @author Warren Zhu
  */
-public abstract class ServiceBusExtendedBindingProperties
-        implements ExtendedBindingProperties<ServiceBusConsumerProperties, ServiceBusProducerProperties> {
-    private final Map<String, ServiceBusBindingProperties> bindings = new ConcurrentHashMap<>();
+@ConfigurationProperties("spring.cloud.stream.servicebus")
+public class ServiceBusExtendedBindingProperties
+    extends AbstractExtendedBindingProperties<ServiceBusConsumerProperties, ServiceBusProducerProperties, ServiceBusBindingProperties> {
+
+    private static final String DEFAULTS_PREFIX = "spring.cloud.stream.servicebus.default";
 
     @Override
-    public ServiceBusConsumerProperties getExtendedConsumerProperties(String channelName) {
-        return this.bindings.computeIfAbsent(channelName, key -> new ServiceBusBindingProperties()).getConsumer();
-    }
-
-    @Override
-    public ServiceBusProducerProperties getExtendedProducerProperties(String channelName) {
-        return this.bindings.computeIfAbsent(channelName, key -> new ServiceBusBindingProperties()).getProducer();
+    public String getDefaultsPrefix() {
+        return DEFAULTS_PREFIX;
     }
 
     @Override
@@ -32,6 +30,7 @@ public abstract class ServiceBusExtendedBindingProperties
     }
 
     public Map<String, ServiceBusBindingProperties> getBindings() {
-        return bindings;
+        return doGetBindings();
     }
+
 }

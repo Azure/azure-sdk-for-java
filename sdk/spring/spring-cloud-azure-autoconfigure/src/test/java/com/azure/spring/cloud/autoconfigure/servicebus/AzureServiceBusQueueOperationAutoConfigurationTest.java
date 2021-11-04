@@ -21,7 +21,7 @@ import static org.mockito.Mockito.mock;
 class AzureServiceBusQueueOperationAutoConfigurationTest {
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(AzureServiceBusQueueMessagingAutoConfiguration.class));
+        .withConfiguration(AutoConfigurations.of(AzureServiceBusMessagingAutoConfiguration.class));
 
     @Test
     void testAzureServiceBusDisabled() {

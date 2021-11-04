@@ -48,11 +48,10 @@ public interface ServiceBusProcessorFactory {
     /**
      * Called whenever a processor is added or removed.
      */
+    @FunctionalInterface
     interface Listener {
 
-        default void processorAdded(String name, String subscription) {
-
-        }
+        void processorAdded(String name, String subscription);
 
         default void processorRemoved(String name, String subscription) {
         }

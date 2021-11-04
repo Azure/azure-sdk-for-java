@@ -14,14 +14,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.StringUtils;
 
 /**
  * Configuration for a {@link ServiceBusSenderClient} and a {@link ServiceBusSenderAsyncClient}.
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnAnyProperty(prefix = "spring.cloud.azure.servicebus.producer", name = { "topic-name", "queue-name" })
+@ConditionalOnProperty(prefix = "spring.cloud.azure.servicebus.producer", name = { "name", "type" })
 class AzureServiceBusProducerClientConfiguration {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureServiceBusProducerClientConfiguration.class);
@@ -31,8 +33,14 @@ class AzureServiceBusProducerClientConfiguration {
     public ServiceBusSenderClientBuilderFactory serviceBusSenderClientBuilderFactory(
         AzureServiceBusProperties serviceBusProperties,
         ObjectProvider<ServiceBusClientBuilder> serviceBusClientBuilders) {
-        ServiceBusSenderClientBuilderFactory builderFactory = new ServiceBusSenderClientBuilderFactory(
-            serviceBusClientBuilders.getIfAvailable(), serviceBusProperties.buildProducerProperties());
+
+        ServiceBusSenderClientBuilderFactory builderFactory;
+        if (isDedicatedConnection(serviceBusProperties.getProducer())) {
+            builderFactory = new ServiceBusSenderClientBuilderFactory(serviceBusProperties.buildProducerProperties());
+        } else {
+            builderFactory = new ServiceBusSenderClientBuilderFactory(
+                serviceBusClientBuilders.getIfAvailable(), serviceBusProperties.buildProducerProperties());
+        }
         builderFactory.setSpringIdentifier(ApplicationId.AZURE_SPRING_SERVICE_BUS);
         return builderFactory;
     }
@@ -57,5 +65,7 @@ class AzureServiceBusProducerClientConfiguration {
         ServiceBusClientBuilder.ServiceBusSenderClientBuilder senderClientBuilder) {
         return senderClientBuilder.buildClient();
     }
-
+    private boolean isDedicatedConnection(AzureServiceBusProperties.Producer producer) {
+        return StringUtils.hasText(producer.getNamespace()) || StringUtils.hasText(producer.getConnectionString());
+    }
 }

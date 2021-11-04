@@ -5,7 +5,6 @@ package com.azure.spring.cloud.autoconfigure.servicebus;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
-import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.servicebus.properties.AzureServiceBusProperties;
 import com.azure.spring.core.ApplicationId;
 import com.azure.spring.service.servicebus.factory.ServiceBusProcessorClientBuilderFactory;
@@ -18,13 +17,14 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.util.StringUtils;
 
 /**
  * Configuration for a {@link ServiceBusProcessorClient}.
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnBean(MessageProcessingListener.class)
-@ConditionalOnAnyProperty(prefix = "spring.cloud.azure.servicebus.processor", name = { "queue-name", "topic-name" })
+@ConditionalOnProperty(prefix = "spring.cloud.azure.servicebus.processor", name = { "name", "type" })
 @Import({
     AzureServiceBusProcessorConfiguration.SessionProcessorClientConfiguration.class,
     AzureServiceBusProcessorConfiguration.NoneSessionProcessorClientConfiguration.class
@@ -42,10 +42,14 @@ class AzureServiceBusProcessorConfiguration {
             AzureServiceBusProperties serviceBusProperties,
             ObjectProvider<ServiceBusClientBuilder> serviceBusClientBuilders,
             MessageProcessingListener listener) {
-            ServiceBusProcessorClientBuilderFactory builderFactory = new ServiceBusProcessorClientBuilderFactory(
-                serviceBusClientBuilders.getIfAvailable(),
-                serviceBusProperties.buildProcessorProperties(),
-                listener);
+
+            ServiceBusProcessorClientBuilderFactory builderFactory;
+            if (isDedicatedConnection(serviceBusProperties.getProcessor())) {
+                builderFactory = new ServiceBusProcessorClientBuilderFactory(serviceBusProperties.buildProcessorProperties(), listener);
+            } else {
+                builderFactory = new ServiceBusProcessorClientBuilderFactory(
+                    serviceBusClientBuilders.getIfAvailable(), serviceBusProperties.buildProcessorProperties(), listener);
+            }
             builderFactory.setSpringIdentifier(ApplicationId.AZURE_SPRING_SERVICE_BUS);
             return builderFactory;
         }
@@ -76,9 +80,15 @@ class AzureServiceBusProcessorConfiguration {
             AzureServiceBusProperties serviceBusProperties,
             ObjectProvider<ServiceBusClientBuilder> serviceBusClientBuilders,
             MessageProcessingListener listener) {
-            ServiceBusSessionProcessorClientBuilderFactory builderFactory =
-                new ServiceBusSessionProcessorClientBuilderFactory(serviceBusClientBuilders.getIfAvailable(),
+
+            ServiceBusSessionProcessorClientBuilderFactory builderFactory;
+            if (isDedicatedConnection(serviceBusProperties.getProcessor())) {
+                builderFactory = new ServiceBusSessionProcessorClientBuilderFactory(
                     serviceBusProperties.buildProcessorProperties(), listener);
+            } else {
+                builderFactory = new ServiceBusSessionProcessorClientBuilderFactory(
+                    serviceBusClientBuilders.getIfAvailable(), serviceBusProperties.buildProcessorProperties(), listener);
+            }
             builderFactory.setSpringIdentifier(ApplicationId.AZURE_SPRING_SERVICE_BUS);
             return builderFactory;
         }
@@ -97,6 +107,9 @@ class AzureServiceBusProcessorConfiguration {
             return processorClientBuilder.buildProcessorClient();
         }
 
+    }
+    private static boolean isDedicatedConnection(AzureServiceBusProperties.Processor processor) {
+        return StringUtils.hasText(processor.getNamespace()) || StringUtils.hasText(processor.getConnectionString());
     }
 
 }

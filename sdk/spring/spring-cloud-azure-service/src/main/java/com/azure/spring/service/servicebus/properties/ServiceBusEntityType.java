@@ -4,5 +4,5 @@ package com.azure.spring.service.servicebus.properties;
 
 public enum ServiceBusEntityType {
     QUEUE,
-    TOPIC;
+    TOPIC
 }

@@ -31,8 +31,7 @@
         <module>spring-cloud-azure-stream-binder-eventhubs-core</module>
         <module>spring-cloud-azure-stream-binder-eventhubs</module>
         <module>spring-cloud-azure-stream-binder-servicebus-core</module>
-        <module>spring-cloud-azure-stream-binder-servicebus-queue</module>
-        <module>spring-cloud-azure-stream-binder-servicebus-topic</module>
+        <module>spring-cloud-azure-stream-binder-servicebus</module>
       </modules>
       <dependencies>
         <dependency>
@@ -112,13 +111,8 @@
         </dependency>
         <dependency>
           <groupId>com.azure.spring</groupId>
-          <artifactId>spring-cloud-azure-stream-binder-servicebus-queue</artifactId>
-          <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-servicebus-queue;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure.spring</groupId>
-          <artifactId>spring-cloud-azure-stream-binder-servicebus-topic</artifactId>
-          <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-servicebus-topic;current} -->
+          <artifactId>spring-cloud-azure-stream-binder-servicebus</artifactId>
+          <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-stream-binder-servicebus;current} -->
         </dependency>
       </dependencies>
 
@@ -187,10 +181,8 @@
         <module>spring-cloud-azure-stream-binder-eventhubs</module>
         <module>spring-cloud-azure-starter-stream-eventhubs</module>
         <module>spring-cloud-azure-stream-binder-servicebus-core</module>
-        <module>spring-cloud-azure-stream-binder-servicebus-queue</module>
-        <module>spring-cloud-azure-starter-stream-servicebus-queue</module>
-        <module>spring-cloud-azure-stream-binder-servicebus-topic</module>
-        <module>spring-cloud-azure-starter-stream-servicebus-topic</module>
+        <module>spring-cloud-azure-stream-binder-servicebus</module>
+        <module>spring-cloud-azure-starter-stream-servicebus</module>
         <module>spring-cloud-azure-stream-binder-test</module>
         <module>spring-cloud-azure-test-servicebus-binder</module>
       </modules>
@@ -230,10 +222,8 @@
         <module>spring-cloud-azure-stream-binder-eventhubs</module>
         <module>spring-cloud-azure-starter-stream-eventhubs</module>
         <module>spring-cloud-azure-stream-binder-servicebus-core</module>
-        <module>spring-cloud-azure-stream-binder-servicebus-queue</module>
-        <module>spring-cloud-azure-starter-stream-servicebus-queue</module>
-        <module>spring-cloud-azure-stream-binder-servicebus-topic</module>
-        <module>spring-cloud-azure-starter-stream-servicebus-topic</module>
+        <module>spring-cloud-azure-stream-binder-servicebus</module>
+        <module>spring-cloud-azure-starter-stream-servicebus</module>
         <module>spring-cloud-azure-stream-binder-test</module>
       </modules>
     </profile>

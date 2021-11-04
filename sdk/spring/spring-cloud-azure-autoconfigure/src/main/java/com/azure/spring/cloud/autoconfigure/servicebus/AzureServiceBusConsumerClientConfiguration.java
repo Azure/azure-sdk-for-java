@@ -8,7 +8,6 @@ import com.azure.messaging.servicebus.ServiceBusReceiverAsyncClient;
 import com.azure.messaging.servicebus.ServiceBusReceiverClient;
 import com.azure.messaging.servicebus.ServiceBusSessionReceiverAsyncClient;
 import com.azure.messaging.servicebus.ServiceBusSessionReceiverClient;
-import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.servicebus.properties.AzureServiceBusProperties;
 import com.azure.spring.core.ApplicationId;
 import com.azure.spring.service.servicebus.factory.ServiceBusReceiverClientBuilderFactory;
@@ -19,13 +18,14 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.util.StringUtils;
 
 /**
  * Configuration for a {@link ServiceBusReceiverClient} and a {@link ServiceBusReceiverAsyncClient} or a
  * {@link ServiceBusSessionReceiverAsyncClient} and a {@link ServiceBusSessionReceiverClient}.
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnAnyProperty(prefix = "spring.cloud.azure.servicebus.consumer", name = { "queue-name", "topic-name" })
+@ConditionalOnProperty(prefix = "spring.cloud.azure.servicebus.consumer", name = { "name", "type" })
 @Import({
     AzureServiceBusConsumerClientConfiguration.SessionConsumerClientConfiguration.class,
     AzureServiceBusConsumerClientConfiguration.NoneSessionConsumerClientConfiguration.class
@@ -42,8 +42,14 @@ class AzureServiceBusConsumerClientConfiguration {
         public ServiceBusReceiverClientBuilderFactory serviceBusReceiverClientBuilderFactory(
             AzureServiceBusProperties serviceBusProperties,
             ObjectProvider<ServiceBusClientBuilder> serviceBusClientBuilders) {
-            ServiceBusReceiverClientBuilderFactory builderFactory = new ServiceBusReceiverClientBuilderFactory(
-                serviceBusClientBuilders.getIfAvailable(), serviceBusProperties.buildConsumerProperties());
+
+            ServiceBusReceiverClientBuilderFactory builderFactory;
+            if (isDedicatedConnection(serviceBusProperties.getConsumer())) {
+                 builderFactory = new ServiceBusReceiverClientBuilderFactory(serviceBusProperties.buildConsumerProperties());
+            } else {
+                builderFactory = new ServiceBusReceiverClientBuilderFactory(
+                    serviceBusClientBuilders.getIfAvailable(), serviceBusProperties.buildConsumerProperties());
+            }
             builderFactory.setSpringIdentifier(ApplicationId.AZURE_SPRING_SERVICE_BUS);
             return builderFactory;
         }
@@ -80,9 +86,15 @@ class AzureServiceBusConsumerClientConfiguration {
         public ServiceBusSessionReceiverClientBuilderFactory serviceBusSessionReceiverClientBuilderFactory(
             AzureServiceBusProperties serviceBusProperties,
             ObjectProvider<ServiceBusClientBuilder> serviceBusClientBuilders) {
-            ServiceBusSessionReceiverClientBuilderFactory builderFactory =
-                new ServiceBusSessionReceiverClientBuilderFactory(serviceBusClientBuilders.getIfAvailable(),
-                    serviceBusProperties.buildConsumerProperties());
+
+            ServiceBusSessionReceiverClientBuilderFactory builderFactory;
+            if (isDedicatedConnection(serviceBusProperties.getConsumer())) {
+                builderFactory = new ServiceBusSessionReceiverClientBuilderFactory(serviceBusProperties.buildConsumerProperties());
+            } else {
+                builderFactory = new ServiceBusSessionReceiverClientBuilderFactory(
+                    serviceBusClientBuilders.getIfAvailable(), serviceBusProperties.buildConsumerProperties());
+            }
+
             builderFactory.setSpringIdentifier(ApplicationId.AZURE_SPRING_SERVICE_BUS);
             return builderFactory;
         }
@@ -108,6 +120,10 @@ class AzureServiceBusConsumerClientConfiguration {
             return receiverClientBuilder.buildClient();
         }
 
+    }
+
+    private static boolean isDedicatedConnection(AzureServiceBusProperties.Consumer consumer) {
+        return StringUtils.hasText(consumer.getNamespace()) || StringUtils.hasText(consumer.getConnectionString());
     }
 
 }

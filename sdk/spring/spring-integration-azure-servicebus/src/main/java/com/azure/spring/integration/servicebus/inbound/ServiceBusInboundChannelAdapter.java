@@ -100,6 +100,11 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
         }
     }
 
+    @Override
+    public void doStart() {
+        this.processorContainer.start();
+    }
+
     public void setMessageConverter(ServiceBusMessageConverter messageConverter) {
         this.recordEventProcessor.setMessageConverter(messageConverter);
     }
