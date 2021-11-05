@@ -575,6 +575,8 @@ public final class ServiceBusClientBuilder {
                 .fromConfiguration(configuration);
             return new ProxyOptions(authentication, new Proxy(coreProxyOptions.getType().toProxyType(),
                 coreProxyOptions.getAddress()), coreProxyOptions.getUsername(), coreProxyOptions.getPassword());
+        } else {
+            return ProxyOptions.SYSTEM_DEFAULTS;
         }
     }
 
