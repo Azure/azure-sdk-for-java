@@ -6,9 +6,6 @@ package com.azure.messaging.servicebus.administration;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
-import com.azure.core.credential.AccessToken;
-import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.AzureException;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
@@ -25,6 +22,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
+import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
 import com.azure.messaging.servicebus.administration.models.CreateRuleOptions;
@@ -96,6 +94,9 @@ import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.pagedFluxError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.AZ_TRACING_NAMESPACE_VALUE;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME;
 
 /**
  * An <b>asynchronous</b> client for managing a Service Bus namespace. Instantiated via
@@ -115,11 +116,6 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  */
 @ServiceClient(builder = ServiceBusAdministrationClientBuilder.class, isAsync = true)
 public final class ServiceBusAdministrationAsyncClient {
-    // See https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers
-    // for more information on Azure resource provider namespaces.
-    private static final String SERVICE_BUS_TRACING_NAMESPACE_VALUE = "Microsoft.ServiceBus";
-    private static final String SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME = "ServiceBusSupplementaryAuthorization";
-    private static final String SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME = "ServiceBusDlqSupplementaryAuthorization";
     private static final String CONTENT_TYPE = "application/xml";
 
     // Name of the entity type when listing queues and topics.
@@ -133,21 +129,21 @@ public final class ServiceBusAdministrationAsyncClient {
     private final ClientLogger logger = new ClientLogger(ServiceBusAdministrationAsyncClient.class);
     private final ServiceBusManagementSerializer serializer;
     private final RulesImpl rulesClient;
-    private final TokenCredential tokenCredential;
 
     /**
      * Creates a new instance with the given management client and serializer.
-     *  @param managementClient Client to make management calls.
+     *
+     * @param managementClient Client to make management calls.
      * @param serializer Serializer to deserialize ATOM XML responses.
-     * @param credential Credential to get additional tokens if necessary
+     *
+     * @throws NullPointerException if any one of {@code managementClient, serializer, credential} is null.
      */
     ServiceBusAdministrationAsyncClient(ServiceBusManagementClientImpl managementClient,
-                                        ServiceBusManagementSerializer serializer, TokenCredential credential) {
+        ServiceBusManagementSerializer serializer) {
         this.serializer = Objects.requireNonNull(serializer, "'serializer' cannot be null.");
         this.managementClient = Objects.requireNonNull(managementClient, "'managementClient' cannot be null.");
         this.entityClient = managementClient.getEntities();
         this.rulesClient = managementClient.getRules();
-        this.tokenCredential = credential;
     }
 
     /**
@@ -1392,21 +1388,21 @@ public final class ServiceBusAdministrationAsyncClient {
         } else if (context == null) {
             return monoError(logger, new NullPointerException("'context' cannot be null."));
         }
+        final Context contextWithHeaders = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE)
+            .addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders());
 
-        final HttpHeaders supplementaryAuthHeaders = new HttpHeaders();
-        Context additionalContext = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
-        if (!CoreUtils.isNullOrEmpty(createQueueOptions.getForwardTo())) {
-            addAdditionalAuthHeader(SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME, supplementaryAuthHeaders);
-            createQueueOptions.setForwardTo(String.format("https://%s/%s", managementClient.getEndpoint(),
-                createQueueOptions.getForwardTo()));
+        final String forwardToEntity = createQueueOptions.getForwardTo();
+        if (!CoreUtils.isNullOrEmpty(forwardToEntity)) {
+            addSupplementaryAuthHeader(SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
+                forwardToEntity, contextWithHeaders);
+            createQueueOptions.setForwardTo(getAbsoluteUrlFromEntity(forwardToEntity));
         }
-        if (!CoreUtils.isNullOrEmpty(createQueueOptions.getForwardDeadLetteredMessagesTo())) {
-            addAdditionalAuthHeader(SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME, supplementaryAuthHeaders);
-            createQueueOptions.setForwardDeadLetteredMessagesTo(String.format("https://%s/%s", managementClient.getEndpoint(),
-                createQueueOptions.getForwardDeadLetteredMessagesTo()));
-        }
-        if (supplementaryAuthHeaders.getSize() != 0) {
-            additionalContext = additionalContext.addData(AZURE_REQUEST_HTTP_HEADERS_KEY, supplementaryAuthHeaders);
+
+        final String forwardDlqToEntity = createQueueOptions.getForwardDeadLetteredMessagesTo();
+        if (!CoreUtils.isNullOrEmpty(forwardDlqToEntity)) {
+            addSupplementaryAuthHeader(SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
+                forwardDlqToEntity, contextWithHeaders);
+            createQueueOptions.setForwardDeadLetteredMessagesTo(getAbsoluteUrlFromEntity(forwardDlqToEntity));
         }
 
         final QueueDescription description = EntityHelper.getQueueDescription(createQueueOptions);
@@ -1417,7 +1413,7 @@ public final class ServiceBusAdministrationAsyncClient {
             .setContent(content);
 
         try {
-            return entityClient.putWithResponseAsync(queueName, createEntity, null, additionalContext)
+            return entityClient.putWithResponseAsync(queueName, createEntity, null, contextWithHeaders)
                 .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
                 .map(this::deserializeQueue);
         } catch (RuntimeException ex) {
@@ -1430,6 +1426,7 @@ public final class ServiceBusAdministrationAsyncClient {
      *
      * @param ruleOptions Rule to create.
      * @param context Context to pass into request.
+     *
      *
      * @return A Mono that completes with the created {@link RuleProperties}.
      */
@@ -1473,7 +1470,7 @@ public final class ServiceBusAdministrationAsyncClient {
             .setRuleDescription(rule);
         final CreateRuleBody createEntity = new CreateRuleBody().setContent(content);
 
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
 
         try {
             return managementClient.getRules().putWithResponseAsync(topicName, subscriptionName, ruleName, createEntity,
@@ -1511,20 +1508,20 @@ public final class ServiceBusAdministrationAsyncClient {
             return monoError(logger, new NullPointerException("'subscription' cannot be null."));
         }
 
-        final HttpHeaders supplementaryAuthHeaders = new HttpHeaders();
-        Context additionalContext = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
-        if (!CoreUtils.isNullOrEmpty(subscriptionOptions.getForwardTo())) {
-            addAdditionalAuthHeader(SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME, supplementaryAuthHeaders);
-            subscriptionOptions.setForwardTo(String.format("https://%s/%s", managementClient.getEndpoint(),
-                subscriptionOptions.getForwardTo()));
+        final Context contextWithHeaders = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE)
+            .addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders());
+        final String forwardToEntity = subscriptionOptions.getForwardTo();
+        if (!CoreUtils.isNullOrEmpty(forwardToEntity)) {
+            addSupplementaryAuthHeader(SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
+                forwardToEntity, contextWithHeaders);
+            subscriptionOptions.setForwardTo(getAbsoluteUrlFromEntity(forwardToEntity));
         }
-        if (!CoreUtils.isNullOrEmpty(subscriptionOptions.getForwardDeadLetteredMessagesTo())) {
-            addAdditionalAuthHeader(SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME, supplementaryAuthHeaders);
-            subscriptionOptions.setForwardDeadLetteredMessagesTo(String.format("https://%s/%s", managementClient.getEndpoint(),
-                subscriptionOptions.getForwardDeadLetteredMessagesTo()));
-        }
-        if (supplementaryAuthHeaders.getSize() != 0) {
-            additionalContext = additionalContext.addData(AZURE_REQUEST_HTTP_HEADERS_KEY, supplementaryAuthHeaders);
+
+        final String forwardDlqToEntity = subscriptionOptions.getForwardDeadLetteredMessagesTo();
+        if (!CoreUtils.isNullOrEmpty(forwardDlqToEntity)) {
+            addSupplementaryAuthHeader(SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
+                forwardDlqToEntity, contextWithHeaders);
+            subscriptionOptions.setForwardDeadLetteredMessagesTo(getAbsoluteUrlFromEntity(forwardDlqToEntity));
         }
 
         final SubscriptionDescription subscription = EntityHelper.getSubscriptionDescription(subscriptionOptions);
@@ -1535,7 +1532,7 @@ public final class ServiceBusAdministrationAsyncClient {
 
         try {
             return managementClient.getSubscriptions().putWithResponseAsync(topicName, subscriptionName, createEntity,
-                null, additionalContext)
+                null, contextWithHeaders)
                 .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
                 .map(response -> deserializeSubscription(topicName, response));
         } catch (RuntimeException ex) {
@@ -1572,7 +1569,7 @@ public final class ServiceBusAdministrationAsyncClient {
         final CreateTopicBody createEntity = new CreateTopicBody()
             .setContent(content);
 
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
 
         try {
             return entityClient.putWithResponseAsync(topicName, createEntity, null, withTracing)
@@ -1600,7 +1597,7 @@ public final class ServiceBusAdministrationAsyncClient {
             return monoError(logger, new NullPointerException("'context' cannot be null."));
         }
 
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
 
         try {
             return entityClient.deleteWithResponseAsync(queueName, withTracing)
@@ -1642,7 +1639,7 @@ public final class ServiceBusAdministrationAsyncClient {
             return monoError(logger, new NullPointerException("'context' cannot be null."));
         }
 
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
 
         try {
             return rulesClient.deleteWithResponseAsync(topicName, subscriptionName, ruleName, withTracing)
@@ -1676,7 +1673,7 @@ public final class ServiceBusAdministrationAsyncClient {
             return monoError(logger, new NullPointerException("'context' cannot be null."));
         }
 
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
 
         try {
             return managementClient.getSubscriptions().deleteWithResponseAsync(topicName, subscriptionName,
@@ -1706,7 +1703,7 @@ public final class ServiceBusAdministrationAsyncClient {
             return monoError(logger, new NullPointerException("'context' cannot be null."));
         }
 
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
 
         try {
             return entityClient.deleteWithResponseAsync(topicName, withTracing)
@@ -1761,7 +1758,7 @@ public final class ServiceBusAdministrationAsyncClient {
             return monoError(logger, new NullPointerException("'context' cannot be null."));
         }
 
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
 
         try {
             return entityClient.getWithResponseAsync(queueName, true, withTracing)
@@ -1787,7 +1784,7 @@ public final class ServiceBusAdministrationAsyncClient {
 
     Mono<Response<RuleProperties>> getRuleWithResponse(String topicName, String subscriptionName,
         String ruleName, Context context) {
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
 
         try {
             return rulesClient.getWithResponseAsync(topicName, subscriptionName, ruleName, true, withTracing)
@@ -1821,7 +1818,7 @@ public final class ServiceBusAdministrationAsyncClient {
             return monoError(logger, new NullPointerException("'context' cannot be null."));
         }
 
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
 
         try {
             return managementClient.getSubscriptions().getWithResponseAsync(topicName, subscriptionName, true,
@@ -1889,7 +1886,7 @@ public final class ServiceBusAdministrationAsyncClient {
             return monoError(logger, new NullPointerException("'context' cannot be null."));
         }
 
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
 
         try {
             return entityClient.getWithResponseAsync(topicName, true, withTracing)
@@ -1921,7 +1918,7 @@ public final class ServiceBusAdministrationAsyncClient {
      * @return A Mono that completes with a page of queues.
      */
     Mono<PagedResponse<QueueProperties>> listQueuesFirstPage(Context context) {
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
 
         try {
             return listQueues(0, withTracing);
@@ -1944,7 +1941,7 @@ public final class ServiceBusAdministrationAsyncClient {
         }
 
         try {
-            final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+            final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
             final int skip = Integer.parseInt(continuationToken);
 
             return listQueues(skip, withTracing);
@@ -1961,7 +1958,7 @@ public final class ServiceBusAdministrationAsyncClient {
      * @return A Mono that completes with a page of rules.
      */
     Mono<PagedResponse<RuleProperties>> listRulesFirstPage(String topicName, String subscriptionName, Context context) {
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
 
         try {
             return listRules(topicName, subscriptionName, 0, withTracing);
@@ -1985,7 +1982,7 @@ public final class ServiceBusAdministrationAsyncClient {
         }
 
         try {
-            final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+            final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
             final int skip = Integer.parseInt(continuationToken);
 
             return listRules(topicName, subscriptionName, skip, withTracing);
@@ -2002,7 +1999,7 @@ public final class ServiceBusAdministrationAsyncClient {
      * @return A Mono that completes with a page of subscriptions.
      */
     Mono<PagedResponse<SubscriptionProperties>> listSubscriptionsFirstPage(String topicName, Context context) {
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
 
         try {
             return listSubscriptions(topicName, 0, withTracing);
@@ -2026,7 +2023,7 @@ public final class ServiceBusAdministrationAsyncClient {
         }
 
         try {
-            final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+            final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
             final int skip = Integer.parseInt(continuationToken);
 
             return listSubscriptions(topicName, skip, withTracing);
@@ -2043,7 +2040,7 @@ public final class ServiceBusAdministrationAsyncClient {
      * @return A Mono that completes with a page of topics.
      */
     Mono<PagedResponse<TopicProperties>> listTopicsFirstPage(Context context) {
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
 
         try {
             return listTopics(0, withTracing);
@@ -2066,7 +2063,7 @@ public final class ServiceBusAdministrationAsyncClient {
         }
 
         try {
-            final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+            final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
             final int skip = Integer.parseInt(continuationToken);
 
             return listTopics(skip, withTracing);
@@ -2091,20 +2088,20 @@ public final class ServiceBusAdministrationAsyncClient {
             return monoError(logger, new NullPointerException("'context' cannot be null."));
         }
 
-        final HttpHeaders supplementaryAuthHeaders = new HttpHeaders();
-        Context additionalContext = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
-        if (!CoreUtils.isNullOrEmpty(queue.getForwardTo())) {
-            addAdditionalAuthHeader(SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME, supplementaryAuthHeaders);
-            queue.setForwardTo(String.format("https://%s/%s", managementClient.getEndpoint(),
-                queue.getForwardTo()));
+        final Context contextWithHeaders = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE)
+            .addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders());
+        final String forwardToEntity = queue.getForwardTo();
+        if (!CoreUtils.isNullOrEmpty(forwardToEntity)) {
+            addSupplementaryAuthHeader(SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
+                forwardToEntity, contextWithHeaders);
+            queue.setForwardTo(getAbsoluteUrlFromEntity(forwardToEntity));
         }
-        if (!CoreUtils.isNullOrEmpty(queue.getForwardDeadLetteredMessagesTo())) {
-            addAdditionalAuthHeader(SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME, supplementaryAuthHeaders);
-            queue.setForwardDeadLetteredMessagesTo(String.format("https://%s/%s", managementClient.getEndpoint(),
-                queue.getForwardDeadLetteredMessagesTo()));
-        }
-        if (supplementaryAuthHeaders.getSize() != 0) {
-            additionalContext = additionalContext.addData(AZURE_REQUEST_HTTP_HEADERS_KEY, supplementaryAuthHeaders);
+
+        final String forwardDlqToEntity = queue.getForwardDeadLetteredMessagesTo();
+        if (!CoreUtils.isNullOrEmpty(forwardDlqToEntity)) {
+            addSupplementaryAuthHeader(SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
+                forwardDlqToEntity, contextWithHeaders);
+            queue.setForwardDeadLetteredMessagesTo(getAbsoluteUrlFromEntity(forwardDlqToEntity));
         }
 
         final QueueDescription queueDescription = EntityHelper.toImplementation(queue);
@@ -2116,7 +2113,7 @@ public final class ServiceBusAdministrationAsyncClient {
 
         try {
             // If-Match == "*" to unconditionally update. This is in line with the existing client library behaviour.
-            return entityClient.putWithResponseAsync(queue.getName(), createEntity, "*", additionalContext)
+            return entityClient.putWithResponseAsync(queue.getName(), createEntity, "*", contextWithHeaders)
                 .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
                 .map(response -> deserializeQueue(response));
         } catch (RuntimeException ex) {
@@ -2147,7 +2144,7 @@ public final class ServiceBusAdministrationAsyncClient {
             .setRuleDescription(implementation);
         final CreateRuleBody ruleBody = new CreateRuleBody()
             .setContent(content);
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
 
         try {
             // If-Match == "*" to unconditionally update. This is in line with the existing client library behaviour.
@@ -2176,20 +2173,20 @@ public final class ServiceBusAdministrationAsyncClient {
         } else if (context == null) {
             return monoError(logger, new NullPointerException("'context' cannot be null."));
         }
-        final HttpHeaders supplementaryAuthHeaders = new HttpHeaders();
-        Context additionalContext = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
-        if (!CoreUtils.isNullOrEmpty(subscription.getForwardTo())) {
-            addAdditionalAuthHeader(SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME, supplementaryAuthHeaders);
-            subscription.setForwardTo(String.format("https://%s/%s", managementClient.getEndpoint(),
-                subscription.getForwardTo()));
+        final Context contextWithHeaders = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE)
+            .addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders());
+        final String forwardToEntity = subscription.getForwardTo();
+        if (!CoreUtils.isNullOrEmpty(forwardToEntity)) {
+            addSupplementaryAuthHeader(SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
+                forwardToEntity, contextWithHeaders);
+            subscription.setForwardTo(getAbsoluteUrlFromEntity(forwardToEntity));
         }
-        if (!CoreUtils.isNullOrEmpty(subscription.getForwardDeadLetteredMessagesTo())) {
-            addAdditionalAuthHeader(SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME, supplementaryAuthHeaders);
-            subscription.setForwardDeadLetteredMessagesTo(String.format("https://%s/%s", managementClient.getEndpoint(),
-                subscription.getForwardDeadLetteredMessagesTo()));
-        }
-        if (supplementaryAuthHeaders.getSize() != 0) {
-            additionalContext = additionalContext.addData(AZURE_REQUEST_HTTP_HEADERS_KEY, supplementaryAuthHeaders);
+
+        final String forwardDlqToEntity = subscription.getForwardDeadLetteredMessagesTo();
+        if (!CoreUtils.isNullOrEmpty(forwardDlqToEntity)) {
+            addSupplementaryAuthHeader(SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
+                forwardDlqToEntity, contextWithHeaders);
+            subscription.setForwardDeadLetteredMessagesTo(getAbsoluteUrlFromEntity(forwardDlqToEntity));
         }
 
         final String topicName = subscription.getTopicName();
@@ -2204,7 +2201,7 @@ public final class ServiceBusAdministrationAsyncClient {
         try {
             // If-Match == "*" to unconditionally update. This is in line with the existing client library behaviour.
             return managementClient.getSubscriptions().putWithResponseAsync(topicName, subscriptionName, createEntity,
-                "*", additionalContext)
+                "*", contextWithHeaders)
                 .onErrorMap(ServiceBusAdministrationAsyncClient::mapException)
                 .map(response -> deserializeSubscription(topicName, response));
         } catch (RuntimeException ex) {
@@ -2234,7 +2231,7 @@ public final class ServiceBusAdministrationAsyncClient {
             .setTopicDescription(implementation);
         final CreateTopicBody createEntity = new CreateTopicBody()
             .setContent(content);
-        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
+        final Context withTracing = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
 
         try {
             // If-Match == "*" to unconditionally update. This is in line with the existing client library behaviour.
@@ -2601,25 +2598,55 @@ public final class ServiceBusAdministrationAsyncClient {
             });
     }
 
-    /** Adds the additional authentication headers needed for various types of forwarding options.
+    /**
+     * Check that the additional headers field is present and add the additional auth header
      *
-     * @param headerName Name of the auth header
+     * @param headerName name of the header to be added
+     * @param context current request context
+     *
+     * @return boolean representing the outcome of adding header operation
      */
-    private void addAdditionalAuthHeader(String headerName, HttpHeaders headers) {
-        final String scope;
+    private void addSupplementaryAuthHeader(String headerName, String entity, Context context) {
+        context.getData(AZURE_REQUEST_HTTP_HEADERS_KEY)
+            .ifPresent(headers -> {
+                if (headers instanceof HttpHeaders) {
+                    HttpHeaders customHttpHeaders = (HttpHeaders) headers;
+                    customHttpHeaders.add(headerName, entity);
+                }
+            });
+    }
 
-        if (tokenCredential instanceof ServiceBusSharedKeyCredential) {
-            scope = String.format("https://%s", managementClient.getEndpoint());
-        } else {
-            scope = ServiceBusConstants.AZURE_ACTIVE_DIRECTORY_SCOPE;
+    /**
+     * Checks if the given entity is an absolute URL, if so return it.
+     * Otherwise, construct the URL from the given entity and return that.
+     *
+     * @param entity : entity to forward messages to.
+     *
+     * @return Forward to Entity represented as an absolute URL
+     */
+    private String getAbsoluteUrlFromEntity(String entity) {
+        // Check if passed entity is an absolute URL
+        try {
+            URL url = new URL(entity);
+            return url.toString();
+        } catch (MalformedURLException ex) {
+            // Entity is not a URL, continue.
         }
-        final Mono<AccessToken> tokenMono = tokenCredential.getToken(new TokenRequestContext().addScopes(scope));
-        final AccessToken token = tokenMono.block(ServiceBusConstants.OPERATION_TIMEOUT);
+        UrlBuilder urlBuilder = new UrlBuilder();
+        urlBuilder.setScheme("https");
+        urlBuilder.setHost(managementClient.getEndpoint());
+        urlBuilder.setPath(entity);
 
-        if (headers == null || token == null) {
-            return;
+        try {
+            URL url = urlBuilder.toUrl();
+            return url.toString();
+        } catch (MalformedURLException ex) {
+            // This is not expected.
+            logger.error("Failed to construct URL using the endpoint:'{}' and entity:'{}'",
+                managementClient.getEndpoint(), entity);
+            logger.logThrowableAsError(ex);
         }
-        headers.add(headerName, token.getToken());
+        return null;
     }
 
     /**

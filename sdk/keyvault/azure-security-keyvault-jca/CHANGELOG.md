@@ -1,6 +1,8 @@
 # Release History
 
-## 2.2.0 (2021-10-29)
+## 2.2.0 (2021-11-02)
+### Features Added
+- Support connect to multi keyvault for keyless. ([24718](https://github.com/Azure/azure-sdk-for-java/pull/24718))
 
 ## 2.1.0 (2021-09-26)
 

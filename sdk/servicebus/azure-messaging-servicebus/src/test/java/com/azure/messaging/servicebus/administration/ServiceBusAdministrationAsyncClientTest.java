@@ -3,12 +3,13 @@
 
 package com.azure.messaging.servicebus.administration;
 
-import com.azure.core.credential.AccessToken;
-import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.*;
+import com.azure.core.http.HttpHeader;
+import com.azure.core.http.HttpHeaders;
+import com.azure.core.http.HttpMethod;
+import com.azure.core.http.HttpRequest;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.messaging.servicebus.administration.models.CreateQueueOptions;
@@ -62,6 +63,8 @@ import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
 import static com.azure.core.http.policy.AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME;
+import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -93,9 +96,6 @@ class ServiceBusAdministrationAsyncClientTest {
     private Response<Object> objectResponse;
     @Mock
     private Response<Object> secondObjectResponse;
-    @Mock
-    private TokenCredential credential;
-    private AutoCloseable mockClosable;
 
     private final String queueName = "some-queue";
     private final String responseString = "some-xml-response-string";
@@ -103,11 +103,10 @@ class ServiceBusAdministrationAsyncClientTest {
     private final String validToken = "some-valid-token";
     private final String dummyEndpoint = "endpoint.servicebus.foo";
     private final String forwardToEntity = "forward-to-entity";
-    private final String serviceBusSupplementaryAuthorizationHeaderName = "ServiceBusSupplementaryAuthorization";
-    private final String serviceBusDlqSupplementaryAuthorizationHeaderName = "ServiceBusDlqSupplementaryAuthorization";
     private final HttpHeaders httpHeaders = new HttpHeaders().put("foo", "baz");
     private final HttpRequest httpRequest;
 
+    private AutoCloseable mockClosable;
     private ServiceBusAdministrationAsyncClient client;
 
     ServiceBusAdministrationAsyncClientTest() {
@@ -147,7 +146,7 @@ class ServiceBusAdministrationAsyncClientTest {
         when(serviceClient.getEndpoint()).thenReturn(dummyEndpoint);
         when(serviceClient.getSubscriptions()).thenReturn(subscriptions);
 
-        client = new ServiceBusAdministrationAsyncClient(serviceClient, serializer, credential);
+        client = new ServiceBusAdministrationAsyncClient(serviceClient, serializer);
     }
 
     @AfterEach
@@ -215,16 +214,14 @@ class ServiceBusAdministrationAsyncClientTest {
         final QueueDescriptionEntry expected = new QueueDescriptionEntry()
             .setTitle(getResponseTitle(updatedName))
             .setContent(new QueueDescriptionEntryContent().setQueueDescription(expectedDescription));
-        final AccessToken token = new AccessToken(validToken, OffsetDateTime.now());
 
         when(entitys.putWithResponseAsync(eq(queueName),
             argThat(arg -> createBodyContentEquals(arg, description)), isNull(),
             argThat(ctx -> (verifyAdditionalAuthHeaderPresent(ctx,
-                serviceBusSupplementaryAuthorizationHeaderName, validToken)
+                SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME, forwardToEntity)
                 && verifyAdditionalAuthHeaderPresent(ctx,
-                    serviceBusDlqSupplementaryAuthorizationHeaderName, validToken)))))
+                SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME, forwardToEntity)))))
             .thenReturn(Mono.just(objectResponse));
-        when(credential.getToken(any(TokenRequestContext.class))).thenReturn(Mono.just(token));
         when(serializer.deserialize(responseString, QueueDescriptionEntry.class)).thenReturn(expected);
 
         // Act & Assert
@@ -543,7 +540,6 @@ class ServiceBusAdministrationAsyncClientTest {
         final QueueDescriptionEntry expected = new QueueDescriptionEntry()
             .setTitle(getResponseTitle(updatedName))
             .setContent(new QueueDescriptionEntryContent().setQueueDescription(expectedDescription));
-        final AccessToken token = new AccessToken(validToken, OffsetDateTime.now());
 
         when(entitys.putWithResponseAsync(eq(queueName),
             argThat(arg -> {
@@ -555,16 +551,15 @@ class ServiceBusAdministrationAsyncClientTest {
                 if (argument.getContent() == null || argument.getContent().getQueueDescription() == null) {
                     return false;
                 }
-                assertEquals(argument.getContent().getQueueDescription().getForwardTo(), FORWARD_TO_ENTITY,
-                    "Update queue does not set the forward To entity to an absolute URL");
+                assertEquals(FORWARD_TO_ENTITY, argument.getContent().getQueueDescription().getForwardTo(),
+                    "Update queue does not set the forward-to-entity to an absolute URL");
                 return true;
             }),
             eq("*"),
             argThat(ctx -> verifyAdditionalAuthHeaderPresent(ctx,
-                serviceBusSupplementaryAuthorizationHeaderName, validToken))))
+                SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME, forwardToEntity))))
             .thenReturn(Mono.just(objectResponse));
 
-        when(credential.getToken(any(TokenRequestContext.class))).thenReturn(Mono.just(token));
         when(serializer.deserialize(responseString, QueueDescriptionEntry.class)).thenReturn(expected);
 
         // Act & Assert
@@ -652,16 +647,17 @@ class ServiceBusAdministrationAsyncClientTest {
             && "application/xml".equals(content.getType());
     }
 
-    private static boolean verifyAdditionalAuthHeaderPresent(Context context, String requiredHeader, String token) {
+    private static boolean verifyAdditionalAuthHeaderPresent(Context context, String requiredHeader, String entity) {
         return context.getData(AZURE_REQUEST_HTTP_HEADERS_KEY).map(headers -> {
-            if (headers instanceof HttpHeaders) {
-                HttpHeaders customHttpHeaders = (HttpHeaders) headers;
-                // loop through customHttpHeaders and check if the required Header is present
-                for (HttpHeader httpHeader : customHttpHeaders) {
-                    if (!Objects.isNull(httpHeader.getName()) && !Objects.isNull(httpHeader.getValue())) {
-                        if (httpHeader.getName().equals(requiredHeader) && httpHeader.getValue().equals(token)) {
-                            return true;
-                        }
+            if (!(headers instanceof HttpHeaders)) {
+                return false;
+            }
+            HttpHeaders customHttpHeaders = (HttpHeaders) headers;
+            // loop through customHttpHeaders and check if the required Header is present
+            for (HttpHeader httpHeader : customHttpHeaders) {
+                if (!Objects.isNull(httpHeader.getName()) && !Objects.isNull(httpHeader.getValue())) {
+                    if (httpHeader.getName().equals(requiredHeader) && httpHeader.getValue().equals(entity)) {
+                        return true;
                     }
                 }
             }
