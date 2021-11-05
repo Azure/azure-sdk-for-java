@@ -11,7 +11,7 @@ from parameters import *
 os.chdir(pwd)
 
 
-LLC_ARGUMENTS = '--java --low-level-client --sdk-integration'
+LLC_ARGUMENTS = '--java --low-level-client --sdk-integration --generate-samples'
 
 
 def generate(
