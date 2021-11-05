@@ -195,9 +195,9 @@ class ServiceBusManagementSerializerTest {
         final String contents = getContents("QueueDescriptionFeed-Paged.xml");
         final List<ResponseLink> responseLinks = Arrays.asList(
             new ResponseLink().setRel("self")
-                .setHref("https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2017-04&enrich=false&$skip=0&$top=5"),
+                .setHref("https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2021-05&enrich=false&$skip=0&$top=5"),
             new ResponseLink().setRel("next")
-                .setHref("https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2017-04&enrich=false&%24skip=5&%24top=5")
+                .setHref("https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2021-05&enrich=false&%24skip=5&%24top=5")
         );
 
         final String queueName = "q-0";
@@ -216,33 +216,33 @@ class ServiceBusManagementSerializerTest {
         final QueueDescription queueProperties = EntityHelper.getQueueDescription(options);
 
         final QueueDescriptionEntry entry1 = new QueueDescriptionEntry()
-            .setBase("https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2017-04&enrich=false&$skip=0&$top=5")
-            .setId("https://sb-java.servicebus.windows.net/q-0?api-version=2017-04")
+            .setBase("https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2021-05&enrich=false&$skip=0&$top=5")
+            .setId("https://sb-java.servicebus.windows.net/q-0?api-version=2021-05")
             .setTitle(getResponseTitle("q-0"))
             .setPublished(OffsetDateTime.parse("2020-03-05T07:17:04Z"))
             .setUpdated(OffsetDateTime.parse("2020-01-05T07:17:04Z"))
             .setAuthor(new ResponseAuthor().setName("sb-java"))
-            .setLink(new ResponseLink().setRel("self").setHref("../q-0?api-version=2017-04"))
+            .setLink(new ResponseLink().setRel("self").setHref("../q-0?api-version=2021-05"))
             .setContent(new QueueDescriptionEntryContent().setType("application/xml")
                 .setQueueDescription(queueProperties));
         final QueueDescriptionEntry entry2 = new QueueDescriptionEntry()
-            .setBase("https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2017-04&enrich=false&$skip=0&$top=5")
-            .setId("https://sb-java.servicebus.windows.net/q-1?api-version=2017-04")
+            .setBase("https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2021-05&enrich=false&$skip=0&$top=5")
+            .setId("https://sb-java.servicebus.windows.net/q-1?api-version=2021-05")
             .setTitle(getResponseTitle("q-1"))
             .setPublished(OffsetDateTime.parse("2020-06-10T07:16:25Z"))
             .setUpdated(OffsetDateTime.parse("2020-06-15T07:16:25Z"))
             .setAuthor(new ResponseAuthor().setName("sb-java2"))
-            .setLink(new ResponseLink().setRel("self").setHref("../q-1?api-version=2017-04"))
+            .setLink(new ResponseLink().setRel("self").setHref("../q-1?api-version=2021-05"))
             .setContent(new QueueDescriptionEntryContent().setType("application/xml")
                 .setQueueDescription(queueProperties));
         final QueueDescriptionEntry entry3 = new QueueDescriptionEntry()
-            .setBase("https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2017-04&enrich=false&$skip=0&$top=5")
-            .setId("https://sb-java.servicebus.windows.net/q-2?api-version=2017-04")
+            .setBase("https://sb-java.servicebus.windows.net/$Resources/queues?api-version=2021-05&enrich=false&$skip=0&$top=5")
+            .setId("https://sb-java.servicebus.windows.net/q-2?api-version=2021-05")
             .setTitle(getResponseTitle("q-2"))
             .setPublished(OffsetDateTime.parse("2020-06-05T07:17:06Z"))
             .setUpdated(OffsetDateTime.parse("2020-06-05T07:17:06Z"))
             .setAuthor(new ResponseAuthor().setName("sb-java3"))
-            .setLink(new ResponseLink().setRel("self").setHref("../q-2?api-version=2017-04"))
+            .setLink(new ResponseLink().setRel("self").setHref("../q-2?api-version=2021-05"))
             .setContent(new QueueDescriptionEntryContent().setType("application/xml")
                 .setQueueDescription(queueProperties));
 
