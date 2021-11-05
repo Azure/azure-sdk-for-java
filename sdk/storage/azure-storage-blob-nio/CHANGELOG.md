@@ -5,8 +5,6 @@
 ### Features Added
 - Added support for the 2020-12-06 service version.
 
-### Breaking Changes
-
 ### Bugs Fixed
 - Fixes an off-by-one error in read() returns 0 bytes read instead of -1 (EOF) when reading at channel position == size.
 - Fixes a bug where read() (and write()) do not respect initial position (and limit) of provided ByteBuffer when backed by an array
