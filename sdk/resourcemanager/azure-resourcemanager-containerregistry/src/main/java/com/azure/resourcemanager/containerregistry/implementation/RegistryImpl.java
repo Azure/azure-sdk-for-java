@@ -8,6 +8,7 @@ import com.azure.resourcemanager.containerregistry.ContainerRegistryManager;
 import com.azure.resourcemanager.containerregistry.fluent.models.RegistryInner;
 import com.azure.resourcemanager.containerregistry.fluent.models.RunInner;
 import com.azure.resourcemanager.containerregistry.models.AccessKeyType;
+import com.azure.resourcemanager.containerregistry.models.PublicNetworkAccess;
 import com.azure.resourcemanager.containerregistry.models.Registry;
 import com.azure.resourcemanager.containerregistry.models.RegistryCredentials;
 import com.azure.resourcemanager.containerregistry.models.RegistryTaskRun;
@@ -183,6 +184,11 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
     }
 
     @Override
+    public PublicNetworkAccess publicNetworkAccess() {
+        return innerModel().publicNetworkAccess();
+    }
+
+    @Override
     public RegistryTaskRun.DefinitionStages.BlankFromRegistry scheduleRun() {
         return new RegistryTaskRunImpl(this.manager(), new RunInner())
             .withExistingRegistry(this.resourceGroupName(), this.name());
@@ -217,5 +223,25 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
     @Override
     public WebhookImpl defineWebhook(String name) {
         return webhooks.defineWebhook(name);
+    }
+
+    @Override
+    public RegistryImpl enablePublicNetworkAccess() {
+        if (this.isInCreateMode()) {
+            this.innerModel().withPublicNetworkAccess(PublicNetworkAccess.ENABLED);
+        } else {
+            updateParameters.withPublicNetworkAccess(PublicNetworkAccess.ENABLED);
+        }
+        return this;
+    }
+
+    @Override
+    public RegistryImpl disablePublicNetworkAccess() {
+        if (this.isInCreateMode()) {
+            this.innerModel().withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
+        } else {
+            updateParameters.withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
+        }
+        return this;
     }
 }

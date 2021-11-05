@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Supported disabling public network access in `Registry` via `disablePublicNetworkAccess()`, for private link feature.
+
 ### Breaking Changes
 
 - Removed classic SKU support in `Registry`, as service with `api-version` after late 2019 no longer supports it.

@@ -85,15 +85,9 @@ public interface Registry
     WebhookOperations webhooks();
 
     /**
-     * @return returns entry point to manage the builds such as queued quick builds and queued build tasks for the
-     *     container registry.
+     * @return the state of public network access for the container registry.
      */
-    //    @Beta(SinceVersion.V1_14_0)
-    //    QueuedBuildOperations queuedBuilds();
-
-    /** @return returns entry point to manage the build tasks for the container registry. */
-    //    @Beta(SinceVersion.V1_14_0)
-    //    BuildTaskOperations buildTasks();
+    PublicNetworkAccess publicNetworkAccess();
 
     RegistryTaskRun.DefinitionStages.BlankFromRegistry scheduleRun();
 
@@ -160,12 +154,26 @@ public interface Registry
             Webhook.DefinitionStages.Blank<WithCreate> defineWebhook(String name);
         }
 
+        /** The stage of the container registry definition allowing to disable public network access. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Disables public network access for the container registry, for private link feature.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate disablePublicNetworkAccess();
+        }
+
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
          * but also allows for any other optional settings to be specified.
          */
         interface WithCreate
-            extends Creatable<Registry>, WithAdminUserEnabled, WithWebhook, Resource.DefinitionWithTags<WithCreate> {
+            extends Creatable<Registry>,
+            WithAdminUserEnabled,
+            WithWebhook,
+            WithPublicNetworkAccess,
+            Resource.DefinitionWithTags<WithCreate> {
         }
     }
 
@@ -175,7 +183,8 @@ public interface Registry
             Appliable<Registry>,
             UpdateStages.WithAdminUserEnabled,
             UpdateStages.WithSku,
-            UpdateStages.WithWebhook {
+            UpdateStages.WithWebhook,
+            UpdateStages.WithPublicNetworkAccess {
     }
 
     /** Grouping of container service update stages. */
@@ -246,6 +255,23 @@ public interface Registry
              * @return the first stage of the webhook update description
              */
             Webhook.UpdateResourceStages.Blank<Update> updateWebhook(String name);
+        }
+
+        /** The stage of the container registry definition allowing to change public network access. */
+        interface WithPublicNetworkAccess {
+            /**
+             * Enables public network access for the container registry.
+             *
+             * @return the next stage of the update
+             */
+            Update enablePublicNetworkAccess();
+
+            /**
+             * Disables public network access for the container registry, for private link feature.
+             *
+             * @return the next stage of the update
+             */
+            Update disablePublicNetworkAccess();
         }
     }
 }
