@@ -89,6 +89,11 @@ public interface Registry
      */
     PublicNetworkAccess publicNetworkAccess();
 
+    /**
+     * Begins the definition of the task run.
+     *
+     * @return the first stage of the task run definition.
+     */
     RegistryTaskRun.DefinitionStages.BlankFromRegistry scheduleRun();
 
     /** Container interface for all the definitions related to a registry. */
