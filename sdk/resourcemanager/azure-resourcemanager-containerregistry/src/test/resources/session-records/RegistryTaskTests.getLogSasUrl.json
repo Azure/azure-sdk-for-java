@@ -28,7 +28,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr56536/providers/Microsoft.ContainerRegistry/registries/acr47484f?api-version=2019-05-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr56536/providers/Microsoft.ContainerRegistry/registries/acr47484f?api-version=2019-12-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry.implementation/2.0.0 (14.0.2; Linux; 5.4.0-48-generic)",
       "x-ms-client-request-id" : "9851f2f8-e1fa-461e-bab8-92a5186db8be",
@@ -56,7 +56,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr56536/providers/Microsoft.ContainerRegistry/registries/acr47484f/scheduleRun?api-version=2019-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr56536/providers/Microsoft.ContainerRegistry/registries/acr47484f/scheduleRun?api-version=2019-06-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry.implementation/2.0.0 (14.0.2; Linux; 5.4.0-48-generic)",
       "x-ms-client-request-id" : "1ced066e-197b-4fa2-91d1-539347525c94",
@@ -86,7 +86,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr56536/providers/Microsoft.ContainerRegistry/registries/acr47484f/runs/da1/listLogSasUrl?api-version=2019-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr56536/providers/Microsoft.ContainerRegistry/registries/acr47484f/runs/da1/listLogSasUrl?api-version=2019-06-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry.implementation/2.0.0 (14.0.2; Linux; 5.4.0-48-generic)",
       "x-ms-client-request-id" : "9fb522c2-4ff4-47fd-8dde-4c927ba566ac",

@@ -28,7 +28,7 @@
     "Exception" : null
   }, {
     "Method" : "PUT",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr13659/providers/Microsoft.ContainerRegistry/registries/acr77159f?api-version=2019-05-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr13659/providers/Microsoft.ContainerRegistry/registries/acr77159f?api-version=2019-12-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry.implementation/2.0.0 (14.0.2; Linux; 5.4.0-48-generic)",
       "x-ms-client-request-id" : "93de60f9-981f-4327-91dd-0fd19f408510",
@@ -56,7 +56,7 @@
     "Exception" : null
   }, {
     "Method" : "POST",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr13659/providers/Microsoft.ContainerRegistry/registries/acr77159f/scheduleRun?api-version=2019-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr13659/providers/Microsoft.ContainerRegistry/registries/acr77159f/scheduleRun?api-version=2019-06-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry.implementation/2.0.0 (14.0.2; Linux; 5.4.0-48-generic)",
       "x-ms-client-request-id" : "1a770198-b12a-44e3-8606-cce990079b1c",
@@ -86,7 +86,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr13659/providers/Microsoft.ContainerRegistry/registries/acr77159f/runs/da1?api-version=2019-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr13659/providers/Microsoft.ContainerRegistry/registries/acr77159f/runs/da1?api-version=2019-06-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry.implementation/2.0.0 (14.0.2; Linux; 5.4.0-48-generic)",
       "x-ms-client-request-id" : "8fdd5b90-8969-4358-9843-6ad19c803008",
@@ -116,7 +116,7 @@
     "Exception" : null
   }, {
     "Method" : "GET",
-    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr13659/providers/Microsoft.ContainerRegistry/registries/acr77159f/runs?api-version=2019-04-01",
+    "Uri" : "http://localhost:1234/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/rgacr13659/providers/Microsoft.ContainerRegistry/registries/acr77159f/runs?api-version=2019-06-01-preview",
     "Headers" : {
       "User-Agent" : "azsdk-java-com.azure.resourcemanager.containerregistry.implementation/2.0.0 (14.0.2; Linux; 5.4.0-48-generic)",
       "x-ms-client-request-id" : "6f4df547-9c99-4b75-a4c0-36b99c4db057",
