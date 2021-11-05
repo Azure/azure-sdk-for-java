@@ -39,16 +39,20 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target(PARAMETER)
 public @interface HostParam {
     /**
-     * The name of the variable in the endpoint uri template which will be replaced with the value
-     * of the parameter annotated with this annotation.
-     * @return The name of the variable in the endpoint uri template which will be replaced with the
-     *     value of the parameter annotated with this annotation.
+     * The name of the variable in the endpoint URI template which will be replaced with the value of the parameter
+     * annotated with this annotation.
+     *
+     * @return The name of the variable in the endpoint URI template which will be replaced with the value of the
+     * parameter annotated with this annotation.
      */
     String value();
+
     /**
-     * A value true for this argument indicates that value of {@link HostParam#value()} is already
-     * encoded hence engine should not encode it, by default value will be encoded.
-     * @return Whether this argument is already encoded.
+     * If set to {@code true}, this argument indicates that {@link HostParam#value() the value of this host parameter}
+     * is already encoded, meaning that it should not be encoded again by an external actor. The default value for this
+     * property is {@code false}.
+     *
+     * @return Whether this host parameter is already encoded.
      */
     boolean encoded() default true;
 }

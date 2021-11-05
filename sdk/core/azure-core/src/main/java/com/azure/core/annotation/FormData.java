@@ -28,7 +28,7 @@ public @interface FormData {
     String value();
 
     /**
-     * Optional value to be provided if the value of {@link FormData#value()} is a file's contents.
+     * Optional value to be provided if {@link FormData#value()} represents a file's contents.
      *
      * @return The name of the file that {@link FormData#value()} represents.
      */

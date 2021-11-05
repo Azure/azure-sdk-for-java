@@ -58,24 +58,29 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Target(PARAMETER)
 public @interface QueryParam {
     /**
-     * The name of the variable in the endpoint uri template which will be replaced with the value
-     * of the parameter annotated with this annotation.
-     * @return The name of the variable in the endpoint uri template which will be replaced with the
-     *     value of the parameter annotated with this annotation.
+     * The name of the variable in the endpoint URI template which will be replaced with the value of the parameter
+     * annotated with this annotation.
+     *
+     * @return The name of the variable in the endpoint URI template which will be replaced with the value of the
+     * parameter annotated with this annotation.
      */
     String value();
+
     /**
-     * A value true for this argument indicates that value of {@link QueryParam#value()} is already encoded
-     * hence engine should not encode it, by default value will be encoded.
+     * If set to {@code true}, this argument indicates that {@link QueryParam#value() the value of this query parameter}
+     * is already encoded, meaning that it should not be encoded again by an external actor. The default value for this
+     * property is {@code false}.
+     *
      * @return Whether this query parameter is already encoded.
      */
     boolean encoded() default false;
+
     /**
-     * A value true for this argument indicates that value of {@link QueryParam#value()} should not be
-     * converted to Json in case it is an array but instead sent as multiple values with same parameter
-     * name.
-     * @return Whether this query parameter list values should be sent as individual query
-     * params or as a single Json.
+     * If set to {@code true}, this argument indicates that value of {@link QueryParam#value()} should not be
+     * converted to JSON in case it is an array but instead sent as multiple values with same parameter
+     * name. The default value for this property is {@code false}.
+     *
+     * @return Whether this query parameter list values should be sent as individual query params or as a single JSON.
      */
     boolean multipleQueryParams() default false;
 }
