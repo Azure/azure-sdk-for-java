@@ -38,6 +38,9 @@ public interface Secret extends Indexable, HasInnerModel<SecretProperties>, HasI
     /** @return the corresponding key backing the KV certificate if this is a secret backing a KV certificate */
     String kid();
 
+    /** @return test */
+    String test();
+
     /**
      * @return true if the secret's lifetime is managed by key vault. If this is a key backing a certificate, then
      *     managed will be true

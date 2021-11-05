@@ -36,6 +36,9 @@ Licensed under the MIT License.
     <jacoco.min.linecoverage>0.01</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.01</jacoco.min.branchcoverage>
     <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>
+
+    <!-- CosmosSkip - This is not a module we want/expect external customers to consume. Skip breaking API checks. -->
+    <revapi.skip>true</revapi.skip>
   </properties>
 
   <dependencies>
@@ -221,16 +224,6 @@ Licensed under the MIT License.
           <source>1.8</source>
           <target>1.8</target>
           <failOnWarning>false</failOnWarning>
-        </configuration>
-      </plugin>
-
-      <!-- CosmosSkip - This is not a module we want/expect external customers to consume. Skip breaking API checks. -->
-      <plugin>
-        <groupId>org.revapi</groupId>
-        <artifactId>revapi-maven-plugin</artifactId>
-        <version>0.11.2</version> <!-- {x-version-update;org.revapi:revapi-maven-plugin;external_dependency} -->
-        <configuration>
-          <skip>true</skip>
         </configuration>
       </plugin>
 
