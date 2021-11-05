@@ -9,8 +9,6 @@
 - Fixes an off-by-one error in read() returns 0 bytes read instead of -1 (EOF) when reading at channel position == size.
 - Fixes a bug where read() (and write()) do not respect initial position (and limit) of provided ByteBuffer when backed by an array
 
-### Other Changes
-
 ## 12.0.0-beta.10 (2021-10-12)
 
 ### Other Changes
