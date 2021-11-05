@@ -55,10 +55,10 @@ public class AzureBlobCheckpointStoreConfiguration {
     @ConditionalOnMissingBean
     public BlobCheckpointStoreContainerInitializer blobCheckpointStoreContainerInitializer() {
         return containerAsyncClient -> {
-            if (Boolean.FALSE.equals(containerAsyncClient.exists().block(Duration.ofSeconds(300)))) {
+            if (Boolean.FALSE.equals(containerAsyncClient.exists().block(Duration.ofSeconds(3)))) {
                 LOGGER.debug("The checkpoint store container [{}] doesn't exist, will create the blob container now.",
                     containerAsyncClient.getBlobContainerName());
-                containerAsyncClient.create().block(Duration.ofSeconds(300));
+                containerAsyncClient.create().block(Duration.ofSeconds(3));
             }
         };
     }
