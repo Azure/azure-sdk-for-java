@@ -547,8 +547,9 @@ public final class ServiceBusClientBuilder {
         }
 
         String proxyAddress = configuration.get(Configuration.PROPERTY_HTTP_PROXY);
+        boolean useSystemProxies = Boolean.parseBoolean(configuration.get("java.net.useSystemProxies"));
 
-        if (CoreUtils.isNullOrEmpty(proxyAddress)) {
+        if (CoreUtils.isNullOrEmpty(proxyAddress) || !useSystemProxies) {
             return ProxyOptions.SYSTEM_DEFAULTS;
         }
 
