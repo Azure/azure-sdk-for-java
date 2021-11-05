@@ -217,11 +217,10 @@ class ServiceBusAdministrationAsyncClientTest {
         when(entitys.putWithResponseAsync(eq(queueName),
             argThat(arg -> createBodyContentEquals(arg, description)), isNull(),
             argThat(ctx -> (verifyAdditionalAuthHeaderPresent(ctx,
-                serviceBusSupplementaryAuthorizationHeaderName, validToken)
+                SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME, forwardToEntity)
                 && verifyAdditionalAuthHeaderPresent(ctx,
-                    serviceBusDlqSupplementaryAuthorizationHeaderName, validToken)))))
+                SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME, forwardToEntity)))))
             .thenReturn(Mono.just(objectResponse));
-        when(credential.getToken(any(TokenRequestContext.class))).thenReturn(Mono.just(token));
         when(serializer.deserialize(responseString, QueueDescriptionEntry.class)).thenReturn(expected);
 
         // Act & Assert
@@ -551,8 +550,8 @@ class ServiceBusAdministrationAsyncClientTest {
                 if (argument.getContent() == null || argument.getContent().getQueueDescription() == null) {
                     return false;
                 }
-                assertEquals(argument.getContent().getQueueDescription().getForwardTo(), FORWARD_TO_ENTITY,
-                    "Update queue does not set the forward To entity to an absolute URL");
+                assertEquals(FORWARD_TO_ENTITY, argument.getContent().getQueueDescription().getForwardTo(),
+                    "Update queue does not set the forward-to-entity to an absolute URL");
                 return true;
             }),
             eq("*"),

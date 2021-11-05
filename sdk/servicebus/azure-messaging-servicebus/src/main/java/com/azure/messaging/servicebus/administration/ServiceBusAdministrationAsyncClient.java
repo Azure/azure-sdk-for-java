@@ -1386,21 +1386,21 @@ public final class ServiceBusAdministrationAsyncClient {
         } else if (context == null) {
             return monoError(logger, new NullPointerException("'context' cannot be null."));
         }
+        final Context contextWithHeaders = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE)
+            .addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders());
 
-        final HttpHeaders supplementaryAuthHeaders = new HttpHeaders();
-        Context additionalContext = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
-        if (!CoreUtils.isNullOrEmpty(createQueueOptions.getForwardTo())) {
-            addAdditionalAuthHeader(SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME, supplementaryAuthHeaders);
-            createQueueOptions.setForwardTo(String.format("https://%s/%s", managementClient.getEndpoint(),
-                createQueueOptions.getForwardTo()));
+        final String forwardToEntity = createQueueOptions.getForwardTo();
+        if (!CoreUtils.isNullOrEmpty(forwardToEntity)) {
+            addSupplementaryAuthHeader(SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
+                forwardToEntity, contextWithHeaders);
+            createQueueOptions.setForwardTo(getAbsoluteUrlFromEntity(forwardToEntity));
         }
-        if (!CoreUtils.isNullOrEmpty(createQueueOptions.getForwardDeadLetteredMessagesTo())) {
-            addAdditionalAuthHeader(SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME, supplementaryAuthHeaders);
-            createQueueOptions.setForwardDeadLetteredMessagesTo(String.format("https://%s/%s", managementClient.getEndpoint(),
-                createQueueOptions.getForwardDeadLetteredMessagesTo()));
-        }
-        if (supplementaryAuthHeaders.getSize() != 0) {
-            additionalContext = additionalContext.addData(AZURE_REQUEST_HTTP_HEADERS_KEY, supplementaryAuthHeaders);
+
+        final String forwardDlqToEntity = createQueueOptions.getForwardDeadLetteredMessagesTo();
+        if (!CoreUtils.isNullOrEmpty(forwardDlqToEntity)) {
+            addSupplementaryAuthHeader(SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
+                forwardDlqToEntity, contextWithHeaders);
+            createQueueOptions.setForwardDeadLetteredMessagesTo(getAbsoluteUrlFromEntity(forwardDlqToEntity));
         }
 
         final QueueDescription description = EntityHelper.getQueueDescription(createQueueOptions);
@@ -1506,20 +1506,20 @@ public final class ServiceBusAdministrationAsyncClient {
             return monoError(logger, new NullPointerException("'subscription' cannot be null."));
         }
 
-        final HttpHeaders supplementaryAuthHeaders = new HttpHeaders();
-        Context additionalContext = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
-        if (!CoreUtils.isNullOrEmpty(subscriptionOptions.getForwardTo())) {
-            addAdditionalAuthHeader(SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME, supplementaryAuthHeaders);
-            subscriptionOptions.setForwardTo(String.format("https://%s/%s", managementClient.getEndpoint(),
-                subscriptionOptions.getForwardTo()));
+        final Context contextWithHeaders = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE)
+            .addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders());
+        final String forwardToEntity = subscriptionOptions.getForwardTo();
+        if (!CoreUtils.isNullOrEmpty(forwardToEntity)) {
+            addSupplementaryAuthHeader(SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
+                forwardToEntity, contextWithHeaders);
+            subscriptionOptions.setForwardTo(getAbsoluteUrlFromEntity(forwardToEntity));
         }
-        if (!CoreUtils.isNullOrEmpty(subscriptionOptions.getForwardDeadLetteredMessagesTo())) {
-            addAdditionalAuthHeader(SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME, supplementaryAuthHeaders);
-            subscriptionOptions.setForwardDeadLetteredMessagesTo(String.format("https://%s/%s", managementClient.getEndpoint(),
-                subscriptionOptions.getForwardDeadLetteredMessagesTo()));
-        }
-        if (supplementaryAuthHeaders.getSize() != 0) {
-            additionalContext = additionalContext.addData(AZURE_REQUEST_HTTP_HEADERS_KEY, supplementaryAuthHeaders);
+
+        final String forwardDlqToEntity = subscriptionOptions.getForwardDeadLetteredMessagesTo();
+        if (!CoreUtils.isNullOrEmpty(forwardDlqToEntity)) {
+            addSupplementaryAuthHeader(SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
+                forwardDlqToEntity, contextWithHeaders);
+            subscriptionOptions.setForwardDeadLetteredMessagesTo(getAbsoluteUrlFromEntity(forwardDlqToEntity));
         }
 
         final SubscriptionDescription subscription = EntityHelper.getSubscriptionDescription(subscriptionOptions);
@@ -2086,20 +2086,20 @@ public final class ServiceBusAdministrationAsyncClient {
             return monoError(logger, new NullPointerException("'context' cannot be null."));
         }
 
-        final HttpHeaders supplementaryAuthHeaders = new HttpHeaders();
-        Context additionalContext = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
-        if (!CoreUtils.isNullOrEmpty(queue.getForwardTo())) {
-            addAdditionalAuthHeader(SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME, supplementaryAuthHeaders);
-            queue.setForwardTo(String.format("https://%s/%s", managementClient.getEndpoint(),
-                queue.getForwardTo()));
+        final Context contextWithHeaders = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE)
+            .addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders());
+        final String forwardToEntity = queue.getForwardTo();
+        if (!CoreUtils.isNullOrEmpty(forwardToEntity)) {
+            addSupplementaryAuthHeader(SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
+                forwardToEntity, contextWithHeaders);
+            queue.setForwardTo(getAbsoluteUrlFromEntity(forwardToEntity));
         }
-        if (!CoreUtils.isNullOrEmpty(queue.getForwardDeadLetteredMessagesTo())) {
-            addAdditionalAuthHeader(SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME, supplementaryAuthHeaders);
-            queue.setForwardDeadLetteredMessagesTo(String.format("https://%s/%s", managementClient.getEndpoint(),
-                queue.getForwardDeadLetteredMessagesTo()));
-        }
-        if (supplementaryAuthHeaders.getSize() != 0) {
-            additionalContext = additionalContext.addData(AZURE_REQUEST_HTTP_HEADERS_KEY, supplementaryAuthHeaders);
+
+        final String forwardDlqToEntity = queue.getForwardDeadLetteredMessagesTo();
+        if (!CoreUtils.isNullOrEmpty(forwardDlqToEntity)) {
+            addSupplementaryAuthHeader(SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
+                forwardDlqToEntity, contextWithHeaders);
+            queue.setForwardDeadLetteredMessagesTo(getAbsoluteUrlFromEntity(forwardDlqToEntity));
         }
 
         final QueueDescription queueDescription = EntityHelper.toImplementation(queue);
@@ -2171,20 +2171,20 @@ public final class ServiceBusAdministrationAsyncClient {
         } else if (context == null) {
             return monoError(logger, new NullPointerException("'context' cannot be null."));
         }
-        final HttpHeaders supplementaryAuthHeaders = new HttpHeaders();
-        Context additionalContext = context.addData(AZ_TRACING_NAMESPACE_KEY, SERVICE_BUS_TRACING_NAMESPACE_VALUE);
-        if (!CoreUtils.isNullOrEmpty(subscription.getForwardTo())) {
-            addAdditionalAuthHeader(SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME, supplementaryAuthHeaders);
-            subscription.setForwardTo(String.format("https://%s/%s", managementClient.getEndpoint(),
-                subscription.getForwardTo()));
+        final Context contextWithHeaders = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE)
+            .addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders());
+        final String forwardToEntity = subscription.getForwardTo();
+        if (!CoreUtils.isNullOrEmpty(forwardToEntity)) {
+            addSupplementaryAuthHeader(SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
+                forwardToEntity, contextWithHeaders);
+            subscription.setForwardTo(getAbsoluteUrlFromEntity(forwardToEntity));
         }
-        if (!CoreUtils.isNullOrEmpty(subscription.getForwardDeadLetteredMessagesTo())) {
-            addAdditionalAuthHeader(SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME, supplementaryAuthHeaders);
-            subscription.setForwardDeadLetteredMessagesTo(String.format("https://%s/%s", managementClient.getEndpoint(),
-                subscription.getForwardDeadLetteredMessagesTo()));
-        }
-        if (supplementaryAuthHeaders.getSize() != 0) {
-            additionalContext = additionalContext.addData(AZURE_REQUEST_HTTP_HEADERS_KEY, supplementaryAuthHeaders);
+
+        final String forwardDlqToEntity = subscription.getForwardDeadLetteredMessagesTo();
+        if (!CoreUtils.isNullOrEmpty(forwardDlqToEntity)) {
+            addSupplementaryAuthHeader(SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
+                forwardDlqToEntity, contextWithHeaders);
+            subscription.setForwardDeadLetteredMessagesTo(getAbsoluteUrlFromEntity(forwardDlqToEntity));
         }
 
         final String topicName = subscription.getTopicName();
