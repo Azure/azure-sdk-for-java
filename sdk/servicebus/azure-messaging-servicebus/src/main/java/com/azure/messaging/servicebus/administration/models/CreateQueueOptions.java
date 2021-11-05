@@ -478,7 +478,7 @@ public final class CreateQueueOptions {
      * Set the maxMessageSizeInKilobytes property: Represents the default maximum message size (in kilobytes)
      * Option only available in premium tier. Default maximum in Standard tier is 256 KB, and 1 MB in premium tier.
      * Larger message sizes are available in preview.
-     * Please see <a href=https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-premium-messaging#large-messages-support-preview>more info</a>
+     * Please see <a href=https://docs.microsoft.com/azure/service-bus-messaging/service-bus-premium-messaging#large-messages-support-preview>more info</a>
      *
      * @param maxMessageSizeInKilobytes the maxMessageSizeInKilobytes value to set.
      *
