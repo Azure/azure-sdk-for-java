@@ -2,39 +2,39 @@
 
 trigger:
   branches:
-      include:
-          - main
-          - hotfix/*
-          - release/*
-      paths:
-          include:
-              - sdk/formrecognizer/
-          exclude:
-              - sdk/formrecognizer/pom.xml
-              - sdk/formrecognizer/azure-ai-formrecognizer/pom.xml
-              - sdk/formrecognizer/azure-ai-formrecognizer-perf/pom.xml
-
+    include:
+      - main
+      - hotfix/*
+      - release/*
+  paths:
+    include:
+      - sdk/formrecognizer/
+    exclude:
+      - sdk/formrecognizer/pom.xml
+      - sdk/formrecognizer/azure-ai-formrecognizer/pom.xml
+      - sdk/formrecognizer/azure-ai-formrecognizer-perf/pom.xml
 
 pr:
   branches:
-      include:
-          - main
-          - feature/*
-          - hotfix/*
-          - release/*
+    include:
+      - main
+      - feature/*
+       - hotfix/*
+       - release/*
   paths:
-      include:
-          - sdk/formrecognizer/
-      exclude:
-          - sdk/formrecognizer/pom.xml
-          - sdk/formrecognizer/azure-ai-formrecognizer/pom.xml
-          - sdk/formrecognizer/azure-ai-formrecognizer-perf/pom.xml
+    include:
+      - sdk/formrecognizer/
+    exclude:
+      - sdk/formrecognizer/pom.xml
+      - sdk/formrecognizer/azure-ai-formrecognizer/pom.xml
+      - sdk/formrecognizer/azure-ai-formrecognizer-perf/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
-      ServiceDirectory: formrecognizer
-      Artifacts:
-          -   name: azure-ai-formrecognizer
-              groupId: com.azure
+    ServiceDirectory: formrecognizer
+    SDKType: client
+    Artifacts:
+      - name: azure-ai-formrecognizer
+        groupId: com.azure
               safeName: azureaiformrecognizer
