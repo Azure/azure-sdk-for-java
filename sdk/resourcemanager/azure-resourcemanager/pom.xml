@@ -211,6 +211,12 @@
       <scope>test</scope>
     </dependency>
     <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-core</artifactId>
+      <version>3.12.4</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
       <groupId>com.jcraft</groupId>
       <artifactId>jsch</artifactId>
       <version>0.1.55</version> <!-- {x-version-update;resourcemanager_com.jcraft:jsch;external_dependency} -->
