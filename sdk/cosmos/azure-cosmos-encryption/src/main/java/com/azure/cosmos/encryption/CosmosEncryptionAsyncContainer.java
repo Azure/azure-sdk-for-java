@@ -588,7 +588,7 @@ public class CosmosEncryptionAsyncContainer {
             else if (patchOperation instanceof PatchOperationCore) {
                 JsonNode objectNode = EncryptionUtils.getSimpleObjectMapper().valueToTree(((PatchOperationCore)patchOperation).getResource());
                 itemPatchOperationMono =
-                    encryptionProcessor.encryptObjectNode(objectNode).map(encryptedObjectNode -> {
+                    encryptionProcessor.encryptObjectNode(objectNode, ((PatchOperationCore)patchOperation).getPath()).map(encryptedObjectNode -> {
                         return new PatchOperationCore<>(
                             patchOperation.getOperationType(),
                             ((PatchOperationCore)patchOperation).getPath(),
@@ -1006,7 +1006,7 @@ public class CosmosEncryptionAsyncContainer {
                 ObjectNode objectNode =
                     EncryptionUtils.getSimpleObjectMapper().valueToTree(itemBatchOperation.getItem());
                 itemBatchOperationMono =
-                    encryptionProcessor.encryptObjectNode(objectNode).map(encryptedItem -> {
+                    encryptionProcessor.encryptObjectNode(objectNode, null).map(encryptedItem -> {
                         return new ItemBatchOperation<>(
                             itemBatchOperation.getOperationType(),
                             itemBatchOperation.getId(),

@@ -243,10 +243,10 @@ public class EncryptionProcessor {
     }
 
     public Mono<byte[]> encrypt(JsonNode itemJObj) {
-        return encryptObjectNode(itemJObj).map(encryptedObjectNode -> EncryptionUtils.serializeJsonToByteArray(EncryptionUtils.getSimpleObjectMapper(), encryptedObjectNode));
+        return encryptObjectNode(itemJObj, null).map(encryptedObjectNode -> EncryptionUtils.serializeJsonToByteArray(EncryptionUtils.getSimpleObjectMapper(), encryptedObjectNode));
     }
 
-    public Mono<JsonNode> encryptObjectNode(JsonNode itemJObj) {
+    public Mono<JsonNode> encryptObjectNode(JsonNode itemJObj, String patchPropertyPath) {
         assert (itemJObj != null);
         return initEncryptionSettingsIfNotInitializedAsync().then(Mono.defer(() -> {
             for (ClientEncryptionIncludedPath includedPath : this.clientEncryptionPolicy.getIncludedPaths()) {
@@ -257,20 +257,36 @@ public class EncryptionProcessor {
             List<Mono<Void>> encryptionMonoList = new ArrayList<>();
             for (ClientEncryptionIncludedPath includedPath : this.clientEncryptionPolicy.getIncludedPaths()) {
                 String propertyName = includedPath.getPath().substring(1);
-                JsonNode propertyValueHolder = itemJObj.get(propertyName);
 
-                // Even null in the JSON is a JToken with Type Null, this null check is just a sanity check
-                if (propertyValueHolder != null && !propertyValueHolder.isNull()) {
-                    Mono<Void> voidMono = this.encryptionSettings.getEncryptionSettingForPropertyAsync(propertyName,
-                        this).flatMap(settings -> {
-                        try {
-                            encryptAndSerializeProperty(settings, itemJObj, propertyValueHolder, propertyName);
-                        } catch (MicrosoftDataEncryptionException ex) {
-                            return Mono.error(ex);
-                        }
-                        return Mono.empty();
-                    });
-                    encryptionMonoList.add(voidMono);
+                if (itemJObj.isValueNode()) {
+                    if (patchPropertyPath.substring(1).equals(propertyName)) {
+                        return this.encryptionSettings.getEncryptionSettingForPropertyAsync(propertyName,
+                            this).flatMap(settings -> {
+                                try{
+                                    return Mono.just(EncryptionUtils.getSimpleObjectMapper().readTree(EncryptionUtils.getSimpleObjectMapper().writeValueAsString(encryptAndSerializeValue(settings,
+                                        null, itemJObj, propertyName))));
+                                } catch (MicrosoftDataEncryptionException | JsonProcessingException ex) {
+                                    return Mono.error(ex);
+                                }
+                        });
+                    }
+                } else {
+
+                    JsonNode propertyValueHolder = itemJObj.get(propertyName);
+
+                    // Even null in the JSON is a JToken with Type Null, this null check is just a sanity check
+                    if (propertyValueHolder != null && !propertyValueHolder.isNull()) {
+                        Mono<Void> voidMono = this.encryptionSettings.getEncryptionSettingForPropertyAsync(propertyName,
+                            this).flatMap(settings -> {
+                            try {
+                                encryptAndSerializeProperty(settings, itemJObj, propertyValueHolder, propertyName);
+                            } catch (MicrosoftDataEncryptionException ex) {
+                                return Mono.error(ex);
+                            }
+                            return Mono.empty();
+                        });
+                        encryptionMonoList.add(voidMono);
+                    }
                 }
             }
             Mono<List<Void>> listMono = Flux.mergeSequential(encryptionMonoList).collectList();

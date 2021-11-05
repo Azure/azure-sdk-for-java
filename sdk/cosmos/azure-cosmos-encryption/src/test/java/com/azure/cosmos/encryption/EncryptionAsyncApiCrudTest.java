@@ -566,7 +566,7 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
             EncryptionPojo.class).block();
 
         assertThat(response.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
-        assertThat(response.getItem()).isEqualTo(patchedItem);
+        validateResponse(patchedItem, response.getItem());
     }
 
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
