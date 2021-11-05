@@ -48,6 +48,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.StringJoiner;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -450,13 +451,20 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
             String boundaryPrefix = "--" + boundary + System.lineSeparator();
             String boundaryDelimiter = System.lineSeparator() + "--" + boundary + System.lineSeparator();
             String boundarySuffix = System.lineSeparator() + "--" + boundary + "--";
+            StringJoiner stringJoiner = new StringJoiner(boundaryDelimiter, boundaryPrefix, boundarySuffix);
 
-            result = formDataEntries.stream()
-                .map(formDataEntry -> serializeMultipartFormData(serializer, formDataEntry.getFormData().value(),
-                    swaggerMethodArguments[formDataEntry.getParameterIndex()],
-                    formDataEntry.getFormData().filename()))
-                .filter(Objects::nonNull)
-                .collect(Collectors.joining(boundaryDelimiter, boundaryPrefix, boundarySuffix));
+            for (FormDataEntry formDataEntry : formDataEntries) {
+                String partBody = serializeMultipartFormData(serializer, formDataEntry.getFormData().value(),
+                    swaggerMethodArguments[formDataEntry.getParameterIndex()], formDataEntry.getFormData().filename());
+
+                if (partBody == null) {
+                    continue;
+                }
+
+                stringJoiner.add(partBody);
+            }
+
+            result = stringJoiner.toString();
         }
 
         return result;
