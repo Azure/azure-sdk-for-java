@@ -67,7 +67,7 @@ public final class WebPubSubServiceAsyncClient {
                 requestOptions.addQueryParam("role", options.getRoles().stream().collect(Collectors.joining(",")));
             }
             requestOptions.addQueryParam("api-version", version.getVersion());
-            this.serviceClient.generateClientTokenWithResponseAsync(hub, requestOptions)
+            return this.serviceClient.generateClientTokenWithResponseAsync(hub, requestOptions)
                     .map(Response::getValue)
                     .map(binaryData -> {
                         String token = WebPubSubUtil.getToken(binaryData);
