@@ -29,6 +29,8 @@ class AzureServiceBusClientBuilderConfiguration {
         this.serviceBusProperties = serviceBusProperties;
     }
 
+    @Bean
+    @ConditionalOnMissingBean
     public ServiceBusClientBuilderFactory serviceBusClientBuilderFactory(
         ObjectProvider<ConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders) {
 

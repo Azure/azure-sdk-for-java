@@ -3,8 +3,9 @@
 
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
-import com.azure.messaging.servicebus.ServiceBusClientBuilder;
+import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.servicebus.properties.AzureServiceBusProperties;
+import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.servicebus.core.ServiceBusProcessorContainer;
 import com.azure.spring.servicebus.core.ServiceBusTemplate;
 import com.azure.spring.servicebus.core.processor.DefaultServiceBusNamespaceProcessorFactory;
@@ -14,7 +15,6 @@ import com.azure.spring.servicebus.core.producer.ServiceBusProducerFactory;
 import com.azure.spring.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.servicebus.core.properties.ProcessorProperties;
 import com.azure.spring.servicebus.core.properties.ProducerProperties;
-import com.azure.spring.servicebus.core.properties.PropertiesSupplier;
 import com.azure.spring.servicebus.core.properties.SubscriptionPropertiesSupplier;
 import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
 import org.springframework.beans.BeanUtils;
@@ -31,10 +31,11 @@ import org.springframework.context.annotation.Import;
 /**
  * An auto-configuration for Service Bus Queue.
  */
-@Configuration
-@ConditionalOnClass(ServiceBusProcessorFactory.class)
+@Configuration(proxyBeanMethods = false)
+@ConditionalOnClass(ServiceBusTemplate.class)
 @ConditionalOnProperty(value = "spring.cloud.azure.servicebus.enabled", havingValue = "true", matchIfMissing = true)
-@ConditionalOnBean(ServiceBusClientBuilder.class)
+@ConditionalOnAnyProperty(prefix = "spring.cloud.azure.servicebus", name = { "connection-string", "namespace" })
+@ConditionalOnBean(AzureServiceBusProperties.class)
 @AutoConfigureAfter(AzureServiceBusAutoConfiguration.class)
 @Import({
     AzureServiceBusMessagingAutoConfiguration.ServiceBusTemplateConfiguration.class,
@@ -59,7 +60,7 @@ public class AzureServiceBusMessagingAutoConfiguration {
         @Bean
         @ConditionalOnMissingBean
         public ServiceBusProcessorFactory defaultServiceBusNamespaceProcessorFactory(NamespaceProperties properties,
-                                                                                          ObjectProvider<SubscriptionPropertiesSupplier<ProcessorProperties>> suppliers) {
+                                                                                     ObjectProvider<SubscriptionPropertiesSupplier<ProcessorProperties>> suppliers) {
             return new DefaultServiceBusNamespaceProcessorFactory(properties, suppliers.getIfAvailable());
         }
 
@@ -94,7 +95,7 @@ public class AzureServiceBusMessagingAutoConfiguration {
         @ConditionalOnMissingBean
         @ConditionalOnBean(ServiceBusProducerFactory.class)
         public ServiceBusTemplate queueOperation(ServiceBusProducerFactory senderClientfactory,
-            ServiceBusMessageConverter messageConverter) {
+                                                 ServiceBusMessageConverter messageConverter) {
             ServiceBusTemplate serviceBusTemplate = new ServiceBusTemplate(senderClientfactory);
             serviceBusTemplate.setMessageConverter(messageConverter);
             return serviceBusTemplate;

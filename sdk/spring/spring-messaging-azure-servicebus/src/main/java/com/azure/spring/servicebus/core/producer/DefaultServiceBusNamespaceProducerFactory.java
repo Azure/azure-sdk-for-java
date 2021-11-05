@@ -4,10 +4,10 @@
 package com.azure.spring.servicebus.core.producer;
 
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
+import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.service.servicebus.factory.ServiceBusSenderClientBuilderFactory;
 import com.azure.spring.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.servicebus.core.properties.ProducerProperties;
-import com.azure.spring.servicebus.core.properties.PropertiesSupplier;
 import com.azure.spring.servicebus.core.properties.merger.ProducerPropertiesParentMerger;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.lang.Nullable;
@@ -65,7 +65,7 @@ public class DefaultServiceBusNamespaceProducerFactory implements ServiceBusProd
             return this.clients.get(name);
         }
         ProducerProperties producerProperties = parentMerger.mergeParent(properties, this.namespaceProperties);
-
+        producerProperties.setName(name);
         //TODO(yiliu6): whether to make the producer client share the same service bus client builder
         ServiceBusSenderAsyncClient producerClient = new ServiceBusSenderClientBuilderFactory(producerProperties)
             .build().buildAsyncClient();

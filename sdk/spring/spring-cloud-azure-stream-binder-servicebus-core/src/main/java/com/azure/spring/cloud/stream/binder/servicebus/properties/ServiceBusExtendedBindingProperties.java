@@ -8,7 +8,6 @@ import org.springframework.cloud.stream.binder.AbstractExtendedBindingProperties
 import org.springframework.cloud.stream.binder.BinderSpecificPropertiesProvider;
 
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @author Warren Zhu

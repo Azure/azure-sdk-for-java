@@ -44,8 +44,7 @@ public class DefaultServiceBusNamespaceProcessorFactory implements ServiceBusPro
 
     // TODO (xiada) the application id should be different for spring integration
     public DefaultServiceBusNamespaceProcessorFactory(NamespaceProperties namespaceProperties) {
-        this(namespaceProperties, new SubscriptionPropertiesSupplier<>() {
-        });
+        this(namespaceProperties, new SubscriptionPropertiesSupplier<ProcessorProperties>() {});
     }
 
     public DefaultServiceBusNamespaceProcessorFactory(SubscriptionPropertiesSupplier<ProcessorProperties> supplier) {
@@ -55,7 +54,7 @@ public class DefaultServiceBusNamespaceProcessorFactory implements ServiceBusPro
     public DefaultServiceBusNamespaceProcessorFactory(NamespaceProperties namespaceProperties,
                                                       SubscriptionPropertiesSupplier<ProcessorProperties> supplier) {
         this.namespaceProperties = namespaceProperties;
-        this.propertiesSupplier = supplier == null ? new SubscriptionPropertiesSupplier<>() {
+        this.propertiesSupplier = supplier == null ? new SubscriptionPropertiesSupplier<ProcessorProperties>() {
         } : supplier;
     }
 

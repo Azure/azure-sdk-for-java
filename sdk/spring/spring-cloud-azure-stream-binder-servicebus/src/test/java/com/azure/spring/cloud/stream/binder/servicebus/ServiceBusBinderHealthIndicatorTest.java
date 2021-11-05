@@ -5,11 +5,10 @@ package com.azure.spring.cloud.stream.binder.servicebus;
 
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.spring.service.servicebus.processor.MessageProcessingListener;
-import com.azure.spring.servicebus.core.processor.container.ServiceBusTopicProcessorContainer;
-import com.azure.spring.servicebus.core.processor.ServiceBusTopicProcessorClientFactory;
+import com.azure.spring.servicebus.core.ServiceBusRuntimeException;
+import com.azure.spring.servicebus.core.ServiceBusTemplate;
+import com.azure.spring.servicebus.core.processor.ServiceBusProcessorFactory;
 import com.azure.spring.servicebus.core.producer.ServiceBusProducerFactory;
-import com.azure.spring.servicebus.core.topic.ServiceBusTopicTemplate;
-import com.azure.spring.servicebus.support.ServiceBusRuntimeException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
@@ -27,21 +26,19 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 
-public class ServiceBusTopicBinderHealthIndicatorTest {
+public class ServiceBusBinderHealthIndicatorTest {
+
     @Mock
-    private ServiceBusTopicProcessorClientFactory serviceBusTopicProcessorClientFactory;
+    private ServiceBusProcessorFactory serviceBusProcessorFactory;
     @Mock
-    private ServiceBusProducerFactory serviceBusTopicSenderClientFactory;
+    private ServiceBusProducerFactory senderClientFactory;
     @Mock
     private ServiceBusProcessorClient processorClient;
     @Mock
-    private MessageProcessingListener listener;
+    private ServiceBusMessageChannelBinder binder;
+    private ServiceBusHealthIndicator serviceBusHealthIndicator;
 
-    private ServiceBusTopicHealthIndicator serviceBusTopicHealthIndicator;
-
-    private ServiceBusTopicTemplate serviceBusTopicTemplate;
-
-    private ServiceBusTopicProcessorContainer serviceBusTopicProcessorContainer;
+    private ServiceBusTemplate serviceBusTemplate;
 
     private Consumer<Message<?>> consumer = message -> {
     };
@@ -49,37 +46,37 @@ public class ServiceBusTopicBinderHealthIndicatorTest {
     @BeforeEach
     public void init() {
         MockitoAnnotations.openMocks(this);
-        serviceBusTopicTemplate = new ServiceBusTopicTemplate(serviceBusTopicSenderClientFactory);
-        serviceBusTopicProcessorContainer = new ServiceBusTopicProcessorContainer(serviceBusTopicProcessorClientFactory);
-        serviceBusTopicHealthIndicator = new ServiceBusTopicHealthIndicator(serviceBusTopicTemplate);
+        serviceBusTemplate = new ServiceBusTemplate(senderClientFactory);
+        serviceBusHealthIndicator = new ServiceBusHealthIndicator(binder);
     }
 
     @Test
-    public void testNoTopicInstrumentationInUse() {
-        final Health health = serviceBusTopicHealthIndicator.health();
+    public void testNoInstrumentationInUse() {
+        final Health health = serviceBusHealthIndicator.health();
         assertThat(health.getStatus()).isEqualTo(Status.UNKNOWN);
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Test
-    public void testServiceBusTopicIsUp() {
-        when(serviceBusTopicProcessorClientFactory.createProcessor(anyString(), anyString(),
+    public void testServiceBusIsUp() {
+        when(serviceBusProcessorFactory.createProcessor(anyString(),
             any(MessageProcessingListener.class))).thenReturn(processorClient);
-        serviceBusTopicProcessorContainer.subscribe("topic-test-1", "topicSubTest", listener);
-        final Health health = serviceBusTopicHealthIndicator.health();
+        serviceBusTemplate.subscribe("queue-test-1", consumer, byte[].class);
+        final Health health = serviceBusHealthIndicator.health();
         assertThat(health.getStatus()).isEqualTo(Status.UP);
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Test
-    public void testServiceBusTopicIsDown() {
-        when(serviceBusTopicProcessorClientFactory.createProcessor(anyString(), anyString(),
+    public void testServiceBusIsDown() {
+        when(serviceBusProcessorFactory.createProcessor(anyString(),
             any(MessageProcessingListener.class))).thenReturn(processorClient);
         doThrow(NullPointerException.class).when(processorClient).start();
         assertThrows(ServiceBusRuntimeException.class, () -> {
-            serviceBusTopicProcessorContainer.subscribe("topic-test-1", "topicSubTest", listener);
+            serviceBusTemplate.subscribe("queue-test-1", consumer, byte[].class);
         });
-        final Health health = serviceBusTopicHealthIndicator.health();
+        final Health health = serviceBusHealthIndicator.health();
         assertThat(health.getStatus()).isEqualTo(Status.DOWN);
     }
+
 }

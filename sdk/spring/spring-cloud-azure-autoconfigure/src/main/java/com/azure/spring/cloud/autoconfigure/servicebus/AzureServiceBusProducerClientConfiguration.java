@@ -65,6 +65,7 @@ class AzureServiceBusProducerClientConfiguration {
         ServiceBusClientBuilder.ServiceBusSenderClientBuilder senderClientBuilder) {
         return senderClientBuilder.buildClient();
     }
+
     private boolean isDedicatedConnection(AzureServiceBusProperties.Producer producer) {
         return StringUtils.hasText(producer.getNamespace()) || StringUtils.hasText(producer.getConnectionString());
     }

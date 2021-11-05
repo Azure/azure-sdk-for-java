@@ -6,7 +6,6 @@ package com.azure.spring.cloud.autoconfigure.servicebus;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusReceiverClient;
 import com.azure.messaging.servicebus.ServiceBusSessionReceiverClient;
-import com.azure.spring.cloud.autoconfigure.context.AzureContextUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -108,14 +107,15 @@ class AzureServiceBusConsumerClientConfigurationTest {
             )
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .withBean(ServiceBusClientBuilder.class, () -> serviceBusClientBuilder)
-            .run(context -> assertThrows(IllegalArgumentException.class, () -> context.getBean(AzureServiceBusConsumerClientConfiguration.class)));
+            .run(context -> assertThrows(IllegalStateException.class, () -> context.getBean(AzureServiceBusConsumerClientConfiguration.class)));
     }
 
     @Test
     void dedicatedConnectionInfoProvidedShouldConfigureDedicated() {
         contextRunner
             .withPropertyValues(
-                "spring.cloud.azure.servicebus.consumer.queue-name=test-queue",
+                "spring.cloud.azure.servicebus.consumer.name=test-queue",
+                "spring.cloud.azure.servicebus.consumer.type=queue",
                 "spring.cloud.azure.servicebus.consumer.connection-string=" + String.format(CONNECTION_STRING, "test-namespace")
             )
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)

@@ -4,6 +4,7 @@
 package com.azure.spring.servicebus.core.properties.merger;
 
 import com.azure.spring.core.properties.AzurePropertiesUtils;
+import com.azure.spring.service.core.ParentMerger;
 import com.azure.spring.service.core.PropertyMapper;
 import com.azure.spring.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.servicebus.core.properties.ProducerProperties;
@@ -13,8 +14,9 @@ import com.azure.spring.servicebus.core.properties.ProducerProperties;
  *  * set in the child, it will be kept. For those properties not set in the child, it will use the value in the
  *  parent.
  */
-public class ProducerPropertiesParentMerger {
-    //TODO(yiliu6): implement interface of ParentMerger
+public class ProducerPropertiesParentMerger implements ParentMerger<ProducerProperties, NamespaceProperties> {
+
+    @Override
     public ProducerProperties mergeParent(ProducerProperties child, NamespaceProperties parent) {
         ProducerProperties properties = new ProducerProperties();
         if (child == null && parent == null) {
@@ -29,8 +31,7 @@ public class ProducerPropertiesParentMerger {
 
         PropertyMapper propertyMapper = new PropertyMapper();
 
-        AzurePropertiesUtils.copyAzureCommonProperties(child, properties);
-        AzurePropertiesUtils.copyAzureCommonPropertiesIgnoreNull(parent, properties);
+        AzurePropertiesUtils.mergeAzureCommonProperties(parent, child, properties);
 
         propertyMapper.from(parent.getDomainName()).to(properties::setDomainName);
         propertyMapper.from(parent.getNamespace()).to(properties::setNamespace);
@@ -39,8 +40,8 @@ public class ProducerPropertiesParentMerger {
         propertyMapper.from(child.getDomainName()).to(properties::setDomainName);
         propertyMapper.from(child.getNamespace()).to(properties::setNamespace);
         propertyMapper.from(child.getConnectionString()).to(properties::setConnectionString);
-        propertyMapper.from(child.getName()).to(properties::setQueueName);
-        propertyMapper.from(child.getType()).to(properties::setTopicName);
+        propertyMapper.from(child.getName()).to(properties::setName);
+        propertyMapper.from(child.getType()).to(properties::setType);
 
         return properties;
 

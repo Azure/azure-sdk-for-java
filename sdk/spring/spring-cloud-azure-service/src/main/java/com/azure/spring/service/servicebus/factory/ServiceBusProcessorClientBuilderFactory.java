@@ -6,6 +6,7 @@ package com.azure.spring.service.servicebus.factory;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.spring.service.core.PropertyMapper;
 import com.azure.spring.service.servicebus.processor.MessageProcessingListener;
+import com.azure.spring.service.servicebus.processor.RecordMessageProcessingListener;
 import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.service.servicebus.properties.ServiceBusProcessorDescriptor;
 import org.springframework.util.Assert;
@@ -18,18 +19,18 @@ import static com.azure.spring.service.servicebus.properties.ServiceBusEntityTyp
 public class ServiceBusProcessorClientBuilderFactory extends AbstractServiceBusSubClientBuilderFactory<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder, ServiceBusProcessorDescriptor> {
 
     private final ServiceBusProcessorDescriptor processorDescriptor;
-    private final MessageProcessingListener listener;
+    private final MessageProcessingListener processingListener;
     public ServiceBusProcessorClientBuilderFactory(ServiceBusProcessorDescriptor processorDescriptor,
-                                                   MessageProcessingListener listener) {
-        this(null, processorDescriptor, listener);
+                                                   MessageProcessingListener processingListener) {
+        this(null, processorDescriptor, processingListener);
     }
 
     public ServiceBusProcessorClientBuilderFactory(ServiceBusClientBuilder serviceBusClientBuilder,
                                                    ServiceBusProcessorDescriptor processorDescriptor,
-                                                   MessageProcessingListener listener) {
+                                                   MessageProcessingListener processingListener) {
         super(serviceBusClientBuilder, processorDescriptor);
         this.processorDescriptor = processorDescriptor;
-        this.listener = listener;
+        this.processingListener = processingListener;
     }
 
     @Override
@@ -60,6 +61,17 @@ public class ServiceBusProcessorClientBuilderFactory extends AbstractServiceBusS
         propertyMapper.from(processorDescriptor.getMaxAutoLockRenewDuration()).to(builder::maxAutoLockRenewDuration);
         propertyMapper.from(processorDescriptor.getAutoComplete()).whenFalse().to(t -> builder.disableAutoComplete());
         propertyMapper.from(processorDescriptor.getMaxConcurrentCalls()).to(builder::maxConcurrentCalls);
+
+        configureProcessorListener(builder);
     }
-    
+
+    private void configureProcessorListener(ServiceBusClientBuilder.ServiceBusProcessorClientBuilder builder) {
+        if (processingListener instanceof RecordMessageProcessingListener) {
+            builder.processMessage(((RecordMessageProcessingListener) processingListener)::onMessage);
+        } else {
+            throw new IllegalArgumentException("A " + RecordMessageProcessingListener.class.getSimpleName()
+                + " is required when configure record processor.");
+        }
+        builder.processError(processingListener.getErrorContextConsumer());
+    }
 }

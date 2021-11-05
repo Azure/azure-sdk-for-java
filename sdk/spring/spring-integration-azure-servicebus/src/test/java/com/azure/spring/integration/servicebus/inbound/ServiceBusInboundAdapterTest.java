@@ -42,9 +42,7 @@ public class ServiceBusInboundAdapterTest {
         ServiceBusProcessorContainer processorsContainer = mock(ServiceBusProcessorContainer.class);
         this.closeable = MockitoAnnotations.openMocks(this);
         this.adapter = new TestServiceBusInboundChannelAdapter(processorsContainer, destination, subscription,
-            CheckpointConfig.builder()
-                            .checkpointMode(CheckpointMode.RECORD)
-                            .build());
+            new CheckpointConfig(CheckpointMode.RECORD));
     }
     @Test
     public void sendAndReceive() throws InterruptedException {

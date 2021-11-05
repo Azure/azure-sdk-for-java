@@ -6,10 +6,9 @@ package com.azure.spring.servicebus.core;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.spring.messaging.PartitionSupplier;
-import com.azure.spring.servicebus.core.producer.ServiceBusProducerFactory;
-import com.azure.spring.servicebus.support.ServiceBusRuntimeException;
 import com.azure.spring.messaging.core.SendOperationTest;
-import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
+import com.azure.spring.servicebus.core.producer.ServiceBusProducerFactory;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.MockitoAnnotations;
@@ -19,7 +18,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -33,15 +31,10 @@ import static org.mockito.Mockito.when;
 /**
  * Test cases to test service bus send operations.
  *
- * @param <T>
- * @param <C>
  */
-public abstract class ServiceBusTemplateSendTest extends SendOperationTest<ServiceBusTemplate> {
+public class ServiceBusTemplateSendTest extends SendOperationTest<ServiceBusTemplate> {
 
-    protected String destination = "event-hub";
-    protected Mono<Void> mono = Mono.empty();
     protected String partitionKey = "key";
-    protected String payload = "payload";
     private String partitionId = "1";
     protected ServiceBusSenderAsyncClient mockSenderClient;
     protected ServiceBusProducerFactory producerFactory;
@@ -57,6 +50,11 @@ public abstract class ServiceBusTemplateSendTest extends SendOperationTest<Servi
         when(this.mockSenderClient.sendMessage(isA(ServiceBusMessage.class))).thenReturn(this.mono);
 
         this.sendOperation = new ServiceBusTemplate(producerFactory);
+    }
+
+    @AfterEach
+    public void close() throws Exception {
+        closeable.close();
     }
 
     @Override

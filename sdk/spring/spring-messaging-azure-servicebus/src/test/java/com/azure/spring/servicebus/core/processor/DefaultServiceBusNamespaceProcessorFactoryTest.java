@@ -1,26 +1,24 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.servicebus.core;
+package com.azure.spring.servicebus.core.processor;
 
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
-import com.azure.spring.servicebus.core.processor.DefaultServiceBusNamespaceProcessorFactory;
-import com.azure.spring.servicebus.core.processor.ServiceBusProcessorFactory;
+import com.azure.spring.service.servicebus.processor.RecordMessageProcessingListener;
 import com.azure.spring.servicebus.core.properties.NamespaceProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.stubbing.Answer;
-import org.springframework.util.StringUtils;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class DefaultServiceBusNamespaceProcessorFactoryTest {
     private ServiceBusProcessorFactory processorFactory;
-    private final String entityName = "eventHub";
-    private final String subscription = "group";
-    private final String anotherSubscription = "group2";
-    private final RecordMessageProcessingListenerImpl listener = new RecordMessageProcessingListenerImpl();
+    private final String entityName = "test";
+    private final String subscription = "subscription";
+    private final String anotherSubscription = "subscription2";
+    private final RecordMessageProcessingListener listener = messageContext -> {};
     private int queueProcessorAddedTimes = 0;
     private int topicProcessorAddedTimes = 0;
 
@@ -31,14 +29,11 @@ public class DefaultServiceBusNamespaceProcessorFactoryTest {
         this.processorFactory = new DefaultServiceBusNamespaceProcessorFactory(namespaceProperties);
         queueProcessorAddedTimes = 0;
         topicProcessorAddedTimes = 0;
-        this.processorFactory.addListener(new ServiceBusProcessorFactory.Listener() {
-            @Override
-            public void processorAdded(String name, String subscription) {
-                if (StringUtils.hasText(subscription)) {
-                    topicProcessorAddedTimes++;
-                } else {
-                    queueProcessorAddedTimes++;
-                }
+        this.processorFactory.addListener((name, subscription) -> {
+            if (subscription == null) {
+                queueProcessorAddedTimes++;
+            } else {
+                topicProcessorAddedTimes++;
             }
         });
     }

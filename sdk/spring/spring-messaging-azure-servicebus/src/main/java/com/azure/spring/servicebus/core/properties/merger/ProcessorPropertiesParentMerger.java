@@ -4,6 +4,7 @@
 package com.azure.spring.servicebus.core.properties.merger;
 
 import com.azure.spring.core.properties.AzurePropertiesUtils;
+import com.azure.spring.service.core.ParentMerger;
 import com.azure.spring.service.core.PropertyMapper;
 import com.azure.spring.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.servicebus.core.properties.ProcessorProperties;
@@ -12,9 +13,9 @@ import com.azure.spring.servicebus.core.properties.ProcessorProperties;
  * A merger used to merge a {@link ProcessorProperties} with its parent {@link NamespaceProperties}. When a property is
  * set in the child, it will be kept. For those properties not set in the child, it will use the value in the parent.
  */
-public class ProcessorPropertiesParentMerger {
+public class ProcessorPropertiesParentMerger implements ParentMerger<ProcessorProperties, NamespaceProperties> {
 
-    //TODO(yiliu6): implement interface of ParentMerger
+    @Override
     public ProcessorProperties mergeParent(ProcessorProperties child, NamespaceProperties parent) {
         ProcessorProperties properties = new ProcessorProperties();
         if (child == null && parent == null) {
@@ -29,8 +30,7 @@ public class ProcessorPropertiesParentMerger {
 
         PropertyMapper propertyMapper = new PropertyMapper();
 
-        AzurePropertiesUtils.copyAzureCommonProperties(child, properties);
-        AzurePropertiesUtils.copyAzureCommonPropertiesIgnoreNull(parent, properties);
+        AzurePropertiesUtils.mergeAzureCommonProperties(parent, child, properties);
 
         propertyMapper.from(parent.getDomainName()).to(properties::setDomainName);
         propertyMapper.from(parent.getNamespace()).to(properties::setNamespace);

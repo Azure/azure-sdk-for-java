@@ -26,10 +26,10 @@ import org.springframework.util.StringUtils;
 @ConditionalOnBean(MessageProcessingListener.class)
 @ConditionalOnProperty(prefix = "spring.cloud.azure.servicebus.processor", name = { "name", "type" })
 @Import({
-    AzureServiceBusProcessorConfiguration.SessionProcessorClientConfiguration.class,
-    AzureServiceBusProcessorConfiguration.NoneSessionProcessorClientConfiguration.class
+    AzureServiceBusProcessorClientConfiguration.SessionProcessorClientConfiguration.class,
+    AzureServiceBusProcessorClientConfiguration.NoneSessionProcessorClientConfiguration.class
 })
-class AzureServiceBusProcessorConfiguration {
+class AzureServiceBusProcessorClientConfiguration {
 
     @Configuration(proxyBeanMethods = false)
     @ConditionalOnProperty(value = "spring.cloud.azure.servicebus.processor.session-aware", havingValue = "false",

@@ -4,7 +4,6 @@ package com.azure.spring.cloud.stream.binder.servicebus.config;
 
 import com.azure.spring.cloud.stream.binder.servicebus.ServiceBusHealthIndicator;
 import com.azure.spring.cloud.stream.binder.servicebus.ServiceBusMessageChannelBinder;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.actuate.autoconfigure.health.ConditionalOnEnabledHealthIndicator;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;

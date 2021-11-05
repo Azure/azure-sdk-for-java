@@ -13,6 +13,7 @@ import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusProd
 import com.azure.spring.cloud.stream.binder.servicebus.provisioning.ServiceBusChannelProvisioner;
 import com.azure.spring.integration.handler.DefaultMessageHandler;
 import com.azure.spring.integration.servicebus.inbound.ServiceBusInboundChannelAdapter;
+import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 import com.azure.spring.servicebus.core.ServiceBusProcessorContainer;
 import com.azure.spring.servicebus.core.ServiceBusTemplate;
@@ -21,9 +22,8 @@ import com.azure.spring.servicebus.core.producer.DefaultServiceBusNamespaceProdu
 import com.azure.spring.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.servicebus.core.properties.ProcessorProperties;
 import com.azure.spring.servicebus.core.properties.ProducerProperties;
-import com.azure.spring.servicebus.core.properties.PropertiesSupplier;
 import com.azure.spring.servicebus.core.properties.SubscriptionPropertiesSupplier;
-import com.azure.spring.servicebus.support.converter.ServiceBusMessageHeaders;
+import com.azure.spring.servicebus.support.ServiceBusMessageHeaders;
 import org.springframework.cloud.stream.binder.AbstractMessageChannelBinder;
 import org.springframework.cloud.stream.binder.BinderHeaders;
 import org.springframework.cloud.stream.binder.BinderSpecificPropertiesProvider;
@@ -51,14 +51,14 @@ import static com.azure.spring.cloud.stream.binder.servicebus.health.Instrumenta
 /**
  *
  */
-public class ServiceBusMessageChannelBinder<T extends ServiceBusExtendedBindingProperties> extends
+public class ServiceBusMessageChannelBinder extends
     AbstractMessageChannelBinder<ExtendedConsumerProperties<ServiceBusConsumerProperties>,
         ExtendedProducerProperties<ServiceBusProducerProperties>,
         ServiceBusChannelProvisioner>
     implements
     ExtendedPropertiesBinder<MessageChannel, ServiceBusConsumerProperties, ServiceBusProducerProperties> {
 
-    private T bindingProperties;
+    private ServiceBusExtendedBindingProperties bindingProperties = new ServiceBusExtendedBindingProperties();
     private NamespaceProperties namespaceProperties;
     private ServiceBusTemplate serviceBusTemplate;
     private ServiceBusProcessorContainer processorContainer;
@@ -185,30 +185,15 @@ public class ServiceBusMessageChannelBinder<T extends ServiceBusExtendedBindingP
         return DEFAULT_ERROR_MESSAGE_STRATEGY;
     }
 
-    public void setBindingProperties(T bindingProperties) {
+    public void setBindingProperties(ServiceBusExtendedBindingProperties bindingProperties) {
         this.bindingProperties = bindingProperties;
     }
 
     private CheckpointConfig buildCheckpointConfig(
         ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
 
-        return CheckpointConfig.builder()
-                               .checkpointMode(properties.getExtension().getCheckpointMode())
-                               .build();
+        return new CheckpointConfig(properties.getExtension().getCheckpointMode());
     }
-
-    //    static class ServiceBusInformation {
-    //
-    //        private final String subscription;
-    //
-    //        ServiceBusInformation(String subscription) {
-    //            this.subscription = subscription;
-    //        }
-    //
-    //        public String getSubscription() {
-    //            return subscription;
-    //        }
-    //    }
 
     public ServiceBusTemplate getServiceBusTemplate() {
         if (this.serviceBusTemplate == null) {
@@ -251,7 +236,7 @@ public class ServiceBusMessageChannelBinder<T extends ServiceBusExtendedBindingP
     }
 
     private SubscriptionPropertiesSupplier<ProcessorProperties> getProcessorPropertiesSupplier() {
-        return new SubscriptionPropertiesSupplier<>() {
+        return new SubscriptionPropertiesSupplier<ProcessorProperties>() {
             @Override
             public ProcessorProperties getQueueSubscription(String name) {
                 Map<String, ServiceBusBindingProperties> bindings = bindingProperties.getBindings();

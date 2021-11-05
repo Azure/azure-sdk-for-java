@@ -16,7 +16,7 @@ import com.azure.spring.service.servicebus.processor.consumer.ErrorContextConsum
 import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.servicebus.core.ServiceBusProcessorContainer;
 import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
-import com.azure.spring.servicebus.support.converter.ServiceBusMessageHeaders;
+import com.azure.spring.servicebus.support.ServiceBusMessageHeaders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.integration.endpoint.MessageProducerSupport;
@@ -133,7 +133,7 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
             Map<String, Object> headers = new HashMap<>();
             headers.put(ServiceBusMessageHeaders.RECEIVED_MESSAGE_CONTEXT, messageContext);
 
-            if (checkpointConfig.getCheckpointMode() == CheckpointMode.MANUAL) {
+            if (checkpointConfig.getMode() == CheckpointMode.MANUAL) {
                 headers.put(AzureHeaders.CHECKPOINTER, checkpointer);
             }
 
@@ -141,7 +141,7 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
                 payloadType);
             sendMessage(message);
 
-            if (checkpointConfig.getCheckpointMode() == CheckpointMode.RECORD) {
+            if (checkpointConfig.getMode() == CheckpointMode.RECORD) {
                 checkpointer.success()
                             .doOnSuccess(t -> logCheckpointSuccess(message))
                             .doOnError(t -> logCheckpointFail(message, t))
@@ -166,7 +166,7 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
 
     protected void logCheckpointSuccess(Message<?> message) {
         if (LOGGER.isDebugEnabled()) {
-            LOGGER.debug(String.format(MSG_SUCCESS_CHECKPOINT, message, this.checkpointConfig.getCheckpointMode()));
+            LOGGER.debug(String.format(MSG_SUCCESS_CHECKPOINT, message, this.checkpointConfig.getMode()));
         }
     }
 

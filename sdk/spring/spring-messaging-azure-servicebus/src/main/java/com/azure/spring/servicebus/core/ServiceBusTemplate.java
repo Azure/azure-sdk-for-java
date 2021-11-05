@@ -9,8 +9,6 @@ import com.azure.spring.messaging.PartitionSupplier;
 import com.azure.spring.messaging.core.SendOperation;
 import com.azure.spring.servicebus.core.producer.ServiceBusProducerFactory;
 import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 import org.springframework.messaging.Message;
 import org.springframework.util.Assert;
@@ -50,6 +48,10 @@ public class ServiceBusTemplate implements SendOperation {
 
     public void setMessageConverter(ServiceBusMessageConverter messageConverter) {
         this.messageConverter = messageConverter;
+    }
+
+    public ServiceBusMessageConverter getMessageConverter() {
+        return messageConverter;
     }
 
     private String getPartitionKey(PartitionSupplier partitionSupplier) {
