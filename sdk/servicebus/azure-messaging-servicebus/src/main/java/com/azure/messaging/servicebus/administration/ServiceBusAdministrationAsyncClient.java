@@ -1386,8 +1386,8 @@ public final class ServiceBusAdministrationAsyncClient {
         } else if (context == null) {
             return monoError(logger, new NullPointerException("'context' cannot be null."));
         }
-        final Context contextWithTrace = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
-        final Context contextWithHeaders = contextWithTrace.addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders());
+        final Context contextWithHeaders = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE)
+            .addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders());
 
         final String forwardToEntity = createQueueOptions.getForwardTo();
         if (!CoreUtils.isNullOrEmpty(forwardToEntity)) {
@@ -1506,8 +1506,8 @@ public final class ServiceBusAdministrationAsyncClient {
             return monoError(logger, new NullPointerException("'subscription' cannot be null."));
         }
 
-        final Context contextWithTrace = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
-        final Context contextWithHeaders = contextWithTrace.addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders());
+        final Context contextWithHeaders = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE)
+            .addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders());
         final String forwardToEntity = subscriptionOptions.getForwardTo();
         if (!CoreUtils.isNullOrEmpty(forwardToEntity)) {
             addSupplementaryAuthHeader(SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
@@ -2086,8 +2086,8 @@ public final class ServiceBusAdministrationAsyncClient {
             return monoError(logger, new NullPointerException("'context' cannot be null."));
         }
 
-        final Context contextWithTrace = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
-        final Context contextWithHeaders = contextWithTrace.addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders());
+        final Context contextWithHeaders = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE)
+            .addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders());
         final String forwardToEntity = queue.getForwardTo();
         if (!CoreUtils.isNullOrEmpty(forwardToEntity)) {
             addSupplementaryAuthHeader(SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
@@ -2171,8 +2171,8 @@ public final class ServiceBusAdministrationAsyncClient {
         } else if (context == null) {
             return monoError(logger, new NullPointerException("'context' cannot be null."));
         }
-        final Context contextWithTrace = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE);
-        final Context contextWithHeaders = contextWithTrace.addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders());
+        final Context contextWithHeaders = context.addData(AZ_TRACING_NAMESPACE_KEY, AZ_TRACING_NAMESPACE_VALUE)
+            .addData(AZURE_REQUEST_HTTP_HEADERS_KEY, new HttpHeaders());
         final String forwardToEntity = subscription.getForwardTo();
         if (!CoreUtils.isNullOrEmpty(forwardToEntity)) {
             addSupplementaryAuthHeader(SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME,
@@ -2606,12 +2606,11 @@ public final class ServiceBusAdministrationAsyncClient {
      */
     private void addSupplementaryAuthHeader(String headerName, String entity, Context context) {
         context.getData(AZURE_REQUEST_HTTP_HEADERS_KEY)
-            .map(headers -> {
+            .ifPresent(headers -> {
                 if (headers instanceof HttpHeaders) {
                     HttpHeaders customHttpHeaders = (HttpHeaders) headers;
                     customHttpHeaders.add(headerName, entity);
                 }
-                return null;
             });
     }
 

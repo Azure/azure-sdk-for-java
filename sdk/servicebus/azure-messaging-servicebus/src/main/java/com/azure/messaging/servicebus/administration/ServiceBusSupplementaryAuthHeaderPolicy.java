@@ -22,7 +22,7 @@ import static com.azure.messaging.servicebus.implementation.ServiceBusConstants.
 /**
  * Authentication policy to add necessary supplementary auth headers when forwarding is set.
  */
-public class ServiceBusSupplementaryAuthHeaderPolicy implements HttpPipelinePolicy {
+public final class ServiceBusSupplementaryAuthHeaderPolicy implements HttpPipelinePolicy {
     private final TokenCredential tokenCredential;
 
     /**
