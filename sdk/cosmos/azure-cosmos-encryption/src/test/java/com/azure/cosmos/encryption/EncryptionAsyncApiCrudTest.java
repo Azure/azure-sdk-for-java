@@ -33,6 +33,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Mono;
 
 import java.time.Instant;
 import java.util.*;
@@ -526,6 +527,8 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
     public void patchItem() {
         String itemId = UUID.randomUUID().toString();
         EncryptionPojo createPojo = getItem(itemId);
+        CosmosItemResponse<EncryptionPojo> itemResponse = cosmosEncryptionAsyncContainer.createItem(createPojo,
+            new PartitionKey(createPojo.getMypk()), new CosmosItemRequestOptions()).block();
 
         int originalSensitiveInt = createPojo.getSensitiveInt();
         int newSensitiveInt = originalSensitiveInt + 1;
@@ -537,12 +540,14 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
         cosmosPatchOperations.set("/sensitiveBoolean", false);
 
         CosmosPatchItemRequestOptions options = new CosmosPatchItemRequestOptions();
-        CosmosItemResponse<EncryptionPojo> response = this.cosmosEncryptionAsyncContainer.patchItem(
+        Mono<CosmosItemResponse<EncryptionPojo>> responseTest = this.cosmosEncryptionAsyncContainer.patchItem(
             createPojo.getId(),
             new PartitionKey(createPojo.getMypk()),
             cosmosPatchOperations,
             options,
-            EncryptionPojo.class).block();
+            EncryptionPojo.class);
+
+        CosmosItemResponse<EncryptionPojo> response = responseTest.block();
 
         assertThat(response.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
 
