@@ -9,6 +9,8 @@
 ### Breaking Changes
 
 - Removed classic SKU support in `Registry`, as service with `api-version` after late 2019 no longer supports it.
+- `taskName` property of `TaskRunRequest` renamed to `taskId`.
+- `value` property of `TaskRunRequest` moved into `overrideTaskStepProperties` property.
 
 ### Other Changes
 
