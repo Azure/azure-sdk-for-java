@@ -452,7 +452,7 @@ Get-ChildItem -Path $Path -Filter pom*.xml -Recurse -File | ForEach-Object {
             if ($versionNode.NextSibling -and $versionNode.NextSibling.NodeType -eq "Comment")
             {
                 # the project's version will always be an update type of "current"
-                if ($versionNode.NextSibling.Value.Trim() -ne "{x-version-update;$($groupId):$($artifactId);current}")
+                if ($versionNode.NextSibling.Value.Trim() -notmatch "{x-version-update;(hybrid_)?$($groupId):$($artifactId);current}")
                 {
                     $hasError = $true
                     # every project string needs to have an update tag and projects version tags are always 'current'
