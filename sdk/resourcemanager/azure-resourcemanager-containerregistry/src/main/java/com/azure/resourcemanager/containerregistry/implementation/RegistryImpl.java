@@ -17,11 +17,7 @@ import com.azure.resourcemanager.containerregistry.models.Sku;
 import com.azure.resourcemanager.containerregistry.models.SkuName;
 import com.azure.resourcemanager.containerregistry.models.SourceUploadDefinition;
 import com.azure.resourcemanager.containerregistry.models.WebhookOperations;
-import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.storage.StorageManager;
-import com.azure.resourcemanager.storage.models.StorageAccount;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
@@ -32,19 +28,12 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
     implements Registry, Registry.Definition, Registry.Update {
 
     private RegistryUpdateParameters updateParameters;
-    private final StorageManager storageManager;
-    private String storageAccountId;
-    private String creatableStorageAccountKey;
     private WebhooksImpl webhooks;
-    // private QueuedBuildOperations queuedBuilds;
-    // private BuildTaskOperations buildTasks;
 
     protected RegistryImpl(
-        String name, RegistryInner innerObject, ContainerRegistryManager manager, final StorageManager storageManager) {
+        String name, RegistryInner innerObject, ContainerRegistryManager manager) {
         super(name, innerObject, manager);
-        this.storageManager = storageManager;
 
-        this.storageAccountId = null;
         this.webhooks = new WebhooksImpl(this, "Webhook");
     }
 
@@ -64,13 +53,6 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
     public Mono<Registry> createResourceAsync() {
         final RegistryImpl self = this;
         if (isInCreateMode()) {
-            if (self.creatableStorageAccountKey != null) {
-                StorageAccount storageAccount = self.<StorageAccount>taskResult(this.creatableStorageAccountKey);
-//                self.innerModel().storageAccount().withId(storageAccount.id());
-            } else if (storageAccountId != null) {
-//                self.innerModel().storageAccount().withId(storageAccountId);
-            }
-
             return manager()
                 .serviceClient()
                 .getRegistries()
@@ -113,36 +95,6 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
     }
 
     @Override
-    public String storageAccountName() {
-//        if (this.innerModel().storageAccount() == null) {
-//            return null;
-//        }
-//
-//        return ResourceUtils.nameFromResourceId(this.innerModel().storageAccount().id());
-        return null;
-    }
-
-    @Override
-    public String storageAccountId() {
-//        if (this.innerModel().storageAccount() == null) {
-//            return null;
-//        }
-//
-//        return this.innerModel().storageAccount().id();
-        return null;
-    }
-
-    @Override
-    public RegistryImpl withClassicSku() {
-        if (this.isInCreateMode()) {
-            this.innerModel().withSku(new Sku().withName(SkuName.CLASSIC));
-//            this.innerModel().withStorageAccount(new StorageAccountProperties());
-        }
-
-        return this;
-    }
-
-    @Override
     public RegistryImpl withBasicSku() {
         return setManagedSku(new Sku().withName(SkuName.BASIC));
     }
@@ -160,51 +112,10 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
     private RegistryImpl setManagedSku(Sku sku) {
         if (this.isInCreateMode()) {
             this.innerModel().withSku(sku);
-//            this.innerModel().withStorageAccount(null);
         } else {
             this.updateParameters.withSku(sku);
         }
 
-        return this;
-    }
-
-    @Override
-    public RegistryImpl withExistingStorageAccount(StorageAccount storageAccount) {
-        this.storageAccountId = storageAccount.id();
-
-        return this;
-    }
-
-    @Override
-    public RegistryImpl withExistingStorageAccount(String id) {
-        this.storageAccountId = id;
-
-        return this;
-    }
-
-    @Override
-    public RegistryImpl withNewStorageAccount(String storageAccountName) {
-        this.storageAccountId = null;
-
-        StorageAccount.DefinitionStages.WithGroup definitionWithGroup =
-            this.storageManager.storageAccounts().define(storageAccountName).withRegion(this.regionName());
-        Creatable<StorageAccount> definitionAfterGroup;
-        if (this.creatableGroup != null) {
-            definitionAfterGroup = definitionWithGroup.withNewResourceGroup(this.creatableGroup);
-        } else {
-            definitionAfterGroup = definitionWithGroup.withExistingResourceGroup(this.resourceGroupName());
-        }
-
-        return withNewStorageAccount(definitionAfterGroup);
-    }
-
-    @Override
-    public RegistryImpl withNewStorageAccount(Creatable<StorageAccount> creatable) {
-        this.storageAccountId = null;
-
-        if (this.creatableStorageAccountKey == null) {
-            this.creatableStorageAccountKey = this.addDependency(creatable);
-        }
         return this;
     }
 
@@ -276,22 +187,6 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
         return new RegistryTaskRunImpl(this.manager(), new RunInner())
             .withExistingRegistry(this.resourceGroupName(), this.name());
     }
-
-    //    @Override
-    //    public QueuedBuildOperations queuedBuilds() {
-    //        if (this.queuedBuilds == null) {
-    //            this.queuedBuilds = new QueuedBuildOperationsImpl(this);
-    //        }
-    //        return this.queuedBuilds;
-    //    }
-
-    //    @Override
-    //    public BuildTaskOperations buildTasks() {
-    //        if (this.buildTasks == null) {
-    //            this.buildTasks = new BuildTaskOperationsImpl(this);
-    //        }
-    //        return this.buildTasks;
-    //    }
 
     @Override
     public SourceUploadDefinition getBuildSourceUploadUrl() {

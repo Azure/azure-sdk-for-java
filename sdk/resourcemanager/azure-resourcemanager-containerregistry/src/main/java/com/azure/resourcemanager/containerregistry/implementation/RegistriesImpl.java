@@ -23,7 +23,6 @@ import com.azure.resourcemanager.containerregistry.models.RegistryUsage;
 import com.azure.resourcemanager.containerregistry.models.SourceUploadDefinition;
 import com.azure.resourcemanager.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
-import com.azure.resourcemanager.storage.StorageManager;
 import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
@@ -34,11 +33,9 @@ import java.util.Collections;
 public class RegistriesImpl
     extends GroupableResourcesImpl<Registry, RegistryImpl, RegistryInner, RegistriesClient, ContainerRegistryManager>
     implements Registries {
-    private final StorageManager storageManager;
 
-    public RegistriesImpl(final ContainerRegistryManager manager, final StorageManager storageManager) {
+    public RegistriesImpl(final ContainerRegistryManager manager) {
         super(manager.serviceClient().getRegistries(), manager);
-        this.storageManager = storageManager;
     }
 
     @Override
@@ -51,7 +48,7 @@ public class RegistriesImpl
         return PagedConverter.mapPage(this
             .inner()
             .listAsync(),
-            inner -> new RegistryImpl(inner.name(), inner, this.manager(), this.storageManager));
+            inner -> new RegistryImpl(inner.name(), inner, this.manager()));
     }
 
     @Override
@@ -89,7 +86,7 @@ public class RegistriesImpl
 
     @Override
     protected RegistryImpl wrapModel(String name) {
-        return new RegistryImpl(name, new RegistryInner(), this.manager(), this.storageManager);
+        return new RegistryImpl(name, new RegistryInner(), this.manager());
     }
 
     @Override
@@ -99,7 +96,7 @@ public class RegistriesImpl
         }
 
         return new RegistryImpl(
-            containerServiceInner.name(), containerServiceInner, this.manager(), this.storageManager);
+            containerServiceInner.name(), containerServiceInner, this.manager());
     }
 
     @Override

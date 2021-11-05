@@ -6,9 +6,13 @@
 
 ### Breaking Changes
 
-### Bugs Fixed
+- Removed classic SKU support in `Registry`, as service with `api-version` after late 2019 no longer supports it.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2019-12-01-preview`.
 
 ## 2.9.0 (2021-10-21)
 

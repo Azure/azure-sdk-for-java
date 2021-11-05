@@ -12,7 +12,6 @@ import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
-import com.azure.resourcemanager.storage.models.StorageAccount;
 import java.time.OffsetDateTime;
 import java.util.Collection;
 import reactor.core.publisher.Mono;
@@ -35,17 +34,6 @@ public interface Registry
 
     /** @return the value that indicates whether the admin user is enabled */
     boolean adminUserEnabled();
-
-    /**
-     * @return the name of the storage account for the container registry; 'null' if container register SKU a managed
-     *     tier
-     */
-    String storageAccountName();
-
-    /**
-     * @return the ID of the storage account for the container registry; 'null' if container register SKU a managed tier
-     */
-    String storageAccountId();
 
     /** @return the login credentials for the specified container registry */
     RegistryCredentials getCredentials();
@@ -114,7 +102,6 @@ public interface Registry
         extends DefinitionStages.Blank,
             DefinitionStages.WithGroup,
             DefinitionStages.WithSku,
-            DefinitionStages.WithStorageAccount,
             DefinitionStages.WithCreate {
     }
 
@@ -130,13 +117,6 @@ public interface Registry
 
         /** The stage of the registry definition allowing to specify the SKU type. */
         interface WithSku {
-            /**
-             * Creates a container registry with a 'Classic' SKU type.
-             *
-             * @return the next stage of the definition
-             */
-            WithStorageAccount withClassicSku();
-
             /**
              * Creates a 'managed' registry with a 'Basic' SKU type.
              *
@@ -157,50 +137,6 @@ public interface Registry
              * @return the next stage of the definition
              */
             WithCreate withPremiumSku();
-        }
-
-        /** The stage of the registry definition allowing to specify the storage account. */
-        interface WithStorageAccount {
-            /**
-             * The parameters of a storage account for the container registry.
-             *
-             * <p>If specified, the storage account must be in the same physical location as the container registry.
-             *
-             * @param storageAccount the storage account
-             * @return the next stage
-             */
-            WithCreate withExistingStorageAccount(StorageAccount storageAccount);
-
-            /**
-             * The ID of an existing storage account for the container registry.
-             *
-             * <p>If specified, the storage account must be in the same physical location as the container registry.
-             *
-             * @param id the resource ID of the storage account; must be in the same physical location as the container
-             *     registry
-             * @return the next stage
-             */
-            WithCreate withExistingStorageAccount(String id);
-
-            /**
-             * The parameters for a storage account for the container registry.
-             *
-             * <p>A new storage account with default setting and specified name will be created.
-             *
-             * @param storageAccountName the name of the storage account
-             * @return the next stage
-             */
-            WithCreate withNewStorageAccount(String storageAccountName);
-
-            /**
-             * The parameters for a storage account for the container registry.
-             *
-             * <p>If specified, the storage account must be in the same physical location as the container registry.
-             *
-             * @param creatable the storage account to create
-             * @return the next stage
-             */
-            WithCreate withNewStorageAccount(Creatable<StorageAccount> creatable);
         }
 
         /** The stage of the registry definition allowing to enable admin user. */
