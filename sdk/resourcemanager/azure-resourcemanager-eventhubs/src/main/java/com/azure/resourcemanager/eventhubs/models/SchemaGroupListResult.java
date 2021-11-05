@@ -6,52 +6,52 @@ package com.azure.resourcemanager.eventhubs.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.eventhubs.fluent.models.NetworkRuleSetInner;
+import com.azure.resourcemanager.eventhubs.fluent.models.SchemaGroupInner;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response of the List NetworkRuleSet operation. */
+/** The result of the List SchemaGroup operation. */
 @Fluent
-public final class NetworkRuleSetListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(NetworkRuleSetListResult.class);
+public final class SchemaGroupListResult {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(SchemaGroupListResult.class);
 
     /*
-     * Result of the List NetworkRuleSet operation.
+     * Result of the List SchemaGroups operation.
      */
     @JsonProperty(value = "value")
-    private List<NetworkRuleSetInner> value;
+    private List<SchemaGroupInner> value;
 
     /*
      * Link to the next set of results. Not empty if Value contains incomplete
-     * list of NetworkRuleSet.
+     * list of Schema Groups.
      */
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
     /**
-     * Get the value property: Result of the List NetworkRuleSet operation.
+     * Get the value property: Result of the List SchemaGroups operation.
      *
      * @return the value value.
      */
-    public List<NetworkRuleSetInner> value() {
+    public List<SchemaGroupInner> value() {
         return this.value;
     }
 
     /**
-     * Set the value property: Result of the List NetworkRuleSet operation.
+     * Set the value property: Result of the List SchemaGroups operation.
      *
      * @param value the value value to set.
-     * @return the NetworkRuleSetListResult object itself.
+     * @return the SchemaGroupListResult object itself.
      */
-    public NetworkRuleSetListResult withValue(List<NetworkRuleSetInner> value) {
+    public SchemaGroupListResult withValue(List<SchemaGroupInner> value) {
         this.value = value;
         return this;
     }
 
     /**
-     * Get the nextLink property: Link to the next set of results. Not empty if Value contains incomplete list of
-     * NetworkRuleSet.
+     * Get the nextLink property: Link to the next set of results. Not empty if Value contains incomplete list of Schema
+     * Groups.
      *
      * @return the nextLink value.
      */
@@ -60,13 +60,13 @@ public final class NetworkRuleSetListResult {
     }
 
     /**
-     * Set the nextLink property: Link to the next set of results. Not empty if Value contains incomplete list of
-     * NetworkRuleSet.
+     * Set the nextLink property: Link to the next set of results. Not empty if Value contains incomplete list of Schema
+     * Groups.
      *
      * @param nextLink the nextLink value to set.
-     * @return the NetworkRuleSetListResult object itself.
+     * @return the SchemaGroupListResult object itself.
      */
-    public NetworkRuleSetListResult withNextLink(String nextLink) {
+    public SchemaGroupListResult withNextLink(String nextLink) {
         this.nextLink = nextLink;
         return this;
     }
