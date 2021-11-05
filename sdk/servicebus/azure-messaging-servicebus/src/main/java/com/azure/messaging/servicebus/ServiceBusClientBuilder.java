@@ -576,6 +576,8 @@ public final class ServiceBusClientBuilder {
             return new ProxyOptions(authentication, new Proxy(coreProxyOptions.getType().toProxyType(),
                 coreProxyOptions.getAddress()), coreProxyOptions.getUsername(), coreProxyOptions.getPassword());
         } else {
+            logger.verbose("'HTTP_PROXY' was configured but ignored as 'java.net.useSystemProxies' wasn't "
+                + "set or was false.");
             return ProxyOptions.SYSTEM_DEFAULTS;
         }
     }

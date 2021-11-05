@@ -829,6 +829,8 @@ public class EventHubClientBuilder {
             String password = coreProxyOptions.getPassword();
             return new ProxyOptions(authentication, new Proxy(proxyType, coreProxyAddress), username, password);
         } else {
+            logger.verbose("'HTTP_PROXY' was configured but ignored as 'java.net.useSystemProxies' wasn't "
+                + "set or was false.");
             return ProxyOptions.SYSTEM_DEFAULTS;
         }
     }
