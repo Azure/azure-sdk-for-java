@@ -6,9 +6,14 @@
 
 ### Breaking Changes
 
+- Removed preview `SchemaRegistryVersion.2017_04`.
+- Renamed `SchemaRegistrySchema.getSchemaDefinition` to `SchemaRegistrySchema.getDefinition`.
+
 ### Bugs Fixed
 
 ### Other Changes
+
+- Regenerated REST API based off 2021-10 swagger.
 
 ## 1.0.0-beta.6 (2021-10-08)
 

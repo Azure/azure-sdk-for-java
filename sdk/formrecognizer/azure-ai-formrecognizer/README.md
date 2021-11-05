@@ -203,7 +203,9 @@ Use the `modelId` parameter to select the type of model for analysis.
 |"prebuilt-receipt"| Text extraction and prebuilt fields and values pertaining to English sales receipts
 |"{custom-model-id}"| Text extraction, selection marks, tables, labeled fields and values from your custom documents
 
-Sample code snippets to illustrate using a DocumentAnalysisClient [here][sample_readme].
+Sample code snippets to illustrate using a DocumentAnalysisClient [here][sample_readme]. 
+More information about analyzing documents, including supported features, locales, and document types can be found 
+[here][fr-models].
 
 ### DocumentModelAdministrationClient
 The [DocumentModelAdministrationClient][document_model_admin_sync_client] and
@@ -648,6 +650,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [get_operation]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/GetOperationInfo.java
 [get_operation_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/GetOperationInfoAsync.java
 
+[fr_models]: https://aka.ms/azsdk/formrecognizer/models
 [service_access]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows
 [service_analyze_business_cards_fields]: https://aka.ms/azsdk/formrecognizer/businesscardfieldschema
 [service_analyze_invoices_fields]: https://aka.ms/azsdk/formrecognizer/invoicefieldschema

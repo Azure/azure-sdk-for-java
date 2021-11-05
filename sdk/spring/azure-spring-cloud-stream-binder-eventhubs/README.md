@@ -37,8 +37,18 @@ that's why you have to fill `spring.cloud.stream.eventhub.checkpoint-storage-acc
 
 #### Partitioning Support
 
-Event Hub provides a similar concept of physical partition as Kafka. But unlike Kafka's auto rebalancing between consumers and partitions, Event Hub provides a kind of preemptive mode. The storage account acts as a lease to determine which partition is owned by which consumer. When a new consumer starts, it will try to steal some partitions
+Event Hubs provides a similar concept of physical partition as Kafka. But unlike Kafka's auto rebalancing between consumers and partitions, Event Hub provides a kind of preemptive mode. The storage account acts as a lease to determine which partition is owned by which consumer. When a new consumer starts, it will try to steal some partitions
 from most heavy-loaded consumers to achieve the workload balancing.
+
+#### Batch Consumer Support
+Azure Event Hubs Spring Cloud Stream Binder supports [Spring Cloud Stream Batch Consumer feature][spring-cloud-stream-batch0-consumer]. 
+
+When enabled, an **org.springframework.messaging.Message** of which the payload is a list of batched events will be received and passed to the consumer function. Each message header is also converted as a list, of which the content is the associated header value parsed from each event. For the communal headers of **com.azure.spring.integration.core.AzureHeaders#RAW_PARTITION_ID** and **com.azure.spring.integration.core.AzureHeaders.CHECKPOINTER**, they are presented as a single value for the entire batch of events share the same one. Note, the checkpoint header only exists when **MANUAL** checkpoint mode is used.
+
+Checkpointing of batch consumer supports two modes: BATCH and MANUAL. BATCH mode is an auto checkpointing mode to checkpoint the entire batch of events together once they are received by the binder. MANUAL mode is to checkpoint the events by users. When used, the 
+**com.azure.spring.integration.core.api.reactor.Checkpointer** will be passes into the message header, and users could use it to do checkpointing.
+
+The batch size can be specified by properties of `max-batch-size` and `max-wait-time` with prefix as `spring.cloud.stream.bindings.<binding-name>.consumer.`. See the below section for more information about the [configuration](#batch-consumer) and [examples](#batch-consumer-sample).
 
 ## Examples 
 
@@ -120,6 +130,21 @@ Effective only if `sync` is set to true. The amount of time to wait for a respon
 
 Default: `10000`
 
+#### Common Consumer Properties ####
+
+You can use the below consumer configurations of **Spring Cloud Stream**, 
+it uses the configuration with the format of `spring.cloud.stream.bindings.<channelName>.consumer`.
+
+##### Batch Consumer
+
+When `spring.cloud.stream.binding.<name>.consumer.batch-mode` is set to `true`, all of the received events will be presented as a `List<?>` to the consumer function. Otherwise, the function will be called with one event at a time. The size of the batch is controlled by Event Hubs consumer properties `max-batch-size`(required) and `max-batch-duration`(optional); refer to the [below section](#event-hub-consumer-properties) for more information.
+
+**_batch-mode_**
+
+Whether to enable the entire batch of messages to be passed to the consumer function in a `List`.
+
+Default: `False`
+
 #### Event Hub Consumer Properties ####
 
 It supports the following configurations with the format of `spring.cloud.stream.eventhub.bindings.<channelName>.consumer`.
@@ -159,6 +184,20 @@ Effectively only when `checkpoint-mode` is `Time`. Decides The time interval to 
 
 Default: `5s`
 
+**_max-batch-size_**
+
+The maximum number of events that will be in the list of a message payload when the consumer callback is invoked.
+
+Default: `10`
+
+**_max-wait-time_**
+
+The max time `Duration` to wait to receive a batch of events upto the max batch size before invoking the consumer callback.
+
+Default: `null`
+
+For configuration of a `Duration` property, please refer to [the offical Spring Boot documentation][spring-boot-converting-duration]. Note: when setting a `long` value, the unit of milliseconds is used.
+
 ### Error Channels
 **_consumer error channel_**
 
@@ -188,6 +227,76 @@ you can handle the error message in this way:
     }
 ```
 
+### Batch Consumer Sample
+
+#### Configuration Options
+To enable the batch consumer mode, you should add below configuration
+```yaml
+spring:
+  cloud:
+    stream:
+      bindings:
+        consume-in-0:
+          destination: {event-hub-name}
+          group: [consumer-group-name]
+          consumer:
+            batch-mode: true 
+      eventhub:
+        bindings:
+          consume-in-0:
+            consumer:
+              checkpoint-mode: BATCH # or MANUAL as needed
+              max-batch-size: 2 # The default valueis 10
+              max-wait-time: 1m # Optional, the default value is null
+```
+
+#### Consume messages in batches
+For checkpointing mode as BATCH, you can use below code to send messages and consume in batches.
+```java
+    @Bean
+    public Consumer<List<String>> consume() {
+        return list -> list.forEach(event -> LOGGER.info("New event received: '{}'",event));
+    }
+
+    @Bean
+    public Supplier<Message<String>> supply() {
+        return () -> {
+            LOGGER.info("Sending message, sequence " + i);
+            return MessageBuilder.withPayload("\"test"+ i++ +"\"").build();
+        };
+    }
+```
+
+For checkpointing mode as MANUAL, you can use below code to send messages and consume/checkpoint in batches.
+```java
+    @Bean
+    public Consumer<Message<List<String>>> consume() {
+        return message -> {
+            for (int i = 0; i < message.getPayload().size(); i++) {
+                LOGGER.info("New message received: '{}', partition key: {}, sequence number: {}, offset: {}, enqueued time: {}",
+                    message.getPayload().get(i),
+                    ((List<Object>) message.getHeaders().get(EventHubHeaders.PARTITION_KEY)).get(i),
+                    ((List<Object>) message.getHeaders().get(EventHubHeaders.SEQUENCE_NUMBER)).get(i),
+                    ((List<Object>) message.getHeaders().get(EventHubHeaders.OFFSET)).get(i),
+                    ((List<Object>) message.getHeaders().get(EventHubHeaders.ENQUEUED_TIME)).get(i));
+            }
+        
+            Checkpointer checkpointer = (Checkpointer) message.getHeaders().get(CHECKPOINTER);
+            checkpointer.success()
+                        .doOnSuccess(success -> LOGGER.info("Message '{}' successfully checkpointed", message.getPayload()))
+                        .doOnError(error -> LOGGER.error("Exception found", error))
+                        .subscribe();
+        };
+    }
+
+    @Bean
+    public Supplier<Message<String>> supply() {
+        return () -> {
+            LOGGER.info("Sending message, sequence " + i);
+            return MessageBuilder.withPayload("\"test"+ i++ +"\"").build();
+        };
+    }
+```
 ## Troubleshooting
 ### Logging setting
 Please refer to [spring logging document] to get more information about logging.
@@ -226,3 +335,5 @@ Please follow [instructions here][contributing_md] to build from source or contr
 [spring_cloud_stream_current_producer_properties]: https://docs.spring.io/spring-cloud-stream/docs/current/reference/html/spring-cloud-stream.html#_producer_properties
 [Add azure-spring-cloud-dependencies]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#add-azure-spring-cloud-dependencies
 [kafka_sample]: https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/eventhubs/azure-spring-cloud-starter-eventhubs-kafka/eventhubs-kafka
+[spring-boot-converting-duration]: https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.external-config.typesafe-configuration-properties.conversion.durations
+[spring-cloud-stream-batch0-consumer]: https://docs.spring.io/spring-cloud-stream/docs/3.1.4/reference/html/spring-cloud-stream.html#_batch_consumers

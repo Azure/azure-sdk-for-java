@@ -137,7 +137,7 @@ Common uses of the Tables service include:
 
 - [Authenticate a client](#authenticate-a-client)
   - [Authenticate with a Connection String](#authenticate-with-a-connection-string)
-  - [Authenticate with a Named Key](#authenticate-with-a-named-key)
+  - [Authenticate with a Shared Key](#authenticate-with-a-shared-key)
   - [Authenticate with a Shared Access Signature (SAS)](#authenticate-with-a-shared-access-signature-sas)
 - [Create, List, and Delete Azure tables](#create-list-and-delete-azure-tables)
   - [Construct a `TableServiceClient`](#construct-a-tableserviceclient)
