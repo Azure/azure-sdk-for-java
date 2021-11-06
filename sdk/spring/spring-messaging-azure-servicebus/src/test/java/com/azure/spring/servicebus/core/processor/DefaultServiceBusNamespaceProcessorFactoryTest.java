@@ -8,7 +8,6 @@ import com.azure.spring.service.servicebus.processor.RecordMessageProcessingList
 import com.azure.spring.servicebus.core.properties.NamespaceProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.stubbing.Answer;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -18,7 +17,7 @@ public class DefaultServiceBusNamespaceProcessorFactoryTest {
     private final String entityName = "test";
     private final String subscription = "subscription";
     private final String anotherSubscription = "subscription2";
-    private final RecordMessageProcessingListener listener = messageContext -> {};
+    private final RecordMessageProcessingListener listener = messageContext -> { };
     private int queueProcessorAddedTimes = 0;
     private int topicProcessorAddedTimes = 0;
 
@@ -80,16 +79,7 @@ public class DefaultServiceBusNamespaceProcessorFactoryTest {
 
         ServiceBusProcessorClient anotherClient = processorFactory.createProcessor(entityName, anotherSubscription, this.listener);
         assertNotNull(anotherClient);
-        assertEquals(2, queueProcessorAddedTimes);
+        assertEquals(2, topicProcessorAddedTimes);
     }
 
-    static class BuilderReturn {
-        private static Answer<?> self = (Answer<Object>) invocation -> {
-            if (invocation.getMethod().getReturnType().isAssignableFrom(invocation.getMock().getClass())) {
-                return invocation.getMock();
-            }
-
-            return null;
-        };
-    }
 }

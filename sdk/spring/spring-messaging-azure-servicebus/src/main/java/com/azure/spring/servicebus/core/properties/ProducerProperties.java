@@ -6,6 +6,9 @@ package com.azure.spring.servicebus.core.properties;
 import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.service.servicebus.properties.ServiceBusProducerDescriptor;
 
+/**
+ * A service bus producer related properties.
+ */
 public class ProducerProperties extends CommonProperties implements ServiceBusProducerDescriptor {
 
     private String name;

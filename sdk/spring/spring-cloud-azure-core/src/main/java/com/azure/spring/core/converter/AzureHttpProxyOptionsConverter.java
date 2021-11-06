@@ -15,6 +15,8 @@ import java.net.InetSocketAddress;
  */
 public final class AzureHttpProxyOptionsConverter implements Converter<HttpProxyProperties, ProxyOptions> {
 
+    public static final AzureHttpProxyOptionsConverter HTTP_PROXY_CONVERTER = new AzureHttpProxyOptionsConverter();
+
     @Override
     public ProxyOptions convert(HttpProxyProperties proxyProperties) {
         if (!StringUtils.hasText(proxyProperties.getHostname())) {

@@ -45,7 +45,7 @@ class AzureServiceBusConsumerClientConfiguration {
 
             ServiceBusReceiverClientBuilderFactory builderFactory;
             if (isDedicatedConnection(serviceBusProperties.getConsumer())) {
-                 builderFactory = new ServiceBusReceiverClientBuilderFactory(serviceBusProperties.buildConsumerProperties());
+                builderFactory = new ServiceBusReceiverClientBuilderFactory(serviceBusProperties.buildConsumerProperties());
             } else {
                 builderFactory = new ServiceBusReceiverClientBuilderFactory(
                     serviceBusClientBuilders.getIfAvailable(), serviceBusProperties.buildConsumerProperties());

@@ -4,9 +4,11 @@
 package com.azure.spring.core.factory;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.spring.core.aware.AzureProfileAware;
+import com.azure.spring.core.aware.ClientAware;
+import com.azure.spring.core.aware.authentication.ConnectionStringAware;
 import com.azure.spring.core.connectionstring.ConnectionStringProvider;
 import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.core.credential.provider.AzureCredentialProvider;
@@ -15,8 +17,6 @@ import com.azure.spring.core.credential.resolver.AzureCredentialResolvers;
 import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.core.customizer.NoOpAzureServiceClientBuilderCustomizer;
 import com.azure.spring.core.properties.AzureProperties;
-import com.azure.spring.core.properties.aware.credential.ConnectionStringAware;
-import com.azure.spring.core.properties.client.ClientProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -57,7 +57,6 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
     protected abstract BiConsumer<T, String> consumeConnectionString();
 
     protected TokenCredential defaultTokenCredential = DEFAULT_TOKEN_CREDENTIAL;
-    private AzureEnvironment azureEnvironment = AzureEnvironment.AZURE;
     private String applicationId; // end-user
     private String springIdentifier;
     private ConnectionStringProvider<?> connectionStringProvider;
@@ -89,8 +88,11 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
     }
 
     protected void configureAzureEnvironment(T builder) {
+        AzureProfileAware.Profile profile = getAzureProperties().getProfile();
+
         Configuration configuration = new Configuration();
-        configuration.put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, this.azureEnvironment.getActiveDirectoryEndpoint());
+        configuration.put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, profile.getEnvironment().getActiveDirectoryEndpoint());
+
         consumeConfiguration().accept(builder, configuration);
     }
 
@@ -161,18 +163,9 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
         return credentialResolvers.resolve(azureProperties);
     }
 
-    protected AzureEnvironment getAzureEnvironment() {
-        return azureEnvironment;
-    }
-
-    public void setAzureEnvironment(AzureEnvironment azureEnvironment) {
-        this.azureEnvironment = azureEnvironment;
-    }
-
     protected String getApplicationId() {
-        final ClientProperties clientProperties = getAzureProperties().getClient();
-        return this.applicationId != null ? this.applicationId : (clientProperties != null
-                                                                      ? clientProperties.getApplicationId() : null);
+        final ClientAware.Client client = getAzureProperties().getClient();
+        return this.applicationId != null ? this.applicationId : (client != null ? client.getApplicationId() : null);
     }
 
     public void setApplicationId(String applicationId) {

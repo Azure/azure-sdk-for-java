@@ -10,6 +10,9 @@ import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
 
 import java.time.Duration;
 
+/**
+ * A service bus consumer related properties.
+ */
 public class ConsumerProperties extends CommonProperties implements ServiceBusConsumerDescriptor {
 
     private Boolean sessionAware;

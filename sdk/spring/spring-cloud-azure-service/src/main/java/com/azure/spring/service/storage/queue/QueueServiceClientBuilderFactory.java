@@ -12,10 +12,11 @@ import com.azure.core.util.Configuration;
 import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.core.credential.descriptor.SasAuthenticationDescriptor;
 import com.azure.spring.core.credential.descriptor.TokenAuthenticationDescriptor;
-import com.azure.spring.core.factory.AbstractAzureHttpClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.service.core.PropertyMapper;
+import com.azure.spring.service.storage.common.AbstractAzureStorageClientBuilderFactory;
 import com.azure.spring.service.storage.common.credential.StorageSharedKeyAuthenticationDescriptor;
+import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.queue.QueueMessageEncoding;
 import com.azure.storage.queue.QueueServiceClientBuilder;
 
@@ -30,7 +31,7 @@ import static com.azure.spring.core.ApplicationId.VERSION;
  * Storage Queue Service client builder factory, it builds the storage blob client according the configuration context
  * and blob properties.
  */
-public class QueueServiceClientBuilderFactory extends AbstractAzureHttpClientBuilderFactory<QueueServiceClientBuilder> {
+public class QueueServiceClientBuilderFactory extends AbstractAzureStorageClientBuilderFactory<QueueServiceClientBuilder> {
 
     private final StorageQueueProperties queueProperties;
 
@@ -108,5 +109,10 @@ public class QueueServiceClientBuilderFactory extends AbstractAzureHttpClientBui
         return QueueMessageEncoding.BASE64
             .name()
             .equalsIgnoreCase(messageEncoding) ? QueueMessageEncoding.BASE64 : QueueMessageEncoding.NONE;
+    }
+
+    @Override
+    protected BiConsumer<QueueServiceClientBuilder, RequestRetryOptions> consumeRequestRetryOptions() {
+        return QueueServiceClientBuilder::retryOptions;
     }
 }

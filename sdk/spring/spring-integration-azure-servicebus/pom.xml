@@ -20,7 +20,7 @@
 
   <properties>
     <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.15</jacoco.min.branchcoverage>
+    <jacoco.min.branchcoverage>0.04</jacoco.min.branchcoverage>
   </properties>
 
   <dependencies>
@@ -90,7 +90,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-test</artifactId>
-      <version>5.3.9</version>
+      <version>5.3.9</version> <!-- {x-version-update;org.springframework:spring-test;external_dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

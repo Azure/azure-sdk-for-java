@@ -5,6 +5,9 @@ package com.azure.spring.servicebus.core;
 
 import org.springframework.core.NestedRuntimeException;
 
+/**
+ * The Azure Service Bus specific {@link NestedRuntimeException}.
+ */
 public class ServiceBusRuntimeException extends NestedRuntimeException {
     public ServiceBusRuntimeException(String msg) {
         super(msg);

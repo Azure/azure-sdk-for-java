@@ -5,7 +5,6 @@ package com.azure.spring.service.servicebus.factory;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.spring.service.core.PropertyMapper;
-import com.azure.spring.service.eventhubs.processor.RecordEventProcessingListener;
 import com.azure.spring.service.servicebus.processor.MessageProcessingListener;
 import com.azure.spring.service.servicebus.processor.RecordMessageProcessingListener;
 import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;

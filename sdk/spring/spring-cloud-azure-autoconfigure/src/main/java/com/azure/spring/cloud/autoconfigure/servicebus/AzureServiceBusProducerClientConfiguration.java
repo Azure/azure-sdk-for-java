@@ -6,7 +6,6 @@ package com.azure.spring.cloud.autoconfigure.servicebus;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.messaging.servicebus.ServiceBusSenderClient;
-import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.servicebus.properties.AzureServiceBusProperties;
 import com.azure.spring.core.ApplicationId;
 import com.azure.spring.service.servicebus.factory.ServiceBusSenderClientBuilderFactory;
@@ -25,8 +24,6 @@ import org.springframework.util.StringUtils;
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnProperty(prefix = "spring.cloud.azure.servicebus.producer", name = { "name", "type" })
 class AzureServiceBusProducerClientConfiguration {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(AzureServiceBusProducerClientConfiguration.class);
 
     @Bean
     @ConditionalOnMissingBean

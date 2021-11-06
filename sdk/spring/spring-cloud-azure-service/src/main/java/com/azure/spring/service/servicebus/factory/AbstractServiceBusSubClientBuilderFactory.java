@@ -25,7 +25,7 @@ import java.util.function.BiConsumer;
 /**
  * Abstract Service Bus client builder factory, it builds the {@link ServiceBusClientBuilder} sub client.
  */
-abstract public class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBusCommonDescriptor> extends AbstractAzureAmqpClientBuilderFactory<T> {
+public abstract class AbstractServiceBusSubClientBuilderFactory<T, P extends ServiceBusCommonDescriptor> extends AbstractAzureAmqpClientBuilderFactory<T> {
 
     protected final P properties;
     protected final ServiceBusClientBuilder serviceBusClientBuilder;

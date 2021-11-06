@@ -75,7 +75,6 @@ public class KeyVaultSecretValueIT {
     public void keyVaultAsPropertySource() {
         LOGGER.info("keyVaultAsPropertySource begin.");
         try (AppRunner app = new AppRunner(DummyApp.class)) {
-            app.property("spring.cloud.azure.keyvault.secret.enabled", "false");
             app.property("spring.cloud.azure.keyvault.secret.property-source-enabled", "true");
             app.property("spring.cloud.azure.keyvault.secret.endpoint", AZURE_KEYVAULT_URI);
             app.property("spring.cloud.azure.keyvault.secret.credential.client-id", SPRING_CLIENT_ID);
@@ -99,7 +98,6 @@ public class KeyVaultSecretValueIT {
     public void keyVaultAsPropertySourceWithSpecificKeys() {
         LOGGER.info("keyVaultAsPropertySourceWithSpecificKeys begin.");
         try (AppRunner app = new AppRunner(DummyApp.class)) {
-            app.property("spring.cloud.azure.keyvault.secret.enabled", "false");
             app.property("spring.cloud.azure.keyvault.secret.property-source-enabled", "true");
             app.property("spring.cloud.azure.keyvault.secret.endpoint", AZURE_KEYVAULT_URI);
             app.property("spring.cloud.azure.keyvault.secret.credential.client-id", SPRING_CLIENT_ID);

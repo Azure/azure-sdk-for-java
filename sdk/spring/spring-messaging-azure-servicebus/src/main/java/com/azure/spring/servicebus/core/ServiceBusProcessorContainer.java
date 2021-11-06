@@ -14,6 +14,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+/**
+ * A processor container to subscribe on a {@link ServiceBusProcessorClient}.
+ */
 public class ServiceBusProcessorContainer implements Lifecycle, DisposableBean {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusProcessorContainer.class);

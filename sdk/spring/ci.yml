@@ -242,7 +242,7 @@ extends:
         safeName: springcloudazurestreambinderservicebuscore
         skipPublishDocMs: true
       - name: spring-cloud-azure-stream-binder-servicebus
-          groupId: com.azure.spring
+        groupId: com.azure.spring
         safeName: springcloudazurestreambinderservicebus
         skipPublishDocMs: true
       - name: spring-cloud-azure-stream-binder-eventhubs

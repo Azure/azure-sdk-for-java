@@ -19,7 +19,7 @@ public class ServiceBusProcessorInstrumentation implements Instrumentation {
 
     private long lastErrorTimestamp = Long.MIN_VALUE;
 
-    private Duration noneErrorWindow;
+    private final Duration noneErrorWindow;
 
     private ServiceBusErrorContext errorContext;
 

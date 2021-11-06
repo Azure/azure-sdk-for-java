@@ -37,7 +37,7 @@ class AzureServiceBusProducerClientConfigurationTest {
     }
 
     @Test
-    void EntityNameAndTypeProvidedShouldConfigure() {
+    void entityNameAndTypeProvidedShouldConfigure() {
         ServiceBusClientBuilder serviceBusClientBuilder = new ServiceBusClientBuilder();
         serviceBusClientBuilder.connectionString(String.format(CONNECTION_STRING, "test-namespace"));
 

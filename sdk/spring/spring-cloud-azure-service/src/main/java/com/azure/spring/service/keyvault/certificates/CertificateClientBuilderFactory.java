@@ -8,6 +8,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.Configuration;
 import com.azure.security.keyvault.certificates.CertificateClientBuilder;
 import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
@@ -94,5 +95,10 @@ public class CertificateClientBuilderFactory extends AbstractAzureHttpClientBuil
     protected BiConsumer<CertificateClientBuilder, String> consumeConnectionString() {
         LOGGER.debug("Connection string is not supported to configure in CertificateClientBuilder");
         return (a, b) -> { };
+    }
+
+    @Override
+    protected BiConsumer<CertificateClientBuilder, RetryPolicy> consumeRetryPolicy() {
+        return CertificateClientBuilder::retryPolicy;
     }
 }

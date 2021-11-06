@@ -18,9 +18,7 @@ import com.azure.spring.core.factory.AbstractAzureAmqpClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.service.core.PropertyMapper;
 import com.azure.spring.service.servicebus.properties.ServiceBusCommonDescriptor;
-import com.azure.spring.service.servicebus.properties.ServiceBusConsumerDescriptor;
 import com.azure.spring.service.servicebus.properties.ServiceBusNamespaceDescriptor;
-import com.azure.spring.service.servicebus.properties.ServiceBusProducerDescriptor;
 
 import java.util.Arrays;
 import java.util.List;

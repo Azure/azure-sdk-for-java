@@ -5,40 +5,43 @@ package com.azure.spring.core.converter;
 
 import com.azure.core.amqp.AmqpRetryMode;
 import com.azure.core.amqp.AmqpRetryOptions;
+import com.azure.spring.core.aware.RetryAware;
 import com.azure.spring.core.properties.retry.RetryProperties;
 import org.springframework.core.convert.converter.Converter;
 
 /**
  * Converts a {@link RetryProperties} to a {@link AmqpRetryOptions}.
  */
-public final class AzureAmqpRetryOptionsConverter implements Converter<RetryProperties, AmqpRetryOptions> {
+public final class AzureAmqpRetryOptionsConverter implements Converter<RetryAware.Retry, AmqpRetryOptions> {
+
+    public static final AzureAmqpRetryOptionsConverter AMQP_RETRY_CONVERTER = new AzureAmqpRetryOptionsConverter();
 
     @Override
-    public AmqpRetryOptions convert(RetryProperties retryProperties) {
+    public AmqpRetryOptions convert(RetryAware.Retry retry) {
         AmqpRetryOptions retryOptions = new AmqpRetryOptions();
 
-        if (retryProperties.getMaxAttempts() != null) {
-            retryOptions.setMaxRetries(retryProperties.getMaxAttempts());
+        if (retry.getMaxAttempts() != null) {
+            retryOptions.setMaxRetries(retry.getMaxAttempts());
         }
 
-        if (retryProperties.getTimeout() != null) {
-            retryOptions.setTryTimeout(retryProperties.getTimeout());
+        if (retry.getTimeout() != null) {
+            retryOptions.setTryTimeout(retry.getTimeout());
         }
 
         AmqpRetryMode mode;
-        final RetryProperties.BackoffProperties backoffProperties = retryProperties.getBackoff();
-        if (backoffProperties != null) {
-            if (backoffProperties.getMultiplier() != null && backoffProperties.getMultiplier() > 0) {
+        final RetryAware.Backoff backoff = retry.getBackoff();
+        if (backoff != null) {
+            if (backoff.getMultiplier() != null && backoff.getMultiplier() > 0) {
                 mode = AmqpRetryMode.EXPONENTIAL;
             } else {
                 mode = AmqpRetryMode.FIXED;
             }
             retryOptions.setMode(mode);
-            if (backoffProperties.getDelay() != null) {
-                retryOptions.setDelay(backoffProperties.getDelay());
+            if (backoff.getDelay() != null) {
+                retryOptions.setDelay(backoff.getDelay());
             }
-            if (backoffProperties.getMaxDelay() != null) {
-                retryOptions.setMaxDelay(backoffProperties.getMaxDelay());
+            if (backoff.getMaxDelay() != null) {
+                retryOptions.setMaxDelay(backoff.getMaxDelay());
             }
         }
         return retryOptions;
