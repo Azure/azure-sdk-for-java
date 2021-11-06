@@ -272,21 +272,17 @@ public final class RestProxy implements InvocationHandler {
     @SuppressWarnings("unchecked")
     private HttpRequest configRequest(final HttpRequest request, final SwaggerMethodParser methodParser,
         final Object[] args) throws IOException {
-
-        final Object bodyContentObject;
-        String contentType = methodParser.getBodyContentType();
-
-        if (ContentType.MULTIPART_FORM_DATA.equals(contentType)) {
-            String boundary = UUID.randomUUID().toString();
-            bodyContentObject = methodParser.setMultipartBody(args, boundary);
-            contentType += "; boundary=" + boundary;
-        } else {
-            bodyContentObject = methodParser.setBody(args);
-        }
+        final Object bodyContentObject = methodParser.setBody(args);
 
         if (bodyContentObject == null) {
-            request.getHeaders().set("Content-Length", "0");
+            request.setHeader("Content-Length", "0");
         } else {
+            String contentType = methodParser.getBodyContentType();
+
+            if (ContentType.MULTIPART_FORM_DATA.equals(contentType)) {
+                contentType += "; boundary=" + methodParser.getBoundary();
+            }
+
             // If this is null or empty, the service interface definition is incomplete and should
             // be fixed to ensure correct definitions are applied
             if (contentType == null || contentType.isEmpty()) {

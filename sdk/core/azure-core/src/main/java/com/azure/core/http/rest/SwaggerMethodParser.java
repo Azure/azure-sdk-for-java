@@ -49,6 +49,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.StringJoiner;
+import java.util.UUID;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
@@ -74,6 +75,7 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
     private final HttpHeaders headers = new HttpHeaders();
     private final Integer bodyContentMethodParameterIndex;
     private final String bodyContentType;
+    private final String boundary;
     private final Type bodyJavaType;
     private final List<FormDataEntry> formDataEntries = new ArrayList<>();
     private final BitSet expectedStatusCodes;
@@ -183,6 +185,7 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
         Integer bodyContentMethodParameterIndex = null;
         String bodyContentType = null;
         Type bodyJavaType = null;
+        String boundary = null;
 
         final Annotation[][] allParametersAnnotations = swaggerMethod.getParameterAnnotations();
         for (int parameterIndex = 0; parameterIndex < allParametersAnnotations.length; ++parameterIndex) {
@@ -222,6 +225,7 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
                         swaggerMethod.getGenericParameterTypes()[parameterIndex]));
                     bodyContentType = ContentType.MULTIPART_FORM_DATA;
                     bodyJavaType = String.class;
+                    boundary = UUID.randomUUID().toString();
                 }
             }
         }
@@ -229,6 +233,7 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
         this.bodyContentMethodParameterIndex = bodyContentMethodParameterIndex;
         this.bodyContentType = bodyContentType;
         this.bodyJavaType = bodyJavaType;
+        this.boundary = boundary;
     }
 
     /**
@@ -435,18 +440,6 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
                 .collect(Collectors.joining("&"));
         }
 
-        return result;
-    }
-
-    /**
-     * Generate the object to be used as the value of the HTTP request.
-     *
-     * @param swaggerMethodArguments The method arguments to generate the value object from.
-     * @return The object that will be used as the body of the HTTP request
-     */
-    public String setMultipartBody(Object[] swaggerMethodArguments, String boundary) {
-        String result = null;
-
         if (!CoreUtils.isNullOrEmpty(formDataEntries) && swaggerMethodArguments != null) {
             String boundaryPrefix = "--" + boundary + System.lineSeparator();
             String boundaryDelimiter = System.lineSeparator() + "--" + boundary + System.lineSeparator();
@@ -497,6 +490,15 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
      */
     public Type getBodyJavaType() {
         return bodyJavaType;
+    }
+
+    /**
+     * Get the boundary to separate all body parts in a multipart request, if present.
+     *
+     * @return The boundary to separate all body parts in a multipart request, if present.
+     */
+    public String getBoundary() {
+        return boundary;
     }
 
     /**

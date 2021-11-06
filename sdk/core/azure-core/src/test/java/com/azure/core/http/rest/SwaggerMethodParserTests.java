@@ -499,10 +499,13 @@ public class SwaggerMethodParserTests {
     public void formDataSubstitution(Method method, Object[] arguments, Object expectedBody) {
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method, "https://raw.host.com");
 
+        String expectedBodyWithBoundary = expectedBody == null ? null
+            : ((String) expectedBody).replace("boundary", swaggerMethodParser.getBoundary());
+
         assertEquals(void.class, swaggerMethodParser.getReturnType());
         assertEquals(String.class, swaggerMethodParser.getBodyJavaType());
         assertEquals(ContentType.MULTIPART_FORM_DATA, swaggerMethodParser.getBodyContentType());
-        assertEquals(expectedBody, swaggerMethodParser.setMultipartBody(arguments, "boundary"));
+        assertEquals(expectedBodyWithBoundary, swaggerMethodParser.setBody(arguments));
     }
 
     private static Stream<Arguments> formDataSubstitutionSupplier() throws NoSuchMethodException {
