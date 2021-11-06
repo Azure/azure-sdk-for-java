@@ -90,6 +90,18 @@ public interface AnnotationJavadocCodesnippets {
         // END: com.azure.core.annotation.FormParam.class
     }
 
+    /**
+     * Examples for {@link FormData}.
+     */
+    interface FormDataExamples {
+        // BEGIN: com.azure.core.annotation.FormData.class
+        @Post("spellcheck")
+        Mono<Response<ResponseBody>> spellChecker(@HeaderParam("X-BingApis-SDK") String xBingApisSDK,
+            @QueryParam("UserId") String userId,
+            @FormData("Text") String text);
+        // END: com.azure.core.annotation.FormData.class
+    }
+
 
     /**
      * Examples for {@link Get}.
