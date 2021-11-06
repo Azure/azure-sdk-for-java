@@ -173,7 +173,7 @@ public class BarrierRequestHelperTest {
                 false,
                 false,
                 null,
-                ApiType.NONE);
+                null);
 
         ResourceType resourceType = ResourceType.DocumentCollection;
         OperationType operationType = OperationType.Read;

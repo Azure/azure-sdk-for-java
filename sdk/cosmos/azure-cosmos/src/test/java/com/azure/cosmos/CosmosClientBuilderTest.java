@@ -2,13 +2,9 @@
 // Licensed under the MIT License.
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.ApiType;
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.RxDocumentClientImpl;
-import com.azure.cosmos.implementation.TestConfigurations;
+import com.azure.cosmos.implementation.*;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
 import com.google.common.collect.ImmutableList;
-import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.net.URISyntaxException;
@@ -70,6 +66,6 @@ public class CosmosClientBuilderTest {
 
         RxDocumentClientImpl documentClient =
             (RxDocumentClientImpl) ReflectionUtils.getAsyncDocumentClient(new CosmosAsyncClient(cosmosClientBuilder));
-        Assert.assertEquals(ReflectionUtils.getApiType(documentClient), apiType);
+        assertThat(ReflectionUtils.getApiType(documentClient)).isEqualTo(apiType);
     }
 }

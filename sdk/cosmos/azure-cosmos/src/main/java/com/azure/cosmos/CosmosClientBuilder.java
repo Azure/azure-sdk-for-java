@@ -109,7 +109,7 @@ public class CosmosClientBuilder {
     private boolean multipleWriteRegionsEnabled = true;
     private boolean readRequestsFallbackEnabled = true;
     private boolean clientTelemetryEnabled = false;
-    private ApiType apiType = ApiType.SQL;
+    private ApiType apiType = null;
 
     /**
      * Instantiates a new Cosmos client builder.
