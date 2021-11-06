@@ -31,13 +31,13 @@ abstract public class AbstractServiceBusSubClientBuilderFactory<T, P extends Ser
     protected final ServiceBusClientBuilder serviceBusClientBuilder;
     protected final boolean shareServiceBusClientBuilder;
 
-    public AbstractServiceBusSubClientBuilderFactory(P producerProperties) {
-        this(null, producerProperties);
+    public AbstractServiceBusSubClientBuilderFactory(P properties) {
+        this(null, properties);
     }
 
     public AbstractServiceBusSubClientBuilderFactory(ServiceBusClientBuilder serviceBusClientBuilder,
-                                                     P producerProperties) {
-        this.properties = producerProperties;
+                                                     P properties) {
+        this.properties = properties;
         if (serviceBusClientBuilder != null) {
             this.serviceBusClientBuilder = serviceBusClientBuilder;
             this.shareServiceBusClientBuilder = true;

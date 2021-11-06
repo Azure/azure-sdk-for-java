@@ -22,6 +22,7 @@ public class ServiceBusProcessorContainer implements Lifecycle, DisposableBean {
     //TODO(yiliu6): map for client
     protected final List<ServiceBusProcessorClient> clients = new ArrayList<>();
     private final AtomicBoolean isRunning = new AtomicBoolean(false);
+    private final List<ServiceBusProcessorFactory.Listener> listeners = new ArrayList<>();
 
     public ServiceBusProcessorContainer(ServiceBusProcessorFactory processorFactory) {
         this.processorFactory = processorFactory;
@@ -58,6 +59,7 @@ public class ServiceBusProcessorContainer implements Lifecycle, DisposableBean {
     public ServiceBusProcessorClient subscribe(String queue, MessageProcessingListener listener) {
         ServiceBusProcessorClient processor = this.processorFactory.createProcessor(queue, listener);
         processor.start();
+        this.listeners.forEach(l -> l.processorAdded(queue, null));
         this.clients.add(processor);
         return processor;
     }
@@ -70,6 +72,7 @@ public class ServiceBusProcessorContainer implements Lifecycle, DisposableBean {
     public ServiceBusProcessorClient subscribe(String topic, String subscription, MessageProcessingListener listener) {
         ServiceBusProcessorClient processor = this.processorFactory.createProcessor(topic, subscription, listener);
         processor.start();
+        this.listeners.forEach(l -> l.processorAdded(topic, subscription));
         this.clients.add(processor);
         return processor;
     }
@@ -77,5 +80,9 @@ public class ServiceBusProcessorContainer implements Lifecycle, DisposableBean {
     public boolean unsubscribe(String topic, String subscription) {
         // TODO: stop and remove
         return false;
+    }
+
+    public void addListener(ServiceBusProcessorFactory.Listener listener) {
+        this.listeners.add(listener);
     }
 }

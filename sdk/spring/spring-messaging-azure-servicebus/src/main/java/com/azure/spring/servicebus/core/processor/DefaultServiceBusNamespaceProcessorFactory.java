@@ -8,9 +8,9 @@ import com.azure.spring.service.servicebus.factory.ServiceBusProcessorClientBuil
 import com.azure.spring.service.servicebus.factory.ServiceBusSessionProcessorClientBuilderFactory;
 import com.azure.spring.service.servicebus.processor.MessageProcessingListener;
 import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
-import com.azure.spring.servicebus.core.properties.SubscriptionPropertiesSupplier;
 import com.azure.spring.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.servicebus.core.properties.ProcessorProperties;
+import com.azure.spring.servicebus.core.properties.SubscriptionPropertiesSupplier;
 import com.azure.spring.servicebus.core.properties.merger.ProcessorPropertiesParentMerger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -120,4 +120,8 @@ public class DefaultServiceBusNamespaceProcessorFactory implements ServiceBusPro
         return client;
     }
 
+    @Override
+    public void addListener(Listener listener) {
+        this.listeners.add(listener);
+    }
 }

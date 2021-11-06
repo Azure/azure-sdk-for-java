@@ -229,14 +229,20 @@ public class ServiceBusMessageChannelBinder extends
             DefaultServiceBusNamespaceProcessorFactory factory = new DefaultServiceBusNamespaceProcessorFactory(
                 this.namespaceProperties, getProcessorPropertiesSupplier());
 
-            factory.addListener((name, subscription) -> {
+//            factory.addListener((name, subscription) -> {
+//                String instrumentationName = name + "/" + subscription == null ? "" : subscription;
+//                Instrumentation instrumentation = new ServiceBusProcessorInstrumentation(instrumentationName, CONSUMER, Duration.ofMinutes(2));
+//                instrumentation.markUp();
+//                instrumentationManager.addHealthInstrumentation(instrumentation.getId(), instrumentation);
+//            });
+
+            this.processorContainer = new ServiceBusProcessorContainer(factory);
+            this.processorContainer.addListener((name, subscription) -> {
                 String instrumentationName = name + "/" + subscription == null ? "" : subscription;
                 Instrumentation instrumentation = new ServiceBusProcessorInstrumentation(instrumentationName, CONSUMER, Duration.ofMinutes(2));
                 instrumentation.markUp();
                 instrumentationManager.addHealthInstrumentation(instrumentation.getId(), instrumentation);
             });
-
-            this.processorContainer = new ServiceBusProcessorContainer(factory);
         }
         return this.processorContainer;
     }
