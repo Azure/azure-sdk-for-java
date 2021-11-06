@@ -22,7 +22,7 @@ class CosmosClientCacheITest extends IntegrationSpec with CosmosClient {
     val client1 = CosmosClientCache(userConfig, None)
     val client2 = CosmosClientCache(userConfig, None)
 
-    client2 should be theSameInstanceAs client1
+    client2.client should be theSameInstanceAs client1.client
     CosmosClientCache.purge(userConfig)
   }
 
@@ -49,7 +49,8 @@ class CosmosClientCacheITest extends IntegrationSpec with CosmosClient {
     val broadcast = mock(classOf[Broadcast[CosmosClientMetadataCachesSnapshot]])
     val client1 = CosmosClientCache(userConfig, Option(broadcast))
     verify(broadcast).value
-    client1 shouldBe a[CosmosAsyncClient]
+    client1 shouldBe a[CosmosClientCacheItem]
+    client1.client shouldBe a[CosmosAsyncClient]
     CosmosClientCache.purge(userConfig)
   }
 }

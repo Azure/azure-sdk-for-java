@@ -10,9 +10,10 @@ import org.apache.spark.broadcast.Broadcast
 
 import java.time.{Duration, Instant}
 import java.util.ConcurrentModificationException
-import java.util.concurrent.{Executors, ScheduledExecutorService, TimeUnit}
+import java.util.concurrent.{ConcurrentHashMap, Executors, ScheduledExecutorService, TimeUnit}
 import java.util.concurrent.atomic.AtomicLong
 import scala.collection.concurrent.TrieMap
+import scala.collection.mutable.ArrayBuffer
 
 // scalastyle:off underscore.import
 import scala.collection.JavaConverters._
@@ -25,6 +26,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
   private[this] val unusedClientTtlInMs = 15 * 60 * 1000
   private[this] val cleanupIntervalInSeconds = 60
   private[this] val cache = new TrieMap[CosmosClientConfiguration, CosmosClientCacheMetadata]
+  private[this] val toBeClosedWhenNotActiveAnymore =  new ConcurrentHashMap[CosmosClientCacheMetadata, java.lang.Boolean]
   private[this] val executorService:ScheduledExecutorService = Executors.newSingleThreadScheduledExecutor(
     new CosmosDaemonThreadFactory("CosmosClientCache"))
 
@@ -35,12 +37,10 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
     TimeUnit.SECONDS)
 
   def apply(cosmosClientConfiguration: CosmosClientConfiguration,
-            cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]]): CosmosAsyncClient = {
+            cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]]): CosmosClientCacheItem = {
 
     cache.get(cosmosClientConfiguration) match {
-      case Some(clientCacheMetadata) =>
-        clientCacheMetadata.lastRetrieved.set(Instant.now.toEpochMilli)
-        clientCacheMetadata.client
+      case Some(clientCacheMetadata) => clientCacheMetadata.createCacheItemForReuse
       case None => syncCreate(cosmosClientConfiguration, cosmosClientStateHandle)
     }
   }
@@ -51,7 +51,18 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
       case Some(existingClientCacheMetadata) =>
         cache.remove(cosmosClientConfiguration) match {
           case None => Unit
-          case Some(_) => existingClientCacheMetadata.client.close()
+          case Some(_) =>
+            // there is a race condition here - technically between the check in onCleanup
+            // when the client wasn't retrieved for certain period of time
+            // and it wasn't actively used anymore someone could have
+            // retrieved it form the cache before we remove it here
+            // so if it is actively used now we need to keep a reference and close it
+            // when it isn't used anymore
+            if (existingClientCacheMetadata.refCount.get() == 0) {
+              existingClientCacheMetadata.client.close()
+            } else {
+              toBeClosedWhenNotActiveAnymore.put(existingClientCacheMetadata, true)
+            }
         }
     }
   }
@@ -60,11 +71,9 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
   // scalastyle:off cyclomatic.complexity
   private[this] def syncCreate(cosmosClientConfiguration: CosmosClientConfiguration,
                                cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]])
-  : CosmosAsyncClient = synchronized {
+  : CosmosClientCacheItem = synchronized {
     cache.get(cosmosClientConfiguration) match {
-      case Some(clientCacheMetadata) =>
-        clientCacheMetadata.lastRetrieved.set(Instant.now.toEpochMilli)
-        clientCacheMetadata.client
+      case Some(clientCacheMetadata) => clientCacheMetadata.createCacheItemForReuse
       case None =>
         var builder = new CosmosClientBuilder()
           .key(cosmosClientConfiguration.key)
@@ -101,8 +110,10 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
         } else {
 
           if (cosmosClientStateHandle.isDefined && isTaskRetryAttempt) {
+            // scalastyle:off multiple.string.literals
             logInfo(s"Ignoring broadcast client state handle because Task is getting retried. " +
               s"Attempt Count: ${TaskContext.get().attemptNumber()}")
+            // scalastyle:on multiple.string.literals
           }
 
           None
@@ -120,11 +131,11 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
         val newClientCacheEntry = CosmosClientCacheMetadata(
           client,
           new AtomicLong(epochNowInMs),
-          new AtomicLong(epochNowInMs))
+          new AtomicLong(epochNowInMs),
+          new AtomicLong(1))
 
         cache.putIfAbsent(cosmosClientConfiguration, newClientCacheEntry) match {
-          case None =>
-            client
+          case None => new CacheItemImpl(client, newClientCacheEntry.refCount)
           case Some(_) =>
             throw new ConcurrentModificationException("Should not reach here because its synchronized")
         }
@@ -141,14 +152,27 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
         val clientConfig = pair._1
         val clientMetadata = pair._2
 
-        if (clientMetadata.lastRetrieved.get() < Instant.now.toEpochMilli - unusedClientTtlInMs) {
-          // Only remove the client from the cache - don't purge or close!!! (because the client retrieved 15 minutes
-          // ago might still be used
+        if (clientMetadata.lastRetrieved.get() < Instant.now.toEpochMilli - unusedClientTtlInMs &&
+            clientMetadata.refCount.get() == 0) {
           logInfo(s"Removing client due to inactivity from the cache - ${clientConfig.endpoint}, " +
             s"${clientConfig.applicationName}, ${clientConfig.preferredRegionsList}, ${clientConfig.useGatewayMode}, " +
             s"${clientConfig.useEventualConsistency}")
-          cache.remove(clientConfig)
+          purge(clientConfig)
         }
+      })
+
+      val deleteCandidates = ArrayBuffer[CosmosClientCacheMetadata]()
+      toBeClosedWhenNotActiveAnymore
+        .keys()
+        .asScala
+        .foreach(m => if (m.refCount.get == 0) {
+          deleteCandidates += m
+        })
+
+      deleteCandidates.foreach(c => if (toBeClosedWhenNotActiveAnymore.remove(c) != null) {
+        // refCount is never going to increase once in this list
+        // so it is save to close the client
+        c.client.close()
       })
     }
     catch {
@@ -161,6 +185,30 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
   (
     client: CosmosAsyncClient,
     lastRetrieved: AtomicLong,
-    created: AtomicLong
-  )
+    created: AtomicLong,
+    refCount: AtomicLong
+  ) {
+    def createCacheItemForReuse : CacheItemImpl = {
+      lastRetrieved.set(Instant.now.toEpochMilli)
+      refCount.incrementAndGet()
+      new CacheItemImpl(client, refCount)
+    }
+  }
+
+  private[this] class CacheItemImpl
+  (
+    val cosmosClient: CosmosAsyncClient,
+    val refCount: AtomicLong
+  ) extends CosmosClientCacheItem with BasicLoggingTrait {
+
+    override def client: CosmosAsyncClient = this.cosmosClient
+
+    override def close(): Unit = {
+      val remainingActiveClients = refCount.decrementAndGet()
+      if (remainingActiveClients < 0) {
+        logError(s"Cached cosmos client has been released to the Cache more often than acquired.")
+      }
+      logDebug(s"Returned client to the pool = remaining active clients $remainingActiveClients")
+    }
+  }
 }
