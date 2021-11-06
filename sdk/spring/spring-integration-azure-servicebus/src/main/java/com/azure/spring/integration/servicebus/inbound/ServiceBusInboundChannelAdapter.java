@@ -4,6 +4,8 @@
 package com.azure.spring.integration.servicebus.inbound;
 
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
+import com.azure.spring.integration.instrumentation.Instrumentation;
+import com.azure.spring.integration.servicebus.inbound.health.ServiceBusProcessorInstrumentation;
 import com.azure.spring.messaging.AzureHeaders;
 import com.azure.spring.messaging.ListenerMode;
 import com.azure.spring.messaging.checkpoint.AzureCheckpointer;
@@ -47,7 +49,6 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
     private final ServiceBusProcessorContainer processorContainer;
     private final ListenerMode listenerMode;
     private final CheckpointConfig checkpointConfig;
-
     private static final String MSG_FAIL_CHECKPOINT = "Failed to checkpoint %s";
     private static final String MSG_SUCCESS_CHECKPOINT = "Checkpointed %s in %s mode";
 
@@ -113,17 +114,31 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
         this.recordEventProcessor.setPayloadType(payloadType);
     }
 
+    public void setInstrumentation(Instrumentation instrumentation) {
+        this.recordEventProcessor.setInstrumentation(instrumentation);
+    }
+
     private class IntegrationRecordMessageProcessingListener implements RecordMessageProcessingListener {
 
         private ServiceBusMessageConverter messageConverter;
         private Class<?> payloadType = byte[].class;
-
+        private Instrumentation instrumentation;
 
         @Override
         public ErrorContextConsumer getErrorContextConsumer() {
-            return errorContext -> LOGGER.error("Error occurred on entity {}. Error: {}",
-                errorContext.getEntityPath(),
-                errorContext.getException());
+            return errorContext -> {
+                LOGGER.error("Error occurred on entity {}. Error: {}",
+                    errorContext.getEntityPath(),
+                    errorContext.getException());
+
+                if (instrumentation != null) {
+                    if (instrumentation instanceof ServiceBusProcessorInstrumentation) {
+                        ((ServiceBusProcessorInstrumentation) instrumentation).markError(errorContext);
+                    } else {
+                        instrumentation.markDown(errorContext.getException());
+                    }
+                }
+            };
         }
 
         @Override
@@ -155,6 +170,10 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
 
         public void setPayloadType(Class<?> payloadType) {
             this.payloadType = payloadType;
+        }
+
+        public void setInstrumentation(Instrumentation instrumentation) {
+            this.instrumentation = instrumentation;
         }
     }
 

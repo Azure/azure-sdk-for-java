@@ -29,7 +29,7 @@ public class ServiceBusProcessorContainer implements Lifecycle, DisposableBean {
 
     @Override
     public void destroy() throws Exception {
-        stop();
+        this.clients.forEach(ServiceBusProcessorClient::close);
     }
 
     @Override

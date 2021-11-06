@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.stream.binder.servicebus.health;
+package com.azure.spring.integration.instrumentation;
 
 import java.util.Map;
 import java.util.Set;
@@ -9,9 +9,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
 /**
- * ServiceBus health details management class.
+ *
  */
-public class InstrumentationManager {
+public class DefaultInstrumentationManager implements InstrumentationManager {
 
     private final Map<String, Instrumentation> healthInstrumentations = new ConcurrentHashMap<>();
 
@@ -20,13 +20,14 @@ public class InstrumentationManager {
                                      .collect(Collectors.toSet());
     }
 
-    public void addHealthInstrumentation(Instrumentation instrumentation) {
-        healthInstrumentations.put(instrumentation.getName() + ":" + instrumentation.getType().name(),
-            instrumentation);
+    @Override
+    public void addHealthInstrumentation(String id, Instrumentation instrumentation) {
+        healthInstrumentations.put(id, instrumentation);
     }
 
-    public Instrumentation getHealthInstrumentation(Instrumentation instrumentation) {
-        return healthInstrumentations.get(instrumentation.getName() + ":" + instrumentation.getType().name());
+    @Override
+    public Instrumentation getHealthInstrumentation(String id) {
+        return healthInstrumentations.get(id);
     }
 
 }

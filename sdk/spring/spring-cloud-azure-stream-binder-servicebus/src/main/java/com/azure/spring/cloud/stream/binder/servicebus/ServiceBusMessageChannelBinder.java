@@ -4,8 +4,10 @@
 package com.azure.spring.cloud.stream.binder.servicebus;
 
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
-import com.azure.spring.cloud.stream.binder.servicebus.health.Instrumentation;
-import com.azure.spring.cloud.stream.binder.servicebus.health.InstrumentationManager;
+import com.azure.spring.integration.instrumentation.DefaultInstrumentation;
+import com.azure.spring.integration.instrumentation.DefaultInstrumentationManager;
+import com.azure.spring.integration.instrumentation.Instrumentation;
+import com.azure.spring.integration.instrumentation.InstrumentationManager;
 import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusBindingProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusConsumerProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusExtendedBindingProperties;
@@ -13,8 +15,10 @@ import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusProd
 import com.azure.spring.cloud.stream.binder.servicebus.provisioning.ServiceBusChannelProvisioner;
 import com.azure.spring.integration.handler.DefaultMessageHandler;
 import com.azure.spring.integration.servicebus.inbound.ServiceBusInboundChannelAdapter;
+import com.azure.spring.integration.servicebus.inbound.health.ServiceBusProcessorInstrumentation;
 import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.messaging.checkpoint.CheckpointConfig;
+import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.servicebus.core.ServiceBusProcessorContainer;
 import com.azure.spring.servicebus.core.ServiceBusTemplate;
 import com.azure.spring.servicebus.core.processor.DefaultServiceBusNamespaceProcessorFactory;
@@ -42,11 +46,13 @@ import org.springframework.messaging.MessageHandler;
 import org.springframework.messaging.support.ErrorMessage;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
+import org.springframework.util.concurrent.ListenableFutureCallback;
 
+import java.time.Duration;
 import java.util.Map;
 
-import static com.azure.spring.cloud.stream.binder.servicebus.health.Instrumentation.Type.CONSUMER;
-import static com.azure.spring.cloud.stream.binder.servicebus.health.Instrumentation.Type.PRODUCER;
+import static com.azure.spring.integration.instrumentation.Instrumentation.Type.CONSUMER;
+import static com.azure.spring.integration.instrumentation.Instrumentation.Type.PRODUCER;
 
 /**
  *
@@ -62,7 +68,7 @@ public class ServiceBusMessageChannelBinder extends
     private NamespaceProperties namespaceProperties;
     private ServiceBusTemplate serviceBusTemplate;
     private ServiceBusProcessorContainer processorContainer;
-    private final InstrumentationManager instrumentationManager = new InstrumentationManager();
+    private final InstrumentationManager instrumentationManager = new DefaultInstrumentationManager();
     private static final DefaultErrorMessageStrategy DEFAULT_ERROR_MESSAGE_STRATEGY = new DefaultErrorMessageStrategy();
 
     private static final String EXCEPTION_MESSAGE = "exception-message";
@@ -76,12 +82,18 @@ public class ServiceBusMessageChannelBinder extends
         ProducerDestination destination,
         ExtendedProducerProperties<ServiceBusProducerProperties> producerProperties,
         MessageChannel errorChannel) {
+        ServiceBusEntityType type = producerProperties.getExtension().getProducer().getType();
+        Assert.notNull(type, "Type cannot be null.");
 
         DefaultMessageHandler handler = new DefaultMessageHandler(destination.getName(), getServiceBusTemplate());
         handler.setBeanFactory(getBeanFactory());
         handler.setSync(producerProperties.getExtension().isSync());
         handler.setSendTimeout(producerProperties.getExtension().getSendTimeout());
         handler.setSendFailureChannel(errorChannel);
+        String instrumentationId = Instrumentation.buildId(PRODUCER, destination.getName());
+
+        handler.setSendCallback(new InstrumentationSendCallback(instrumentationManager.getHealthInstrumentation(instrumentationId)));
+
         if (producerProperties.isPartitioned()) {
             handler.setPartitionKeyExpressionString(
                 "'partitionKey-' + headers['" + BinderHeaders.PARTITION_HEADER + "']");
@@ -106,6 +118,8 @@ public class ServiceBusMessageChannelBinder extends
                     buildCheckpointConfig(properties));
         }
         inboundAdapter.setBeanFactory(getBeanFactory());
+        String instrumentationId = Instrumentation.buildId(CONSUMER, destination.getName() + "/" + group != null ? group : "");
+        inboundAdapter.setInstrumentation(instrumentationManager.getHealthInstrumentation(instrumentationId));
         ErrorInfrastructure errorInfrastructure = registerErrorInfrastructure(destination, group, properties);
         inboundAdapter.setErrorChannel(errorInfrastructure.getErrorChannel());
         return inboundAdapter;
@@ -200,8 +214,11 @@ public class ServiceBusMessageChannelBinder extends
             DefaultServiceBusNamespaceProducerFactory factory = new DefaultServiceBusNamespaceProducerFactory(
                 this.namespaceProperties, getProducerPropertiesSupplier());
 
-            factory.addListener((name) -> instrumentationManager.addHealthInstrumentation(
-                new Instrumentation(name , PRODUCER)));
+            factory.addListener((name) -> {
+                DefaultInstrumentation instrumentation = new DefaultInstrumentation(name, PRODUCER);
+                instrumentation.markUp();
+                instrumentationManager.addHealthInstrumentation(instrumentation.getId(), instrumentation);
+            });
             this.serviceBusTemplate = new ServiceBusTemplate(factory);
         }
         return this.serviceBusTemplate;
@@ -211,8 +228,13 @@ public class ServiceBusMessageChannelBinder extends
         if (this.processorContainer == null) {
             DefaultServiceBusNamespaceProcessorFactory factory = new DefaultServiceBusNamespaceProcessorFactory(
                 this.namespaceProperties, getProcessorPropertiesSupplier());
-            factory.addListener((name, subscription) -> instrumentationManager.addHealthInstrumentation(
-                new Instrumentation(name + subscription == null ? "" : subscription, CONSUMER)));
+
+            factory.addListener((name, subscription) -> {
+                String instrumentationName = name + "/" + subscription == null ? "" : subscription;
+                Instrumentation instrumentation = new ServiceBusProcessorInstrumentation(instrumentationName, CONSUMER, Duration.ofMinutes(2));
+                instrumentation.markUp();
+                instrumentationManager.addHealthInstrumentation(instrumentation.getId(), instrumentation);
+            });
 
             this.processorContainer = new ServiceBusProcessorContainer(factory);
         }
@@ -275,5 +297,24 @@ public class ServiceBusMessageChannelBinder extends
 
     public InstrumentationManager getInstrumentationManager() {
         return instrumentationManager;
+    }
+
+    private static class InstrumentationSendCallback implements ListenableFutureCallback<Void> {
+
+        private final Instrumentation instrumentation;
+
+        public InstrumentationSendCallback(Instrumentation instrumentation) {
+            this.instrumentation = instrumentation;
+        }
+
+        @Override
+        public void onFailure(Throwable ex) {
+            instrumentation.markDown(ex);
+        }
+
+        @Override
+        public void onSuccess(Void result) {
+            instrumentation.markUp();
+        }
     }
 }

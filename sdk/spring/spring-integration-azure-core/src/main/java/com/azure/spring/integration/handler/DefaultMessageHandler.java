@@ -3,6 +3,7 @@
 
 package com.azure.spring.integration.handler;
 
+import com.azure.spring.integration.instrumentation.Instrumentation;
 import com.azure.spring.messaging.AzureHeaders;
 import com.azure.spring.messaging.AzureSendFailureException;
 import com.azure.spring.messaging.PartitionSupplier;

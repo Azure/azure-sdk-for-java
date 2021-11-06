@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.stream.binder.servicebus;
 
-import com.azure.spring.cloud.stream.binder.servicebus.health.Instrumentation;
-import com.azure.spring.cloud.stream.binder.servicebus.health.InstrumentationManager;
+import com.azure.spring.integration.instrumentation.Instrumentation;
+import com.azure.spring.integration.instrumentation.InstrumentationManager;
 import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health;
 
@@ -31,16 +31,11 @@ public class ServiceBusHealthIndicator extends AbstractHealthIndicator {
             builder.up();
             return;
         }
-        if (instrumentationManager.getHealthInstrumentations().stream()
-                                  .allMatch(Instrumentation::isOutOfService)) {
-            builder.outOfService();
-            return;
-        }
         builder.down();
         instrumentationManager.getHealthInstrumentations().stream()
-                              .filter(instrumentation -> !instrumentation.isStarted())
+                              .filter(instrumentation -> instrumentation.isDown())
                               .forEach(instrumentation -> builder
-                                  .withDetail(instrumentation.getName() + ":" + instrumentation.getType().name(),
-                                      instrumentation.getStartException()));
+                                  .withDetail(instrumentation.getId(),
+                                      instrumentation.getException()));
     }
 }
