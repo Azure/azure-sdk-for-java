@@ -14,10 +14,13 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *
  * <p><strong>Example 1:</strong></p>
  *
+ * <!-- src_embed com.azure.core.annotation.FormData.class -->
  * <pre>
- * {@literal @}POST("spellcheck")
- * {@literal Mono<Response<ResponseBody>>} spellChecker(@Header("X-BingApis-SDK") String xBingApisSDK, @Query
- * ("UserId") String userId, @FormData("Text") String text);</pre>
+ * &#64;Post&#40;&quot;spellcheck&quot;&#41;
+ * Mono&lt;Response&lt;ResponseBody&gt;&gt; spellChecker&#40&#64;Header&#40&quot;X-BingApis-SDK&quot;&#41;
+ *     String xBingApisSDK, &#64;QueryParam&#40&quot;UserId&quot;&#41; String userId,
+ *     &#64;FormData&#40&quot;Text&quot;&#41; String text&#41;;</pre>
+ * <!-- end com.azure.core.annotation.FormData.class -->
  */
 @Retention(RUNTIME)
 @Target(PARAMETER)
