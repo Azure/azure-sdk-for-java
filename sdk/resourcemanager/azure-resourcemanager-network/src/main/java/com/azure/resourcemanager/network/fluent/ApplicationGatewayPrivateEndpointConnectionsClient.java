@@ -49,7 +49,7 @@ public interface ApplicationGatewayPrivateEndpointConnectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String applicationGatewayName, String connectionName);
 
@@ -64,7 +64,7 @@ public interface ApplicationGatewayPrivateEndpointConnectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String applicationGatewayName, String connectionName);
 
@@ -80,7 +80,7 @@ public interface ApplicationGatewayPrivateEndpointConnectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String applicationGatewayName, String connectionName, Context context);
 
@@ -156,7 +156,7 @@ public interface ApplicationGatewayPrivateEndpointConnectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private Endpoint connection on an application gateway.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<
             PollResult<ApplicationGatewayPrivateEndpointConnectionInner>,
             ApplicationGatewayPrivateEndpointConnectionInner>
@@ -178,7 +178,7 @@ public interface ApplicationGatewayPrivateEndpointConnectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private Endpoint connection on an application gateway.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<
             PollResult<ApplicationGatewayPrivateEndpointConnectionInner>,
             ApplicationGatewayPrivateEndpointConnectionInner>
@@ -201,7 +201,7 @@ public interface ApplicationGatewayPrivateEndpointConnectionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return private Endpoint connection on an application gateway.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<
             PollResult<ApplicationGatewayPrivateEndpointConnectionInner>,
             ApplicationGatewayPrivateEndpointConnectionInner>

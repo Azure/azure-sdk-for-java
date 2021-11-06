@@ -456,7 +456,7 @@ public final class VirtualWansClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualWAN Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualWanInner>, VirtualWanInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String virtualWanName, VirtualWanInner wanParameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -479,7 +479,7 @@ public final class VirtualWansClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualWAN Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualWanInner>, VirtualWanInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String virtualWanName, VirtualWanInner wanParameters, Context context) {
         context = this.client.mergeContext(context);
@@ -502,7 +502,7 @@ public final class VirtualWansClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualWAN Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualWanInner>, VirtualWanInner> beginCreateOrUpdate(
         String resourceGroupName, String virtualWanName, VirtualWanInner wanParameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, virtualWanName, wanParameters).getSyncPoller();
@@ -520,7 +520,7 @@ public final class VirtualWansClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualWAN Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualWanInner>, VirtualWanInner> beginCreateOrUpdate(
         String resourceGroupName, String virtualWanName, VirtualWanInner wanParameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, virtualWanName, wanParameters, context).getSyncPoller();
@@ -874,7 +874,7 @@ public final class VirtualWansClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualWanName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, virtualWanName);
         return this
@@ -893,7 +893,7 @@ public final class VirtualWansClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String virtualWanName, Context context) {
         context = this.client.mergeContext(context);
@@ -913,7 +913,7 @@ public final class VirtualWansClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualWanName) {
         return beginDeleteAsync(resourceGroupName, virtualWanName).getSyncPoller();
     }
@@ -929,7 +929,7 @@ public final class VirtualWansClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String virtualWanName, Context context) {
         return beginDeleteAsync(resourceGroupName, virtualWanName, context).getSyncPoller();

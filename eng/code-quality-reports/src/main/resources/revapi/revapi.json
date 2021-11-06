@@ -406,6 +406,21 @@
         "code": "java.method.added",
         "new": "method com.azure.core.credential.TokenRequestContext com.azure.core.credential.TokenRequestContext::setTenantId(java.lang.String)",
         "justification": "New method added to TokenRequestContext in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method java.lang.String com.azure.storage.common.StorageSharedKeyCredential::generateAuthorizationHeader(java.net.URL, java.lang.String, com.azure.core.http.HttpHeaders, boolean)",
+        "justification": "New method added to SharedKeyCredential in common not intended for use by customers. Only public for access by other packages."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method <T, U> com.azure.core.util.polling.PollerFlux<T, U> com.azure.core.util.polling.PollerFlux<T, U>::create(java.time.Duration, java.util.function.Supplier<reactor.core.publisher.Mono<? extends com.azure.core.http.rest.Response<?>>>, com.azure.core.util.polling.PollingStrategy<T, U>, com.azure.core.util.serializer.TypeReference<T>, com.azure.core.util.serializer.TypeReference<U>)",
+        "justification": "New method added to PollerFlux in azure-core."
+      },
+      {
+        "code": "java.method.added",
+        "new": "method java.lang.Class<T> com.azure.core.util.serializer.TypeReference<T>::getJavaClass()",
+        "justification": "New method added to TypeReference in azure-core."
       }
     ]
   }

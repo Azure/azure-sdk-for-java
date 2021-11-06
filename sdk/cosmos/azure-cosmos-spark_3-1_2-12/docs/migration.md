@@ -25,7 +25,6 @@
 | changefeedqueryname | n/a | See the `Structured streaming` section below. Bookmarks/offsets are not stored in a proprietary way by the connector any longer but by Spark's Metadata Store |
 | changefeedcheckpointlocation | n/a | See the `Structured streaming` section below. Bookmarks/offsets are not stored in a proprietary way by the connector any longer but by Spark's Metadata Store |
 
-
 ### Other config options
 | Name - V1-3 (Spark 2.4) | Name - V4 and later (Spark >= 3.1) | Notes |
 | :---        |    :----   |         :--- | 
@@ -46,6 +45,7 @@
 | connectionmaxpoolsize | n/a | Not relevant anymore - just remove this config entry |
 | connectionidletimeout | n/a | Not relevant anymore - just remove this config entry |
 | connectionrequesttimeout | n/a | Not relevant anymore - just remove this config entry |
+| preservenullinwrite | spark.cosmos.serialization.inclusionMode | The default value for `preservenullinwrite` was `false` which reflects `NonNull` now. But the new default value is `Always` which reflects `preservenullinwrite` == `true` - *So the default values have changed for this setting* |
 
 ## Conceptual differences
 The list above shows the new names of the different config options. Below you can find an explanation for conceptual differences in the new connector. The Cosmos DB Connector for Spark 3 is implementing using the DataSource V2 API (vs. Data Source V1 with the old connector) which is driving some changes especially for structured streaming.

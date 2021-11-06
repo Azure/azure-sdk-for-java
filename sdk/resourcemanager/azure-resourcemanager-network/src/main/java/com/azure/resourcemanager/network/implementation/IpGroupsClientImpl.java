@@ -489,7 +489,7 @@ public final class IpGroupsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the IpGroups resource information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<IpGroupInner>, IpGroupInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String ipGroupsName, IpGroupInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -512,7 +512,7 @@ public final class IpGroupsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the IpGroups resource information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<IpGroupInner>, IpGroupInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String ipGroupsName, IpGroupInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -535,7 +535,7 @@ public final class IpGroupsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the IpGroups resource information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IpGroupInner>, IpGroupInner> beginCreateOrUpdate(
         String resourceGroupName, String ipGroupsName, IpGroupInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, ipGroupsName, parameters).getSyncPoller();
@@ -553,7 +553,7 @@ public final class IpGroupsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the IpGroups resource information.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IpGroupInner>, IpGroupInner> beginCreateOrUpdate(
         String resourceGroupName, String ipGroupsName, IpGroupInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, ipGroupsName, parameters, context).getSyncPoller();
@@ -905,7 +905,7 @@ public final class IpGroupsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String ipGroupsName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, ipGroupsName);
         return this
@@ -924,7 +924,7 @@ public final class IpGroupsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String ipGroupsName, Context context) {
         context = this.client.mergeContext(context);
@@ -944,7 +944,7 @@ public final class IpGroupsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String ipGroupsName) {
         return beginDeleteAsync(resourceGroupName, ipGroupsName).getSyncPoller();
     }
@@ -960,7 +960,7 @@ public final class IpGroupsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String ipGroupsName, Context context) {
         return beginDeleteAsync(resourceGroupName, ipGroupsName, context).getSyncPoller();

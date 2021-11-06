@@ -524,9 +524,9 @@ customFormModel.getTrainingDocuments().forEach(trainingDocumentInfo -> {
     System.out.printf("Document page count: %d%n", trainingDocumentInfo.getPageCount());
     if (!trainingDocumentInfo.getErrors().isEmpty()) {
         System.out.println("Document Errors:");
-        trainingDocumentInfo.getErrors().forEach(formRecognizerError ->
-            System.out.printf("Error code %s, Error message: %s%n", formRecognizerError.getErrorCode(),
-            formRecognizerError.getMessage()));
+        trainingDocumentInfo.getErrors().forEach(documentModelOperationError ->
+            System.out.printf("Error code %s, Error message: %s%n", documentModelOperationError.getErrorCode(),
+            documentModelOperationError.getMessage()));
     }
 });
 ```

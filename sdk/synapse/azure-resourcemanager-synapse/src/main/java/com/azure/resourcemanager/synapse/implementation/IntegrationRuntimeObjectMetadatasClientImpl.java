@@ -448,7 +448,7 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of the operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SsisObjectMetadataStatusResponseInner>, SsisObjectMetadataStatusResponseInner>
         beginRefreshAsync(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -475,7 +475,7 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of the operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<SsisObjectMetadataStatusResponseInner>, SsisObjectMetadataStatusResponseInner>
         beginRefreshAsync(
             String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context) {
@@ -503,7 +503,7 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of the operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SsisObjectMetadataStatusResponseInner>, SsisObjectMetadataStatusResponseInner>
         beginRefresh(String resourceGroupName, String workspaceName, String integrationRuntimeName) {
         return beginRefreshAsync(resourceGroupName, workspaceName, integrationRuntimeName).getSyncPoller();
@@ -521,7 +521,7 @@ public final class IntegrationRuntimeObjectMetadatasClientImpl implements Integr
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the status of the operation.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<SsisObjectMetadataStatusResponseInner>, SsisObjectMetadataStatusResponseInner>
         beginRefresh(String resourceGroupName, String workspaceName, String integrationRuntimeName, Context context) {
         return beginRefreshAsync(resourceGroupName, workspaceName, integrationRuntimeName, context).getSyncPoller();

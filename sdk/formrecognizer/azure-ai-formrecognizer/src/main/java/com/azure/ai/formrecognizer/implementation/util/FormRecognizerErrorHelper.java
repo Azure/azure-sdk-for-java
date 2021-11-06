@@ -3,13 +3,13 @@
 
 package com.azure.ai.formrecognizer.implementation.util;
 
-import com.azure.ai.formrecognizer.administration.models.FormRecognizerError;
-import com.azure.ai.formrecognizer.administration.models.InnerError;
+import com.azure.ai.formrecognizer.administration.models.DocumentModelOperationError;
+import com.azure.ai.formrecognizer.administration.models.DocumentModelOperationInnerError;
 
 import java.util.List;
 
 /**
- * The helper class to set the non-public properties of an {@link FormRecognizerError} instance.
+ * The helper class to set the non-public properties of an {@link DocumentModelOperationError} instance.
  */
 public final class FormRecognizerErrorHelper {
     private static FormRecognizerErrorAccessor accessor;
@@ -18,21 +18,21 @@ public final class FormRecognizerErrorHelper {
     }
 
     /**
-     * Type defining the methods to set the non-public properties of an {@link FormRecognizerError} instance.
+     * Type defining the methods to set the non-public properties of an {@link DocumentModelOperationError} instance.
      */
     public interface FormRecognizerErrorAccessor {
-        void setCode(FormRecognizerError formRecognizerError, String errorCode);
-        void setMessage(FormRecognizerError formRecognizerError, String message);
+        void setCode(DocumentModelOperationError documentModelOperationError, String errorCode);
+        void setMessage(DocumentModelOperationError documentModelOperationError, String message);
 
-        void setTarget(FormRecognizerError formRecognizerError, String target);
+        void setTarget(DocumentModelOperationError documentModelOperationError, String target);
 
-        void setDetails(FormRecognizerError formRecognizerError, List<FormRecognizerError> details);
+        void setDetails(DocumentModelOperationError documentModelOperationError, List<DocumentModelOperationError> details);
 
-        void setInnerError(FormRecognizerError formRecognizerError, InnerError innerError);
+        void setInnerError(DocumentModelOperationError documentModelOperationError, DocumentModelOperationInnerError innerError);
     }
 
     /**
-     * The method called from {@link FormRecognizerError} to set it's accessor.
+     * The method called from {@link DocumentModelOperationError} to set it's accessor.
      *
      * @param formRecognizerErrorAccessor The accessor.
      */
@@ -40,23 +40,23 @@ public final class FormRecognizerErrorHelper {
         accessor = formRecognizerErrorAccessor;
     }
 
-    static void setCode(FormRecognizerError formRecognizerError, String errorCode) {
-        accessor.setCode(formRecognizerError, errorCode);
+    static void setCode(DocumentModelOperationError documentModelOperationError, String errorCode) {
+        accessor.setCode(documentModelOperationError, errorCode);
     }
 
-    static void setMessage(FormRecognizerError formRecognizerError, String message) {
-        accessor.setMessage(formRecognizerError, message);
+    static void setMessage(DocumentModelOperationError documentModelOperationError, String message) {
+        accessor.setMessage(documentModelOperationError, message);
     }
 
-    static void setTarget(FormRecognizerError formRecognizerError, String target) {
-        accessor.setTarget(formRecognizerError, target);
+    static void setTarget(DocumentModelOperationError documentModelOperationError, String target) {
+        accessor.setTarget(documentModelOperationError, target);
     }
 
-    static void setDetails(FormRecognizerError formRecognizerError, List<FormRecognizerError> details) {
-        accessor.setDetails(formRecognizerError, details);
+    static void setDetails(DocumentModelOperationError documentModelOperationError, List<DocumentModelOperationError> details) {
+        accessor.setDetails(documentModelOperationError, details);
     }
 
-    static void setInnerError(FormRecognizerError formRecognizerError, InnerError innerError) {
-        accessor.setInnerError(formRecognizerError, innerError);
+    static void setInnerError(DocumentModelOperationError documentModelOperationError, DocumentModelOperationInnerError innerError) {
+        accessor.setInnerError(documentModelOperationError, innerError);
     }
 }

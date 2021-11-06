@@ -39,8 +39,8 @@ import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.util.Collections;
+import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ConcurrentMap;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.equalTo;
@@ -126,7 +126,7 @@ public class ReactiveCosmosTemplatePartitionIT {
 
         CosmosAsyncClient cosmosAsyncClient = cosmosFactory.getCosmosAsyncClient();
         AsyncDocumentClient asyncDocumentClient = CosmosBridgeInternal.getAsyncDocumentClient(cosmosAsyncClient);
-        ConcurrentMap<String, PartitionedQueryExecutionInfo> initialCache = asyncDocumentClient.getQueryPlanCache();
+        Map<String, PartitionedQueryExecutionInfo> initialCache = asyncDocumentClient.getQueryPlanCache();
         assertThat(initialCache.containsKey(sqlQuerySpec.getQueryText())).isTrue();
         int initialSize = initialCache.size();
 
@@ -145,7 +145,7 @@ public class ReactiveCosmosTemplatePartitionIT {
             Assert.assertThat(actual.getZipCode(), is(equalTo(TEST_PERSON_2.getZipCode())));
         }).verifyComplete();
 
-        ConcurrentMap<String, PartitionedQueryExecutionInfo> postQueryCallCache = asyncDocumentClient.getQueryPlanCache();
+        Map<String, PartitionedQueryExecutionInfo> postQueryCallCache = asyncDocumentClient.getQueryPlanCache();
         assertThat(postQueryCallCache.containsKey(sqlQuerySpec.getQueryText())).isTrue();
         assertThat(postQueryCallCache.size()).isEqualTo(initialSize);
     }

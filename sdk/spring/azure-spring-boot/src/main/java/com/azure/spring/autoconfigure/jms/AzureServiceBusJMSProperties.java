@@ -31,6 +31,8 @@ public class AzureServiceBusJMSProperties {
 
     private final Listener listener = new Listener();
 
+    private final PrefetchPolicy prefetchPolicy = new PrefetchPolicy();
+
     public String getConnectionString() {
         return connectionString;
     }
@@ -67,6 +69,10 @@ public class AzureServiceBusJMSProperties {
         return listener;
     }
 
+    public PrefetchPolicy getPrefetchPolicy() {
+        return prefetchPolicy;
+    }
+
     /**
      * Validate spring.jms.servicebus related properties.
      *
@@ -83,6 +89,90 @@ public class AzureServiceBusJMSProperties {
             throw new IllegalArgumentException("'spring.jms.servicebus.pricing-tier' is not valid");
         }
     }
+
+    /**
+     * Properties to configure {@link org.apache.qpid.jms.policy.JmsDefaultPrefetchPolicy} for
+     * {@link org.apache.qpid.jms.JmsConnectionFactory} .
+     */
+    public static class PrefetchPolicy {
+
+        private int all = 0;
+
+        private int durableTopicPrefetch = 0;
+
+        private int queueBrowserPrefetch = 0;
+
+        private int queuePrefetch = 0;
+
+        private int topicPrefetch = 0;
+
+        public int getAll() {
+            return Math.max(all, 0);
+        }
+
+        public void setAll(int all) {
+            this.all = all;
+        }
+
+        /**
+         * @return Returns the durableTopicPrefetch.
+         */
+        public int getDurableTopicPrefetch() {
+            return durableTopicPrefetch > 0 ? durableTopicPrefetch : getAll();
+        }
+
+        /**
+         * @param durableTopicPrefetch Sets the durable topic prefetch value
+         */
+        public void setDurableTopicPrefetch(int durableTopicPrefetch) {
+            this.durableTopicPrefetch = durableTopicPrefetch;
+        }
+
+        /**
+         *
+         * @return Returns the queueBrowserPrefetch.
+         */
+        public int getQueueBrowserPrefetch() {
+            return queueBrowserPrefetch > 0 ? queueBrowserPrefetch : getAll();
+        }
+
+        /**
+         * @param queueBrowserPrefetch The queueBrowserPrefetch to set.
+         */
+        public void setQueueBrowserPrefetch(int queueBrowserPrefetch) {
+            this.queueBrowserPrefetch = queueBrowserPrefetch;
+        }
+
+        /**
+         * @return Returns the queuePrefetch.
+         */
+        public int getQueuePrefetch() {
+            return queuePrefetch > 0 ? queuePrefetch : getAll();
+        }
+
+        /**
+         * @param queuePrefetch The queuePrefetch to set.
+         */
+        public void setQueuePrefetch(int queuePrefetch) {
+            this.queuePrefetch = queuePrefetch;
+        }
+
+        /**
+         * @return Returns the topicPrefetch.
+         */
+        public int getTopicPrefetch() {
+            return topicPrefetch > 0 ? topicPrefetch : getAll();
+        }
+
+        /**
+         * @param topicPrefetch The topicPrefetch to set.
+         */
+        public void setTopicPrefetch(int topicPrefetch) {
+            this.topicPrefetch = topicPrefetch;
+        }
+
+    }
+
 
     /**
      * Properties to configure {@link org.springframework.jms.annotation.JmsListener} for
