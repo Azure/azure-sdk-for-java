@@ -117,6 +117,9 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
             httpClientOptions.setWriteTimeout(properties.getWriteTimeout());
             httpClientOptions.responseTimeout(properties.getResponseTimeout());
             httpClientOptions.readTimeout(properties.getReadTimeout());
+            httpClientOptions.setConnectTimeout(properties.getConnectTimeout());
+            httpClientOptions.setConnectionIdleTimeout(properties.getConnectionIdleTimeout());
+            httpClientOptions.setMaximumConnectionPoolSize(properties.getMaximumConnectionPoolSize());
         }
     }
 
