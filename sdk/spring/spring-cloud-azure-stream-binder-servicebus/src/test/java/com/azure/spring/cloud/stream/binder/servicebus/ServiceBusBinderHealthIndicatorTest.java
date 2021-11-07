@@ -174,8 +174,8 @@ public class ServiceBusBinderHealthIndicatorTest {
         bindingProperties.setProducer(serviceBusProducerProperties);
 
         extendedBindingProperties.setBindings(new HashMap<String, ServiceBusBindingProperties>() {{
-            put(ENTITY_NAME, bindingProperties);
-        }});
+                put(ENTITY_NAME, bindingProperties);
+            }});
         binder.setBindingProperties(extendedBindingProperties);
 
         producerProperties = new ExtendedProducerProperties<>(serviceBusProducerProperties);
@@ -191,8 +191,8 @@ public class ServiceBusBinderHealthIndicatorTest {
         bindingProperties.setConsumer(serviceBusConsumerProperties);
 
         extendedBindingProperties.setBindings(new HashMap<String, ServiceBusBindingProperties>() {{
-            put(ENTITY_NAME, bindingProperties);
-        }});
+                put(ENTITY_NAME, bindingProperties);
+            }});
         binder.setBindingProperties(extendedBindingProperties);
 
         consumerProperties = new ExtendedConsumerProperties<>(serviceBusConsumerProperties);

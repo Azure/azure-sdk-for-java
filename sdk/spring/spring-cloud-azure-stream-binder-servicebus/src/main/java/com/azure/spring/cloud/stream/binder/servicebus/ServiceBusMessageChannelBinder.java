@@ -309,7 +309,7 @@ public class ServiceBusMessageChannelBinder extends
 
         private final Instrumentation instrumentation;
 
-        public InstrumentationSendCallback(Instrumentation instrumentation) {
+        InstrumentationSendCallback(Instrumentation instrumentation) {
             this.instrumentation = instrumentation;
         }
 

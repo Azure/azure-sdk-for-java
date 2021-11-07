@@ -6,6 +6,7 @@ package com.azure.spring.servicebus.core.producer;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.service.servicebus.factory.ServiceBusSenderClientBuilderFactory;
+import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.servicebus.core.properties.ProducerProperties;
 import com.azure.spring.servicebus.core.properties.merger.ProducerPropertiesParentMerger;
@@ -41,7 +42,11 @@ public class DefaultServiceBusNamespaceProducerFactory implements ServiceBusProd
     }
 
     public ServiceBusSenderAsyncClient createProducer(String name) {
-        return doCreateProducer(name, this.propertiesSupplier.getProperties(name));
+        return doCreateProducer(name, null, this.propertiesSupplier.getProperties(name));
+    }
+
+    public ServiceBusSenderAsyncClient createProducer(String name, ServiceBusEntityType serviceBusEntityType) {
+        return doCreateProducer(name, serviceBusEntityType, this.propertiesSupplier.getProperties(name));
     }
 
     @Override
@@ -60,11 +65,14 @@ public class DefaultServiceBusNamespaceProducerFactory implements ServiceBusProd
         this.clients.clear();
     }
 
-    private ServiceBusSenderAsyncClient doCreateProducer(String name, @Nullable ProducerProperties properties) {
+    private ServiceBusSenderAsyncClient doCreateProducer(String name, @Nullable ServiceBusEntityType entityType, @Nullable ProducerProperties properties) {
         if (this.clients.containsKey(name)) {
             return this.clients.get(name);
         }
         ProducerProperties producerProperties = parentMerger.mergeParent(properties, this.namespaceProperties);
+        if (entityType != null) {
+            producerProperties.setType(entityType);
+        }
         producerProperties.setName(name);
         //TODO(yiliu6): whether to make the producer client share the same service bus client builder
         ServiceBusSenderAsyncClient producerClient = new ServiceBusSenderClientBuilderFactory(producerProperties)
