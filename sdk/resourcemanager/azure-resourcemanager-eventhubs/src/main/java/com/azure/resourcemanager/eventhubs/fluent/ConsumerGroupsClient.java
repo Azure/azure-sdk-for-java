@@ -22,9 +22,7 @@ public interface ConsumerGroupsClient {
      * @param namespaceName The Namespace name.
      * @param eventHubName The Event Hub name.
      * @param consumerGroupName The consumer group name.
-     * @param userMetadata User Metadata is a placeholder to store user-defined string data with maximum length 1024.
-     *     e.g. it can be used to store descriptive data, such as list of teams and their contact information also
-     *     user-defined configuration settings can be stored.
+     * @param parameters Parameters supplied to create or update a consumer group resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -36,7 +34,7 @@ public interface ConsumerGroupsClient {
         String namespaceName,
         String eventHubName,
         String consumerGroupName,
-        String userMetadata);
+        ConsumerGroupInner parameters);
 
     /**
      * Creates or updates an Event Hubs consumer group as a nested resource within a Namespace.
@@ -45,9 +43,7 @@ public interface ConsumerGroupsClient {
      * @param namespaceName The Namespace name.
      * @param eventHubName The Event Hub name.
      * @param consumerGroupName The consumer group name.
-     * @param userMetadata User Metadata is a placeholder to store user-defined string data with maximum length 1024.
-     *     e.g. it can be used to store descriptive data, such as list of teams and their contact information also
-     *     user-defined configuration settings can be stored.
+     * @param parameters Parameters supplied to create or update a consumer group resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -59,7 +55,7 @@ public interface ConsumerGroupsClient {
         String namespaceName,
         String eventHubName,
         String consumerGroupName,
-        String userMetadata);
+        ConsumerGroupInner parameters);
 
     /**
      * Creates or updates an Event Hubs consumer group as a nested resource within a Namespace.
@@ -68,22 +64,7 @@ public interface ConsumerGroupsClient {
      * @param namespaceName The Namespace name.
      * @param eventHubName The Event Hub name.
      * @param consumerGroupName The consumer group name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in List or Get Consumer group operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ConsumerGroupInner> createOrUpdateAsync(
-        String resourceGroupName, String namespaceName, String eventHubName, String consumerGroupName);
-
-    /**
-     * Creates or updates an Event Hubs consumer group as a nested resource within a Namespace.
-     *
-     * @param resourceGroupName Name of the resource group within the azure subscription.
-     * @param namespaceName The Namespace name.
-     * @param eventHubName The Event Hub name.
-     * @param consumerGroupName The consumer group name.
+     * @param parameters Parameters supplied to create or update a consumer group resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -91,7 +72,11 @@ public interface ConsumerGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     ConsumerGroupInner createOrUpdate(
-        String resourceGroupName, String namespaceName, String eventHubName, String consumerGroupName);
+        String resourceGroupName,
+        String namespaceName,
+        String eventHubName,
+        String consumerGroupName,
+        ConsumerGroupInner parameters);
 
     /**
      * Creates or updates an Event Hubs consumer group as a nested resource within a Namespace.
@@ -100,9 +85,7 @@ public interface ConsumerGroupsClient {
      * @param namespaceName The Namespace name.
      * @param eventHubName The Event Hub name.
      * @param consumerGroupName The consumer group name.
-     * @param userMetadata User Metadata is a placeholder to store user-defined string data with maximum length 1024.
-     *     e.g. it can be used to store descriptive data, such as list of teams and their contact information also
-     *     user-defined configuration settings can be stored.
+     * @param parameters Parameters supplied to create or update a consumer group resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -115,7 +98,7 @@ public interface ConsumerGroupsClient {
         String namespaceName,
         String eventHubName,
         String consumerGroupName,
-        String userMetadata,
+        ConsumerGroupInner parameters,
         Context context);
 
     /**
@@ -289,6 +272,22 @@ public interface ConsumerGroupsClient {
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param eventHubName The Event Hub name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the consumer groups in a Namespace.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    PagedIterable<ConsumerGroupInner> listByEventHub(
+        String resourceGroupName, String namespaceName, String eventHubName);
+
+    /**
+     * Gets all the consumer groups in a Namespace. An empty feed is returned if no consumer group exists in the
+     * Namespace.
+     *
+     * @param resourceGroupName Name of the resource group within the azure subscription.
+     * @param namespaceName The Namespace name.
+     * @param eventHubName The Event Hub name.
      * @param skip Skip is only used if a previous operation returned a partial result. If a previous response contains
      *     a nextLink element, the value of the nextLink element will include a skip parameter that specifies a starting
      *     point to use for subsequent calls.
@@ -307,20 +306,4 @@ public interface ConsumerGroupsClient {
         Integer skip,
         Integer top,
         Context context);
-
-    /**
-     * Gets all the consumer groups in a Namespace. An empty feed is returned if no consumer group exists in the
-     * Namespace.
-     *
-     * @param resourceGroupName Name of the resource group within the azure subscription.
-     * @param namespaceName The Namespace name.
-     * @param eventHubName The Event Hub name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the consumer groups in a Namespace.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ConsumerGroupInner> listByEventHub(
-        String resourceGroupName, String namespaceName, String eventHubName);
 }

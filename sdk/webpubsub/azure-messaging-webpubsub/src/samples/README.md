@@ -21,13 +21,14 @@ Getting started explained in detail [here][SDK_README_GETTING_STARTED].
 ## Examples
 The following sections provide several code snippets covering some of the most common configuration service tasks, including:
 
-## Troubleshooting
-Troubleshooting steps can be found [here][SDK_README_TROUBLESHOOTING].
 - [Broadcasting a message][broadcast_sample]
 - [Send a message to a user or connection][direct_sample]
 - [Manage groups][manage_group_sample]
 - [A simple chat client][simple_chat_client]
+- [More advanced samples][advanced_samples]
 
+## Troubleshooting
+Troubleshooting steps can be found [here][SDK_README_TROUBLESHOOTING].
 ## Next steps
 See [Next steps][SDK_README_NEXT_STEPS]. 
 
@@ -47,5 +48,6 @@ This project welcomes contributions and suggestions. Find [more contributing][SD
 [direct_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/webpubsub/azure-messaging-webpubsub/src/samples/java/com/azure/messaging/webpubsub/DirectMessageSample.java
 [manage_group_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/webpubsub/azure-messaging-webpubsub/src/samples/java/com/azure/messaging/webpubsub/ManagingGroupsSample.java
 [simple_chat_sample]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/webpubsub/azure-messaging-webpubsub/src/samples/java/com/azure/messaging/webpubsub/SimpleChatClient.java
+[advanced_samples]: https://github.com/Azure/azure-webpubsub/tree/main/samples/java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fwebpubsub%2Fazure-messaging-webpubsub%2FREADME.png)

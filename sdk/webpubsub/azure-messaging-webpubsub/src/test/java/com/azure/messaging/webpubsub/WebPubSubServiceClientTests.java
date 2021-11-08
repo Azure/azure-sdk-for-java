@@ -26,6 +26,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.io.ByteArrayInputStream;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
 import java.util.EnumSet;
@@ -110,12 +111,12 @@ public class WebPubSubServiceClientTests extends TestBase {
                 null),
             202);
 
-//        ByteArrayInputStream messageStream = new ByteArrayInputStream(message.toBytes());
-//        assertResponse(client.sendToUserWithResponse("test_user",
-//                BinaryData.fromStream(messageStream),
-//                WebPubSubContentType.APPLICATION_OCTET_STREAM, message.getLength(),
-//                null),
-//            202);
+        ByteArrayInputStream messageStream = new ByteArrayInputStream(message.toBytes());
+        assertResponse(client.sendToUserWithResponse("test_user",
+                BinaryData.fromStream(messageStream),
+                WebPubSubContentType.APPLICATION_OCTET_STREAM, message.getLength(),
+                null),
+            202);
     }
 
     @Test

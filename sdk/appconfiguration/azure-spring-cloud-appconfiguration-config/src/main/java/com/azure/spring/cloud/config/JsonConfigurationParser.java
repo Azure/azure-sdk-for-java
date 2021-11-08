@@ -68,8 +68,9 @@ final class JsonConfigurationParser {
                 }
                 break;
             default:
-                settings.put(currentKey, currentValue);
+                settings.put(currentKey, currentValue.asText());
                 break;
+
         }
     }
 

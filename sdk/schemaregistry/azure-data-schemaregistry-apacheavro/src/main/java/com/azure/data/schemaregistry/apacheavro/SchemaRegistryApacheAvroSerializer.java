@@ -119,7 +119,7 @@ public final class SchemaRegistryApacheAvroSerializer implements ObjectSerialize
 
                 return this.schemaRegistryClient.getSchema(schemaId)
                     .handle((registryObject, sink) -> {
-                        byte[] payloadSchema = registryObject.getSchemaDefinition().getBytes(StandardCharsets.UTF_8);
+                        byte[] payloadSchema = registryObject.getDefinition().getBytes(StandardCharsets.UTF_8);
                         int start = buffer.position() + buffer.arrayOffset();
                         int length = buffer.limit() - SCHEMA_ID_SIZE;
                         byte[] b = Arrays.copyOfRange(buffer.array(), start, start + length);
