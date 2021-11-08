@@ -40,7 +40,7 @@
       --add-reads com.azure.core.test=ALL-UNNAMED
       --add-reads com.azure.core.http.netty=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <skipNewCodesnippetTooling>false</skipNewCodesnippetTooling>
+    <codesnippet.skip>false</codesnippet.skip>
     <javadocDoclet></javadocDoclet>
     <javadocDocletOptions></javadocDocletOptions>
   </properties>

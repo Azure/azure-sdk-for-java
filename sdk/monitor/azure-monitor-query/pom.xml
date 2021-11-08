@@ -28,7 +28,7 @@
   </scm>
 
   <properties>
-    <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>
+    <jacoco.skip>true</jacoco.skip>
     <javaModulesSurefireArgLine>
       --add-exports com.azure.core/com.azure.core.implementation.jackson=ALL-UNNAMED
     </javaModulesSurefireArgLine>
