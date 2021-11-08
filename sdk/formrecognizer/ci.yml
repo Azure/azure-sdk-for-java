@@ -37,4 +37,4 @@ extends:
     Artifacts:
       - name: azure-ai-formrecognizer
         groupId: com.azure
-              safeName: azureaiformrecognizer
+        safeName: azureaiformrecognizer
