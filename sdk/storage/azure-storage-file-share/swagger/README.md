@@ -16,7 +16,7 @@ autorest --java --use:@autorest/java@4.0.x
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/storage-dataplane-preview/specification/storage/data-plane/Microsoft.FileStorage/preview/2020-10-02/file.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main/specification/storage/data-plane/Microsoft.FileStorage/preview/2021-02-12/file.json
 java: true
 output-folder: ../
 namespace: com.azure.storage.file.share
