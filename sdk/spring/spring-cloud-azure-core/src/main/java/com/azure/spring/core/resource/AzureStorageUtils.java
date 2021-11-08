@@ -8,8 +8,6 @@ import org.springframework.util.Assert;
 
 /**
  * Azure storage resource utility class
- *
- * @author Warren Zhu
  */
 final class AzureStorageUtils {
     public static final String PATH_DELIMITER = "/";
@@ -25,6 +23,7 @@ final class AzureStorageUtils {
         return String.format(STORAGE_PROTOCOL_PREFIX, storageType.getType());
     }
 
+    //@zhihaoguo todo add test here
     static String stripProtocol(String location, StorageType storageType) {
         Assert.notNull(location, "Location must not be null");
         assertIsAzureStorageLocation(location, storageType);

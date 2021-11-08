@@ -13,6 +13,9 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.util.AntPathMatcher;
 import org.springframework.util.ClassUtils;
 
+/**
+ * Abstract protocolResolver for Storage
+ */
 public abstract class AbstractAzureStorageProtocolResolver implements ProtocolResolver, ResourcePatternResolver,
     ResourceLoaderAware {
 
@@ -23,6 +26,27 @@ public abstract class AbstractAzureStorageProtocolResolver implements ProtocolRe
      */
     protected final AntPathMatcher matcher = new AntPathMatcher();
 
+    protected abstract StorageType getStorageType();
+
+    protected abstract Resource getStorageResource(String location, Boolean autoCreate);
+
+    /**
+     * List all storage containers.
+     * <p>
+     * The underlying storage system may support 'prefix' filter, for example, Azure Storage Blob supports this
+     * <p>
+     * https://docs.microsoft.com/en-us/rest/api/storageservices/list-blobs
+     * <p>
+     * In this case, we can avoid load all containers to do client side filtering.
+     *
+     * @param containerPrefix container name prefix, without any wildcard characters.
+     * @return All storage containers match the given prefix, or all containers if the underlying storage system doesn't
+     * support prefix match.
+     */
+    protected abstract Stream<StorageContainerItem> listStorageContainers(String containerPrefix);
+
+    protected abstract StorageContainerClient getStorageContainerClient(String name);
+
     @Override
     public void setResourceLoader(ResourceLoader resourceLoader) {
         if (resourceLoader instanceof DefaultResourceLoader) {
@@ -31,9 +55,6 @@ public abstract class AbstractAzureStorageProtocolResolver implements ProtocolRe
             LOGGER.warn("Custom Protocol using azure-{}:// prefix will not be enabled.", getStorageType().getType());
         }
     }
-
-    protected abstract StorageType getStorageType();
-
 
     @Override
     public Resource resolve(String location, ResourceLoader resourceLoader) {
@@ -90,17 +111,15 @@ public abstract class AbstractAzureStorageProtocolResolver implements ProtocolRe
         return ClassUtils.getDefaultClassLoader();
     }
 
-    protected abstract Resource getStorageResource(String location, Boolean autoCreate);
-
     protected static class StorageItem {
 
         private final String container;
         private final String name;
         private final StorageType storageType;
 
-        public StorageItem(String container, String item, StorageType storageType) {
+        public StorageItem(String container, String fileName, StorageType storageType) {
             this.container = container;
-            this.name = item;
+            this.name = fileName;
             this.storageType = storageType;
         }
 
@@ -116,6 +135,7 @@ public abstract class AbstractAzureStorageProtocolResolver implements ProtocolRe
             return storageType;
         }
 
+        //@zhihaoguo todo test
         public String toResourceLocation() {
             return AzureStorageUtils.getStorageProtocolPrefix(getStorageType()) + container + "/" + name;
         }
@@ -159,22 +179,6 @@ public abstract class AbstractAzureStorageProtocolResolver implements ProtocolRe
         //        beforeIndex;
     }
 
-    /**
-     * List all storage containers.
-     * <p>
-     * The underlying storage system may support 'prefix' filter, for example, Azure Storage Blob supports this
-     * <p>
-     * https://docs.microsoft.com/en-us/rest/api/storageservices/list-blobs
-     * <p>
-     * In this case, we can avoid load all containers to do client side filtering.
-     *
-     * @param containerPrefix container name prefix, without any wildcard characters.
-     * @return All storage containers match the given prefix, or all containers if the underlying storage system doesn't
-     * support prefix match.
-     */
-    protected abstract Stream<StorageContainerItem> listStorageContainers(String containerPrefix);
-
-    protected abstract StorageContainerClient getStorageContainerClient(String name);
 
     protected Resource[] resolveResources(String containerPattern, String itemPattern) {
         return getMatchedContainers(containerPattern)
