@@ -62,7 +62,6 @@ public class ServiceBusProcessorContainer implements Lifecycle, DisposableBean {
     public ServiceBusProcessorClient subscribe(String queue, MessageProcessingListener listener) {
         ServiceBusProcessorClient processor = this.processorFactory.createProcessor(queue, listener);
         processor.start();
-        this.listeners.forEach(l -> l.processorAdded(queue, null));
         this.clients.add(processor);
         return processor;
     }
@@ -85,7 +84,4 @@ public class ServiceBusProcessorContainer implements Lifecycle, DisposableBean {
         return false;
     }
 
-    public void addListener(ServiceBusProcessorFactory.Listener listener) {
-        this.listeners.add(listener);
-    }
 }

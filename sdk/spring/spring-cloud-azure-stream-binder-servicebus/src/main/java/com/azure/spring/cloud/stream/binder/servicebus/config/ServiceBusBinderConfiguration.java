@@ -15,6 +15,7 @@ import com.azure.spring.cloud.stream.binder.servicebus.provisioning.ServiceBusCh
 import com.azure.spring.cloud.stream.binder.servicebus.provisioning.ServiceBusChannelResourceManagerProvisioner;
 import com.azure.spring.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.servicebus.provisioning.ServiceBusProvisioner;
+import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -23,6 +24,7 @@ import org.springframework.cloud.stream.binder.Binder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import org.springframework.lang.Nullable;
 
 /**
  * @author Warren Zhu
@@ -62,11 +64,13 @@ public class ServiceBusBinderConfiguration {
     @ConditionalOnMissingBean
     public ServiceBusMessageChannelBinder serviceBusBinder(ServiceBusChannelProvisioner channelProvisioner,
                                                            ServiceBusExtendedBindingProperties bindingProperties,
-                                                           ObjectProvider<NamespaceProperties> namespaceProperties) {
+                                                           ObjectProvider<NamespaceProperties> namespaceProperties,
+                                                           @Nullable ServiceBusMessageConverter messageConverter) {
 
         ServiceBusMessageChannelBinder binder = new ServiceBusMessageChannelBinder(null, channelProvisioner);
         binder.setBindingProperties(bindingProperties);
         binder.setNamespaceProperties(namespaceProperties.getIfAvailable());
+        binder.setMessageConverter(messageConverter);
         return binder;
     }
 

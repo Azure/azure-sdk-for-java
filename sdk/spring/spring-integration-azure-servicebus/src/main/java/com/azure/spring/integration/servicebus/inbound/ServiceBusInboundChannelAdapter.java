@@ -5,6 +5,7 @@ package com.azure.spring.integration.servicebus.inbound;
 
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.spring.integration.instrumentation.Instrumentation;
+import com.azure.spring.integration.instrumentation.InstrumentationManager;
 import com.azure.spring.integration.servicebus.inbound.health.ServiceBusProcessorInstrumentation;
 import com.azure.spring.messaging.AzureHeaders;
 import com.azure.spring.messaging.ListenerMode;
@@ -114,15 +115,20 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
         this.recordEventProcessor.setPayloadType(payloadType);
     }
 
-    public void setInstrumentation(Instrumentation instrumentation) {
-        this.recordEventProcessor.setInstrumentation(instrumentation);
+    public void setInstrumentationManager(InstrumentationManager instrumentationManager) {
+        this.recordEventProcessor.setInstrumentationManager(instrumentationManager);
     }
 
+    public void setInstrumentationId(String instrumentationId) {
+        this.recordEventProcessor.setInstrumentationId(instrumentationId);
+
+    }
     private class IntegrationRecordMessageProcessingListener implements RecordMessageProcessingListener {
 
         private ServiceBusMessageConverter messageConverter;
         private Class<?> payloadType = byte[].class;
-        private Instrumentation instrumentation;
+        private InstrumentationManager instrumentationManager;
+        private String instrumentationId;
 
         @Override
         public ErrorContextConsumer getErrorContextConsumer() {
@@ -131,6 +137,7 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
                     errorContext.getEntityPath(),
                     errorContext.getException());
 
+                Instrumentation instrumentation = instrumentationManager.getHealthInstrumentation(instrumentationId);
                 if (instrumentation != null) {
                     if (instrumentation instanceof ServiceBusProcessorInstrumentation) {
                         ((ServiceBusProcessorInstrumentation) instrumentation).markError(errorContext);
@@ -172,8 +179,12 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
             this.payloadType = payloadType;
         }
 
-        public void setInstrumentation(Instrumentation instrumentation) {
-            this.instrumentation = instrumentation;
+        public void setInstrumentationManager(InstrumentationManager instrumentationManager) {
+            this.instrumentationManager = instrumentationManager;
+        }
+
+        public void setInstrumentationId(String instrumentationId) {
+            this.instrumentationId = instrumentationId;
         }
     }
 

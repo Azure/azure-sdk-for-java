@@ -28,6 +28,7 @@ import com.azure.spring.servicebus.core.properties.ProcessorProperties;
 import com.azure.spring.servicebus.core.properties.ProducerProperties;
 import com.azure.spring.servicebus.core.properties.SubscriptionPropertiesSupplier;
 import com.azure.spring.servicebus.support.ServiceBusMessageHeaders;
+import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
 import org.springframework.cloud.stream.binder.AbstractMessageChannelBinder;
 import org.springframework.cloud.stream.binder.BinderHeaders;
 import org.springframework.cloud.stream.binder.BinderSpecificPropertiesProvider;
@@ -68,6 +69,7 @@ public class ServiceBusMessageChannelBinder extends
     private NamespaceProperties namespaceProperties;
     private ServiceBusTemplate serviceBusTemplate;
     private ServiceBusProcessorContainer processorContainer;
+    private ServiceBusMessageConverter messageConverter = new ServiceBusMessageConverter();
     private final InstrumentationManager instrumentationManager = new DefaultInstrumentationManager();
     private static final DefaultErrorMessageStrategy DEFAULT_ERROR_MESSAGE_STRATEGY = new DefaultErrorMessageStrategy();
 
@@ -92,7 +94,7 @@ public class ServiceBusMessageChannelBinder extends
         handler.setSendFailureChannel(errorChannel);
         String instrumentationId = Instrumentation.buildId(PRODUCER, destination.getName());
 
-        handler.setSendCallback(new InstrumentationSendCallback(instrumentationManager.getHealthInstrumentation(instrumentationId)));
+        handler.setSendCallback(new InstrumentationSendCallback(instrumentationId, instrumentationManager));
 
         if (producerProperties.isPartitioned()) {
             handler.setPartitionKeyExpressionString(
@@ -119,9 +121,11 @@ public class ServiceBusMessageChannelBinder extends
         }
         inboundAdapter.setBeanFactory(getBeanFactory());
         String instrumentationId = Instrumentation.buildId(CONSUMER, destination.getName() + "/" + group != null ? group : "");
-        inboundAdapter.setInstrumentation(instrumentationManager.getHealthInstrumentation(instrumentationId));
+        inboundAdapter.setInstrumentationManager(instrumentationManager);
+        inboundAdapter.setInstrumentationId(instrumentationId);
         ErrorInfrastructure errorInfrastructure = registerErrorInfrastructure(destination, group, properties);
         inboundAdapter.setErrorChannel(errorInfrastructure.getErrorChannel());
+        inboundAdapter.setMessageConverter(messageConverter);
         return inboundAdapter;
     }
 
@@ -229,20 +233,14 @@ public class ServiceBusMessageChannelBinder extends
             DefaultServiceBusNamespaceProcessorFactory factory = new DefaultServiceBusNamespaceProcessorFactory(
                 this.namespaceProperties, getProcessorPropertiesSupplier());
 
-//            factory.addListener((name, subscription) -> {
-//                String instrumentationName = name + "/" + subscription == null ? "" : subscription;
-//                Instrumentation instrumentation = new ServiceBusProcessorInstrumentation(instrumentationName, CONSUMER, Duration.ofMinutes(2));
-//                instrumentation.markUp();
-//                instrumentationManager.addHealthInstrumentation(instrumentation.getId(), instrumentation);
-//            });
-
-            this.processorContainer = new ServiceBusProcessorContainer(factory);
-            this.processorContainer.addListener((name, subscription) -> {
+            factory.addListener((name, subscription) -> {
                 String instrumentationName = name + "/" + subscription == null ? "" : subscription;
                 Instrumentation instrumentation = new ServiceBusProcessorInstrumentation(instrumentationName, CONSUMER, Duration.ofMinutes(2));
                 instrumentation.markUp();
                 instrumentationManager.addHealthInstrumentation(instrumentation.getId(), instrumentation);
             });
+
+            this.processorContainer = new ServiceBusProcessorContainer(factory);
         }
         return this.processorContainer;
     }
@@ -301,26 +299,33 @@ public class ServiceBusMessageChannelBinder extends
         this.namespaceProperties = namespaceProperties;
     }
 
+    public void setMessageConverter(ServiceBusMessageConverter messageConverter) {
+        this.messageConverter = messageConverter;
+    }
+
     public InstrumentationManager getInstrumentationManager() {
         return instrumentationManager;
     }
 
     private static class InstrumentationSendCallback implements ListenableFutureCallback<Void> {
 
-        private final Instrumentation instrumentation;
+        private final InstrumentationManager instrumentationManager;
 
-        InstrumentationSendCallback(Instrumentation instrumentation) {
-            this.instrumentation = instrumentation;
+        private final String instrumentationId;
+
+        InstrumentationSendCallback(String instrumentationId, InstrumentationManager instrumentationManager) {
+            this.instrumentationId = instrumentationId;
+            this.instrumentationManager = instrumentationManager;
         }
 
         @Override
         public void onFailure(Throwable ex) {
-            instrumentation.markDown(ex);
+            this.instrumentationManager.getHealthInstrumentation(instrumentationId).markDown(ex);
         }
 
         @Override
         public void onSuccess(Void result) {
-            instrumentation.markUp();
+            this.instrumentationManager.getHealthInstrumentation(instrumentationId).markUp();
         }
     }
 }
