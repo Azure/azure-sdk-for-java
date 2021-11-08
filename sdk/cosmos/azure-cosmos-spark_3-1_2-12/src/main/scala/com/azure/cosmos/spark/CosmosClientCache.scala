@@ -37,11 +37,24 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
     TimeUnit.SECONDS)
 
   def apply(cosmosClientConfiguration: CosmosClientConfiguration,
-            cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]]): CosmosClientCacheItem = {
+            cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
+            calledFrom: String): CosmosClientCacheItem = {
+
+    val ownerInfo = OwnerInfo(calledFrom)
 
     cache.get(cosmosClientConfiguration) match {
-      case Some(clientCacheMetadata) => clientCacheMetadata.createCacheItemForReuse
-      case None => syncCreate(cosmosClientConfiguration, cosmosClientStateHandle)
+      case Some(clientCacheMetadata) => clientCacheMetadata.createCacheItemForReuse(ownerInfo)
+      case None => syncCreate(cosmosClientConfiguration, cosmosClientStateHandle, ownerInfo)
+    }
+  }
+
+  def ownerInformation(cosmosClientConfiguration: CosmosClientConfiguration): String = {
+    cache.get(cosmosClientConfiguration) match {
+      case None => ""
+      case Some(existingClientCacheMetadata) => existingClientCacheMetadata
+        .owners
+        .keys
+        .mkString(", ")
     }
   }
 
@@ -70,10 +83,11 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
   // scalastyle:off method.length
   // scalastyle:off cyclomatic.complexity
   private[this] def syncCreate(cosmosClientConfiguration: CosmosClientConfiguration,
-                               cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]])
+                               cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
+                               ownerInfo: OwnerInfo)
   : CosmosClientCacheItem = synchronized {
     cache.get(cosmosClientConfiguration) match {
-      case Some(clientCacheMetadata) => clientCacheMetadata.createCacheItemForReuse
+      case Some(clientCacheMetadata) => clientCacheMetadata.createCacheItemForReuse(ownerInfo)
       case None =>
         var builder = new CosmosClientBuilder()
           .key(cosmosClientConfiguration.key)
@@ -128,14 +142,19 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
 
         val client = builder.buildAsyncClient()
         val epochNowInMs = Instant.now.toEpochMilli
+        val owners = new TrieMap[OwnerInfo, Option[Boolean]]
+        owners.put(ownerInfo, None)
+
         val newClientCacheEntry = CosmosClientCacheMetadata(
           client,
           new AtomicLong(epochNowInMs),
           new AtomicLong(epochNowInMs),
-          new AtomicLong(1))
+          new AtomicLong(1),
+          owners
+        )
 
         cache.putIfAbsent(cosmosClientConfiguration, newClientCacheEntry) match {
-          case None => new CacheItemImpl(client, newClientCacheEntry.refCount)
+          case None => new CacheItemImpl(client, newClientCacheEntry, ownerInfo)
           case Some(_) =>
             throw new ConcurrentModificationException("Should not reach here because its synchronized")
         }
@@ -152,13 +171,21 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
         val clientConfig = pair._1
         val clientMetadata = pair._2
 
-        if (clientMetadata.lastRetrieved.get() < Instant.now.toEpochMilli - unusedClientTtlInMs &&
-            clientMetadata.refCount.get() == 0) {
-          logInfo(s"Removing client due to inactivity from the cache - ${clientConfig.endpoint}, " +
-            s"${clientConfig.applicationName}, ${clientConfig.preferredRegionsList}, ${clientConfig.useGatewayMode}, " +
-            s"${clientConfig.useEventualConsistency}")
-          purge(clientConfig)
+        //scalastyle:off multiple.string.literals
+        if (clientMetadata.lastRetrieved.get() < Instant.now.toEpochMilli - unusedClientTtlInMs) {
+          if (clientMetadata.refCount.get() == 0) {
+            logInfo(s"Removing client due to inactivity from the cache - ${clientConfig.endpoint}, " +
+              s"${clientConfig.applicationName}, ${clientConfig.preferredRegionsList}, ${clientConfig.useGatewayMode}, " +
+              s"${clientConfig.useEventualConsistency}")
+            purge(clientConfig)
+          } else {
+            logInfo(s"Client has not been retrieved from the cache recently - ${clientConfig.endpoint}, " +
+              s"${clientConfig.applicationName}, ${clientConfig.preferredRegionsList}, ${clientConfig.useGatewayMode}, " +
+              s"${clientConfig.useEventualConsistency}, - but there are still Spark tasks running using this client " +
+              s"Spark tasks: ${clientMetadata.owners.keys.mkString(", ")}")
+          }
         }
+        //scalastyle:on multiple.string.literals
       })
 
       val deleteCandidates = ArrayBuffer[CosmosClientCacheMetadata]()
@@ -186,29 +213,57 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
     client: CosmosAsyncClient,
     lastRetrieved: AtomicLong,
     created: AtomicLong,
-    refCount: AtomicLong
+    refCount: AtomicLong,
+    owners: TrieMap[OwnerInfo, Option[Boolean]]
   ) {
-    def createCacheItemForReuse : CacheItemImpl = {
+    def createCacheItemForReuse(ownerInfo: OwnerInfo) : CacheItemImpl = {
       lastRetrieved.set(Instant.now.toEpochMilli)
       refCount.incrementAndGet()
-      new CacheItemImpl(client, refCount)
+      owners.putIfAbsent(ownerInfo, None)
+
+      new CacheItemImpl(client, this, ownerInfo)
+    }
+  }
+
+  private[this] case class OwnerInfo(
+                                      calledFrom: String,
+                                      partitionId: Int,
+                                      stageId: Int,
+                                      taskAttemptId: Long,
+                                      attemptNumber: Int,
+                                      stageAttemptNumber: Int
+                                    )
+
+  private[this] object OwnerInfo {
+    def apply(calledFrom: String): OwnerInfo = {
+      Option[TaskContext](TaskContext.get) match {
+        case Some(ctx) => OwnerInfo(calledFrom, ctx.partitionId(), ctx.stageId(), ctx.taskAttemptId(), ctx.attemptNumber(), ctx.stageAttemptNumber())
+        case None => OwnerInfo(calledFrom, -1, -1, -1, -1, -1)
+      }
     }
   }
 
   private[this] class CacheItemImpl
   (
     val cosmosClient: CosmosAsyncClient,
-    val refCount: AtomicLong
+    val ref: CosmosClientCacheMetadata,
+    val ownerInfo: OwnerInfo
   ) extends CosmosClientCacheItem with BasicLoggingTrait {
 
     override def client: CosmosAsyncClient = this.cosmosClient
 
+    override def context: String = this.ownerInfo.toString
+
     override def close(): Unit = {
-      val remainingActiveClients = refCount.decrementAndGet()
+      val remainingActiveClients = ref.refCount.decrementAndGet()
       if (remainingActiveClients < 0) {
         logError(s"Cached cosmos client has been released to the Cache more often than acquired.")
       }
-      logDebug(s"Returned client to the pool = remaining active clients $remainingActiveClients")
+
+      ref.owners.remove(ownerInfo)
+
+      logDebug("Returned client to the pool = remaining active clients - Count: " +
+        s"$remainingActiveClients, Spark contexts: ${ref.owners.keys.mkString(", ")}")
     }
   }
 }

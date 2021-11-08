@@ -147,7 +147,12 @@ private object PartitionMetadataCache extends BasicLoggingTrait {
     feedRange: NormalizedRange,
     tolerateNotFound: Boolean
   ): SMono[Option[PartitionMetadata]] = {
-    Loan(CosmosClientCache.apply(cosmosClientConfiguration, cosmosClientStateHandle))
+    Loan(CosmosClientCache(
+      cosmosClientConfiguration,
+      cosmosClientStateHandle,
+      "PartitionMetadataCache.readPartitionMetadata(" +
+        s"${cosmosContainerConfig.database}.${cosmosContainerConfig.container}, $feedRange)"
+    ))
       .to(clientCacheItem => {
         val container = ThroughputControlHelper.getContainer(userConfig, cosmosContainerConfig, clientCacheItem.client)
 

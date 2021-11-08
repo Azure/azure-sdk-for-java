@@ -41,7 +41,9 @@ private case class ItemsPartitionReader
   private val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
   private val clientCacheItem = CosmosClientCache(
     CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
-    Some(cosmosClientStateHandle))
+    Some(cosmosClientStateHandle),
+    s"ItemsPartitionReader($feedRange, ${containerTargetConfig.database}.${containerTargetConfig.container})"
+  )
 
   private val cosmosAsyncContainer = ThroughputControlHelper.getContainer(
     config, containerTargetConfig, clientCacheItem.client)

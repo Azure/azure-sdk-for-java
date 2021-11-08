@@ -452,7 +452,12 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
 
     assertNotNull(cosmosClientConfig, "cosmosClientConfig")
     assertNotNull(cosmosContainerConfig, "cosmosContainerConfig")
-    Loan(CosmosClientCache.apply(cosmosClientConfig, cosmosClientStateHandle))
+    Loan(CosmosClientCache.apply(
+      cosmosClientConfig,
+      cosmosClientStateHandle,
+      "CosmosPartitionPlanner.getFeedRanges(database " +
+        s"${cosmosContainerConfig.database}, container ${cosmosContainerConfig.container})"
+    ))
       .to(clientCacheItem => {
         val container = ThroughputControlHelper.getContainer(userConfig, cosmosContainerConfig, clientCacheItem.client)
         SparkUtils.safeOpenConnectionInitCaches(container, (msg, e) => logWarning(msg, e))

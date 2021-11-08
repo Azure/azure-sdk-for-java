@@ -44,7 +44,7 @@ private class ItemsDataWriteFactory(userConfig: Map[String, String],
    *                    for example).
    */
   override def createWriter(partitionId: Int, taskId: Long): DataWriter[InternalRow] =
-    new CosmosWriter(inputSchema)
+    new CosmosWriter(inputSchema, partitionId, taskId, None)
 
   /**
    * Returns a data writer to do the actual writing work. Note that, Spark will reuse the same data
@@ -66,10 +66,10 @@ private class ItemsDataWriteFactory(userConfig: Map[String, String],
    *                     discrete periods of execution.
    */
   override def createWriter(partitionId: Int, taskId: Long, epochId: Long): DataWriter[InternalRow] =
-    new CosmosWriter(inputSchema)
+    new CosmosWriter(inputSchema, partitionId, taskId, Some(epochId))
 
-  private class CosmosWriter(inputSchema: StructType) extends DataWriter[InternalRow] {
-    log.logInfo(s"Instantiated ${this.getClass.getSimpleName}")
+  private class CosmosWriter(inputSchema: StructType, partitionId: Int, taskId: Long, epochId: Option[Long]) extends DataWriter[InternalRow] {
+    log.logInfo(s"Instantiated ${this.getClass.getSimpleName} - ($partitionId, $taskId, $epochId)")
     private val cosmosTargetContainerConfig = CosmosContainerConfig.parseCosmosContainerConfig(userConfig)
     private val cosmosWriteConfig = CosmosWriteConfig.parseWriteConfig(userConfig)
     private val cosmosSerializationConfig = CosmosSerializationConfig.parseSerializationConfig(userConfig)
@@ -78,7 +78,9 @@ private class ItemsDataWriteFactory(userConfig: Map[String, String],
     private val cacheItemReleasedCount = new AtomicInteger(0)
     private val clientCacheItem = CosmosClientCache(
       CosmosClientConfiguration(userConfig, useEventualConsistency = true),
-      Some(cosmosClientStateHandle))
+      Some(cosmosClientStateHandle),
+      s"CosmosWriter($partitionId, $taskId, $epochId)"
+    )
 
     private val container = ThroughputControlHelper.getContainer(
       userConfig, cosmosTargetContainerConfig, clientCacheItem.client)

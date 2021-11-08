@@ -98,7 +98,9 @@ private[spark] class ItemsReadOnlyTable(val sparkSession: SparkSession,
     Loan(
       CosmosClientCache(
         CosmosClientConfiguration(effectiveUserConfig, useEventualConsistency = readConfig.forceEventualConsistency),
-        None))
+        None,
+        s"ItemReadOnlyTable($tableName).schema"
+      ))
       .to(clientCacheItem => userProvidedSchema.getOrElse(this.inferSchema(clientCacheItem.client, effectiveUserConfig)))
   }
 
@@ -116,7 +118,8 @@ private[spark] class ItemsReadOnlyTable(val sparkSession: SparkSession,
     Loan(
       CosmosClientCache(
         CosmosClientConfiguration(effectiveUserConfig, useEventualConsistency = readConfig.forceEventualConsistency),
-        None))
+        None,
+        s"ItemReadOnlyTable($tableName).initializeAndBroadcastCosmosClientStateForContainer"))
         .to(clientCacheItem => {
           try {
             val container = ThroughputControlHelper.getContainer(

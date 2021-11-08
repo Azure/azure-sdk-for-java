@@ -36,7 +36,12 @@ private class ChangeFeedBatch
     val partitioningConfig = CosmosPartitioningConfig.parseCosmosPartitioningConfig(config)
     val changeFeedConfig = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(config)
 
-    Loan(CosmosClientCache.apply(clientConfiguration, Some(cosmosClientStateHandle))).to(cacheItem => {
+    Loan(
+      CosmosClientCache.apply(
+        clientConfiguration,
+        Some(cosmosClientStateHandle),
+        s"ChangeFeedBatch.planInputPartitions(batchId ${batchId})"
+      )).to(cacheItem => {
       val container = ThroughputControlHelper.getContainer(config, containerConfig, cacheItem.client)
 
       // This maps the StartFrom settings to concrete LSNs

@@ -107,7 +107,11 @@ class CosmosCatalog
   override def listNamespaces(): Array[Array[String]] = {
     logDebug("catalog:listNamespaces")
 
-    Loan(CosmosClientCache(CosmosClientConfiguration(config, readConfig.forceEventualConsistency), None))
+    Loan(CosmosClientCache(
+      CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
+      None,
+      s"CosmosCatalog(name $catalogName).listNamespaces"
+    ))
       .to(cosmosClientCacheItem => {
         cosmosClientCacheItem
           .client
@@ -146,7 +150,11 @@ class CosmosCatalog
 
     checkNamespace(namespace)
 
-    Loan(CosmosClientCache(CosmosClientConfiguration(config, readConfig.forceEventualConsistency), None))
+    Loan(CosmosClientCache(
+      CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
+      None,
+      s"CosmosCatalog(name $catalogName).loadNamespaceMetadata([${namespace.mkString(", ")}])"
+    ))
       .to(clientCacheItem => {
         val databaseName = toCosmosDatabaseName(namespace.head)
         try {
@@ -180,7 +188,11 @@ class CosmosCatalog
         metadata.asScala.toMap)
     val databaseName = toCosmosDatabaseName(namespace.head)
 
-    Loan(CosmosClientCache(CosmosClientConfiguration(config, readConfig.forceEventualConsistency), None))
+    Loan(CosmosClientCache(
+      CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
+      None,
+      s"CosmosCatalog(name $catalogName).createNamespace([${namespace.mkString(", ")}])"
+    ))
       .to(cosmosClientCacheItem => {
         try {
           if (throughputPropertiesOpt.isDefined) {
@@ -219,7 +231,11 @@ class CosmosCatalog
   override def dropNamespace(namespace: Array[String]): Boolean = {
     checkNamespace(namespace)
     try {
-      Loan(CosmosClientCache(CosmosClientConfiguration(config, readConfig.forceEventualConsistency), None))
+      Loan(CosmosClientCache(
+        CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
+        None,
+        s"CosmosCatalog(name $catalogName).dropNamespace([${namespace.mkString(", ")}])"
+      ))
         .to(cosmosClientCacheItem => {
           cosmosClientCacheItem
             .client
@@ -240,7 +256,11 @@ class CosmosCatalog
 
     try {
       val cosmosTables =
-        Loan(CosmosClientCache(CosmosClientConfiguration(config, readConfig.forceEventualConsistency), None))
+        Loan(CosmosClientCache(
+          CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
+          None,
+          s"CosmosCatalog(name $catalogName).listTables([${namespace.mkString(", ")}])"
+        ))
           .to(cosmosClientCacheItem => {
             cosmosClientCacheItem
               .client
@@ -337,6 +357,7 @@ class CosmosCatalog
     throw new UnsupportedOperationException("renaming table not supported")
   }
 
+  //scalastyle:off method.length
   private def createPhysicalTable(databaseName: String,
                                   containerName: String,
                                   schema: StructType,
@@ -358,7 +379,11 @@ class CosmosCatalog
       case None =>
     }
 
-    Loan(CosmosClientCache(CosmosClientConfiguration(config, readConfig.forceEventualConsistency), None))
+    Loan(CosmosClientCache(
+      CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
+      None,
+      s"CosmosCatalog(name $catalogName).createPhysicalTable($databaseName, $containerName)"
+    ))
       .to(cosmosClientCacheItem => {
         if (throughputPropertiesOpt.isDefined) {
           cosmosClientCacheItem
@@ -386,6 +411,7 @@ class CosmosCatalog
       effectiveOptions.asJava,
       Option.apply(schema))
   }
+  //scalastyle:on method.length
 
   //scalastyle:off method.length
   @tailrec
@@ -448,7 +474,11 @@ class CosmosCatalog
 
   private def deletePhysicalTable(databaseName: String, containerName: String): Boolean = {
     try {
-      Loan(CosmosClientCache(CosmosClientConfiguration(config, readConfig.forceEventualConsistency), None))
+      Loan(CosmosClientCache(
+        CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
+        None,
+        s"CosmosCatalog(name $catalogName).deletePhysicalTable($databaseName, $containerName)"
+      ))
         .to (cosmosClientCacheItem =>
           cosmosClientCacheItem
             .client
@@ -502,7 +532,10 @@ class CosmosCatalog
 
     try {
       Some(
-        Loan(CosmosClientCache(CosmosClientConfiguration(config, readConfig.forceEventualConsistency), None))
+        Loan(CosmosClientCache(
+          CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
+          None,
+          s"CosmosCatalog(name $catalogName).tryGetContainerMetadata($databaseName, $containerName)"))
           .to(cosmosClientCacheItem =>
             cosmosClientCacheItem
               .client

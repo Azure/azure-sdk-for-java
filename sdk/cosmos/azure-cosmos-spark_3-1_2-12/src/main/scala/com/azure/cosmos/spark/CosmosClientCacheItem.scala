@@ -3,7 +3,9 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.CosmosAsyncClient
+import org.apache.spark.TaskContext
 
 trait CosmosClientCacheItem extends AutoCloseable {
   def client: CosmosAsyncClient
+  def context: String
 }

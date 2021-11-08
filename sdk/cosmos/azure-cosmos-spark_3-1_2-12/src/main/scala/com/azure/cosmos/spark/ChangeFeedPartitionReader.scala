@@ -46,7 +46,9 @@ private case class ChangeFeedPartitionReader
     s"container ${containerTargetConfig.database}.${containerTargetConfig.container}")
   private val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
   private val clientCacheItem = CosmosClientCache(
-    CosmosClientConfiguration(config, readConfig.forceEventualConsistency), Some(cosmosClientStateHandle))
+    CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
+    Some(cosmosClientStateHandle),
+    s"ChangeFeedPartitionReader(partition ${partition})")
 
   private val cosmosAsyncContainer =
     ThroughputControlHelper

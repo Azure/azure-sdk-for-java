@@ -4,10 +4,11 @@ package com.azure.cosmos.spark
 
 import com.azure.cosmos.CosmosAsyncClient
 import com.azure.cosmos.implementation.{CosmosClientMetadataCachesSnapshot, TestConfigurations}
+import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import org.apache.spark.broadcast.Broadcast
 import org.mockito.Mockito.{mock, verify}
 
-class CosmosClientCacheITest extends IntegrationSpec with CosmosClient {
+class CosmosClientCacheITest extends IntegrationSpec with CosmosClient with BasicLoggingTrait {
   //scalastyle:off multiple.string.literals
 
   private val cosmosEndpoint = TestConfigurations.HOST
@@ -19,11 +20,20 @@ class CosmosClientCacheITest extends IntegrationSpec with CosmosClient {
       "spark.cosmos.accountKey" -> cosmosMasterKey
     ), useEventualConsistency = true)
 
-    val client1 = CosmosClientCache(userConfig, None)
-    val client2 = CosmosClientCache(userConfig, None)
+    Loan(CosmosClientCache(userConfig, None, "CosmosClientCacheITest-01"))
+      .to(client1 => {
+        Loan(CosmosClientCache(userConfig, None, "CosmosClientCacheITest-02"))
+          .to(client2 => {
+              client2.client should be theSameInstanceAs client1.client
 
-    client2.client should be theSameInstanceAs client1.client
-    CosmosClientCache.purge(userConfig)
+            val ownerInfo = CosmosClientCache.ownerInformation(userConfig)
+            logInfo(s"OwnerInfo $ownerInfo")
+            ownerInfo.contains("CosmosClientCacheITest-01") shouldEqual true
+            ownerInfo.contains("CosmosClientCacheITest-02") shouldEqual true
+            ownerInfo.contains("CosmosClientCacheITest-03") shouldEqual false
+            CosmosClientCache.purge(userConfig)
+          })
+      })
   }
 
   it should "return a new instance after purging" in {
@@ -32,12 +42,16 @@ class CosmosClientCacheITest extends IntegrationSpec with CosmosClient {
       "spark.cosmos.accountKey" -> cosmosMasterKey
     ), useEventualConsistency = true)
 
-    val client1 = CosmosClientCache(userConfig, None)
-    CosmosClientCache.purge(userConfig)
-    val client2 = CosmosClientCache(userConfig, None)
+    Loan(CosmosClientCache(userConfig, None, "CosmosClientCacheITest-03"))
+      .to(client1 => {
+        CosmosClientCache.purge(userConfig)
+        Loan(CosmosClientCache(userConfig, None, "CosmosClientCacheITest-04"))
+          .to(client2 => {
 
-    client2 shouldNot be theSameInstanceAs client1
-    CosmosClientCache.purge(userConfig)
+            client2 shouldNot be theSameInstanceAs client1
+            CosmosClientCache.purge(userConfig)
+          })
+      })
   }
 
   it should "use state during initialization" in {
@@ -47,10 +61,12 @@ class CosmosClientCacheITest extends IntegrationSpec with CosmosClient {
     ), useEventualConsistency = true)
 
     val broadcast = mock(classOf[Broadcast[CosmosClientMetadataCachesSnapshot]])
-    val client1 = CosmosClientCache(userConfig, Option(broadcast))
-    verify(broadcast).value
-    client1 shouldBe a[CosmosClientCacheItem]
-    client1.client shouldBe a[CosmosAsyncClient]
-    CosmosClientCache.purge(userConfig)
+    Loan(CosmosClientCache(userConfig, Option(broadcast), "CosmosClientCacheITest-05"))
+      .to(client1 => {
+        verify(broadcast).value
+        client1 shouldBe a[CosmosClientCacheItem]
+        client1.client shouldBe a[CosmosAsyncClient]
+        CosmosClientCache.purge(userConfig)
+      })
   }
 }

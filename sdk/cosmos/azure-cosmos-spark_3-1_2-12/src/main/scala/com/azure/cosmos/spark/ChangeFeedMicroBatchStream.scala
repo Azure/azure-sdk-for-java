@@ -38,7 +38,10 @@ private class ChangeFeedMicroBatchStream
   private val containerConfig = CosmosContainerConfig.parseCosmosContainerConfig(config)
   private val partitioningConfig = CosmosPartitioningConfig.parseCosmosPartitioningConfig(config)
   private val changeFeedConfig = CosmosChangeFeedConfig.parseCosmosChangeFeedConfig(config)
-  private val clientCacheItem = CosmosClientCache(clientConfiguration, Some(cosmosClientStateHandle))
+  private val clientCacheItem = CosmosClientCache(
+    clientConfiguration,
+    Some(cosmosClientStateHandle),
+    s"ChangeFeedMicroBatchStream(streamId ${streamId})")
   private val container = ThroughputControlHelper.getContainer(config, containerConfig, clientCacheItem.client)
   SparkUtils.safeOpenConnectionInitCaches(container, log)
 

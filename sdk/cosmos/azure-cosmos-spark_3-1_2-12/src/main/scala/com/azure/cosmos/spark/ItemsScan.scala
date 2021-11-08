@@ -71,7 +71,11 @@ private case class ItemsScan(session: SparkSession,
       containerConfig
     )
 
-    Loan(CosmosClientCache.apply(clientConfiguration, Some(cosmosClientStateHandle)))
+    Loan(CosmosClientCache.apply(
+      clientConfiguration,
+      Some(cosmosClientStateHandle),
+      s"ItemsScan($description()).planInputPartitions"
+    ))
       .to(clientCacheItem => {
         val container = ThroughputControlHelper
           .getContainer(config, containerConfig, clientCacheItem.client)

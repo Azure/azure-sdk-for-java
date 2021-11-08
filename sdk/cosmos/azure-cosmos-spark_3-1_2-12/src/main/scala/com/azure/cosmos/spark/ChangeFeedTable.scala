@@ -99,7 +99,12 @@ private class ChangeFeedTable(val session: SparkSession,
   }
 
   override def schema(): StructType = {
-    Loan(CosmosClientCache(cosmosClientConfig, None)).to(clientCacheItem =>
+    Loan(CosmosClientCache(
+      cosmosClientConfig,
+      None,
+      s"ChangeFeedTable(name ${tableName}).schema"
+    ))
+      .to(clientCacheItem =>
       userProvidedSchema.getOrElse(this.inferSchema(clientCacheItem.client, effectiveUserConfig))
     )
   }
@@ -124,7 +129,11 @@ private class ChangeFeedTable(val session: SparkSession,
   private[spark] def initializeAndBroadcastCosmosClientStateForContainer()
   : Broadcast[CosmosClientMetadataCachesSnapshot] = {
 
-    Loan(CosmosClientCache(cosmosClientConfig, None)).to(clientCacheItem => {
+    Loan(CosmosClientCache(
+      cosmosClientConfig,
+      None,
+      s"ChangeFeedTable(name ${tableName}).initializeAndBroadcastCosmosClientStateForContainer"))
+      .to(clientCacheItem => {
       val container = ThroughputControlHelper
         .getContainer(effectiveUserConfig, cosmosContainerConfig, clientCacheItem.client)
 
