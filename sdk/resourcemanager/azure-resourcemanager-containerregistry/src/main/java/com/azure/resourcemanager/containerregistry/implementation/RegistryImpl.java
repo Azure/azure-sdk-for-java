@@ -54,16 +54,6 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
     public Mono<Registry> createResourceAsync() {
         final RegistryImpl self = this;
         if (isInCreateMode()) {
-<<<<<<< HEAD
-            if (self.creatableStorageAccountKey != null) {
-                StorageAccount storageAccount = self.<StorageAccount>taskResult(this.creatableStorageAccountKey);
-//                self.innerModel().storageAccount().withId(storageAccount.id());
-            } else if (storageAccountId != null) {
-//                self.innerModel().storageAccount().withId(storageAccountId);
-            }
-
-=======
->>>>>>> 1bda609f156d60d186f8b1c348422f3944d459d1
             return manager()
                 .serviceClient()
                 .getRegistries()
@@ -106,39 +96,6 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
     }
 
     @Override
-<<<<<<< HEAD
-    public String storageAccountName() {
-//        if (this.innerModel().storageAccount() == null) {
-//            return null;
-//        }
-//
-//        return ResourceUtils.nameFromResourceId(this.innerModel().storageAccount().id());
-        return null;
-    }
-
-    @Override
-    public String storageAccountId() {
-//        if (this.innerModel().storageAccount() == null) {
-//            return null;
-//        }
-//
-//        return this.innerModel().storageAccount().id();
-        return null;
-    }
-
-    @Override
-    public RegistryImpl withClassicSku() {
-        if (this.isInCreateMode()) {
-            this.innerModel().withSku(new Sku().withName(SkuName.CLASSIC));
-//            this.innerModel().withStorageAccount(new StorageAccountProperties());
-        }
-
-        return this;
-    }
-
-    @Override
-=======
->>>>>>> 1bda609f156d60d186f8b1c348422f3944d459d1
     public RegistryImpl withBasicSku() {
         return setManagedSku(new Sku().withName(SkuName.BASIC));
     }
@@ -156,10 +113,6 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
     private RegistryImpl setManagedSku(Sku sku) {
         if (this.isInCreateMode()) {
             this.innerModel().withSku(sku);
-<<<<<<< HEAD
-//            this.innerModel().withStorageAccount(null);
-=======
->>>>>>> 1bda609f156d60d186f8b1c348422f3944d459d1
         } else {
             this.updateParameters.withSku(sku);
         }
