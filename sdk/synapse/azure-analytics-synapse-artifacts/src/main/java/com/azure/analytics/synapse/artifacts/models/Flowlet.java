@@ -11,44 +11,44 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Mapping data flow. */
+/** Data flow flowlet. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("MappingDataFlow")
+@JsonTypeName("Flowlet")
 @JsonFlatten
 @Fluent
-public class MappingDataFlow extends DataFlow {
+public class Flowlet extends DataFlow {
     /*
-     * List of sources in data flow.
+     * List of sources in Flowlet.
      */
     @JsonProperty(value = "typeProperties.sources")
     private List<DataFlowSource> sources;
 
     /*
-     * List of sinks in data flow.
+     * List of sinks in Flowlet.
      */
     @JsonProperty(value = "typeProperties.sinks")
     private List<DataFlowSink> sinks;
 
     /*
-     * List of transformations in data flow.
+     * List of transformations in Flowlet.
      */
     @JsonProperty(value = "typeProperties.transformations")
     private List<Transformation> transformations;
 
     /*
-     * DataFlow script.
+     * Flowlet script.
      */
     @JsonProperty(value = "typeProperties.script")
     private String script;
 
     /*
-     * Data flow script lines.
+     * Flowlet script lines.
      */
     @JsonProperty(value = "typeProperties.scriptLines")
     private List<String> scriptLines;
 
     /**
-     * Get the sources property: List of sources in data flow.
+     * Get the sources property: List of sources in Flowlet.
      *
      * @return the sources value.
      */
@@ -57,18 +57,18 @@ public class MappingDataFlow extends DataFlow {
     }
 
     /**
-     * Set the sources property: List of sources in data flow.
+     * Set the sources property: List of sources in Flowlet.
      *
      * @param sources the sources value to set.
-     * @return the MappingDataFlow object itself.
+     * @return the Flowlet object itself.
      */
-    public MappingDataFlow setSources(List<DataFlowSource> sources) {
+    public Flowlet setSources(List<DataFlowSource> sources) {
         this.sources = sources;
         return this;
     }
 
     /**
-     * Get the sinks property: List of sinks in data flow.
+     * Get the sinks property: List of sinks in Flowlet.
      *
      * @return the sinks value.
      */
@@ -77,18 +77,18 @@ public class MappingDataFlow extends DataFlow {
     }
 
     /**
-     * Set the sinks property: List of sinks in data flow.
+     * Set the sinks property: List of sinks in Flowlet.
      *
      * @param sinks the sinks value to set.
-     * @return the MappingDataFlow object itself.
+     * @return the Flowlet object itself.
      */
-    public MappingDataFlow setSinks(List<DataFlowSink> sinks) {
+    public Flowlet setSinks(List<DataFlowSink> sinks) {
         this.sinks = sinks;
         return this;
     }
 
     /**
-     * Get the transformations property: List of transformations in data flow.
+     * Get the transformations property: List of transformations in Flowlet.
      *
      * @return the transformations value.
      */
@@ -97,18 +97,18 @@ public class MappingDataFlow extends DataFlow {
     }
 
     /**
-     * Set the transformations property: List of transformations in data flow.
+     * Set the transformations property: List of transformations in Flowlet.
      *
      * @param transformations the transformations value to set.
-     * @return the MappingDataFlow object itself.
+     * @return the Flowlet object itself.
      */
-    public MappingDataFlow setTransformations(List<Transformation> transformations) {
+    public Flowlet setTransformations(List<Transformation> transformations) {
         this.transformations = transformations;
         return this;
     }
 
     /**
-     * Get the script property: DataFlow script.
+     * Get the script property: Flowlet script.
      *
      * @return the script value.
      */
@@ -117,18 +117,18 @@ public class MappingDataFlow extends DataFlow {
     }
 
     /**
-     * Set the script property: DataFlow script.
+     * Set the script property: Flowlet script.
      *
      * @param script the script value to set.
-     * @return the MappingDataFlow object itself.
+     * @return the Flowlet object itself.
      */
-    public MappingDataFlow setScript(String script) {
+    public Flowlet setScript(String script) {
         this.script = script;
         return this;
     }
 
     /**
-     * Get the scriptLines property: Data flow script lines.
+     * Get the scriptLines property: Flowlet script lines.
      *
      * @return the scriptLines value.
      */
@@ -137,12 +137,12 @@ public class MappingDataFlow extends DataFlow {
     }
 
     /**
-     * Set the scriptLines property: Data flow script lines.
+     * Set the scriptLines property: Flowlet script lines.
      *
      * @param scriptLines the scriptLines value to set.
-     * @return the MappingDataFlow object itself.
+     * @return the Flowlet object itself.
      */
-    public MappingDataFlow setScriptLines(List<String> scriptLines) {
+    public Flowlet setScriptLines(List<String> scriptLines) {
         this.scriptLines = scriptLines;
         return this;
     }
