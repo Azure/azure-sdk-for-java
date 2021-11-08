@@ -19,12 +19,13 @@ import scala.collection.mutable.ArrayBuffer
 import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
+// scalastyle:off multiple.string.literals
 private[spark] object CosmosClientCache extends BasicLoggingTrait {
   // removing clients from the cache after 15 minutes
   // The clients won't be disposed - so any still running task can still keep using it
   // but it helps to allow the GC to clean-up the resources if no running task is using the client anymore
   private[this] val unusedClientTtlInMs = 15 * 60 * 1000
-  private[this] val cleanupIntervalInSeconds = 60
+  private[this] val cleanupIntervalInSeconds = 5 * 60
   private[this] val cache = new TrieMap[CosmosClientConfiguration, CosmosClientCacheMetadata]
   private[this] val toBeClosedWhenNotActiveAnymore =  new ConcurrentHashMap[CosmosClientCacheMetadata, java.lang.Boolean]
   private[this] val executorService:ScheduledExecutorService = Executors.newSingleThreadScheduledExecutor(
@@ -124,10 +125,8 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
         } else {
 
           if (cosmosClientStateHandle.isDefined && isTaskRetryAttempt) {
-            // scalastyle:off multiple.string.literals
             logInfo(s"Ignoring broadcast client state handle because Task is getting retried. " +
               s"Attempt Count: ${TaskContext.get().attemptNumber()}")
-            // scalastyle:on multiple.string.literals
           }
 
           None
@@ -167,11 +166,11 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
     try {
       logInfo(s"-->onCleanup (${cache.size} clients)")
       val snapshot = cache.readOnlySnapshot()
+      val staleClientsInUse = ArrayBuffer[OwnerInfo]()
       snapshot.foreach(pair => {
         val clientConfig = pair._1
         val clientMetadata = pair._2
 
-        //scalastyle:off multiple.string.literals
         if (clientMetadata.lastRetrieved.get() < Instant.now.toEpochMilli - unusedClientTtlInMs) {
           if (clientMetadata.refCount.get() == 0) {
             logInfo(s"Removing client due to inactivity from the cache - ${clientConfig.endpoint}, " +
@@ -179,13 +178,11 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
               s"${clientConfig.useEventualConsistency}")
             purge(clientConfig)
           } else {
-            logInfo(s"Client has not been retrieved from the cache recently - ${clientConfig.endpoint}, " +
-              s"${clientConfig.applicationName}, ${clientConfig.preferredRegionsList}, ${clientConfig.useGatewayMode}, " +
-              s"${clientConfig.useEventualConsistency}, - but there are still Spark tasks running using this client " +
-              s"Spark tasks: ${clientMetadata.owners.keys.mkString(", ")}")
+            logInfo(s"Client has not been retrieved from the cache recently - Created: ${clientMetadata.created}, " +
+              s"LastRetrieved ${clientMetadata.lastRetrieved}, RefCount: ${clientMetadata.lastRetrieved}, " +
+              s"Owning Spark tasks: [${clientMetadata.owners.keys.mkString(", ")}]")
           }
         }
-        //scalastyle:on multiple.string.literals
       })
 
       val deleteCandidates = ArrayBuffer[CosmosClientCacheMetadata]()
@@ -267,3 +264,4 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
     }
   }
 }
+// scalastyle:on multiple.string.literals
