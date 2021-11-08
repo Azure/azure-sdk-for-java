@@ -27,8 +27,9 @@ public final class Sku {
     private SkuTier tier;
 
     /*
-     * The Event Hubs throughput units, value should be 0 to 20 throughput
-     * units.
+     * The Event Hubs throughput units for Basic or Standard tiers, where value
+     * should be 0 to 20 throughput units. The Event Hubs premium units for
+     * Premium tier, where value should be 0 to 10 premium units.
      */
     @JsonProperty(value = "capacity")
     private Integer capacity;
@@ -74,7 +75,9 @@ public final class Sku {
     }
 
     /**
-     * Get the capacity property: The Event Hubs throughput units, value should be 0 to 20 throughput units.
+     * Get the capacity property: The Event Hubs throughput units for Basic or Standard tiers, where value should be 0
+     * to 20 throughput units. The Event Hubs premium units for Premium tier, where value should be 0 to 10 premium
+     * units.
      *
      * @return the capacity value.
      */
@@ -83,7 +86,9 @@ public final class Sku {
     }
 
     /**
-     * Set the capacity property: The Event Hubs throughput units, value should be 0 to 20 throughput units.
+     * Set the capacity property: The Event Hubs throughput units for Basic or Standard tiers, where value should be 0
+     * to 20 throughput units. The Event Hubs premium units for Premium tier, where value should be 0 to 10 premium
+     * units.
      *
      * @param capacity the capacity value to set.
      * @return the Sku object itself.
