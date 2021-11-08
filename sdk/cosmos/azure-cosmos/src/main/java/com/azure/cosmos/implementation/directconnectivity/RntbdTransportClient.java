@@ -402,7 +402,7 @@ public class RntbdTransportClient extends TransportClient {
         private final Duration receiveHangDetectionTime;
 
         @JsonProperty()
-        private final Duration requestTimeout;
+        private final Duration tcpNetworkRequestTimeout;
 
         @JsonProperty()
         private final Duration requestTimerResolution;
@@ -456,7 +456,7 @@ public class RntbdTransportClient extends TransportClient {
             this.maxRequestsPerChannel = builder.maxRequestsPerChannel;
             this.maxConcurrentRequestsPerEndpointOverride = builder.maxConcurrentRequestsPerEndpointOverride;
             this.receiveHangDetectionTime = builder.receiveHangDetectionTime;
-            this.requestTimeout = builder.requestTimeout;
+            this.tcpNetworkRequestTimeout = builder.tcpNetworkRequestTimeout;
             this.requestTimerResolution = builder.requestTimerResolution;
             this.sendHangDetectionTime = builder.sendHangDetectionTime;
             this.shutdownTimeout = builder.shutdownTimeout;
@@ -469,7 +469,7 @@ public class RntbdTransportClient extends TransportClient {
             this.preferTcpNative = builder.preferTcpNative;
 
             this.connectTimeout = builder.connectTimeout == null
-                ? builder.requestTimeout
+                ? builder.tcpNetworkRequestTimeout
                 : builder.connectTimeout;
         }
 
@@ -488,7 +488,7 @@ public class RntbdTransportClient extends TransportClient {
             this.maxConcurrentRequestsPerEndpointOverride = -1;
 
             this.receiveHangDetectionTime = Duration.ofSeconds(65L);
-            this.requestTimeout = connectionPolicy.getRequestTimeout();
+            this.tcpNetworkRequestTimeout = connectionPolicy.getTcpNetworkRequestTimeout();
             this.requestTimerResolution = Duration.ofMillis(100L);
             this.sendHangDetectionTime = Duration.ofSeconds(10L);
             this.shutdownTimeout = Duration.ofSeconds(15L);
@@ -557,8 +557,8 @@ public class RntbdTransportClient extends TransportClient {
             return this.receiveHangDetectionTime;
         }
 
-        public Duration requestTimeout() {
-            return this.requestTimeout;
+        public Duration tcpNetworkRequestTimeout() {
+            return this.tcpNetworkRequestTimeout;
         }
 
         public Duration requestTimerResolution() {
@@ -734,7 +734,7 @@ public class RntbdTransportClient extends TransportClient {
             private int maxRequestsPerChannel;
             private int maxConcurrentRequestsPerEndpointOverride;
             private Duration receiveHangDetectionTime;
-            private Duration requestTimeout;
+            private Duration tcpNetworkRequestTimeout;
             private Duration requestTimerResolution;
             private Duration sendHangDetectionTime;
             private Duration shutdownTimeout;
@@ -767,7 +767,7 @@ public class RntbdTransportClient extends TransportClient {
                     DEFAULT_OPTIONS.maxConcurrentRequestsPerEndpointOverride;
 
                 this.receiveHangDetectionTime = DEFAULT_OPTIONS.receiveHangDetectionTime;
-                this.requestTimeout = connectionPolicy.getRequestTimeout();
+                this.tcpNetworkRequestTimeout = connectionPolicy.getTcpNetworkRequestTimeout();
                 this.requestTimerResolution = DEFAULT_OPTIONS.requestTimerResolution;
                 this.sendHangDetectionTime = DEFAULT_OPTIONS.sendHangDetectionTime;
                 this.shutdownTimeout = DEFAULT_OPTIONS.shutdownTimeout;
@@ -875,11 +875,11 @@ public class RntbdTransportClient extends TransportClient {
                 return this;
             }
 
-            public Builder requestTimeout(final Duration value) {
+            public Builder tcpNetworkRequestTimeout(final Duration value) {
                 checkArgument(value != null && value.compareTo(Duration.ZERO) > 0,
                     "expected positive value, not %s",
                     value);
-                this.requestTimeout = value;
+                this.tcpNetworkRequestTimeout = value;
                 return this;
             }
 

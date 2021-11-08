@@ -24,6 +24,7 @@ import com.azure.core.implementation.serializer.HttpResponseDecoder.HttpDecodedR
 import com.azure.core.util.Base64Url;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
@@ -50,7 +51,6 @@ import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
 
@@ -131,12 +131,14 @@ public final class RestProxy implements InvocationHandler {
                 .addData("azure-eagerly-read-response", shouldEagerlyReadResponse(methodParser.getReturnType()));
             context = startTracingSpan(method, context);
 
-            if (request.getBody() != null) {
-                request.setBody(validateLength(request));
-            }
-
+            // If there is 'RequestOptions' apply its request callback operations before validating the body.
+            // This is because the callbacks may mutate the request body.
             if (options != null) {
                 options.getRequestCallback().accept(request);
+            }
+
+            if (request.getBody() != null) {
+                request.setBody(validateLength(request));
             }
 
             final Mono<HttpResponse> asyncResponse = send(request, context);
@@ -166,12 +168,7 @@ public final class RestProxy implements InvocationHandler {
 
         Context optionsContext = options.getContext();
         if (optionsContext != null && optionsContext != Context.NONE) {
-            // For now, get the 'Context' key-value map to ensure only the latest versions of a 'Context'
-            // key-value pair is merged into 'context'.
-            // In the future this can be further optimized: https://github.com/Azure/azure-sdk-for-java/issues/25153
-            for (Map.Entry<Object, Object> kvp : optionsContext.getValues().entrySet()) {
-                context = context.addData(kvp.getKey(), kvp.getValue());
-            }
+            context = CoreUtils.mergeContexts(context, optionsContext);
         }
 
         return context;

@@ -9,7 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Description of NetWorkRuleSet - IpRules resource. */
+/** The response from the List namespace operation. */
 @Fluent
 public final class NWRuleSetIpRules {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(NWRuleSetIpRules.class);

@@ -9,13 +9,17 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.resourcemanager.eventhubs.fluent.ClustersClient;
+import com.azure.resourcemanager.eventhubs.fluent.ConfigurationsClient;
 import com.azure.resourcemanager.eventhubs.fluent.ConsumerGroupsClient;
 import com.azure.resourcemanager.eventhubs.fluent.DisasterRecoveryConfigsClient;
 import com.azure.resourcemanager.eventhubs.fluent.EventHubManagementClient;
 import com.azure.resourcemanager.eventhubs.fluent.EventHubsClient;
 import com.azure.resourcemanager.eventhubs.fluent.NamespacesClient;
 import com.azure.resourcemanager.eventhubs.fluent.OperationsClient;
-import com.azure.resourcemanager.eventhubs.fluent.RegionsClient;
+import com.azure.resourcemanager.eventhubs.fluent.PrivateEndpointConnectionsClient;
+import com.azure.resourcemanager.eventhubs.fluent.PrivateLinkResourcesClient;
+import com.azure.resourcemanager.eventhubs.fluent.SchemaRegistriesClient;
 import com.azure.resourcemanager.resources.fluentcore.AzureServiceClient;
 import java.time.Duration;
 
@@ -100,6 +104,30 @@ public final class EventHubManagementClientImpl extends AzureServiceClient imple
         return this.defaultPollInterval;
     }
 
+    /** The ClustersClient object to access its operations. */
+    private final ClustersClient clusters;
+
+    /**
+     * Gets the ClustersClient object to access its operations.
+     *
+     * @return the ClustersClient object.
+     */
+    public ClustersClient getClusters() {
+        return this.clusters;
+    }
+
+    /** The ConfigurationsClient object to access its operations. */
+    private final ConfigurationsClient configurations;
+
+    /**
+     * Gets the ConfigurationsClient object to access its operations.
+     *
+     * @return the ConfigurationsClient object.
+     */
+    public ConfigurationsClient getConfigurations() {
+        return this.configurations;
+    }
+
     /** The NamespacesClient object to access its operations. */
     private final NamespacesClient namespaces;
 
@@ -112,40 +140,28 @@ public final class EventHubManagementClientImpl extends AzureServiceClient imple
         return this.namespaces;
     }
 
-    /** The DisasterRecoveryConfigsClient object to access its operations. */
-    private final DisasterRecoveryConfigsClient disasterRecoveryConfigs;
+    /** The PrivateEndpointConnectionsClient object to access its operations. */
+    private final PrivateEndpointConnectionsClient privateEndpointConnections;
 
     /**
-     * Gets the DisasterRecoveryConfigsClient object to access its operations.
+     * Gets the PrivateEndpointConnectionsClient object to access its operations.
      *
-     * @return the DisasterRecoveryConfigsClient object.
+     * @return the PrivateEndpointConnectionsClient object.
      */
-    public DisasterRecoveryConfigsClient getDisasterRecoveryConfigs() {
-        return this.disasterRecoveryConfigs;
+    public PrivateEndpointConnectionsClient getPrivateEndpointConnections() {
+        return this.privateEndpointConnections;
     }
 
-    /** The EventHubsClient object to access its operations. */
-    private final EventHubsClient eventHubs;
+    /** The PrivateLinkResourcesClient object to access its operations. */
+    private final PrivateLinkResourcesClient privateLinkResources;
 
     /**
-     * Gets the EventHubsClient object to access its operations.
+     * Gets the PrivateLinkResourcesClient object to access its operations.
      *
-     * @return the EventHubsClient object.
+     * @return the PrivateLinkResourcesClient object.
      */
-    public EventHubsClient getEventHubs() {
-        return this.eventHubs;
-    }
-
-    /** The ConsumerGroupsClient object to access its operations. */
-    private final ConsumerGroupsClient consumerGroups;
-
-    /**
-     * Gets the ConsumerGroupsClient object to access its operations.
-     *
-     * @return the ConsumerGroupsClient object.
-     */
-    public ConsumerGroupsClient getConsumerGroups() {
-        return this.consumerGroups;
+    public PrivateLinkResourcesClient getPrivateLinkResources() {
+        return this.privateLinkResources;
     }
 
     /** The OperationsClient object to access its operations. */
@@ -160,16 +176,52 @@ public final class EventHubManagementClientImpl extends AzureServiceClient imple
         return this.operations;
     }
 
-    /** The RegionsClient object to access its operations. */
-    private final RegionsClient regions;
+    /** The EventHubsClient object to access its operations. */
+    private final EventHubsClient eventHubs;
 
     /**
-     * Gets the RegionsClient object to access its operations.
+     * Gets the EventHubsClient object to access its operations.
      *
-     * @return the RegionsClient object.
+     * @return the EventHubsClient object.
      */
-    public RegionsClient getRegions() {
-        return this.regions;
+    public EventHubsClient getEventHubs() {
+        return this.eventHubs;
+    }
+
+    /** The DisasterRecoveryConfigsClient object to access its operations. */
+    private final DisasterRecoveryConfigsClient disasterRecoveryConfigs;
+
+    /**
+     * Gets the DisasterRecoveryConfigsClient object to access its operations.
+     *
+     * @return the DisasterRecoveryConfigsClient object.
+     */
+    public DisasterRecoveryConfigsClient getDisasterRecoveryConfigs() {
+        return this.disasterRecoveryConfigs;
+    }
+
+    /** The ConsumerGroupsClient object to access its operations. */
+    private final ConsumerGroupsClient consumerGroups;
+
+    /**
+     * Gets the ConsumerGroupsClient object to access its operations.
+     *
+     * @return the ConsumerGroupsClient object.
+     */
+    public ConsumerGroupsClient getConsumerGroups() {
+        return this.consumerGroups;
+    }
+
+    /** The SchemaRegistriesClient object to access its operations. */
+    private final SchemaRegistriesClient schemaRegistries;
+
+    /**
+     * Gets the SchemaRegistriesClient object to access its operations.
+     *
+     * @return the SchemaRegistriesClient object.
+     */
+    public SchemaRegistriesClient getSchemaRegistries() {
+        return this.schemaRegistries;
     }
 
     /**
@@ -196,12 +248,16 @@ public final class EventHubManagementClientImpl extends AzureServiceClient imple
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2017-04-01";
+        this.apiVersion = "2021-11-01";
+        this.clusters = new ClustersClientImpl(this);
+        this.configurations = new ConfigurationsClientImpl(this);
         this.namespaces = new NamespacesClientImpl(this);
-        this.disasterRecoveryConfigs = new DisasterRecoveryConfigsClientImpl(this);
-        this.eventHubs = new EventHubsClientImpl(this);
-        this.consumerGroups = new ConsumerGroupsClientImpl(this);
+        this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
+        this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.operations = new OperationsClientImpl(this);
-        this.regions = new RegionsClientImpl(this);
+        this.eventHubs = new EventHubsClientImpl(this);
+        this.disasterRecoveryConfigs = new DisasterRecoveryConfigsClientImpl(this);
+        this.consumerGroups = new ConsumerGroupsClientImpl(this);
+        this.schemaRegistries = new SchemaRegistriesClientImpl(this);
     }
 }

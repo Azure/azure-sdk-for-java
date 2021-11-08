@@ -129,13 +129,8 @@ public final class WebPubSubServiceClient {
         if (requestOptions == null) {
             requestOptions = new RequestOptions();
         }
-        requestOptions.addHeader("Content-Type", contentType.toString());
-        requestOptions.addRequestCallback(httpRequest -> {
-            if (httpRequest.getHeaders().stream()
-                .noneMatch(header -> header.getName().equalsIgnoreCase("Content-Length"))) {
-                httpRequest.setHeader("Content-Length", String.valueOf(contentLength));
-            }
-        });
+        requestOptions.setHeader("Content-Type", contentType.toString());
+        requestOptions.setHeader("Content-Length", String.valueOf(contentLength));
         return this.serviceClient.sendToAllWithResponse(
                 hub, message, requestOptions);
     }
@@ -151,8 +146,7 @@ public final class WebPubSubServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void sendToAll(String message, WebPubSubContentType contentType) {
         sendToAllWithResponse(BinaryData.fromString(message),
-                new RequestOptions().addRequestCallback(request -> request.getHeaders().set("Content-Type",
-                        contentType.toString())));
+                new RequestOptions().setHeader("Content-Type", contentType.toString()));
     }
 
     /**
@@ -222,13 +216,8 @@ public final class WebPubSubServiceClient {
         if (requestOptions == null) {
             requestOptions = new RequestOptions();
         }
-        requestOptions.addHeader("Content-Type", contentType.toString());
-        requestOptions.addRequestCallback(httpRequest -> {
-            if (httpRequest.getHeaders().stream()
-                .noneMatch(header -> header.getName().equalsIgnoreCase("Content-Length"))) {
-                httpRequest.setHeader("Content-Length", String.valueOf(contentLength));
-            }
-        });
+        requestOptions.setHeader("Content-Type", contentType.toString());
+        requestOptions.setHeader("Content-Length", String.valueOf(contentLength));
         return this.serviceClient.sendToConnectionWithResponse(
                 hub, connectionId, message, requestOptions);
     }
@@ -246,8 +235,7 @@ public final class WebPubSubServiceClient {
     public void sendToConnection(
             String connectionId, String message, WebPubSubContentType contentType) {
         this.sendToConnectionWithResponse(connectionId, BinaryData.fromString(message),
-                new RequestOptions().addRequestCallback(request -> request.getHeaders()
-                        .set("Content-Type", contentType.toString())));
+                new RequestOptions().setHeader("Content-Type", contentType.toString()));
     }
 
     /**
@@ -303,13 +291,8 @@ public final class WebPubSubServiceClient {
         if (requestOptions == null) {
             requestOptions = new RequestOptions();
         }
-        requestOptions.addHeader("Content-Type", contentType.toString());
-        requestOptions.addRequestCallback(httpRequest -> {
-            if (httpRequest.getHeaders().stream()
-                .noneMatch(header -> header.getName().equalsIgnoreCase("Content-Length"))) {
-                httpRequest.setHeader("Content-Length", String.valueOf(contentLength));
-            }
-        });
+        requestOptions.setHeader("Content-Type", contentType.toString());
+        requestOptions.setHeader("Content-Length", String.valueOf(contentLength));
         return this.serviceClient.sendToGroupWithResponse(
                 hub, group, message, requestOptions);
     }
@@ -326,7 +309,7 @@ public final class WebPubSubServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void sendToGroup(String group, String message, WebPubSubContentType contentType) {
         sendToGroupWithResponse(group, BinaryData.fromString(message), new RequestOptions()
-                .addRequestCallback(request -> request.getHeaders().set("Content-Type", contentType.toString())));
+                .setHeader("Content-Type", contentType.toString()));
     }
 
     /**
@@ -415,13 +398,8 @@ public final class WebPubSubServiceClient {
         if (requestOptions == null) {
             requestOptions = new RequestOptions();
         }
-        requestOptions.addHeader("Content-Type", contentType.toString());
-        requestOptions.addRequestCallback(httpRequest -> {
-            if (httpRequest.getHeaders().stream()
-                .noneMatch(header -> header.getName().equalsIgnoreCase("Content-Length"))) {
-                httpRequest.setHeader("Content-Length", String.valueOf(contentLength));
-            }
-        });
+        requestOptions.setHeader("Content-Type", contentType.toString());
+        requestOptions.setHeader("Content-Length", String.valueOf(contentLength));
         return this.serviceClient.sendToUserWithResponse(
                 hub, userId, message, requestOptions);
     }
@@ -438,7 +416,7 @@ public final class WebPubSubServiceClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void sendToUser(String userId, String message, WebPubSubContentType contentType) {
         sendToUserWithResponse(userId, BinaryData.fromString(message), new RequestOptions()
-                .addRequestCallback(request -> request.getHeaders().set("Content-Type", contentType.toString())));
+                .setHeader("Content-Type", contentType.toString()));
     }
 
     /**
