@@ -50,11 +50,11 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class ClientTelemetry {
     public final static int ONE_KB_TO_BYTES = 1024;
-    public final static int REQUEST_LATENCY_MAX_MICRO_SEC = 300000000;
+    public final static int REQUEST_LATENCY_MAX_MILLI_SEC = 300000;
     public final static int REQUEST_LATENCY_SUCCESS_PRECISION = 4;
     public final static int REQUEST_LATENCY_FAILURE_PRECISION = 2;
     public final static String REQUEST_LATENCY_NAME = "RequestLatency";
-    public final static String REQUEST_LATENCY_UNIT = "MicroSec";
+    public final static String REQUEST_LATENCY_UNIT = "MilliSecond";
 
     public final static int REQUEST_CHARGE_MAX = 10000;
     public final static int REQUEST_CHARGE_PRECISION = 2;
