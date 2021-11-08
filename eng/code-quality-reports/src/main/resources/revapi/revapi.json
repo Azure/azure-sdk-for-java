@@ -18,6 +18,7 @@
             "reactor\\.netty\\..+",
             "reactor\\.util\\..+",
             "io\\.netty\\..+",
+            "com\\.squareup\\..+",
             "com\\.nimbusds(\\..+)?",
             "com\\.microsoft\\.azure\\..+",
             "javax\\.jms(\\..+)?",
