@@ -39,7 +39,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
-    <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>
+    <jacoco.skip>true</jacoco.skip>
   </properties>
   <dependencies>
     <dependency>

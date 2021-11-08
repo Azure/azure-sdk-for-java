@@ -81,11 +81,6 @@ class SecretImpl extends CreatableUpdatableImpl<Secret, SecretProperties, Secret
     }
 
     @Override
-    public String test() {
-        return null;
-    }
-
-    @Override
     public boolean managed() {
         return ResourceManagerUtils.toPrimitiveBoolean(innerModel().isManaged());
     }

@@ -81,6 +81,12 @@ public final class SharesGetPropertiesHeaders {
     private Integer xMsShareProvisionedIngressMbps;
 
     /*
+     * The x-ms-share-provisioned-bandwidth-mibps property.
+     */
+    @JsonProperty(value = "x-ms-share-provisioned-bandwidth-mibps")
+    private Integer xMsShareProvisionedBandwidthMibps;
+
+    /*
      * The x-ms-share-quota property.
      */
     @JsonProperty(value = "x-ms-share-quota")
@@ -352,6 +358,26 @@ public final class SharesGetPropertiesHeaders {
      */
     public SharesGetPropertiesHeaders setXMsShareProvisionedIngressMbps(Integer xMsShareProvisionedIngressMbps) {
         this.xMsShareProvisionedIngressMbps = xMsShareProvisionedIngressMbps;
+        return this;
+    }
+
+    /**
+     * Get the xMsShareProvisionedBandwidthMibps property: The x-ms-share-provisioned-bandwidth-mibps property.
+     *
+     * @return the xMsShareProvisionedBandwidthMibps value.
+     */
+    public Integer getXMsShareProvisionedBandwidthMibps() {
+        return this.xMsShareProvisionedBandwidthMibps;
+    }
+
+    /**
+     * Set the xMsShareProvisionedBandwidthMibps property: The x-ms-share-provisioned-bandwidth-mibps property.
+     *
+     * @param xMsShareProvisionedBandwidthMibps the xMsShareProvisionedBandwidthMibps value to set.
+     * @return the SharesGetPropertiesHeaders object itself.
+     */
+    public SharesGetPropertiesHeaders setXMsShareProvisionedBandwidthMibps(Integer xMsShareProvisionedBandwidthMibps) {
+        this.xMsShareProvisionedBandwidthMibps = xMsShareProvisionedBandwidthMibps;
         return this;
     }
 

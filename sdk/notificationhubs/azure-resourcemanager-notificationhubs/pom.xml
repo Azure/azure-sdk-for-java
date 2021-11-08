@@ -38,8 +38,8 @@
   </developers>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>
-    <skipNewCodesnippetTooling>false</skipNewCodesnippetTooling>
+    <jacoco.skip>true</jacoco.skip>
+    <codesnippet.skip>false</codesnippet.skip>
     <javadocDoclet></javadocDoclet>
     <javadocDocletOptions></javadocDocletOptions>
   </properties>
