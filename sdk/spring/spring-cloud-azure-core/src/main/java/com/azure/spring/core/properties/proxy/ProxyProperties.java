@@ -12,11 +12,12 @@ public class ProxyProperties implements ProxyAware.Proxy {
 
     private String type;
     private String hostname;
-    private int port;
+    private Integer port;
     private String authenticationType;
     private String username;
     private String password;
 
+    @Override
     public String getType() {
         return type;
     }
@@ -25,6 +26,7 @@ public class ProxyProperties implements ProxyAware.Proxy {
         this.type = type;
     }
 
+    @Override
     public String getHostname() {
         return hostname;
     }
@@ -33,14 +35,16 @@ public class ProxyProperties implements ProxyAware.Proxy {
         this.hostname = hostname;
     }
 
-    public int getPort() {
+    @Override
+    public Integer getPort() {
         return port;
     }
 
-    public void setPort(int port) {
+    public void setPort(Integer port) {
         this.port = port;
     }
 
+    @Override
     public String getAuthenticationType() {
         return authenticationType;
     }
@@ -49,6 +53,7 @@ public class ProxyProperties implements ProxyAware.Proxy {
         this.authenticationType = authenticationType;
     }
 
+    @Override
     public String getUsername() {
         return username;
     }
@@ -57,6 +62,7 @@ public class ProxyProperties implements ProxyAware.Proxy {
         this.username = username;
     }
 
+    @Override
     public String getPassword() {
         return password;
     }

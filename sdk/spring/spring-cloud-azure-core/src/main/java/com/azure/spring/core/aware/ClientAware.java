@@ -35,11 +35,18 @@ public interface ClientAware {
      * Interface to be implemented by classes that wish to describe a http based client sdk.
      */
     interface HttpClient extends Client {
+
         Duration getWriteTimeout();
 
         Duration getResponseTimeout();
 
         Duration getReadTimeout();
+
+        Duration getConnectTimeout();
+
+        Integer getMaximumConnectionPoolSize();
+
+        Duration getConnectionIdleTimeout();
 
     }
 
