@@ -13,7 +13,7 @@
     "extension": "revapi.versions",
     "configuration": {
       "enabled": true,
-      "semantic0": true,
+      "semantic0": false,
       "versionIncreaseAllows": {
         "major": {
           "severity": "BREAKING"
@@ -48,24 +48,78 @@
       "elements": {
         "exclude": [
           "class com\\.azure\\.core\\.util\\.Configuration",
-          "class com\\.azure\\..+\\.implementation(\\.)?.+",
-          "class com\\.azure\\..+\\.samples(\\..+)?",
-          "class com\\.fasterxml\\.jackson\\..+",
-          "class reactor\\.core\\..+",
-          "class reactor\\.netty\\..+",
-          "class reactor\\.util\\..+",
-          "class io\\.netty\\..+",
-          "class com\\.nimbusds(\\..+)?",
-          "class com\\.microsoft\\.azure\\..+",
-          "class javax\\.jms(\\..+)?",
-          "class javax\\.servlet(\\..+)?",
-          "class io\\.micrometer(\\..+)?",
-          "class com\\.azure\\.data\\.cosmos(\\..+)?",
-          "class com\\.azure\\.spring\\.data\\.cosmos\\..+",
-          "class com\\.azure\\.spring\\.data\\.gremlin\\..+",
-          "class com\\.azure\\.spring(\\..+)?",
-          "class org\\.apache\\.avro\\..+",
-          "class com\\.azure\\.resourcemanager\\..*\\.fluent\\..*"
+          {
+            "matcher": "java-package",
+            "match": "com\\.\\azure\\..+\\.implementation(\\..*)?"
+          },
+          {
+            "matcher": "java-package",
+            "match": "com\\.azure\\..+\\.samples(\\..*)?"
+          },
+          {
+            "matcher": "java-package",
+            "match": "com\\.fasterxml\\.jackson(\\..*)?"
+          },
+          {
+            "matcher": "java-package",
+            "match": "reactor\\.core(\\..*)?"
+          },
+          {
+            "matcher": "java-package",
+            "match": "reactor\\.netty(\\..*)?"
+          },
+          {
+            "matcher": "java-package",
+            "match": "reactor\\.util(\\..*)?"
+          },
+          {
+            "matcher": "java-package",
+            "match": "io\\.netty(\\..*)?"
+          },
+          {
+            "matcher": "java-package",
+            "match": "com\\.nimbusds(\\..*)?"
+          },
+          {
+            "matcher": "java-package",
+            "match": "com\\.microsoft\\.azure(\\..*)?"
+          },
+          {
+            "matcher": "java-package",
+            "match": "javax\\.jms(\\..*)?"
+          },
+          {
+            "matcher": "java-package",
+            "match": "javax\\.servlet(\\..*)?"
+          },
+          {
+            "matcher": "java-package",
+            "match": "io\\.micrometer(\\..*)?"
+          },
+          {
+            "matcher": "java-package",
+            "match": "com\\.azure\\.data\\.cosmos(\\..*)?"
+          },
+          {
+            "matcher": "java-package",
+            "match": "com\\.azure\\.spring\\.data\\.cosmos(\\..*)?"
+          },
+          {
+            "matcher": "java-package",
+            "match": "com\\.azure\\.spring\\.data\\.gremlin(\\..*)?"
+          },
+          {
+            "matcher": "java-package",
+            "match": "com\\.azure\\.spring(\\..*)?"
+          },
+          {
+            "matcher": "java-package",
+            "match": "org\\.apache\\.avro(\\..*)?"
+          },
+          {
+            "matcher": "java-package",
+            "match": "com\\.azure\\.resourcemanager\\..*\\.fluent(\\..*)?"
+          }
         ]
       }
     }
