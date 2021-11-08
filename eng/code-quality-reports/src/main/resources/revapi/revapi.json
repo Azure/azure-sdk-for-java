@@ -1,5 +1,15 @@
 [
   {
+    "extension": "revapi.java",
+    "configuration": {
+      "missing-classes": {
+        "behavior": "report",
+        "ignoreMissingAnnotations": false
+      },
+      "matchOverloads": true
+    }
+  },
+  {
     "extension": "revapi.versions",
     "configuration": {
       "enabled": true,
@@ -14,7 +24,22 @@
         "patch": {
           "severity": "EQUIVALENT"
         }
-      }
+      },
+      "onAllowed": {
+        "remove": true,
+        "attachments": {
+          "breaksVersioningRules": "false"
+        }
+      },
+      "onDisallowed": {
+        "criticality": "error",
+        "attachments": {
+          "breaksVersioningRules": "true"
+        }
+      },
+      "passThroughDifference": [
+        "java.class.nonPublicPartOfAPI"
+      ]
     }
   },
   {
@@ -48,7 +73,7 @@
   {
     "extension": "revapi.differences",
     "configuration": {
-      "ignored": true,
+      "ignore": true,
       "differences": [
         {
           "regex": true,
@@ -156,7 +181,7 @@
           "regex": true,
           "code": "java\\.method\\.addedToInterface",
           "new": "method .* com\\.azure\\.resourcemanager\\..*",
-          "justification": "Interfaces in ResourceManager are allowed to add methods."
+          "justification": "resourcemanager interfaces are allowed to add methods."
         },
         {
           "regex": true,
