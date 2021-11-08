@@ -4,8 +4,10 @@
 package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.AnalyzeResult;
+import com.azure.ai.formrecognizer.models.DocumentLine;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.ai.formrecognizer.models.DocumentTable;
+import com.azure.ai.formrecognizer.models.DocumentWord;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.polling.SyncPoller;
 
@@ -14,7 +16,9 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Sample for analyzing layout information from a document given through a file.
@@ -52,20 +56,26 @@ public class AnalyzeLayout {
                 documentPage.getUnit());
 
             // lines
-            documentPage.getLines().forEach(documentLine ->
-                System.out.printf("Line %s is within a bounding box %s.%n",
+            documentPage.getLines().forEach(documentLine -> {
+                System.out.printf("Line '%s' is within a bounding box %s.%n",
                     documentLine.getContent(),
-                    documentLine.getBoundingBox().toString()));
+                    documentLine.getBoundingBox().toString());
+
+                List<DocumentWord> containedWords = getWordsInALine(documentLine, documentPage.getWords());
+                System.out.printf("Total number of words in the line: %d.%n", containedWords.size());
+                System.out.printf("Words contained in the line are: %s.%n",
+                    containedWords.stream().map(DocumentWord::getContent).collect(Collectors.toList()));
+            });
 
             // words
             documentPage.getWords().forEach(documentWord ->
-                System.out.printf("Word %s has a confidence score of %.2f%n.",
+                System.out.printf("Word '%s' has a confidence score of %.2f.%n",
                     documentWord.getContent(),
                     documentWord.getConfidence()));
 
             // selection marks
             documentPage.getSelectionMarks().forEach(documentSelectionMark ->
-                System.out.printf("Selection mark is %s and is within a bounding box %s with confidence %.2f.%n",
+                System.out.printf("Selection mark is '%s' and is within a bounding box %s with confidence %.2f.%n",
                     documentSelectionMark.getState().toString(),
                     documentSelectionMark.getBoundingBox().toString(),
                     documentSelectionMark.getConfidence()));
@@ -86,6 +96,21 @@ public class AnalyzeLayout {
 
         // styles
         analyzeLayoutResult.getStyles().forEach(documentStyle
-            -> System.out.printf("Document is handwritten %s%n.", documentStyle.isHandwritten()));
+            -> System.out.printf("Document is handwritten %s.%n", documentStyle.isHandwritten()));
+    }
+
+    private static List<DocumentWord> getWordsInALine(DocumentLine documentLine, List<DocumentWord> pageWords) {
+        List<DocumentWord> containedWords = new ArrayList<>();
+        pageWords.forEach(documentWord -> {
+            documentLine.getSpans().forEach(documentSpan -> {
+                if ((documentWord.getSpan().getOffset() >= documentSpan.getOffset())
+                    && ((documentWord.getSpan().getOffset() +
+                    documentWord.getSpan().getLength()) <= (documentSpan.getOffset() + documentSpan.getLength()))) {
+                    containedWords.add(documentWord);
+                }
+            });
+        });
+
+        return containedWords;
     }
 }

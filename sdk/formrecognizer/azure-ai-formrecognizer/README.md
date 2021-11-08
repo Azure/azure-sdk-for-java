@@ -20,7 +20,7 @@ It includes the following main features:
 
 #### Include the BOM file
 
-Please include the azure-sdk-bom to your project to take dependency on GA version of the library. In the following snippet, replace the {bom_version_to_target} placeholder with the version number.
+Do include the azure-sdk-bom to your project to take dependency on GA version of the library. In the following snippet, replace the {bom_version_to_target} placeholder with the version number.
 To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/boms/azure-sdk-bom/README.md).
 
 ```xml
@@ -36,7 +36,7 @@ To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/A
     </dependencies>
 </dependencyManagement>
 ```
-and then include the direct dependency in the dependencies section without the version tag.
+And then include the direct dependency in the dependencies section without the version tag.
 
 ```xml
 <dependencies>
@@ -48,8 +48,7 @@ and then include the direct dependency in the dependencies section without the v
 ```
 
 #### Include direct dependency
-If you want to take dependency on a particular version of the library that is not present in the BOM,
-add the direct dependency to your project as follows.
+You can add a direct dependency of a particular version of the library to your project, that is not present in the BOM as follows:
 
 [//]: # ({x-version-update-start;com.azure:azure-ai-formrecognizer;current})
 ```xml
@@ -72,7 +71,7 @@ This table shows the relationship between SDK versions and supported API version
 
 > Note: Starting with version 2021-09-30-preview, a new set of clients were introduced to leverage the newest features
 > of the Form Recognizer service. Please see the [Migration Guide][migration_guide] for detailed instructions on how to update application
-> code from client library version 3.1.X or lower to the latest version. Additionally, see the [Changelog][changelog] for more detailed information.
+> code from client library version 3.1.X or lower to the latest version. For more information, see [Changelog][changelog].
 > The below table describes the relationship of each client and its supported API version(s):
 
 |API version|Supported clients
@@ -88,7 +87,7 @@ create a Form Recognizer resource.
 
 You can create either resource using the
 
-**Option 1:** [Azure Portal][create_new_resource]
+**Option 1:** [Azure portal][create_new_resource]
 
 **Option 2:** [Azure CLI][azure_cli]
 
@@ -118,7 +117,7 @@ will create the synchronous client, while invoking `buildAsyncClient` will creat
 You will need an **endpoint**, and a **key** to instantiate a client object.
 
 #### Looking up the endpoint
-You can find the **endpoint** for your Form Recognizer resource in the [Azure Portal][azure_portal],
+You can find the **endpoint** for your Form Recognizer resource in the [Azure portal][azure_portal],
 or [Azure CLI][azure_cli_endpoint].
 ```bash
 # Get the endpoint for the resource
@@ -127,7 +126,7 @@ az cognitiveservices account show --name "resource-name" --resource-group "resou
 
 #### Create a Document Analysis client using AzureKeyCredential
 To use `AzureKeyCredential` authentication, provide the [key][key] as a string to the [AzureKeyCredential][azure_key_credential].
-This key can be found in the [Azure Portal][azure_portal] in your created Form Recognizer
+This key can be found in the [Azure portal][azure_portal] in your created Form Recognizer
 resource, or by running the following Azure CLI command to get the key from the Form Recognizer resource:
 
 ```bash
@@ -174,8 +173,7 @@ Set the values of the client ID, tenant ID, and client secret of the AAD applica
 AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET.
 
 Authorization is easiest using [DefaultAzureCredential][wiki_identity]. It finds the best credential to use in its
-running environment. For more information about using Azure Active Directory authorization with Form Recognizer, please
-refer to [the associated documentation][aad_authorization].
+running environment. For more information about using Azure Active Directory authorization with Form Recognizer, see [the associated documentation][aad_authorization].
 
 ```java readme-sample-createDocumentAnalysisClientWithAAD
 TokenCredential credential = new DefaultAzureCredentialBuilder().build();
@@ -192,43 +190,41 @@ provide both synchronous and asynchronous operations for analyzing input documen
 through the `beginAnalyzeDocument` and `beginAnalyzeDocumentFromUrl` methods.
 Use the `modelId` parameter to select the type of model for analysis.
 
-|Model| Features
-|-|-
-|"prebuilt-layout"| Text extraction, selection marks, tables
-|"prebuilt-document"| Text extraction, selection marks, tables, key-value pairs and entities
-|"prebuilt-invoices"| Text extraction, selection marks, tables, and prebuilt fields and values pertaining to English invoices
-|"prebuilt-businessCard"| Text extraction and prebuilt fields and values pertaining to English business cards
-|"prebuilt-idDocument"| Text extraction and prebuilt fields and values pertaining to US driver licenses and international passports
-|"prebuilt-receipt"| Text extraction and prebuilt fields and values pertaining to English sales receipts
-|"{custom-model-id}"| Text extraction, selection marks, tables, labeled fields and values from your custom documents
+| Model                   | Features                                                                                                 |
+|-------------------------|----------------------------------------------------------------------------------------------------------|
+| "prebuilt-layout"       | Text extraction, selection marks, tables                                                                 |
+| "prebuilt-document"     | Text extraction, selection marks, tables, key-value pairs, and entities                                  |
+| "prebuilt-invoice"      | Text extraction, selection marks, tables, and prebuilt fields and values related to English invoices     |
+| "prebuilt-businessCard" | Text extraction and prebuilt fields, and values related to English business cards                        |
+| "prebuilt-idDocument"   | Text extraction and prebuilt fields and values related to US driver licenses and international passports |
+| "prebuilt-receipt"      | Text extraction and prebuilt fields and values related to English sales receipts                         |
+| "{custom-model-id}"     | Text extraction, selection marks, tables, labeled fields, and values from your custom documents          |
 
-Sample code snippets to illustrate using a DocumentAnalysisClient [here][sample_readme]. 
-More information about analyzing documents, including supported features, locales, and document types can be found 
+Sample code snippets to illustrate using a DocumentAnalysisClient [here][sample_readme].
+More information about analyzing documents, including supported features, locales, and document types can be found
 [here][fr-models].
 
 ### DocumentModelAdministrationClient
 The [DocumentModelAdministrationClient][document_model_admin_sync_client] and
 [DocumentModelAdministrationAsyncClient][document_model_admin_sync_client] provide both synchronous and asynchronous operations
-- Build custom document analysis models to analyze text content, fields and values found in your custom documents. See example [Build a model](#build-a-model).
-  A `DocumentModel` is returned indicating the document types that the model can analyze, and the fields and schemas it will extract in
+- Build custom document analysis models to analyze text content, fields, and values found in your custom documents. See example [Build a model](#build-a-model).
+  A `DocumentModel` is returned indicating the document types that the model can analyze, and the fields, and schemas it will extract in
   each doc type.
-- Managing models created in your account by building, listing, deleting, and see how close you are to the limit of
-  custom models your account can hold. See example [Manage models](#manage-your-models).
+- Managing models created in your account by building, listing, deleting, and see the limit of custom models your account. See example [Manage models](#manage-your-models).
 - Copying a custom model from one Form Recognizer resource to another.
 - Creating a composed model from a collection of existing built models.
 - Listing document model operations associated with the Form Recognizer resource.
 
-Please note that models can also be trained using a graphical user interface such as the [Form Recognizer Labeling Tool][fr_labeling_tool].
 Sample code snippets are provided to illustrate using a DocumentModelAdministrationClient [here](#examples "Examples").
 
 ### Long-running operations
-Long-running operations are operations which consist of an initial request sent to the service to start an operation,
+Long-running operations are operations that consist of an initial request sent to the service to start an operation,
 followed by polling the service at intervals to determine whether the operation has completed or failed, and if it has
 succeeded, to get the result.
 
-Methods that build models, analyze values from documents or copy and compose models are modeled as long-running operations.
+Methods that build models, analyze values from documents, or copy and compose models are modeled as long-running operations.
 The client exposes a `begin<MethodName>` method that returns a `SyncPoller` or `PollerFlux` instance.
-Callers should wait for the operation to completed by calling `getFinalResult()` on the returned operation from the
+Callers should wait for the operation to be completed by calling `getFinalResult()` on the returned operation from the
 `begin<MethodName>` method. Sample code snippets are provided to illustrate using long-running operations
 [below](#examples).
 
@@ -243,8 +239,7 @@ The following section provides several code snippets covering some of the most c
 * [Manage Your Models](#manage-your-models "Manage Your Models")
 
 ### Extract Layout
-Extract text, table structures and selection marks like radio buttons and check boxes, along with their bounding box
-coordinates, from documents, without the need to build a model.
+Extract text, table structures, and selection marks like radio buttons and check boxes, along with their bounding box coordinates from documents without the need to build a model.
 ```java readme-sample-extractLayout
 // analyze document layout using file input stream
 File layoutDocument = new File("local/file_path/filename.png");
@@ -369,7 +364,7 @@ for (int i = 0; i < receiptResults.getDocuments().size(); i++) {
 }
 ```
 
-For more information and samples using prebuilt models see:
+For more information and samples using prebuilt models, see:
 - [Business Cards][analyze_business_cards_from_url]
 - [Identity Documents][analyze_identity_documents_from_url]
 - [Invoices][analyze_invoices_from_url]
@@ -380,7 +375,10 @@ Build a machine-learned model on your own document type. The resulting model wil
 Provide a container SAS url to your Azure Storage Blob container where you're storing the training documents. See details on setting this up
 in the [service quickstart documentation][quickstart_training].
 
-More details on setting up a container and required file structure can be found in the [service documentation][fr_build_training_set].
+**Note**
+
+You can use the [Form Recognizer Studio preview][fr-studio] for creating a labeled file for your training forms.
+More details on setting up a container and required file structure can be found in the [here][fr_build_training_set].
 
 ```java readme-sample-buildModel
 // Build custom document analysis model
@@ -506,7 +504,7 @@ For more detailed examples, refer to [samples][sample_examples].
 
 ## Troubleshooting
 ### General
-Form Recognizer clients raises `HttpResponseException` [exceptions][http_response_exception]. For example, if you try
+Form Recognizer clients raise `HttpResponseException` [exceptions][http_response_exception]. For example, if you try
 to provide an invalid file source URL an `HttpResponseException` would be raised with an error indicating the failure cause.
 In the following code snippet, the error is handled
 gracefully by catching the exception and display the additional information about the error.
@@ -525,7 +523,7 @@ their resolution. The logs produced will capture the flow of an application befo
 locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
 
 ### Default HTTP Client
-All client libraries by default use the Netty HTTP client. Adding the above dependency will automatically configure
+All client libraries by default use the Netty HTTP client. Add the above dependency to automatically configure
 the client library to use the Netty HTTP client. Configuring or changing the HTTP client is detailed in the
 [HTTP clients wiki][http_clients_wiki].
 
@@ -579,7 +577,7 @@ This project welcomes contributions and suggestions. Most contributions require 
 
 When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repos using our CLA.
 
-This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information see the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
+This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For more information, see the [Code of Conduct FAQ][coc_faq] or contact [opencode@microsoft.com][coc_contact] with any additional questions or comments.
 
 <!-- LINKS -->
 [aad_authorization]: https://docs.microsoft.com/azure/cognitive-services/authentication#authenticate-with-azure-active-directory
@@ -606,7 +604,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [package]: https://mvnrepository.com/artifact/com.azure/azure-ai-formrecognizer
 [product_documentation]: https://docs.microsoft.com/azure/cognitive-services/form-recognizer/overview
 [register_AAD_application]: https://docs.microsoft.com/azure/cognitive-services/authentication#assign-a-role-to-a-service-principal
-[fr_labeling_tool]: https://aka.ms/azsdk/formrecognizer/labelingtool
+[fr-studio]: https://aka.ms/azsdk/formrecognizer/formrecognizerstudio
 [fr_build_training_set]: https://aka.ms/azsdk/formrecognizer/buildtrainingset
 [sample_examples]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples#examples
 [sample_readme]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples#readme
