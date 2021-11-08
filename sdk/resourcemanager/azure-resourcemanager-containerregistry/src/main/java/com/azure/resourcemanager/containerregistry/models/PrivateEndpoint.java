@@ -9,19 +9,20 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of a storage account for a container registry. Only applicable to Classic SKU. */
+/** The Private Endpoint resource. */
 @Fluent
-public final class StorageAccountProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageAccountProperties.class);
+public final class PrivateEndpoint {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpoint.class);
 
     /*
-     * The resource ID of the storage account.
+     * This is private endpoint resource created with Microsoft.Network
+     * resource provider.
      */
-    @JsonProperty(value = "id", required = true)
+    @JsonProperty(value = "id")
     private String id;
 
     /**
-     * Get the id property: The resource ID of the storage account.
+     * Get the id property: This is private endpoint resource created with Microsoft.Network resource provider.
      *
      * @return the id value.
      */
@@ -30,12 +31,12 @@ public final class StorageAccountProperties {
     }
 
     /**
-     * Set the id property: The resource ID of the storage account.
+     * Set the id property: This is private endpoint resource created with Microsoft.Network resource provider.
      *
      * @param id the id value to set.
-     * @return the StorageAccountProperties object itself.
+     * @return the PrivateEndpoint object itself.
      */
-    public StorageAccountProperties withId(String id) {
+    public PrivateEndpoint withId(String id) {
         this.id = id;
         return this;
     }
@@ -46,10 +47,5 @@ public final class StorageAccountProperties {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (id() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property id in model StorageAccountProperties"));
-        }
     }
 }
