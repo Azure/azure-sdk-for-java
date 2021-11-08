@@ -8,6 +8,7 @@ import com.azure.resourcemanager.containerregistry.ContainerRegistryManager;
 import com.azure.resourcemanager.containerregistry.fluent.models.RegistryInner;
 import com.azure.resourcemanager.containerregistry.fluent.models.RunInner;
 import com.azure.resourcemanager.containerregistry.models.AccessKeyType;
+import com.azure.resourcemanager.containerregistry.models.PublicNetworkAccess;
 import com.azure.resourcemanager.containerregistry.models.Registry;
 import com.azure.resourcemanager.containerregistry.models.RegistryCredentials;
 import com.azure.resourcemanager.containerregistry.models.RegistryTaskRun;
@@ -17,11 +18,7 @@ import com.azure.resourcemanager.containerregistry.models.Sku;
 import com.azure.resourcemanager.containerregistry.models.SkuName;
 import com.azure.resourcemanager.containerregistry.models.SourceUploadDefinition;
 import com.azure.resourcemanager.containerregistry.models.WebhookOperations;
-import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
-import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
-import com.azure.resourcemanager.storage.StorageManager;
-import com.azure.resourcemanager.storage.models.StorageAccount;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
@@ -32,19 +29,12 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
     implements Registry, Registry.Definition, Registry.Update {
 
     private RegistryUpdateParameters updateParameters;
-    private final StorageManager storageManager;
-    private String storageAccountId;
-    private String creatableStorageAccountKey;
     private WebhooksImpl webhooks;
-    // private QueuedBuildOperations queuedBuilds;
-    // private BuildTaskOperations buildTasks;
 
     protected RegistryImpl(
-        String name, RegistryInner innerObject, ContainerRegistryManager manager, final StorageManager storageManager) {
+        String name, RegistryInner innerObject, ContainerRegistryManager manager) {
         super(name, innerObject, manager);
-        this.storageManager = storageManager;
 
-        this.storageAccountId = null;
         this.webhooks = new WebhooksImpl(this, "Webhook");
     }
 
@@ -64,6 +54,7 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
     public Mono<Registry> createResourceAsync() {
         final RegistryImpl self = this;
         if (isInCreateMode()) {
+<<<<<<< HEAD
             if (self.creatableStorageAccountKey != null) {
                 StorageAccount storageAccount = self.<StorageAccount>taskResult(this.creatableStorageAccountKey);
 //                self.innerModel().storageAccount().withId(storageAccount.id());
@@ -71,6 +62,8 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
 //                self.innerModel().storageAccount().withId(storageAccountId);
             }
 
+=======
+>>>>>>> 1bda609f156d60d186f8b1c348422f3944d459d1
             return manager()
                 .serviceClient()
                 .getRegistries()
@@ -113,6 +106,7 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
     }
 
     @Override
+<<<<<<< HEAD
     public String storageAccountName() {
 //        if (this.innerModel().storageAccount() == null) {
 //            return null;
@@ -143,6 +137,8 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
     }
 
     @Override
+=======
+>>>>>>> 1bda609f156d60d186f8b1c348422f3944d459d1
     public RegistryImpl withBasicSku() {
         return setManagedSku(new Sku().withName(SkuName.BASIC));
     }
@@ -160,51 +156,14 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
     private RegistryImpl setManagedSku(Sku sku) {
         if (this.isInCreateMode()) {
             this.innerModel().withSku(sku);
+<<<<<<< HEAD
 //            this.innerModel().withStorageAccount(null);
+=======
+>>>>>>> 1bda609f156d60d186f8b1c348422f3944d459d1
         } else {
             this.updateParameters.withSku(sku);
         }
 
-        return this;
-    }
-
-    @Override
-    public RegistryImpl withExistingStorageAccount(StorageAccount storageAccount) {
-        this.storageAccountId = storageAccount.id();
-
-        return this;
-    }
-
-    @Override
-    public RegistryImpl withExistingStorageAccount(String id) {
-        this.storageAccountId = id;
-
-        return this;
-    }
-
-    @Override
-    public RegistryImpl withNewStorageAccount(String storageAccountName) {
-        this.storageAccountId = null;
-
-        StorageAccount.DefinitionStages.WithGroup definitionWithGroup =
-            this.storageManager.storageAccounts().define(storageAccountName).withRegion(this.regionName());
-        Creatable<StorageAccount> definitionAfterGroup;
-        if (this.creatableGroup != null) {
-            definitionAfterGroup = definitionWithGroup.withNewResourceGroup(this.creatableGroup);
-        } else {
-            definitionAfterGroup = definitionWithGroup.withExistingResourceGroup(this.resourceGroupName());
-        }
-
-        return withNewStorageAccount(definitionAfterGroup);
-    }
-
-    @Override
-    public RegistryImpl withNewStorageAccount(Creatable<StorageAccount> creatable) {
-        this.storageAccountId = null;
-
-        if (this.creatableStorageAccountKey == null) {
-            this.creatableStorageAccountKey = this.addDependency(creatable);
-        }
         return this;
     }
 
@@ -272,26 +231,15 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
     }
 
     @Override
+    public PublicNetworkAccess publicNetworkAccess() {
+        return innerModel().publicNetworkAccess();
+    }
+
+    @Override
     public RegistryTaskRun.DefinitionStages.BlankFromRegistry scheduleRun() {
         return new RegistryTaskRunImpl(this.manager(), new RunInner())
             .withExistingRegistry(this.resourceGroupName(), this.name());
     }
-
-    //    @Override
-    //    public QueuedBuildOperations queuedBuilds() {
-    //        if (this.queuedBuilds == null) {
-    //            this.queuedBuilds = new QueuedBuildOperationsImpl(this);
-    //        }
-    //        return this.queuedBuilds;
-    //    }
-
-    //    @Override
-    //    public BuildTaskOperations buildTasks() {
-    //        if (this.buildTasks == null) {
-    //            this.buildTasks = new BuildTaskOperationsImpl(this);
-    //        }
-    //        return this.buildTasks;
-    //    }
 
     @Override
     public SourceUploadDefinition getBuildSourceUploadUrl() {
@@ -322,5 +270,25 @@ public class RegistryImpl extends GroupableResourceImpl<Registry, RegistryInner,
     @Override
     public WebhookImpl defineWebhook(String name) {
         return webhooks.defineWebhook(name);
+    }
+
+    @Override
+    public RegistryImpl enablePublicNetworkAccess() {
+        if (this.isInCreateMode()) {
+            this.innerModel().withPublicNetworkAccess(PublicNetworkAccess.ENABLED);
+        } else {
+            updateParameters.withPublicNetworkAccess(PublicNetworkAccess.ENABLED);
+        }
+        return this;
+    }
+
+    @Override
+    public RegistryImpl disablePublicNetworkAccess() {
+        if (this.isInCreateMode()) {
+            this.innerModel().withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
+        } else {
+            updateParameters.withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
+        }
+        return this;
     }
 }
