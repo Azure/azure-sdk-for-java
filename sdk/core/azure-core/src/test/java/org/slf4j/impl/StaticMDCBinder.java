@@ -6,6 +6,8 @@ import org.slf4j.spi.MDCAdapter;
 import java.util.HashMap;
 import java.util.Map;
 
+
+// Temp: needed for realistic MDC benchmarking
 public class StaticMDCBinder {
     public static final StaticMDCBinder SINGLETON = new StaticMDCBinder();
 

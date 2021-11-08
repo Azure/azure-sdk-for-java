@@ -335,12 +335,6 @@ public class ClientLoggerTests {
     @Test
     public void testLoginWithContext() {
         setupLogLevel(LogLevel.INFORMATIONAL.getLogLevel());
-        String msg = String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3");
-
-        // ordered to simplify validation
-        TreeMap<String, String> context = new TreeMap<>();
-        context.put("connectionId", "foo");
-        context.put("linkName", "bar");
 
         Supplier<String> supplier = () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3");
         ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
@@ -356,28 +350,8 @@ public class ClientLoggerTests {
             supplier);
 
         String logValues = byteArraySteamToString(logCaptureStream);
-        assertTrue(logValues.endsWith(msg + ", az.sdk.context={\"connectionId\":\"foo\", \"linkName\":\"bar\"}\r\n"));
+        assertTrue(logValues.endsWith(supplier.get() + ", az.sdk.context={\"connectionId\":\"foo\", \"linkName\":\"bar\"}\r\n"));
     }
-
-    @Test
-    public void testLoginWithMDC() {
-        setupLogLevel(LogLevel.INFORMATIONAL.getLogLevel());
-
-        Supplier<String> supplier = () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3");
-        ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
-        logHelper(() -> logger.atLevel(LogLevel.WARNING)
-                .addKeyValue("connectionId", "foo")
-                .addKeyValue("linkName", "bar")
-                .logWithMDC(supplier),
-            (args) -> logger.atLevel(LogLevel.WARNING)
-                .addKeyValue("connectionId", "foo")
-                .addKeyValue("linkName", "bar")
-                .logWithMDC(supplier),
-            supplier);
-        String logValues = byteArraySteamToString(logCaptureStream);
-        assertTrue(logValues.endsWith("{\"connectionId\":\"foo\",\"linkName\":\"bar\"} - " + supplier.get() + "\r\n"));
-    }
-
 
     @Test
     public void testIsSupplierLoggingWithException() {
