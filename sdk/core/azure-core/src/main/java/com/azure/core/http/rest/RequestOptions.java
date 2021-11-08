@@ -4,7 +4,6 @@
 package com.azure.core.http.rest;
 
 import com.azure.core.annotation.QueryParam;
-import com.azure.core.http.HttpHeader;
 import com.azure.core.http.HttpRequest;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
@@ -156,20 +155,30 @@ public final class RequestOptions {
 
     /**
      * Adds a header to the HTTP request.
+     * <p>
+     * If a header with the given name exists the {@code value} is added to the existing header (comma-separated),
+     * otherwise a new header is created.
      *
      * @param header the header key
      * @param value the header value
      * @return the modified RequestOptions object
      */
     public RequestOptions addHeader(String header, String value) {
-        this.requestCallback = this.requestCallback.andThen(request -> {
-            HttpHeader httpHeader = request.getHeaders().get(header);
-            if (httpHeader == null) {
-                request.getHeaders().set(header, value);
-            } else {
-                httpHeader.addValue(value);
-            }
-        });
+        this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().add(header, value));
+        return this;
+    }
+
+    /**
+     * Sets a header on the HTTP request.
+     * <p>
+     * If a header with the given name exists it is overridden by the new {@code value}.
+     *
+     * @param header the header key
+     * @param value the header value
+     * @return the modified RequestOptions object
+     */
+    public RequestOptions setHeader(String header, String value) {
+        this.requestCallback = this.requestCallback.andThen(request -> request.getHeaders().set(header, value));
         return this;
     }
 

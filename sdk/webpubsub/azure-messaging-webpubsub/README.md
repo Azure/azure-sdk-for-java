@@ -1,16 +1,21 @@
 # Azure Web PubSub service client library for Java
 
-Azure Web PubSub service client library for Java allows sending messages to Web PubSub. Azure Web PubSub service 
-enables you to build real-time messaging web applications using WebSockets and the publish-subscribe pattern. Any 
-platform supporting WebSocket APIs can connect to the service easily, e.g. web pages, mobile applications, edge devices,
-etc. The service manages the WebSocket connections for you and allows up to 100K concurrent connections. It provides 
-powerful APIs for you to manage these clients and deliver real-time messages.
+[Azure Web PubSub service](https://aka.ms/awps/doc) is an Azure-managed service that helps developers easily build web applications with real-time features and publish-subscribe pattern. Any scenario that requires real-time publish-subscribe messaging between server and clients or among clients can use Azure Web PubSub service. Traditional real-time features that often require polling from server or submitting HTTP requests can also use Azure Web PubSub service.
 
-Any scenario that requires real-time publish-subscribe messaging between server and clients or among clients, can use
-Azure Web PubSub service. Traditional real-time features that often require polling from server or submitting HTTP
-requests, can also use Azure Web PubSub service.
+You can use this library in your app server side to manage the WebSocket client connections, as shown in below diagram:
 
-[Source code][source_code] | [Product Documentation][product_documentation] | [Samples][samples_readme]
+![overflow](https://user-images.githubusercontent.com/668244/140014067-25a00959-04dc-47e8-ac25-6957bd0a71ce.png)
+
+Use this library to:
+- Send messages to hubs and groups. 
+- Send messages to particular users and connections.
+- Organize users and connections into groups.
+- Close connections
+- Grant, revoke, and check permissions for an existing connection
+
+Details about the terms used here are described in [Key concepts](#key-concepts) section.
+
+[Source code][source_code] | [API reference documentation][api] | [Product Documentation][product_documentation] | [Samples][samples_readme]
 
 ## Getting started
 
@@ -33,7 +38,7 @@ requests, can also use Azure Web PubSub service.
 
 [//]: # ({x-version-update-end})
 
-### Create a Web PubSub client using connection string
+### Create a `WebPubSubServiceClient` using connection string
 
 <!-- embedme ./src/samples/java/com/azure/messaging/webpubsub/ReadmeSamples.java#L21-L24 -->
 ```java
@@ -43,7 +48,7 @@ WebPubSubServiceClient webPubSubServiceClient = new WebPubSubServiceClientBuilde
     .buildClient();
 ```
 
-### Create a Web PubSub client using access key
+### Create a `WebPubSubServiceClient` using access key
 
 <!-- embedme ./src/samples/java/com/azure/messaging/webpubsub/ReadmeSamples.java#L31-L35 -->
 ```java
@@ -56,30 +61,25 @@ WebPubSubServiceClient webPubSubServiceClient = new WebPubSubServiceClientBuilde
 
 ## Key concepts
 
+### Connection
+
+A connection, also known as a client or a client connection, represents an individual WebSocket connection connected to the Web PubSub service. When successfully connected, a unique connection ID is assigned to this connection by the Web PubSub service.
+
 ### Hub
 
-Hub is a logic set of connections. All connections to Web PubSub connect to a specific hub. Messages that are broadcast
-to the hub are dispatched to all connections to that hub. For example, hub can be used for different applications,
-different applications can share one Azure Web PubSub service by using different hub names.
+A hub is a logical concept for a set of client connections. Usually you use one hub for one purpose, for example, a chat hub, or a notification hub. When a client connection is created, it connects to a hub, and during its lifetime, it belongs to that hub. Different applications can share one Azure Web PubSub service by using different hub names.
 
 ### Group
 
-Group allow broadcast messages to a subset of connections to the hub. You can add and remove users and connections as
-needed. A client can join multiple groups, and a group can contain multiple clients.
+A group is a subset of connections to the hub. You can add a client connection to a group, or remove the client connection from the group, anytime you want. For example, when a client joins a chat room, or when a client leaves the chat room, this chat room can be considered to be a group. A client can join multiple groups, and a group can contain multiple clients.
 
 ### User
 
-Connections to Web PubSub can belong to one user. A user might have multiple connections, for example when a single user
-is connected across multiple devices or multiple browser tabs.
-
-### Connection
-
-Connections, represented by a connection id, represent an individual websocket connection to the Web PubSub service.
-Connection id is always unique.
+Connections to Web PubSub can belong to one user. A user might have multiple connections, for example when a single user is connected across multiple devices or multiple browser tabs.
 
 ### Message
 
-A message is either an UTF-8 encoded string or raw binary data.
+When the client is connected, it can send messages to the upstream application, or receive messages from the upstream application, through the WebSocket connection.
 
 ## Examples
 
@@ -164,5 +164,6 @@ comments.
 [coc]: https://opensource.microsoft.com/codeofconduct/
 [coc_faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [coc_contact]: mailto:opencode@microsoft.com
+[api]: https://aka.ms/awps/sdk/java
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fwebpubsub%2Fazure-messaging-webpubsub%2FREADME.png)

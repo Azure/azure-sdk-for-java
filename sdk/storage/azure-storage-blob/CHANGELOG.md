@@ -1,22 +1,25 @@
 # Release History
 
-## 12.15.0-beta.1 (Unreleased)
+## 12.15.0-beta.2 (Unreleased)
 
 ### Features Added
 - Added support for 2021-02-12 service version.
 - Added support for listing system containers.
-
-- Added support for permanent delete permissions in blob and account level SAS.
-
-- Added support for the 2020-12-06 service version.
-- Added support for setting an encryption scope on a BlobServiceSas and an AccountSas.
-- Added support for setting encryption scopes on the destination of a sync copy.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.15.0-beta.1 (2021-11-05)
+
+### Features Added
+- Added support for permanent delete permissions in blob and account level SAS.
+
+- Added support for the 2020-12-06 service version.
+- Added support for setting an encryption scope on a BlobServiceSas and an AccountSas.
+- Added support for setting encryption scopes on the destination of a sync copy.
 
 ## 12.14.1 (2021-10-12)
 
