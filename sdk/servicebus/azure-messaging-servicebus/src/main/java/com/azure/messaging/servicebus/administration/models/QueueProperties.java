@@ -79,7 +79,6 @@ public final class QueueProperties {
                     .setIsAnonymousAccessible(queue.isAnonymousAccessible)
                     .setLockDuration(queue.getLockDuration())
                     .setMaxSizeInMegabytes(queue.getMaxSizeInMegabytes())
-                    .setMaxMessageSizeInKilobytes(queue.getMaxMessageSizeInKilobytes())
                     .setMaxDeliveryCount(queue.getMaxDeliveryCount())
                     .setMessageCount(queue.messageCount)
                     .setMessageCountDetails(queue.getMessageCountDetails())
@@ -93,6 +92,9 @@ public final class QueueProperties {
 
                 if (!rules.isEmpty()) {
                     description.setAuthorizationRules(rules);
+                }
+                if (queue.getMaxMessageSizeInKilobytes() != 0) {
+                    description.setMaxMessageSizeInKilobytes(queue.getMaxMessageSizeInKilobytes());
                 }
 
                 return description;

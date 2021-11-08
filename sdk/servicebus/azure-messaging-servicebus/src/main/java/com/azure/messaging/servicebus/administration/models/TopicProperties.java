@@ -92,6 +92,9 @@ public final class TopicProperties {
                 if (!rules.isEmpty()) {
                     description.setAuthorizationRules(rules);
                 }
+                if (topic.getMaxMessageSizeInKilobytes() != 0) {
+                    description.setMaxMessageSizeInKilobytes(topic.getMaxMessageSizeInKilobytes());
+                }
 
                 return description;
             }

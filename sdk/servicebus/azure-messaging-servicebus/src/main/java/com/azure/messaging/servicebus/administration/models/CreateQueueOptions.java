@@ -482,7 +482,7 @@ public final class CreateQueueOptions {
      *
      * @param maxMessageSizeInKilobytes the maxMessageSizeInKilobytes value to set.
      *
-     * @return the QueueDescription object itself.
+     * @return the CreateQueueOptions object itself.
      */
     public CreateQueueOptions setMaxMessageSizeInKilobytes(long maxMessageSizeInKilobytes) {
         this.maxMessageSizeInKilobytes = maxMessageSizeInKilobytes;

@@ -3,7 +3,7 @@
 ## 7.5.0-beta.1 (Unreleased)
 
 ### Features Added
-- Move to service API version `2021-05`
+- Moved to service API version `2021-05`
 - Added support for specifying the `MaxMessageSizeInKilobytes` for entities in Premium namespaces.
 
 ### Breaking Changes
