@@ -1022,7 +1022,8 @@ public final class BlobContainerAsyncClient {
                         : Stream.concat(
                         response.getValue().getSegment().getBlobItems().stream().map(ModelHelper::populateBlobItem),
                         response.getValue().getSegment().getBlobPrefixes().stream()
-                            .map(blobPrefix -> new BlobItem().setName(blobPrefix.getName()).setIsPrefix(true))
+                            .map(blobPrefix -> new BlobItem()
+                                .setName(ModelHelper.toBlobNameString(blobPrefix.getName())).setIsPrefix(true))
                     ).collect(Collectors.toList());
 
                     return new PagedResponseBase<>(
