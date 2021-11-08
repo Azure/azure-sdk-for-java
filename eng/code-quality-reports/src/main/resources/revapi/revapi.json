@@ -50,75 +50,75 @@
           "class com\\.azure\\.core\\.util\\.Configuration",
           {
             "matcher": "java-package",
-            "match": "com\\.\\azure\\..+\\.implementation(\\..*)?"
+            "match": "/com\\.azure(\\..+?)?\\.implementation(\\..*)?/"
           },
           {
             "matcher": "java-package",
-            "match": "com\\.azure\\..+\\.samples(\\..*)?"
+            "match": "/com\\.azure(\\..+?)?\\.samples(\\..*)?/"
           },
           {
             "matcher": "java-package",
-            "match": "com\\.fasterxml\\.jackson(\\..*)?"
+            "match": "/com\\.fasterxml\\.jackson(\\..*)?/"
           },
           {
             "matcher": "java-package",
-            "match": "reactor\\.core(\\..*)?"
+            "match": "/reactor\\.core(\\..*)?/"
           },
           {
             "matcher": "java-package",
-            "match": "reactor\\.netty(\\..*)?"
+            "match": "/reactor\\.netty(\\..*)?/"
           },
           {
             "matcher": "java-package",
-            "match": "reactor\\.util(\\..*)?"
+            "match": "/reactor\\.util(\\..*)?/"
           },
           {
             "matcher": "java-package",
-            "match": "io\\.netty(\\..*)?"
+            "match": "/io\\.netty(\\..*)?/"
           },
           {
             "matcher": "java-package",
-            "match": "com\\.nimbusds(\\..*)?"
+            "match": "/com\\.nimbusds(\\..*)?/"
           },
           {
             "matcher": "java-package",
-            "match": "com\\.microsoft\\.azure(\\..*)?"
+            "match": "/com\\.microsoft\\.azure(\\..*)?/"
           },
           {
             "matcher": "java-package",
-            "match": "javax\\.jms(\\..*)?"
+            "match": "/javax\\.jms(\\..*)?/"
           },
           {
             "matcher": "java-package",
-            "match": "javax\\.servlet(\\..*)?"
+            "match": "/javax\\.servlet(\\..*)?/"
           },
           {
             "matcher": "java-package",
-            "match": "io\\.micrometer(\\..*)?"
+            "match": "/io\\.micrometer(\\..*)?/"
           },
           {
             "matcher": "java-package",
-            "match": "com\\.azure\\.data\\.cosmos(\\..*)?"
+            "match": "/com\\.azure\\.data\\.cosmos(\\..*)?/"
           },
           {
             "matcher": "java-package",
-            "match": "com\\.azure\\.spring\\.data\\.cosmos(\\..*)?"
+            "match": "/com\\.azure\\.spring\\.data\\.cosmos(\\..*)?/"
           },
           {
             "matcher": "java-package",
-            "match": "com\\.azure\\.spring\\.data\\.gremlin(\\..*)?"
+            "match": "/com\\.azure\\.spring\\.data\\.gremlin(\\..*)?/"
           },
           {
             "matcher": "java-package",
-            "match": "com\\.azure\\.spring(\\..*)?"
+            "match": "/com\\.azure\\.spring(\\..*)?/"
           },
           {
             "matcher": "java-package",
-            "match": "org\\.apache\\.avro(\\..*)?"
+            "match": "/org\\.apache\\.avro(\\..*)?/"
           },
           {
             "matcher": "java-package",
-            "match": "com\\.azure\\.resourcemanager\\..*\\.fluent(\\..*)?"
+            "match": "/com\\.azure\\.resourcemanager(\\..+?)?\\.fluent(\\..*)?/"
           }
         ]
       }
