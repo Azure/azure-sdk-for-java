@@ -17,17 +17,22 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
+import org.slf4j.MDC;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.UncheckedIOException;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
+import java.util.Map;
+import java.util.TreeMap;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
+import java.util.logging.Level;
 import java.util.stream.Stream;
 
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_LOG_LEVEL;
@@ -326,6 +331,53 @@ public class ClientLoggerTests {
 
         assertTrue(logger.isSupplierLogging(args));
     }
+
+    @Test
+    public void testLoginWithContext() {
+        setupLogLevel(LogLevel.INFORMATIONAL.getLogLevel());
+        String msg = String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3");
+
+        // ordered to simplify validation
+        TreeMap<String, String> context = new TreeMap<>();
+        context.put("connectionId", "foo");
+        context.put("linkName", "bar");
+
+        Supplier<String> supplier = () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3");
+        ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
+
+        logHelper(() -> logger.atLevel(LogLevel.WARNING)
+                .addKeyValue("connectionId", "foo")
+                .addKeyValue("linkName", "bar")
+                .log(supplier),
+            (args) -> logger.atLevel(LogLevel.WARNING)
+                .addKeyValue("connectionId", "foo")
+                .addKeyValue("linkName", "bar")
+                .log(supplier),
+            supplier);
+
+        String logValues = byteArraySteamToString(logCaptureStream);
+        assertTrue(logValues.endsWith(msg + ", az.sdk.context={\"connectionId\":\"foo\", \"linkName\":\"bar\"}\r\n"));
+    }
+
+    @Test
+    public void testLoginWithMDC() {
+        setupLogLevel(LogLevel.INFORMATIONAL.getLogLevel());
+
+        Supplier<String> supplier = () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3");
+        ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
+        logHelper(() -> logger.atLevel(LogLevel.WARNING)
+                .addKeyValue("connectionId", "foo")
+                .addKeyValue("linkName", "bar")
+                .logWithMDC(supplier),
+            (args) -> logger.atLevel(LogLevel.WARNING)
+                .addKeyValue("connectionId", "foo")
+                .addKeyValue("linkName", "bar")
+                .logWithMDC(supplier),
+            supplier);
+        String logValues = byteArraySteamToString(logCaptureStream);
+        assertTrue(logValues.endsWith("{\"connectionId\":\"foo\",\"linkName\":\"bar\"} - " + supplier.get() + "\r\n"));
+    }
+
 
     @Test
     public void testIsSupplierLoggingWithException() {
