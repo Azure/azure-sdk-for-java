@@ -3,7 +3,6 @@
 
 module com.azure.resourcemanager.containerregistry {
     requires transitive com.azure.resourcemanager.resources;
-    requires transitive com.azure.resourcemanager.storage;
 
     // export public APIs of containerregistry
     exports com.azure.resourcemanager.containerregistry;
