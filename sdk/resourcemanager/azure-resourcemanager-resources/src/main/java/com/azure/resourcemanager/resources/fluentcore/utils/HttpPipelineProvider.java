@@ -8,9 +8,18 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.HttpPipelinePosition;
-import com.azure.core.http.policy.*;
+import com.azure.core.http.policy.AddDatePolicy;
+import com.azure.core.http.policy.AddHeadersFromContextPolicy;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
+import com.azure.core.http.policy.HttpLoggingPolicy;
+import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.HttpPolicyProviders;
+import com.azure.core.http.policy.RequestIdPolicy;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
+import com.azure.core.util.CoreUtils;
 import com.azure.resourcemanager.resources.fluentcore.policy.AuthenticationPolicy;
 import com.azure.resourcemanager.resources.fluentcore.policy.ProviderRegistrationPolicy;
 import com.azure.resourcemanager.resources.fluentcore.policy.ReturnRequestIdHeaderPolicy;
@@ -63,13 +72,13 @@ public final class HttpPipelineProvider {
         policies.add(new AddHeadersFromContextPolicy());
         policies.add(new RequestIdPolicy());
         policies.add(new ReturnRequestIdHeaderPolicy(ReturnRequestIdHeaderPolicy.Option.COPY_CLIENT_REQUEST_ID));
-        if(additionalPolicies != null && !additionalPolicies.isEmpty()){
+        if (!CoreUtils.isNullOrEmpty(additionalPolicies)) {
             policies.addAll(
                 additionalPolicies
                     .stream()
                     .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
                     .collect(Collectors.toList())
-                );
+            );
         }
         HttpPolicyProviders.addBeforeRetryPolicies(policies);
         policies.add(retryPolicy);
@@ -78,7 +87,7 @@ public final class HttpPipelineProvider {
             policies.add(new AuthenticationPolicy(credential, profile.getEnvironment(), scopes));
         }
         policies.add(new ProviderRegistrationPolicy());
-        if(additionalPolicies != null && !additionalPolicies.isEmpty()){
+        if (!CoreUtils.isNullOrEmpty(additionalPolicies)) {
             policies.addAll(
                 additionalPolicies
                     .stream()
