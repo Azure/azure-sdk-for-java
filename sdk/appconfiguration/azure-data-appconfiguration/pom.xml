@@ -38,7 +38,7 @@
       --add-exports com.azure.core/com.azure.core.implementation.http=ALL-UNNAMED
       --add-opens com.azure.data.appconfiguration/com.azure.data.appconfiguration=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <skipNewCodesnippetTooling>false</skipNewCodesnippetTooling>
+    <codesnippet.skip>false</codesnippet.skip>
     <javadocDoclet></javadocDoclet>
     <javadocDocletOptions></javadocDocletOptions>
   </properties>
