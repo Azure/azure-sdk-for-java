@@ -11,6 +11,7 @@ import org.springframework.core.Ordered;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.MapPropertySource;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
@@ -22,10 +23,15 @@ import static com.azure.core.util.Configuration.PROPERTY_AZURE_CLIENT_SECRET;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_CLOUD;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_HTTP_LOG_DETAIL_LEVEL;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_PASSWORD;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_READ_TIMEOUT;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_RETRY_COUNT;
+import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_TENANT_ID;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_USERNAME;
+import static com.azure.core.util.Configuration.PROPERTY_NO_PROXY;
 
 /**
  * An EnvironmentPostProcessor to convert environment variables predefined by Azure Core and Azure SDKs to Azure Spring
@@ -63,16 +69,21 @@ public class AzureGlobalConfigurationEnvironmentPostProcessor implements Environ
 
         // TODO (xiada): PROPERTY_AZURE_LOG_LEVEL, how to set this to env?
 
-        httpLogLevel(PROPERTY_AZURE_HTTP_LOG_DETAIL_LEVEL, "client.logging.level"),
+        maxRetry(PROPERTY_AZURE_REQUEST_RETRY_COUNT, "retry.max-attempts"),
 
-        maxRetry(PROPERTY_AZURE_REQUEST_RETRY_COUNT, "retry.max-attempts");
+        httpLogLevel(PROPERTY_AZURE_HTTP_LOG_DETAIL_LEVEL, "client.http.logging.level"),
 
-        // TODO (xiada): we can't configure http at global level:
-        // PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT,
-        // PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT,
-        // PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT,
-        // PROPERTY_AZURE_REQUEST_READ_TIMEOUT,
-        // PROPERTY_NO_PROXY
+        httpConnectTimeout(PROPERTY_AZURE_REQUEST_CONNECT_TIMEOUT, "client.http.connect-timeout", convertMillisToDuration()),
+
+        httpReadTimeout(PROPERTY_AZURE_REQUEST_READ_TIMEOUT, "client.http.read-timeout", convertMillisToDuration()),
+
+        httpWriteTimeout(PROPERTY_AZURE_REQUEST_WRITE_TIMEOUT, "client.http.write-timeout", convertMillisToDuration()),
+
+        httpResponseTimeout(PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, "client.http.response-timeout", convertMillisToDuration()),
+
+        httpNoProxy(PROPERTY_NO_PROXY, "proxy.http.non-proxy-hosts")
+        ;
+
 
         // TODO (xiada): how to set this proxy?
         // proxy(PROPERTY_HTTP_PROXY, PROPERTY_HTTPS_PROXY)
@@ -93,9 +104,22 @@ public class AzureGlobalConfigurationEnvironmentPostProcessor implements Environ
         }
     }
 
+    private static Function<String, String> convertMillisToDuration() {
+        return ms -> {
+            try {
+                return Duration.ofMillis(Integer.parseInt(ms)).toString();
+            } catch (Exception ignore) {
+                LOGGER.debug("The millisecond value {} is malformed.", ms);
+                return null;
+            }
+        };
+    }
+
     enum AzureSdkEnvMapping {
         keyVaultSecretEndpoint("AZURE_KEYVAULT_ENDPOINT", "keyvault.secret.endpoint"),
-        keyVaultCertificateEndpoint("AZURE_KEYVAULT_ENDPOINT", "keyvault.certificate.endpoint");
+        keyVaultCertificateEndpoint("AZURE_KEYVAULT_ENDPOINT", "keyvault.certificate.endpoint"),
+        eventHubsConnectionString("AZURE_EVENT_HUBS_CONNECTION_STRING", "eventhubs.connection-string")
+        ;
 
         private final String sdkEnvName;
         private final String springPropertyName;

@@ -3,7 +3,7 @@
 package com.azure.spring.cosmos;
 
 import com.azure.core.credential.AzureKeyCredential;
-import com.azure.spring.cloud.autoconfigure.cosmos.AzureCosmosProperties;
+import com.azure.spring.cloud.autoconfigure.cosmos.properties.AzureCosmosProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

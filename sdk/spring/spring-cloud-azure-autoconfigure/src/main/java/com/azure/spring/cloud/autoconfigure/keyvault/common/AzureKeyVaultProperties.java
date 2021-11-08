@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.keyvault;
+package com.azure.spring.cloud.autoconfigure.keyvault.common;
 
 import com.azure.spring.cloud.autoconfigure.properties.AbstractAzureHttpCP;
 
@@ -10,7 +10,6 @@ import com.azure.spring.cloud.autoconfigure.properties.AbstractAzureHttpCP;
  */
 public class AzureKeyVaultProperties extends AbstractAzureHttpCP {
 
-    // TODO (xiada): the default vault url
     private String endpoint;
 
     public String getEndpoint() {

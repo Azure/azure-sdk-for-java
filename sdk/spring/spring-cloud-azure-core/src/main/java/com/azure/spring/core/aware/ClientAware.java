@@ -27,8 +27,6 @@ public interface ClientAware {
 
         List<HeaderProperties> getHeaders();
 
-        Logging getLogging();
-
     }
 
     /**
@@ -48,22 +46,25 @@ public interface ClientAware {
 
         Duration getConnectionIdleTimeout();
 
+        HttpLogging getLogging();
+
     }
 
     /**
      * Interface to be implemented by classes that wish to describe am amqp based client sdk.
      */
     interface AmqpClient extends Client {
+
         AmqpTransportType getTransportType();
     }
 
     /**
-     * Interface to be implemented by classes that wish to describe logging options in client sdk.
+     * Interface to be implemented by classes that wish to describe logging options in http-based client sdks.
      *
      * For example, if you want to log the http request or response, you could set the level to
      * {@link HttpLogDetailLevel#BASIC} or some other levels.
      */
-    interface Logging {
+    interface HttpLogging {
 
         HttpLogDetailLevel getLevel();
 

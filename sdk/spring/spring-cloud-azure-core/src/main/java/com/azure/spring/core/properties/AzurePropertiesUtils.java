@@ -3,6 +3,7 @@
 
 package com.azure.spring.core.properties;
 
+import com.azure.spring.core.aware.ClientAware;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.BeanWrapper;
 import org.springframework.beans.BeanWrapperImpl;
@@ -25,6 +26,16 @@ public class AzurePropertiesUtils {
     public static <T extends AzureProperties> void copyAzureCommonProperties(AzureProperties source, T target) {
         // call explicitly for these fields could be defined as final
         BeanUtils.copyProperties(source.getClient(), target.getClient());
+
+        if (source.getClient() instanceof ClientAware.HttpClient
+            && target.getClient() instanceof ClientAware.HttpClient) {
+            ClientAware.HttpClient sourceClient = (ClientAware.HttpClient) source.getClient();
+            ClientAware.HttpClient targetClient = (ClientAware.HttpClient) target.getClient();
+            BeanUtils.copyProperties(sourceClient.getLogging(), targetClient.getLogging());
+            targetClient.getLogging().getAllowedHeaderNames().addAll(sourceClient.getLogging().getAllowedHeaderNames());
+            targetClient.getLogging().getAllowedQueryParamNames().addAll(sourceClient.getLogging().getAllowedQueryParamNames());
+        }
+
         BeanUtils.copyProperties(source.getProxy(), target.getProxy());
         BeanUtils.copyProperties(source.getRetry(), target.getRetry());
         BeanUtils.copyProperties(source.getRetry().getBackoff(), target.getRetry().getBackoff());
@@ -35,6 +46,16 @@ public class AzurePropertiesUtils {
     // TODO (xiada): add tests for this
     public static <T extends AzureProperties> void copyAzureCommonPropertiesIgnoreNull(AzureProperties source, T target) {
         copyPropertiesIgnoreNull(source.getClient(), target.getClient());
+
+        if (source.getClient() instanceof ClientAware.HttpClient
+            && target.getClient() instanceof ClientAware.HttpClient) {
+            ClientAware.HttpClient sourceClient = (ClientAware.HttpClient) source.getClient();
+            ClientAware.HttpClient targetClient = (ClientAware.HttpClient) target.getClient();
+            copyPropertiesIgnoreNull(sourceClient.getLogging(), targetClient.getLogging());
+            targetClient.getLogging().getAllowedHeaderNames().addAll(sourceClient.getLogging().getAllowedHeaderNames());
+            targetClient.getLogging().getAllowedQueryParamNames().addAll(sourceClient.getLogging().getAllowedQueryParamNames());
+        }
+
         copyPropertiesIgnoreNull(source.getProxy(), target.getProxy());
         copyPropertiesIgnoreNull(source.getRetry(), target.getRetry());
         copyPropertiesIgnoreNull(source.getRetry().getBackoff(), target.getRetry().getBackoff());

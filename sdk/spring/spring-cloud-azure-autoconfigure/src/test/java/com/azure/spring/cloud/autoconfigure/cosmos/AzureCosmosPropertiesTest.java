@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.cosmos;
 
+import com.azure.spring.cloud.autoconfigure.cosmos.properties.AzureCosmosProperties;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

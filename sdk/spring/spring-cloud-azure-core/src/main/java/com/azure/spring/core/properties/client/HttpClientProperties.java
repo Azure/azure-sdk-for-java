@@ -18,6 +18,7 @@ public final class HttpClientProperties extends ClientProperties implements Clie
     private Duration connectTimeout;
     private Duration connectionIdleTimeout;
     private Integer maximumConnectionPoolSize;
+    private final LoggingProperties logging = new LoggingProperties();
 
     public Duration getWriteTimeout() {
         return writeTimeout;
@@ -68,5 +69,10 @@ public final class HttpClientProperties extends ClientProperties implements Clie
 
     public void setConnectionIdleTimeout(Duration connectionIdleTimeout) {
         this.connectionIdleTimeout = connectionIdleTimeout;
+    }
+
+    @Override
+    public LoggingProperties getLogging() {
+        return logging;
     }
 }

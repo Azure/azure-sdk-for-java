@@ -13,7 +13,7 @@ import java.util.Set;
  * Options related to http logging. For example, if you want to log the http request or response, you could set the
  * level to {@link HttpLogDetailLevel#BASIC} or some other levels.
  */
-public class LoggingProperties implements ClientAware.Logging {
+public class LoggingProperties implements ClientAware.HttpLogging {
 
     private HttpLogDetailLevel level;
     private final Set<String> allowedHeaderNames = new HashSet<>();

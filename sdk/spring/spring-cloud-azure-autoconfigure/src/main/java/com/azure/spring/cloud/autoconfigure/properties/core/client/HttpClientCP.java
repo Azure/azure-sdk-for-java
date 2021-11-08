@@ -4,6 +4,8 @@
 package com.azure.spring.cloud.autoconfigure.properties.core.client;
 
 import com.azure.spring.core.aware.ClientAware;
+import com.azure.spring.core.properties.client.LoggingProperties;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 import java.time.Duration;
 
@@ -18,6 +20,8 @@ public class HttpClientCP extends ClientCP implements ClientAware.HttpClient {
     private Duration connectTimeout;
     private Integer maximumConnectionPoolSize;
     private Duration connectionIdleTimeout;
+    @NestedConfigurationProperty
+    private final LoggingProperties logging = new LoggingProperties();
 
     @Override
     public Duration getWriteTimeout() {
@@ -68,5 +72,10 @@ public class HttpClientCP extends ClientCP implements ClientAware.HttpClient {
 
     public void setConnectionIdleTimeout(Duration connectionIdleTimeout) {
         this.connectionIdleTimeout = connectionIdleTimeout;
+    }
+
+    @Override
+    public LoggingProperties getLogging() {
+        return logging;
     }
 }

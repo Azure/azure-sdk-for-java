@@ -5,6 +5,7 @@ package com.azure.spring.cloud.autoconfigure.properties.core.retry;
 
 import com.azure.spring.core.aware.RetryAware;
 import com.azure.spring.core.properties.retry.BackoffProperties;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 import java.time.Duration;
 
@@ -13,6 +14,7 @@ import java.time.Duration;
  */
 public class RetryCP implements RetryAware.Retry {
 
+    @NestedConfigurationProperty
     private final Backoff backoff = new Backoff();
     /**
      * The maximum number of attempts
