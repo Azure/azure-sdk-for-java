@@ -3,12 +3,10 @@
 
 package com.azure.spring.eventhubs.core;
 
-import com.azure.core.amqp.exception.AmqpException;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventDataBatch;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
-import com.azure.messaging.eventhubs.models.SendOptions;
 import com.azure.spring.eventhubs.core.producer.EventHubProducerFactory;
 import com.azure.spring.eventhubs.support.converter.EventHubMessageConverter;
 import com.azure.spring.messaging.PartitionSupplier;
@@ -23,7 +21,6 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -48,24 +45,19 @@ public class EventHubsTemplate implements SendOperation, BatchSendOperation {
 
     @Override
     public <T> Mono<Void> sendAsync(String destination, Collection<Message<T>> messages,
-                                    PartitionSupplier partitionSupplier, int maximumSizeInBytes, Duration maxWaitTime) {
-        List<EventData> eventData = messages.stream()
-            .map(m -> messageConverter.fromMessage(m, EventData.class))
-            .collect(Collectors.toList());
-        return doSendBatch(destination, eventData, partitionSupplier, maximumSizeInBytes, maxWaitTime);
+                                    PartitionSupplier partitionSupplier, int maxSizeInBytes, Duration maxWaitTime) {
+        return doSend(destination, covertMessagesToList(messages), partitionSupplier, maxSizeInBytes, maxWaitTime);
     }
 
     @Override
     public <T> Mono<Void> sendAsync(String destination, Message<T> message, PartitionSupplier partitionSupplier) {
-        List<EventData> eventData = new ArrayList<>();
-        eventData.add(messageConverter.fromMessage(message, EventData.class));
-        return doSend(destination, eventData, partitionSupplier);
+        return sendAsync(destination, Collections.singleton(message), partitionSupplier, 0);
     }
 
-    private Mono<Void> doSendBatch(String destination, List<EventData> events, PartitionSupplier partitionSupplier,
-                                   int maximumSizeInBytes, Duration maxWaitTime) {
+    private Mono<Void> doSend(String destination, List<EventData> events, PartitionSupplier partitionSupplier,
+                              int maxSizeInBytes, Duration maxWaitTime) {
         EventHubProducerAsyncClient producer = producerFactory.createProducer(destination);
-        CreateBatchOptions options = buildCreateBatchOptions(partitionSupplier, maximumSizeInBytes);
+        CreateBatchOptions options = buildCreateBatchOptions(partitionSupplier, maxSizeInBytes);
         Flux<EventData> eventDataFlux = Flux.fromIterable(events);
 
         if (currentBatch == null) {
@@ -80,8 +72,9 @@ public class EventHubsTemplate implements SendOperation, BatchSendOperation {
 
             // The batch is full, so we create a new batch and send the batch. Mono.when completes when both operations
             // have completed.
+            lastSendTime.set(LocalDateTime.now());
             return Mono.when(
-                producer.send(batch).then().doFinally(signal -> lastSendTime.set(LocalDateTime.now())),
+                producer.send(batch),
                 producer.createBatch(options).map(newBatch -> {
                     currentBatch.set(newBatch);
 
@@ -101,29 +94,23 @@ public class EventHubsTemplate implements SendOperation, BatchSendOperation {
                 if (batch != null && Duration.between(this.lastSendTime.get(), LocalDateTime.now())
                     .compareTo(maxWaitTime) > 0) {
                     producer.send(batch);
+                    lastSendTime.set(LocalDateTime.now());
                     currentBatch.set(producer.createBatch(options).block());
                 }
             });
     }
 
-    private Mono<Void> doSend(String destination, List<EventData> events, PartitionSupplier partitionSupplier) {
-        EventHubProducerAsyncClient producer = producerFactory.createProducer(destination);
-        SendOptions options = buildSendOptions(partitionSupplier);
-        return producer.send(events, options);
-
-    }
-
-    private CreateBatchOptions buildCreateBatchOptions(PartitionSupplier partitionSupplier, int maximumSizeInBytes) {
+    private CreateBatchOptions buildCreateBatchOptions(PartitionSupplier partitionSupplier, int maxSizeInBytes) {
         return new CreateBatchOptions()
             .setPartitionId(partitionSupplier != null ? partitionSupplier.getPartitionId() : null)
             .setPartitionKey(partitionSupplier != null ? partitionSupplier.getPartitionKey() : null)
-            .setMaximumSizeInBytes(maximumSizeInBytes);
+            .setMaximumSizeInBytes(maxSizeInBytes);
     }
 
-    private SendOptions buildSendOptions(PartitionSupplier partitionSupplier) {
-        return new SendOptions()
-            .setPartitionId(partitionSupplier != null ? partitionSupplier.getPartitionId() : null)
-            .setPartitionKey(partitionSupplier != null ? partitionSupplier.getPartitionKey() : null);
+    private <T> List<EventData> covertMessagesToList(Collection<Message<T>> messages) {
+        return messages.stream()
+                       .map(m -> messageConverter.fromMessage(m, EventData.class))
+                       .collect(Collectors.toList());
     }
 
     public void setMessageConverter(EventHubMessageConverter messageConverter) {

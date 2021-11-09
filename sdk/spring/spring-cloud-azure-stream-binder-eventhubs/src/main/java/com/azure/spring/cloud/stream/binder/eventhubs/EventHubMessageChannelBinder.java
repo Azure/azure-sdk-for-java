@@ -82,6 +82,7 @@ public class EventHubMessageChannelBinder extends
         handler.setSync(producerProperties.getExtension().isSync());
         handler.setSendTimeout(producerProperties.getExtension().getSendTimeout());
         handler.setSendFailureChannel(errorChannel);
+        handler.setBatchSendingConfig(producerProperties.getExtension().getBatchConfig());
 
         if (producerProperties.isPartitioned()) {
             handler.setPartitionIdExpression(

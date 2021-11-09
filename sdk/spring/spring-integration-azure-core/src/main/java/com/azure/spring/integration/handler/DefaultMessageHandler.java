@@ -6,6 +6,8 @@ package com.azure.spring.integration.handler;
 import com.azure.spring.messaging.AzureHeaders;
 import com.azure.spring.messaging.AzureSendFailureException;
 import com.azure.spring.messaging.PartitionSupplier;
+import com.azure.spring.messaging.batch.BatchSendingConfig;
+import com.azure.spring.messaging.core.BatchSendOperation;
 import com.azure.spring.messaging.core.SendOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +32,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
@@ -57,6 +60,7 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
     private Expression partitionIdExpression;
     private MessageChannel sendFailureChannel;
     private String sendFailureChannelName;
+    private BatchSendingConfig batchSendingConfig;
 
     public DefaultMessageHandler(String destination, @NonNull SendOperation sendOperation) {
         Assert.hasText(destination, "destination can't be null or empty");
@@ -75,7 +79,13 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
     protected void handleMessageInternal(Message<?> message) {
         PartitionSupplier partitionSupplier = toPartitionSupplier(message);
         String destination = toDestination(message);
-        final Mono<Void> mono = this.sendOperation.sendAsync(destination, message, partitionSupplier);
+        final Mono<Void> mono;
+        if (this.batchSendingConfig.isBatchMode()) {
+            mono = ((BatchSendOperation) this.sendOperation).sendAsync(destination, Collections.singleton(message),
+                partitionSupplier, this.batchSendingConfig.getMaxSizeInBytes(), this.batchSendingConfig.getMaxWaitTime());
+        } else {
+            mono = this.sendOperation.sendAsync(destination, message, partitionSupplier);
+        }
 
         if (this.sync) {
             waitingSendResponse(mono, message);
@@ -251,5 +261,9 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
     public void setErrorMessageStrategy(ErrorMessageStrategy errorMessageStrategy) {
         Assert.notNull(errorMessageStrategy, "'errorMessageStrategy' must not be null");
         this.errorMessageStrategy = errorMessageStrategy;
+    }
+
+    public void setBatchSendingConfig(BatchSendingConfig batchSendingConfig) {
+        this.batchSendingConfig = batchSendingConfig;
     }
 }

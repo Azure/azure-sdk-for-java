@@ -23,13 +23,27 @@ public interface BatchSendOperation {
      * @param destination destination
      * @param messages message set
      * @param partitionSupplier partition supplier
-     * @param maximumSizeInBytes the maximum size to allow for the batch sending
+     * @param maxSizeInBytes the maximum size to allow for the batch sending
      * @param maxWaitTime the maximum wait time for buffering a batch of messages
      * @param <T> payload type in message
      * @return Mono Void
      */
     <T> Mono<Void> sendAsync(String destination, Collection<Message<T>> messages,
-                             PartitionSupplier partitionSupplier, int maximumSizeInBytes, Duration maxWaitTime);
+                             PartitionSupplier partitionSupplier, int maxSizeInBytes, Duration maxWaitTime);
+
+    /**
+     * Send a {@link Collection}&lt;{@link Message}&gt; to the given destination with a given partition supplier asynchronously.
+     * @param destination destination
+     * @param messages message set
+     * @param partitionSupplier partition supplier
+     * @param maxSizeInBytes the maximum size to allow for the batch sending
+     * @param <T> payload type in message
+     * @return Mono Void
+     */
+    default <T> Mono<Void> sendAsync(String destination, Collection<Message<T>> messages,
+                             PartitionSupplier partitionSupplier, int maxSizeInBytes) {
+        return sendAsync(destination, messages, partitionSupplier, 0, Duration.ofMillis(0));
+    }
 
     /**
      * Send a {@link Collection}&lt;{@link Message}&gt; to the given destination with a given partition supplier asynchronously.
@@ -40,9 +54,8 @@ public interface BatchSendOperation {
      * @return Mono Void
      */
     default <T> Mono<Void> sendAsync(String destination, Collection<Message<T>> messages,
-                             PartitionSupplier partitionSupplier) {
-        // how much should the default max size be? and waiting time
-        return sendAsync(destination, messages, partitionSupplier, 0, Duration.ofMinutes(5));
+                                     PartitionSupplier partitionSupplier) {
+        return sendAsync(destination, messages, partitionSupplier, 0);
     }
 
     /**
@@ -61,10 +74,38 @@ public interface BatchSendOperation {
      * @param destination destination
      * @param messages message set
      * @param partitionSupplier partition supplier
+     * @param maxSizeInBytes the maximum size to allow for the batch sending
+     * @param <T> payload type in message
+     * @return Mono Void
+     */
+    default <T> void send(String destination, Collection<Message<T>> messages, PartitionSupplier partitionSupplier,
+                          int maxSizeInBytes, Duration maxWaitTime) {
+        sendAsync(destination, messages, partitionSupplier, maxSizeInBytes, maxWaitTime).block();
+    }
+
+    /**
+     * Send a {@link Collection}&lt;{@link Message}&gt; to the given destination with a given partition supplier synchronously.
+     * @param destination destination
+     * @param messages message set
+     * @param partitionSupplier partition supplier
+     * @param maxSizeInBytes the maximum size to allow for the batch sending
+     * @param <T> payload type in message
+     * @return Mono Void
+     */
+    default <T> void send(String destination, Collection<Message<T>> messages, PartitionSupplier partitionSupplier,
+                          int maxSizeInBytes) {
+        send(destination, messages, partitionSupplier, maxSizeInBytes, Duration.ofMillis(0));
+    }
+
+    /**
+     * Send a {@link Collection}&lt;{@link Message}&gt; to the given destination with a given partition supplier synchronously.
+     * @param destination destination
+     * @param messages message set
+     * @param partitionSupplier partition supplier
      * @param <T> payload type in message
      */
     default <T> void send(String destination, Collection<Message<T>> messages, PartitionSupplier partitionSupplier) {
-        sendAsync(destination, messages, partitionSupplier).block();
+        send(destination, messages, partitionSupplier, 0);
     }
 
     /**
