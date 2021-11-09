@@ -25,8 +25,8 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
   // The clients won't be disposed - so any still running task can still keep using it
   // but it helps to allow the GC to clean-up the resources if no running task is using the client anymore
   private[this] val unusedClientTtlInMs = 15 * 60 * 1000
-  private[this] val cleanupIntervalInSeconds = 5 * 60
-  private[this] val cache = new TrieMap[CosmosClientConfiguration, CosmosClientCacheMetadata]
+  private[this] val cleanupIntervalInSeconds = 1 * 60
+  private[this] val cache = new TrieMap[ClientConfigurationWrapper, CosmosClientCacheMetadata]
   private[this] val toBeClosedWhenNotActiveAnymore =  new ConcurrentHashMap[CosmosClientCacheMetadata, java.lang.Boolean]
   private[this] val executorService:ScheduledExecutorService = Executors.newSingleThreadScheduledExecutor(
     new CosmosDaemonThreadFactory("CosmosClientCache"))
@@ -43,14 +43,14 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
 
     val ownerInfo = OwnerInfo(calledFrom)
 
-    cache.get(cosmosClientConfiguration) match {
+    cache.get(ClientConfigurationWrapper(cosmosClientConfiguration)) match {
       case Some(clientCacheMetadata) => clientCacheMetadata.createCacheItemForReuse(ownerInfo)
       case None => syncCreate(cosmosClientConfiguration, cosmosClientStateHandle, ownerInfo)
     }
   }
 
   def ownerInformation(cosmosClientConfiguration: CosmosClientConfiguration): String = {
-    cache.get(cosmosClientConfiguration) match {
+    cache.get(ClientConfigurationWrapper(cosmosClientConfiguration)) match {
       case None => ""
       case Some(existingClientCacheMetadata) => existingClientCacheMetadata
         .owners
@@ -60,10 +60,14 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
   }
 
   def purge(cosmosClientConfiguration: CosmosClientConfiguration): Unit = {
-    cache.get(cosmosClientConfiguration) match {
+    purgeImpl(ClientConfigurationWrapper(cosmosClientConfiguration))
+  }
+
+  private[this]def purgeImpl(clientConfigWrapper: ClientConfigurationWrapper): Unit = {
+    cache.get(clientConfigWrapper) match {
       case None => Unit
       case Some(existingClientCacheMetadata) =>
-        cache.remove(cosmosClientConfiguration) match {
+        cache.remove(clientConfigWrapper) match {
           case None => Unit
           case Some(_) =>
             // there is a race condition here - technically between the check in onCleanup
@@ -87,7 +91,8 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
                                cosmosClientStateHandle: Option[Broadcast[CosmosClientMetadataCachesSnapshot]],
                                ownerInfo: OwnerInfo)
   : CosmosClientCacheItem = synchronized {
-    cache.get(cosmosClientConfiguration) match {
+    val clientConfigWrapper = ClientConfigurationWrapper(cosmosClientConfiguration)
+    cache.get(clientConfigWrapper) match {
       case Some(clientCacheMetadata) => clientCacheMetadata.createCacheItemForReuse(ownerInfo)
       case None =>
         var builder = new CosmosClientBuilder()
@@ -148,11 +153,12 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
           client,
           new AtomicLong(epochNowInMs),
           new AtomicLong(epochNowInMs),
+          new AtomicLong(epochNowInMs),
           new AtomicLong(1),
           owners
         )
 
-        cache.putIfAbsent(cosmosClientConfiguration, newClientCacheEntry) match {
+        cache.putIfAbsent(clientConfigWrapper, newClientCacheEntry) match {
           case None => new CacheItemImpl(client, newClientCacheEntry, ownerInfo)
           case Some(_) =>
             throw new ConcurrentModificationException("Should not reach here because its synchronized")
@@ -171,12 +177,20 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
         val clientConfig = pair._1
         val clientMetadata = pair._2
 
-        if (clientMetadata.lastModified.get() < Instant.now.toEpochMilli - unusedClientTtlInMs) {
+        if (clientMetadata.lastRetrieved.get() < Instant.now.toEpochMilli - unusedClientTtlInMs) {
           if (clientMetadata.refCount.get() == 0) {
-            logInfo(s"Removing client due to inactivity from the cache - ${clientConfig.endpoint}, " +
-              s"${clientConfig.applicationName}, ${clientConfig.preferredRegionsList}, ${clientConfig.useGatewayMode}, " +
-              s"${clientConfig.useEventualConsistency}")
-            purge(clientConfig)
+            if (clientMetadata.lastModified.get() < Instant.now.toEpochMilli - (cleanupIntervalInSeconds * 1000)) {
+              logInfo(s"Removing client due to inactivity from the cache - ${clientConfig.endpoint}, " +
+                s"${clientConfig.applicationName}, ${clientConfig.preferredRegionsList}, ${clientConfig.useGatewayMode}, " +
+                s"${clientConfig.useEventualConsistency}")
+              purgeImpl(clientConfig)
+            } else {
+              logInfo("Client has not been retrieved from the cache recently and no spark task has been using " +
+                s"it for < $cleanupIntervalInSeconds seconds. Waiting one more clean-up cycle before closing it, in " +
+                s"case newly scheduled spark tasks need it - Created: ${clientMetadata.created}, " +
+                s"LastModified ${clientMetadata.lastModified}, RefCount: ${clientMetadata.refCount}, " +
+                s"Owning Spark tasks: [${clientMetadata.owners.keys.mkString(", ")}]")
+            }
           } else {
             logInfo(s"Client has not been retrieved from the cache recently - Created: ${clientMetadata.created}, " +
               s"LastModified ${clientMetadata.lastModified}, RefCount: ${clientMetadata.refCount}, " +
@@ -208,13 +222,16 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
   private[this] case class CosmosClientCacheMetadata
   (
     client: CosmosAsyncClient,
+    lastRetrieved: AtomicLong,
     lastModified: AtomicLong,
     created: AtomicLong,
     refCount: AtomicLong,
     owners: TrieMap[OwnerInfo, Option[Boolean]]
   ) {
     def createCacheItemForReuse(ownerInfo: OwnerInfo) : CacheItemImpl = {
-      lastModified.set(Instant.now.toEpochMilli)
+      val nowInEpochMilli = Instant.now.toEpochMilli
+      lastRetrieved.set(nowInEpochMilli)
+      lastModified.set(nowInEpochMilli)
       refCount.incrementAndGet()
       owners.putIfAbsent(ownerInfo, None)
 
@@ -237,6 +254,30 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
         case Some(ctx) => OwnerInfo(calledFrom, ctx.partitionId(), ctx.stageId(), ctx.taskAttemptId(), ctx.attemptNumber(), ctx.stageAttemptNumber())
         case None => OwnerInfo(calledFrom, -1, -1, -1, -1, -1)
       }
+    }
+  }
+
+  private[spark] case class ClientConfigurationWrapper (
+                                                        endpoint: String,
+                                                        key: String,
+                                                        applicationName: String,
+                                                        useGatewayMode: Boolean,
+                                                        useEventualConsistency: Boolean,
+                                                        preferredRegionsList: String)
+
+  private[this] object ClientConfigurationWrapper {
+    def apply(clientConfig: CosmosClientConfiguration): ClientConfigurationWrapper = {
+      ClientConfigurationWrapper(
+        clientConfig.endpoint,
+        clientConfig.key,
+        clientConfig.applicationName,
+        clientConfig.useGatewayMode,
+        clientConfig.useEventualConsistency,
+        clientConfig.preferredRegionsList match {
+          case Some(regionListArray) => s"[${regionListArray.mkString(", ")}]"
+          case None => ""
+        }
+      )
     }
   }
 

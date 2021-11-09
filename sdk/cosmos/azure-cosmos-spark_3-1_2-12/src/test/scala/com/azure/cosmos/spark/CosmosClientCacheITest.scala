@@ -15,26 +15,94 @@ class CosmosClientCacheITest extends IntegrationSpec with CosmosClient with Basi
   private val cosmosMasterKey = TestConfigurations.MASTER_KEY
 
   "CosmosClientCache" should "get cached object with same config" in {
-    val userConfig = CosmosClientConfiguration(Map(
-      "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
-      "spark.cosmos.accountKey" -> cosmosMasterKey
-    ), useEventualConsistency = true)
 
-    Loan(CosmosClientCache(userConfig, None, "CosmosClientCacheITest-01"))
-      .to(client1 => {
-        Loan(CosmosClientCache(userConfig, None, "CosmosClientCacheITest-02"))
-          .to(client2 => {
+    val userConfigs = Array[(String, CosmosClientConfiguration)](
+      (
+        "SimpleCtor",
+        CosmosClientConfiguration(
+        Map(
+          "spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+          "spark.cosmos.accountKey" -> cosmosMasterKey
+        ),
+        useEventualConsistency = true)
+      ),
+      (
+        "StandardCtorWithoutPreferredRegions",
+        CosmosClientConfiguration(
+        cosmosEndpoint,
+        cosmosMasterKey,
+        "SampleApplicationName",
+        useGatewayMode = true,
+        useEventualConsistency = true,
+        preferredRegionsList = None)
+      ),
+      (
+        "StandardCtorWithEmptyPreferredRegions",
+        CosmosClientConfiguration(
+          cosmosEndpoint,
+          cosmosMasterKey,
+          "SampleApplicationName",
+          useGatewayMode = true,
+          useEventualConsistency = true,
+          preferredRegionsList = Some(Array[String]()))
+      ),
+      (
+        "StandardCtorWithOnePreferredRegion",
+        CosmosClientConfiguration(
+        cosmosEndpoint,
+        cosmosMasterKey,
+        "SampleApplicationName",
+        useGatewayMode = true,
+        useEventualConsistency = true,
+        preferredRegionsList = Some(Array[String]("North Europe")))
+      ),
+      (
+        "StandardCtorWithTwoPreferredRegions",
+        CosmosClientConfiguration(
+          cosmosEndpoint,
+          cosmosMasterKey,
+          "SampleApplicationName",
+          useGatewayMode = true,
+          useEventualConsistency = true,
+          preferredRegionsList = Some(Array[String]("North Europe", "West Europe")))
+      )
+    )
+
+    userConfigs.foreach(userConfigPair => {
+
+      val testCaseName = userConfigPair._1
+      val userConfig = userConfigPair._2
+      val userConfigShallowCopy = CosmosClientConfiguration(
+        userConfig.endpoint,
+        userConfig.key,
+        userConfig.applicationName,
+        userConfig.useGatewayMode,
+        userConfig.useEventualConsistency,
+        userConfig.preferredRegionsList match {
+          case Some(array) => Some(array.clone())
+          case None => None
+        }
+      )
+
+      logInfo(s"TestCase: {$testCaseName}")
+
+      Loan(CosmosClientCache(userConfig, None, s"$testCaseName-CosmosClientCacheITest-01"))
+        .to(client1 => {
+          Loan(CosmosClientCache(userConfigShallowCopy, None, s"$testCaseName-CosmosClientCacheITest-02"))
+            .to(client2 => {
               client2.client should be theSameInstanceAs client1.client
 
-            val ownerInfo = CosmosClientCache.ownerInformation(userConfig)
-            logInfo(s"OwnerInfo $ownerInfo")
-            ownerInfo.contains("CosmosClientCacheITest-01") shouldEqual true
-            ownerInfo.contains("CosmosClientCacheITest-02") shouldEqual true
-            ownerInfo.contains("CosmosClientCacheITest-03") shouldEqual false
-            CosmosClientCache.purge(userConfig)
-          })
-      })
+              val ownerInfo = CosmosClientCache.ownerInformation(userConfig)
+              logInfo(s"$testCaseName-OwnerInfo $ownerInfo")
+              ownerInfo.contains(s"$testCaseName-CosmosClientCacheITest-01") shouldEqual true
+              ownerInfo.contains(s"$testCaseName-CosmosClientCacheITest-02") shouldEqual true
+              ownerInfo.contains(s"$testCaseName-CosmosClientCacheITest-03") shouldEqual false
+              CosmosClientCache.purge(userConfig)
+            })
+        })
+    })
   }
+
 
   it should "return a new instance after purging" in {
     val userConfig = CosmosClientConfiguration(Map(
