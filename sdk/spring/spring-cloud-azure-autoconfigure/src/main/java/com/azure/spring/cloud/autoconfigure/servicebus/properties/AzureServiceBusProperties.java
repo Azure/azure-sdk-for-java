@@ -6,6 +6,10 @@ package com.azure.spring.cloud.autoconfigure.servicebus.properties;
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.messaging.servicebus.models.SubQueue;
 import com.azure.spring.core.properties.AzurePropertiesUtils;
+import com.azure.spring.service.servicebus.properties.ServiceBusConsumerProperties;
+import com.azure.spring.service.servicebus.properties.ServiceBusProcessorProperties;
+import com.azure.spring.service.servicebus.properties.ServiceBusProducerProperties;
+import com.azure.spring.service.servicebus.properties.ServiceBusProperties;
 import org.springframework.boot.context.properties.PropertyMapper;
 
 import java.time.Duration;
@@ -13,7 +17,7 @@ import java.time.Duration;
 /**
  *
  */
-public class AzureServiceBusProperties extends AzureServiceBusCommonProperties {
+public class AzureServiceBusProperties extends AzureServiceBusCommonProperties implements ServiceBusProperties {
 
     public static final String PREFIX = "spring.cloud.azure.servicebus";
 
@@ -47,8 +51,7 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties {
 
         Producer properties = new Producer();
 
-        AzurePropertiesUtils.copyAzureCommonProperties(this.producer, properties);
-        AzurePropertiesUtils.copyAzureCommonPropertiesIgnoreNull(this, properties);
+        AzurePropertiesUtils.mergeAzureCommonProperties(this, this.producer, properties);
 
         propertyMapper.from(this.getDomainName()).to(properties::setDomainName);
         propertyMapper.from(this.getNamespace()).to(properties::setNamespace);
@@ -68,8 +71,7 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties {
 
         Consumer properties = new Consumer();
 
-        AzurePropertiesUtils.copyAzureCommonProperties(this.consumer, properties);
-        AzurePropertiesUtils.copyAzureCommonPropertiesIgnoreNull(this, properties);
+        AzurePropertiesUtils.mergeAzureCommonProperties(this, this.consumer, properties);
 
         propertyMapper.from(this.getDomainName()).to(properties::setDomainName);
         propertyMapper.from(this.getNamespace()).to(properties::setNamespace);
@@ -97,8 +99,7 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties {
 
         Processor properties = new Processor();
 
-        AzurePropertiesUtils.copyAzureCommonProperties(this.processor, properties);
-        AzurePropertiesUtils.copyAzureCommonPropertiesIgnoreNull(this, properties);
+        AzurePropertiesUtils.mergeAzureCommonProperties(this, this.processor, properties);
 
         propertyMapper.from(this.getDomainName()).to(properties::setDomainName);
         propertyMapper.from(this.getNamespace()).to(properties::setNamespace);
@@ -126,7 +127,7 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties {
     /**
      * Properties of a Service Bus producer.
      */
-    public static class Producer extends AzureServiceBusCommonProperties {
+    public static class Producer extends AzureServiceBusCommonProperties implements ServiceBusProducerProperties {
 
         private String queueName;
         private String topicName;
@@ -151,7 +152,7 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties {
     /**
      * Properties of a Service Bus consumer.
      */
-    public static class Consumer extends AzureServiceBusCommonProperties {
+    public static class Consumer extends AzureServiceBusCommonProperties implements ServiceBusConsumerProperties {
 
         // TODO (xiada): name for session
         private Boolean sessionAware;
@@ -240,7 +241,7 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties {
     /**
      * Properties of a Service Bus processor.
      */
-    public static class Processor extends Consumer {
+    public static class Processor extends Consumer implements ServiceBusProcessorProperties {
         private Integer maxConcurrentCalls;
         private Integer maxConcurrentSessions;
 

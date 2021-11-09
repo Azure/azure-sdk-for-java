@@ -4,9 +4,11 @@
 package com.azure.spring.core.factory;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.spring.core.aware.AzureProfileAware;
+import com.azure.spring.core.aware.ClientAware;
+import com.azure.spring.core.aware.authentication.ConnectionStringAware;
 import com.azure.spring.core.connectionstring.ConnectionStringProvider;
 import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.core.credential.provider.AzureCredentialProvider;
@@ -15,7 +17,6 @@ import com.azure.spring.core.credential.resolver.AzureCredentialResolvers;
 import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.core.customizer.NoOpAzureServiceClientBuilderCustomizer;
 import com.azure.spring.core.properties.AzureProperties;
-import com.azure.spring.core.properties.client.ClientProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
@@ -34,8 +35,8 @@ import java.util.stream.Collectors;
  * @param <T> Type of the service client builder
  */
 public abstract class AbstractAzureServiceClientBuilderFactory<T> implements AzureServiceClientBuilderFactory<T> {
-
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractAzureServiceClientBuilderFactory.class);
+    private static final TokenCredential DEFAULT_TOKEN_CREDENTIAL = new DefaultAzureCredentialBuilder().build();
     protected abstract T createBuilderInstance();
 
     protected abstract AzureProperties getAzureProperties();
@@ -56,10 +57,9 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
 
     protected abstract BiConsumer<T, String> consumeConnectionString();
 
-    protected TokenCredential defaultTokenCredential = new DefaultAzureCredentialBuilder().build();
-
-    private AzureEnvironment azureEnvironment = AzureEnvironment.AZURE;
-    private String springIdentifier = "";
+    protected TokenCredential defaultTokenCredential = DEFAULT_TOKEN_CREDENTIAL;
+    private String applicationId; // end-user
+    private String springIdentifier;
     private ConnectionStringProvider<?> connectionStringProvider;
     private boolean credentialConfigured = false;
 
@@ -103,8 +103,11 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
     }
 
     protected void configureAzureEnvironment(T builder) {
+        AzureProfileAware.Profile profile = getAzureProperties().getProfile();
+
         Configuration configuration = new Configuration();
-        configuration.put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, this.azureEnvironment.getActiveDirectoryEndpoint());
+        configuration.put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, profile.getEnvironment().getActiveDirectoryEndpoint());
+
         consumeConfiguration().accept(builder, configuration);
     }
 
@@ -113,7 +116,7 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
         List<AuthenticationDescriptor<?>> descriptors = getAuthenticationDescriptors(builder);
         AzureCredentialProvider<?> azureCredentialProvider = resolveAzureCredential(getAzureProperties(), descriptors);
         if (azureCredentialProvider == null) {
-            LOGGER.warn("No authentication credential configured for class {}.", builder.getClass());
+            LOGGER.debug("No authentication credential configured for class {}.", builder.getClass().getSimpleName());
             return;
         }
 
@@ -134,7 +137,19 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
                 && StringUtils.hasText(this.connectionStringProvider.getConnectionString())) {
             consumeConnectionString().accept(builder, this.connectionStringProvider.getConnectionString());
             credentialConfigured = true;
+            LOGGER.debug("Connection string configured for class {}.", builder.getClass().getSimpleName());
+        } else {
+            AzureProperties azureProperties = getAzureProperties();
+            if (azureProperties instanceof ConnectionStringAware) {
+                String connectionString = ((ConnectionStringAware) azureProperties).getConnectionString();
+                if (StringUtils.hasText(connectionString)) {
+                    consumeConnectionString().accept(builder, connectionString);
+                    credentialConfigured = true;
+                    LOGGER.debug("Connection string configured for class {}.", builder.getClass().getSimpleName());
+                }
+            }
         }
+
     }
 
     protected void configureDefaultCredential(T builder) {
@@ -163,19 +178,11 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
         return credentialResolvers.resolve(azureProperties);
     }
 
-    protected AzureEnvironment getAzureEnvironment() {
-        return azureEnvironment;
-    }
-
-    public void setAzureEnvironment(AzureEnvironment azureEnvironment) {
-        this.azureEnvironment = azureEnvironment;
-    }
-
     private String getApplicationId() {
-        final ClientProperties clientProperties = getAzureProperties().getClient();
-        return Optional.ofNullable(clientProperties)
-                                           .map(ClientProperties::getApplicationId)
-                                           .orElse("");
+        final ClientAware.Client client = getAzureProperties().getClient();
+        return Optional.ofNullable(client)
+                       .map(ClientAware.Client::getApplicationId)
+                       .orElse("");
     }
 
     public void setSpringIdentifier(String springIdentifier) {

@@ -8,12 +8,11 @@ import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubProducerClient;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnMissingProperty;
-import com.azure.spring.cloud.autoconfigure.eventhubs.factory.EventHubClientBuilderFactory;
 import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubProperties;
 import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.core.service.AzureServiceType;
-import com.azure.spring.eventhubs.core.EventHubOperation;
+import com.azure.spring.service.eventhubs.factory.EventHubClientBuilderFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -24,7 +23,8 @@ import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.EVE
 import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.EVENT_HUB_PRODUCER_CLIENT_BUILDER_FACTORY_BEAN_NAME;
 
 /**
- * An auto-configuration for Event Hub, which provides {@link EventHubOperation}
+ * An auto-configuration for Event Hub, which provides {@link EventHubProducerAsyncClient} and
+ * {@link EventHubProducerClient}.
  *
  */
 @Configuration(proxyBeanMethods = false)

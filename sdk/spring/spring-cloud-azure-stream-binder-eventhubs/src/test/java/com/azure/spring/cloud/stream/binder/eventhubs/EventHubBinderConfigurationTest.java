@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.stream.binder.eventhubs;
 
 import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubOperationAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubMessagingAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureEventHubResourceManagerAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureResourceManagerAutoConfiguration;
 import com.azure.spring.cloud.stream.binder.eventhubs.config.EventHubBinderConfiguration;
@@ -26,7 +26,7 @@ public class EventHubBinderConfigurationTest {
         .withConfiguration(AutoConfigurations.of(AzureResourceManagerAutoConfiguration.class,
                                                  AzureEventHubResourceManagerAutoConfiguration.class,
                                                  AzureEventHubAutoConfiguration.class,
-                                                 AzureEventHubOperationAutoConfiguration.class,
+                                                 AzureEventHubMessagingAutoConfiguration.class,
                                                  EventHubBinderConfiguration.class));
 /*
 // TODO (xiada): tests

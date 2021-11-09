@@ -27,9 +27,10 @@ import java.util.function.Supplier;
 
 @SpringBootTest(classes = EventHubBinderConsumeErrorIT.TestConfig.class)
 @TestPropertySource(properties = {
+    "spring.cloud.stream.eventhub.default.consumer.checkpoint.mode=MANUAL",
     "spring.cloud.stream.bindings.consume-in-0.destination=test-eventhub-message",
     "spring.cloud.stream.bindings.supply-out-0.destination=test-eventhub-message",
-    "spring.cloud.azure.eventhub.processor.checkpoint-store.container-name=test-eventhub-message"
+    "spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name=test-eventhub-message"
     })
 public class EventHubBinderConsumeErrorIT {
 

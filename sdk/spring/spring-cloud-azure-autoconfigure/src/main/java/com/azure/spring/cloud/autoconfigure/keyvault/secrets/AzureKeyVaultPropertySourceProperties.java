@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.keyvault.secrets;
 
 import com.azure.security.keyvault.secrets.SecretServiceVersion;
-import com.azure.spring.cloud.autoconfigure.properties.AbstractAzureHttpConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.properties.AbstractAzureHttpCP;
 
 import java.time.Duration;
 import java.util.List;
@@ -14,7 +14,7 @@ import static com.azure.spring.cloud.autoconfigure.keyvault.env.KeyVaultProperty
 /**
  * Configurations to set when Azure Key Vault is used as an external property source.
  */
-public class AzureKeyVaultPropertySourceProperties extends AbstractAzureHttpConfigurationProperties {
+public class AzureKeyVaultPropertySourceProperties extends AbstractAzureHttpCP {
 
     public static final Duration DEFAULT_REFRESH_INTERVAL = Duration.ofMinutes(30);
 

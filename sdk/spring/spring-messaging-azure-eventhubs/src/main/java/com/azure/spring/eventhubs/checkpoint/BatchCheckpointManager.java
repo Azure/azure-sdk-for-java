@@ -26,7 +26,7 @@ class BatchCheckpointManager extends CheckpointManager {
 
     BatchCheckpointManager(CheckpointConfig checkpointConfig) {
         super(checkpointConfig);
-        Assert.isTrue(this.checkpointConfig.getCheckpointMode() == CheckpointMode.BATCH,
+        Assert.isTrue(this.checkpointConfig.getMode() == CheckpointMode.BATCH,
             () -> "BatchCheckpointManager should have checkpointMode batch");
     }
 

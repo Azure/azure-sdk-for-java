@@ -8,11 +8,12 @@ import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubConsumerClient;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnMissingProperty;
-import com.azure.spring.cloud.autoconfigure.eventhubs.factory.EventHubClientBuilderFactory;
 import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubProperties;
 import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.core.service.AzureServiceType;
+import com.azure.spring.service.core.PropertyMapper;
+import com.azure.spring.service.eventhubs.factory.EventHubClientBuilderFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -43,16 +44,26 @@ class AzureEventHubConsumerClientConfiguration {
     @ConditionalOnBean(EventHubClientBuilder.class)
     @Configuration(proxyBeanMethods = false)
     static class SharedConsumerConnectionConfiguration {
+
+        private final EventHubClientBuilder builder;
+        SharedConsumerConnectionConfiguration(AzureEventHubProperties properties, EventHubClientBuilder builder) {
+            this.builder = builder;
+
+            PropertyMapper mapper = new PropertyMapper();
+            mapper.from(properties.getConsumer().getConsumerGroup()).to(builder::consumerGroup);
+            mapper.from(properties.getConsumer().getPrefetchCount()).to(builder::prefetchCount);
+        }
+
         @Bean
         @ConditionalOnMissingBean
-        public EventHubConsumerAsyncClient eventHubConsumerAsyncClient(EventHubClientBuilder builder) {
-            return builder.buildAsyncConsumerClient();
+        public EventHubConsumerAsyncClient eventHubConsumerAsyncClient() {
+            return this.builder.buildAsyncConsumerClient();
         }
 
         @Bean
         @ConditionalOnMissingBean
         public EventHubConsumerClient eventHubConsumerClient(EventHubClientBuilder builder) {
-            return builder.buildConsumerClient();
+            return this.builder.buildConsumerClient();
         }
     }
 

@@ -4,20 +4,26 @@
 package com.azure.spring.core.converter;
 
 import com.azure.core.http.ProxyOptions;
-import com.azure.spring.core.properties.proxy.ProxyProperties;
+import com.azure.spring.core.properties.proxy.HttpProxyProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.util.StringUtils;
 
 import java.net.InetSocketAddress;
 
 /**
- * Converts a {@link ProxyProperties} to a {@link ProxyOptions}.
+ * Converts a {@link HttpProxyProperties} to a {@link ProxyOptions}.
  */
-public final class AzureHttpProxyOptionsConverter implements Converter<ProxyProperties, ProxyOptions> {
+public final class AzureHttpProxyOptionsConverter implements Converter<HttpProxyProperties, ProxyOptions> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AzureHttpProxyOptionsConverter.class);
+    public static final AzureHttpProxyOptionsConverter HTTP_PROXY_CONVERTER = new AzureHttpProxyOptionsConverter();
 
     @Override
-    public ProxyOptions convert(ProxyProperties proxyProperties) {
-        if (!StringUtils.hasText(proxyProperties.getHostname())) {
+    public ProxyOptions convert(HttpProxyProperties proxyProperties) {
+        if (!StringUtils.hasText(proxyProperties.getHostname()) || proxyProperties.getPort() == null) {
+            LOGGER.debug("Proxy hostname or port is not set.");
             return null;
         }
 
@@ -34,8 +40,9 @@ public final class AzureHttpProxyOptionsConverter implements Converter<ProxyProp
         if (StringUtils.hasText(proxyProperties.getUsername()) && StringUtils.hasText(proxyProperties.getPassword())) {
             proxyOptions.setCredentials(proxyProperties.getUsername(), proxyProperties.getPassword());
         }
-        // TODO (xiada) non proxy hosts
+        if (StringUtils.hasText(proxyProperties.getNonProxyHosts())) {
+            proxyOptions.setNonProxyHosts(proxyProperties.getNonProxyHosts());
+        }
         return proxyOptions;
-
     }
 }

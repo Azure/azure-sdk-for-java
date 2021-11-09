@@ -3,13 +3,16 @@
 
 package com.azure.spring.cloud.autoconfigure.storage.common;
 
-import com.azure.spring.cloud.autoconfigure.properties.AbstractAzureHttpConfigurationProperties;
-import com.azure.spring.core.properties.aware.credential.SasTokenAware;
+import com.azure.spring.cloud.autoconfigure.properties.core.AbstractAzureServiceCP;
+import com.azure.spring.cloud.autoconfigure.properties.core.client.HttpClientCP;
+import com.azure.spring.cloud.autoconfigure.properties.core.proxy.HttpProxyCP;
+import com.azure.spring.service.storage.common.StorageProperties;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
  * Common properties for all Azure Storage services.
  */
-public class AzureStorageProperties extends AbstractAzureHttpConfigurationProperties implements SasTokenAware {
+public class AzureStorageProperties extends AbstractAzureServiceCP implements StorageProperties {
 
     protected String endpoint;
 
@@ -20,6 +23,30 @@ public class AzureStorageProperties extends AbstractAzureHttpConfigurationProper
     protected String connectionString;
 
     protected String accountName;
+
+    @NestedConfigurationProperty
+    protected final StorageRetryCP retry = new StorageRetryCP();
+
+    @NestedConfigurationProperty
+    protected final HttpClientCP client = new HttpClientCP();
+
+    @NestedConfigurationProperty
+    protected final HttpProxyCP proxy = new HttpProxyCP();
+
+    @Override
+    public StorageRetryCP getRetry() {
+        return retry;
+    }
+
+    @Override
+    public HttpClientCP getClient() {
+        return client;
+    }
+
+    @Override
+    public HttpProxyCP getProxy() {
+        return proxy;
+    }
 
     public String getEndpoint() {
         return endpoint;
@@ -50,7 +77,6 @@ public class AzureStorageProperties extends AbstractAzureHttpConfigurationProper
         return sasToken;
     }
 
-    @Override
     public void setSasToken(String sasToken) {
         this.sasToken = sasToken;
     }

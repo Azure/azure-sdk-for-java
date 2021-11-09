@@ -6,13 +6,13 @@ package com.azure.spring.servicebus.core.queue;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.azure.spring.servicebus.core.DefaultServiceBusMessageProcessor;
+import com.azure.spring.servicebus.core.ServiceBusQueueClientFactory;
+import com.azure.spring.servicebus.core.ServiceBusTemplate;
+import com.azure.spring.servicebus.health.Instrumentation;
 import com.azure.spring.servicebus.support.ServiceBusClientConfig;
 import com.azure.spring.servicebus.support.ServiceBusRuntimeException;
-import com.azure.spring.servicebus.core.ServiceBusTemplate;
 import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
 import com.azure.spring.servicebus.support.converter.ServiceBusMessageHeaders;
-import com.azure.spring.servicebus.core.ServiceBusQueueClientFactory;
-import com.azure.spring.servicebus.health.Instrumentation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
@@ -69,7 +69,7 @@ public class ServiceBusQueueTemplate extends ServiceBusTemplate<ServiceBusQueueC
             @Override
             protected void logCheckpointSuccess(Message<?> message) {
                 if (LOGGER.isDebugEnabled()) {
-                    LOGGER.debug(String.format(MSG_SUCCESS_CHECKPOINT, message, name, getCheckpointConfig().getCheckpointMode()));
+                    LOGGER.debug(String.format(MSG_SUCCESS_CHECKPOINT, message, name, getCheckpointConfig().getMode()));
                 }
             }
         };

@@ -7,7 +7,7 @@ import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubConsumerClient;
 import com.azure.spring.cloud.autoconfigure.context.AzureContextUtils;
-import com.azure.spring.cloud.autoconfigure.eventhubs.factory.EventHubClientBuilderFactory;
+import com.azure.spring.service.eventhubs.factory.EventHubClientBuilderFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -66,6 +66,7 @@ class AzureEventHubConsumerClientConfigurationTest {
                 "spring.cloud.azure.eventhubs.event-hub-name=" + eventHubName,
                 "spring.cloud.azure.eventhubs.consumer.consumer-group=" + consumerGroupName
             )
+            .withUserConfiguration(AzureEventHubPropertiesTestConfiguration.class)
             .withBean(EventHubClientBuilder.class, () -> clientBuilder)
             .run(
                 context -> {

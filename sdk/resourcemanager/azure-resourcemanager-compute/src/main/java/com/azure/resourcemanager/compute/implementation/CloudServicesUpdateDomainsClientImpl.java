@@ -258,7 +258,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginWalkUpdateDomainAsync(
         String resourceGroupName, String cloudServiceName, int updateDomain, UpdateDomainInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -282,7 +282,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginWalkUpdateDomainAsync(
         String resourceGroupName,
         String cloudServiceName,
@@ -310,7 +310,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginWalkUpdateDomain(
         String resourceGroupName, String cloudServiceName, int updateDomain, UpdateDomainInner parameters) {
         return beginWalkUpdateDomainAsync(resourceGroupName, cloudServiceName, updateDomain, parameters)
@@ -331,7 +331,7 @@ public final class CloudServicesUpdateDomainsClientImpl implements CloudServices
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginWalkUpdateDomain(
         String resourceGroupName,
         String cloudServiceName,

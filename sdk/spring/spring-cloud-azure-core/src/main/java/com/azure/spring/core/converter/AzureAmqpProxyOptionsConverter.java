@@ -5,7 +5,7 @@ package com.azure.spring.core.converter;
 
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
-import com.azure.spring.core.properties.proxy.ProxyProperties;
+import com.azure.spring.core.aware.ProxyAware;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.util.StringUtils;
 
@@ -13,17 +13,19 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 
 /**
- * Converts a {@link ProxyProperties} to a {@link ProxyOptions}.
+ * Converts a {@link ProxyAware.Proxy} to a {@link ProxyOptions}.
  */
-public final class AzureAmqpProxyOptionsConverter implements Converter<ProxyProperties, ProxyOptions> {
+public final class AzureAmqpProxyOptionsConverter implements Converter<ProxyAware.Proxy, ProxyOptions> {
+
+    public static final AzureAmqpProxyOptionsConverter AMQP_PROXY_CONVERTER = new AzureAmqpProxyOptionsConverter();
 
     @Override
-    public ProxyOptions convert(ProxyProperties properties) {
-        if (!StringUtils.hasText(properties.getHostname())) {
+    public ProxyOptions convert(ProxyAware.Proxy proxy) {
+        if (!StringUtils.hasText(proxy.getHostname())) {
             return null;
         }
         ProxyAuthenticationType authenticationType;
-        switch (properties.getAuthenticationType()) {
+        switch (proxy.getAuthenticationType()) {
             case "basic":
                 authenticationType = ProxyAuthenticationType.BASIC;
                 break;
@@ -34,7 +36,7 @@ public final class AzureAmqpProxyOptionsConverter implements Converter<ProxyProp
                 authenticationType = ProxyAuthenticationType.NONE;
         }
         Proxy.Type type;
-        switch (properties.getType()) {
+        switch (proxy.getType()) {
             case "http":
                 type = Proxy.Type.HTTP;
                 break;
@@ -44,7 +46,7 @@ public final class AzureAmqpProxyOptionsConverter implements Converter<ProxyProp
             default:
                 type = Proxy.Type.DIRECT;
         }
-        Proxy proxyAddress = new Proxy(type, new InetSocketAddress(properties.getHostname(), properties.getPort()));
-        return new ProxyOptions(authenticationType, proxyAddress, properties.getUsername(), properties.getPassword());
+        Proxy proxyAddress = new Proxy(type, new InetSocketAddress(proxy.getHostname(), proxy.getPort()));
+        return new ProxyOptions(authenticationType, proxyAddress, proxy.getUsername(), proxy.getPassword());
     }
 }
