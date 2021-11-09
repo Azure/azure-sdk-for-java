@@ -3,8 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.context;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.commons.logging.Log;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.core.Ordered;
@@ -39,7 +38,12 @@ import static com.azure.core.util.Configuration.PROPERTY_NO_PROXY;
  */
 public class AzureGlobalConfigurationEnvironmentPostProcessor implements EnvironmentPostProcessor, Ordered {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(AzureGlobalConfigurationEnvironmentPostProcessor.class);
+    private final Log logger;
+
+    public AzureGlobalConfigurationEnvironmentPostProcessor(Log logger) {
+        this.logger = logger;
+        AzureCoreEnvMapping.setLogger(logger);
+    }
 
     @Override
     public int getOrder() {
@@ -87,7 +91,7 @@ public class AzureGlobalConfigurationEnvironmentPostProcessor implements Environ
         // TODO (xiada): how to set this proxy?
         // proxy(PROPERTY_HTTP_PROXY, PROPERTY_HTTPS_PROXY)
 
-
+        private static Log logger;
         private final String coreEnvName;
         private final String springPropertyName;
         private final Function<String, String> converter;
@@ -101,17 +105,24 @@ public class AzureGlobalConfigurationEnvironmentPostProcessor implements Environ
             this.springPropertyName = "spring.cloud.azure." + springPropertyName;
             this.converter = converter;
         }
-    }
 
-    private static Function<String, String> convertMillisToDuration() {
-        return ms -> {
-            try {
-                return Duration.ofMillis(Integer.parseInt(ms)).toString();
-            } catch (Exception ignore) {
-                LOGGER.debug("The millisecond value {} is malformed.", ms);
-                return null;
-            }
-        };
+        private static Function<String, String> convertMillisToDuration() {
+            return ms -> {
+                try {
+                    return Duration.ofMillis(Integer.parseInt(ms)).toString();
+                } catch (Exception ignore) {
+                    if (logger != null) {
+                        logger.debug("The millisecond value " + ms + " is malformed.");
+                    }
+                    return null;
+                }
+            };
+        }
+
+        public static void setLogger(Log logger) {
+            AzureCoreEnvMapping.logger = logger;
+        }
+
     }
 
     enum AzureSdkEnvMapping {
@@ -154,7 +165,7 @@ public class AzureGlobalConfigurationEnvironmentPostProcessor implements Environ
         if (!source.isEmpty()) {
             environment.getPropertySources().addLast(new AzureCoreEnvPropertySource("Azure Core/SDK", source));
         } else {
-            LOGGER.debug("No env predefined by Azure Core/SDKs are set, skip adding the AzureCoreEnvPropertySource.");
+            logger.debug("No env predefined by Azure Core/SDKs are set, skip adding the AzureCoreEnvPropertySource.");
         }
     }
 
