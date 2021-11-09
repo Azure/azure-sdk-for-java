@@ -3,22 +3,16 @@
 
 package com.azure.spring.service.storage.blob;
 
-import com.azure.spring.service.core.properties.TestAzureProperties;
+import com.azure.spring.service.storage.TestAzureStorageProperties;
 import com.azure.storage.blob.BlobServiceVersion;
 
-class TestAzureStorageBlobProperties extends TestAzureProperties implements StorageBlobProperties {
-
+public class TestAzureStorageBlobProperties extends TestAzureStorageProperties implements StorageBlobProperties {
 
     private String customerProvidedKey;
     private String encryptionScope;
     private BlobServiceVersion serviceVersion;
     private String containerName;
     private String blobName;
-    private String endpoint;
-    private String accountKey;
-    private String sasToken;
-    private String connectionString;
-    private String accountName;
 
     @Override
     public String getCustomerProvidedKey() {
@@ -63,51 +57,5 @@ class TestAzureStorageBlobProperties extends TestAzureProperties implements Stor
 
     public void setBlobName(String blobName) {
         this.blobName = blobName;
-    }
-
-    @Override
-    public String getEndpoint() {
-        return endpoint;
-    }
-
-    public void setEndpoint(String endpoint) {
-        this.endpoint = endpoint;
-    }
-
-    @Override
-    public String getAccountKey() {
-        return accountKey;
-    }
-
-    public void setAccountKey(String accountKey) {
-        this.accountKey = accountKey;
-    }
-
-    @Override
-    public String getSasToken() {
-        return sasToken;
-    }
-
-    @Override
-    public void setSasToken(String sasToken) {
-        this.sasToken = sasToken;
-    }
-
-    @Override
-    public String getConnectionString() {
-        return connectionString;
-    }
-
-    public void setConnectionString(String connectionString) {
-        this.connectionString = connectionString;
-    }
-
-    @Override
-    public String getAccountName() {
-        return accountName;
-    }
-
-    public void setAccountName(String accountName) {
-        this.accountName = accountName;
     }
 }

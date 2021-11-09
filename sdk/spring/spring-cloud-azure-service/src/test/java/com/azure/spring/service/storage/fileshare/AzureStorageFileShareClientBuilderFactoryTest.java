@@ -15,6 +15,7 @@ import com.azure.spring.service.core.http.TestHttpClientProvider;
 import com.azure.spring.service.core.http.TestPerCallHttpPipelinePolicy;
 import com.azure.spring.service.core.http.TestPerRetryHttpPipelinePolicy;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.policy.RequestRetryOptions;
 import com.azure.storage.file.share.ShareServiceClient;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
 import org.junit.jupiter.api.Test;
@@ -93,13 +94,23 @@ class AzureStorageFileShareClientBuilderFactoryTest extends AzureServiceClientBu
         proxyProperties.setHostname("localhost");
         proxyProperties.setPort(8080);
 
-        final ShareServiceClientBuilderFactoryProxyExt builderFactory = new ShareServiceClientBuilderFactoryProxyExt(properties);
+        final ShareServiceClientBuilderFactoryProxyExt builderFactory =
+            new ShareServiceClientBuilderFactoryProxyExt(properties);
         HttpClientProvider defaultHttpClientProvider = builderFactory.getDefaultHttpClientProvider();
         final ShareServiceClientBuilder builder = builderFactory.build();
         final ShareServiceClient client = builder.buildClient();
 
         verify(builder, times(1)).httpClient(any(HttpClient.class));
         verify(defaultHttpClientProvider, times(1)).createInstance(any(HttpClientOptions.class));
+    }
+
+    @Test
+    void testRetryOptionsConfigured() {
+        TestAzureStorageFileShareProperties properties = createMinimalServiceProperties();
+        final ShareServiceClientBuilderFactoryExt builderFactory = new ShareServiceClientBuilderFactoryExt(properties);
+        final ShareServiceClientBuilder builder = builderFactory.build();
+        final ShareServiceClient client = builder.buildClient();
+        verify(builder, times(1)).retryOptions(any(RequestRetryOptions.class));
     }
 
     @Override

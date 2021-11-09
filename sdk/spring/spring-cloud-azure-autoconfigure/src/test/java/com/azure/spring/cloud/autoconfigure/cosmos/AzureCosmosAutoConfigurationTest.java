@@ -13,8 +13,6 @@ import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
-import java.time.Duration;
-
 import static com.azure.spring.cloud.autoconfigure.cosmos.AzureCosmosPropertiesTest.TEST_ENDPOINT_HTTPS;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -73,13 +71,13 @@ class AzureCosmosAutoConfigurationTest {
         AzureGlobalProperties azureProperties = new AzureGlobalProperties();
         azureProperties.getCredential().setClientId("azure-client-id");
         azureProperties.getCredential().setClientSecret("azure-client-secret");
-        azureProperties.getRetry().getBackoff().setDelay(Duration.ofSeconds(2));
+        azureProperties.getProxy().setHostname("localhost");
 
         this.contextRunner
             .withBean(AzureGlobalProperties.class, () -> azureProperties)
             .withBean(CosmosClientBuilder.class, () -> mock(CosmosClientBuilder.class))
             .withPropertyValues("spring.cloud.azure.cosmos.credential.client-id=cosmos-client-id",
-                                "spring.cloud.azure.cosmos.retry.backoff.delay=2m",
+                                "spring.cloud.azure.cosmos.proxy.nonProxyHosts=127.0.0.1",
                                 "spring.cloud.azure.cosmos.endpoint=" + TEST_ENDPOINT_HTTPS,
                                 "spring.cloud.azure.cosmos.key=cosmos-key"
                                 )
@@ -88,7 +86,8 @@ class AzureCosmosAutoConfigurationTest {
                 final AzureCosmosProperties properties = context.getBean(AzureCosmosProperties.class);
                 assertThat(properties).extracting("credential.clientId").isEqualTo("cosmos-client-id");
                 assertThat(properties).extracting("credential.clientSecret").isEqualTo("azure-client-secret");
-                assertThat(properties).extracting("retry.backoff.delay").isEqualTo(Duration.ofMinutes(2));
+                assertThat(properties).extracting("proxy.hostname").isEqualTo("localhost");
+                assertThat(properties).extracting("proxy.nonProxyHosts").isEqualTo("127.0.0.1");
                 assertThat(properties).extracting("endpoint").isEqualTo(TEST_ENDPOINT_HTTPS);
                 assertThat(properties).extracting("key").isEqualTo("cosmos-key");
 

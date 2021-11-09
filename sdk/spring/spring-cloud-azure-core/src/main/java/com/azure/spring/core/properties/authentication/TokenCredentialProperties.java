@@ -1,13 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.core.properties.credential;
+package com.azure.spring.core.properties.authentication;
 
+
+import com.azure.spring.core.aware.authentication.TokenCredentialAware;
 
 /**
  * Azure properties used for getting token credential.
  */
-public class TokenCredentialProperties {
+public class TokenCredentialProperties implements TokenCredentialAware.TokenCredential {
 
     /**
      * Client id to use when performing service principal authentication with Azure.

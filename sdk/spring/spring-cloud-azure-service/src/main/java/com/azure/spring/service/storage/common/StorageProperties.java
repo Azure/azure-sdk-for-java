@@ -4,7 +4,7 @@
 package com.azure.spring.service.storage.common;
 
 import com.azure.spring.core.properties.AzureProperties;
-import com.azure.spring.core.properties.aware.credential.SasTokenAware;
+import com.azure.spring.core.aware.authentication.SasTokenAware;
 
 /**
  * Common properties for all Azure Storage services.

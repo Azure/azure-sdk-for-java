@@ -8,15 +8,16 @@ import com.azure.core.http.HttpClientProvider;
 import com.azure.core.util.HttpClientOptions;
 import com.azure.identity.ClientCertificateCredential;
 import com.azure.identity.ClientSecretCredential;
+import com.azure.spring.core.http.DefaultHttpProvider;
+import com.azure.spring.core.properties.proxy.ProxyProperties;
 import com.azure.spring.service.AzureServiceClientBuilderFactoryTestBase;
 import com.azure.spring.service.core.http.TestHttpClient;
 import com.azure.spring.service.core.http.TestHttpClientProvider;
 import com.azure.spring.service.core.http.TestPerCallHttpPipelinePolicy;
 import com.azure.spring.service.core.http.TestPerRetryHttpPipelinePolicy;
-import com.azure.spring.core.http.DefaultHttpProvider;
-import com.azure.spring.core.properties.proxy.ProxyProperties;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
+import com.azure.storage.common.policy.RequestRetryOptions;
 import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,7 +29,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 /**
- * @author Xiaolu Dai, 2021/8/25.
+ *
  */
 class AzureBlobClientBuilderFactoryTest extends AzureServiceClientBuilderFactoryTestBase<BlobServiceClientBuilder,
     TestAzureStorageBlobProperties, BlobServiceClientBuilderFactory> {
@@ -116,6 +117,15 @@ class AzureBlobClientBuilderFactoryTest extends AzureServiceClientBuilderFactory
 
         verify(builder, times(1)).httpClient(any(HttpClient.class));
         verify(defaultHttpClientProvider, times(1)).createInstance(any(HttpClientOptions.class));
+    }
+
+    @Test
+    void testRetryOptionsConfigured() {
+        TestAzureStorageBlobProperties properties = createMinimalServiceProperties();
+        final BlobServiceClientBuilderFactoryExt builderFactory = new BlobServiceClientBuilderFactoryExt(properties);
+        final BlobServiceClientBuilder builder = builderFactory.build();
+        final BlobServiceClient client = builder.buildClient();
+        verify(builder, times(1)).retryOptions(any(RequestRetryOptions.class));
     }
 
     @Override

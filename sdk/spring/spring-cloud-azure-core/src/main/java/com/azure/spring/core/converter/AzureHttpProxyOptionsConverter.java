@@ -5,6 +5,8 @@ package com.azure.spring.core.converter;
 
 import com.azure.core.http.ProxyOptions;
 import com.azure.spring.core.properties.proxy.HttpProxyProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.util.StringUtils;
 
@@ -15,9 +17,13 @@ import java.net.InetSocketAddress;
  */
 public final class AzureHttpProxyOptionsConverter implements Converter<HttpProxyProperties, ProxyOptions> {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AzureHttpProxyOptionsConverter.class);
+    public static final AzureHttpProxyOptionsConverter HTTP_PROXY_CONVERTER = new AzureHttpProxyOptionsConverter();
+
     @Override
     public ProxyOptions convert(HttpProxyProperties proxyProperties) {
-        if (!StringUtils.hasText(proxyProperties.getHostname())) {
+        if (!StringUtils.hasText(proxyProperties.getHostname()) || proxyProperties.getPort() == null) {
+            LOGGER.debug("Proxy hostname or port is not set.");
             return null;
         }
 

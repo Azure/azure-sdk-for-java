@@ -5,8 +5,8 @@ package com.azure.spring.cloud.core.properties;
 
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.core.properties.AzurePropertiesUtils;
+import com.azure.spring.core.properties.authentication.TokenCredentialProperties;
 import com.azure.spring.core.properties.client.ClientProperties;
-import com.azure.spring.core.properties.credential.TokenCredentialProperties;
 import com.azure.spring.core.properties.profile.AzureProfile;
 import com.azure.spring.core.properties.proxy.ProxyProperties;
 import com.azure.spring.core.properties.retry.RetryProperties;
@@ -15,8 +15,8 @@ import org.junit.jupiter.api.Test;
 
 import java.time.Duration;
 
-import static com.azure.spring.core.properties.profile.AzureProfile.AzureEnvironment.AZURE;
-import static com.azure.spring.core.properties.profile.AzureProfile.AzureEnvironment.AZURE_CHINA;
+import static com.azure.spring.core.properties.profile.AzureEnvironment.AZURE;
+import static com.azure.spring.core.properties.profile.AzureEnvironment.AZURE_CHINA;
 
 /**
  *

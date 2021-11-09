@@ -4,16 +4,18 @@
 package com.azure.spring.core.converter;
 
 import com.azure.core.http.policy.HttpLogOptions;
-import com.azure.spring.core.properties.client.ClientProperties;
+import com.azure.spring.core.aware.ClientAware;
 import org.springframework.core.convert.converter.Converter;
 
 /**
- * Converts a {@link ClientProperties.LoggingProperties} to a {@link HttpLogOptions}.
+ * Converts a {@link ClientAware.Logging} to a {@link HttpLogOptions}.
  */
-public final class AzureHttpLogOptionsConverter implements Converter<ClientProperties.LoggingProperties, HttpLogOptions> {
+public final class AzureHttpLogOptionsConverter implements Converter<ClientAware.Logging, HttpLogOptions> {
+
+    public static final AzureHttpLogOptionsConverter HTTP_LOG_OPTIONS_CONVERTER = new AzureHttpLogOptionsConverter();
 
     @Override
-    public HttpLogOptions convert(ClientProperties.LoggingProperties logging) {
+    public HttpLogOptions convert(ClientAware.Logging logging) {
         HttpLogOptions logOptions = new HttpLogOptions();
 
         logOptions.setLogLevel(logging.getLevel());

@@ -11,6 +11,8 @@ import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
+import java.time.Duration;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 class AzureEventHubAutoConfigurationTest {
@@ -53,6 +55,32 @@ class AzureEventHubAutoConfigurationTest {
             .withPropertyValues("spring.cloud.azure.eventhubs.connection-string=test-connection-string")
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .run(context -> assertThat(context).hasSingleBean(AzureEventHubProperties.class));
+    }
+
+    @Test
+    void configureAzureEventHubProperties() {
+        AzureGlobalProperties azureProperties = new AzureGlobalProperties();
+        azureProperties.getCredential().setClientId("azure-client-id");
+        azureProperties.getCredential().setClientSecret("azure-client-secret");
+        azureProperties.getRetry().getBackoff().setDelay(Duration.ofSeconds(2));
+
+        this.contextRunner
+            .withBean(AzureGlobalProperties.class, () -> azureProperties)
+            .withPropertyValues(
+                "spring.cloud.azure.eventhubs.credential.client-id=eventhubs-client-id",
+                "spring.cloud.azure.eventhubs.retry.backoff.delay=2m",
+                "spring.cloud.azure.eventhubs.connection-string=test-connection-string"
+            )
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureEventHubProperties.class);
+                final AzureEventHubProperties properties = context.getBean(AzureEventHubProperties.class);
+                assertThat(properties).extracting("credential.clientId").isEqualTo("eventhubs-client-id");
+                assertThat(properties).extracting("credential.clientSecret").isEqualTo("azure-client-secret");
+                assertThat(properties).extracting("retry.backoff.delay").isEqualTo(Duration.ofMinutes(2));
+                assertThat(properties).extracting("connectionString").isEqualTo("test-connection-string");
+
+                assertThat(azureProperties.getCredential().getClientId()).isEqualTo("azure-client-id");
+            });
     }
 
 }

@@ -3,12 +3,12 @@
 
 package com.azure.spring.cloud.autoconfigure.servicebus.properties;
 
-import com.azure.spring.cloud.autoconfigure.properties.AbstractAzureAmqpConfigurationProperties;
+import com.azure.spring.cloud.autoconfigure.properties.AbstractAzureAmqpCP;
 
 /**
  *
  */
-public abstract class AzureServiceBusCommonProperties extends AbstractAzureAmqpConfigurationProperties {
+public abstract class AzureServiceBusCommonProperties extends AbstractAzureAmqpCP {
 
     // https://help.boomi.com/bundle/connectors/page/r-atm-Microsoft_Azure_Service_Bus_connection.html
     // https://docs.microsoft.com/en-us/rest/api/servicebus/addressing-and-protocol
