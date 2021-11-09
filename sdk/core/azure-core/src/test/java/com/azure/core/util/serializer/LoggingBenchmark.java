@@ -48,19 +48,19 @@ public class LoggingBenchmark {
         }));
     }
 
-    /*@Benchmark
+    @Benchmark
     public void loggingAtDisabledLevel() {
         logger.info("hello, connectionId={}, linkName={}", "foo", "bar");
     }
 
-@Benchmark
+    @Benchmark
     public void loggingAtDisabledLevelWithContext() {
         logger.atLevel(LogLevel.INFORMATIONAL)
             .addKeyValue("connectionId", "foo")
             .addKeyValue("linkName", "bar")
             .log("hello");
     }
-*/
+
     @Benchmark
     public void loggingAtEnabledLevel() {
         logger.error("hello, connectionId={}, linkName={}", "foo", "bar");
