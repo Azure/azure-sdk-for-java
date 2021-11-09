@@ -11,10 +11,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class MediaOutput {
     /*
-     * The mediaOutputType property.
+     * The mediaType property.
      */
-    @JsonProperty(value = "mediaOutputType")
-    private MediaType mediaOutputType;
+    @JsonProperty(value = "mediaType")
+    private MediaType mediaType;
 
     /*
      * The groupCall property.
@@ -41,22 +41,22 @@ public final class MediaOutput {
     private SrtStream srt;
 
     /**
-     * Get the mediaOutputType property: The mediaOutputType property.
+     * Get the mediaType property: The mediaType property.
      *
-     * @return the mediaOutputType value.
+     * @return the mediaType value.
      */
-    public MediaType getMediaOutputType() {
-        return this.mediaOutputType;
+    public MediaType getMediaType() {
+        return this.mediaType;
     }
 
     /**
-     * Set the mediaOutputType property: The mediaOutputType property.
+     * Set the mediaType property: The mediaType property.
      *
-     * @param mediaOutputType the mediaOutputType value to set.
+     * @param mediaType the mediaType value to set.
      * @return the MediaOutput object itself.
      */
-    public MediaOutput setMediaOutputType(MediaType mediaOutputType) {
-        this.mediaOutputType = mediaOutputType;
+    public MediaOutput setMediaType(MediaType mediaType) {
+        this.mediaType = mediaType;
         return this;
     }
 

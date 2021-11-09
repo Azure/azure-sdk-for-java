@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Copyright (c) Microsoft Corporation. All rights reserved.
      Licensed under the MIT License. -->
 <project xmlns="http://maven.apache.org/POM/4.0.0"
@@ -17,6 +18,7 @@
         <module>azure-communication-chat</module>
         <module>azure-communication-common</module>
         <module>azure-communication-identity</module>
+        <module>azure-communication-mediacomposition</module>
         <module>azure-communication-networktraversal</module>
         <module>azure-communication-sms</module>
         <module>azure-communication-phonenumbers</module>
@@ -47,6 +49,11 @@
           <groupId>com.azure</groupId>
           <artifactId>azure-communication-phonenumbers</artifactId>
           <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-phonenumbers;current} -->
+        </dependency>
+        <dependency>
+          <groupId>com.azure</groupId>
+          <artifactId>azure-communication-mediacomposition</artifactId>
+          <version>1.0.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-mediacomposition;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure</groupId>
@@ -100,6 +107,7 @@
         <module>azure-communication-chat</module>
         <module>azure-communication-common</module>
         <module>azure-communication-identity</module>
+        <module>azure-communication-mediacomposition</module>
         <module>azure-communication-networktraversal</module>
         <module>azure-communication-phonenumbers</module>
         <module>azure-communication-sms</module>

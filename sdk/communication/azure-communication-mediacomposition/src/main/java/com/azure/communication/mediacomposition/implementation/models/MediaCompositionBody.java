@@ -30,10 +30,10 @@ public final class MediaCompositionBody {
     private Map<String, MediaInput> mediaInputs;
 
     /*
-     * The mediaOutput property.
+     * Dictionary of <MediaOutput>
      */
-    @JsonProperty(value = "mediaOutput")
-    private MediaOutput mediaOutput;
+    @JsonProperty(value = "mediaOutputs")
+    private Map<String, MediaOutput> mediaOutputs;
 
     /*
      * Dictionary of <Source>
@@ -108,22 +108,22 @@ public final class MediaCompositionBody {
     }
 
     /**
-     * Get the mediaOutput property: The mediaOutput property.
+     * Get the mediaOutputs property: Dictionary of &lt;MediaOutput&gt;.
      *
-     * @return the mediaOutput value.
+     * @return the mediaOutputs value.
      */
-    public MediaOutput getMediaOutput() {
-        return this.mediaOutput;
+    public Map<String, MediaOutput> getMediaOutputs() {
+        return this.mediaOutputs;
     }
 
     /**
-     * Set the mediaOutput property: The mediaOutput property.
+     * Set the mediaOutputs property: Dictionary of &lt;MediaOutput&gt;.
      *
-     * @param mediaOutput the mediaOutput value to set.
+     * @param mediaOutputs the mediaOutputs value to set.
      * @return the MediaCompositionBody object itself.
      */
-    public MediaCompositionBody setMediaOutput(MediaOutput mediaOutput) {
-        this.mediaOutput = mediaOutput;
+    public MediaCompositionBody setMediaOutputs(Map<String, MediaOutput> mediaOutputs) {
+        this.mediaOutputs = mediaOutputs;
         return this;
     }
 

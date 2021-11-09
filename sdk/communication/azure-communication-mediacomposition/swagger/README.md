@@ -19,13 +19,13 @@ npm install -g autorest
 
 ```ps
 cd <swagger-folder>
-autorest README.md --java --v4 --use=@autorest/java@4.0.2X
+autorest README.md --java --v4 --use=@autorest/java@4.0.1
 ```
 
 ### Code generation settings
 ``` yaml
 tag: package-preview-2021-10
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/53608dc04b81e7123542747d5b9a4f6110d98c5d/specification/communication/data-plane/MediaComposition/preview/2021-12-31-preview/CommunicationMediaComposition.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/85fd44e61de4bb5d4d18933ecf72ae2bcc657f45/specification/communication/data-plane/MediaComposition/preview/2021-12-31-preview/CommunicationMediaComposition.json
 add-context-parameter: true
 custom-types-subpackage: models
 models-subpackage: implementation.models
