@@ -5,11 +5,11 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.azure.spring</groupId>
-  <artifactId>spring-cloud-azure-starter-storage</artifactId>
-  <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-storage;current} -->
+  <artifactId>spring-cloud-azure-starter-appconfiguration</artifactId>
+  <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-appconfiguration;current} -->
 
-  <name>Spring Cloud Azure Starter Storage</name>
-  <description>Spring Cloud Azure Starter Storage</description>
+  <name>Spring Cloud Azure Starter App Configuration</name>
+  <description>Spring Cloud Azure Starter App Configuration</description>
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <properties>
@@ -23,18 +23,10 @@
       <artifactId>spring-cloud-azure-starter</artifactId>
       <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter;current} -->
     </dependency>
-
-    <!--  Storage  -->
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-storage-blob</artifactId>
-      <version>12.14.1</version>  <!-- {x-version-update;com.azure:azure-storage-blob;dependency} -->
-    </dependency>
-
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-storage-file-share</artifactId>
-      <version>12.11.1</version> <!-- {x-version-update;com.azure:azure-storage-file-share;dependency} -->
+      <artifactId>azure-data-appconfiguration</artifactId>
+      <version>1.2.3</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
     </dependency>
   </dependencies>
 
