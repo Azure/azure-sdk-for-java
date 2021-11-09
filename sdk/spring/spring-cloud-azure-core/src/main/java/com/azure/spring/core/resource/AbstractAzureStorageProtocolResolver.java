@@ -159,10 +159,11 @@ public abstract class AbstractAzureStorageProtocolResolver implements ProtocolRe
         String getName();
 
         /**
-         * List all storage items with the given prefix, or all items if the underlying system doesn't support prefix
-         * matching.
          * <p>
          * Normally, a cloud storage system doesn't support wildcard pattern matching, but support prefix match
+         * @param  itemPrefix the prefix of item’s path
+         * @return All items with the given prefix, or all items if the underlying system doesn't
+         * support prefix matching.
          */
         Stream<StorageItem> listItems(String itemPrefix);
 
