@@ -81,8 +81,7 @@ public class AzureGlobalConfigurationEnvironmentPostProcessor implements Environ
 
         httpResponseTimeout(PROPERTY_AZURE_REQUEST_RESPONSE_TIMEOUT, "client.http.response-timeout", convertMillisToDuration()),
 
-        httpNoProxy(PROPERTY_NO_PROXY, "proxy.http.non-proxy-hosts")
-        ;
+        httpNoProxy(PROPERTY_NO_PROXY, "proxy.http.non-proxy-hosts");
 
 
         // TODO (xiada): how to set this proxy?
@@ -118,8 +117,7 @@ public class AzureGlobalConfigurationEnvironmentPostProcessor implements Environ
     enum AzureSdkEnvMapping {
         keyVaultSecretEndpoint("AZURE_KEYVAULT_ENDPOINT", "keyvault.secret.endpoint"),
         keyVaultCertificateEndpoint("AZURE_KEYVAULT_ENDPOINT", "keyvault.certificate.endpoint"),
-        eventHubsConnectionString("AZURE_EVENT_HUBS_CONNECTION_STRING", "eventhubs.connection-string")
-        ;
+        eventHubsConnectionString("AZURE_EVENT_HUBS_CONNECTION_STRING", "eventhubs.connection-string");
 
         private final String sdkEnvName;
         private final String springPropertyName;
