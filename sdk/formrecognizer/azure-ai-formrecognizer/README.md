@@ -117,7 +117,7 @@ will create the synchronous client, while invoking `buildAsyncClient` will creat
 
 You will need an **endpoint**, and a **key** to instantiate a client object.
 
-##### Looking up the endpoint
+#### Looking up the endpoint
 You can find the **endpoint** for your Form Recognizer resource in the [Azure Portal][azure_portal],
 or [Azure CLI][azure_cli_endpoint].
 ```bash
@@ -546,7 +546,7 @@ These code samples show common scenario operations with the Azure Form Recognize
 * Create a composed model from a collection of custom-built models: [CreateComposedModel][create_composed_model]
 * Get/List document model operations associated with the Form Recognizer resource: [GetOperation][get_operation]
 
-#### Async APIs
+### Async APIs
 All the examples shown so far have been using synchronous APIs, but we provide full support for async APIs as well.
 You'll need to use `DocumentAnalysisAsyncClient`
 ```java readme-sample-asyncClient
