@@ -1,0 +1,61 @@
+== Spring Cloud for Azure Storage client library for Java
+
+This package helps developers to finish the auto-configuration of Azure Storage.
+
+https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-cloud-storage[Source code] |  https://mvnrepository.com/artifact/com.azure.spring/azure-spring-cloud-storage[Package (Maven)] | https://azure.github.io/azure-sdk-for-java/springcloud.html#azure-spring-cloud-storage[API reference documentation]
+
+=== Getting started
+
+==== Prerequisites
+
+* https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist[Environment checklist]
+
+==== Include the package
+
+1. https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#add-azure-spring-cloud-dependencies[Add azure-spring-cloud-dependencies].
+1. Add dependency. `<version>` can be skipped because we already add `azure-spring-cloud-dependencies`.
+
+[source,xml,indent=0]
+----
+<dependency>
+  <groupId>com.azure.spring</groupId>
+  <artifactId>spring-cloud-azure-starter-storage</artifactId>
+</dependency>
+----
+
+=== Key concepts
+
+The Azure Storage platform is Microsoft's cloud storage solution for modern data storage scenarios. Core storage services offer a massively scalable object store for data objects, disk storage for Azure virtual machines (VMs), a file system service for the cloud, a messaging store for reliable messaging, and a NoSQL store.
+
+=== Examples
+
+Please refer to this https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/storage/azure-spring-cloud-starter-storage-queue/storage-queue-operation[sample project] illustrating how to use this package.
+
+=== Troubleshooting
+
+==== Logging setting
+
+Please refer to https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging[spring logging document] to get more information about logging.
+
+===== Logging setting examples
+
+- Example: Setting logging level of hibernate
+
+[source,properties,indent=0]
+----
+logging.level.root=WARN
+logging.level.org.springframework.web=DEBUG
+logging.level.org.hibernate=ERROR
+----
+
+=== Next steps
+
+The following section provide a sample project illustrating how to use the package.
+
+===  More sample code
+- https://github.com/Azure-Samples/azure-spring-boot-samples/tree/main/storage/azure-spring-cloud-starter-storage-queue/storage-queue-operation[Azure Storage]
+
+=== Contributing
+This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
+
+Please follow https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CONTRIBUTING.md[instructions here] to build from source or contribute.

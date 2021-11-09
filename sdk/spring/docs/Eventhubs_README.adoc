@@ -1,0 +1,67 @@
+== Azure Event Hubs Spring cloud starter client library for Java
+
+The Spring Cloud Event Hubs starter helps developers to finish the auto-configuration of Event Hubs and provides Spring Integration on Event Hubs.
+
+For Spring Integration on Event Hubs, please refer to the https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-integration-eventhubs[source code].
+
+
+https://mvnrepository.com/artifact/com.azure.spring/azure-spring-cloud-starter-eventhubs[Package (Maven)] | https://azure.github.io/azure-sdk-for-java/springcloud.html#azure-spring-cloud-autoconfigure[API reference documentation] | https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/eventhubs/azure-spring-integration-sample-eventhubs[Samples]
+
+=== Getting started
+
+==== Prerequisites
+
+* https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/ENVIRONMENT_CHECKLIST.md#ready-to-run-checklist[Environment checklist]
+
+==== Include the package
+
+1. https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#add-azure-spring-cloud-dependencies[Add azure-spring-cloud-dependencies].
+1. Add dependency. `<version>` can be skipped because we already add `azure-spring-cloud-dependencies`.
+
+[source,xml,indent=0]
+----
+<dependency>
+  <groupId>com.azure.spring</groupId>
+  <artifactId>spring-cloud-azure-starter-eventhubs</artifactId>
+</dependency>
+----
+
+=== Key concepts
+
+Azure Event Hubs is a big data streaming platform and event ingestion service. It can receive and process millions of events per second. Data sent to an event hub can be transformed and stored by using any real-time analytics provider or batching/storage adapters.
+
+Note: RxJava support APIs have been deprecated from version 2.10.0, and will be dropped from version 4.0.0.
+Please refer to Javadoc for details.
+
+=== Examples
+
+Please refer to this https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/eventhubs/azure-spring-integration-sample-eventhubs[sample project] illustrating how to use Spring Cloud Event Hubs.
+
+=== Troubleshooting
+
+==== Logging setting
+
+Please refer to https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#boot-features-logging[spring logging document] to get more information about logging.
+
+===== Logging setting examples
+
+- Example: Setting logging level of hibernate
+
+[source,properties,indent=0]
+----
+logging.level.root=WARN
+logging.level.org.springframework.web=DEBUG
+logging.level.org.hibernate=ERROR
+----
+
+=== Next steps
+
+The following section provide a sample project illustrating how to use the starter.
+
+===  More sample code
+- https://github.com/Azure-Samples/azure-spring-boot-samples/tree/tag_azure-spring-boot_3.6.0/eventhubs/azure-spring-integration-sample-eventhubs[Eventhubs Integration Sample].
+
+=== Contributing
+This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
+
+Please follow https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/CONTRIBUTING.md[instructions here] to build from source or contribute.
