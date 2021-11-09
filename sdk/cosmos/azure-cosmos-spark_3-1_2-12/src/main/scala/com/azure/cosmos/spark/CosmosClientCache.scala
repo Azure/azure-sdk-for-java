@@ -170,7 +170,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
 
   private[this] def onCleanup(): Unit = {
     try {
-      logInfo(s"-->onCleanup (${cache.size} clients)")
+      logDebug(s"-->onCleanup (${cache.size} clients)")
       val snapshot = cache.readOnlySnapshot()
       val staleClientsInUse = ArrayBuffer[OwnerInfo]()
       snapshot.foreach(pair => {
@@ -180,19 +180,19 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
         if (clientMetadata.lastRetrieved.get() < Instant.now.toEpochMilli - unusedClientTtlInMs) {
           if (clientMetadata.refCount.get() == 0) {
             if (clientMetadata.lastModified.get() < Instant.now.toEpochMilli - (cleanupIntervalInSeconds * 1000)) {
-              logInfo(s"Removing client due to inactivity from the cache - ${clientConfig.endpoint}, " +
+              logDebug(s"Removing client due to inactivity from the cache - ${clientConfig.endpoint}, " +
                 s"${clientConfig.applicationName}, ${clientConfig.preferredRegionsList}, ${clientConfig.useGatewayMode}, " +
                 s"${clientConfig.useEventualConsistency}")
               purgeImpl(clientConfig)
             } else {
-              logInfo("Client has not been retrieved from the cache recently and no spark task has been using " +
+              logDebug("Client has not been retrieved from the cache recently and no spark task has been using " +
                 s"it for < $cleanupIntervalInSeconds seconds. Waiting one more clean-up cycle before closing it, in " +
                 s"case newly scheduled spark tasks need it - Created: ${clientMetadata.created}, " +
                 s"LastModified ${clientMetadata.lastModified}, RefCount: ${clientMetadata.refCount}, " +
                 s"Owning Spark tasks: [${clientMetadata.owners.keys.mkString(", ")}]")
             }
           } else {
-            logInfo(s"Client has not been retrieved from the cache recently - Created: ${clientMetadata.created}, " +
+            logDebug(s"Client has not been retrieved from the cache recently - Created: ${clientMetadata.created}, " +
               s"LastModified ${clientMetadata.lastModified}, RefCount: ${clientMetadata.refCount}, " +
               s"Owning Spark tasks: [${clientMetadata.owners.keys.mkString(", ")}]")
           }
