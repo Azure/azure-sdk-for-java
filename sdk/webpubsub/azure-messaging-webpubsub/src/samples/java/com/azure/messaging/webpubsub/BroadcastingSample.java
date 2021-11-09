@@ -6,7 +6,6 @@ package com.azure.messaging.webpubsub;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Configuration;
-import com.azure.core.util.Context;
 import com.azure.messaging.webpubsub.models.WebPubSubContentType;
 
 public class BroadcastingSample {
@@ -31,7 +30,6 @@ public class BroadcastingSample {
             data[i] = (byte) i;
         }
         chatHub.sendToAllWithResponse(BinaryData.fromBytes(data), new RequestOptions()
-                .addRequestCallback(request -> request.getHeaders().set("Content-Type", "application/octet-stream")),
-                Context.NONE);
+                .addRequestCallback(request -> request.getHeaders().set("Content-Type", "application/octet-stream")));
     }
 }

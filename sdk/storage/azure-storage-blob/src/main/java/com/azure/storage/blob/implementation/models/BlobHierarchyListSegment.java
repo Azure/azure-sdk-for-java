@@ -5,7 +5,6 @@
 package com.azure.storage.blob.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.storage.blob.models.BlobPrefix;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
@@ -21,7 +20,7 @@ public final class BlobHierarchyListSegment {
      * The BlobPrefixes property.
      */
     @JsonProperty("BlobPrefix")
-    private List<BlobPrefix> blobPrefixes = new ArrayList<>();
+    private List<BlobPrefixInternal> blobPrefixes = new ArrayList<>();
 
     /*
      * The BlobItems property.
@@ -34,7 +33,7 @@ public final class BlobHierarchyListSegment {
      *
      * @return the blobPrefixes value.
      */
-    public List<BlobPrefix> getBlobPrefixes() {
+    public List<BlobPrefixInternal> getBlobPrefixes() {
         return this.blobPrefixes;
     }
 
@@ -44,7 +43,7 @@ public final class BlobHierarchyListSegment {
      * @param blobPrefixes the blobPrefixes value to set.
      * @return the BlobHierarchyListSegment object itself.
      */
-    public BlobHierarchyListSegment setBlobPrefixes(List<BlobPrefix> blobPrefixes) {
+    public BlobHierarchyListSegment setBlobPrefixes(List<BlobPrefixInternal> blobPrefixes) {
         this.blobPrefixes = blobPrefixes;
         return this;
     }

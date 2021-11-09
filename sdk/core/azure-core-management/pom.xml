@@ -49,7 +49,7 @@
     <javaModulesSurefireArgLine>
       --add-opens com.azure.core.management/com.azure.core.management.implementation.polling=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <skipNewCodesnippetTooling>false</skipNewCodesnippetTooling>
+    <codesnippet.skip>false</codesnippet.skip>
     <javadocDoclet></javadocDoclet>
     <javadocDocletOptions></javadocDocletOptions>
   </properties>
@@ -65,7 +65,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.22.0-beta.2</version> <!-- {x-version-update;com.azure:azure-core;current} -->
+      <version>1.23.0-beta.1</version> <!-- {x-version-update;com.azure:azure-core;current} -->
     </dependency>
 
     <dependency>

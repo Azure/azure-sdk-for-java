@@ -17,7 +17,7 @@ public final class Subnet {
     /*
      * Resource ID of Virtual Network Subnet
      */
-    @JsonProperty(value = "id", required = true)
+    @JsonProperty(value = "id")
     private String id;
 
     /**
@@ -46,9 +46,5 @@ public final class Subnet {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (id() == null) {
-            throw logger
-                .logExceptionAsError(new IllegalArgumentException("Missing required property id in model Subnet"));
-        }
     }
 }

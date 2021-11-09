@@ -117,7 +117,7 @@ will create the synchronous client, while invoking `buildAsyncClient` will creat
 
 You will need an **endpoint**, and a **key** to instantiate a client object.
 
-##### Looking up the endpoint
+#### Looking up the endpoint
 You can find the **endpoint** for your Form Recognizer resource in the [Azure Portal][azure_portal],
 or [Azure CLI][azure_cli_endpoint].
 ```bash
@@ -134,15 +134,15 @@ resource, or by running the following Azure CLI command to get the key from the 
 az cognitiveservices account keys list --resource-group <your-resource-group-name> --name <your-resource-name>
 ```
 Use the API key as the credential parameter to authenticate the client:
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L52-L55 -->
-```java
+
+```java readme-sample-createDocumentAnalysisClient
 DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilder()
     .credential(new AzureKeyCredential("{key}"))
     .endpoint("{endpoint}")
     .buildClient();
 ```
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L62-L65 -->
-```java
+
+```java readme-sample-createDocumentModelAdministrationClient
 DocumentModelAdministrationClient documentModelAdminClient = new DocumentModelAdministrationClientBuilder()
     .credential(new AzureKeyCredential("{key}"))
     .endpoint("{endpoint}")
@@ -177,8 +177,7 @@ Authorization is easiest using [DefaultAzureCredential][wiki_identity]. It finds
 running environment. For more information about using Azure Active Directory authorization with Form Recognizer, please
 refer to [the associated documentation][aad_authorization].
 
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L72-L76 -->
-```java
+```java readme-sample-createDocumentAnalysisClientWithAAD
 TokenCredential credential = new DefaultAzureCredentialBuilder().build();
 DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilder()
     .endpoint("{endpoint}")
@@ -203,7 +202,9 @@ Use the `modelId` parameter to select the type of model for analysis.
 |"prebuilt-receipt"| Text extraction and prebuilt fields and values pertaining to English sales receipts
 |"{custom-model-id}"| Text extraction, selection marks, tables, labeled fields and values from your custom documents
 
-Sample code snippets to illustrate using a DocumentAnalysisClient [here][sample_readme].
+Sample code snippets to illustrate using a DocumentAnalysisClient [here][sample_readme]. 
+More information about analyzing documents, including supported features, locales, and document types can be found 
+[here][fr-models].
 
 ### DocumentModelAdministrationClient
 The [DocumentModelAdministrationClient][document_model_admin_sync_client] and
@@ -244,8 +245,7 @@ The following section provides several code snippets covering some of the most c
 ### Extract Layout
 Extract text, table structures and selection marks like radio buttons and check boxes, along with their bounding box
 coordinates, from documents, without the need to build a model.
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L85-L127 -->
-```java
+```java readme-sample-extractLayout
 // analyze document layout using file input stream
 File layoutDocument = new File("local/file_path/filename.png");
 byte[] fileContent = Files.readAllBytes(layoutDocument.toPath());
@@ -300,8 +300,7 @@ Supported prebuilt models are:
 - Analyze identity documents using the `prebuilt-idDocuments` model (fields recognized by the service can be found [here][service_analyze_identity_documents_fields]).
 
 For example, to analyze fields from a sales receipt, into the `beginAnalyzeDocument` method:
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L134-L199-->
-```java
+```java readme-sample-analyzeReceiptFromUrl
 String receiptUrl = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/formrecognizer"
     + "/azure-ai-formrecognizer/src/samples/resources/sample-documents/receipts/contoso-allinone.jpg";
 
@@ -383,8 +382,7 @@ in the [service quickstart documentation][quickstart_training].
 
 More details on setting up a container and required file structure can be found in the [service documentation][fr_build_training_set].
 
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L206-L228 -->
-```java
+```java readme-sample-buildModel
 // Build custom document analysis model
 String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
 // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
@@ -414,8 +412,7 @@ documentModel.getDocTypes().forEach((key, docTypeInfo) -> {
 Analyze the key/value pairs and table data from documents. These models are built with your own data,
 so they're tailored to your documents. You should only analyze documents of the same doc type that the custom model
 was built on.
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L235-L287 -->
-```java
+```java readme-sample-analyzeCustomDocument
 String documentUrl = "{document-url}";
 String modelId = "{custom-built-model-ID}";
 SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeDocumentPoller =
@@ -473,8 +470,7 @@ for (int i = 0; i < tables.size(); i++) {
 
 ### Manage your models
 Manage the models in your Form Recognizer account.
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L364-L393 -->
-```java
+```java readme-sample-manageModels
 AtomicReference<String> modelId = new AtomicReference<>();
 
 // First, we see how many models we have, and what our limit is
@@ -515,8 +511,7 @@ to provide an invalid file source URL an `HttpResponseException` would be raised
 In the following code snippet, the error is handled
 gracefully by catching the exception and display the additional information about the error.
 
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L400-L404 -->
-```java
+```java readme-sample-handlingException
 try {
     documentAnalysisClient.beginAnalyzeDocumentFromUrl("prebuilt-receipt", "invalidSourceUrl");
 } catch (HttpResponseException e) {
@@ -551,11 +546,10 @@ These code samples show common scenario operations with the Azure Form Recognize
 * Create a composed model from a collection of custom-built models: [CreateComposedModel][create_composed_model]
 * Get/List document model operations associated with the Form Recognizer resource: [GetOperation][get_operation]
 
-#### Async APIs
+### Async APIs
 All the examples shown so far have been using synchronous APIs, but we provide full support for async APIs as well.
 You'll need to use `DocumentAnalysisAsyncClient`
-<!-- embedme ./src/samples/java/com/azure/ai/formrecognizer/ReadmeSamples.java#L411-L414 -->
-```java
+```java readme-sample-asyncClient
 DocumentAnalysisAsyncClient documentAnalysisAsyncClient = new DocumentAnalysisClientBuilder()
     .credential(new AzureKeyCredential("{key}"))
     .endpoint("{endpoint}")
@@ -648,6 +642,7 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [get_operation]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/GetOperationInfo.java
 [get_operation_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/formrecognizer/azure-ai-formrecognizer/src/samples/java/com/azure/ai/formrecognizer/administration/GetOperationInfoAsync.java
 
+[fr_models]: https://aka.ms/azsdk/formrecognizer/models
 [service_access]: https://docs.microsoft.com/azure/cognitive-services/cognitive-services-apis-create-account?tabs=multiservice%2Cwindows
 [service_analyze_business_cards_fields]: https://aka.ms/azsdk/formrecognizer/businesscardfieldschema
 [service_analyze_invoices_fields]: https://aka.ms/azsdk/formrecognizer/invoicefieldschema

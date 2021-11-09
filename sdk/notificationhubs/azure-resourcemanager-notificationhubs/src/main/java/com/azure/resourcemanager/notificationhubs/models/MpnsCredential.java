@@ -5,34 +5,30 @@
 package com.azure.resourcemanager.notificationhubs.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.notificationhubs.fluent.models.MpnsCredentialProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Description of a NotificationHub MpnsCredential. */
-@JsonFlatten
 @Fluent
-public class MpnsCredential {
+public final class MpnsCredential {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(MpnsCredential.class);
 
     /*
-     * The MPNS certificate.
+     * Properties of NotificationHub MpnsCredential.
      */
-    @JsonProperty(value = "properties.mpnsCertificate")
-    private String mpnsCertificate;
+    @JsonProperty(value = "properties")
+    private MpnsCredentialProperties innerProperties;
 
-    /*
-     * The certificate key for this credential.
+    /**
+     * Get the innerProperties property: Properties of NotificationHub MpnsCredential.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.certificateKey")
-    private String certificateKey;
-
-    /*
-     * The MPNS certificate Thumbprint
-     */
-    @JsonProperty(value = "properties.thumbprint")
-    private String thumbprint;
+    private MpnsCredentialProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the mpnsCertificate property: The MPNS certificate.
@@ -40,7 +36,7 @@ public class MpnsCredential {
      * @return the mpnsCertificate value.
      */
     public String mpnsCertificate() {
-        return this.mpnsCertificate;
+        return this.innerProperties() == null ? null : this.innerProperties().mpnsCertificate();
     }
 
     /**
@@ -50,7 +46,10 @@ public class MpnsCredential {
      * @return the MpnsCredential object itself.
      */
     public MpnsCredential withMpnsCertificate(String mpnsCertificate) {
-        this.mpnsCertificate = mpnsCertificate;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MpnsCredentialProperties();
+        }
+        this.innerProperties().withMpnsCertificate(mpnsCertificate);
         return this;
     }
 
@@ -60,7 +59,7 @@ public class MpnsCredential {
      * @return the certificateKey value.
      */
     public String certificateKey() {
-        return this.certificateKey;
+        return this.innerProperties() == null ? null : this.innerProperties().certificateKey();
     }
 
     /**
@@ -70,7 +69,10 @@ public class MpnsCredential {
      * @return the MpnsCredential object itself.
      */
     public MpnsCredential withCertificateKey(String certificateKey) {
-        this.certificateKey = certificateKey;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MpnsCredentialProperties();
+        }
+        this.innerProperties().withCertificateKey(certificateKey);
         return this;
     }
 
@@ -80,7 +82,7 @@ public class MpnsCredential {
      * @return the thumbprint value.
      */
     public String thumbprint() {
-        return this.thumbprint;
+        return this.innerProperties() == null ? null : this.innerProperties().thumbprint();
     }
 
     /**
@@ -90,7 +92,10 @@ public class MpnsCredential {
      * @return the MpnsCredential object itself.
      */
     public MpnsCredential withThumbprint(String thumbprint) {
-        this.thumbprint = thumbprint;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new MpnsCredentialProperties();
+        }
+        this.innerProperties().withThumbprint(thumbprint);
         return this;
     }
 
@@ -100,5 +105,8 @@ public class MpnsCredential {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

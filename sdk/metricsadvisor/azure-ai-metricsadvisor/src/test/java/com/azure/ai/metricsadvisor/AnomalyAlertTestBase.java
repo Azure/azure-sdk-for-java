@@ -22,8 +22,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public abstract class AnomalyAlertTestBase extends MetricsAdvisorAdministrationClientTestBase {
 
-    static final String DETECTION_CONFIGURATION_ID = "fb5a6ed6-2b9e-4b72-8b0c-0046ead1c15c";
-    static final String ALERT_HOOK_ID = "dd3bfc43-c461-440d-9fcd-f6326d8e7fae";
+    static final String DETECTION_CONFIGURATION_ID = "efaee305-f049-43ec-9f9b-76026d55c14a";
+    static final String ALERT_HOOK_ID = "14b69527-cc37-45ba-8863-4f9857ccacca";
 
     @Override
     protected void beforeTest() {

@@ -374,6 +374,7 @@ public final class ServiceBusAdministrationClientBuilder {
         httpPolicies.add(new UserAgentPolicy(applicationId, CLIENT_NAME, CLIENT_VERSION, buildConfiguration));
         httpPolicies.add(new ServiceBusTokenCredentialHttpPolicy(tokenCredential));
         httpPolicies.add(new AddHeadersFromContextPolicy());
+        httpPolicies.add(new ServiceBusSupplementaryAuthHeaderPolicy(tokenCredential));
 
         httpPolicies.addAll(perCallPolicies);
 

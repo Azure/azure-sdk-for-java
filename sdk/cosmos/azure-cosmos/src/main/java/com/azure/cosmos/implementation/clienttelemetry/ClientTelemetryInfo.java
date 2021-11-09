@@ -3,9 +3,11 @@
 package com.azure.cosmos.implementation.clienttelemetry;
 
 import com.azure.cosmos.ConnectionMode;
+import com.azure.cosmos.implementation.Configs;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import org.HdrHistogram.ConcurrentDoubleHistogram;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -20,6 +22,8 @@ public class ClientTelemetryInfo {
     private String applicationRegion;
     private String hostEnvInfo;
     private Boolean acceleratedNetworking;
+    private int aggregationIntervalInSec;
+    private List<String> preferredRegions;
     private Map<ReportPayload, ConcurrentDoubleHistogram> systemInfoMap;
     private Map<ReportPayload, ConcurrentDoubleHistogram> cacheRefreshInfoMap;
     private Map<ReportPayload, ConcurrentDoubleHistogram> operationInfoMap;
@@ -31,7 +35,8 @@ public class ClientTelemetryInfo {
                                String globalDatabaseAccountName,
                                String applicationRegion,
                                String hostEnvInfo,
-                               Boolean acceleratedNetworking) {
+                               Boolean acceleratedNetworking,
+                               List<String> preferredRegions) {
         this.clientId = clientId;
         this.processId = processId;
         this.userAgent = userAgent;
@@ -43,6 +48,8 @@ public class ClientTelemetryInfo {
         this.systemInfoMap = new ConcurrentHashMap<>();
         this.cacheRefreshInfoMap = new ConcurrentHashMap<>();
         this.operationInfoMap = new ConcurrentHashMap<>();
+        this.aggregationIntervalInSec = Configs.getClientTelemetrySchedulingInSec();
+        this.preferredRegions = preferredRegions;
     }
 
     public String getTimeStamp() {
@@ -115,6 +122,22 @@ public class ClientTelemetryInfo {
 
     public void setAcceleratedNetworking(Boolean acceleratedNetworking) {
         this.acceleratedNetworking = acceleratedNetworking;
+    }
+
+    public int getAggregationIntervalInSec() {
+        return aggregationIntervalInSec;
+    }
+
+    public void setAggregationIntervalInSec(int aggregationIntervalInSec) {
+        this.aggregationIntervalInSec = aggregationIntervalInSec;
+    }
+
+    public List<String> getPreferredRegions() {
+        return preferredRegions;
+    }
+
+    public void setPreferredRegions(List<String> preferredRegions) {
+        this.preferredRegions = preferredRegions;
     }
 
     public Map<ReportPayload, ConcurrentDoubleHistogram> getSystemInfoMap() {
