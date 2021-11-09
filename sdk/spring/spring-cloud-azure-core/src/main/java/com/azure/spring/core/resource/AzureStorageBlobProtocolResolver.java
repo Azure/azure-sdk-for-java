@@ -33,7 +33,6 @@ public class AzureStorageBlobProtocolResolver extends AbstractAzureStorageProtoc
         RETRIEVE_NOTHING_DETAILS.setRetrieveSnapshots(false);
         RETRIEVE_NOTHING_DETAILS.setRetrieveTags(false);
         RETRIEVE_NOTHING_DETAILS.setRetrieveUncommittedBlobs(false);
-
         RETRIEVE_NOTHING_CONTAINER_DETAILS.setRetrieveMetadata(false);
         RETRIEVE_NOTHING_CONTAINER_DETAILS.setRetrieveDeleted(false);
     }
@@ -56,8 +55,7 @@ public class AzureStorageBlobProtocolResolver extends AbstractAzureStorageProtoc
         return blobServiceClient.listBlobContainers(options, null)
                                 .stream()
                                 .map(BlobContainerItem::getName)
-                                .map(StorageContainerItem::new)
-            ;
+                                .map(StorageContainerItem::new);
     }
 
     @Override

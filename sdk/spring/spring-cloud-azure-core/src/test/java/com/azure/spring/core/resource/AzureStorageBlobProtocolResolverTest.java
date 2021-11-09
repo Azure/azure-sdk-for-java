@@ -70,7 +70,6 @@ class AzureStorageBlobProtocolResolverTest extends AbstractAzureStorageProtocolR
         when(nonExistingBlockBlob.exists()).thenReturn(false);
         when(nonExistingBlockBlob.getBlobName()).thenReturn(NON_EXISTING);
 
-
     }
 
     @Override

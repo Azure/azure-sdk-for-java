@@ -111,6 +111,20 @@ public abstract class AbstractAzureStorageProtocolResolver implements ProtocolRe
         return ClassUtils.getDefaultClassLoader();
     }
 
+
+    protected static class StorageContainerItem {
+
+        private final String name;
+
+        public StorageContainerItem(String name) {
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+    }
+
     protected static class StorageItem {
 
         private final String container;
@@ -135,22 +149,8 @@ public abstract class AbstractAzureStorageProtocolResolver implements ProtocolRe
             return storageType;
         }
 
-        //@zhihaoguo todo test
         public String toResourceLocation() {
             return AzureStorageUtils.getStorageProtocolPrefix(getStorageType()) + container + "/" + name;
-        }
-    }
-
-    protected static class StorageContainerItem {
-
-        private final String name;
-
-        public StorageContainerItem(String name) {
-            this.name = name;
-        }
-
-        public String getName() {
-            return name;
         }
     }
 
@@ -167,18 +167,6 @@ public abstract class AbstractAzureStorageProtocolResolver implements ProtocolRe
         Stream<StorageItem> listItems(String itemPrefix);
 
     }
-
-    private String getValidPrefix(String keyPattern) {
-        int starIndex = keyPattern.indexOf("*");
-        int markIndex = keyPattern.indexOf("?");
-        int index = Math.min(starIndex == -1 ? keyPattern.length() : starIndex,
-            markIndex == -1 ? keyPattern.length() : markIndex);
-        //        String beforeIndex = keyPattern.substring(0, index);
-        return keyPattern.substring(0, index);
-        //        return beforeIndex.contains("/") ? beforeIndex.substring(0, beforeIndex.lastIndexOf('/') + 1) :
-        //        beforeIndex;
-    }
-
 
     protected Resource[] resolveResources(String containerPattern, String itemPattern) {
         return getMatchedContainers(containerPattern)
@@ -209,5 +197,13 @@ public abstract class AbstractAzureStorageProtocolResolver implements ProtocolRe
         } else {
             return Stream.of(new StorageItem(containerClient.getName(), itemPattern, getStorageType()));
         }
+    }
+
+    private String getValidPrefix(String keyPattern) {
+        int starIndex = keyPattern.indexOf("*");
+        int markIndex = keyPattern.indexOf("?");
+        int index = Math.min(starIndex == -1 ? keyPattern.length() : starIndex,
+            markIndex == -1 ? keyPattern.length() : markIndex);
+        return keyPattern.substring(0, index);
     }
 }

@@ -70,7 +70,6 @@ public abstract class AbstractAzureStorageProtocolResolverTest {
         assertTrue(resource.exists());
     }
 
-
     @Test
     void testValidObject() throws Exception {
         Resource resource = getResource("container/blob");

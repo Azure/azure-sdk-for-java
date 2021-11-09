@@ -43,8 +43,8 @@ public class AzureStorageResourceTest {
     @ParameterizedTest
     @MethodSource("contentTypeProvider")
     public void testGetContentType(ArgumentsAccessor arguments) {
-        String contentType = arguments.getString(1);
         String location = arguments.getString(0);
+        String contentType = arguments.getString(1);
         assertEquals(contentType, storageResource.getContentType(location));
     }
 

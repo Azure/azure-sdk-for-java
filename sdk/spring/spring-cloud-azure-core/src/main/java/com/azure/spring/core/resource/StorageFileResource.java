@@ -27,10 +27,7 @@ import org.springframework.util.StringUtils;
  */
 public class StorageFileResource extends AzureStorageResource {
     private static final Logger LOGGER = LoggerFactory.getLogger(StorageFileResource.class);
-    private static final String MSG_FAIL_GET = "Failed to get file or container";
     private static final String MSG_FAIL_OPEN_OUTPUT = "Failed to open output stream of file";
-    private static final String MSG_FAIL_CHECK_EXIST = "Failed to check existence of file or container";
-    private static final String MSG_FAIL_OPEN_INPUT = "Failed to open input stream of file";
     private final ShareServiceClient shareServiceClient;
     private final ShareClient shareClient;
     private final ShareFileClient shareFileClient;
@@ -61,13 +58,13 @@ public class StorageFileResource extends AzureStorageResource {
     @Override
     public OutputStream getOutputStream() throws IOException {
         try {
-            //if (!exists()) {
-            //    if (autoCreateFiles) {
-            //        create();
-            //    } else {
-            //        throw new FileNotFoundException("The file was not found: " + this.location);
-            //    }
-            //}
+            if (!exists()) {
+                if (autoCreateFiles) {
+                    create();
+                } else {
+                    throw new FileNotFoundException("The file was not found: " + this.location);
+                }
+            }
             return this.shareFileClient.getFileOutputStream();
         } catch (ShareStorageException e) {
             LOGGER.error(MSG_FAIL_OPEN_OUTPUT, e);

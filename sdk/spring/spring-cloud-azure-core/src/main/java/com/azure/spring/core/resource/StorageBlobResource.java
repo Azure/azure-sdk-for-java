@@ -32,9 +32,7 @@ import org.springframework.util.StringUtils;
  */
 public class StorageBlobResource extends AzureStorageResource {
     private static final Logger LOGGER = LoggerFactory.getLogger(StorageBlobResource.class);
-    private static final String MSG_FAIL_GET = "Failed to get blob or container";
     private static final String MSG_FAIL_OPEN_OUTPUT = "Failed to open output stream of cloud blob";
-    private static final String MSG_FAIL_CHECK_EXIST = "Failed to check existence of blob or container";
     private static final String MSG_FAIL_OPEN_INPUT = "Failed to open input stream of blob";
     private final BlobServiceClient blobServiceClient;
     private final String location;
@@ -114,7 +112,7 @@ public class StorageBlobResource extends AzureStorageResource {
     }
 
     @Override
-    public File getFile() throws IOException {
+    public File getFile() {
         throw new UnsupportedOperationException(getDescription() + " cannot be resolved to absolute file path");
     }
 
@@ -126,17 +124,17 @@ public class StorageBlobResource extends AzureStorageResource {
     }
 
     @Override
-    public long contentLength() throws IOException {
+    public long contentLength() {
         return getBlobProperties().getBlobSize();
     }
 
     @Override
-    public long lastModified() throws IOException {
+    public long lastModified() {
         return getBlobProperties().getLastModified().toEpochSecond();
     }
 
     @Override
-    public Resource createRelative(String relativePath) throws IOException {
+    public Resource createRelative(String relativePath) {
         String newLocation = this.location + "/" + relativePath;
         return new StorageBlobResource(this.blobServiceClient, newLocation, autoCreateFiles);
     }
