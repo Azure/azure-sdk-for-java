@@ -94,22 +94,22 @@ public class AzureGlobalConfigurationEnvironmentPostProcessor implements Environ
         private static Log logger;
         private final String coreEnvName;
         private final String springPropertyName;
-        private final Function<String, String> converter;
+        private final Function<String, Object> converter;
 
         AzureCoreEnvMapping(String coreEnvName, String springPropertyName) {
-            this(coreEnvName, springPropertyName, Function.identity());
+            this(coreEnvName, springPropertyName, a -> a);
         }
 
-        AzureCoreEnvMapping(String coreEnvName, String springPropertyName, Function<String, String> converter) {
+        AzureCoreEnvMapping(String coreEnvName, String springPropertyName, Function<String, Object> converter) {
             this.coreEnvName = coreEnvName;
             this.springPropertyName = "spring.cloud.azure." + springPropertyName;
             this.converter = converter;
         }
 
-        private static Function<String, String> convertMillisToDuration() {
+        private static Function<String, Object> convertMillisToDuration() {
             return ms -> {
                 try {
-                    return Duration.ofMillis(Integer.parseInt(ms)).toString();
+                    return Duration.ofMillis(Integer.parseInt(ms));
                 } catch (Exception ignore) {
                     if (logger != null) {
                         logger.debug("The millisecond value " + ms + " is malformed.");
@@ -132,13 +132,13 @@ public class AzureGlobalConfigurationEnvironmentPostProcessor implements Environ
 
         private final String sdkEnvName;
         private final String springPropertyName;
-        private final Function<String, String> converter;
+        private final Function<String, Object> converter;
 
         AzureSdkEnvMapping(String sdkEnvName, String springPropertyName) {
-            this(sdkEnvName, springPropertyName, Function.identity());
+            this(sdkEnvName, springPropertyName, a -> a);
         }
 
-        AzureSdkEnvMapping(String sdkEnvName, String springPropertyName, Function<String, String> converter) {
+        AzureSdkEnvMapping(String sdkEnvName, String springPropertyName, Function<String, Object> converter) {
             this.sdkEnvName = sdkEnvName;
             this.springPropertyName = "spring.cloud.azure." + springPropertyName;
             this.converter = converter;
