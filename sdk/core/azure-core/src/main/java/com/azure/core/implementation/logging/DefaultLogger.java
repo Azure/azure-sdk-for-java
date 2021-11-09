@@ -5,9 +5,6 @@ package com.azure.core.implementation.logging;
 
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.LogLevel;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.slf4j.MDC;
 import org.slf4j.helpers.FormattingTuple;
 import org.slf4j.helpers.MarkerIgnoringBase;
 import org.slf4j.helpers.MessageFormatter;
@@ -350,14 +347,6 @@ public final class DefaultLogger extends MarkerIgnoringBase {
     private void log(String levelName, String message, Throwable t) {
         String dateTime = getFormattedDate();
         String threadName = Thread.currentThread().getName();
-        String mdc = null;
-        try {
-            // temp change for MDC benchmarking
-            mdc = new ObjectMapper().writeValueAsString(MDC.getCopyOfContextMap());
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException("Failed to serialize MDC", e);
-        }
-
         StringBuilder stringBuilder = new StringBuilder();
         stringBuilder
             .append(dateTime)
@@ -369,8 +358,6 @@ public final class DefaultLogger extends MarkerIgnoringBase {
             .append(CLOSE_BRACKET)
             .append(WHITESPACE)
             .append(classPath)
-            .append(WHITESPACE)
-            .append(mdc)
             .append(HYPHEN)
             .append(message)
             .append(System.lineSeparator());

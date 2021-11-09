@@ -1,14 +1,8 @@
 package com.azure.core.util.logging;
 
-import org.slf4j.MDC;
-
 import java.util.AbstractMap;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-import java.util.function.Supplier;
 
 // heavily inspired by http://www.slf4j.org/apidocs/org/slf4j/spi/LoggingEventBuilder.html
 public class LogEntryBuilder {
