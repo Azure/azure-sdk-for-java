@@ -24,9 +24,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiConsumer;
 
-import static com.azure.spring.core.ApplicationId.AZURE_SPRING_STORAGE_QUEUE;
-import static com.azure.spring.core.ApplicationId.VERSION;
-
 /**
  * Storage Queue Service client builder factory, it builds the storage blob client according the configuration context
  * and blob properties.
@@ -98,11 +95,6 @@ public class QueueServiceClientBuilderFactory extends AbstractAzureStorageClient
     @Override
     protected BiConsumer<QueueServiceClientBuilder, String> consumeConnectionString() {
         return QueueServiceClientBuilder::connectionString;
-    }
-
-    @Override
-    protected String getApplicationId() {
-        return AZURE_SPRING_STORAGE_QUEUE + VERSION;
     }
 
     private QueueMessageEncoding convertToMessageEncoding(String messageEncoding) {

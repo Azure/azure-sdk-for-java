@@ -92,8 +92,8 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
     }
 
     @Override
-    protected void configureApplicationId(T builder) {
-        this.httpClientOptions.setApplicationId(getApplicationId());
+    protected BiConsumer<T, String> consumeApplicationId() {
+        return (builder, id) -> this.httpClientOptions.setApplicationId(id);
     }
 
     protected void configureHttpHeaders(T builder) {

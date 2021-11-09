@@ -24,9 +24,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiConsumer;
 
-import static com.azure.spring.core.ApplicationId.AZURE_SPRING_STORAGE_FILES;
-import static com.azure.spring.core.ApplicationId.VERSION;
-
 /**
  * Storage File Share Service client builder factory, it builds the storage blob client according the configuration
  * context and blob properties.
@@ -100,11 +97,6 @@ public class ShareServiceClientBuilderFactory extends AbstractAzureStorageClient
     @Override
     protected BiConsumer<ShareServiceClientBuilder, String> consumeConnectionString() {
         return ShareServiceClientBuilder::connectionString;
-    }
-
-    @Override
-    protected String getApplicationId() {
-        return AZURE_SPRING_STORAGE_FILES + VERSION;
     }
 
     @Override

@@ -50,6 +50,8 @@ public class AzureKeyVaultCertificateAutoConfiguration extends AzureServiceConfi
     @Bean
     @ConditionalOnMissingBean
     public CertificateClientBuilder certificateClientBuilder(CertificateClientBuilderFactory factory) {
+        // TODO (xiada): how to distinguish this from kv secrets?
+//        factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_KEY_VAULT);
         return factory.build();
     }
 
