@@ -472,6 +472,8 @@ the main ServiceBusClientBuilder. -->
 
   <!-- MissingJavadocMethod: Temporarily skip -->
   <suppress checks="MissingJavadocMethod" files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*"/>
+  <!-- JavadocThrowsChecks: Temporarily skip -->
+  <suppress checks="JavadocThrowsChecks" files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*"/>
   <!-- MissingJavadocMethod: internal packages -->
   <suppress checks="MissingJavadocType|JavadocThrowsChecks|EnforceFinalFields" files=".*[/\\]com[/\\]azure[/\\]spring[/\\]integration[/\\]test.*"/>
 

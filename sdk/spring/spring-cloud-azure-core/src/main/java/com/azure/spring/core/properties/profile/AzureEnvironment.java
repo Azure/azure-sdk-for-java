@@ -6,10 +6,8 @@ package com.azure.spring.core.properties.profile;
 import com.azure.spring.core.aware.AzureProfileAware;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
-import java.util.Locale;
 import java.util.Map;
 
 /**
@@ -18,11 +16,6 @@ import java.util.Map;
 public class AzureEnvironment implements AzureProfileAware.Environment {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureEnvironment.class);
-
-    public static final AzureEnvironment AZURE_CHINA = new AzureEnvironment(com.azure.core.management.AzureEnvironment.AZURE_CHINA);
-    public static final AzureEnvironment AZURE = new AzureEnvironment(com.azure.core.management.AzureEnvironment.AZURE);
-    public static final AzureEnvironment AZURE_GERMANY = new AzureEnvironment(com.azure.core.management.AzureEnvironment.AZURE_GERMANY);
-    public static final AzureEnvironment AZURE_US_GOVERNMENT = new AzureEnvironment(com.azure.core.management.AzureEnvironment.AZURE_US_GOVERNMENT);
 
     private String portal;
     private String publishingProfile;
@@ -70,25 +63,11 @@ public class AzureEnvironment implements AzureProfileAware.Environment {
         this.azureApplicationInsightsEndpoint = azureEnvironment.getApplicationInsightsEndpoint();
     }
 
-    public static AzureEnvironment fromAzureCloud(String cloud) {
-        if (!StringUtils.hasText(cloud)) {
-            LOGGER.warn("Cloud is empty, return the default AzureEnvironment");
-            return AZURE;
-        }
-
-        switch (cloud.toUpperCase(Locale.ROOT)) {
-            case "AZURE_CHINA":
-                return AZURE_CHINA;
-            case "AZURE_US_GOVERNMENT":
-                return AZURE_US_GOVERNMENT;
-            case "AZURE_GERMANY":
-                return AZURE_GERMANY;
-            default:
-                return AZURE;
-        }
+    public com.azure.core.management.AzureEnvironment toManagementAzureEnvironment() {
+        return new com.azure.core.management.AzureEnvironment(exportEndpointsMap());
     }
 
-    public Map<String, String> exportEndpointsMap() {
+    private Map<String, String> exportEndpointsMap() {
         return new HashMap<String, String>() {
             {
                 put("portalUrl", portal);
@@ -265,4 +244,5 @@ public class AzureEnvironment implements AzureProfileAware.Environment {
     public void setAzureApplicationInsightsEndpoint(String azureApplicationInsightsEndpoint) {
         this.azureApplicationInsightsEndpoint = azureApplicationInsightsEndpoint;
     }
+
 }

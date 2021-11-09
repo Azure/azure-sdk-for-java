@@ -11,6 +11,7 @@ import com.azure.spring.cloud.autoconfigure.properties.core.proxy.ProxyCP;
 import com.azure.spring.cloud.autoconfigure.properties.core.retry.RetryCP;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.core.properties.client.LoggingProperties;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 import java.time.Duration;
@@ -19,24 +20,25 @@ import java.time.temporal.ChronoUnit;
 /**
  *
  */
+@ConfigurationProperties(prefix = AzureGlobalProperties.PREFIX)
 public class AzureGlobalProperties implements AzureProperties {
 
     public static final String PREFIX = "spring.cloud.azure";
 
     @NestedConfigurationProperty
-    protected final GlobalClientCP client = new GlobalClientCP();
+    private final GlobalClientCP client = new GlobalClientCP();
 
     @NestedConfigurationProperty
-    protected final GlobalProxyCP proxy = new GlobalProxyCP();
+    private final GlobalProxyCP proxy = new GlobalProxyCP();
 
     @NestedConfigurationProperty
-    protected final GlobalRetryCP retry = new GlobalRetryCP();
+    private final GlobalRetryCP retry = new GlobalRetryCP();
 
     @NestedConfigurationProperty
-    protected final TokenCredentialCP credential = new TokenCredentialCP();
+    private final TokenCredentialCP credential = new TokenCredentialCP();
 
     @NestedConfigurationProperty
-    protected final AzureProfileCP profile = new AzureProfileCP();
+    private final AzureProfileCP profile = new AzureProfileCP();
 
     @Override
     public GlobalClientCP getClient() {

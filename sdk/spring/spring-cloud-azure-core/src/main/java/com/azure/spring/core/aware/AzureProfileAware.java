@@ -19,10 +19,22 @@ public interface AzureProfileAware {
 
         String getSubscriptionId();
 
-        String getCloud();
+        CloudType getCloud();
 
         Environment getEnvironment();
 
+    }
+
+    /**
+     * Define the cloud environment type, with four known Azure cloud type and the types don't fall in the four known
+     * types will be OTHER.
+     */
+    enum CloudType {
+        AZURE,
+        AZURE_CHINA,
+        AZURE_GERMANY,
+        AZURE_US_GOVERNMENT,
+        OTHER
     }
 
     /**

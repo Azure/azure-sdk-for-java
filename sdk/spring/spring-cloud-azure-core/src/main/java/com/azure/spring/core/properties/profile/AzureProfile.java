@@ -12,8 +12,8 @@ public class AzureProfile implements AzureProfileAware.Profile {
 
     private String tenantId;
     private String subscriptionId;
-    private String cloud = "Azure"; // TODO (xiada) this name
-    private AzureEnvironment environment = AzureEnvironment.AZURE;
+    private AzureProfileAware.CloudType cloud = AzureProfileAware.CloudType.AZURE;
+    private final AzureEnvironment otherEnvironment = new AzureEnvironment(com.azure.core.management.AzureEnvironment.AZURE);
 
     public String getTenantId() {
         return tenantId;
@@ -31,17 +31,32 @@ public class AzureProfile implements AzureProfileAware.Profile {
         this.subscriptionId = subscriptionId;
     }
 
-    public String getCloud() {
+    @Override
+    public AzureProfileAware.CloudType getCloud() {
         return cloud;
     }
 
-    public void setCloud(String cloud) {
+    public void setCloud(AzureProfileAware.CloudType cloud) {
         this.cloud = cloud;
-        this.environment = AzureEnvironment.fromAzureCloud(cloud);
     }
 
     public AzureEnvironment getEnvironment() {
-        return environment;
+        switch (cloud) {
+            case AZURE_CHINA:
+                return KnownAzureEnvironment.AZURE_CHINA_ENV;
+            case AZURE_US_GOVERNMENT:
+                return KnownAzureEnvironment.AZURE_US_GOVERNMENT_ENV;
+            case AZURE_GERMANY:
+                return KnownAzureEnvironment.AZURE_GERMANY_ENV;
+            case AZURE:
+                return KnownAzureEnvironment.AZURE_ENV;
+            default:
+                return otherEnvironment;
+        }
     }
+
+
+
+
 
 }

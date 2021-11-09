@@ -4,18 +4,14 @@
 package com.azure.spring.cloud.autoconfigure.context;
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubProperties;
 import com.azure.spring.cloud.autoconfigure.keyvault.secrets.properties.AzureKeyVaultSecretProperties;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
+import com.azure.spring.core.aware.AzureProfileAware;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
-import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.boot.env.EnvironmentPostProcessor;
 import org.springframework.boot.logging.DeferredLog;
-import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.PropertiesPropertySource;
 import org.springframework.web.context.support.StandardServletEnvironment;
@@ -39,10 +35,8 @@ import static com.azure.core.util.Configuration.PROPERTY_AZURE_SUBSCRIPTION_ID;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_TENANT_ID;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_USERNAME;
 import static com.azure.core.util.Configuration.PROPERTY_NO_PROXY;
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@Execution(ExecutionMode.SAME_THREAD)
 class AzureGlobalConfigurationEnvironmentPostProcessorTest {
 
     @Test
@@ -112,7 +106,7 @@ class AzureGlobalConfigurationEnvironmentPostProcessorTest {
         properties.put(PROPERTY_AZURE_PASSWORD, "core-password");
         properties.put(PROPERTY_AZURE_TENANT_ID, "core-tenant-id");
         properties.put(PROPERTY_AZURE_SUBSCRIPTION_ID, "core-sub-id");
-        properties.put(PROPERTY_AZURE_CLOUD, "azure_china");
+        properties.put(PROPERTY_AZURE_CLOUD, "other");
         properties.put(PROPERTY_AZURE_AUTHORITY_HOST, "aad");
         properties.put(PROPERTY_AZURE_REQUEST_RETRY_COUNT, 3);
         properties.put(PROPERTY_AZURE_HTTP_LOG_DETAIL_LEVEL, "headers");
@@ -134,7 +128,7 @@ class AzureGlobalConfigurationEnvironmentPostProcessorTest {
         assertEquals("core-password", globalProperties.getCredential().getPassword());
         assertEquals("core-tenant-id", globalProperties.getProfile().getTenantId());
         assertEquals("core-sub-id", globalProperties.getProfile().getSubscriptionId());
-        assertEquals("azure_china", globalProperties.getProfile().getCloud());
+        assertEquals(AzureProfileAware.CloudType.OTHER, globalProperties.getProfile().getCloud());
         assertEquals("aad", globalProperties.getProfile().getEnvironment().getActiveDirectoryEndpoint());
         assertEquals(3, globalProperties.getRetry().getMaxAttempts());
         assertEquals(HttpLogDetailLevel.HEADERS, globalProperties.getClient().getHttp().getLogging().getLevel());
@@ -190,50 +184,6 @@ class AzureGlobalConfigurationEnvironmentPostProcessorTest {
         environmentPostProcessor.postProcessEnvironment(environment, null);
 
         return environment;
-    }
-
-    /**
-     * Move the testAzureProperties() to this test class for the JavaBeanBinder.Bean.cached will cache the binding
-     * result, when this test case was put in AzureGlobalPropertiesAutoConfigurationTest, and it ran concurrently with
-     * this class, which uses Binder, it would just fail occasionally.
-     */
-    @Test
-    void testAzureProperties() {
-        final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(AzureGlobalPropertiesAutoConfiguration.class));
-
-        contextRunner
-            .withPropertyValues(
-                "spring.cloud.azure.client.application-id=fake-application-id",
-                "spring.cloud.azure.credential.client-id=fake-client-id",
-                "spring.cloud.azure.credential.client-secret=fake-client-secret",
-                "spring.cloud.azure.credential.username=fake-username",
-                "spring.cloud.azure.credential.password=fake-password",
-                "spring.cloud.azure.proxy.hostname=proxy-host",
-                "spring.cloud.azure.proxy.port=8888",
-                "spring.cloud.azure.retry.timeout=200s",
-                "spring.cloud.azure.retry.backoff.delay=20s",
-                "spring.cloud.azure.profile.tenant-id=fake-tenant-id",
-                "spring.cloud.azure.profile.subscription-id=fake-sub-id",
-                "spring.cloud.azure.profile.cloud=azure_china"
-            )
-            .run(context -> {
-                final AzureGlobalProperties azureProperties = context.getBean(AzureGlobalProperties.class);
-                assertThat(azureProperties).extracting("client.applicationId").isEqualTo("fake-application-id");
-                assertThat(azureProperties).extracting("credential.clientId").isEqualTo("fake-client-id");
-                assertThat(azureProperties).extracting("credential.clientSecret").isEqualTo("fake-client-secret");
-                assertThat(azureProperties).extracting("credential.username").isEqualTo("fake-username");
-                assertThat(azureProperties).extracting("credential.password").isEqualTo("fake-password");
-                assertThat(azureProperties).extracting("proxy.hostname").isEqualTo("proxy-host");
-                assertThat(azureProperties).extracting("proxy.port").isEqualTo(8888);
-                assertThat(azureProperties).extracting("retry.timeout").isEqualTo(Duration.ofSeconds(200));
-                assertThat(azureProperties).extracting("retry.backoff.delay").isEqualTo(Duration.ofSeconds(20));
-                assertThat(azureProperties).extracting("profile.tenantId").isEqualTo("fake-tenant-id");
-                assertThat(azureProperties).extracting("profile.subscriptionId").isEqualTo("fake-sub-id");
-                assertThat(azureProperties).extracting("profile.cloud").isEqualTo("azure_china");
-                assertThat(azureProperties).extracting("profile.environment.activeDirectoryEndpoint").isEqualTo(
-                    AzureEnvironment.AZURE_CHINA.getActiveDirectoryEndpoint());
-            });
     }
 
 }
