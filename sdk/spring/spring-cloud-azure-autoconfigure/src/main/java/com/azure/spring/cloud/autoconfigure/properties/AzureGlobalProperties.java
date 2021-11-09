@@ -11,18 +11,14 @@ import com.azure.spring.cloud.autoconfigure.properties.core.proxy.ProxyCP;
 import com.azure.spring.cloud.autoconfigure.properties.core.retry.RetryCP;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.core.properties.client.LoggingProperties;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 
-import static com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties.PREFIX;
-
 /**
  *
  */
-@ConfigurationProperties(PREFIX)
 public class AzureGlobalProperties implements AzureProperties {
 
     public static final String PREFIX = "spring.cloud.azure";

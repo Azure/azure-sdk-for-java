@@ -27,7 +27,7 @@ class AzureBlobCheckpointStoreConfigurationTest {
 
 
     @Test
-    void configureWithoutBlobCheckpointStore() {
+    void configureWithoutBlobCheckpointStoreClass() {
         this.contextRunner
             .withClassLoader(new FilteredClassLoader(BlobCheckpointStore.class))
             .withPropertyValues(
@@ -38,17 +38,8 @@ class AzureBlobCheckpointStoreConfigurationTest {
     }
 
     @Test
-    void configureWithoutContainerName() {
+    void configureWithoutRequiredProperties() {
         this.contextRunner
-            .withPropertyValues("spring.cloud.azure.eventhubs.processor.checkpoint-store.account-name=sa")
-            .run(context -> assertThat(context).doesNotHaveBean(AzureBlobCheckpointStoreConfiguration.class));
-    }
-
-
-    @Test
-    void configureWithoutAccountName() {
-        this.contextRunner
-            .withPropertyValues("spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name=abc")
             .run(context -> assertThat(context).doesNotHaveBean(AzureBlobCheckpointStoreConfiguration.class));
     }
 

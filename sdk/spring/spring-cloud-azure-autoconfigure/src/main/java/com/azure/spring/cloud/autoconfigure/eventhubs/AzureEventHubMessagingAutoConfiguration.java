@@ -29,6 +29,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import reactor.util.function.Tuple2;
 
+import static com.azure.spring.core.properties.AzurePropertiesUtils.copyAzureCommonProperties;
+
 /**
  * An auto-configuration for Event Hub, which provides {@link EventHubsTemplate} and {@link
  * EventHubProcessorContainer}.
@@ -51,6 +53,7 @@ public class AzureEventHubMessagingAutoConfiguration {
         NamespaceProperties namespaceProperties = new NamespaceProperties();
         AzurePropertiesUtils.copyAzureCommonProperties(properties, namespaceProperties);
         BeanUtils.copyProperties(properties, namespaceProperties);
+        copyAzureCommonProperties(properties, namespaceProperties);
         return namespaceProperties;
     }
 
