@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Supported `tags` in `KubernetesClusterAgentPool` during create and update.
+
 ### Breaking Changes
 
 ### Bugs Fixed
