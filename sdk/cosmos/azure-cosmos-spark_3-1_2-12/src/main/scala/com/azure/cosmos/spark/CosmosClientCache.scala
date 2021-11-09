@@ -165,7 +165,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
         }
     }
   }
-  // scalastyle:on method.length 
+  // scalastyle:on method.length
   // scalastyle:on cyclomatic.complexity
 
   private[this] def onCleanup(): Unit = {
