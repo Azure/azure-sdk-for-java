@@ -24,7 +24,7 @@ public class AzureGlobalProperties implements AzureProperties {
     public static final String PREFIX = "spring.cloud.azure";
 
     @NestedConfigurationProperty
-    protected final GlobalClient client = new GlobalClient();
+    protected final GlobalClientCP client = new GlobalClientCP();
 
     @NestedConfigurationProperty
     protected final GlobalProxyCP proxy = new GlobalProxyCP();
@@ -39,7 +39,7 @@ public class AzureGlobalProperties implements AzureProperties {
     protected final AzureProfileCP profile = new AzureProfileCP();
 
     @Override
-    public GlobalClient getClient() {
+    public GlobalClientCP getClient() {
         return client;
     }
 
@@ -66,7 +66,7 @@ public class AzureGlobalProperties implements AzureProperties {
     /**
      * Global configurations for the transport client underneath.
      */
-    public static final class GlobalClient extends ClientCP {
+    public static final class GlobalClientCP extends ClientCP {
 
         private final HttpClientCP http = new HttpClientCP();
         private final AmqpClientCP amqp = new AmqpClientCP();
