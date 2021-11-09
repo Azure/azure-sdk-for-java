@@ -339,9 +339,9 @@ public class IdentityClient {
             IntelliJCacheAccessor cacheAccessor = new IntelliJCacheAccessor(options.getIntelliJKeePassDatabasePath());
             IntelliJAuthMethodDetails authDetails = cacheAccessor.getAuthDetailsIfAvailable();
             if (authDetails == null) {
-                throw logger.logExceptionAsError(
+                return Mono.error(logger.logExceptionAsError(
                     new CredentialUnavailableException("IntelliJ Authentication not available."
-                        + " Please log in with Azure Tools for IntelliJ plugin in the IDE."));
+                        + " Please log in with Azure Tools for IntelliJ plugin in the IDE.")));
             }
             String authType = authDetails.getAuthMethod();
             if (authType.equalsIgnoreCase("SP")) {
@@ -400,9 +400,9 @@ public class IdentityClient {
                 logger.verbose("IntelliJ Authentication = > Only Service Principal and Device Code Authentication"
                     + " schemes are currently supported via IntelliJ Credential currently. Please ensure you used one"
                     + " of those schemes from Azure Tools for IntelliJ plugin.");
-                throw logger.logExceptionAsError(new CredentialUnavailableException(
+                return Mono.error(logger.logExceptionAsError(new CredentialUnavailableException(
                     "IntelliJ Authentication not available."
-                    + " Please login with Azure Tools for IntelliJ plugin in the IDE."));
+                    + " Please login with Azure Tools for IntelliJ plugin in the IDE.")));
             }
         } catch (IOException e) {
             return Mono.error(e);
