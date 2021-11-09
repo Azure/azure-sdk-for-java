@@ -458,9 +458,7 @@ public final class BlobServiceAsyncClient {
      */
     private List<ListBlobContainersIncludeType> toIncludeTypes(BlobContainerListDetails blobContainerListDetails) {
         boolean hasDetails = blobContainerListDetails != null
-            && (blobContainerListDetails.getRetrieveMetadata()
-            || blobContainerListDetails.getRetrieveDeleted()
-            || blobContainerListDetails.getRetrieveSystem());
+            && (blobContainerListDetails.getRetrieveMetadata() || blobContainerListDetails.getRetrieveDeleted());
         if (hasDetails) {
             List<ListBlobContainersIncludeType> flags = new ArrayList<>(2);
             if (blobContainerListDetails.getRetrieveDeleted()) {
@@ -468,9 +466,6 @@ public final class BlobServiceAsyncClient {
             }
             if (blobContainerListDetails.getRetrieveMetadata()) {
                 flags.add(ListBlobContainersIncludeType.METADATA);
-            }
-            if (blobContainerListDetails.getRetrieveSystem()) {
-                flags.add(ListBlobContainersIncludeType.SYSTEM);
             }
             return flags;
         } else {
@@ -877,8 +872,7 @@ public final class BlobServiceAsyncClient {
      */
     public String generateAccountSas(AccountSasSignatureValues accountSasSignatureValues, Context context) {
         throwOnAnonymousAccess();
-        return new AccountSasImplUtil(accountSasSignatureValues,
-            this.encryptionScope == null ? null : this.encryptionScope.getEncryptionScope())
+        return new AccountSasImplUtil(accountSasSignatureValues)
             .generateSas(SasImplUtils.extractSharedKeyCredential(getHttpPipeline()), context);
     }
 

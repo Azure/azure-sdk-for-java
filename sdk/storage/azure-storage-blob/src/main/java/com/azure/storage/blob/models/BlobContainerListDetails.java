@@ -15,7 +15,6 @@ import com.azure.storage.blob.BlobServiceClient;
 public final class BlobContainerListDetails {
     private boolean retrieveMetadata;
     private boolean retrieveDeleted;
-    private boolean retrieveSystem;
 
     /**
      * Constructs an unpopulated {@link BlobContainerListDetails}.
@@ -60,26 +59,6 @@ public final class BlobContainerListDetails {
      */
     public BlobContainerListDetails setRetrieveDeleted(boolean retrieveDeleted) {
         this.retrieveDeleted = retrieveDeleted;
-        return this;
-    }
-
-    /**
-     * Whether system containers should be returned.
-     *
-     * @return a flag indicating whether system containers should be returned in the listing
-     */
-    public boolean getRetrieveSystem() {
-        return this.retrieveSystem;
-    }
-
-    /**
-     * Whether system containers should be returned.
-     *
-     * @param retrieveSystem Flag indicating whether system containers should be returned
-     * @return the updated ContainerListDetails object
-     */
-    public BlobContainerListDetails setRetrieveSystem(boolean retrieveSystem) {
-        this.retrieveSystem = retrieveSystem;
         return this;
     }
 
