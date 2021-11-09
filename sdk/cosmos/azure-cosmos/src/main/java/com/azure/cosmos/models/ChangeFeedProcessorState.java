@@ -11,7 +11,6 @@ import java.time.Instant;
 /**
  * Specifies the {@link ChangeFeedProcessor} state for a particular lease/worker.
  */
-@Beta(value = Beta.SinceVersion.V4_4_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public class ChangeFeedProcessorState {
     private String leaseToken;
     private String hostName;
