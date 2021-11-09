@@ -4,10 +4,10 @@
 package com.azure.ai.formrecognizer.administration;
 
 import com.azure.ai.formrecognizer.DocumentAnalysisServiceVersion;
-import com.azure.ai.formrecognizer.implementation.util.Utility;
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImplBuilder;
 import com.azure.ai.formrecognizer.implementation.util.Constants;
+import com.azure.ai.formrecognizer.implementation.util.Utility;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
@@ -39,13 +39,23 @@ import java.util.Objects;
  * the builder access credential.
  * </p>
  *
- * <p><strong>Instantiating an asynchronous Document Analysis Training Client</strong></p>
+ * <p><strong>Instantiating an asynchronous Document Model Administration Client</strong></p>
  *
- * {@codesnippet com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.initialization}
+ * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.initialization -->
+ * <pre>
+ * DocumentModelAdministrationAsyncClient documentModelAdministrationAsyncClient =
+ *     new DocumentModelAdministrationClientBuilder&#40;&#41;.buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.initialization -->
  *
- * <p><strong>Instantiating a synchronous Document Analysis Training Client</strong></p>
+ * <p><strong>Instantiating a synchronous Document Model Administration Client</strong></p>
  *
- * {@codesnippet com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.initialization}
+ * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.initialization -->
+ * <pre>
+ * DocumentModelAdministrationClient documentModelAdministrationClient =
+ *     new DocumentModelAdministrationClientBuilder&#40;&#41;.buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationClient.initialization -->
  *
  * <p>
  * Another way to construct the client is using a {@link HttpPipeline}. The pipeline gives the client an
@@ -55,7 +65,20 @@ import java.util.Objects;
  * {@link DocumentModelAdministrationAsyncClient} is built.
  * </p>
  *
- * {@codesnippet com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.pipeline.instantiation}
+ * <!-- src_embed com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.pipeline.instantiation -->
+ * <pre>
+ * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
+ *     .policies&#40;&#47;* add policies *&#47;&#41;
+ *     .build&#40;&#41;;
+ *
+ * DocumentModelAdministrationAsyncClient documentModelAdministrationAsyncClient =
+ *     new DocumentModelAdministrationClientBuilder&#40;&#41;
+ *         .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
+ *         .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *         .pipeline&#40;pipeline&#41;
+ *         .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.ai.formrecognizer.administration.DocumentModelAdministrationAsyncClient.pipeline.instantiation -->
  *
  * @see DocumentModelAdministrationAsyncClient
  * @see DocumentModelAdministrationClient

@@ -3,7 +3,8 @@
 ## 12.15.0-beta.2 (Unreleased)
 
 ### Features Added
-- Added support for the 2021-02-12 service version.
+- Added support for 2021-02-12 service version.
+- Added support for listing system containers.
 - Added support for listing blobs which contain invalid xml characters.
 
 ### Breaking Changes
