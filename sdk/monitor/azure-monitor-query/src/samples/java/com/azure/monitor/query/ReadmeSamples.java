@@ -250,9 +250,9 @@ public class ReadmeSamples {
      * Enable HTTP request and response logging.
      */
     public void tsgEnableHttpLogging() {
-        // BEGIN: readme-sample-enablehttplogging
         DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
 
+        // BEGIN: readme-sample-enablehttplogging
         LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
                 .credential(credential)
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))

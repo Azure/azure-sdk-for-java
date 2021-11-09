@@ -345,8 +345,6 @@ reduce the dependency size, refer to the [performance tuning][performance_tuning
 Reviewing the HTTP request sent or response received over the wire to/from the Azure Monitor service can be useful in troubleshooting issues. To enable logging the HTTP request and response payload, the LogsQueryClient and the MetricsQueryClient can be configured as shown below:
 
 ```java readme-sample-enablehttplogging
-DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
-
 LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
         .credential(credential)
         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
