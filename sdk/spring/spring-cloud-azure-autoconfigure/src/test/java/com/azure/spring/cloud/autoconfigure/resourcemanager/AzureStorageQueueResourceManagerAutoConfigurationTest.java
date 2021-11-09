@@ -3,6 +3,8 @@
 
 package com.azure.spring.cloud.autoconfigure.resourcemanager;
 
+import com.azure.resourcemanager.AzureResourceManager;
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.storage.queue.AzureStorageQueueProperties;
 import com.azure.spring.cloud.resourcemanager.connectionstring.StorageQueueArmConnectionStringProvider;
 import org.junit.jupiter.api.Test;
@@ -21,5 +23,16 @@ public class AzureStorageQueueResourceManagerAutoConfigurationTest {
         this.contextRunner
             .withPropertyValues(AzureStorageQueueProperties.PREFIX + "enabled=false")
             .run(context -> assertThat(context).doesNotHaveBean(StorageQueueArmConnectionStringProvider.class));
+    }
+
+    @Test
+    void testAzureServiceBusResourceManagerAutoConfigurationBeans() {
+        this.contextRunner
+            .withUserConfiguration(AzureGlobalPropertiesAutoConfiguration.class,
+                AzureResourceManagerAutoConfiguration.class)
+            .withBean(AzureResourceManager.class, TestAzureResourceManager::getAzureResourceManager)
+            .withBean(AzureStorageQueueProperties.class, AzureStorageQueueProperties::new)
+            .withPropertyValues(AzureStorageQueueProperties.PREFIX + ".account-name=test-account")
+            .run(context -> assertThat(context).hasSingleBean(StorageQueueArmConnectionStringProvider.class));
     }
 }

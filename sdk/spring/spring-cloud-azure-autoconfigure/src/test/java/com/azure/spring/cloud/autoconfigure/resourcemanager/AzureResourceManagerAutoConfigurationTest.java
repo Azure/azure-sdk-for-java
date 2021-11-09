@@ -16,7 +16,6 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 import static com.azure.core.management.AzureEnvironment.AZURE;
 import static com.azure.core.management.AzureEnvironment.AZURE_CHINA;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.mock;
 
 class AzureResourceManagerAutoConfigurationTest {
 
@@ -69,7 +68,7 @@ class AzureResourceManagerAutoConfigurationTest {
     void testAzureProfileWithAzureDefault() {
         this.contextRunner
             .withUserConfiguration(AzureGlobalPropertiesAutoConfiguration.class)
-            .withBean(AzureResourceManager.class, AzureResourceManagerExt::getAzureResourceManager)
+            .withBean(AzureResourceManager.class, TestAzureResourceManager::getAzureResourceManager)
             .withPropertyValues(
                 "spring.cloud.azure.profile.tenant-id=test-tenant-id",
                 "spring.cloud.azure.profile.subscription-id=test-subscription-id"
@@ -86,7 +85,7 @@ class AzureResourceManagerAutoConfigurationTest {
     void testAzureProfileWithAzureChina() {
         this.contextRunner
             .withUserConfiguration(AzureGlobalPropertiesAutoConfiguration.class)
-            .withBean(AzureResourceManager.class, AzureResourceManagerExt::getAzureResourceManager)
+            .withBean(AzureResourceManager.class, TestAzureResourceManager::getAzureResourceManager)
             .withPropertyValues(
                 "spring.cloud.azure.profile.tenant-id=test-tenant-id",
                 "spring.cloud.azure.profile.subscription-id=test-subscription-id",
@@ -98,11 +97,5 @@ class AzureResourceManagerAutoConfigurationTest {
                 Assertions.assertEquals(azureProfile.getEnvironment().getActiveDirectoryEndpoint(),
                     AZURE_CHINA.getActiveDirectoryEndpoint());
             });
-    }
-
-    static class AzureResourceManagerExt {
-        static AzureResourceManager getAzureResourceManager() {
-            return mock(AzureResourceManager.class);
-        }
     }
 }

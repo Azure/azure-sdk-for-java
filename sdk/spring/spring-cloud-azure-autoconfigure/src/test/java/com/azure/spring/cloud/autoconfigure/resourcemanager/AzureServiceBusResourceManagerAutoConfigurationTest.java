@@ -4,6 +4,8 @@
 package com.azure.spring.cloud.autoconfigure.resourcemanager;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
+import com.azure.resourcemanager.AzureResourceManager;
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.servicebus.properties.AzureServiceBusProperties;
 import com.azure.spring.cloud.resourcemanager.connectionstring.ServiceBusArmConnectionStringProvider;
 import com.azure.spring.servicebus.provisioning.ServiceBusQueueProvisioner;
@@ -47,5 +49,18 @@ class AzureServiceBusResourceManagerAutoConfigurationTest {
         this.contextRunner
             .withPropertyValues(AzureServiceBusProperties.PREFIX + "." + connectionString)
             .run(context -> assertThat(context).doesNotHaveBean(ServiceBusArmConnectionStringProvider.class));
+    }
+
+    @Test
+    void testAzureServiceBusResourceManagerAutoConfigurationBeans() {
+        this.contextRunner
+            .withUserConfiguration(AzureGlobalPropertiesAutoConfiguration.class,
+                AzureResourceManagerAutoConfiguration.class)
+            .withBean(AzureResourceManager.class, TestAzureResourceManager::getAzureResourceManager)
+            .withBean(AzureServiceBusProperties.class, AzureServiceBusProperties::new)
+            .run(context -> {
+                assertThat(context).hasSingleBean(ServiceBusTopicProvisioner.class);
+                assertThat(context).hasSingleBean(ServiceBusQueueProvisioner.class);
+            });
     }
 }

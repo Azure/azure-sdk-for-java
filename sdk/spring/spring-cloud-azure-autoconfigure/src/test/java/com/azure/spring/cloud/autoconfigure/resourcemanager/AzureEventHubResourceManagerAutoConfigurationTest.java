@@ -4,6 +4,8 @@
 package com.azure.spring.cloud.autoconfigure.resourcemanager;
 
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
+import com.azure.resourcemanager.AzureResourceManager;
+import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubProperties;
 import com.azure.spring.cloud.resourcemanager.connectionstring.EventHubArmConnectionStringProvider;
 import com.azure.spring.eventhubs.provisioning.EventHubProvisioner;
@@ -48,5 +50,15 @@ class AzureEventHubResourceManagerAutoConfigurationTest {
         this.contextRunner
             .withPropertyValues(AzureEventHubProperties.PREFIX + "." + connectionString)
             .run(context -> assertThat(context).doesNotHaveBean(EventHubArmConnectionStringProvider.class));
+    }
+
+    @Test
+    void testAzureEventHubResourceManagerAutoConfigurationBeans() {
+        this.contextRunner
+            .withUserConfiguration(AzureGlobalPropertiesAutoConfiguration.class,
+                AzureResourceManagerAutoConfiguration.class)
+            .withBean(AzureResourceManager.class, TestAzureResourceManager::getAzureResourceManager)
+            .withBean(AzureEventHubProperties.class, AzureEventHubProperties::new)
+            .run(context -> assertThat(context).hasSingleBean(EventHubProvisioner.class));
     }
 }
