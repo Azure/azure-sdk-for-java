@@ -38,9 +38,9 @@
    <jacoco.min.branchcoverage>0.0</jacoco.min.branchcoverage>
    <jacoco.skip.coverage.check>false</jacoco.skip.coverage.check>
    <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
-<javaModulesSurefireArgLine>
-  --add-opens com.azure.communication.common/com.azure.communication.common.implementation=ALL-UNNAMED
-</javaModulesSurefireArgLine>
+    <javaModulesSurefireArgLine>
+      --add-opens com.azure.communication.mediacomposition/com.azure.communication.mediacomposition=ALL-UNNAMED
+    </javaModulesSurefireArgLine>
 </properties>
 
 <dependencies>
