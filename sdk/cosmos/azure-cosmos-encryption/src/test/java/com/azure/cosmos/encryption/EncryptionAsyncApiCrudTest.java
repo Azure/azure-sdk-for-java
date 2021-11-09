@@ -56,7 +56,7 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
     @BeforeClass(groups = {"encryption"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosItemTest() {
         assertThat(this.client).isNull();
-        this.client = getClientBuilder().buildAsyncClient();
+        this.client = getClientBuilder().directMode().buildAsyncClient();
         TestEncryptionKeyStoreProvider encryptionKeyStoreProvider = new TestEncryptionKeyStoreProvider();
         cosmosEncryptionAsyncClient = CosmosEncryptionAsyncClient.createCosmosEncryptionAsyncClient(this.client,
             encryptionKeyStoreProvider);

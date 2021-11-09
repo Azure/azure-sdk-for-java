@@ -632,7 +632,7 @@ public class CosmosEncryptionAsyncContainer {
                                                              CosmosItemRequestOptions requestOptions,
                                                              Class<T> itemClass,
                                                              boolean isRetry) {
-        this.setRequestHeaders(requestOptions);
+
         return this.encryptionProcessor.encrypt(streamPayload)
             .flatMap(encryptedPayload -> createItemHelper(
                 encryptedPayload,
@@ -659,6 +659,7 @@ public class CosmosEncryptionAsyncContainer {
     private <T> Mono<CosmosItemResponse<byte[]>> createItemHelper(byte[] encryptedPayload,
                                                                   PartitionKey partitionKey,
                                                                   CosmosItemRequestOptions requestOptions) {
+        this.setRequestHeaders(requestOptions);
         return partitionKey != null
             ? this.container.createItem(encryptedPayload, partitionKey, requestOptions)
             : this.container.createItem(encryptedPayload, requestOptions);
