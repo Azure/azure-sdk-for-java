@@ -10,6 +10,7 @@ import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.keyvault.secrets.properties.AzureKeyVaultSecretProperties;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
+import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.service.keyvault.secrets.SecretClientBuilderFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -51,6 +52,7 @@ public class AzureKeyVaultSecretAutoConfiguration extends AzureServiceConfigurat
     @Bean
     @ConditionalOnMissingBean
     public SecretClientBuilder secretClientBuilder(SecretClientBuilderFactory factory) {
+        factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_KEY_VAULT);
         return factory.build();
     }
 

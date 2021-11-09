@@ -9,7 +9,7 @@ import com.azure.messaging.eventhubs.EventHubConsumerClient;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnMissingProperty;
 import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubProperties;
-import com.azure.spring.core.ApplicationId;
+import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.core.service.AzureServiceType;
 import com.azure.spring.service.core.PropertyMapper;
@@ -85,7 +85,7 @@ class AzureEventHubConsumerClientConfiguration {
 
             builderFactory.setConnectionStringProvider(new StaticConnectionStringProvider<>(AzureServiceType.EVENT_HUB,
                                                                                             this.consumerProperties.getConnectionString()));
-            builderFactory.setSpringIdentifier(ApplicationId.AZURE_SPRING_EVENT_HUB);
+            builderFactory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_EVENT_HUB);
             return builderFactory;
         }
 

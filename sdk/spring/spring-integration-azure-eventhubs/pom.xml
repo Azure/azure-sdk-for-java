@@ -46,7 +46,6 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
       <version>1.10.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;dependency} -->
-      <optional>true</optional>
     </dependency>
 
     <!-- Added this dependency to include necessary annotations used by reactor core.

@@ -7,6 +7,7 @@ import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.storage.blob.properties.AzureStorageBlobProperties;
+import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.service.storage.blob.BlobServiceClientBuilderFactory;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
@@ -96,6 +97,7 @@ public class AzureStorageBlobAutoConfiguration extends AzureServiceConfiguration
     @ConditionalOnMissingBean
     public BlobServiceClientBuilder blobServiceClientBuilder(@Qualifier(STORAGE_BLOB_CLIENT_BUILDER_FACTORY_BEAN_NAME)
                                                                      BlobServiceClientBuilderFactory factory) {
+        factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_STORAGE_BLOB);
         return factory.build();
     }
 

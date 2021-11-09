@@ -34,23 +34,28 @@ trigger:
       - sdk/spring/spring-cloud-azure-actuator-autoconfigure/pom.xml
       - sdk/spring/spring-cloud-azure-autoconfigure/pom.xml
       - sdk/spring/spring-cloud-azure-starter-actuator/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-appconfiguration/pom.xml
       - sdk/spring/spring-cloud-azure-starter-cosmos/pom.xml
       - sdk/spring/spring-cloud-azure-starter-eventhubs/pom.xml
       - sdk/spring/spring-cloud-azure-starter-keyvault-certificates/pom.xml
       - sdk/spring/spring-cloud-azure-starter-keyvault-secrets/pom.xml
       - sdk/spring/spring-cloud-azure-starter-servicebus-jms/pom.xml
       - sdk/spring/spring-cloud-azure-starter-servicebus/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-storage-blob/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-storage-file-share/pom.xml
       - sdk/spring/spring-cloud-azure-starter-storage-queue/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-storage/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-integration-eventhubs/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-integration-servicebus/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-integration-storage-queue/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-stream-eventhubs/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-stream-servicebus-queue/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-stream-servicebus-topic/pom.xml
       - sdk/spring/spring-cloud-azure-starter/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-eventhubs-core/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-eventhubs/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-stream-eventhubs/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-servicebus-core/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-servicebus-queue/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-stream-servicebus-queue/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-servicebus-topic/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-stream-servicebus-topic/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-test/pom.xml
       - sdk/spring/spring-cloud-azure-test-servicebus-binder/pom.xml
 
@@ -88,23 +93,28 @@ pr:
       - sdk/spring/spring-cloud-azure-actuator-autoconfigure/pom.xml
       - sdk/spring/spring-cloud-azure-autoconfigure/pom.xml
       - sdk/spring/spring-cloud-azure-starter-actuator/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-appconfiguration/pom.xml
       - sdk/spring/spring-cloud-azure-starter-cosmos/pom.xml
       - sdk/spring/spring-cloud-azure-starter-eventhubs/pom.xml
       - sdk/spring/spring-cloud-azure-starter-keyvault-certificates/pom.xml
       - sdk/spring/spring-cloud-azure-starter-keyvault-secrets/pom.xml
       - sdk/spring/spring-cloud-azure-starter-servicebus-jms/pom.xml
       - sdk/spring/spring-cloud-azure-starter-servicebus/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-storage-blob/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-storage-file-share/pom.xml
       - sdk/spring/spring-cloud-azure-starter-storage-queue/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-storage/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-integration-eventhubs/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-integration-servicebus/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-integration-storage-queue/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-stream-eventhubs/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-stream-servicebus-queue/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-stream-servicebus-topic/pom.xml
       - sdk/spring/spring-cloud-azure-starter/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-eventhubs-core/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-eventhubs/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-stream-eventhubs/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-servicebus-core/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-servicebus-queue/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-stream-servicebus-queue/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-servicebus-topic/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-stream-servicebus-topic/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-test/pom.xml
       - sdk/spring/spring-cloud-azure-test-servicebus-binder/pom.xml
 
@@ -160,6 +170,12 @@ extends:
         skipPublishDocMs: true
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
+      - name: spring-cloud-azure-starter-appconfiguration
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterappconfiguration
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
       - name: spring-cloud-azure-starter-cosmos
         groupId: com.azure.spring
         safeName: springcloudazurestartercosmos
@@ -184,9 +200,51 @@ extends:
         skipPublishDocMs: true
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
-      - name: spring-cloud-azure-starter-storage
+      - name: spring-cloud-azure-starter-storage-blob
         groupId: com.azure.spring
-        safeName: springcloudazurestarterstorage
+        safeName: springcloudazurestarterstorageblob
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-starter-storage-file-share
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterstoragefileshare
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-starter-storage-queue
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterstoragequeue
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-starter-eventhubs
+        groupId: com.azure.spring
+        safeName: springcloudazurestartereventhubs
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-starter-servicebus
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterservicebus
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-starter-integration-storage-queue
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterintegrationstoragequeue
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-starter-integration-eventhubs
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterintegrationeventhubs
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-starter-integration-servicebus
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterintegrationservicebus
         skipPublishDocMs: true
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
@@ -208,24 +266,6 @@ extends:
       - name: spring-cloud-azure-starter-actuator
         groupId: com.azure.spring
         safeName: springcloudazurestarteractuator
-        skipPublishDocMs: true
-        skipUpdatePackageJson: true
-        skipVerifyChangelog: true
-      - name: spring-cloud-azure-starter-eventhubs
-        groupId: com.azure.spring
-        safeName: springcloudazurestartereventhubs
-        skipPublishDocMs: true
-        skipUpdatePackageJson: true
-        skipVerifyChangelog: true
-      - name: spring-cloud-azure-starter-servicebus
-        groupId: com.azure.spring
-        safeName: springcloudazurestarterservicebus
-        skipPublishDocMs: true
-        skipUpdatePackageJson: true
-        skipVerifyChangelog: true
-      - name: spring-cloud-azure-starter-storage-queue
-        groupId: com.azure.spring
-        safeName: springcloudazurestarterstoragequeue
         skipPublishDocMs: true
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
