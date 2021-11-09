@@ -8,7 +8,6 @@ import com.azure.resourcemanager.redis.RedisManager;
 import com.azure.resourcemanager.redis.fluent.models.RedisResourceInner;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.GroupableResource;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.HasId;
-import com.azure.resourcemanager.resources.fluentcore.arm.models.Resource;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListingPrivateEndpointConnection;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListingPrivateLinkResource;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsUpdatingPrivateEndpointConnection;
@@ -16,6 +15,7 @@ import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Refreshable;
 import com.azure.resourcemanager.resources.fluentcore.model.Updatable;
+
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
@@ -273,10 +273,17 @@ public interface RedisCache
              * @return the next stage of Redis Cache with Premium SKU definition.
              */
             WithCreate withPatchSchedule(List<ScheduleEntry> scheduleEntry);
+
+            /**
+             * Explicitly specify the Redis version to create with
+             * @param redisVersion the redisVersion value to set.
+             * @return the next stage of Redis Cache with Premium SKU definition.
+             */
+            WithCreate withRedisVersion(MajorVersion redisVersion);
         }
 
         /** A Redis Cache definition with Premium Sku specific functionality. */
-        interface WithPremiumSkuCreate extends DefinitionStages.WithCreate {
+        interface WithPremiumSkuCreate extends WithCreate {
 
             /**
              * The number of shards to be created on a Premium Cluster Cache.
@@ -424,7 +431,7 @@ public interface RedisCache
     /** The template for a Redis Cache update operation, containing all the settings that can be modified. */
     interface Update
         extends Appliable<RedisCache>,
-            Resource.UpdateWithTags<Update>,
+            UpdateWithTags<Update>,
             UpdateStages.WithSku,
             UpdateStages.WithNonSslPort,
             UpdateStages.WithRedisConfiguration {
@@ -519,5 +526,33 @@ public interface RedisCache
          * @return the next stage of Redis Cache definition.
          */
         Update withoutMinimumTlsVersion();
+
+        /**
+         * Update the Redis version.
+         * @param redisVersion the redisVersion value to set
+         * @return the next stage of Redis Cache definition.
+         */
+        Update withRedisVersion(MajorVersion redisVersion);
     }
+
+    /**
+     * major version of redis
+     * for version 4.x.x, use V4
+     * for version 6.x.x, use V6
+     */
+    enum  MajorVersion {
+        V6("6"), // version 6.x.x
+        V4("4"); // version 4.x.x
+
+        private final String value;
+
+        MajorVersion(String value) {
+            this.value = value;
+        }
+
+        public String getValue() {
+            return value;
+        }
+    }
+
 }

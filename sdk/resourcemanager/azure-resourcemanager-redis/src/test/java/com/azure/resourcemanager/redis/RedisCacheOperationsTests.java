@@ -3,6 +3,7 @@
 
 package com.azure.resourcemanager.redis;
 
+import com.azure.core.management.Region;
 import com.azure.core.management.exception.ManagementException;
 import com.azure.resourcemanager.redis.models.DayOfWeek;
 import com.azure.resourcemanager.redis.models.RebootType;
@@ -14,17 +15,18 @@ import com.azure.resourcemanager.redis.models.ReplicationRole;
 import com.azure.resourcemanager.redis.models.ScheduleEntry;
 import com.azure.resourcemanager.redis.models.SkuFamily;
 import com.azure.resourcemanager.redis.models.SkuName;
-import com.azure.core.management.Region;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.CreatedResources;
+import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.resources.models.ResourceGroup;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+
 import java.time.Duration;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public class RedisCacheOperationsTests extends RedisManagementTest {
 
@@ -96,7 +98,6 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
             .withFirewallRule("rule3", "192.168.0.10", "192.168.0.104")
             .withoutMinimumTlsVersion()
             .apply();
-
         Thread.sleep(10000);
         premiumCache.refresh();
 
@@ -204,6 +205,35 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
         /*premiumCache.exportData(storageAccount.name(),"snapshot1");
 
         premiumCache.importData(Arrays.asList("snapshot1"));*/
+    }
+
+    @Test
+    public void canRedisVersionUpdate(){
+        RedisCache.MajorVersion redisVersion = RedisCache.MajorVersion.V4;
+
+        RedisCache redisCache =
+                redisManager
+                        .redisCaches()
+                        .define(rrName)
+                        .withRegion(Region.ASIA_EAST)
+                        .withNewResourceGroup(rgName)
+                        .withBasicSku()
+                        .withRedisVersion(redisVersion)
+                        .create()
+                ;
+
+        Assertions.assertTrue(redisCache.redisVersion().startsWith(redisVersion.getValue()));
+
+        redisVersion = RedisCache.MajorVersion.V6;
+        redisCache = redisCache.update()
+                .withRedisVersion(redisVersion)
+                .apply(); // response with "provisioningState" : "Succeeded", but it takes quite a while for the client to detect the actual version change
+
+        ResourceManagerUtils.sleep(Duration.ofSeconds(300)); // even 240 sometimes won't work
+
+        redisCache = redisCache.refresh();
+        Assertions.assertTrue(redisCache.redisVersion().startsWith(redisVersion.getValue()));
+
     }
 
     @Test
