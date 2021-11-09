@@ -36,7 +36,7 @@ To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/A
     </dependencies>
 </dependencyManagement>
 ```
-And then include the direct dependency in the dependencies section without the version tag.
+Then, include the direct dependency in the dependencies section without the version tag.
 
 ```xml
 <dependencies>
@@ -48,7 +48,8 @@ And then include the direct dependency in the dependencies section without the v
 ```
 
 #### Include direct dependency
-You can add a direct dependency of a particular version of the library to your project, that is not present in the BOM as follows:
+If you want to take dependency on a particular version of the library that is not present in the BOM,
+add the direct dependency to your project as follows.
 
 [//]: # ({x-version-update-start;com.azure:azure-ai-formrecognizer;current})
 ```xml
@@ -208,8 +209,7 @@ More information about analyzing documents, including supported features, locale
 The [DocumentModelAdministrationClient][document_model_admin_sync_client] and
 [DocumentModelAdministrationAsyncClient][document_model_admin_sync_client] provide both synchronous and asynchronous operations
 - Build custom document analysis models to analyze text content, fields, and values found in your custom documents. See example [Build a model](#build-a-model).
-  A `DocumentModel` is returned indicating the document types that the model can analyze, and the fields, and schemas it will extract in
-  each doc type.
+  A `DocumentModel` is returned indicating the document types that the model can analyze, along with the fields and schemas it will extract.
 - Managing models created in your account by building, listing, deleting, and see the limit of custom models your account. See example [Manage models](#manage-your-models).
 - Copying a custom model from one Form Recognizer resource to another.
 - Creating a composed model from a collection of existing built models.
