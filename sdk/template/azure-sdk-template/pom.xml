@@ -34,7 +34,7 @@
     <jacoco.min.branchcoverage>0.10</jacoco.min.branchcoverage>
 
     <!-- If skipping test coverage is absolutely necessary, for example resources cannot be provisioned uncomment this -->
-    <!--<jacoco.skip.coverage.check>false</jacoco.skip.coverage.check>-->
+    <!--<jacoco.skip>false</jacoco.skip>-->
   </properties>
 
   <dependencies>

@@ -51,7 +51,7 @@
       --add-opens com.azure.core.experimental/com.azure.core.experimental.http=ALL-UNNAMED
       --add-opens com.azure.core.experimental/com.azure.core.experimental.models=ALL-UNNAMED
     </javaModulesSurefireArgLine>
-    <skipNewCodesnippetTooling>false</skipNewCodesnippetTooling>
+    <codesnippet.skip>false</codesnippet.skip>
     <javadocDoclet></javadocDoclet>
     <javadocDocletOptions></javadocDocletOptions>
   </properties>

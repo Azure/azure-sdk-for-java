@@ -42,7 +42,7 @@
     <test.dir>src/test</test.dir>
     <jacoco.min.linecoverage>0.70</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.70</jacoco.min.branchcoverage>
-    <jacoco.skip.coverage.check>false</jacoco.skip.coverage.check>
+    <jacoco.skip>false</jacoco.skip>
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
     <javaModulesSurefireArgLine>
       --add-opens com.azure.communication.callingserver/com.azure.communication.callingserver.implementation=ALL-UNNAMED
@@ -123,7 +123,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.4.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.4.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

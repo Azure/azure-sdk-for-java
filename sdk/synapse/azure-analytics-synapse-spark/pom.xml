@@ -34,7 +34,7 @@
 
   <properties>
     <!-- synapse spark temporarily skipping code coverage until more tests are added -->
-    <jacoco.skip.coverage.check>true</jacoco.skip.coverage.check>
+    <jacoco.skip>true</jacoco.skip>
   </properties>
 
   <dependencies>
@@ -83,7 +83,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.4.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.4.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

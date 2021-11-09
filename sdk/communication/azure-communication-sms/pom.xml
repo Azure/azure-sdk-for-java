@@ -43,7 +43,7 @@
     <test.dir>src/test</test.dir>
     <jacoco.min.linecoverage>0.70</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.70</jacoco.min.branchcoverage>
-    <jacoco.skip.coverage.check>false</jacoco.skip.coverage.check>
+    <jacoco.skip>false</jacoco.skip>
   </properties>
 
   <dependencies>
@@ -102,7 +102,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.4.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.4.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
