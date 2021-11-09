@@ -171,7 +171,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
         val clientConfig = pair._1
         val clientMetadata = pair._2
 
-        if (clientMetadata.lastRetrieved.get() < Instant.now.toEpochMilli - unusedClientTtlInMs) {
+        if (clientMetadata.lastModified.get() < Instant.now.toEpochMilli - unusedClientTtlInMs) {
           if (clientMetadata.refCount.get() == 0) {
             logInfo(s"Removing client due to inactivity from the cache - ${clientConfig.endpoint}, " +
               s"${clientConfig.applicationName}, ${clientConfig.preferredRegionsList}, ${clientConfig.useGatewayMode}, " +
@@ -179,7 +179,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
             purge(clientConfig)
           } else {
             logInfo(s"Client has not been retrieved from the cache recently - Created: ${clientMetadata.created}, " +
-              s"LastRetrieved ${clientMetadata.lastRetrieved}, RefCount: ${clientMetadata.lastRetrieved}, " +
+              s"LastModified ${clientMetadata.lastModified}, RefCount: ${clientMetadata.refCount}, " +
               s"Owning Spark tasks: [${clientMetadata.owners.keys.mkString(", ")}]")
           }
         }
@@ -208,13 +208,13 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
   private[this] case class CosmosClientCacheMetadata
   (
     client: CosmosAsyncClient,
-    lastRetrieved: AtomicLong,
+    lastModified: AtomicLong,
     created: AtomicLong,
     refCount: AtomicLong,
     owners: TrieMap[OwnerInfo, Option[Boolean]]
   ) {
     def createCacheItemForReuse(ownerInfo: OwnerInfo) : CacheItemImpl = {
-      lastRetrieved.set(Instant.now.toEpochMilli)
+      lastModified.set(Instant.now.toEpochMilli)
       refCount.incrementAndGet()
       owners.putIfAbsent(ownerInfo, None)
 
@@ -258,6 +258,7 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
       }
 
       ref.owners.remove(ownerInfo)
+      ref.lastModified.set(Instant.now.toEpochMilli)
 
       logDebug("Returned client to the pool = remaining active clients - Count: " +
         s"$remainingActiveClients, Spark contexts: ${ref.owners.keys.mkString(", ")}")
