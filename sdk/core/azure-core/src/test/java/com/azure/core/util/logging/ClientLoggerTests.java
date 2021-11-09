@@ -339,18 +339,32 @@ public class ClientLoggerTests {
         Supplier<String> supplier = () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3");
         ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
 
-        logHelper(() -> logger.atLevel(LogLevel.WARNING)
-                .addKeyValue("connectionId", "foo")
-                .addKeyValue("linkName", "bar")
-                .log(supplier),
-            (args) -> logger.atLevel(LogLevel.WARNING)
-                .addKeyValue("connectionId", "foo")
-                .addKeyValue("linkName", "bar")
-                .log(supplier),
-            supplier);
+        LogEntryBuilder logBuilder = logger.atLevel(LogLevel.WARNING)
+            .addKeyValue("connectionId", "foo")
+            .addKeyValue("linkName", "bar");
+
+        logHelper(() -> logBuilder.log(supplier.get()),
+                  (args) -> logBuilder.log(supplier.get()),
+                  supplier);
 
         String logValues = byteArraySteamToString(logCaptureStream);
-        assertTrue(logValues.endsWith(supplier.get() + ", az.sdk.context={\"connectionId\":\"foo\", \"linkName\":\"bar\"}\r\n"));
+
+        assertTrue(logValues.endsWith(supplier.get() + ", az.sdk.context={\"connectionId\":\"foo\",\"linkName\":\"bar\"}\r\n"));
+    }
+
+
+    @Test
+    public void testLoginWithContext2() {
+        setupLogLevel(LogLevel.INFORMATIONAL.getLogLevel());
+
+        String message  = "hello";
+        ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
+
+        logger.error(message, null, "connectionId", "foo", "linkName", "bar");
+
+        String logValues = byteArraySteamToString(logCaptureStream);
+
+        assertTrue(logValues.endsWith(message + ", az.sdk.context={\"connectionId\":\"foo\",\"linkName\":\"bar\"}\r\n"));
     }
 
     @Test

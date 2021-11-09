@@ -28,14 +28,13 @@ import java.util.concurrent.TimeUnit;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_LOG_LEVEL;
 
 @Fork(3)
-@Warmup(iterations = 2, time = 2)
-@Measurement(iterations = 3, time = 10)
+@Warmup(iterations = 5, time = 2)
+@Measurement(iterations = 5, time = 10)
 @BenchmarkMode(Mode.AverageTime)
 @OutputTimeUnit(TimeUnit.NANOSECONDS)
 @State(Scope.Thread)
 public class LoggingBenchmark {
     ClientLogger logger;
-    Map<String, String> context = Map.of("connectionId", "foo", "linkName", "bar");
 
     @Setup
     public void setup() {
@@ -49,11 +48,19 @@ public class LoggingBenchmark {
         }));
     }
 
-    @Benchmark
+    /*@Benchmark
     public void loggingAtDisabledLevel() {
-        logger.info("hello");
+        logger.info("hello, connectionId={}, linkName={}", "foo", "bar");
     }
 
+@Benchmark
+    public void loggingAtDisabledLevelWithContext() {
+        logger.atLevel(LogLevel.INFORMATIONAL)
+            .addKeyValue("connectionId", "foo")
+            .addKeyValue("linkName", "bar")
+            .log("hello");
+    }
+*/
     @Benchmark
     public void loggingAtEnabledLevel() {
         logger.error("hello, connectionId={}, linkName={}", "foo", "bar");
@@ -64,31 +71,12 @@ public class LoggingBenchmark {
         logger.atLevel(LogLevel.ERROR)
             .addKeyValue("connectionId", "foo")
             .addKeyValue("linkName", "bar")
-            .log(() -> "hello");
+            .log("hello");
     }
 
     @Benchmark
-    public void loggingAtEnabledLevelWithMDC() {
-        logger.atLevel(LogLevel.ERROR)
-            .addKeyValue("connectionId", "foo")
-            .addKeyValue("linkName", "bar")
-            .logWithMDC(() -> "hello");
-    }
-
-    @Benchmark
-    public void loggingAtDisabledLevelWithContext() {
-        logger.atLevel(LogLevel.INFORMATIONAL)
-            .addKeyValue("connectionId", "foo")
-            .addKeyValue("linkName", "bar")
-            .log(() -> "hello");
-    }
-
-    @Benchmark
-    public void loggingAtDisabledLevelWithMDC() {
-        logger.atLevel(LogLevel.INFORMATIONAL)
-            .addKeyValue("connectionId", "foo")
-            .addKeyValue("linkName", "bar")
-            .logWithMDC(() -> "hello");
+    public void loggingAtEnabledLevelWithContext2() {
+        logger.error("hello", null, "connectionId", "foo", "linkName", "bar");
     }
 
     public static void main(String... args) throws IOException, RunnerException {

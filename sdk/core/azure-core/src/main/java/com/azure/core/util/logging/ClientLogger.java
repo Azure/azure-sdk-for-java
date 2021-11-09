@@ -8,12 +8,10 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.MDC;
 import org.slf4j.helpers.NOPLogger;
 
+import java.util.AbstractMap;
 import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Objects;
 import java.util.function.Supplier;
 
@@ -107,6 +105,41 @@ public class ClientLogger {
     public void log(LogLevel logLevel, Supplier<String> message, Throwable throwable) {
         if (message != null && canLogAtLevel(logLevel)) {
             performDeferredLogging(logLevel, message, throwable);
+        }
+    }
+
+    public void error(String message, Throwable throwable, Object ... context) {
+        if (message != null && logger.isErrorEnabled()) {
+            String messageAndContext;
+            if (context == null || context.length == 0) {
+                messageAndContext = message;
+            } else {
+                // can potentially calculate capacity
+                StringBuilder sb = new StringBuilder(message.length())
+                    .append(message)
+                    .append(", az.sdk.context={\"")
+                    .append(context[0])
+                    .append("\":\"")
+                    // todo support for primitive types
+                    .append(context[1])
+                    .append("\"");
+
+                for (int i = 2; i < context.length; i+=2) {
+
+                    sb.append(",\"")
+                        .append(context[i])
+                        .append("\":\"")
+                        // todo support for primitive types
+                        .append(context[i+1])
+                        .append("\"");
+                }
+
+                sb.append("}");
+
+                messageAndContext = sb.toString();
+            }
+
+            performDeferredLogging(LogLevel.ERROR, messageAndContext, throwable);
         }
     }
 
@@ -457,8 +490,7 @@ public class ClientLogger {
      */
     private void performDeferredLogging(LogLevel logLevel, Supplier<String> messageSupplier, Throwable throwable) {
         String throwableMessage = (throwable != null) ? throwable.getMessage() : "";
-        String message = messageSupplier.get();
-        message = removeNewLinesFromLogMessage(message);
+        String message = removeNewLinesFromLogMessage(messageSupplier.get());
         switch (logLevel) {
             case VERBOSE:
                 if (throwable != null) {
@@ -530,96 +562,6 @@ public class ClientLogger {
                 return logger.isErrorEnabled();
             default:
                 return false;
-        }
-    }
-
-    // heavily inspired by http://www.slf4j.org/apidocs/org/slf4j/spi/LoggingEventBuilder.html
-    public static class LogEntryBuilder {
-        private final ClientLogger logger;
-        private final LogLevel level;
-
-        // instead of virtual methods and builder inheritance
-        private final boolean isEnabled;
-        private String message;
-        private Map<String, String> context;
-        private Throwable throwable;
-
-        private static final LogEntryBuilder NOOP = new LogEntryBuilder(null, null, false);
-
-        static LogEntryBuilder create(ClientLogger logger, LogLevel level, boolean isEnabled) {
-            if (isEnabled) {
-                return new LogEntryBuilder(logger, level, true);
-            }
-
-            return NOOP;
-        }
-
-        private LogEntryBuilder(ClientLogger logger, LogLevel level, boolean isEnabled) {
-            this.logger = logger;
-            this.level = level;
-            this.isEnabled = isEnabled;
-            this.message = null;
-            this.context = null;
-            this.throwable = null;
-        }
-
-        public LogEntryBuilder setCause(Throwable cause) {
-            if (this.isEnabled) {
-                this.throwable = cause;
-            }
-            return this;
-        }
-
-        public LogEntryBuilder addKeyValue(String key, String value) {
-            if (this.isEnabled) {
-                if (this.context == null) {
-                    this.context = new HashMap<>();
-                }
-
-                this.context.put(key, value);
-            }
-            return this;
-        }
-
-        // todo: overloads
-        public void log(Supplier<String> message) {
-            if (this.isEnabled) {
-                logger.log(level, () -> {
-
-                    String msg = message.get();
-                    if (this.context == null || this.context.isEmpty()) {
-                        return msg;
-                    }
-
-                    // can potentially calculate capacity or come up with heuristics
-                    // e.g. if there is context, start with msg len * 2
-                    StringBuilder sb = new StringBuilder(msg.length())
-                        .append(msg)
-                        .append(", az.sdk.context={");
-
-                    for (Map.Entry<String, String> entry : this.context.entrySet()) {
-                        sb.append("\"")
-                            .append(entry.getKey())
-                            .append("\":\"")
-                            .append(entry.getValue())
-                            .append("\", ");
-                    }
-
-                    sb.delete(sb.length() - 2, sb.length())
-                      .append("}");
-
-                    return sb.toString();
-                });
-            }
-        }
-
-        // todo: remove - temp for benchmarking, seem to have bad perf (1.5X vs context)
-        public void logWithMDC(Supplier<String> message) {
-            if (this.isEnabled) {
-                MDC.setContextMap(this.context);
-                logger.log(level, message);
-                MDC.clear();
-            }
         }
     }
 
