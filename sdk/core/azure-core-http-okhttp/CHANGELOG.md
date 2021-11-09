@@ -10,6 +10,10 @@
 
 ### Other Changes
 
+#### Dependency Updates
+
+- Upgraded OkHttp from `4.8.1` to `4.9.2`.
+
 ## 1.7.5 (2021-11-05)
 
 ### Other Changes
