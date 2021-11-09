@@ -78,8 +78,8 @@ public class GetWordsUsingSpans {
         pageWords.forEach(documentWord -> {
             documentLine.getSpans().forEach(documentSpan -> {
                 if ((documentWord.getSpan().getOffset() >= documentSpan.getOffset())
-                    && ((documentWord.getSpan().getOffset() +
-                    documentWord.getSpan().getLength()) <= (documentSpan.getOffset() + documentSpan.getLength()))) {
+                    && ((documentWord.getSpan().getOffset() 
+                         + documentWord.getSpan().getLength()) <= (documentSpan.getOffset() + documentSpan.getLength()))) {
                     containedWords.add(documentWord);
                 }
             });
