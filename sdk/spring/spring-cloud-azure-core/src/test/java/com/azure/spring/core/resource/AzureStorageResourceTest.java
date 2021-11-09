@@ -85,7 +85,7 @@ public class AzureStorageResourceTest {
 
         private final StorageType storageType;
 
-        public MockAzureStorageResource(StorageType storageType) {
+        MockAzureStorageResource(StorageType storageType) {
             this.storageType = storageType;
         }
 

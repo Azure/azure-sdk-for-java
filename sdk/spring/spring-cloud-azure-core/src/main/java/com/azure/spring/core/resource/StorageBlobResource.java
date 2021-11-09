@@ -147,11 +147,11 @@ public class StorageBlobResource extends AzureStorageResource {
     @Override
     public String getDescription() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Azure storage account blob resource [container='")
-          .append(this.blockBlobClient.getContainerName())
-          .append("', blob='")
-          .append(blockBlobClient.getBlobName())
-          .append("'");
+        sb.append("Azure storage account blob resource [container='");
+        sb.append(this.blockBlobClient.getContainerName());
+        sb.append("', blob='");
+        sb.append(blockBlobClient.getBlobName());
+        sb.append("'");
         if (versionId != null) {
             sb.append(", versionId='").append(versionId).append("'");
         }

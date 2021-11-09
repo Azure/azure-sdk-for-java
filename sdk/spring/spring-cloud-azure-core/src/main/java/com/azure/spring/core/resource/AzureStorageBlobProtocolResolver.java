@@ -67,7 +67,7 @@ public class AzureStorageBlobProtocolResolver extends AbstractAzureStorageProtoc
 
         private final String name;
 
-        public StorageBlobContainerClient(String name) {
+        StorageBlobContainerClient(String name) {
             this.name = name;
         }
 

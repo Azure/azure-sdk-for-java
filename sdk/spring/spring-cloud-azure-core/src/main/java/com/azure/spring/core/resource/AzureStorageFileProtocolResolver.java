@@ -50,7 +50,7 @@ public class AzureStorageFileProtocolResolver extends AbstractAzureStorageProtoc
 
         private final String name;
 
-        public StorageFileContainerClient(String name) {
+        StorageFileContainerClient(String name) {
             this.name = name;
         }
 
