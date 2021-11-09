@@ -20,8 +20,8 @@ public class AzureStorageBlobProtocolResolver extends AbstractAzureStorageProtoc
 
     private final BlobServiceClient blobServiceClient;
 
-    private final static BlobListDetails RETRIEVE_NOTHING_DETAILS = new BlobListDetails();
-    private final static BlobContainerListDetails RETRIEVE_NOTHING_CONTAINER_DETAILS = new BlobContainerListDetails();
+    private static final BlobListDetails RETRIEVE_NOTHING_DETAILS = new BlobListDetails();
+    private static final BlobContainerListDetails RETRIEVE_NOTHING_CONTAINER_DETAILS = new BlobContainerListDetails();
 
     static {
         RETRIEVE_NOTHING_DETAILS.setRetrieveCopy(false);
