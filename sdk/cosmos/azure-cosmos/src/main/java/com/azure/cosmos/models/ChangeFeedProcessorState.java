@@ -4,9 +4,6 @@
 package com.azure.cosmos.models;
 
 import com.azure.cosmos.ChangeFeedProcessor;
-import com.azure.cosmos.util.Beta;
-
-import java.time.Instant;
 
 /**
  * Specifies the {@link ChangeFeedProcessor} state for a particular lease/worker.

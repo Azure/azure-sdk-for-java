@@ -3,7 +3,6 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.models.ChangeFeedProcessorState;
-import com.azure.cosmos.util.Beta;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
