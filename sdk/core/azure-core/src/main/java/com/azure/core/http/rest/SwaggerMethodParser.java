@@ -229,7 +229,7 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
                         swaggerMethod.getGenericParameterTypes()[parameterIndex]));
                     bodyContentType = ContentType.MULTIPART_FORM_DATA;
                     bodyJavaType = String.class;
-                    boundary = UUID.randomUUID().toString();
+                    boundary = boundary == null ? UUID.randomUUID().toString() : boundary;
                 }
             }
         }
@@ -433,15 +433,25 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
             && swaggerMethodArguments != null
             && 0 <= bodyContentMethodParameterIndex
             && bodyContentMethodParameterIndex < swaggerMethodArguments.length) {
+
             result = swaggerMethodArguments[bodyContentMethodParameterIndex];
         }
 
         if (!CoreUtils.isNullOrEmpty(formSubstitutions) && swaggerMethodArguments != null) {
-            result = formSubstitutions.stream()
-                .map(substitution -> serializeFormData(serializer, substitution.getUrlParameterName(),
-                    swaggerMethodArguments[substitution.getMethodParameterIndex()], substitution.shouldEncode()))
-                .filter(Objects::nonNull)
-                .collect(Collectors.joining("&"));
+            StringJoiner stringJoiner = new StringJoiner("&");
+
+            for (Substitution substitution : formSubstitutions) {
+                String formData = serializeFormData(serializer, substitution.getUrlParameterName(),
+                    swaggerMethodArguments[substitution.getMethodParameterIndex()], substitution.shouldEncode());
+
+                if (formData == null) {
+                    continue;
+                }
+
+                stringJoiner.add(formData);
+            }
+
+            result = stringJoiner.toString();
         }
 
         if (!CoreUtils.isNullOrEmpty(formDataEntries) && swaggerMethodArguments != null) {
