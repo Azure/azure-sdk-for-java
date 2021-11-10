@@ -23,8 +23,8 @@ public class AzureStorageFileShareResourceAutoConfiguration  {
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(ShareServiceClient.class)
-    public AzureStorageFileProtocolResolver azureStorageFileProtocolResolver(ShareServiceClient shareServiceClient) {
-        return new AzureStorageFileProtocolResolver(shareServiceClient);
+    public AzureStorageFileProtocolResolver azureStorageFileProtocolResolver() {
+        return new AzureStorageFileProtocolResolver();
     }
 
 }

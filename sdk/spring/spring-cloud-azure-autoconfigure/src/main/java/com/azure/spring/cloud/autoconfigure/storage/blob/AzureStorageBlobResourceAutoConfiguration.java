@@ -23,8 +23,8 @@ public class AzureStorageBlobResourceAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean(BlobServiceClient.class)
-    public AzureStorageBlobProtocolResolver azureStorageBlobProtocolResolver(BlobServiceClient blobServiceClient) {
-        return new AzureStorageBlobProtocolResolver(blobServiceClient);
+    public AzureStorageBlobProtocolResolver azureStorageBlobProtocolResolver() {
+        return new AzureStorageBlobProtocolResolver();
     }
 
 }

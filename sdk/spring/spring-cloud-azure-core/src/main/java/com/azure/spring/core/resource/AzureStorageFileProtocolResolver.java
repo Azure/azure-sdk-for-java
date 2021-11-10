@@ -16,10 +16,13 @@ import org.springframework.core.io.Resource;
  */
 public class AzureStorageFileProtocolResolver extends AbstractAzureStorageProtocolResolver {
 
-    private final ShareServiceClient shareServiceClient;
+    private ShareServiceClient shareServiceClient;
 
     public AzureStorageFileProtocolResolver(ShareServiceClient shareServiceClient) {
         this.shareServiceClient = shareServiceClient;
+    }
+
+    public AzureStorageFileProtocolResolver() {
     }
 
     @Override
@@ -35,7 +38,7 @@ public class AzureStorageFileProtocolResolver extends AbstractAzureStorageProtoc
         options.setIncludeDeleted(false);
         options.setIncludeMetadata(false);
         options.setIncludeSnapshots(false);
-        return shareServiceClient.listShares(options, null, null)
+        return getShareServiceClient().listShares(options, null, null)
                                  .stream()
                                  .map(ShareItem::getName)
                                  .map(StorageContainerItem::new);
@@ -61,7 +64,7 @@ public class AzureStorageFileProtocolResolver extends AbstractAzureStorageProtoc
 
         @Override
         public Stream<StorageItem> listItems(String itemPrefix) {
-            ShareClient shareClient = shareServiceClient.getShareClient(name);
+            ShareClient shareClient = getShareServiceClient().getShareClient(name);
             return shareClient.getRootDirectoryClient().listFilesAndDirectories(itemPrefix, null, null, null)
                               .stream()
                               .filter(file -> !file.isDirectory())
@@ -71,6 +74,13 @@ public class AzureStorageFileProtocolResolver extends AbstractAzureStorageProtoc
 
     @Override
     protected Resource getStorageResource(String location, Boolean autoCreate) {
-        return new StorageFileResource(shareServiceClient, location, autoCreate);
+        return new StorageFileResource(getShareServiceClient(), location, autoCreate);
+    }
+
+    private ShareServiceClient getShareServiceClient() {
+        if (shareServiceClient == null) {
+            shareServiceClient = beanFactory.getBean(ShareServiceClient.class);
+        }
+        return shareServiceClient;
     }
 }

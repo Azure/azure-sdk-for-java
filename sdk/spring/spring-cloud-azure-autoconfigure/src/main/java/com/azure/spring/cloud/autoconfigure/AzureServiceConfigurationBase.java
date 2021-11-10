@@ -18,6 +18,9 @@ public abstract class AzureServiceConfigurationBase {
 
     protected AzureGlobalProperties azureGlobalProperties;
 
+    public AzureServiceConfigurationBase() {
+    }
+
     public AzureServiceConfigurationBase(AzureGlobalProperties azureProperties) {
         this.azureGlobalProperties = azureProperties;
     }

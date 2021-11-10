@@ -31,14 +31,13 @@ import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.STO
 @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.storage.blob", name = { "account-name", "endpoint", "connection-string" })
 public class AzureStorageBlobAutoConfiguration extends AzureServiceConfigurationBase {
 
-    public AzureStorageBlobAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
-        super(azureGlobalProperties);
+    public AzureStorageBlobAutoConfiguration() {
     }
 
     @Bean
     @ConfigurationProperties(AzureStorageBlobProperties.PREFIX)
-    public AzureStorageBlobProperties azureStorageBlobProperties() {
-        return loadProperties(this.azureGlobalProperties, new AzureStorageBlobProperties());
+    public AzureStorageBlobProperties azureStorageBlobProperties(AzureGlobalProperties azureGlobalProperties) {
+        return loadProperties(azureGlobalProperties, new AzureStorageBlobProperties());
     }
 
     @Bean

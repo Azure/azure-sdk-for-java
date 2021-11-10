@@ -18,7 +18,7 @@ import org.springframework.core.io.Resource;
  */
 public class AzureStorageBlobProtocolResolver extends AbstractAzureStorageProtocolResolver {
 
-    private final BlobServiceClient blobServiceClient;
+    private BlobServiceClient blobServiceClient;
 
     private static final BlobListDetails RETRIEVE_NOTHING_DETAILS = new BlobListDetails();
     private static final BlobContainerListDetails RETRIEVE_NOTHING_CONTAINER_DETAILS = new BlobContainerListDetails();
@@ -39,6 +39,9 @@ public class AzureStorageBlobProtocolResolver extends AbstractAzureStorageProtoc
 
     public AzureStorageBlobProtocolResolver(BlobServiceClient blobServiceClient) {
         this.blobServiceClient = blobServiceClient;
+    }
+
+    public AzureStorageBlobProtocolResolver() {
     }
 
     @Override
@@ -81,7 +84,7 @@ public class AzureStorageBlobProtocolResolver extends AbstractAzureStorageProtoc
             ListBlobsOptions options = new ListBlobsOptions();
             options.setPrefix(itemPrefix);
             options.setDetails(RETRIEVE_NOTHING_DETAILS);
-            return blobServiceClient.getBlobContainerClient(name)
+            return getBlobServiceClient().getBlobContainerClient(name)
                                     .listBlobs(options, null)
                                     .stream()
                                     .map(blob -> new StorageItem(name, blob.getName(), getStorageType()));
@@ -90,6 +93,13 @@ public class AzureStorageBlobProtocolResolver extends AbstractAzureStorageProtoc
 
     @Override
     protected Resource getStorageResource(String location, Boolean autoCreate) {
-        return new StorageBlobResource(blobServiceClient, location, autoCreate);
+        return new StorageBlobResource(getBlobServiceClient(), location, autoCreate);
+    }
+
+    private BlobServiceClient getBlobServiceClient() {
+        if (blobServiceClient == null || blobServiceClient.getAccountName() == null) {
+            blobServiceClient = beanFactory.getBean(BlobServiceClient.class);
+        }
+        return blobServiceClient;
     }
 }

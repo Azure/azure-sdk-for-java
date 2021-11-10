@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.util.stream.Stream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.context.ResourceLoaderAware;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.ProtocolResolver;
@@ -20,7 +23,7 @@ import org.springframework.util.ClassUtils;
  * Abstract protocolResolver for Storage
  */
 public abstract class AbstractAzureStorageProtocolResolver implements ProtocolResolver, ResourcePatternResolver,
-    ResourceLoaderAware {
+    ResourceLoaderAware, BeanFactoryPostProcessor {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AbstractAzureStorageProtocolResolver.class);
 
@@ -32,6 +35,8 @@ public abstract class AbstractAzureStorageProtocolResolver implements ProtocolRe
     protected abstract StorageType getStorageType();
 
     protected abstract Resource getStorageResource(String location, Boolean autoCreate);
+
+    protected ConfigurableListableBeanFactory beanFactory;
 
     /**
      * List all storage containers.
@@ -57,6 +62,11 @@ public abstract class AbstractAzureStorageProtocolResolver implements ProtocolRe
         } else {
             LOGGER.warn("Custom Protocol using azure-{}:// prefix will not be enabled.", getStorageType().getType());
         }
+    }
+
+    @Override
+    public void postProcessBeanFactory(ConfigurableListableBeanFactory beanFactory) throws BeansException {
+        this.beanFactory = beanFactory;
     }
 
     @Override
