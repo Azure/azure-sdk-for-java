@@ -17,7 +17,6 @@ class AzureCosmosPropertiesTest {
 
     static final String TEST_ENDPOINT_HTTPS = "https://test.https.documents.azure.com:443/";
     static final String TEST_ENDPOINT_HTTP = "http://test.http.documents.azure.com:443/";
-    static final String TEST_ENDPOINT_MALFORMED = "http://test.fail.documentsfail.azure.com:443/";
 
     private Validator validator;
 
