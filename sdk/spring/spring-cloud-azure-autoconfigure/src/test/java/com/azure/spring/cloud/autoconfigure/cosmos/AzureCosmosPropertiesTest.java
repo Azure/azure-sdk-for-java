@@ -36,32 +36,11 @@ class AzureCosmosPropertiesTest {
     }
 
     @Test
-    void testWithWrongEndpointPattern() {
-        AzureCosmosProperties cosmosProperties = new AzureCosmosProperties();
-        cosmosProperties.setEndpoint(TEST_ENDPOINT_MALFORMED);
-        cosmosProperties.setKey("test-key");
-
-
-        Set<ConstraintViolation<AzureCosmosProperties>> violations = validator.validate(cosmosProperties);
-        Assertions.assertEquals(1, violations.size());
-    }
-
-    @Test
     void testWithHttpEndpointPattern() {
         AzureCosmosProperties cosmosProperties = new AzureCosmosProperties();
         cosmosProperties.setEndpoint(TEST_ENDPOINT_HTTP);
         cosmosProperties.setKey("test-key");
 
-
-        Set<ConstraintViolation<AzureCosmosProperties>> violations = validator.validate(cosmosProperties);
-        Assertions.assertTrue(violations.isEmpty());
-    }
-
-    @Test
-    void testWithHttpsEndpointPattern() {
-        AzureCosmosProperties cosmosProperties = new AzureCosmosProperties();
-        cosmosProperties.setEndpoint(TEST_ENDPOINT_HTTPS);
-        cosmosProperties.setKey("test-key");
 
         Set<ConstraintViolation<AzureCosmosProperties>> violations = validator.validate(cosmosProperties);
         Assertions.assertTrue(violations.isEmpty());
