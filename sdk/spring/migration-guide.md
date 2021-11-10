@@ -136,7 +136,7 @@ For a full list of common configurations, check this list **[placeholder]**.
 | Name                                                         | Description                                                  | Default Value |
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------- |
 | spring.cloud.azure.client.application-id                     | Represents current application and is used for telemetry/monitoring purposes. |               |
-| spring.cloud.azure.client.amqp.transport-type                |                                                              |               |
+| spring.cloud.azure.client.amqp.transport-type                | Transport type for AMQP-based client.                        |               |
 | spring.cloud.azure.client.headers                            | Comma-delimited list of headers applied to each request sent with client. |               |
 | spring.cloud.azure.client.http.connect-timeout               | Amount of time the request attempts to connect to the remote host and the connection is resolved. |               |
 | spring.cloud.azure.client.http.connection-idle-timeout       | Amount of time before an idle connection.                    |               |
@@ -158,7 +158,7 @@ For a full list of common configurations, check this list **[placeholder]**.
 | spring.cloud.azure.profile.environment.active-directory-endpoint |                                                              |               |
 | spring.cloud.azure.profile.subscription                      |  Subscription id to use when connecting to Azure resources.  |               |
 | spring.cloud.azure.profile.tenant-id                         |  Tenant id for Azure resources.                              |               |
-| spring.cloud.azure.proxy.authentication-type                 |                                                              |               |
+| spring.cloud.azure.proxy.authentication-type                 |  Authentication type used against the proxy.                 |               |
 | spring.cloud.azure.proxy.hostname                            |  The host of the proxy.                                      |               |
 | spring.cloud.azure.proxy.password                            |  Password used to authenticate with the proxy.               |               |
 | spring.cloud.azure.proxy.port                                |  The port of the proxy.                                      |               |
