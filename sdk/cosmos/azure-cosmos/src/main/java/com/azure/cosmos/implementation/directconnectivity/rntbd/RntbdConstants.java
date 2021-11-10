@@ -586,7 +586,6 @@ public final class RntbdConstants {
         IsClientEncrypted((short) 0x0087, RntbdTokenType.Byte, false),
         IntendedCollectionRid((short) 0x009D, RntbdTokenType.String, false);
 
-
         public static final ImmutableMap<Short, RntbdRequestHeader> map;
         public static final ImmutableSet<RntbdRequestHeader> set = Sets.immutableEnumSet(EnumSet.allOf(RntbdRequestHeader.class));
 
