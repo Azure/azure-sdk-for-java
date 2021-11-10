@@ -501,6 +501,39 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
             assertThat(batchResponse.getResults().size()).isEqualTo(2);
             validateResponse(createPojo, batchResponse.getResults().get(0).getItem(EncryptionPojo.class));
             validateResponse(createPojo, batchResponse.getResults().get(1).getItem(EncryptionPojo.class));
+
+            //Deleting and creating container
+            encryptionAsyncContainerOriginal.getCosmosAsyncContainer().delete().block();
+            createEncryptionContainer(cosmosEncryptionAsyncDatabase, clientEncryptionPolicy, containerId);
+
+            itemId= UUID.randomUUID().toString();
+            createPojo = getItem(itemId);
+            CosmosItemResponse<EncryptionPojo> itemResponse = encryptionAsyncContainerOriginal.createItem(createPojo,
+                new PartitionKey(createPojo.getMypk()), new CosmosItemRequestOptions()).block();
+
+            int originalSensitiveInt = createPojo.getSensitiveInt();
+            int newSensitiveInt = originalSensitiveInt + 1;
+
+            CosmosPatchOperations cosmosPatchOperations = CosmosPatchOperations.create();
+            cosmosPatchOperations.add("/sensitiveString", "patched");
+            cosmosPatchOperations.remove("/sensitiveDouble");
+            cosmosPatchOperations.replace("/sensitiveInt", newSensitiveInt);
+
+            CosmosItemResponse<EncryptionPojo> patchResponse = encryptionAsyncContainerOriginal.patchItem(
+                createPojo.getId(),
+                new PartitionKey(createPojo.getMypk()),
+                cosmosPatchOperations,
+                new CosmosPatchItemRequestOptions(),
+                EncryptionPojo.class).block();
+
+            CosmosItemResponse<EncryptionPojo> readResponse = encryptionAsyncContainerOriginal.readItem(
+                createPojo.getId(),
+                new PartitionKey(createPojo.getMypk()),
+                new CosmosPatchItemRequestOptions(),
+                EncryptionPojo.class).block();
+
+            validateResponse(patchResponse.getItem(), readResponse.getItem());
+
         } finally {
             try {
                 //deleting the database created for this test

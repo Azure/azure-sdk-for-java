@@ -243,7 +243,7 @@ public class EncryptionProcessor {
     }
 
     public Mono<byte[]> encrypt(JsonNode itemJObj) {
-        return encryptObjectNode(itemJObj, null).map(encryptedObjectNode -> EncryptionUtils.serializeJsonToByteArray(EncryptionUtils.getSimpleObjectMapper(), encryptedObjectNode));
+        return encryptObjectNode(itemJObj).map(encryptedObjectNode -> EncryptionUtils.serializeJsonToByteArray(EncryptionUtils.getSimpleObjectMapper(), encryptedObjectNode));
     }
 
     public Mono<JsonNode> encryptPatchNode(JsonNode itemObj, String patchPropertyPath) {
@@ -254,7 +254,7 @@ public class EncryptionProcessor {
                     return Mono.error(new IllegalArgumentException("Invalid encryption path: " + includedPath.getPath()));
                 }
             }
-            
+
             for (ClientEncryptionIncludedPath includedPath : this.clientEncryptionPolicy.getIncludedPaths()) {
                 String propertyName = includedPath.getPath().substring(1);
                 if (patchPropertyPath.substring(1).equals(propertyName)) {
@@ -262,7 +262,8 @@ public class EncryptionProcessor {
                         return this.encryptionSettings.getEncryptionSettingForPropertyAsync(propertyName,
                             this).flatMap(settings -> {
                             try {
-                                return Mono.just(EncryptionUtils.getSimpleObjectMapper().readTree(EncryptionUtils.getSimpleObjectMapper().writeValueAsString(encryptAndSerializeValue(settings,
+                                return Mono.just(EncryptionUtils.getSimpleObjectMapper().readTree(EncryptionUtils.getSimpleObjectMapper()
+                                    .writeValueAsString(encryptAndSerializeValue(settings,
                                     null, itemObj, propertyName))));
                             } catch (MicrosoftDataEncryptionException | JsonProcessingException ex) {
                                 return Mono.error(ex);
@@ -285,7 +286,7 @@ public class EncryptionProcessor {
         }));
     }
 
-    public Mono<JsonNode> encryptObjectNode(JsonNode itemJObj, String patchPropertyPath) {
+    public Mono<JsonNode> encryptObjectNode(JsonNode itemJObj) {
         assert (itemJObj != null);
         return initEncryptionSettingsIfNotInitializedAsync().then(Mono.defer(() -> {
             for (ClientEncryptionIncludedPath includedPath : this.clientEncryptionPolicy.getIncludedPaths()) {
@@ -558,7 +559,6 @@ public class EncryptionProcessor {
                                              JsonNode propertyValueHolder, String propertyName) throws MicrosoftDataEncryptionException, IOException {
         byte[] cipherText;
         byte[] cipherTextWithTypeMarker;
-
         cipherTextWithTypeMarker = propertyValueHolder.binaryValue();
         cipherText = new byte[cipherTextWithTypeMarker.length - 1];
         System.arraycopy(cipherTextWithTypeMarker, 1, cipherText, 0,

@@ -610,6 +610,7 @@ public class CosmosEncryptionAsyncContainer {
         });
     }
 
+    @SuppressWarnings("unchecked") // Casting cosmosItemResponse to CosmosItemResponse<byte[]> from CosmosItemResponse<T>
     private <T> Mono<CosmosItemResponse<T>> patchItemInternalHelper(String itemId,
                                                                     PartitionKey partitionKey,
                                                                     CosmosPatchOperations encryptedCosmosPatchOperations,
@@ -619,17 +620,20 @@ public class CosmosEncryptionAsyncContainer {
 
         setRequestHeaders(requestOptions);
         return this.container.patchItem(itemId, partitionKey, encryptedCosmosPatchOperations, requestOptions, itemType).publishOn(encryptionScheduler).
-            flatMap(cosmosItemResponse -> setByteArrayContent((CosmosItemResponse<byte[]>)cosmosItemResponse,
-                this.encryptionProcessor.decrypt(this.cosmosItemResponseBuilderAccessor.getByteArrayContent((CosmosItemResponse<byte[]>)cosmosItemResponse)))
+            flatMap(cosmosItemResponse -> setByteArrayContent((CosmosItemResponse<byte[]>) cosmosItemResponse,
+                this.encryptionProcessor.decrypt(this.cosmosItemResponseBuilderAccessor.getByteArrayContent((CosmosItemResponse<byte[]>) cosmosItemResponse)))
                 .map(bytes -> this.responseFactory.createItemResponse((CosmosItemResponse<byte[]>) cosmosItemResponse,
                     itemType))).onErrorResume(exception -> {
-                        if(!isRetry && exception instanceof CosmosException) {
-                            this.encryptionProcessor.getIsEncryptionSettingsInitDone().set(false);
-                            return this.encryptionProcessor.initializeEncryptionSettingsAsync(true).then
-                                (Mono.defer(() -> patchItemInternalHelper(itemId, partitionKey, encryptedCosmosPatchOperations, requestOptions,itemType, true)));
-                        }
-                        return Mono.error(exception);
-                });
+                if (!isRetry && exception instanceof CosmosException) {
+                    final CosmosException cosmosException = (CosmosException) exception;
+                    if (isIncorrectContainerRid(cosmosException)) {
+                        this.encryptionProcessor.getIsEncryptionSettingsInitDone().set(false);
+                        return this.encryptionProcessor.initializeEncryptionSettingsAsync(true).then
+                            (Mono.defer(() -> patchItemInternalHelper(itemId, partitionKey, encryptedCosmosPatchOperations, requestOptions, itemType, true)));
+                    }
+                }
+                return Mono.error(exception);
+            });
     }
 
     /**
@@ -1006,7 +1010,7 @@ public class CosmosEncryptionAsyncContainer {
                 ObjectNode objectNode =
                     EncryptionUtils.getSimpleObjectMapper().valueToTree(itemBatchOperation.getItem());
                 itemBatchOperationMono =
-                    encryptionProcessor.encryptObjectNode(objectNode, null).map(encryptedItem -> {
+                    encryptionProcessor.encryptObjectNode(objectNode).map(encryptedItem -> {
                         return new ItemBatchOperation<>(
                             itemBatchOperation.getOperationType(),
                             itemBatchOperation.getId(),
