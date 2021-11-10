@@ -181,6 +181,46 @@ function CreatePatchRelease($ArtifactName, $ServiceDirectoryName, $PatchVersion,
     LogError "Could not update the versions in the pom files.. Exiting..."
     exit 1
   }
+
+  $newDependenciesToVersion = New-Object "System.Collections.Generic.Dictionary``2[System.String,System.String]"
+  parsePomFileDependencies -PomFilePath $PomFilePath -DependencyToVersion $newDependenciesToVersion
+
+
+  $releaseStatus = "$(Get-Date -Format $CHANGELOG_DATE_FORMAT)"
+  $releaseStatus = "($releaseStatus)"
+  $changeLogEntries = Get-ChangeLogEntries -ChangeLogLocation $ChangelogPath
+  LogDebug "Adding new ChangeLog entry for Version [$Version]"
+  $Content = @()
+  $Content += ""
+  $Content += "### Other Changes"
+  $Content += ""
+  $Content += "#### Dependency Updates"
+  $Content += ""
+
+  foreach($key in $oldDependenciesToVersion.Keys) {
+    $oldVersion = $($oldDependenciesToVersion[$key]).Trim()
+    $newVersion = $($newDependenciesToVersion[$key]).Trim()
+    if($oldVersion -ne $newVersion) {
+      $Content += "- Upgraded ``$key`` from ``$oldVersion`` to version ``$newVersion``."
+    }
+  }
+
+  $Content += ""
+  $newChangeLogEntry = New-ChangeLogEntry -Version $PatchVersion -Status $releaseStatus -Content $Content
+  if ($newChangeLogEntry) {
+    $changeLogEntries.Insert(0, $PatchVersion, $newChangeLogEntry)
+  }
+  else {
+    LogError "Failed to create new changelog entry"
+    exit 1
+    }
+
+
+  Set-ChangeLogContent -ChangeLogLocation $ChangelogPath -ChangeLogEntries $ChangeLogEntries
+  if($LASTEXITCODE -ne 0) {
+    LogError "Could not update the changelog.. Exiting..."
+    exit 1
+  }
 }
 
 if(!$PatchVersion) {
