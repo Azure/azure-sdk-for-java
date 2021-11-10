@@ -8,14 +8,13 @@ import com.azure.autorest.customization.Customization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.MethodCustomization;
 import com.azure.autorest.customization.PackageCustomization;
-import org.slf4j.Logger;
 
 /**
  * Customization class for File DataLake Storage.
  */
 public class DataLakeStorageCustomization extends Customization {
     @Override
-    public void customize(LibraryCustomization customization, Logger logger) {
+    public void customize(LibraryCustomization customization) {
         PackageCustomization implementation = customization.getPackage("com.azure.storage.file.datalake.implementation");
 
         ClassCustomization fileSystemsImpl = implementation.getClass("FileSystemsImpl");
@@ -68,7 +67,7 @@ public class DataLakeStorageCustomization extends Customization {
     }
 
     private void modifyUnexpectedResponseExceptionType(MethodCustomization method) {
-        method.removeAnnotation("@UnexpectedResponseExceptionType(StorageErrorException.class)")
-            .addAnnotation("@UnexpectedResponseExceptionType(com.azure.storage.file.datalake.models.DataLakeStorageException.class)");
+        method.removeAnnotation("@UnexpectedResponseExceptionType(StorageErrorException.class)");
+        method.addAnnotation("@UnexpectedResponseExceptionType(com.azure.storage.file.datalake.models.DataLakeStorageException.class)");
     }
 }

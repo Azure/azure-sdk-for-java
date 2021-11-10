@@ -186,8 +186,7 @@ class Transforms {
         }
         return new BlobContainerListDetails()
             .setRetrieveMetadata(fileSystemListDetails.getRetrieveMetadata())
-            .setRetrieveDeleted(fileSystemListDetails.getRetrieveDeleted())
-            .setRetrieveSystem(fileSystemListDetails.getRetrieveSystem());
+            .setRetrieveDeleted(fileSystemListDetails.getRetrieveDeleted());
     }
 
     static ListBlobContainersOptions toListBlobContainersOptions(ListFileSystemsOptions listFileSystemsOptions) {
