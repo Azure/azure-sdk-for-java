@@ -52,6 +52,13 @@ public interface ExpressRouteAuthorization {
     String expressRouteAuthorizationKey();
 
     /**
+     * Gets the expressRouteId property: The ID of the ExpressRoute Circuit.
+     *
+     * @return the expressRouteId value.
+     */
+    String expressRouteId();
+
+    /**
      * Gets the inner com.azure.resourcemanager.avs.fluent.models.ExpressRouteAuthorizationInner object.
      *
      * @return the inner object.
