@@ -53,6 +53,8 @@ stages:
         ServiceDirectory: ${{ parameters.ServiceDirectory }}
         ${{ if eq(parameters.ServiceDirectory, 'template') }}:
           TestPipeline: true
+        ${{ if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'), ne(variables['Skip.Release'], 'true')) }}:
+          ForRelease: true
         SDKType: ${{ parameters.SDKType }}
         Artifacts: ${{ parameters.Artifacts }}
         AdditionalModules: ${{ parameters.AdditionalModules }}

@@ -28,6 +28,9 @@ parameters:
   - name: MatrixReplace
     type: object
     default: []
+  - name: ForRelease
+    type: boolean
+    default: false
 
 jobs:
   - job: 'Build'
@@ -268,10 +271,7 @@ jobs:
             parameters:
               PackageName: ${{artifact.name}}
               ServiceName: ${{parameters.ServiceDirectory}}
-              ${{ if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'), ne(variables['Skip.Release'], 'true')) }}:
-                ForRelease: true
-              ${{ else }}:
-                ForRelease: false
+              ForRelease: ${{parameters.ForRelease}}
 
       # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
       # reports. This means it is available as part of that, but also so that this is not documented in the project report.
