@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for PrivateLinkHubs Update. */
 public final class PrivateLinkHubsUpdateSamples {
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/UpdatePrivateLinkHub.json
      */
     /**
      * Sample code: Update a privateLinkHub.

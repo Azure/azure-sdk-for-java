@@ -10,7 +10,7 @@ import com.azure.resourcemanager.synapse.models.EncryptionProtectorName;
 /** Samples for WorkspaceManagedSqlServerEncryptionProtector Revalidate. */
 public final class WorkspaceManagedSqlServerEncryptionProtectorRevalidateSamples {
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/WorkspaceManagedSqlServerEncryptionProtectorRevalidate.json
      */
     /**
      * Sample code: Revalidates the encryption protector.

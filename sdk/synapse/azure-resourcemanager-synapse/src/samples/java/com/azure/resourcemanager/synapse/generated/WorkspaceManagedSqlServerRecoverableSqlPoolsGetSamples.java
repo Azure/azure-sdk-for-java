@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for WorkspaceManagedSqlServerRecoverableSqlPools Get. */
 public final class WorkspaceManagedSqlServerRecoverableSqlPoolsGetSamples {
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetWorkspaceManagedSqlServerRecoverableSqlPool.json
      */
     /**
      * Sample code: Get recoverable sql pools for the server.

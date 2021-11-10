@@ -13,7 +13,7 @@ import java.util.Arrays;
 /** Samples for WorkspaceManagedSqlServerSecurityAlertPolicy CreateOrUpdate. */
 public final class WorkspaceManagedSqlServerSecurityAlertPolicyCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/WorkspaceManagedSqlServerSecurityAlertWithAllParameters.json
      */
     /**
      * Sample code: Update a workspace managed sql server's threat detection policy with all parameters.
@@ -42,7 +42,7 @@ public final class WorkspaceManagedSqlServerSecurityAlertPolicyCreateOrUpdateSam
     }
 
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/WorkspaceManagedSqlServerSecurityAlertCreateWithMinParameters.json
      */
     /**
      * Sample code: Update a workspace managed sql server's threat detection policy with minimal parameters.

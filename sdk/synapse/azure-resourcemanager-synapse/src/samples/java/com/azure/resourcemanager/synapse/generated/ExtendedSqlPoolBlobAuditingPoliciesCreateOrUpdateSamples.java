@@ -11,7 +11,7 @@ import java.util.UUID;
 /** Samples for ExtendedSqlPoolBlobAuditingPolicies CreateOrUpdate. */
 public final class ExtendedSqlPoolBlobAuditingPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ExtendedSqlPoolBlobAuditingCreateMax.json
      */
     /**
      * Sample code: Create or update an extended Sql pool's blob auditing policy with all parameters.
@@ -43,7 +43,7 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ExtendedSqlPoolAzureMonitorAuditingCreateMin.json
      */
     /**
      * Sample code: Create or update an extended SQL pool's azure monitor auditing policy with minimal parameters.
@@ -62,7 +62,7 @@ public final class ExtendedSqlPoolBlobAuditingPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ExtendedSqlPoolBlobAuditingCreateMin.json
      */
     /**
      * Sample code: Create or update an extended Sql pool's blob auditing policy with minimal parameters.

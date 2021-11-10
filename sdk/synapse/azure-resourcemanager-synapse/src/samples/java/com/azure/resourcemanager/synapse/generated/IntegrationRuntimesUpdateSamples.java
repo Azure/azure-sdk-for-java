@@ -11,7 +11,7 @@ import com.azure.resourcemanager.synapse.models.IntegrationRuntimeResource;
 /** Samples for IntegrationRuntimes Update. */
 public final class IntegrationRuntimesUpdateSamples {
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/IntegrationRuntimes_Update.json
      */
     /**
      * Sample code: Update integration runtime.

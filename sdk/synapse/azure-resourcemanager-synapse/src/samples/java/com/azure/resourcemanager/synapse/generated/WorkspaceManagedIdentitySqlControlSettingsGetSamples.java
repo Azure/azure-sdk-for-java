@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for WorkspaceManagedIdentitySqlControlSettings Get. */
 public final class WorkspaceManagedIdentitySqlControlSettingsGetSamples {
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetManagedIdentitySqlControlSettings.json
      */
     /**
      * Sample code: Get managed identity sql control settings.

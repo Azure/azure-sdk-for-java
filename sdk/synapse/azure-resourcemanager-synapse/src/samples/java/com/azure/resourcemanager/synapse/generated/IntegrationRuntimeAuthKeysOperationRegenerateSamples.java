@@ -11,7 +11,7 @@ import com.azure.resourcemanager.synapse.models.IntegrationRuntimeRegenerateKeyP
 /** Samples for IntegrationRuntimeAuthKeysOperation Regenerate. */
 public final class IntegrationRuntimeAuthKeysOperationRegenerateSamples {
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/IntegrationRuntimes_RegenerateAuthKey.json
      */
     /**
      * Sample code: Regenerate auth key.

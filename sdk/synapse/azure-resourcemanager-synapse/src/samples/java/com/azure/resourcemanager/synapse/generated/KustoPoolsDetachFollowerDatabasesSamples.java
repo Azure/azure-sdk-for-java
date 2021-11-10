@@ -10,7 +10,7 @@ import com.azure.resourcemanager.synapse.fluent.models.FollowerDatabaseDefinitio
 /** Samples for KustoPools DetachFollowerDatabases. */
 public final class KustoPoolsDetachFollowerDatabasesSamples {
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolFollowerDatabasesDetach.json
      */
     /**
      * Sample code: KustoPoolDetachFollowerDatabases.

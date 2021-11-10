@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for ExtendedSqlPoolBlobAuditingPolicies ListBySqlPool. */
 public final class ExtendedSqlPoolBlobAuditingPoliciesListBySqlPoolSamples {
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/SqlPoolExtendedAuditingSettingsList.json
      */
     /**
      * Sample code: List extended auditing settings of a database.

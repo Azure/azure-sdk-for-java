@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for KustoPools Stop. */
 public final class KustoPoolsStopSamples {
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolsStop.json
      */
     /**
      * Sample code: kustoPoolsStop.

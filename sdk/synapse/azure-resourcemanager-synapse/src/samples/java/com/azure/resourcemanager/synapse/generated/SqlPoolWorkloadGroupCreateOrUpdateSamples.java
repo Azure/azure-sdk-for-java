@@ -7,7 +7,7 @@ package com.azure.resourcemanager.synapse.generated;
 /** Samples for SqlPoolWorkloadGroup CreateOrUpdate. */
 public final class SqlPoolWorkloadGroupCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateOrUpdateSqlPoolWorkloadGroupMin.json
      */
     /**
      * Sample code: Create a workload group with the required properties specified.
@@ -27,7 +27,7 @@ public final class SqlPoolWorkloadGroupCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateOrUpdateSqlPoolWorkloadGroupMax.json
      */
     /**
      * Sample code: Create a workload group with all properties specified.

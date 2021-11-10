@@ -15,7 +15,7 @@ import java.util.Map;
 /** Samples for SqlPools Update. */
 public final class SqlPoolsUpdateSamples {
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/UpdateSqlPool.json
      */
     /**
      * Sample code: Update a SQL Analytics pool.

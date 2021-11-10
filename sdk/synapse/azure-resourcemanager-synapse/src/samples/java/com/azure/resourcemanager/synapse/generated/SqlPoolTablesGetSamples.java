@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SqlPoolTables Get. */
 public final class SqlPoolTablesGetSamples {
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/SqlPoolTableGet.json
      */
     /**
      * Sample code: Get database table.

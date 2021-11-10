@@ -15,7 +15,7 @@ import java.util.Arrays;
 /** Samples for SqlPoolSensitivityLabels Update. */
 public final class SqlPoolSensitivityLabelsUpdateSamples {
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/SensitivityLabelsCurrentUpdate.json
      */
     /**
      * Sample code: Update sensitivity labels of a given database using an operations batch.

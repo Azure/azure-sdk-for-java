@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SqlPoolRestorePoints Delete. */
 public final class SqlPoolRestorePointsDeleteSamples {
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/SqlPoolRestorePointsDelete.json
      */
     /**
      * Sample code: Deletes a restore point.

@@ -11,7 +11,7 @@ import com.azure.resourcemanager.synapse.models.SkuSize;
 /** Samples for KustoPools CreateOrUpdate. */
 public final class KustoPoolsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolsCreateOrUpdate.json
      */
     /**
      * Sample code: kustoPoolsCreateOrUpdate.

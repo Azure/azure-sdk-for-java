@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SqlPoolWorkloadGroup List. */
 public final class SqlPoolWorkloadGroupListSamples {
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetSqlPoolWorkloadGroupList.json
      */
     /**
      * Sample code: Get the list of workload groups of a SQL Analytics pool.
