@@ -1,22 +1,5 @@
 # Release History
 
-## 12.12.0-beta.2 (Unreleased)
-
-### Features Added
-- Added support for the 2021-02-12 service version.
-- Added support for new bandwidth limits.
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
-## 12.12.0-beta.1 (2021-11-05)
-
-### Features Added
-- Added support for the 2020-12-06 service version.
-
 ## 12.11.1 (2021-10-12)
 
 ### Other Changes
