@@ -8,6 +8,7 @@ import com.azure.spring.data.cosmos.repository.CosmosRepository;
 import com.azure.spring.data.cosmos.repository.config.CosmosRepositoryConfigurationExtension;
 import com.azure.spring.data.cosmos.repository.support.CosmosRepositoryFactoryBean;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -22,6 +23,7 @@ import org.springframework.context.annotation.Import;
 @ConditionalOnMissingBean({ CosmosRepositoryFactoryBean.class,
     CosmosRepositoryConfigurationExtension.class })
 @AutoConfigureAfter(CosmosTemplate.class)
+@ConditionalOnBean(CosmosTemplate.class)
 @ConditionalOnProperty(prefix = "spring.cloud.azure.cosmos.repositories",
         name = "enabled",
         havingValue = "true",
