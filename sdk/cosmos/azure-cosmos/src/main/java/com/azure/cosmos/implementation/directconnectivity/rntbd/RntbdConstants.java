@@ -584,7 +584,7 @@ public final class RntbdConstants {
         ReturnPreference((short) 0x0082, RntbdTokenType.Byte, false),
         PopulateIndexMetrics((short) 0x00A9, RntbdTokenType.Byte, false),
         IsClientEncrypted((short) 0x0087, RntbdTokenType.Byte, false),
-        IntendedCollectionRid((short) 0x009D, RntbdTokenType.String, false),;
+        IntendedCollectionRid((short) 0x009D, RntbdTokenType.String, false);
 
 
         public static final ImmutableMap<Short, RntbdRequestHeader> map;

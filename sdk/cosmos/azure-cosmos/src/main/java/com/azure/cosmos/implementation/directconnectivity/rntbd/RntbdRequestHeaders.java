@@ -998,7 +998,7 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
     private void addIntendedCollectionRid(final Map<String, String> headers) {
         final String value = headers.get(HttpHeaders.INTENDED_COLLECTION_RID_HEADER);
         if (StringUtils.isNotEmpty(value)) {
-            this.getIntendedCollectionRid().setValue(Boolean.parseBoolean(value));
+            this.getIntendedCollectionRid().setValue(value);
         }
     }
 

@@ -48,7 +48,7 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
     CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer;
     CosmosEncryptionAsyncDatabase cosmosEncryptionAsyncDatabase;
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "clientBuildersWithSessionConsistency")
     public EncryptionAsyncApiCrudTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
@@ -56,7 +56,7 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
     @BeforeClass(groups = {"encryption"}, timeOut = SETUP_TIMEOUT)
     public void before_CosmosItemTest() {
         assertThat(this.client).isNull();
-        this.client = getClientBuilder().directMode().buildAsyncClient();
+        this.client = getClientBuilder().buildAsyncClient();
         TestEncryptionKeyStoreProvider encryptionKeyStoreProvider = new TestEncryptionKeyStoreProvider();
         cosmosEncryptionAsyncClient = CosmosEncryptionAsyncClient.createCosmosEncryptionAsyncClient(this.client,
             encryptionKeyStoreProvider);
