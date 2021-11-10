@@ -1270,8 +1270,8 @@
 
   <!-- DocumentAnalysisException fields re serializable -->
   <Match>
-    <Class name="com.azure.ai.formrecognizer.models.DocumentModelOperationException"/>
-    <Field name="documentModelOperationError"/>
+    <Class name="com.azure.ai.formrecognizer.models.DocumentAnalysisException"/>
+    <Field name="errorInformation"/>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
@@ -1307,13 +1307,6 @@
   <Match>
     <Class name="com.azure.cosmos.implementation.ClientSideRequestStatistics$ClientSideRequestStatisticsSerializer"/>
     <Method name="serialize"/>
-    <Bug pattern="REC_CATCH_EXCEPTION"/>
-  </Match>
-
-    <!-- Exception is required to handle when getting java version  -->
-  <Match>
-    <Class name="com.azure.cosmos.implementation.Utils"/>
-    <Method name="getJavaVersion"/>
     <Bug pattern="REC_CATCH_EXCEPTION"/>
   </Match>
 
@@ -1890,13 +1883,6 @@
     <Bug pattern="DE_MIGHT_IGNORE"/>
   </Match>
 
-  <!-- Exception in AutoCloseable.close is ignored -->
-  <Match>
-    <Class name="com.azure.core.tracing.opentelemetry.OpenTelemetryHttpPolicy$ScalarPropagatingMono"/>
-    <Method name="subscribe"/>
-    <Bug pattern="DE_MIGHT_IGNORE"/>
-  </Match>
-
   <!-- Exception is ignored by design which indicate that non-parsable id -->
   <Match>
     <Class name="com.azure.cosmos.implementation.ResourceId"/>
@@ -2428,10 +2414,6 @@
     <Method name="~(get|post)"/>
     <Bug pattern="RCN_REDUNDANT_NULLCHECK_WOULD_HAVE_BEEN_A_NPE"/>
   </Match>
-  <Match>
-    <Class name="com.azure.security.keyvault.jca.implementation.KeyVaultPrivateKey"/>
-    <Bug pattern="SE_BAD_FIELD"/>
-  </Match>
 
   <!-- Returning a new copy of the object is not necessary for queuing system use cases.
   Client do not change content of message once message is created. Array copy would degrade the performance.
@@ -2516,14 +2498,5 @@
     <Class name="com.azure.core.test.implementation.AzureMethodSourceArgumentsProvider"/>
     <Method name="getServiceVersions"/>
     <Bug pattern="BC_UNCONFIRMED_CAST_OF_RETURN_VALUE"/>
-  </Match>
-
-  <Match>
-    <Class name="~com\.azure\.search.*"/>
-    <Or>
-      <Field name="odataType"/>
-      <Field name="type"/>
-    </Or>
-    <Bug pattern="URF_UNREAD_FIELD"/>
   </Match>
 </FindBugsFilter>
