@@ -1,6 +1,6 @@
 # Release History
 
-## 12.0.1 (2021-11-09)
+## 12.0.0-beta.12 (2021-11-09)
 
 ### Other Changes
 
