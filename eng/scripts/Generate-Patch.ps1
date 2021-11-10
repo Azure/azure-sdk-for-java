@@ -41,7 +41,7 @@ Write-Information "ArtifactName is: $ArtifactName"
 Write-Information "ReleaseVersion is: $ReleaseVersion"
 Write-Information "ServiceDirectoryName is: $ServiceDirectoryName"
 
-$MainRemoteUrl = 'https://github.com/Azure/azure-sdk-for-java.git'
+$MainRemoteUrl = 'git@github.com:Azure/azure-sdk-for-java.git'
 $RepoRoot = Resolve-Path "${PSScriptRoot}..\..\.."
 $EngDir = Join-Path $RepoRoot "eng"
 $EngCommonScriptsDir = Join-Path $EngDir "common" "scripts"
@@ -88,16 +88,16 @@ function ResetSourcesToReleaseTag($ArtifactName, $ServiceDirectoryName, $Release
 
   $ArtifactDirPath = Join-Path $ServiceDirPath $ArtifactName
   TestPathThrow -Path $ArtifactDirPath -PathName 'ArtifactDirPath'
-  
+
   $pkgProperties = Get-PkgProperties -PackageName $ArtifactName -ServiceDirectory $ServiceDirectoryName
   $currentPackageVersion = $pkgProperties.Version
   if($currentPackageVersion -eq $ReleaseVersion) {
      Write-Information "We do not have to reset the sources."
      return;
   }
-  
+
   $TestResourcesFilePath = Join-Path $ServiceDirPath "test-resources.json"
-  $EngDir = Join-Path $RepoRoot "eng"  
+  $EngDir = Join-Path $RepoRoot "eng"
   $CodeQualityReports = Join-Path $EngDir "code-quality-reports" "src" "main" "resources"
   $CheckStyleSuppressionFilePath = Join-Path $CodeQualityReports "checkstyle" "checkstyle-suppressions.xml"
   $CheckStyleFilePath = Join-Path $CodeQualityReports "checkstyle" "checkstyle.xml"
@@ -109,7 +109,7 @@ function ResetSourcesToReleaseTag($ArtifactName, $ServiceDirectoryName, $Release
     LogError "Could not restore the tags for release tag $ReleaseTag"
     exit 1
   }
-  
+
   $cmdOutput = git restore --source $ReleaseTag -W -S $ArtifactDirPath
   if($LASTEXITCODE -ne 0) {
     LogError "Could not restore the changes for release tag $ReleaseTag"
@@ -160,15 +160,15 @@ function CreatePatchRelease($ArtifactName, $ServiceDirectoryName, $PatchVersion,
   $pkgProperties = Get-PkgProperties -PackageName $ArtifactName -ServiceDirectory $ServiceDirectoryName
   $ChangelogPath = $pkgProperties.ChangeLogPath
   $PomFilePath = Join-Path $pkgProperties.DirectoryPath "pom.xml"
-  
+
   TestPathThrow -Path $SetVersionFilePath -PathName 'SetVersionFilePath'
   TestPathThrow -Path $UpdateVersionFilePath -PathName 'UpdateVersionFilePath'
   TestPathThrow -Path $ChangelogPath -PathName 'ChangelogPath'
   TestPathThrow -Path $PomFilePath -PathName 'PomFilePath'
-  
+
   $oldDependenciesToVersion = New-Object "System.Collections.Generic.Dictionary``2[System.String,System.String]"
   parsePomFileDependencies -PomFilePath $PomFilePath -DependencyToVersion $oldDependenciesToVersion
-  
+
   ## Create the patch release
   $cmdOutput = python $SetVersionFilePath --bt client --new-version $PatchVersion --ar $ArtifactName --gi $GroupId
   if($LASTEXITCODE -ne 0) {
@@ -179,44 +179,6 @@ function CreatePatchRelease($ArtifactName, $ServiceDirectoryName, $PatchVersion,
   $cmdOutput = python $UpdateVersionFilePath --ut all --bt client --sr
     if($LASTEXITCODE -ne 0) {
     LogError "Could not update the versions in the pom files.. Exiting..."
-    exit 1
-  }
-  
-  $newDependenciesToVersion = New-Object "System.Collections.Generic.Dictionary``2[System.String,System.String]"
-  parsePomFileDependencies -PomFilePath $PomFilePath -DependencyToVersion $newDependenciesToVersion
-  
-  
-  $releaseStatus = "$(Get-Date -Format $CHANGELOG_DATE_FORMAT)"
-  $releaseStatus = "($releaseStatus)"
-  $changeLogEntries = Get-ChangeLogEntries -ChangeLogLocation $ChangelogPath
-  LogDebug "Adding new ChangeLog entry for Version [$Version]"
-  $Content = @()
-  $Content += ""
-  $Content += "### Other Changes"
-  $Content += ""
-  $Content += "#### Dependency Updates"
-  $Content += ""
-  
-  foreach($key in $oldDependenciesToVersion.Keys) {
-    $oldVersion = $($oldDependenciesToVersion[$key]).Trim()
-    $newVersion = $($newDependenciesToVersion[$key]).Trim()
-    if($oldVersion -ne $newVersion) {
-      $Content += "- Upgraded ``$key`` from ``$oldVersion`` to version ``$newVersion``."
-    }
-  }
-  
-  $Content += ""
-  $newChangeLogEntry = New-ChangeLogEntry -Version $Version -Status $releaseStatus -Content $Content
-  if ($newChangeLogEntry) {
-    $changeLogEntries.Insert(0, $Version, $newChangeLogEntry)
-  }
-  else {
-    LogError "Failed to create new changelog entry"
-    exit 1
-    }
-  Set-ChangeLogContent -ChangeLogLocation $ChangelogPath -ChangeLogEntries $changeLogEntries
-  if($LASTEXITCODE -ne 0) {
-    LogError "Could not update the changelog.. Exiting..."
     exit 1
   }
 }
@@ -244,12 +206,12 @@ if(!$BranchName) {
 
 try {
   ## Creating a new branch
-  $cmdOutput = git checkout -b $BranchName $RemoteName/main
+  $cmdOutput = git checkout $BranchName
   if($LASTEXITCODE -ne 0) {
     LogError "Could not checkout branch $BranchName, please check if it already exists and delete as necessary. Exiting..."
     exit 1
   }
-  
+
   ## Hard reseting it to the contents of the release tag.
   ## Fetching all the tags from the remote branch
   ResetSourcesToReleaseTag -ArtifactName $ArtifactName -ServiceDirectoryName $ServiceDirectoryName -ReleaseVersion $ReleaseVersion -RepoRoot $RepoRoot -RemoteName $RemoteName
@@ -259,7 +221,7 @@ try {
     LogError "Could not add the changes. Exiting..."
     exit 1
   }
-  
+
   $cmdOutput = git commit -a -m "Updating the SDK dependencies for $ArtifactName"
   if($LASTEXITCODE -ne 0) {
     LogError "Could not commit changes to $BranchName locally. Exiting..."
