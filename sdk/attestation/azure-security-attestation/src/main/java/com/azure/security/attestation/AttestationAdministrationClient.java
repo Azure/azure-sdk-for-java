@@ -9,7 +9,9 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.security.attestation.models.AttestationPolicySetOptions;
 import com.azure.security.attestation.models.AttestationType;
+import com.azure.security.attestation.models.PolicyResult;
 
 /**
  * The AttestationAdministrationClient provides access to the administrative policy APIs
@@ -88,4 +90,75 @@ public final class AttestationAdministrationClient {
     }
 
 //endregion
+
+    //region Set Attestation Policy
+
+    /**
+     * Sets the attestation policy for the specified attestation type, with policy and signing key.
+     *
+     * More information about Attestation Policy can be found <a href='https://docs.microsoft.com/en-us/azure/attestation/basic-concepts#attestation-policy'>here.</a>
+     *
+     * @param attestationType The {@link AttestationType} to be updated.
+     * @param options {@link AttestationPolicySetOptions} for the request.
+     * @return {@link PolicyResult} expressing the result of the attestation operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PolicyResult setAttestationPolicy(AttestationType attestationType, AttestationPolicySetOptions options) {
+        return asyncClient.setAttestationPolicy(attestationType, options).block();
+    }
+
+    /**
+     * Sets the attestation policy for the specified attestation type for an AAD mode attestation instance.
+     *
+     * Note that this function will only work on AAD mode attestation instances, because there is
+     * no key signing certificate provided.
+     *
+     * More information about Attestation Policy can be found <a href='https://docs.microsoft.com/en-us/azure/attestation/basic-concepts#attestation-policy'>here.</a>
+     *
+     * @param attestationType The {@link AttestationType} to be updated.
+     * @param policyToSet Attestation Policy to set on the instance.
+     * @return {@link PolicyResult} expressing the result of the attestation operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PolicyResult setAttestationPolicy(AttestationType attestationType, String policyToSet) {
+        return asyncClient.setAttestationPolicy(attestationType, policyToSet).block();
+    }
+
+    /**
+     * Sets the attestation policy for the specified attestation type
+     *
+     * Note that this function will only work on AAD mode attestation instances, because there is
+     * no key signing certificate provided.
+     *
+     * More information about Attestation Policy can be found <a href='https://docs.microsoft.com/en-us/azure/attestation/basic-concepts#attestation-policy'>here.</a>
+     *
+     * @param attestationType The {@link AttestationType} to be updated.
+     * @param options {@link AttestationPolicySetOptions} for the request.
+     * @param context Context for the operation.
+     * @return {@link PolicyResult} expressing the result of the attestation operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PolicyResult> setAttestationPolicyWithResponse(AttestationType attestationType, AttestationPolicySetOptions options, Context context) {
+        return asyncClient.setAttestationPolicyWithResponse(attestationType, options, context).block();
+    }
+
+    /**
+     * Sets the attestation policy for the specified attestation type for an AAD mode attestation instance.
+     *
+     * Note that this function will only work on AAD mode attestation instances, because there is
+     * no key signing certificate provided.
+     *
+     * More information about Attestation Policy can be found <a href='https://docs.microsoft.com/en-us/azure/attestation/basic-concepts#attestation-policy'>here.</a>
+     *
+     * @param attestationType The {@link AttestationType} to be updated.
+     * @param policyToSet Attestation Policy to set on the instance.
+     * @param context Context for the operation.
+     * @return {@link PolicyResult} expressing the result of the attestation operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PolicyResult> setAttestationPolicyWithResponse(AttestationType attestationType, String policyToSet, Context context) {
+        return asyncClient.setAttestationPolicyWithResponse(attestationType, policyToSet, context).block();
+    }
+
+    //endregion
 };

@@ -270,17 +270,18 @@ public class AttestationClientTestBase extends TestBase {
         String signingCertificate = Configuration.getGlobalConfiguration().get("isolatedSigningCertificate");
         if (signingCertificate == null) {
             // Use a pre-canned signing certificate captured at provisioning time.
-            signingCertificate = "MIIC+DCCAeCgAwIBAgIITwYg6gewUZswDQYJKoZIhvcNAQELBQAwMzExMC8GA1UEAxMoQXR0ZXN0YXRpb25Jc"
-                + "29sYXRlZE1hbmFnZW1lbnRDZXJ0aWZpY2F0ZTAeFw0yMTAxMTkyMDEyNTZaFw0yMjAxMTkyMDEyNTZaMDMxMTAvBgNVBAMTK"
-                + "EF0dGVzdGF0aW9uSXNvbGF0ZWRNYW5hZ2VtZW50Q2VydGlmaWNhdGUwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBA"
-                + "QDZlz+tRMz5knbLWYY+CJmgzJ4WIoKAkVs6fwm2JZt3ig8NKWDR9XC0Byixj4cCNOanvqSy2eLLhm30jNdc0o3ObLJVro+4W"
-                + "sI2p19DuV5PrpyCiZHDPb5DmxtMnsXpYV1ePIxveLgNcTe4lu/pRGxaCcDxSWLG1DL4BsMXzLE2GQaCVLzPHI0NJVvd/DDXz"
-                + "bHK7tX45F8kRaXhnSd3fOaS4spw57r9oZfL1fzM03DVptnEmBrpsxP8Kw7aLv5ZYLhX/rK9H7MrM4NA6g/g3dw4w/rf8025h"
-                + "JaAUJ+T68oARiXXBqDWCIkPXhkmukcmmP6Sl8mnNAqRG55iRY4AqzLRAgMBAAGjEDAOMAwGA1UdEwQFMAMBAf8wDQYJKoZIh"
-                + "vcNAQELBQADggEBAJzbrs1pGiT6wwApfqT8jAM5OD9ylh8U9MCJOnMbigFAdp96N+TX568NUGPIssFB2oNNqI/Ai2hovPhdC"
-                + "gDuPY2ngj2t9qyBhpqnQ0JWJ/Hpl4fZfbma9O9V18z9nLDmbOvbDNm11n1txZlwd+/h8Fh4CpXePhTWK2LIMYZ6WNBRRsanl"
-                + "kF83yGFWMCShNqUiMGd9sWkRaaeJY9KtXxecQB3a/+SHKV2OESfA7inT3MXpwzCWAogrOk4GxzyWNPpsU7gHgErsiw+lKF8B"
-                + "KrCArm0UjKvqhKeDni2zhWTYSQS2NLWnQwNvkxVdgdCl1lqtPeJ/qYPR8ZA+ksm36c7hBQ=";
+
+            signingCertificate = "MIIC+DCCAeCgAwIBAgIICw0n21Fl8+EwDQYJKoZIhvcNAQELBQAwMzExMC8GA1UEAxMoQXR0Z"
+                + "XN0YXRpb25Jc29sYXRlZE1hbmFnZW1lbnRDZXJ0aWZpY2F0ZTAeFw0yMTA4MDUyMzQ5MDJaFw0yMjA4MDUyMzQ5MDJaMDMxM"
+                + "TAvBgNVBAMTKEF0dGVzdGF0aW9uSXNvbGF0ZWRNYW5hZ2VtZW50Q2VydGlmaWNhdGUwggEiMA0GCSqGSIb3DQEBAQUAA4IBD"
+                + "wAwggEKAoIBAQDdX2I5myWt7PT/uq5J1mIK3yJb24rJIYNhjiWAgPGzjr3+n3ZG/tnzzZ4t9eIn6ZN+WruzbH/iil7aiS+2p"
+                + "eCiv0xFPiap1wtCFZMOTFzpZzFJlF1tpXuT2v4PZiJa5KPa2PUB1BlvoXtXrNz6mCj+dqK6ldE21qLIH+JkZiPZ1cfi+GeV5"
+                + "ANucPjKD749umarhsQGbHXK2yK2iLPeulEMekUPyv+O/MVoVt/plRl3oG/4i+ZAc3T0IVPwjtPJtf1ko/P7ytFWcaTjpeDzY"
+                + "jozB8rUh/uXfjuyw3RTu1ZGmFXTyQhWl/azIZmNpV2geIUcj0SS64QmvO2QjKXV6I6FAgMBAAGjEDAOMAwGA1UdEwQFMAMBA"
+                + "f8wDQYJKoZIhvcNAQELBQADggEBAFtkGTbpgX1i4wLPOQyHkJ/VMJXicxYrQOwpTltT7yM7L+nRuIy06/1JCsiszXVOkFtc1"
+                + "fK18vlwLEGH7D4E+sAOz2gfbh8vUL0BuJg4vQdfdXXxAOis0tz/5ALOr7mBvsbmVA0dvA9ZcVv/6RwPezBQgCbWODDsv0CBQ"
+                + "GfYTt2twZx3M0U97x8+MIE+4qSgXQ3oX7h2RyxxotMx/DDBA8lp8OdQ3fGKJ8mzNydmnsYdn378GnZW6MczTMyzbWcakuyuP"
+                + "wd10RlO8gzRvFj+ep21DsRkk8xIo5l+TalG54pfnMjUcRWc8DO4Sq4FGB3WGqgFR0aQaU9bbo2vEcypCaU=";
         }
         return signingCertificate;
     }
@@ -297,24 +298,24 @@ public class AttestationClientTestBase extends TestBase {
         String signingKey = Configuration.getGlobalConfiguration().get("isolatedSigningKey");
         if (signingKey == null) {
             // Use a pre-canned signing key captured at provisioning time.
-            signingKey = "MIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDZlz+tRMz5knbLWYY+CJmgzJ4WIoKAkVs6fwm2"
-                + "JZt3ig8NKWDR9XC0Byixj4cCNOanvqSy2eLLhm30jNdc0o3ObLJVro+4WsI2p19DuV5PrpyCiZHDPb5DmxtMnsXpYV1ePIx"
-                + "veLgNcTe4lu/pRGxaCcDxSWLG1DL4BsMXzLE2GQaCVLzPHI0NJVvd/DDXzbHK7tX45F8kRaXhnSd3fOaS4spw57r9oZfL1f"
-                + "zM03DVptnEmBrpsxP8Kw7aLv5ZYLhX/rK9H7MrM4NA6g/g3dw4w/rf8025hJaAUJ+T68oARiXXBqDWCIkPXhkmukcmmP6Sl"
-                + "8mnNAqRG55iRY4AqzLRAgMBAAECggEAU0dTJMLPXLnU47Fo8rch7WxDGR+uKPz5GKNkmSU9onvhlN0AZHt23kBbL9JKDusm"
-                + "WI9bw+QmrFTQIqgBCVLA2X+6pZaBBUMfUAGxMV9yHDctSbzTYBFyj7d+tE2UW+Va8eVkrolakDKD7A9A1VvNyIwxH2hB+O1"
-                + "gcJNN+f7q2FP4zpmJjEsMm9IL9sZ+6aiQSSsFQEih92yZEtHJ6Ohe8mdvSkmi3Ki0TSeqDfh4CksRnd6Bv/6oBAV48WaRa3"
-                + "yQ7tnsBrhXrCRzXRbiCcJP+C/Eqe3gkXvWuzq+cgicX95qh05VPnf5Pa6w5N4wEgwmoorloYfDStYcthtKidUefQKBgQD3h"
-                + "WXciacPcydjAfH+0WyoszqBup/B5OBw/ZNlv531EzongB8V7+3pCs1/gF4+H3qvIRkL7JWt4HVtZEBp4D3tpWQHoYpE6wxA"
-                + "0oeGM/DXbCQttCpR3eHZXYa9hbuQZuFjkclXjDBIk/q+U178+GRiB7zZb7JGNCBwlpCkTh+WywKBgQDhC2GnDCAGjwjDHa5"
-                + "Nf4qLWyISN34KoEF9hgAYIvNYzAwwp8J/xxxQ7j8hf5XJPnld1UprVrhrYL0aGSc0kNWri1pZx2PDge42XK9boRARvuuK5U"
-                + "aV3VNk7xb7vHzjoNDJWzmLlEaVPLFQPHVWHobTMwQWbzKZmopTA+QuV68NUwKBgQCbMmU/9n9tTIKxrZKSd7VtwZM5rE5nQ"
-                + "J8JubUl4xOjir637bmQA7RknoVjIJX21b4S+Om/dEQVlduLD4Tj3dp2m3Ew57TOqaIxMtAO8ZpdOE0m6wRt+HWX2PCW/Lcy"
-                + "P4+q4sofvqK3nzFlDNlOPGCUps1eeI6LPjvo3D8tBl8AKQKBgQCHhv8sRtUSnhk8yCcsbN7Wxe9i4SB67cADBCwSXRoII/pDY"
-                + "wRzR0n6Q0Cpv9hI9eLJa6YBtpwhroSzruo5ce/7+1RSNQ4Ts6/t9St2Fy1CQqQ/ZYx4vG14n7RLrlvYCgUy/klNkeJgBckS9R"
-                + "YE4yV3E4YmrJjggH1FOVa1wgCeGQKBgQCbCKeM4EahWIyTBiZsTQ/l5hwhjPCrxncbyA2EZWNg3Ri6nuMIQzoBrCoX9L8t7e0"
-                + "CKWAN0oM2Cn1VIJhsiE75dzN3vvGBcNZ9y+BwbwxDIAhrztyKKJS0h9YmAUVr+w5WsUPyMUPQ0/1wdTdxvKqQpriddrvyKRSJ"
-                + "M9fb29+cwQ==";
+            signingKey = "MIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDdX2I5myWt7PT/uq5J1mIK3yJb24rJI"
+                + "YNhjiWAgPGzjr3+n3ZG/tnzzZ4t9eIn6ZN+WruzbH/iil7aiS+2peCiv0xFPiap1wtCFZMOTFzpZzFJlF1tpXuT2v4PZiJa5"
+                + "KPa2PUB1BlvoXtXrNz6mCj+dqK6ldE21qLIH+JkZiPZ1cfi+GeV5ANucPjKD749umarhsQGbHXK2yK2iLPeulEMekUPyv+O/"
+                + "MVoVt/plRl3oG/4i+ZAc3T0IVPwjtPJtf1ko/P7ytFWcaTjpeDzYjozB8rUh/uXfjuyw3RTu1ZGmFXTyQhWl/azIZmNpV2ge"
+                + "IUcj0SS64QmvO2QjKXV6I6FAgMBAAECggEAGy9LcKeMyP8AVycloAujnpIoNf+P24MyDxjVoiIzjElLK6mJbM5/FWF6u0omq"
+                + "6ATbMDXrAD282rqmwudwGA+Zb34L8iiFtlBmKvtkyPthPwXIWIG1yArPMz3xgxUy7SoKofaDo9tUDgUXX/s4xksb5NCCIe9W"
+                + "W6iLtE7i/i/DlDn7SCOVCGxfTs/arMml04065QSJRUeuDWD0g4GSylWl48z8+GEl3UO5NFzrYSEirFc8r3/ycNtF+5G+Gle9"
+                + "7gEOn9Hlh2f4R5cA06DYOnYieaqCCoklVlbHLQgpJkhrEl2tcuJ4WdNUaMQtsD+9VaOTdSfcG1FDRETTSrH2rJFQQKBgQDnZ"
+                + "H3RlZHz+6NaBLzk89TQtetX8MtoJlYIOVpB9JQ3I/Q5LvyDouZAAWAExZO9cuebnLM+68lWez52ciSuRZa/W0A9Atcn7E/Wr"
+                + "46TP9Y7LKQTBQ2GW6N7bEZ1C127dhLMTpjofqTZGBjH0CbLNVZz7wHF8fAam0j+GgAd5pKNzwKBgQD06hsMb8dyuijUBV6Dc"
+                + "/ybwWiZmTcSTuHbpdakAhS9wq1gxirXwYnZkrkA1eA2Yavc4VnYc5umgjHJbqBee8G5oXPvSzxAGkiTnyTVGWymWV+Fdkeqs"
+                + "HgANbecRQBEoVglSAr7S/OqTKT9tMm23HPkQEpmjDhPxMTYncx/nhdnawKBgQDYYxKCN3Q5DN6y5PFczmT7FNTT9VvStt8Ha"
+                + "9LrEPS2KApQm48K7wCRZHfNnpLNvLG4xS6erdMn67L7Az0oN+2EX6pQI+Le88+pvZ0AONd3mQSKwNPoDLRyTEwLUqjCEOX9Z"
+                + "5b4/M3eMvmhihdtOyDw49btrJXT29nDvr7TN3df4wKBgQDawkjKwQUbmuBhETKso+tcjFML72jbd44SDX09HYa9QKhwqlEWS"
+                + "o8AwidxcZhFutQyBS+lQQ4kmmIyFBg2jMArOOU/Nqpob5GoGhxiI8WCiI3jvhShh+KH/XM1qARnSN5c3o7Ai8TntnIhE1yhc"
+                + "yQpGqvaESEzTwSsn7ZLv0AUZQKBgQDIZreuQLZilRMSjf2+8eitcAcnJLmba8wkDaOBMDCQBf8WMKbEuBzvmLOBYs6G6hHJ2"
+                + "Qqjy6mLXeFVdOBgdF8SHZVJ+nwGh0LfV86LhesbCwiNApooSR1HqBaS6NTNONZTYPBOOytdHLkG6RkwgIiRp2t+lbaTFllyb"
+                + "T1llDajSw==";
         }
         return signingKey;
     }

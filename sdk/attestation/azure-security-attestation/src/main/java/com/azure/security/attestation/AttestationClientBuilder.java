@@ -25,10 +25,8 @@ import java.util.Objects;
 /** A builder for creating a new instance of the AttestationClient type. */
 @ServiceClientBuilder(
         serviceClients = {
-            PolicyClient.class,
             PolicyCertificatesClient.class,
             AttestationClient.class,
-            PolicyAsyncClient.class,
             PolicyCertificatesAsyncClient.class,
         })
 public final class AttestationClientBuilder {
