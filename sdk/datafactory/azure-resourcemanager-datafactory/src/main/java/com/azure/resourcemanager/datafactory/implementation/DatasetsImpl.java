@@ -150,7 +150,7 @@ public final class DatasetsImpl implements Datasets {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'datasets'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, factoryName, datasetName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, factoryName, datasetName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
