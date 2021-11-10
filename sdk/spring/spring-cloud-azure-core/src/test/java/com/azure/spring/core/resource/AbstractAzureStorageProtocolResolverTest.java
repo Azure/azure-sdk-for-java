@@ -87,10 +87,12 @@ public abstract class AbstractAzureStorageProtocolResolverTest {
         assertNotNull(writableResource.getOutputStream());
     }
 
+    /**
+     * By default, Azure Storage Resource is autoCreated.
+     */
     @Test
-    void testWritableOutputStreamNoAutoCreateOnNullBlob() {
-        assertThrows(FileNotFoundException.class,
-            () -> getWritableResource("container/non-existing").getOutputStream());
+    void testWritableResourceAutoCreate() {
+        assertNotNull(getWritableResource("container/non-existing"));
     }
 
     @Test
