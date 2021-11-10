@@ -416,7 +416,7 @@ public final class ResourceGuardsImpl implements ResourceGuards {
                         String
                             .format("The resource ID '%s' is not valid. Missing path segment 'resourceGuards'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, resourceGuardsName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, resourceGuardsName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {

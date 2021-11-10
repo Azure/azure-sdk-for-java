@@ -66,6 +66,19 @@ def generate_overview(readme_file, version, overview_file_path):
         for anchor in anchors_with_rel:
             del anchor['rel']
 
+        # Find all anchor tags with a title attribute and remove the title as that is an invalid attribute to Javadoc.
+        anchors_with_title = soup.find_all(name='a', attrs={'title':re.compile(r".*")})
+        for anchor in anchors_with_title:
+            del anchor['title']
+
+        
+        # Iterate each line
+        for x in soup.find_all():
+            # fetching text from tag and remove whitespaces
+            if len(x.get_text(strip=True)) == 0:
+                # Remove empty tag
+                x.extract()
+
     # The html_readme_content needs to be encapsulated inside of <body> tags in order
     # for the content to correctly be added to the landing page
     with open(html_overview_file, 'w', encoding='utf-8') as f:

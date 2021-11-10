@@ -15,6 +15,7 @@ public final class FileSystemListDetails {
 
     private boolean retrieveMetadata;
     private boolean retrieveDeleted;
+    private boolean retrieveSystem;
 
     /**
      * Creates a new instance of {@link FileSystemListDetails}.
@@ -60,6 +61,26 @@ public final class FileSystemListDetails {
      */
     public FileSystemListDetails setRetrieveDeleted(boolean retrieveDeleted) {
         this.retrieveDeleted = retrieveDeleted;
+        return this;
+    }
+
+    /**
+     * Whether system fileSystems should be returned.
+     *
+     * @return a flag indicating whether system fileSystems should be returned in the listing
+     */
+    public boolean getRetrieveSystem() {
+        return this.retrieveSystem;
+    }
+
+    /**
+     * Whether system fileSystems should be returned.
+     *
+     * @param retrieveSystem Flag indicating whether system fileSystems should be returned
+     * @return the updated FileSystemListDetails object
+     */
+    public FileSystemListDetails setRetrieveSystem(boolean retrieveSystem) {
+        this.retrieveSystem = retrieveSystem;
         return this;
     }
 

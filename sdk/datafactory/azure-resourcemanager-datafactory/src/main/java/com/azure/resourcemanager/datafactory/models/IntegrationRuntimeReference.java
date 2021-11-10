@@ -20,7 +20,7 @@ public final class IntegrationRuntimeReference {
      * Type of integration runtime.
      */
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private String type = "IntegrationRuntimeReference";
 
     /*
      * Reference integration runtime name.
