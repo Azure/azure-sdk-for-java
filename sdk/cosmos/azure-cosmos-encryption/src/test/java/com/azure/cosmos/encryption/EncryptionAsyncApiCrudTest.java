@@ -536,21 +536,24 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
         int originalSensitiveInt = createPojo.getSensitiveInt();
         int newSensitiveInt = originalSensitiveInt + 1;
 
+        String itemIdToReplace = UUID.randomUUID().toString();
+        EncryptionPojo nestedEncryptionPojoToReplace = getItem(itemIdToReplace);
+        nestedEncryptionPojoToReplace.setSensitiveString("testing");
+
         CosmosPatchOperations cosmosPatchOperations = CosmosPatchOperations.create();
         cosmosPatchOperations.add("/sensitiveString", "patched");
         cosmosPatchOperations.remove("/sensitiveDouble");
         cosmosPatchOperations.replace("/sensitiveInt", newSensitiveInt);
+        cosmosPatchOperations.replace("/sensitiveNestedPojo", nestedEncryptionPojoToReplace);
         cosmosPatchOperations.set("/sensitiveBoolean", false);
 
         CosmosPatchItemRequestOptions options = new CosmosPatchItemRequestOptions();
-        Mono<CosmosItemResponse<EncryptionPojo>> responseTest = this.cosmosEncryptionAsyncContainer.patchItem(
+        CosmosItemResponse<EncryptionPojo> response = this.cosmosEncryptionAsyncContainer.patchItem(
             createPojo.getId(),
             new PartitionKey(createPojo.getMypk()),
             cosmosPatchOperations,
             options,
-            EncryptionPojo.class);
-
-        CosmosItemResponse<EncryptionPojo> response = responseTest.block();
+            EncryptionPojo.class).block();
 
         assertThat(response.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
 
@@ -559,6 +562,7 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
 
         assertThat(patchedItem.getSensitiveString()).isEqualTo("patched");
         assertThat(patchedItem.getSensitiveDouble()).isNull();
+        assertThat(patchedItem.getSensitiveNestedPojo()).isNotNull();
         assertThat(patchedItem.getSensitiveInt()).isEqualTo(newSensitiveInt);
         assertThat(patchedItem.isSensitiveBoolean()).isEqualTo(false);
 
