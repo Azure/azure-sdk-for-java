@@ -4,7 +4,7 @@
 
 ### Other Changes
 #### Dependency Updates
-- Updated to version `12.14.2` of `azure-storage-blob`
+- Updated to version `12.14.1` of `azure-storage-blob`
 - Updated to version 1.22.0 of `azure-core`
 
 ## 12.11.1 (2021-10-12)
