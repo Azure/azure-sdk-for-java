@@ -33,6 +33,7 @@ import java.util.Objects;
  */
 public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T, U> {
     private static final String DEFAULT_OPERATION_LOCATION_HEADER = "Operation-Location";
+    private static final String DEFAULT_RESOURCE_LOCATION_HEADER = "Resource-Location";
 
     private final HttpPipeline httpPipeline;
     private final ObjectSerializer serializer;
@@ -118,6 +119,13 @@ public class OperationResourcePollingStrategy<T, U> implements PollingStrategy<T
                 .map(pollResult -> {
                     if (pollResult.getResourceLocation() != null) {
                         pollingContext.setData(PollingConstants.RESOURCE_LOCATION, pollResult.getResourceLocation());
+                    }
+                    else {
+                        // fetch resource location from the header
+                        final String resourceLocation = response.getHeaders().getValue(DEFAULT_RESOURCE_LOCATION_HEADER);
+                        if (resourceLocation != null) {
+                            pollingContext.setData(PollingConstants.RESOURCE_LOCATION, resourceLocation);
+                        }
                     }
                     pollingContext.setData(PollingConstants.POLL_RESPONSE_BODY, binaryData.toString());
                     return pollResult.getStatus();
