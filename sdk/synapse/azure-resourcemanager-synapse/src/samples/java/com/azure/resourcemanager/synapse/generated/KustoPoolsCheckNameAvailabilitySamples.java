@@ -10,7 +10,7 @@ import com.azure.resourcemanager.synapse.models.KustoPoolCheckNameRequest;
 /** Samples for KustoPools CheckNameAvailability. */
 public final class KustoPoolsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolsCheckNameAvailability.json
      */
     /**
      * Sample code: KustoPoolsCheckNameAvailability.

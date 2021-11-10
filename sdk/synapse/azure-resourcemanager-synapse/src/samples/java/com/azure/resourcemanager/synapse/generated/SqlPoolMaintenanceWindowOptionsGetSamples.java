@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SqlPoolMaintenanceWindowOptions Get. */
 public final class SqlPoolMaintenanceWindowOptionsGetSamples {
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetMaintenanceWindowOptions.json
      */
     /**
      * Sample code: Get list of transparent data encryption configurations of a SQL Analytics pool.

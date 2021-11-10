@@ -9,7 +9,7 @@ import com.azure.resourcemanager.synapse.models.PrivateLinkServiceConnectionStat
 /** Samples for PrivateEndpointConnections Create. */
 public final class PrivateEndpointConnectionsCreateSamples {
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ApprovePrivateEndpointConnection.json
      */
     /**
      * Sample code: Approve private endpoint connection.

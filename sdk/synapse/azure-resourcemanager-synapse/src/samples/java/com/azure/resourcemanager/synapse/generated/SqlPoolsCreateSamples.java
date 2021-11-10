@@ -13,7 +13,7 @@ import java.util.Map;
 /** Samples for SqlPools Create. */
 public final class SqlPoolsCreateSamples {
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateSqlPool.json
      */
     /**
      * Sample code: Create a SQL Analytics pool.

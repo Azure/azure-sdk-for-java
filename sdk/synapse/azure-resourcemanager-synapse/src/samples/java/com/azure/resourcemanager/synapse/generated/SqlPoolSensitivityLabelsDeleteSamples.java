@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SqlPoolSensitivityLabels Delete. */
 public final class SqlPoolSensitivityLabelsDeleteSamples {
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/DeleteSqlPoolColumnSensitivityLabel.json
      */
     /**
      * Sample code: Deletes the sensitivity label of a given column.

@@ -13,7 +13,7 @@ import java.util.Arrays;
 /** Samples for SqlPoolSecurityAlertPolicies CreateOrUpdate. */
 public final class SqlPoolSecurityAlertPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateOrUpdateSqlPoolSecurityAlertWithAllParameters.json
      */
     /**
      * Sample code: Update a Sql pool's threat detection policy with all parameters.
@@ -42,7 +42,7 @@ public final class SqlPoolSecurityAlertPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateOrUpdateSqlPoolSecurityAlertWithMinParameters.json
      */
     /**
      * Sample code: Update a Sql pool's threat detection policy with minimal parameters.

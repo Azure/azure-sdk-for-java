@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Keys Get. */
 public final class KeysGetSamples {
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetKey.json
      */
     /**
      * Sample code: Get a workspace key.

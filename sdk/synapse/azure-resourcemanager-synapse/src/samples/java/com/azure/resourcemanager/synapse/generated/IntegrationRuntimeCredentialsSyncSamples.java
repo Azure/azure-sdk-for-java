@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for IntegrationRuntimeCredentials Sync. */
 public final class IntegrationRuntimeCredentialsSyncSamples {
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/IntegrationRuntimes_SyncCredentials.json
      */
     /**
      * Sample code: Sync credentials.

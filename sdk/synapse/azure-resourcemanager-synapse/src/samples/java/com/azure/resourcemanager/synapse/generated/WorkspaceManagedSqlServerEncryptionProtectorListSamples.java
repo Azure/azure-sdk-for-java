@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for WorkspaceManagedSqlServerEncryptionProtector List. */
 public final class WorkspaceManagedSqlServerEncryptionProtectorListSamples {
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetWorkspaceManagedSqlServerEncryptionProtectorList.json
      */
     /**
      * Sample code: Get workspace managed sql Server's encryption protectors.

@@ -11,7 +11,7 @@ import java.util.UUID;
 /** Samples for SqlPoolBlobAuditingPolicies CreateOrUpdate. */
 public final class SqlPoolBlobAuditingPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateOrUpdateSqlPoolBlobAuditingWithAllParameters.json
      */
     /**
      * Sample code: Create or update a database's blob auditing policy with all parameters.
@@ -42,7 +42,7 @@ public final class SqlPoolBlobAuditingPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateOrUpdateSqlPoolBlobAuditingWithMinParameters.json
      */
     /**
      * Sample code: Create or update a database's blob auditing policy with minimal parameters.

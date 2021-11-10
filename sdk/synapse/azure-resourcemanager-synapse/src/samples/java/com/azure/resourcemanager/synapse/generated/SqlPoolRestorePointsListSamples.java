@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SqlPoolRestorePoints List. */
 public final class SqlPoolRestorePointsListSamples {
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListSqlPoolRestorePoints.json
      */
     /**
      * Sample code: Get a list of restore points of a SQL Analytics pool.

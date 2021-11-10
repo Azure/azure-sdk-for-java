@@ -11,7 +11,7 @@ import java.util.Arrays;
 /** Samples for KustoPoolAttachedDatabaseConfigurations CreateOrUpdate. */
 public final class KustoPoolAttachedDatabaseConfigurationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolAttachedDatabaseConfigurationsCreateOrUpdate.json
      */
     /**
      * Sample code: KustoPoolAttachedDatabaseConfigurationsCreateOrUpdate.

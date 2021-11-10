@@ -10,7 +10,7 @@ import com.azure.resourcemanager.synapse.models.DataMaskingRuleState;
 /** Samples for DataMaskingRules CreateOrUpdate. */
 public final class DataMaskingRulesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/DataMaskingRuleCreateOrUpdateDefaultMin.json
      */
     /**
      * Sample code: Create/Update data masking rule for default min.
@@ -31,7 +31,7 @@ public final class DataMaskingRulesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/DataMaskingRuleCreateOrUpdateDefaultMax.json
      */
     /**
      * Sample code: Create/Update data masking rule for default max.
@@ -54,7 +54,7 @@ public final class DataMaskingRulesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/DataMaskingRuleCreateOrUpdateText.json
      */
     /**
      * Sample code: Create/Update data masking rule for text.
@@ -77,7 +77,7 @@ public final class DataMaskingRulesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/DataMaskingRuleCreateOrUpdateNumber.json
      */
     /**
      * Sample code: Create/Update data masking rule for numbers.

@@ -13,7 +13,7 @@ import java.util.Arrays;
 /** Samples for KustoPools RemoveLanguageExtensions. */
 public final class KustoPoolsRemoveLanguageExtensionsSamples {
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolLanguageExtensionsRemove.json
      */
     /**
      * Sample code: KustoPoolRemoveLanguageExtensions.

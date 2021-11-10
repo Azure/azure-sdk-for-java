@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SqlPoolOperations List. */
 public final class SqlPoolOperationsListSamples {
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListSqlPoolOperations.json
      */
     /**
      * Sample code: List the Sql Analytics pool management operations.

@@ -10,7 +10,7 @@ import com.azure.resourcemanager.synapse.models.UpdateIntegrationRuntimeNodeRequ
 /** Samples for IntegrationRuntimeNodes Update. */
 public final class IntegrationRuntimeNodesUpdateSamples {
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/IntegrationRuntimeNodes_Update.json
      */
     /**
      * Sample code: Update integration runtime node.

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for KustoPools Delete. */
 public final class KustoPoolsDeleteSamples {
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolsDelete.json
      */
     /**
      * Sample code: kustoPoolsDelete.

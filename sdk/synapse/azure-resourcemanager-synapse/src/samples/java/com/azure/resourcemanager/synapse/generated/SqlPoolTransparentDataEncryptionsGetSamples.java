@@ -10,7 +10,7 @@ import com.azure.resourcemanager.synapse.models.TransparentDataEncryptionName;
 /** Samples for SqlPoolTransparentDataEncryptions Get. */
 public final class SqlPoolTransparentDataEncryptionsGetSamples {
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetSqlPoolTransparentDataEncryption.json
      */
     /**
      * Sample code: Get transparent data encryption configuration of a SQL Analytics pool.

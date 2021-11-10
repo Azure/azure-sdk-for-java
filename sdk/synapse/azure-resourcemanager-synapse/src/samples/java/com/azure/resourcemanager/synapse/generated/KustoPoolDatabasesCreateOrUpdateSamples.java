@@ -11,7 +11,7 @@ import java.time.Duration;
 /** Samples for KustoPoolDatabases CreateOrUpdate. */
 public final class KustoPoolDatabasesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolDatabasesCreateOrUpdate.json
      */
     /**
      * Sample code: KustoPoolDatabasesCreateOrUpdate.

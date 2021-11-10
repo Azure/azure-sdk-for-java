@@ -10,7 +10,7 @@ import com.azure.resourcemanager.synapse.models.SecurityAlertPolicyNameAutoGener
 /** Samples for WorkspaceManagedSqlServerSecurityAlertPolicy Get. */
 public final class WorkspaceManagedSqlServerSecurityAlertPolicyGetSamples {
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetWorkspaceManagedSqlServerSecurityAlertPolicy.json
      */
     /**
      * Sample code: Get workspace managed sql Server's security alert policy.

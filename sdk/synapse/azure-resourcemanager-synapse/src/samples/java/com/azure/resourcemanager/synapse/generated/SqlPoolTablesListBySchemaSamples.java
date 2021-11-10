@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SqlPoolTables ListBySchema. */
 public final class SqlPoolTablesListBySchemaSamples {
     /*
-     * x-ms-original-file: null
+     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListSqlPoolTables.json
      */
     /**
      * Sample code: List the tables of a given schema in a SQL Analytics pool.
