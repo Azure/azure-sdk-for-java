@@ -49,6 +49,7 @@ public final class WebPubSubServiceClient {
      * @param options Options to apply when creating the client access token.
      * @return A new client access instance.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public WebPubSubClientAccessToken getClientAccessToken(GetClientAccessTokenOptions options) {
         if (this.keyCredential == null) {
             RequestOptions requestOptions = new RequestOptions();

@@ -54,6 +54,7 @@ public final class WebPubSubServiceAsyncClient {
      * @param options Options to apply when creating the client access token.
      * @return A new client access token instance.
      */
+    @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<WebPubSubClientAccessToken> getClientAccessToken(GetClientAccessTokenOptions options) {
         if (this.keyCredential == null) {
             RequestOptions requestOptions = new RequestOptions();
