@@ -172,8 +172,8 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
                 try {
                     authorizationUri = new URI(authorization);
                 } catch (URISyntaxException e) {
-                    throw new RuntimeException(
-                        String.format("The challenge authorization URI %s is invalid.", authorization), e);
+                    // The challenge authorization URI is invalid.
+                    return Mono.just(false);
                 }
 
                 this.challenge = new ChallengeParameters(authorizationUri, new String[] { scope });
