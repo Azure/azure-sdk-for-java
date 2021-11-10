@@ -21,7 +21,7 @@ public final class CommunicationRelayConfigurationRequest {
      * client.
      */
     @JsonProperty(value = "routeType")
-    private CommunicationRelayConfigurationRequestRouteType routeType;
+    private RouteType routeType;
 
     /**
      * Get the id property: An existing ACS identity.
@@ -48,7 +48,7 @@ public final class CommunicationRelayConfigurationRequest {
      *
      * @return the routeType value.
      */
-    public CommunicationRelayConfigurationRequestRouteType getRouteType() {
+    public RouteType getRouteType() {
         return this.routeType;
     }
 
@@ -58,8 +58,7 @@ public final class CommunicationRelayConfigurationRequest {
      * @param routeType the routeType value to set.
      * @return the CommunicationRelayConfigurationRequest object itself.
      */
-    public CommunicationRelayConfigurationRequest setRouteType(
-            CommunicationRelayConfigurationRequestRouteType routeType) {
+    public CommunicationRelayConfigurationRequest setRouteType(RouteType routeType) {
         this.routeType = routeType;
         return this;
     }

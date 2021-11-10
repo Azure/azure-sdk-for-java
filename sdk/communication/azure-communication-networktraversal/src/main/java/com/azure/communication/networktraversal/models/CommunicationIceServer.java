@@ -34,7 +34,7 @@ public final class CommunicationIceServer {
      * client.
      */
     @JsonProperty(value = "routeType", required = true)
-    private CommunicationIceServerRouteType routeType;
+    private RouteType routeType;
 
     /**
      * Get the urls property: List of STUN/TURN server URLs.
@@ -101,7 +101,7 @@ public final class CommunicationIceServer {
      *
      * @return the routeType value.
      */
-    public CommunicationIceServerRouteType getRouteType() {
+    public RouteType getRouteType() {
         return this.routeType;
     }
 
@@ -111,7 +111,7 @@ public final class CommunicationIceServer {
      * @param routeType the routeType value to set.
      * @return the CommunicationIceServer object itself.
      */
-    public CommunicationIceServer setRouteType(CommunicationIceServerRouteType routeType) {
+    public CommunicationIceServer setRouteType(RouteType routeType) {
         this.routeType = routeType;
         return this;
     }
