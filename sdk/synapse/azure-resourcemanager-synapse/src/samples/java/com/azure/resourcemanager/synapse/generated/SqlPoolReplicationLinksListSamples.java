@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SqlPoolReplicationLinks List. */
 public final class SqlPoolReplicationLinksListSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListSqlPoolReplicationLinks.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: Lists a Sql Analytic pool's replication links.

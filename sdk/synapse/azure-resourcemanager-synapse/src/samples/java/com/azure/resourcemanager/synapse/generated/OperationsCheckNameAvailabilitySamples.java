@@ -10,7 +10,7 @@ import com.azure.resourcemanager.synapse.models.CheckNameAvailabilityRequest;
 /** Samples for Operations CheckNameAvailability. */
 public final class OperationsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CheckNameAvailabilityWorkspaceAlreadyExists.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: Check for a workspace name that already exists.
@@ -27,7 +27,7 @@ public final class OperationsCheckNameAvailabilitySamples {
     }
 
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CheckNameAvailabilityWorkspaceAvailable.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: Check for a workspace name that is available.

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for RestorableDroppedSqlPools ListByWorkspace. */
 public final class RestorableDroppedSqlPoolsListByWorkspaceSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/RestorableDroppedSqlpoolList.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: Get list of restorable dropped Sql pools.

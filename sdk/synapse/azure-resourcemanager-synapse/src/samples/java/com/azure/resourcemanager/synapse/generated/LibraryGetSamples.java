@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Library Get. */
 public final class LibraryGetSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/Library_Get.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: Get Library by name.

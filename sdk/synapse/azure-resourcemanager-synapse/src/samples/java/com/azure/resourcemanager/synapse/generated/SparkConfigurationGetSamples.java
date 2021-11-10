@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SparkConfiguration Get. */
 public final class SparkConfigurationGetSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/SparkConfiguration_Get.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: Get SparkConfiguration by name.

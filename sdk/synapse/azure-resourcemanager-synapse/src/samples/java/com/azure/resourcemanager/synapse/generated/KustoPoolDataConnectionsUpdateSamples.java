@@ -10,7 +10,7 @@ import com.azure.resourcemanager.synapse.models.EventHubDataConnection;
 /** Samples for KustoPoolDataConnections Update. */
 public final class KustoPoolDataConnectionsUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolDataConnectionsUpdate.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: KustoPoolDataConnectionsUpdate.

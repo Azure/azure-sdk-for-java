@@ -6,10 +6,10 @@ package com.azure.resourcemanager.synapse.generated;
 
 import com.azure.core.util.Context;
 
-/** Samples for KustoPoolsOperation Start. */
-public final class KustoPoolsOperationStartSamples {
+/** Samples for KustoPools Start. */
+public final class KustoPoolsStartSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolsStart.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: kustoPoolsStop.
@@ -17,6 +17,6 @@ public final class KustoPoolsOperationStartSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void kustoPoolsStop(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPoolsOperations().start("kustorptest", "kustoclusterrptest4", "kustorptest", Context.NONE);
+        manager.kustoPools().start("kustorptest", "kustoclusterrptest4", "kustorptest", Context.NONE);
     }
 }

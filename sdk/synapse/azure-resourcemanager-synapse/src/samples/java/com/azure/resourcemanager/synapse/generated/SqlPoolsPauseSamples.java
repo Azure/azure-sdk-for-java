@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SqlPools Pause. */
 public final class SqlPoolsPauseSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/PauseSqlPool.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: Pause a SQL Analytics pool.

@@ -6,10 +6,10 @@ package com.azure.resourcemanager.synapse.generated;
 
 import com.azure.core.util.Context;
 
-/** Samples for KustoPoolsOperation ListLanguageExtensions. */
-public final class KustoPoolsOperationListLanguageExtensionsSamples {
+/** Samples for KustoPools ListLanguageExtensions. */
+public final class KustoPoolsListLanguageExtensionsSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolLanguageExtensionsList.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: KustoPoolListLanguageExtensions.
@@ -17,8 +17,6 @@ public final class KustoPoolsOperationListLanguageExtensionsSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void kustoPoolListLanguageExtensions(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager
-            .kustoPoolsOperations()
-            .listLanguageExtensions("kustorptest", "kustoclusterrptest4", "kustorptest", Context.NONE);
+        manager.kustoPools().listLanguageExtensions("kustorptest", "kustoclusterrptest4", "kustorptest", Context.NONE);
     }
 }

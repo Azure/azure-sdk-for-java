@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for IntegrationRuntimeConnectionInfos Get. */
 public final class IntegrationRuntimeConnectionInfosGetSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/IntegrationRuntimes_GetConnectionInfo.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: Get connection info.

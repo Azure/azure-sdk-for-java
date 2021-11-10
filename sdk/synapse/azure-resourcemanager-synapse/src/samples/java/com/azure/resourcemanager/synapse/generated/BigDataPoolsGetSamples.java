@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for BigDataPools Get. */
 public final class BigDataPoolsGetSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/GetBigDataPool.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: Get a Big Data pool.

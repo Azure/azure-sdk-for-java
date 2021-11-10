@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SparkConfigurationsOperation ListByWorkspace. */
 public final class SparkConfigurationsOperationListByWorkspaceSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/SparkConfigurations_ListByWorkspace.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: List sparkConfigurations in a workspace.

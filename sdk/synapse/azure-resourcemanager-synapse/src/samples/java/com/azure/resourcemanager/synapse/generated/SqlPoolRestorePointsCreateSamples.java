@@ -10,7 +10,7 @@ import com.azure.resourcemanager.synapse.models.CreateSqlPoolRestorePointDefinit
 /** Samples for SqlPoolRestorePoints Create. */
 public final class SqlPoolRestorePointsCreateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateSqlPoolRestorePoints.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: Creates Sql pool restore point.

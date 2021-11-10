@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for DataMaskingPolicies Get. */
 public final class DataMaskingPoliciesGetSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/DataMaskingPolicyGet.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: Get data masking policy.

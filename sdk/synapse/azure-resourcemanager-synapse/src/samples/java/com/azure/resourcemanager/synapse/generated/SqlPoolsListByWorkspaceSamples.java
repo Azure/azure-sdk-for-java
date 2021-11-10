@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SqlPools ListByWorkspace. */
 public final class SqlPoolsListByWorkspaceSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListSqlPoolsInWorkspaceWithFilter.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: List SQL Analytics pools in a workspace with filter.
@@ -22,7 +22,7 @@ public final class SqlPoolsListByWorkspaceSamples {
     }
 
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListSqlPoolsInWorkspace.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: List SQL Analytics pools in a workspace.

@@ -10,7 +10,7 @@ import com.azure.resourcemanager.synapse.models.ResourceMoveDefinition;
 /** Samples for SqlPools Rename. */
 public final class SqlPoolsRenameSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/RenameSqlPool.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: Rename a SQL Analytics pool.

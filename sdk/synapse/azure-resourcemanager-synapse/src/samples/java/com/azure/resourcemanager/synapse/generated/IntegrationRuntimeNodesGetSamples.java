@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for IntegrationRuntimeNodes Get. */
 public final class IntegrationRuntimeNodesGetSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/IntegrationRuntimeNodes_Get.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: Get integration runtime node.

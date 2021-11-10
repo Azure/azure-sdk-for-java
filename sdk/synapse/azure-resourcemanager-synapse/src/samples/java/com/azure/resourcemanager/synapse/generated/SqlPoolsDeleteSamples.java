@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SqlPools Delete. */
 public final class SqlPoolsDeleteSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/DeleteSqlPool.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: Delete a SQL Analytics pool.

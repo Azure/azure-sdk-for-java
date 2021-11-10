@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SqlPoolWorkloadClassifier Delete. */
 public final class SqlPoolWorkloadClassifierDeleteSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/DeleteSqlPoolWorkloadGroupWorkloadClassifer.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: Delete a workload classifier of a SQL Analytics pool's workload group.

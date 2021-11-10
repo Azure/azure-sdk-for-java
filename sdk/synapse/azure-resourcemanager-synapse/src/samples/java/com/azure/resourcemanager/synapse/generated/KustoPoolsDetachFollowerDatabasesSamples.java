@@ -7,10 +7,10 @@ package com.azure.resourcemanager.synapse.generated;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.fluent.models.FollowerDatabaseDefinitionInner;
 
-/** Samples for KustoPoolsOperation DetachFollowerDatabases. */
-public final class KustoPoolsOperationDetachFollowerDatabasesSamples {
+/** Samples for KustoPools DetachFollowerDatabases. */
+public final class KustoPoolsDetachFollowerDatabasesSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolFollowerDatabasesDetach.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: KustoPoolDetachFollowerDatabases.
@@ -19,7 +19,7 @@ public final class KustoPoolsOperationDetachFollowerDatabasesSamples {
      */
     public static void kustoPoolDetachFollowerDatabases(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
-            .kustoPoolsOperations()
+            .kustoPools()
             .detachFollowerDatabases(
                 "kustorptest",
                 "kustoclusterrptest4",

@@ -9,7 +9,7 @@ import com.azure.resourcemanager.synapse.models.DataMaskingState;
 /** Samples for DataMaskingPolicies CreateOrUpdate. */
 public final class DataMaskingPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/DataMaskingPolicyCreateOrUpdateMin.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: Create or update data masking policy min.
@@ -26,7 +26,7 @@ public final class DataMaskingPoliciesCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/DataMaskingPolicyCreateOrUpdateMax.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: Create or update data masking policy max.

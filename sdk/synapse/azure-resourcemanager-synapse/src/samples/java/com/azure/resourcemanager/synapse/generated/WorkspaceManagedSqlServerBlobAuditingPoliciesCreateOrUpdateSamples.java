@@ -12,7 +12,7 @@ import java.util.UUID;
 /** Samples for WorkspaceManagedSqlServerBlobAuditingPolicies CreateOrUpdate. */
 public final class WorkspaceManagedSqlServerBlobAuditingPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateWorkspaceManagedSqlServerBlobAuditingSettingsWithAllParameters.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: Create or update blob auditing policy of workspace SQL Server with all parameters.
@@ -44,7 +44,7 @@ public final class WorkspaceManagedSqlServerBlobAuditingPoliciesCreateOrUpdateSa
     }
 
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateWorkspaceManagedSqlServerBlobAuditingSettingsWithMinParameters.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: Create or update blob auditing policy of workspace managed Sql Server with minimal parameters.

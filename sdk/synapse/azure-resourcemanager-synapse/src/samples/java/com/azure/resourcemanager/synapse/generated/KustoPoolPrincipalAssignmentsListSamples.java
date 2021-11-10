@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for KustoPoolPrincipalAssignments List. */
 public final class KustoPoolPrincipalAssignmentsListSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolPrincipalAssignmentsList.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: KustoPoolPrincipalAssignmentsList.

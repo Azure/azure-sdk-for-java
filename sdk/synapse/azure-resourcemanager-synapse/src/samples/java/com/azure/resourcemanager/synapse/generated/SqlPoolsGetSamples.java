@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SqlPools Get. */
 public final class SqlPoolsGetSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetSqlPool.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: Get a SQL Analytics pool.

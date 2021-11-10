@@ -6,10 +6,10 @@ package com.azure.resourcemanager.synapse.generated;
 
 import com.azure.core.util.Context;
 
-/** Samples for KustoPoolsOperation ListSkusByResource. */
-public final class KustoPoolsOperationListSkusByResourceSamples {
+/** Samples for KustoPools ListSkusByResource. */
+public final class KustoPoolsListSkusByResourceSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolsListResourceSkus.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: KustoPoolsListResourceSkus.
@@ -18,7 +18,7 @@ public final class KustoPoolsOperationListSkusByResourceSamples {
      */
     public static void kustoPoolsListResourceSkus(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
-            .kustoPoolsOperations()
+            .kustoPools()
             .listSkusByResource("synapseWorkspaceName", "kustoclusterrptest4", "kustorptest", Context.NONE);
     }
 }

@@ -10,7 +10,7 @@ import com.azure.resourcemanager.synapse.models.GetSsisObjectMetadataRequest;
 /** Samples for IntegrationRuntimeObjectMetadata List. */
 public final class IntegrationRuntimeObjectMetadataListSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/IntegrationRuntimeObjectMetadata_List.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: Get integration runtime object metadata.

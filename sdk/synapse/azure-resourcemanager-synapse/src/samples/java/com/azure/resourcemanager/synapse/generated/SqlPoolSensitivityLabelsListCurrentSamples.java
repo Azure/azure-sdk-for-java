@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SqlPoolSensitivityLabels ListCurrent. */
 public final class SqlPoolSensitivityLabelsListCurrentSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListSqlPoolsSensitivityLabelsWithSourceCurrent.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: Gets the current sensitivity labels of a given SQL Analytics pool.
