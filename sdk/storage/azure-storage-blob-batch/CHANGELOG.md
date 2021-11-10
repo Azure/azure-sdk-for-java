@@ -1,6 +1,6 @@
 # Release History
 
-## 12.11.1 (2021-11-10)
+## 12.11.2 (2021-11-10)
 
 ### Other Changes
 #### Dependency Updates
