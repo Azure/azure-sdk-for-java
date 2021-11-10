@@ -98,7 +98,9 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
             .withFirewallRule("rule3", "192.168.0.10", "192.168.0.104")
             .withoutMinimumTlsVersion()
             .apply();
-        Thread.sleep(10000);
+
+        ResourceManagerUtils.sleep(Duration.ofSeconds(10));
+
         premiumCache.refresh();
 
         Assertions.assertEquals(2, premiumCache.firewallRules().size());
@@ -208,28 +210,27 @@ public class RedisCacheOperationsTests extends RedisManagementTest {
     }
 
     @Test
-    public void canRedisVersionUpdate(){
-        RedisCache.MajorVersion redisVersion = RedisCache.MajorVersion.V4;
+    public void canRedisVersionUpdate() {
+        RedisCache.RedisVersion redisVersion = RedisCache.RedisVersion.V4;
 
         RedisCache redisCache =
-                redisManager
-                        .redisCaches()
-                        .define(rrName)
-                        .withRegion(Region.ASIA_EAST)
-                        .withNewResourceGroup(rgName)
-                        .withBasicSku()
-                        .withRedisVersion(redisVersion)
-                        .create()
-                ;
+            redisManager
+                .redisCaches()
+                .define(rrName)
+                .withRegion(Region.ASIA_EAST)
+                .withNewResourceGroup(rgName)
+                .withBasicSku()
+                .withRedisVersion(redisVersion)
+                .create();
 
         Assertions.assertTrue(redisCache.redisVersion().startsWith(redisVersion.getValue()));
 
-        redisVersion = RedisCache.MajorVersion.V6;
+        redisVersion = RedisCache.RedisVersion.V6;
         redisCache = redisCache.update()
                 .withRedisVersion(redisVersion)
                 .apply(); // response with "provisioningState" : "Succeeded", but it takes quite a while for the client to detect the actual version change
 
-        ResourceManagerUtils.sleep(Duration.ofSeconds(300)); // even 240 sometimes won't work
+        ResourceManagerUtils.sleep(Duration.ofSeconds(300)); // let redis cache take its time
 
         redisCache = redisCache.refresh();
         Assertions.assertTrue(redisCache.redisVersion().startsWith(redisVersion.getValue()));

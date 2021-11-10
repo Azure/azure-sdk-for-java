@@ -490,7 +490,7 @@ class RedisCacheImpl extends GroupableResourceImpl<RedisCache, RedisResourceInne
     }
 
     @Override
-    public RedisCacheImpl withRedisVersion(MajorVersion redisVersion) {
+    public RedisCacheImpl withRedisVersion(RedisVersion redisVersion) {
         String version = redisVersion == null ? null : redisVersion.getValue();
         if (isInCreateMode()) {
             this.createParameters.withRedisVersion(version);
