@@ -117,7 +117,7 @@ jobs:
           python3 eng/versioning/update_versions.py --update-type library --build-type ${{parameters.SDKType}} --sr
         condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
         displayName: Setup Dev versioning
-        
+
       - ${{if ne(parameters.ServiceDirectory, '')}}:
         - task: Powershell@2
           inputs:
@@ -130,7 +130,7 @@ jobs:
             workingDirectory: $(Pipeline.Workspace)
           displayName: Update package properties with dev version
           condition: and(succeeded(), eq(variables['SetDevVersion'],'true'))
-          
+
       - script: |
           pip install markdown2 BeautifulSoup4
         displayName: 'pip install markdown2 and BeautifulSoup4'
@@ -268,7 +268,10 @@ jobs:
             parameters:
               PackageName: ${{artifact.name}}
               ServiceName: ${{parameters.ServiceDirectory}}
-              ForRelease: false
+              ${{ if and(ne(variables['Build.Reason'], 'PullRequest'), eq(variables['System.TeamProject'], 'internal'), ne(variables['Skip.Release'], 'true')) }}:
+                ForRelease: true
+              ${{ else }}:
+                ForRelease: false
 
       # We `install` the code quality reports tooling into our local m2 cache separately from building the Maven project
       # reports. This means it is available as part of that, but also so that this is not documented in the project report.
