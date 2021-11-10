@@ -33,6 +33,24 @@ public class AttestationClientJavaDocCodeSnippets {
         return client;
     }
 
+    public static AttestationAdministrationClient createAdminSyncClient() {
+        String endpoint = null;
+        // BEGIN: com.azure.security.attestation.AttestationAdministrationClientBuilder.buildClient
+        AttestationAdministrationClient client = new AttestationAdministrationClientBuilder()
+            .endpoint(endpoint)
+            .buildClient();
+        // END: com.azure.security.attestation.AttestationAdministrationClientBuilder.buildClient
+
+        // BEGIN: com.azure.security.attestation.AttestationAdministrationClientBuilder.buildAsyncClient
+        AttestationAdministrationAsyncClient asyncClient = new AttestationAdministrationClientBuilder()
+            .endpoint(endpoint)
+            .buildAsyncClient();
+        // END: com.azure.security.attestation.AttestationAdministrationClientBuilder.buildAsyncClient
+
+        return client;
+    }
+
+
     public static void attestationOptionsSnippets() {
 
         BinaryData sgxQuote = null;

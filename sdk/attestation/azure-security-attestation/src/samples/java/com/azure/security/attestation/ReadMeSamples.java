@@ -43,7 +43,7 @@ class ReadmeSamples {
     }
 
     static void attestationPolicyGet(HttpClient httpClient, String clientUri) {
-        AttestationClientBuilder attestationBuilder = new AttestationClientBuilder();
+        AttestationAdministrationClientBuilder attestationBuilder = new AttestationAdministrationClientBuilder();
         attestationBuilder.httpClient(httpClient);
         attestationBuilder.endpoint(clientUri);
 

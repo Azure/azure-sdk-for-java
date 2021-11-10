@@ -3,7 +3,13 @@
 package com.azure.security.attestation;
 
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.rest.Response;
+import com.azure.core.util.Context;
+import com.azure.security.attestation.models.AttestationPolicySetOptions;
+import com.azure.security.attestation.models.AttestationResponse;
+import com.azure.security.attestation.models.AttestationSigningKey;
 import com.azure.security.attestation.models.AttestationType;
+import com.azure.security.attestation.models.PolicyModification;
 import com.azure.security.attestation.models.PolicyResponse;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JOSEObject;
@@ -15,13 +21,14 @@ import com.nimbusds.jose.Payload;
 import com.nimbusds.jose.PlainObject;
 import com.nimbusds.jwt.JWTClaimsSet;
 import net.minidev.json.JSONObject;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.nio.charset.StandardCharsets;
+import java.security.PrivateKey;
+import java.security.cert.X509Certificate;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Base64;
@@ -31,6 +38,7 @@ import java.util.Map;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.junit.jupiter.api.Assertions.fail;
 import static org.junit.jupiter.api.Assumptions.assumeTrue;
@@ -42,24 +50,72 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
     @MethodSource("getPolicyClients")
     void testGetAttestationPolicy(HttpClient client, String clientUri, AttestationType attestationType) {
 
-        AttestationClientBuilder attestationBuilder = getAdministrationBuilder(client, clientUri);
+        AttestationAdministrationClientBuilder attestationBuilder = getAdministrationBuilder(client, clientUri);
 
-        PolicyResponse policyResponse = attestationBuilder.buildPolicyClient().get(attestationType);
+        AttestationAdministrationClient adminClient = attestationBuilder.buildClient();
 
-        StepVerifier.create(verifyBasicGetAttestationPolicyResponse(client, clientUri, attestationType, policyResponse))
-            .expectComplete()
-            .verify();
+        String policy = adminClient.getAttestationPolicy(attestationType);
+        if (policy == null) {
+            assertEquals(AttestationType.TPM, attestationType);
+        } else {
+            assertTrue(policy.contains("version="));
+        }
+        Response<String> policyResponse = adminClient.getAttestationPolicyWithResponse(attestationType, Context.NONE);
+        if (policyResponse.getValue() == null) {
+            assertEquals(AttestationType.TPM, attestationType);
+        } else {
+            assertTrue(policyResponse.getValue().contains("version="));
+        }
+        assertTokenIsJws(policyResponse);
+    }
+
+    void assertTokenIsJws(Response<String> response) {
+        assertTrue(response instanceof AttestationResponse);
+        // Verify we can access the underlying policy JWT.
+        AttestationResponse<String> attestResponse = (AttestationResponse<String>) response;
+        // This token is NOT a JWT, it's a JWS. As such, the token properties
+        // won't be present.
+        assertNull(attestResponse.getToken().getIssuer());
+        assertNull(attestResponse.getToken().getExpiresOn());
+        assertNull(attestResponse.getToken().getNotBefore());
+        assertNull(attestResponse.getToken().getIssuedAt());
+        assertNotNull(attestResponse.getToken().getAlgorithm());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getPolicyClients")
     void testGetAttestationPolicyAsync(HttpClient client, String clientUri, AttestationType attestationType) {
-        AttestationClientBuilder attestationBuilder = getAdministrationBuilder(client, clientUri);
+        AttestationAdministrationClientBuilder attestationBuilder = getAdministrationBuilder(client, clientUri);
 
-        StepVerifier.create(attestationBuilder.buildPolicyAsyncClient().get(attestationType))
-            .assertNext(response -> assertDoesNotThrow(() -> verifyBasicGetAttestationPolicyResponse(client, clientUri, attestationType, response)))
+        AttestationAdministrationAsyncClient adminClient = attestationBuilder.buildAsyncClient();
+
+        StepVerifier.create(adminClient.getAttestationPolicy(attestationType)
+                .switchIfEmpty(Mono.just("No policy set")))
+            .assertNext(response -> assertDoesNotThrow(() -> {
+               // If the policy is null, it must be coming from TPM attestation.
+                if (response.equals("No policy set")) {
+                    assertEquals(AttestationType.TPM, attestationType);
+                } else {
+                    assertTrue(response.contains("version="));
+                }
+            }))
             .expectComplete()
             .verify();
+
+        // Now test getAttestationPolicy with a response.
+        StepVerifier.create(adminClient.getAttestationPolicyWithResponse(attestationType))
+            .assertNext(response -> assertDoesNotThrow(() -> {
+                // If the policy is null, it must be coming from TPM attestation.
+                if (response.getValue() == null) {
+                    assertEquals(AttestationType.TPM, attestationType);
+                } else {
+                    assertTrue(response.getValue().contains("version="));
+                }
+                assertTokenIsJws(response);
+            }))
+            .expectComplete()
+            .verify();
+
     }
 
     /**
@@ -85,11 +141,11 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
         // We can't set attestation policy on the shared client, so just exit early.
         assumeTrue(clientType != ClientTypes.SHARED, "This test does not work on shared instances.");
 
-        AttestationClientBuilder attestationBuilder = getAdministrationBuilder(httpClient, clientUri);
-        PolicyClient client = attestationBuilder.buildPolicyClient();
+        AttestationAdministrationClientBuilder attestationAdministrationClientBuilder = getAdministrationBuilder(httpClient, clientUri);
+        PolicyClient client = attestationAdministrationClientBuilder.buildPolicyClient();
 
-        String signingCertificateBase64 = getIsolatedSigningCertificate();
-        String signingKeyBase64 = getIsolatedSigningKey();
+        String signingCertificateBase64 = getIsolatedSigningCertificateBase64();
+        String signingKeyBase64 = getIsolatedSigningKeyBase64();
 
         JWSSigner signer = getJwsSigner(signingKeyBase64);
 
@@ -133,45 +189,126 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
         // We can't set attestation policy on the shared client, so just exit early.
         assumeTrue(clientType != ClientTypes.SHARED, "This test does not work on shared instances.");
 
-        AttestationClientBuilder attestationBuilder = getAdministrationBuilder(httpClient, clientUri);
-        PolicyAsyncClient client = attestationBuilder.buildPolicyAsyncClient();
+        AttestationAdministrationClientBuilder attestationBuilder = getAdministrationBuilder(httpClient, clientUri);
+        AttestationAdministrationAsyncClient client = attestationBuilder.buildAsyncClient();
 
-        String signingCertificateBase64 = getIsolatedSigningCertificate();
-        String signingKeyBase64 = getIsolatedSigningKey();
+        // AAD or isolated: We want to try setting policy with the Isolated signing certificate.
+        if (clientType == ClientTypes.AAD || clientType == ClientTypes.ISOLATED) {
+            X509Certificate certificate = getIsolatedSigningCertificate();
+            PrivateKey key = getIsolatedSigningKey();
 
-        JWSSigner signer = Assertions.assertDoesNotThrow(() -> getJwsSigner(signingKeyBase64));
+            AttestationSigningKey signingKey = new AttestationSigningKey()
+                .setPrivateKey(key)
+                .setCertificate(certificate);
 
-        ArrayList<JOSEObject> policySetObjects = Assertions.assertDoesNotThrow(() -> getPolicySetObjects(clientUri, signingCertificateBase64, signer));
-
-        for (JOSEObject policyObject : policySetObjects) {
-            StepVerifier.create(client.set(attestationType, policyObject.serialize())
-                .flatMap(response -> verifyAttestationToken(httpClient, clientUri, response.getToken())).doOnNext(responseClaims -> {
-                    assertTrue(responseClaims.getClaims().containsKey("x-ms-policy-result"));
-                    assertEquals("Updated", responseClaims.getClaims().get("x-ms-policy-result").toString());
-                }).flatMap(responseClaims -> {
-                    String resetToken;
-                    switch (clientType) {
-                        case AAD:
-                            resetToken = new PlainPolicyResetToken().serialize();
-                            break;
-                        case ISOLATED:
-                            resetToken = new SecuredPolicyResetToken(signer, signingCertificateBase64).serialize();
-                            break;
-                        default:
-                            throw new RuntimeException("Cannot ever hit this - unknown client type: " + clientType.toString());
-                    }
-                    return client.reset(attestationType, resetToken)
-                            .flatMap(response -> verifyAttestationToken(httpClient, clientUri, response.getToken()));
+            // Test setting the policy. This works for both AAD and Isolated mode.
+            StepVerifier.create(client.setAttestationPolicy(attestationType, new AttestationPolicySetOptions()
+                    .setPolicy("version=1.0; authorizationrules{=> permit();}; issuancerules{};")
+                    .setAttestationSigner(signingKey)))
+                .assertNext(result -> {
+                    assertEquals(PolicyModification.UPDATED, result.getPolicyResolution());
                 })
-                .doOnNext(responseClaims -> {
-                    assertTrue(responseClaims.getClaims().containsKey("x-ms-policy-result"));
-                    assertEquals("Removed", responseClaims.getClaims().get("x-ms-policy-result").toString());
-                }))
-                .assertNext(claimSet -> { })
+                .expectComplete()
+                .verify();
+        }
+
+        // Try setting attestation policy with an arbitrary signing key - this should be allowed
+        // in AAD mode.
+        if (clientType == ClientTypes.AAD) {
+            X509Certificate certificate = getPolicySigningCertificate0();
+            PrivateKey key = getPolicySigningKey0();
+
+            AttestationSigningKey signingKey = new AttestationSigningKey()
+                .setPrivateKey(key)
+                .setCertificate(certificate);
+
+            // Test setting the policy. This works for both AAD and Isolated mode.
+            StepVerifier.create(client.setAttestationPolicy(attestationType, new AttestationPolicySetOptions()
+                    .setPolicy("version=1.0; authorizationrules{=> permit();}; issuancerules{};")
+                    .setAttestationSigner(signingKey)))
+                .assertNext(result -> {
+                    assertEquals(PolicyModification.UPDATED, result.getPolicyResolution());
+                })
+                .expectComplete()
+                .verify();
+        }
+        // Try setting attestation policy with an unsigned policy token - this should be allowed
+        // in AAD mode.
+        if (clientType == ClientTypes.AAD) {
+            // Test setting the policy. This works for both AAD and Isolated mode.
+            StepVerifier.create(client.setAttestationPolicy(attestationType, new AttestationPolicySetOptions()
+                    .setPolicy("version=1.0; authorizationrules{=> permit();}; issuancerules{};")))
+                .assertNext(result -> {
+                    assertEquals(PolicyModification.UPDATED, result.getPolicyResolution());
+                })
                 .expectComplete()
                 .verify();
         }
     }
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getPolicyClients")
+    void testSetAttestationPolicyWithResponseAsync(HttpClient httpClient, String clientUri, AttestationType attestationType) {
+        ClientTypes clientType = classifyClient(clientUri);
+        // We can't set attestation policy on the shared client, so just exit early.
+        assumeTrue(clientType != ClientTypes.SHARED, "This test does not work on shared instances.");
+
+        AttestationAdministrationClientBuilder attestationBuilder = getAdministrationBuilder(httpClient, clientUri);
+        AttestationAdministrationAsyncClient client = attestationBuilder.buildAsyncClient();
+
+        // AAD or isolated: We want to try setting policy with the Isolated signing certificate.
+        if (clientType == ClientTypes.AAD || clientType == ClientTypes.ISOLATED) {
+            X509Certificate certificate = getIsolatedSigningCertificate();
+            PrivateKey key = getIsolatedSigningKey();
+
+            AttestationSigningKey signingKey = new AttestationSigningKey()
+                .setPrivateKey(key)
+                .setCertificate(certificate);
+
+            // Test setting the policy. This works for both AAD and Isolated mode.
+            StepVerifier.create(client.setAttestationPolicyWithResponse(attestationType, new AttestationPolicySetOptions()
+                    .setPolicy("version=1.0; authorizationrules{=> permit();}; issuancerules{};")
+                    .setAttestationSigner(signingKey)))
+                .assertNext(response -> {
+                    assertEquals(PolicyModification.UPDATED, response.getValue().getPolicyResolution());
+                })
+                .expectComplete()
+                .verify();
+        }
+
+        // Try setting attestation policy with an arbitrary signing key - this should be allowed
+        // in AAD mode.
+        if (clientType == ClientTypes.AAD) {
+            X509Certificate certificate = getPolicySigningCertificate0();
+            PrivateKey key = getPolicySigningKey0();
+
+            AttestationSigningKey signingKey = new AttestationSigningKey()
+                .setPrivateKey(key)
+                .setCertificate(certificate);
+
+            // Test setting the policy. This works for both AAD and Isolated mode.
+            StepVerifier.create(client.setAttestationPolicyWithResponse(attestationType, new AttestationPolicySetOptions()
+                    .setPolicy("version=1.0; authorizationrules{=> permit();}; issuancerules{};")
+                    .setAttestationSigner(signingKey)))
+                .assertNext(response -> {
+                    assertEquals(PolicyModification.UPDATED, response.getValue().getPolicyResolution());
+                })
+                .expectComplete()
+                .verify();
+        }
+        // Try setting attestation policy with an unsigned policy token - this should be allowed
+        // in AAD mode.
+        if (clientType == ClientTypes.AAD) {
+            // Test setting the policy. This works for both AAD and Isolated mode.
+            StepVerifier.create(client.setAttestationPolicyWithResponse(attestationType, new AttestationPolicySetOptions()
+                    .setPolicy("version=1.0; authorizationrules{=> permit();}; issuancerules{};")))
+                .assertNext(response -> {
+                    assertEquals(PolicyModification.UPDATED, response.getValue().getPolicyResolution());
+                })
+                .expectComplete()
+                .verify();
+        }
+    }
+
 
     /**
      * Verifies the basic response for a Get Attestation Policy API - this simply verifies that the server

@@ -14,6 +14,7 @@ import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSSigner;
 import com.nimbusds.jose.crypto.RSASSASigner;
 import com.nimbusds.jose.crypto.RSASSAVerifier;
+import com.nimbusds.jose.util.X509CertUtils;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
 import org.junit.jupiter.api.BeforeAll;
@@ -26,6 +27,7 @@ import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
@@ -96,8 +98,8 @@ public class AttestationClientTestBase extends TestBase {
      * @param clientUri - Client base URI to access the service.
      * @return Returns an attestation client builder corresponding to the httpClient and clientUri.
      */
-    AttestationClientBuilder getAdministrationBuilder(HttpClient httpClient, String clientUri) {
-        AttestationClientBuilder builder = getAttestationBuilder(httpClient, clientUri);
+    AttestationAdministrationClientBuilder getAdministrationBuilder(HttpClient httpClient, String clientUri) {
+        AttestationAdministrationClientBuilder builder = getAttestationAdministrationBuilder(httpClient, clientUri);
         if (!interceptorManager.isPlaybackMode()) {
             builder.credential(new EnvironmentCredentialBuilder().httpClient(httpClient).build());
         }
@@ -111,8 +113,8 @@ public class AttestationClientTestBase extends TestBase {
      * @param clientUri - Client base URI to access the service.
      * @return Returns an attestation client builder corresponding to the httpClient and clientUri.
      */
-    AttestationClientBuilder getAuthenticatedAttestationBuilder(HttpClient httpClient, String clientUri) {
-        AttestationClientBuilder builder = getAttestationBuilder(httpClient, clientUri);
+    AttestationAdministrationClientBuilder getAuthenticatedAttestationBuilder(HttpClient httpClient, String clientUri) {
+        AttestationAdministrationClientBuilder builder = getAttestationAdministrationBuilder(httpClient, clientUri);
         if (!interceptorManager.isPlaybackMode()) {
             builder.credential(new EnvironmentCredentialBuilder().httpClient(httpClient).build());
         }
@@ -142,6 +144,30 @@ public class AttestationClientTestBase extends TestBase {
         }
         return builder;
     }
+    /**
+     * Retrieve an attestationClientBuilder for the specified HTTP client and client URI
+     * @param httpClient - HTTP client ot be used for the attestation client.
+     * @param clientUri - Client base URI to access the service.
+     * @return Returns an attestation client builder corresponding to the httpClient and clientUri.
+     */
+    AttestationAdministrationClientBuilder getAttestationAdministrationBuilder(HttpClient httpClient, String clientUri) {
+        AttestationAdministrationClientBuilder builder = new AttestationAdministrationClientBuilder()
+            .endpoint(clientUri)
+            .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
+//            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .addPolicy(interceptorManager.getRecordPolicy());
+
+        // In playback mode, we want to disable expiration times, since the tokens in the recordings
+        // will almost certainly expire.
+        if (interceptorManager.isPlaybackMode()) {
+            builder.tokenValidationOptions(new AttestationTokenValidationOptions()
+                .setValidateExpiresOn(false)
+                .setValidateNotBefore(false)
+            );
+        }
+        return builder;
+    }
+
 
     /**
      * Verifies an MAA attestation token and returns the set of attestation claims embedded in the token.
@@ -240,7 +266,7 @@ public class AttestationClientTestBase extends TestBase {
      * Retrieve the signing certificate used for the isolated attestation instance.
      * @return Returns a base64 encoded X.509 certificate used to sign policy documents.
      */
-    String getIsolatedSigningCertificate() {
+    String getIsolatedSigningCertificateBase64() {
         String signingCertificate = Configuration.getGlobalConfiguration().get("isolatedSigningCertificate");
         if (signingCertificate == null) {
             // Use a pre-canned signing certificate captured at provisioning time.
@@ -259,11 +285,15 @@ public class AttestationClientTestBase extends TestBase {
         return signingCertificate;
     }
 
+    X509Certificate getIsolatedSigningCertificate() {
+        return X509CertUtils.parse(Base64.getDecoder().decode(getIsolatedSigningCertificateBase64()));
+    }
+
     /**
      * Retrieve the signing key used for the isolated attestation instance.
      * @return Returns a base64 encoded RSA Key used to sign policy documents.
      */
-    String getIsolatedSigningKey() {
+    String getIsolatedSigningKeyBase64() {
         String signingKey = Configuration.getGlobalConfiguration().get("isolatedSigningKey");
         if (signingKey == null) {
             // Use a pre-canned signing key captured at provisioning time.
@@ -289,28 +319,80 @@ public class AttestationClientTestBase extends TestBase {
         return signingKey;
     }
 
+    PrivateKey privateKeyFromBase64(String base64) {
+        byte[] signingKey = Base64.getDecoder().decode(base64);
+        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(signingKey);
+        KeyFactory keyFactory;
+        try {
+            keyFactory = KeyFactory.getInstance("RSA");
+        } catch (NoSuchAlgorithmException e) {
+            throw logger.logThrowableAsError(new RuntimeException(e));
+        }
+
+        PrivateKey privateKey;
+        try {
+            privateKey = keyFactory.generatePrivate(keySpec);
+        } catch (InvalidKeySpecException e) {
+            throw logger.logExceptionAsError(new RuntimeException(e));
+        }
+        return privateKey;
+    }
+
+    PrivateKey getIsolatedSigningKey() {
+        return privateKeyFromBase64(getIsolatedSigningKeyBase64());
+    }
+
     /**
      * Retrieves a certificate which can be used to sign attestation policies.
      * @return Returns a base64 encoded X.509 certificate which can be used to sign attestation policies.
      */
-    String getPolicySigningCertificate0() {
+    String getPolicySigningCertificate0Base64() {
         String certificate = Configuration.getGlobalConfiguration().get("policySigningCertificate0");
         if (certificate == null) {
-            certificate = "MIIC1jCCAb6gAwIBAgIIAxfcH6Co5DowDQYJKoZIhvcNAQELBQAwIjEgMB4GA1UEAxMXQXR0ZXN0YXRpb25DZXJ"
-                + "0aWZpY2F0ZTAwHhcNMjEwMTE5MjAxMjU2WhcNMjIwMTE5MjAxMjU2WjAiMSAwHgYDVQQDExdBdHRlc3RhdGlvbkNlcnRpZmlj"
-                + "YXRlMDCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAOOpb5GvUCuOYiB4ZazIePtSazdXGDyjtFlr4ulo1VY1Ai91X"
-                + "IcWIPELCV1OfQiIoJlj096u3cirP1GvCKgb4FTNHHi7omDaQvYRmuZZ6KXrqNi5Iu/jKjGgjwYt+FYV/9eqYCWdyS0RjMbKw7"
-                + "sZUvBxTDeTqQunwbjPZ1y4JbxXx6xwcZJHfwD6g7aHslsblHh4zM1mhiuoIMpNUeeThLwQTD6oGSmIt+hqRbfvd3Ljr/v7W3m"
-                + "SKvw5X9L85PNHaDIUd4vHSDiytZUoXyhtbC8RKGzxgZCz6gFwM5JF6QhYE/A84HFH7JZ3FKk1UJBoTjcv63BshT7Pt3fYMZqV"
-                + "SzkCAwEAAaMQMA4wDAYDVR0TBAUwAwEB/zANBgkqhkiG9w0BAQsFAAOCAQEAC+YKGp6foV94lYQB/yNQ53Bk+YeR4dgAkR99U"
-                + "t1VvvXKyWnka/X8QRjKoaPULDZH4+9ZXg6lSfhuEGTSPUzO294mlNbF6n6cuuuawe3OeuZUO53b4xYXPRv898FBRxdD+FCW/f"
-                + "A5HLBrGItfk31+aNUFryCd5RrJfJU8Rurm+7uGPtS16Ft0P7xSnL0C7nfHNVuEKFV0ZbzgzXlzkKQT4d3fYpvOxzYoXImxzwz"
-                + "W/jzZjN3aKbOlmY2LyW8J5BKKgA3C4FRWwCTmgqYp2vQhsw1HgCeBjmBN5/imnk2lsgjrvvSdlkXOnNf5atibuguYzdakz99b"
-                + "wwWWsd5HddtcyA==";
+            certificate = "MIIC1jCCAb6gAwIBAgIINiKXaYxzhQkwDQYJKoZIhvcNAQELBQAwIjEgMB4GA1UEAxMXQXR0ZXN0YXRpb25DZXJ"
+                + "0aWZpY2F0ZTAwHhcNMjEwODA1MjM0OTAyWhcNMjIwODA1MjM0OTAyWjAiMSAwHgYDVQQDExdBdHRlc3RhdGlvbkNlcnRpZmljYXRlMD"
+                + "CCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMqSkK84QAxkBvgWAsqKrVMIBl/sv1MRWXv8S8lHMhy6xCcVnYtfxlqwVqOYl"
+                + "PJq6j8k4m1VLIhJqZTSAtjIksX8Gli15MGMIz6qi1QZgQpExEuWQR0WJC7y7z8rbB1y5LvKt8waxyD13n5dyJM2acEyNY0oxT019aBG"
+                + "9q7Pi74JN6c18YIveG4QcCPs9v2lruXdzXK8KMcNyFNd5KkbMXYCHJgFJUCi45Zcr6+lNTD6vHwJGoWfu8c5wauAsOODHrMZjiABQJi"
+                + "6pA3VarHQF6mLYCIkAl6be2nb9Dp/eH9RUxovZLn2FIu+Zn5ARGaY98kGm7L52in0dH1V/bKuxwUCAwEAAaMQMA4wDAYDVR0TBAUwAwEB"
+                + "/zANBgkqhkiG9w0BAQsFAAOCAQEAxSGcikwkx2hSTwtDCoZZGQOOA1Zle/6rrNqjiq2nkg7UJpgn+zbi9a18RJSyVJJyYpwJnA2Kg9Ol9"
+                + "QFTf9E8z+LufI27KE/AubhqjdxZBrgfGdjKY8olNNEeCa5Up4uZN4EkOl4dqcj+NyyFjo2Sp9YfbgafDW96CCOl+u1GDZA2IHrGMrUe"
+                + "kiOfqWikqlyYy+vaNvrq6IHIA+pcaiEAWekQmVOMHB/96ubDlyW65N6ofVZ2Q1SPV+cxYFbjQQmg9m/lbLIVVdZsy3tlqFtYijcZNl/"
+                + "cEC0iMoZDrz8JTVmCU/cMxYqS0EZMJYCOqjLkrdIqndCnJW4ci1J6k94L9A==";
         }
         return certificate;
     }
 
+    String getPolicySigningKey0Base64() {
+        String key = Configuration.getGlobalConfiguration().get("policySigningKey0");
+        if (key == null) {
+            key = "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDKkpCvOEAMZAb4FgLKiq1TCAZf7L9TEVl7/EvJRzIcusQ"
+                + "nFZ2LX8ZasFajmJTyauo/JOJtVSyISamU0gLYyJLF/BpYteTBjCM+qotUGYEKRMRLlkEdFiQu8u8/K2wdcuS7yrfMGscg9d5+XciTNm"
+                + "nBMjWNKMU9NfWgRvauz4u+CTenNfGCL3huEHAj7Pb9pa7l3c1yvCjHDchTXeSpGzF2AhyYBSVAouOWXK+vpTUw+rx8CRqFn7vHOcGrg"
+                + "LDjgx6zGY4gAUCYuqQN1Wqx0Bepi2AiJAJem3tp2/Q6f3h/UVMaL2S59hSLvmZ+QERmmPfJBpuy+dop9HR9Vf2yrscFAgMBAAECggEB"
+                + "AID8ZkhL5ux83LsnOMvDFa4jE/wMgZ7hEzuRYKhfPxdwDOpeJxzR9TlVwzUUOPNLBLEESXEYpOx7CxIJz2o9/Mc4SYZm+6wKEX8blPA"
+                + "N9U6Wju8aU4ezy4JhidmNSqBNwjuZTwMVoeno5K1OBiNGqHwt/k9NwJnDPA28YeLZoL91eNTtTfJDxjPlkKKtmcmuczE4PABIoZJqz5"
+                + "bMl9ezDJQ96QnuNdKo+V9aoKCvixrhOvOVFr64yB6T1k/dE+/if2qdqiebbNZDUUvmzdGOG8Nlv9HYN2TIcfCOvN03Cwn2sKbE7Wcrw"
+                + "ic9o6H4evWsVsIydWMEPT8tnt9telHWIxkCgYEA7IzXvRm8IiwbT1YgwlA+GS+Wuz3Pj/X+Ah2aY0b5FzvHlqGGdpayZg5SMvBVqkj9"
+                + "UwROZB4ml+FTccjzE1otmuoYAkvVer4aphs1T8l2Gzzpx6bOoOCb0FXvMRRD3MpfXKSb5imaorEcFYJuCgcvxbf3jl6VWGb+ijsCWZa"
+                + "y918CgYEA2zqGbjlNFyuwqXI3wYvSa8PgJfgv4gigjXRS8UQH8UbWp7qmSgzAeu2kubSlyP+xNUTV+RbarSjBb+wNq/vdop+daUuHoX"
+                + "ov2lKFpE9UIB5xEBkhIV3ODxEfj5spCwuE9UKcok3NFm3RhgB+wQDa93PhhedelERvCaypvJQfUBsCgYABK2EVqj7n3Ff2OHLJAySLc"
+                + "1THcDLKf2jWEddljkBFASKnd/z2MSCIqKF3ZwDFar713huVGyENtyt2cIvjGJsJHQcpW76ecLopABFvZ4uR7uco+YYj/XhHu2UHVRZQ"
+                + "zR9TkezDYolFLKL66D4rBoYR8CrlJUqPuVKg1FHap4gS+QKBgHVNlH7IBFrgks+oAPN8GGR3U6mdaimdCiOGWZclGsbca6El+zJmLlv"
+                + "Yaqq/YXHyduSU55U3yFydERwNB6e9xfLtSzH7KyCZG5/LRh0MIWxqPX8qoxKSed6P//48PLLfQA5nzR3/WTymGFWGUEx/Y6rCg6q9iV"
+                + "r2Xx+jFtODwll/AoGAUw8QdBn3886mNDBRbEZECgNYil7YRBfhQ593LXAUpAzM8AqI64L5xQOCV2yX+sx793t88OVoJTP/kzmP43POo"
+                + "380F4Q4cs5h57eFH7Hy4CEFoyTgI1zLPGoOAYLHLZmtUiLW0hCdctYoAHLcsJS+HzLvpka55FaTqgiF/yf46O0=";
+        }
+        return key;
+    }
+
+    X509Certificate getPolicySigningCertificate0() {
+        return X509CertUtils.parse(Base64.getDecoder().decode(getPolicySigningCertificate0Base64()));
+    }
+
+    PrivateKey getPolicySigningKey0() {
+        return privateKeyFromBase64(getPolicySigningKey0Base64());
+    }
     /**
      * Returns the location in which the tests are running.
      * @return returns the location in which the tests are running.
