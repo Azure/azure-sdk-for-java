@@ -4,6 +4,8 @@
 package com.azure.spring.core.properties.profile;
 
 import com.azure.spring.core.aware.AzureProfileAware;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
 import static com.azure.spring.core.aware.AzureProfileAware.CloudType.AZURE;
@@ -16,6 +18,8 @@ import static com.azure.spring.core.aware.AzureProfileAware.CloudType.OTHER;
  * The AzureEnvironment defines all properties to Azure services, such as endpoints, resource ids, etc.
  */
 public class KnownAzureEnvironment extends AzureEnvironment {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(KnownAzureEnvironment.class);
 
     public static final KnownAzureEnvironment AZURE_CHINA_ENV = new KnownAzureEnvironment(AZURE_CHINA);
     public static final KnownAzureEnvironment AZURE_ENV = new KnownAzureEnvironment(AZURE);
@@ -50,79 +54,79 @@ public class KnownAzureEnvironment extends AzureEnvironment {
     }
 
     public void setPortal(String portal) {
-        throw new UnsupportedOperationException("Set method is not supported in a KnownAzureEnvironment");
+        LOGGER.warn("Set method is not supported in a KnownAzureEnvironment");
     }
 
     public void setPublishingProfile(String publishingProfile) {
-        throw new UnsupportedOperationException("Set method is not supported in a KnownAzureEnvironment");
+        LOGGER.warn("Set method is not supported in a KnownAzureEnvironment");
     }
 
     public void setManagementEndpoint(String managementEndpoint) {
-        throw new UnsupportedOperationException("Set method is not supported in a KnownAzureEnvironment");
+        LOGGER.warn("Set method is not supported in a KnownAzureEnvironment");
     }
 
     public void setResourceManagerEndpoint(String resourceManagerEndpoint) {
-        throw new UnsupportedOperationException("Set method is not supported in a KnownAzureEnvironment");
+        LOGGER.warn("Set method is not supported in a KnownAzureEnvironment");
     }
 
     public void setSqlManagementEndpoint(String sqlManagementEndpoint) {
-        throw new UnsupportedOperationException("Set method is not supported in a KnownAzureEnvironment");
+        LOGGER.warn("Set method is not supported in a KnownAzureEnvironment");
     }
 
     public void setSqlServerHostnameSuffix(String sqlServerHostnameSuffix) {
-        throw new UnsupportedOperationException("Set method is not supported in a KnownAzureEnvironment");
+        LOGGER.warn("Set method is not supported in a KnownAzureEnvironment");
     }
 
     public void setGalleryEndpoint(String galleryEndpoint) {
-        throw new UnsupportedOperationException("Set method is not supported in a KnownAzureEnvironment");
+        LOGGER.warn("Set method is not supported in a KnownAzureEnvironment");
     }
 
     public void setActiveDirectoryEndpoint(String activeDirectoryEndpoint) {
-        throw new UnsupportedOperationException("Set method is not supported in a KnownAzureEnvironment");
+        LOGGER.warn("Set method is not supported in a KnownAzureEnvironment");
     }
 
     public void setActiveDirectoryResourceId(String activeDirectoryResourceId) {
-        throw new UnsupportedOperationException("Set method is not supported in a KnownAzureEnvironment");
+        LOGGER.warn("Set method is not supported in a KnownAzureEnvironment");
     }
 
     public void setActiveDirectoryGraphEndpoint(String activeDirectoryGraphEndpoint) {
-        throw new UnsupportedOperationException("Set method is not supported in a KnownAzureEnvironment");
+        LOGGER.warn("Set method is not supported in a KnownAzureEnvironment");
     }
 
     public void setMicrosoftGraphEndpoint(String microsoftGraphEndpoint) {
-        throw new UnsupportedOperationException("Set method is not supported in a KnownAzureEnvironment");
+        LOGGER.warn("Set method is not supported in a KnownAzureEnvironment");
     }
 
     public void setDataLakeEndpointResourceId(String dataLakeEndpointResourceId) {
-        throw new UnsupportedOperationException("Set method is not supported in a KnownAzureEnvironment");
+        LOGGER.warn("Set method is not supported in a KnownAzureEnvironment");
     }
 
     public void setActiveDirectoryGraphApiVersion(String activeDirectoryGraphApiVersion) {
-        throw new UnsupportedOperationException("Set method is not supported in a KnownAzureEnvironment");
+        LOGGER.warn("Set method is not supported in a KnownAzureEnvironment");
     }
 
     public void setStorageEndpointSuffix(String storageEndpointSuffix) {
-        throw new UnsupportedOperationException("Set method is not supported in a KnownAzureEnvironment");
+        LOGGER.warn("Set method is not supported in a KnownAzureEnvironment");
     }
 
     public void setKeyVaultDnsSuffix(String keyVaultDnsSuffix) {
-        throw new UnsupportedOperationException("Set method is not supported in a KnownAzureEnvironment");
+        LOGGER.warn("Set method is not supported in a KnownAzureEnvironment");
     }
 
     public void setAzureDataLakeStoreFileSystemEndpointSuffix(String azureDataLakeStoreFileSystemEndpointSuffix) {
-        throw new UnsupportedOperationException("Set method is not supported in a KnownAzureEnvironment");
+        LOGGER.warn("Set method is not supported in a KnownAzureEnvironment");
     }
 
     public void setAzureDataLakeAnalyticsCatalogAndJobEndpointSuffix(String azureDataLakeAnalyticsCatalogAndJobEndpointSuffix) {
-        throw new UnsupportedOperationException("Set method is not supported in a KnownAzureEnvironment");
+        LOGGER.warn("Set method is not supported in a KnownAzureEnvironment");
     }
 
     public void setAzureLogAnalyticsEndpoint(String azureLogAnalyticsEndpoint) {
-        throw new UnsupportedOperationException("Set method is not supported in a KnownAzureEnvironment");
+        LOGGER.warn("Set method is not supported in a KnownAzureEnvironment");
     }
 
     public void setAzureApplicationInsightsEndpoint(String azureApplicationInsightsEndpoint) {
-        throw new UnsupportedOperationException("Set method is not supported in a KnownAzureEnvironment");
+        LOGGER.warn("Set method is not supported in a KnownAzureEnvironment");
     }
 
 
