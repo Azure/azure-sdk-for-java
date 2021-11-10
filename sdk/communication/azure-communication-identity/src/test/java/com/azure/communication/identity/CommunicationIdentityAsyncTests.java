@@ -2,6 +2,10 @@
 // Licensed under the MIT License.
 package com.azure.communication.identity;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -17,8 +21,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class CommunicationIdentityAsyncTests extends CommunicationIdentityClientTestBase {
     private CommunicationIdentityAsyncClient asyncClient;
@@ -302,7 +304,12 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
                     List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
                     return asyncClient.getToken(communicationUser, scopes);
                 }))
-            .assertNext(issuedToken -> verifyTokenNotEmpty(issuedToken))
+            .assertNext(issuedToken -> {
+                assertNotNull(issuedToken.getToken());
+                assertFalse(issuedToken.getToken().isEmpty());
+                assertNotNull(issuedToken.getExpiresAt());
+                assertFalse(issuedToken.getExpiresAt().toString().isEmpty());
+            })
             .verifyComplete();
     }
 
@@ -321,7 +328,10 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
                     return asyncClient.getTokenWithResponse(communicationUser, scopes);
                 }))
             .assertNext(issuedToken -> {
-                verifyTokenNotEmpty(issuedToken.getValue());
+                assertNotNull(issuedToken.getValue().getToken());
+                assertFalse(issuedToken.getValue().getToken().isEmpty());
+                assertNotNull(issuedToken.getValue().getExpiresAt());
+                assertFalse(issuedToken.getValue().getExpiresAt().toString().isEmpty());
                 assertEquals(issuedToken.getStatusCode(), 200);
             })
             .verifyComplete();
@@ -365,110 +375,6 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
         StepVerifier.create(
             asyncClient.getTokenWithResponse(null, scopes))
             .verifyError(NullPointerException.class);
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getTokenForTeamsUser(HttpClient httpClient) {
-        if (skipExchangeAadTeamsTokenTest()) {
-            return;
-        }
-
-        // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        asyncClient = setupAsyncClient(builder, "getTokenForTeamsUser");
-        try {
-            String teamsUserAadToken = generateTeamsUserAadToken();
-            // Action & Assert
-            Mono<AccessToken> response = asyncClient.getTokenForTeamsUser(teamsUserAadToken);
-            StepVerifier.create(response)
-                .assertNext(issuedToken -> verifyTokenNotEmpty(issuedToken))
-                .verifyComplete();
-        } catch (Exception exception) {
-            fail("Could not generate teams token");
-        }
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getTokenForTeamsUserWithEmptyToken(HttpClient httpClient) {
-        if (skipExchangeAadTeamsTokenTest()) {
-            return;
-        }
-
-        // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        asyncClient = setupAsyncClient(builder, "getTokenForTeamsUserWithEmptyToken");
-        // Action & Assert
-        Mono<AccessToken> response = asyncClient.getTokenForTeamsUser("");
-        StepVerifier.create(response)
-            .verifyErrorSatisfies(throwable -> {
-                assertNotNull(throwable.getMessage());
-                assertTrue(throwable.getMessage().contains("401"));
-            });
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getTokenForTeamsUserWithNull(HttpClient httpClient) {
-        if (skipExchangeAadTeamsTokenTest()) {
-            return;
-        }
-
-        // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        asyncClient = setupAsyncClient(builder, "getTokenForTeamsUserWithNull");
-        // Action & Assert
-        Mono<AccessToken> response = asyncClient.getTokenForTeamsUser(null);
-        StepVerifier.create(response)
-            .verifyErrorSatisfies(throwable -> {
-                assertNotNull(throwable.getMessage());
-                assertTrue(throwable.getMessage().contains("token"));
-            });
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getTokenForTeamsUserWithInvalidToken(HttpClient httpClient) {
-        if (skipExchangeAadTeamsTokenTest()) {
-            return;
-        }
-
-        // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        asyncClient = setupAsyncClient(builder, "getTokenForTeamsUserWithInvalidToken");
-        // Action & Assert
-        Mono<AccessToken> response = asyncClient.getTokenForTeamsUser("invalid");
-        StepVerifier.create(response)
-            .verifyErrorSatisfies(throwable -> {
-                assertNotNull(throwable.getMessage());
-                assertTrue(throwable.getMessage().contains("401"));
-            });
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getTokenForTeamsUserWithResponse(HttpClient httpClient) {
-        if (skipExchangeAadTeamsTokenTest()) {
-            return;
-        }
-
-        // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilder(httpClient);
-        asyncClient = setupAsyncClient(builder, "getTokenForTeamsUserWithResponse");
-        try {
-            String teamsUserAadToken = generateTeamsUserAadToken();
-            // Action & Assert
-            Mono<Response<AccessToken>> response = asyncClient.getTokenForTeamsUserWithResponse(teamsUserAadToken);
-            StepVerifier.create(response)
-                .assertNext(issuedTokenResponse -> {
-                    verifyTokenNotEmpty(issuedTokenResponse.getValue());
-                    assertEquals(200, issuedTokenResponse.getStatusCode(), "Expect status code to be 201");
-                })
-                .verifyComplete();
-        } catch (Exception exception) {
-            fail("Could not generate teams token");
-        }
     }
 
     @ParameterizedTest
@@ -598,7 +504,12 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
                     List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
                     return asyncClient.getToken(communicationUser, scopes);
                 }))
-            .assertNext(issuedToken -> verifyTokenNotEmpty(issuedToken))
+            .assertNext(issuedToken -> {
+                assertNotNull(issuedToken.getToken());
+                assertFalse(issuedToken.getToken().isEmpty());
+                assertNotNull(issuedToken.getExpiresAt());
+                assertFalse(issuedToken.getExpiresAt().toString().isEmpty());
+            })
             .verifyComplete();
     }
 
@@ -616,55 +527,13 @@ public class CommunicationIdentityAsyncTests extends CommunicationIdentityClient
                     List<CommunicationTokenScope> scopes = Arrays.asList(CommunicationTokenScope.CHAT);
                     return asyncClient.getTokenWithResponse(communicationUser, scopes);
                 }))
-            .assertNext(issuedToken -> verifyTokenNotEmpty(issuedToken.getValue()))
+            .assertNext(issuedToken -> {
+                assertNotNull(issuedToken.getValue().getToken());
+                assertFalse(issuedToken.getValue().getToken().isEmpty());
+                assertNotNull(issuedToken.getValue().getExpiresAt());
+                assertFalse(issuedToken.getValue().getExpiresAt().toString().isEmpty());
+            })
             .verifyComplete();
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getTokenForTeamsUserUsingManagedIdentity(HttpClient httpClient) {
-        if (skipExchangeAadTeamsTokenTest()) {
-            return;
-        }
-
-        // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
-        asyncClient = setupAsyncClient(builder, "getTokenForTeamsUserUsingManagedIdentity");
-        try {
-            String teamsUserAadToken = generateTeamsUserAadToken();
-            // Action & Assert
-            Mono<AccessToken> response = asyncClient.getTokenForTeamsUser(teamsUserAadToken);
-            StepVerifier.create(response)
-                .assertNext(issuedToken -> verifyTokenNotEmpty(issuedToken))
-                .verifyComplete();
-        } catch (Exception exception) {
-            fail("Could not generate teams token");
-        }
-    }
-
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getTokenForTeamsUserWithResponseUsingManagedIdentity(HttpClient httpClient) {
-        if (skipExchangeAadTeamsTokenTest()) {
-            return;
-        }
-
-        // Arrange
-        CommunicationIdentityClientBuilder builder = createClientBuilderUsingManagedIdentity(httpClient);
-        asyncClient = setupAsyncClient(builder, "getTokenForTeamsUserWithResponseUsingManagedIdentity");
-        try {
-            String teamsUserAadToken = generateTeamsUserAadToken();
-            // Action & Assert
-            Mono<Response<AccessToken>> response = asyncClient.getTokenForTeamsUserWithResponse(teamsUserAadToken);
-            StepVerifier.create(response)
-                .assertNext(issuedTokenResponse -> {
-                    verifyTokenNotEmpty(issuedTokenResponse.getValue());
-                    assertEquals(200, issuedTokenResponse.getStatusCode(), "Expect status code to be 201");
-                })
-                .verifyComplete();
-        } catch (Exception exception) {
-            fail("Could not generate teams token");
-        }
     }
 
     private CommunicationIdentityAsyncClient setupAsyncClient(CommunicationIdentityClientBuilder builder, String testName) {
