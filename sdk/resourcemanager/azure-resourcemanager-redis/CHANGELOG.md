@@ -4,7 +4,7 @@
 
 ### Features Added
 
- - supported `redisVersion` in convenient layer of `redis`
+ - Supported `redisVersion` in convenient layer of `redis`.
 
 ## 2.9.0 (2021-10-21)
 
