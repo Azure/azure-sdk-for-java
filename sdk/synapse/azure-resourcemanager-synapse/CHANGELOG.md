@@ -4,92 +4,14 @@
 
 - Azure Resource Manager Synapse client library for Java. This package contains Microsoft Azure SDK for Synapse Management SDK. Azure Synapse Analytics Management Client. Package tag package-composite-v2. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
-
-
-* `models.KustoPoolsOperations` was removed
-
-
-
-* `withCreateMode(java.lang.String)` was removed
-* `java.lang.String createMode()` -> `models.CreateMode createMode()`
-
-
-
-* `withCreateMode(java.lang.String)` was removed
-
-
-
-* `java.lang.String createMode()` -> `models.CreateMode createMode()`
-
-
-
-* `withCreateMode(java.lang.String)` was removed
-
-
-
-* `kustoPoolsOperations()` was removed
-
-
-
-* `models.CreateMode` was added
-
-
-
-* `withCreateMode(models.CreateMode)` was added
-
-
-
-* `removeLanguageExtensions(java.lang.String,java.lang.String,java.lang.String,models.LanguageExtensionsList)` was added
-* `delete(java.lang.String,java.lang.String,java.lang.String)` was added
-* `getWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
-* `detachFollowerDatabases(java.lang.String,java.lang.String,java.lang.String,fluent.models.FollowerDatabaseDefinitionInner)` was added
-* `detachFollowerDatabases(java.lang.String,java.lang.String,java.lang.String,fluent.models.FollowerDatabaseDefinitionInner,com.azure.core.util.Context)` was added
-* `listByWorkspaceWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
-* `stop(java.lang.String,java.lang.String,java.lang.String)` was added
-* `listFollowerDatabases(java.lang.String,java.lang.String,java.lang.String)` was added
-* `start(java.lang.String,java.lang.String,java.lang.String)` was added
-* `checkNameAvailability(java.lang.String,models.KustoPoolCheckNameRequest)` was added
-* `listLanguageExtensions(java.lang.String,java.lang.String,java.lang.String)` was added
-* `listSkusByResource(java.lang.String,java.lang.String,java.lang.String)` was added
-* `addLanguageExtensions(java.lang.String,java.lang.String,java.lang.String,models.LanguageExtensionsList,com.azure.core.util.Context)` was added
-* `checkNameAvailabilityWithResponse(java.lang.String,models.KustoPoolCheckNameRequest,com.azure.core.util.Context)` was added
-* `listLanguageExtensions(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
-* `listFollowerDatabases(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
-* `listByWorkspace(java.lang.String,java.lang.String)` was added
-* `start(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
-* `define(java.lang.String)` was added
-* `getById(java.lang.String)` was added
-* `addLanguageExtensions(java.lang.String,java.lang.String,java.lang.String,models.LanguageExtensionsList)` was added
-* `delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
-* `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
-* `removeLanguageExtensions(java.lang.String,java.lang.String,java.lang.String,models.LanguageExtensionsList,com.azure.core.util.Context)` was added
-* `stop(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
-* `get(java.lang.String,java.lang.String,java.lang.String)` was added
-* `deleteById(java.lang.String)` was added
-* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
-* `listSkusByResource(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
-
-
-
-* `withCreateMode(models.CreateMode)` was added
-
-
-
-* `withManagedIdentityResourceId(java.lang.String)` was added
-* `managedIdentityResourceId()` was added
-
-
-
-* `withCreateMode(models.CreateMode)` was added
-
 ### Breaking Changes
 
 * `models.KustoPoolsOperations` was removed
 
 #### `models.SqlPoolPatchInfo` was modified
 
-* `java.lang.String createMode()` -> `models.CreateMode createMode()`
 * `withCreateMode(java.lang.String)` was removed
+* `java.lang.String createMode()` -> `models.CreateMode createMode()`
 
 #### `models.SqlPool$Definition` was modified
 
@@ -117,35 +39,35 @@
 
 #### `models.KustoPools` was modified
 
-* `stop(java.lang.String,java.lang.String,java.lang.String)` was added
-* `getById(java.lang.String)` was added
-* `checkNameAvailability(java.lang.String,models.KustoPoolCheckNameRequest)` was added
-* `listLanguageExtensions(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 * `removeLanguageExtensions(java.lang.String,java.lang.String,java.lang.String,models.LanguageExtensionsList)` was added
-* `getWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
-* `listFollowerDatabases(java.lang.String,java.lang.String,java.lang.String)` was added
 * `delete(java.lang.String,java.lang.String,java.lang.String)` was added
-* `listFollowerDatabases(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `getWithResponse(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 * `detachFollowerDatabases(java.lang.String,java.lang.String,java.lang.String,fluent.models.FollowerDatabaseDefinitionInner)` was added
-* `stop(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `detachFollowerDatabases(java.lang.String,java.lang.String,java.lang.String,fluent.models.FollowerDatabaseDefinitionInner,com.azure.core.util.Context)` was added
+* `listByWorkspaceWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `stop(java.lang.String,java.lang.String,java.lang.String)` was added
+* `listFollowerDatabases(java.lang.String,java.lang.String,java.lang.String)` was added
+* `start(java.lang.String,java.lang.String,java.lang.String)` was added
+* `checkNameAvailability(java.lang.String,models.KustoPoolCheckNameRequest)` was added
+* `listLanguageExtensions(java.lang.String,java.lang.String,java.lang.String)` was added
 * `listSkusByResource(java.lang.String,java.lang.String,java.lang.String)` was added
 * `addLanguageExtensions(java.lang.String,java.lang.String,java.lang.String,models.LanguageExtensionsList,com.azure.core.util.Context)` was added
-* `delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
-* `addLanguageExtensions(java.lang.String,java.lang.String,java.lang.String,models.LanguageExtensionsList)` was added
-* `define(java.lang.String)` was added
 * `checkNameAvailabilityWithResponse(java.lang.String,models.KustoPoolCheckNameRequest,com.azure.core.util.Context)` was added
-* `deleteById(java.lang.String)` was added
+* `listLanguageExtensions(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `listFollowerDatabases(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 * `listByWorkspace(java.lang.String,java.lang.String)` was added
-* `detachFollowerDatabases(java.lang.String,java.lang.String,java.lang.String,fluent.models.FollowerDatabaseDefinitionInner,com.azure.core.util.Context)` was added
-* `listLanguageExtensions(java.lang.String,java.lang.String,java.lang.String)` was added
 * `start(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
-* `get(java.lang.String,java.lang.String,java.lang.String)` was added
-* `start(java.lang.String,java.lang.String,java.lang.String)` was added
-* `listSkusByResource(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
-* `listByWorkspaceWithResponse(java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
-* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `define(java.lang.String)` was added
+* `getById(java.lang.String)` was added
+* `addLanguageExtensions(java.lang.String,java.lang.String,java.lang.String,models.LanguageExtensionsList)` was added
+* `delete(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 * `getByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
 * `removeLanguageExtensions(java.lang.String,java.lang.String,java.lang.String,models.LanguageExtensionsList,com.azure.core.util.Context)` was added
+* `stop(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
+* `get(java.lang.String,java.lang.String,java.lang.String)` was added
+* `deleteById(java.lang.String)` was added
+* `deleteByIdWithResponse(java.lang.String,com.azure.core.util.Context)` was added
+* `listSkusByResource(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 
 #### `models.SqlPool$Definition` was modified
 
@@ -153,8 +75,8 @@
 
 #### `models.EventHubDataConnection` was modified
 
-* `managedIdentityResourceId()` was added
 * `withManagedIdentityResourceId(java.lang.String)` was added
+* `managedIdentityResourceId()` was added
 
 #### `models.SqlPool$Update` was modified
 
