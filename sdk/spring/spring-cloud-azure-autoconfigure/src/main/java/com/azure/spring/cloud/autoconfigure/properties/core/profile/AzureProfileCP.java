@@ -13,11 +13,22 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
  */
 public class AzureProfileCP implements AzureProfileAware.Profile {
 
+    /**
+     * Tenant id for Azure resources.
+     */
     private String tenantId;
+    /**
+     * Subscription id to use when connecting to Azure resources.
+     */
     private String subscriptionId;
+    /**
+     * Name of the Azure cloud to connect to.
+     */
     private AzureProfileAware.CloudType cloud = AzureProfileAware.CloudType.AZURE;
+
     @NestedConfigurationProperty
     private AzureEnvironment environment = KnownAzureEnvironment.AZURE_ENV;
+
     private final AzureEnvironment otherAzureEnvironment =
         new AzureEnvironment(com.azure.core.management.AzureEnvironment.AZURE);
 

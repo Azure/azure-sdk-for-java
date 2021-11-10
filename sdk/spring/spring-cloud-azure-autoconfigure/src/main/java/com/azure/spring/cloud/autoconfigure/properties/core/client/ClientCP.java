@@ -14,7 +14,13 @@ import java.util.List;
  */
 public class ClientCP implements ClientAware.Client {
 
+    /**
+     * Represents current application and is used for telemetry/monitoring purposes.
+     */
     private String applicationId;
+    /**
+     * Comma-delimited list of headers applied to each request sent with client.
+     */
     private final List<HeaderProperties> headers = new ArrayList<>();
 
     @Override

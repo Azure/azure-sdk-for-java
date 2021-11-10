@@ -6,11 +6,11 @@ package com.azure.spring.cloud.autoconfigure.properties;
 import com.azure.core.amqp.AmqpTransportType;
 import com.azure.spring.cloud.autoconfigure.properties.core.authentication.TokenCredentialCP;
 import com.azure.spring.cloud.autoconfigure.properties.core.client.ClientCP;
+import com.azure.spring.cloud.autoconfigure.properties.core.client.HttpLoggingCP;
 import com.azure.spring.cloud.autoconfigure.properties.core.profile.AzureProfileCP;
 import com.azure.spring.cloud.autoconfigure.properties.core.proxy.ProxyCP;
 import com.azure.spring.cloud.autoconfigure.properties.core.retry.RetryCP;
 import com.azure.spring.core.properties.AzureProperties;
-import com.azure.spring.core.properties.client.LoggingProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
@@ -111,7 +111,14 @@ public class AzureGlobalProperties implements AzureProperties {
      */
     public static final class HttpRetryCP {
 
+        /**
+         * HTTP header, such as Retry-After or x-ms-retry-after-ms, to lookup for the retry delay.
+         * If the value is null, will calculate the delay using backoff and ignore the delay provided in response header.
+         */
         private String retryAfterHeader;
+        /**
+         * Time unit to use when applying the retry delay.
+         */
         private ChronoUnit retryAfterTimeUnit;
 
         public String getRetryAfterHeader() {
@@ -136,6 +143,9 @@ public class AzureGlobalProperties implements AzureProperties {
      */
     public static final class HttpProxyCP {
 
+        /**
+         * A list of hosts or CIDR to not use proxy HTTP/HTTPS connections through.
+         */
         private String nonProxyHosts;
 
         public String getNonProxyHosts() {
@@ -151,15 +161,33 @@ public class AzureGlobalProperties implements AzureProperties {
      * Transport properties for http-based clients.
      */
     public static final class HttpClientCP {
-
+        /**
+         * Amount of time each request being sent over the wire.
+         */
         private Duration writeTimeout;
+        /**
+         * Amount of time used when waiting for a server to reply.
+         */
         private Duration responseTimeout;
+        /**
+         * Amount of time used when reading the server response.
+         */
         private Duration readTimeout;
+        /**
+         * Amount of time the request attempts to connect to the remote host and the connection is resolved.
+         */
         private Duration connectTimeout;
+        /**
+         * Maximum connection pool size used by the underlying HTTP client.
+         */
         private Integer maximumConnectionPoolSize;
+        /**
+         * Amount of time before an idle connection.
+         */
         private Duration connectionIdleTimeout;
+
         @NestedConfigurationProperty
-        private final LoggingProperties logging = new LoggingProperties();
+        private final HttpLoggingCP logging = new HttpLoggingCP();
 
         public Duration getWriteTimeout() {
             return writeTimeout;
@@ -209,7 +237,7 @@ public class AzureGlobalProperties implements AzureProperties {
             this.connectionIdleTimeout = connectionIdleTimeout;
         }
 
-        public LoggingProperties getLogging() {
+        public HttpLoggingCP getLogging() {
             return logging;
         }
     }
@@ -218,6 +246,10 @@ public class AzureGlobalProperties implements AzureProperties {
      * Transport properties for amqp-based clients.
      */
     public static final class AmqpClientCP {
+
+        /**
+         * Transport type for AMQP-based client.
+         */
         private AmqpTransportType transportType = AmqpTransportType.AMQP;
 
         public AmqpTransportType getTransportType() {

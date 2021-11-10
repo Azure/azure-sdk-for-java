@@ -66,12 +66,28 @@ public interface ClientAware {
      */
     interface HttpLogging {
 
+        /**
+         * Gets the level of detail to log on HTTP messages.
+         * @return the http log detail level.
+         */
         HttpLogDetailLevel getLevel();
 
+        /**
+         * Gets the whitelisted headers that should be logged.
+         * @return The list of whitelisted headers.
+         */
         Set<String> getAllowedHeaderNames();
 
+        /**
+         * Gets the whitelisted query parameters.
+         * @return The list of whitelisted query parameters.
+         */
         Set<String> getAllowedQueryParamNames();
 
+        /**
+         * Gets flag to allow pretty printing of message bodies.
+         * @return whether to pretty print the message bodies.
+         */
         Boolean getPrettyPrintBody();
 
     }

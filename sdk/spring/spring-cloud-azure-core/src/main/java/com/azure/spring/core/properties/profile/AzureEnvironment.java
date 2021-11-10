@@ -24,6 +24,9 @@ public class AzureEnvironment implements AzureProfileAware.Environment {
     private String sqlManagementEndpoint;
     private String sqlServerHostnameSuffix;
     private String galleryEndpoint;
+    /**
+     * The Azure Active Directory endpoint to connect to.
+     */
     private String activeDirectoryEndpoint;
     private String activeDirectoryResourceId;
     private String activeDirectoryGraphEndpoint;

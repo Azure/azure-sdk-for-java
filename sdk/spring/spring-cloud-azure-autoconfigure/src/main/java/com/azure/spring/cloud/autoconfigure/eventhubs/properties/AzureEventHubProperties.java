@@ -137,8 +137,17 @@ public class AzureEventHubProperties extends AzureEventHubCommonProperties imple
      * Properties of an Event Hub consumer.
      */
     public static class Consumer extends AzureEventHubCommonProperties implements EventHubConsumerDescriptor {
+
+        /**
+         * Name of the consumer group this consumer is associated with.
+         */
         protected String consumerGroup;
 
+        /**
+         * The number of events the Event Hub consumer will actively receive and queue locally without regard to
+         * whether a receiving operation is currently active.
+         *
+         */
         protected Integer prefetchCount;
 
         public String getConsumerGroup() {

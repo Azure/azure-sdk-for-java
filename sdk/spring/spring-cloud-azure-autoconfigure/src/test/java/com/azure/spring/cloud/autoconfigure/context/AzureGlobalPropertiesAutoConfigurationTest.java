@@ -10,7 +10,9 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import java.time.Duration;
 
+import static com.azure.spring.core.aware.AzureProfileAware.CloudType.AZURE;
 import static com.azure.spring.core.aware.AzureProfileAware.CloudType.AZURE_CHINA;
+import static com.azure.spring.core.aware.AzureProfileAware.CloudType.OTHER;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class AzureGlobalPropertiesAutoConfigurationTest {
@@ -28,10 +30,7 @@ class AzureGlobalPropertiesAutoConfigurationTest {
 
     @Test
     void testAzureProperties() {
-        final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-            .withConfiguration(AutoConfigurations.of(AzureGlobalPropertiesAutoConfiguration.class));
-
-        contextRunner
+        this.contextRunner
             .withPropertyValues(
                 "spring.cloud.azure.client.application-id=fake-application-id",
                 "spring.cloud.azure.credential.client-id=fake-client-id",
@@ -62,6 +61,35 @@ class AzureGlobalPropertiesAutoConfigurationTest {
                 assertThat(azureProperties).extracting("profile.cloud").isEqualTo(AZURE_CHINA);
                 assertThat(azureProperties).extracting("profile.environment.activeDirectoryEndpoint").isEqualTo(
                     AzureEnvironment.AZURE_CHINA.getActiveDirectoryEndpoint());
+            });
+    }
+
+    @Test
+    void testAzureProfileOther() {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.profile.environment.activeDirectoryEndpoint=abc",
+                "spring.cloud.azure.profile.cloud=other"
+            )
+            .run(context -> {
+                final AzureGlobalProperties azureProperties = context.getBean(AzureGlobalProperties.class);
+                assertThat(azureProperties).extracting("profile.cloud").isEqualTo(OTHER);
+                assertThat(azureProperties).extracting("profile.environment.activeDirectoryEndpoint").isEqualTo("abc");
+            });
+    }
+
+    @Test
+    void testAzureProfileAzure() {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.profile.environment.activeDirectoryEndpoint=abc",
+                "spring.cloud.azure.profile.cloud=azure"
+            )
+            .run(context -> {
+                final AzureGlobalProperties azureProperties = context.getBean(AzureGlobalProperties.class);
+                assertThat(azureProperties).extracting("profile.cloud").isEqualTo(AZURE);
+                assertThat(azureProperties).extracting("profile.environment.activeDirectoryEndpoint")
+                                           .isEqualTo(AzureEnvironment.AZURE.getActiveDirectoryEndpoint());
             });
     }
 
