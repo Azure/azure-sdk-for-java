@@ -18,7 +18,7 @@
 ### Other Changes
 #### Dependency Updates
 - Updated to version `1.22.0` of `azure-core`
-- Updated to version `12.14.2` of `azure-storage-common`
+- Updated to version `12.14.1` of `azure-storage-common`
 
 ## 12.15.0-beta.1 (2021-11-05)
 
