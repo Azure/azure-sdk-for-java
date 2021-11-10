@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for WorkspaceManagedSqlServerUsages List. */
 public final class WorkspaceManagedSqlServerUsagesListSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/ListWorkspaceManagedSqlServerUsages.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: List usages metric for the workspace managed sql server.

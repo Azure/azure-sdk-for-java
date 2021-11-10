@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SqlPoolSecurityAlertPolicies List. */
 public final class SqlPoolSecurityAlertPoliciesListSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/SqlPoolSecurityAlertPolicies_List.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: Get a security alert of a SQL Analytics pool.

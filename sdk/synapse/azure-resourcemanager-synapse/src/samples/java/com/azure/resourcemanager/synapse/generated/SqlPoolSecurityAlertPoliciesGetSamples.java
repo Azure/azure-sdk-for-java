@@ -10,7 +10,7 @@ import com.azure.resourcemanager.synapse.models.SecurityAlertPolicyName;
 /** Samples for SqlPoolSecurityAlertPolicies Get. */
 public final class SqlPoolSecurityAlertPoliciesGetSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetSqlPoolSecurityAlert.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: Get a security alert of a SQL Analytics pool.

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for IntegrationRuntimeNodeIpAddressOperation Get. */
 public final class IntegrationRuntimeNodeIpAddressOperationGetSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/IntegrationRuntimeNodes_GetIpAddress.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: Get integration runtime node IP address.

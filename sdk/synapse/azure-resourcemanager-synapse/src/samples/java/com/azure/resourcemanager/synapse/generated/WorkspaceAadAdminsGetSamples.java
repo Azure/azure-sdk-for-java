@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for WorkspaceAadAdmins Get. */
 public final class WorkspaceAadAdminsGetSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetWorkspaceAadAdmin.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: Get workspace active directory admin.

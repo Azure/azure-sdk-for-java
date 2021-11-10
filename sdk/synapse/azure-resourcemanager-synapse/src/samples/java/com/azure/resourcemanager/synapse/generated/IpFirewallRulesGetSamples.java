@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for IpFirewallRules Get. */
 public final class IpFirewallRulesGetSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetIpFirewallRule.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: Create an IP firewall rule.

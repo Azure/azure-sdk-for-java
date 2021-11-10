@@ -13,7 +13,7 @@ import java.util.Arrays;
 /** Samples for SqlPoolMaintenanceWindows CreateOrUpdate. */
 public final class SqlPoolMaintenanceWindowsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateOrUpdateMaintenanceWindows.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: Sets maintenance window settings for a selected SQL Analytics Pool.

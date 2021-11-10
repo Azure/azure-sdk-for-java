@@ -12,7 +12,7 @@ import com.azure.resourcemanager.synapse.models.ManagedIdentitySqlControlSetting
 /** Samples for WorkspaceManagedIdentitySqlControlSettings CreateOrUpdate. */
 public final class WorkspaceManagedIdentitySqlControlSettingsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateOrUpdateManagedIdentitySqlControlSettings.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: Create or update managed identity sql control settings.

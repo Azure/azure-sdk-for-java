@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for LibrariesOperation ListByWorkspace. */
 public final class LibrariesOperationListByWorkspaceSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/Libraries_ListByWorkspace.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: List libraries in a workspace.

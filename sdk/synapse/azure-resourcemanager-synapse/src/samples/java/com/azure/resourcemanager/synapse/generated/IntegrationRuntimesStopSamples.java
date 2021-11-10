@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for IntegrationRuntimes Stop. */
 public final class IntegrationRuntimesStopSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/IntegrationRuntimes_Stop.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: Stop integration runtime.

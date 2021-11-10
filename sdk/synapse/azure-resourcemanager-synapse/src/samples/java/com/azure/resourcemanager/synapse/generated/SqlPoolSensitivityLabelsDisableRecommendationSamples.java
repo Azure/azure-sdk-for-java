@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SqlPoolSensitivityLabels DisableRecommendation. */
 public final class SqlPoolSensitivityLabelsDisableRecommendationSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/RecommendedColumnSensitivityLabelDisable.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: Disables sensitivity recommendations on a given column.

@@ -10,7 +10,7 @@ import com.azure.resourcemanager.synapse.models.DatabasePrincipalAssignmentCheck
 /** Samples for KustoPoolDatabasePrincipalAssignments CheckNameAvailability. */
 public final class KustoPoolDatabasePrincipalAssignmentsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolDatabasePrincipalAssignmentsCheckNameAvailability.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: KustoPoolDatabasePrincipalAssignmentsCheckNameAvailability.

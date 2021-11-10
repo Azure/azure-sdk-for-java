@@ -7,10 +7,10 @@ package com.azure.resourcemanager.synapse.generated;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.synapse.models.KustoPoolCheckNameRequest;
 
-/** Samples for KustoPoolsOperation CheckNameAvailability. */
-public final class KustoPoolsOperationCheckNameAvailabilitySamples {
+/** Samples for KustoPools CheckNameAvailability. */
+public final class KustoPoolsCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolsCheckNameAvailability.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: KustoPoolsCheckNameAvailability.
@@ -19,7 +19,7 @@ public final class KustoPoolsOperationCheckNameAvailabilitySamples {
      */
     public static void kustoPoolsCheckNameAvailability(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
-            .kustoPoolsOperations()
+            .kustoPools()
             .checkNameAvailabilityWithResponse(
                 "westus", new KustoPoolCheckNameRequest().withName("kustoclusterrptest4"), Context.NONE);
     }

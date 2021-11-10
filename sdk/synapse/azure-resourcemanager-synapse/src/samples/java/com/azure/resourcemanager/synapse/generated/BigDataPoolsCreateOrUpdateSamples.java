@@ -15,7 +15,7 @@ import java.util.Map;
 /** Samples for BigDataPools CreateOrUpdate. */
 public final class BigDataPoolsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/CreateOrUpdateBigDataPool.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: Create or update a Big Data pool.

@@ -9,7 +9,7 @@ import com.azure.resourcemanager.synapse.models.AzureADOnlyAuthenticationName;
 /** Samples for AzureADOnlyAuthentications Create. */
 public final class AzureADOnlyAuthenticationsCreateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateOrUpdateAzureADOnlyAuthentication.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: Create or Update Azure Active Directory Only Authentication property.

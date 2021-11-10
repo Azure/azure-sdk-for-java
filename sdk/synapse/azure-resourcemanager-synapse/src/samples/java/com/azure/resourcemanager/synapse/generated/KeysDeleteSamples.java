@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Keys Delete. */
 public final class KeysDeleteSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/DeleteKey.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: Delete a workspace key.

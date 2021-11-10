@@ -6,10 +6,10 @@ package com.azure.resourcemanager.synapse.generated;
 
 import com.azure.core.util.Context;
 
-/** Samples for KustoPoolsOperation ListByWorkspace. */
-public final class KustoPoolsOperationListByWorkspaceSamples {
+/** Samples for KustoPools ListByWorkspace. */
+public final class KustoPoolsListByWorkspaceSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolsListByWorkspace.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: List Kusto pools in a workspace.
@@ -17,6 +17,6 @@ public final class KustoPoolsOperationListByWorkspaceSamples {
      * @param manager Entry point to SynapseManager.
      */
     public static void listKustoPoolsInAWorkspace(com.azure.resourcemanager.synapse.SynapseManager manager) {
-        manager.kustoPoolsOperations().listByWorkspaceWithResponse("kustorptest", "kustorptest", Context.NONE);
+        manager.kustoPools().listByWorkspaceWithResponse("kustorptest", "kustorptest", Context.NONE);
     }
 }

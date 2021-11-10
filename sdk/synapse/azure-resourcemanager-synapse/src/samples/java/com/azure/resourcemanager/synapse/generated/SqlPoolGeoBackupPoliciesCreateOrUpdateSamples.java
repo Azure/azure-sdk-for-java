@@ -10,7 +10,7 @@ import com.azure.resourcemanager.synapse.models.GeoBackupPolicyState;
 /** Samples for SqlPoolGeoBackupPolicies CreateOrUpdate. */
 public final class SqlPoolGeoBackupPoliciesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateOrUpdateGeoBackupPolicies.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: Create geo backup policy.

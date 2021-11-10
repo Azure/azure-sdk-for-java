@@ -12,7 +12,7 @@ import java.util.Map;
 /** Samples for BigDataPools Update. */
 public final class BigDataPoolsUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/UpdateBigDataPool.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: Update a Big Data pool.

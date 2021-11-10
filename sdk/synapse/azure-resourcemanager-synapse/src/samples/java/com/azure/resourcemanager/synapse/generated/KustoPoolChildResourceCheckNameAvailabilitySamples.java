@@ -11,7 +11,7 @@ import com.azure.resourcemanager.synapse.models.Type;
 /** Samples for KustoPoolChildResource CheckNameAvailability. */
 public final class KustoPoolChildResourceCheckNameAvailabilitySamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolAttachedDatabaseConfigurationCheckNameAvailability.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: KustoPoolAttachedDatabaseConfigurationCheckNameAvailability.
@@ -33,7 +33,7 @@ public final class KustoPoolChildResourceCheckNameAvailabilitySamples {
     }
 
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolDatabasesCheckNameAvailability.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: KustoPoolDatabasesCheckNameAvailability.

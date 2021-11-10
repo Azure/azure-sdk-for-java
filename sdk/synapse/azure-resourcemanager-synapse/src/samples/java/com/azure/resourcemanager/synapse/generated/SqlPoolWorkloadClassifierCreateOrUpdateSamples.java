@@ -7,7 +7,7 @@ package com.azure.resourcemanager.synapse.generated;
 /** Samples for SqlPoolWorkloadClassifier CreateOrUpdate. */
 public final class SqlPoolWorkloadClassifierCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateOrUpdateSqlPoolWorkloadClassifierMin.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: Create a workload classifier with the required properties specified.
@@ -25,7 +25,7 @@ public final class SqlPoolWorkloadClassifierCreateOrUpdateSamples {
     }
 
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateOrUpdateSqlPoolWorkloadClassifierMax.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: Create a workload classifier with all properties specified.

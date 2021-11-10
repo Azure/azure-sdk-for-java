@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for Workspaces Delete. */
 public final class WorkspacesDeleteSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/DeleteWorkspace.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: Delete a workspace.

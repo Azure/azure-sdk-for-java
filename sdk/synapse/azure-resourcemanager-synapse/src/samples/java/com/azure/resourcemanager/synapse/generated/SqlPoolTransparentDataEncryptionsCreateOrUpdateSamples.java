@@ -10,7 +10,7 @@ import com.azure.resourcemanager.synapse.models.TransparentDataEncryptionStatus;
 /** Samples for SqlPoolTransparentDataEncryptions CreateOrUpdate. */
 public final class SqlPoolTransparentDataEncryptionsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/CreateOrUpdateSqlPoolTransparentDataEncryption.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: Create or update a Sql pool's transparent data encryption configuration.

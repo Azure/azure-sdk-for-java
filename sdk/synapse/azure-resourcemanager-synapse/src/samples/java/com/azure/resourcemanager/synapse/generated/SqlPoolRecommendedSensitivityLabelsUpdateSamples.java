@@ -13,7 +13,7 @@ import java.util.Arrays;
 /** Samples for SqlPoolRecommendedSensitivityLabels Update. */
 public final class SqlPoolRecommendedSensitivityLabelsUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/SensitivityLabelsRecommendedUpdate.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: Update recommended sensitivity labels of a given SQL Pool using an operations batch.

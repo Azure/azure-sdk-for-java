@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SqlPoolMaintenanceWindows Get. */
 public final class SqlPoolMaintenanceWindowsGetSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetMaintenanceWindows.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: Gets maintenance window settings for a selected SQL Analytics pool.

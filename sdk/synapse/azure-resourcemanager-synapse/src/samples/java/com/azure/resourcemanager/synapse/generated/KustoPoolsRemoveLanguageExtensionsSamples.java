@@ -10,10 +10,10 @@ import com.azure.resourcemanager.synapse.models.LanguageExtensionName;
 import com.azure.resourcemanager.synapse.models.LanguageExtensionsList;
 import java.util.Arrays;
 
-/** Samples for KustoPoolsOperation RemoveLanguageExtensions. */
-public final class KustoPoolsOperationRemoveLanguageExtensionsSamples {
+/** Samples for KustoPools RemoveLanguageExtensions. */
+public final class KustoPoolsRemoveLanguageExtensionsSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolLanguageExtensionsRemove.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: KustoPoolRemoveLanguageExtensions.
@@ -22,7 +22,7 @@ public final class KustoPoolsOperationRemoveLanguageExtensionsSamples {
      */
     public static void kustoPoolRemoveLanguageExtensions(com.azure.resourcemanager.synapse.SynapseManager manager) {
         manager
-            .kustoPoolsOperations()
+            .kustoPools()
             .removeLanguageExtensions(
                 "kustorptest",
                 "kustoclusterrptest4",

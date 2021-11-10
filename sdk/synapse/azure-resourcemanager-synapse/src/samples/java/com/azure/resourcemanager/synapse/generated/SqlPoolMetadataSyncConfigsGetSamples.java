@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for SqlPoolMetadataSyncConfigs Get. */
 public final class SqlPoolMetadataSyncConfigsGetSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/GetSqlPoolMetadataSyncConfig.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: Get metadata sync config for a SQL Analytics pool.

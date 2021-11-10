@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for BigDataPools Delete. */
 public final class BigDataPoolsDeleteSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/DeleteBigDataPool.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: Delete a Big Data pool.

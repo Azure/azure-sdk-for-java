@@ -6,10 +6,10 @@ package com.azure.resourcemanager.synapse.generated;
 
 import com.azure.core.util.Context;
 
-/** Samples for KustoPool List. */
-public final class KustoPoolListSamples {
+/** Samples for KustoPools List. */
+public final class KustoPoolsListSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolsListSkus.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: KustoPoolsListSkus.

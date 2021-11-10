@@ -10,7 +10,7 @@ import com.azure.resourcemanager.synapse.models.PrincipalType;
 /** Samples for KustoPoolDatabasePrincipalAssignments CreateOrUpdate. */
 public final class KustoPoolDatabasePrincipalAssignmentsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolDatabasePrincipalAssignmentsCreateOrUpdate.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: KustoPoolDatabasePrincipalAssignmentsCreateOrUpdate.

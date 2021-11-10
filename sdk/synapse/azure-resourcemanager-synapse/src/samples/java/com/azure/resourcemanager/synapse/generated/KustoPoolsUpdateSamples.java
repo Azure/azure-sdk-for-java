@@ -10,10 +10,10 @@ import com.azure.resourcemanager.synapse.models.KustoPool;
 import com.azure.resourcemanager.synapse.models.SkuName;
 import com.azure.resourcemanager.synapse.models.SkuSize;
 
-/** Samples for KustoPoolsOperation Update. */
-public final class KustoPoolsOperationUpdateSamples {
+/** Samples for KustoPools Update. */
+public final class KustoPoolsUpdateSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolsUpdate.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: kustoPoolsUpdate.
@@ -23,7 +23,7 @@ public final class KustoPoolsOperationUpdateSamples {
     public static void kustoPoolsUpdate(com.azure.resourcemanager.synapse.SynapseManager manager) {
         KustoPool resource =
             manager
-                .kustoPoolsOperations()
+                .kustoPools()
                 .getWithResponse("synapseWorkspaceName", "kustoclusterrptest4", "kustorptest", Context.NONE)
                 .getValue();
         resource

@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for PrivateLinkHubs Delete. */
 public final class PrivateLinkHubsDeleteSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/stable/2021-06-01/examples/DeletePrivateLinkHub.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: Delete a privateLinkHub.

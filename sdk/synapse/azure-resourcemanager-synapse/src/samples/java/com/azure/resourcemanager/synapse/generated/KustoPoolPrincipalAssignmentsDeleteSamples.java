@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
 /** Samples for KustoPoolPrincipalAssignments Delete. */
 public final class KustoPoolPrincipalAssignmentsDeleteSamples {
     /*
-     * x-ms-original-file: specification/synapse/resource-manager/Microsoft.Synapse/preview/2021-06-01-preview/examples/KustoPoolPrincipalAssignmentsDelete.json
+     * x-ms-original-file: null
      */
     /**
      * Sample code: KustoPoolPrincipalAssignmentsDelete.
