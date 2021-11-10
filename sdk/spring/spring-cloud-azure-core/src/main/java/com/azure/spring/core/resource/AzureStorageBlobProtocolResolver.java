@@ -55,10 +55,10 @@ public class AzureStorageBlobProtocolResolver extends AbstractAzureStorageProtoc
         ListBlobContainersOptions options = new ListBlobContainersOptions();
         options.setPrefix(containerPrefix);
         options.setDetails(RETRIEVE_NOTHING_CONTAINER_DETAILS);
-        return blobServiceClient.listBlobContainers(options, null)
-                                .stream()
-                                .map(BlobContainerItem::getName)
-                                .map(StorageContainerItem::new);
+        return getBlobServiceClient().listBlobContainers(options, null)
+                                     .stream()
+                                     .map(BlobContainerItem::getName)
+                                     .map(StorageContainerItem::new);
     }
 
     @Override
@@ -97,7 +97,7 @@ public class AzureStorageBlobProtocolResolver extends AbstractAzureStorageProtoc
     }
 
     private BlobServiceClient getBlobServiceClient() {
-        if (blobServiceClient == null || blobServiceClient.getAccountName() == null) {
+        if (blobServiceClient == null) {
             blobServiceClient = beanFactory.getBean(BlobServiceClient.class);
         }
         return blobServiceClient;
