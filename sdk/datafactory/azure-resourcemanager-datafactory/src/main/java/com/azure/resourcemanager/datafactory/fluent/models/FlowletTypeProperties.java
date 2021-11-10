@@ -13,43 +13,49 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Mapping data flow type properties. */
+/** Flowlet type properties. */
 @Fluent
-public final class MappingDataFlowTypeProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(MappingDataFlowTypeProperties.class);
+public final class FlowletTypeProperties {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(FlowletTypeProperties.class);
 
     /*
-     * List of sources in data flow.
+     * List of sources in Flowlet.
      */
     @JsonProperty(value = "sources")
     private List<DataFlowSource> sources;
 
     /*
-     * List of sinks in data flow.
+     * List of sinks in Flowlet.
      */
     @JsonProperty(value = "sinks")
     private List<DataFlowSink> sinks;
 
     /*
-     * List of transformations in data flow.
+     * List of transformations in Flowlet.
      */
     @JsonProperty(value = "transformations")
     private List<Transformation> transformations;
 
     /*
-     * DataFlow script.
+     * Flowlet script.
      */
     @JsonProperty(value = "script")
     private String script;
 
     /*
-     * Data flow script lines.
+     * Flowlet script lines.
      */
     @JsonProperty(value = "scriptLines")
     private List<String> scriptLines;
 
+    /*
+     * Any object
+     */
+    @JsonProperty(value = "additionalProperties")
+    private Object additionalProperties;
+
     /**
-     * Get the sources property: List of sources in data flow.
+     * Get the sources property: List of sources in Flowlet.
      *
      * @return the sources value.
      */
@@ -58,18 +64,18 @@ public final class MappingDataFlowTypeProperties {
     }
 
     /**
-     * Set the sources property: List of sources in data flow.
+     * Set the sources property: List of sources in Flowlet.
      *
      * @param sources the sources value to set.
-     * @return the MappingDataFlowTypeProperties object itself.
+     * @return the FlowletTypeProperties object itself.
      */
-    public MappingDataFlowTypeProperties withSources(List<DataFlowSource> sources) {
+    public FlowletTypeProperties withSources(List<DataFlowSource> sources) {
         this.sources = sources;
         return this;
     }
 
     /**
-     * Get the sinks property: List of sinks in data flow.
+     * Get the sinks property: List of sinks in Flowlet.
      *
      * @return the sinks value.
      */
@@ -78,18 +84,18 @@ public final class MappingDataFlowTypeProperties {
     }
 
     /**
-     * Set the sinks property: List of sinks in data flow.
+     * Set the sinks property: List of sinks in Flowlet.
      *
      * @param sinks the sinks value to set.
-     * @return the MappingDataFlowTypeProperties object itself.
+     * @return the FlowletTypeProperties object itself.
      */
-    public MappingDataFlowTypeProperties withSinks(List<DataFlowSink> sinks) {
+    public FlowletTypeProperties withSinks(List<DataFlowSink> sinks) {
         this.sinks = sinks;
         return this;
     }
 
     /**
-     * Get the transformations property: List of transformations in data flow.
+     * Get the transformations property: List of transformations in Flowlet.
      *
      * @return the transformations value.
      */
@@ -98,18 +104,18 @@ public final class MappingDataFlowTypeProperties {
     }
 
     /**
-     * Set the transformations property: List of transformations in data flow.
+     * Set the transformations property: List of transformations in Flowlet.
      *
      * @param transformations the transformations value to set.
-     * @return the MappingDataFlowTypeProperties object itself.
+     * @return the FlowletTypeProperties object itself.
      */
-    public MappingDataFlowTypeProperties withTransformations(List<Transformation> transformations) {
+    public FlowletTypeProperties withTransformations(List<Transformation> transformations) {
         this.transformations = transformations;
         return this;
     }
 
     /**
-     * Get the script property: DataFlow script.
+     * Get the script property: Flowlet script.
      *
      * @return the script value.
      */
@@ -118,18 +124,18 @@ public final class MappingDataFlowTypeProperties {
     }
 
     /**
-     * Set the script property: DataFlow script.
+     * Set the script property: Flowlet script.
      *
      * @param script the script value to set.
-     * @return the MappingDataFlowTypeProperties object itself.
+     * @return the FlowletTypeProperties object itself.
      */
-    public MappingDataFlowTypeProperties withScript(String script) {
+    public FlowletTypeProperties withScript(String script) {
         this.script = script;
         return this;
     }
 
     /**
-     * Get the scriptLines property: Data flow script lines.
+     * Get the scriptLines property: Flowlet script lines.
      *
      * @return the scriptLines value.
      */
@@ -138,13 +144,33 @@ public final class MappingDataFlowTypeProperties {
     }
 
     /**
-     * Set the scriptLines property: Data flow script lines.
+     * Set the scriptLines property: Flowlet script lines.
      *
      * @param scriptLines the scriptLines value to set.
-     * @return the MappingDataFlowTypeProperties object itself.
+     * @return the FlowletTypeProperties object itself.
      */
-    public MappingDataFlowTypeProperties withScriptLines(List<String> scriptLines) {
+    public FlowletTypeProperties withScriptLines(List<String> scriptLines) {
         this.scriptLines = scriptLines;
+        return this;
+    }
+
+    /**
+     * Get the additionalProperties property: Any object.
+     *
+     * @return the additionalProperties value.
+     */
+    public Object additionalProperties() {
+        return this.additionalProperties;
+    }
+
+    /**
+     * Set the additionalProperties property: Any object.
+     *
+     * @param additionalProperties the additionalProperties value to set.
+     * @return the FlowletTypeProperties object itself.
+     */
+    public FlowletTypeProperties withAdditionalProperties(Object additionalProperties) {
+        this.additionalProperties = additionalProperties;
         return this;
     }
 
