@@ -86,8 +86,8 @@ def parse_args() -> argparse.Namespace:
         '--credential-types',
         required=True,
         help='Credential types, '
-             'Sample: tokencredential for AAD credential for OAuth 2.0 authentication; '
-             'azurekeycredential for Azure key credential',
+             'Sample: "tokencredential" for AAD credential for OAuth 2.0 authentication; '
+             '"azurekeycredential" for Azure key credential',
     )
     parser.add_argument(
         '--credential-scopes',
