@@ -79,7 +79,7 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
         this.client.close();
     }
 
-    @Test(groups = {"encryption"}, priority = 1, timeOut = TIMEOUT)// Doing max of a string in the query_aggregate so has to set the priority for this one as 1.
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT)
     public void createItemEncrypt_readItemDecrypt() {
         EncryptionPojo properties = getItem(UUID.randomUUID().toString());
         CosmosItemResponse<EncryptionPojo> itemResponse = cosmosEncryptionAsyncContainer.createItem(properties,
@@ -104,6 +104,9 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
         assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
         responseItem = itemResponse.getItem();
         validateResponse(properties, responseItem);
+
+        // Deleting this item so query max of string in the query_aggregate test passes
+        cosmosEncryptionAsyncContainer.deleteItem(properties.getId(), new PartitionKey(properties.getMypk())).block();
     }
 
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
