@@ -33,7 +33,7 @@ public final class SqlPoolsAsyncClient {
      *
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SQL pools.
+     * @return sQL pool collection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SqlPoolInfoListResult>> listWithResponse() {
@@ -45,7 +45,7 @@ public final class SqlPoolsAsyncClient {
      *
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of SQL pools.
+     * @return sQL pool collection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SqlPoolInfoListResult> list() {

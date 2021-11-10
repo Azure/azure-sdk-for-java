@@ -253,18 +253,18 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
             ClientTelemetry.REQUEST_LATENCY_UNIT);
         ConcurrentDoubleHistogram latencyHistogram = telemetry.getClientTelemetryInfo().getOperationInfoMap().get(reportPayloadLatency);
         if (latencyHistogram != null) {
-            ClientTelemetry.recordValue(latencyHistogram, latency.toNanos() / 1000);
+            ClientTelemetry.recordValue(latencyHistogram, latency.toMillis());
         } else {
             if (statusCode == HttpConstants.StatusCodes.OK) {
-                latencyHistogram = new ConcurrentDoubleHistogram(ClientTelemetry.REQUEST_LATENCY_MAX_MICRO_SEC,
+                latencyHistogram = new ConcurrentDoubleHistogram(ClientTelemetry.REQUEST_LATENCY_MAX_MILLI_SEC,
                     ClientTelemetry.REQUEST_LATENCY_SUCCESS_PRECISION);
             } else {
-                latencyHistogram = new ConcurrentDoubleHistogram(ClientTelemetry.REQUEST_LATENCY_MAX_MICRO_SEC,
+                latencyHistogram = new ConcurrentDoubleHistogram(ClientTelemetry.REQUEST_LATENCY_MAX_MILLI_SEC,
                     ClientTelemetry.REQUEST_LATENCY_FAILURE_PRECISION);
             }
 
             latencyHistogram.setAutoResize(true);
-            ClientTelemetry.recordValue(latencyHistogram, latency.toNanos() / 1000);
+            ClientTelemetry.recordValue(latencyHistogram, latency.toMillis());
             telemetry.getClientTelemetryInfo().getOperationInfoMap().put(reportPayloadLatency, latencyHistogram);
         }
 

@@ -3,8 +3,12 @@
 
 package com.azure.monitor.query;
 
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.HttpClientOptions;
+import com.azure.identity.DefaultAzureCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.monitor.query.models.AggregationType;
 import com.azure.monitor.query.models.LogsBatchQuery;
@@ -26,10 +30,6 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
- * ARE USED TO EXTRACT APPROPRIATE CODE SEGMENTS FROM THIS FILE. ADD NEW CODE AT THE BOTTOM TO AVOID CHANGING
- * LINE NUMBERS OF EXISTING CODE SAMPLES.
- * <p>
  * Code samples for the README.md
  */
 public class ReadmeSamples {
@@ -37,32 +37,41 @@ public class ReadmeSamples {
      * Sample for creating sync and async clients for querying logs.
      */
     public void createLogsClients() {
+        // BEGIN: readme-sample-createLogsQueryClient
         LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
+        // END: readme-sample-createLogsQueryClient
 
+        // BEGIN: readme-sample-createLogsQueryAsyncClient
         LogsQueryAsyncClient logsQueryAsyncClient = new LogsQueryClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
+        // END: readme-sample-createLogsQueryAsyncClient
     }
 
     /**
      * Sample for creating sync and async clients for querying metrics.
      */
     public void createMetricsClients() {
+        // BEGIN: readme-sample-createMetricsQueryClient
         MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
+        // END: readme-sample-createMetricsQueryClient
 
+        // BEGIN: readme-sample-createMetricsQueryAsyncClient
         MetricsQueryAsyncClient metricsQueryAsyncClient = new MetricsQueryClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
+        // END: readme-sample-createMetricsQueryAsyncClient
     }
 
     /**
      * Sample to query logs using a single Kusto query.
      */
     public void queryLogs() {
+        // BEGIN: readme-sample-logsquery
         LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .buildClient();
@@ -73,11 +82,13 @@ public class ReadmeSamples {
         for (LogsTableRow row : queryResults.getTable().getRows()) {
             System.out.println(row.getColumnValue("OperationName") + " " + row.getColumnValue("ResourceGroup"));
         }
+        // END: readme-sample-logsquery
     }
 
     /**
      * A custom model type to map logs query result to an object.
      */
+    // BEGIN: readme-sample-custommodel
     public class CustomLogModel {
         private String resourceGroup;
         private String operationName;
@@ -90,11 +101,13 @@ public class ReadmeSamples {
             return operationName;
         }
     }
+    // END: readme-sample-custommodel
 
     /**
      * Sample to query logs and convert the response to a strongly-typed list of objects.
      */
     public void queryLogsAsModel() {
+        // BEGIN: readme-sample-logsquerycustommodel
         LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .buildClient();
@@ -105,12 +118,14 @@ public class ReadmeSamples {
         for (CustomLogModel customLogModel : customLogModels) {
             System.out.println(customLogModel.getOperationName() + " " + customLogModel.getResourceGroup());
         }
+        // END: readme-sample-logsquerycustommodel
     }
 
     /**
      * Sample to execute a batch of logs queries.
      */
     public void queryBatch() {
+        // BEGIN: readme-sample-batchlogsquery
         LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .buildClient();
@@ -137,6 +152,7 @@ public class ReadmeSamples {
         if (query3Result.getQueryResultStatus() == LogsQueryResultStatus.FAILURE) {
             System.out.println(query3Result.getError().getMessage());
         }
+        // END: readme-sample-batchlogsquery
     }
 
     /**
@@ -144,6 +160,7 @@ public class ReadmeSamples {
      * requires extending server timeout.
      */
     public void getLogsWithServerTimeout() {
+        // BEGIN: readme-sample-logsquerytimeout
         LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
@@ -154,12 +171,14 @@ public class ReadmeSamples {
 
         Response<LogsQueryResult> response = logsQueryClient.queryWorkspaceWithResponse("{workspace-id}",
                 "{kusto-query}", new QueryTimeInterval(Duration.ofDays(2)), options, Context.NONE);
+        // END: readme-sample-logsquerytimeout
     }
 
     /**
      * Sample to demonstrate querying multiple workspaces.
      */
     public void getLogsQueryFromMultipleWorkspaces() {
+        // BEGIN: readme-sample-logsquerymultipleworkspaces
         LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .buildClient();
@@ -169,6 +188,7 @@ public class ReadmeSamples {
                         .setAdditionalWorkspaces(Arrays.asList("{additional-workspace-identifiers}")),
                 Context.NONE);
         LogsQueryResult result = response.getValue();
+        // END: readme-sample-logsquerymultipleworkspaces
     }
 
 
@@ -176,6 +196,7 @@ public class ReadmeSamples {
      * Sample to demonstrate querying Azure Monitor for metrics.
      */
     public void getMetrics() {
+        // BEGIN: readme-sample-metricsquery
         MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
                 .credential(new DefaultAzureCredentialBuilder().build())
                 .buildClient();
@@ -192,12 +213,14 @@ public class ReadmeSamples {
                 }
             }
         }
+        // END: readme-sample-metricsquery
     }
 
     /**
      * Sample to demonstrate querying Azure Monitor for metrics with advanced options.
      */
     public void getMetricsWithOptions() {
+        // BEGIN: readme-sample-metricsqueryaggregation
         MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
@@ -220,5 +243,84 @@ public class ReadmeSamples {
                 }
             }
         }
+        // END: readme-sample-metricsqueryaggregation
+    }
+
+    /**
+     * Enable HTTP request and response logging.
+     */
+    public void tsgEnableHttpLogging() {
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+
+        // BEGIN: readme-sample-enablehttplogging
+        LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
+                .credential(credential)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .buildClient();
+        // or
+        MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
+                .credential(credential)
+                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+                .buildClient();
+        // END: readme-sample-enablehttplogging
+    }
+
+    /**
+     * Sample to show how to set response timeout for http client.
+     */
+    public void tsgHttpResponseTimeout() {
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+
+        // BEGIN: readme-sample-responsetimeout
+        LogsQueryClient client = new LogsQueryClientBuilder()
+                .credential(credential)
+                .clientOptions(new HttpClientOptions().setResponseTimeout(Duration.ofSeconds(120)))
+                .buildClient();
+        // END: readme-sample-responsetimeout
+    }
+
+    /**
+     * Sample to show how to set server timeout.
+     */
+    public void tsgSetServerTimeout() {
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+        // BEGIN: readme-sample-servertimeout
+        LogsQueryClient client = new LogsQueryClientBuilder()
+                .credential(credential)
+                .buildClient();
+
+        client.queryWorkspaceWithResponse("{workspaceId}", "{kusto-query-string}", QueryTimeInterval.LAST_DAY,
+                new LogsQueryOptions().setServerTimeout(Duration.ofMinutes(10)), Context.NONE);
+        // END: readme-sample-servertimeout
+    }
+
+    /**
+     * Sample to show how to allow partial errors for logs queries.
+     */
+    public void tsgAllowPartialErrors() {
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+
+        LogsQueryClient client = new LogsQueryClientBuilder()
+                .credential(credential)
+                .buildClient();
+
+        // BEGIN: readme-sample-allowpartialerrors
+        client.queryWorkspaceWithResponse("{workspaceId}", "{kusto-query-string}", QueryTimeInterval.LAST_DAY,
+                new LogsQueryOptions().setAllowPartialErrors(true), Context.NONE);
+        // END: readme-sample-allowpartialerrors
+    }
+
+    /**
+     * Sample to show how to configure response timeout for OkHttp client.
+     */
+    public void tsgOkHttpResponseTimeout() {
+        DefaultAzureCredential credential = new DefaultAzureCredentialBuilder().build();
+
+        // BEGIN: readme-sample-okhttpresponsetimeout
+        LogsQueryClient client = new LogsQueryClientBuilder()
+                .credential(credential)
+                .clientOptions(new HttpClientOptions().setResponseTimeout(Duration.ofSeconds(120)))
+                .buildClient();
+        // END: readme-sample-okhttpresponsetimeout
     }
 }

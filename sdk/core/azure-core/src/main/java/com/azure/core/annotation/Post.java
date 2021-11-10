@@ -17,18 +17,26 @@ import java.lang.annotation.Target;
  *
  * <p><strong>Example 1: Relative path segments</strong></p>
  *
+ * <!-- src_embed com.azure.core.annotation.Post.class1 -->
  * <pre>
- * {@literal @}Post("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft
- * .Compute/virtualMachines/{vmName}/restart")
- *  void restart(@PathParam("resourceGroupName") String rgName, @PathParam("vmName") String vmName, @PathParam
- *  ("subscriptionId") String subscriptionId);</pre>
+ * &#64;Post&#40;&quot;subscriptions&#47;&#123;subscriptionId&#125;&#47;resourceGroups&#47;&#123;resourceGroupName&#125;&#47;providers&#47;Microsoft.Compute&#47;&quot;
+ *     + &quot;virtualMachines&#47;&#123;vmName&#125;&#47;restart&quot;&#41;
+ * void restart&#40;&#64;PathParam&#40;&quot;resourceGroupName&quot;&#41; String rgName,
+ *     &#64;PathParam&#40;&quot;vmName&quot;&#41; String vmName,
+ *     &#64;PathParam&#40;&quot;subscriptionId&quot;&#41; String subscriptionId&#41;;
+ * </pre>
+ * <!-- end com.azure.core.annotation.Post.class1 -->
  *
  * <p><strong>Example 2: Absolute path segment</strong></p>
  *
+ * <!-- src_embed com.azure.core.annotation.Post.class2 -->
  * <pre>
- * {@literal @}Post(https://{functionApp}.azurewebsites.net/admin/functions/{name}/keys/{keyName})
- *  NameValuePair generateFunctionKey(@PathParam("functionApp") String functionApp, @PathParam("name") String
- *  function, @PathParam("keyName") String keyName);</pre>
+ * &#64;Post&#40;&quot;https:&#47;&#47;&#123;functionApp&#125;.azurewebsites.net&#47;admin&#47;functions&#47;&#123;name&#125;&#47;keys&#47;&#123;keyName&#125;&quot;&#41;
+ * NameValuePair generateFunctionKey&#40;&#64;PathParam&#40;&quot;functionApp&quot;&#41; String functionApp,
+ *     &#64;PathParam&#40;&quot;name&quot;&#41; String name,
+ *     &#64;PathParam&#40;&quot;keyName&quot;&#41; String keyName&#41;;
+ * </pre>
+ * <!-- end com.azure.core.annotation.Post.class2 -->
  */
 @Retention(RUNTIME)
 @Target(METHOD)

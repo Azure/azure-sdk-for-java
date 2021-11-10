@@ -1,6 +1,6 @@
 # Release History
 
-## 12.2.0-beta.1 (Unreleased)
+## 12.2.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,17 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.2.0-beta.1 (2021-11-05)
+
+### Features Added
+- Added support for the 2020-12-06 service version.
+
+## 12.1.1 (2021-10-12)
+
+### Other Changes
+#### Dependency Updates
+- Updated `azure-storage-common` to version `12.14.0`
 
 ## 12.1.0 (2021-09-15)
 ### Other changes

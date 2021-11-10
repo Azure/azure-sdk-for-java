@@ -647,7 +647,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return pool of backend IP addresses.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<BackendAddressPoolInner>, BackendAddressPoolInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String loadBalancerName,
@@ -678,7 +678,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return pool of backend IP addresses.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BackendAddressPoolInner>, BackendAddressPoolInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String loadBalancerName,
@@ -711,7 +711,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return pool of backend IP addresses.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackendAddressPoolInner>, BackendAddressPoolInner> beginCreateOrUpdate(
         String resourceGroupName,
         String loadBalancerName,
@@ -734,7 +734,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return pool of backend IP addresses.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BackendAddressPoolInner>, BackendAddressPoolInner> beginCreateOrUpdate(
         String resourceGroupName,
         String loadBalancerName,
@@ -963,7 +963,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String loadBalancerName, String backendAddressPoolName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -985,7 +985,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String loadBalancerName, String backendAddressPoolName, Context context) {
         context = this.client.mergeContext(context);
@@ -1007,7 +1007,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String loadBalancerName, String backendAddressPoolName) {
         return beginDeleteAsync(resourceGroupName, loadBalancerName, backendAddressPoolName).getSyncPoller();
@@ -1025,7 +1025,7 @@ public final class LoadBalancerBackendAddressPoolsClientImpl implements LoadBala
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String loadBalancerName, String backendAddressPoolName, Context context) {
         return beginDeleteAsync(resourceGroupName, loadBalancerName, backendAddressPoolName, context).getSyncPoller();

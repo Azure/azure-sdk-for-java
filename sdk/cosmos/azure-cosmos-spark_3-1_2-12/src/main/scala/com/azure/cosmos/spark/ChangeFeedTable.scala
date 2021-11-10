@@ -63,9 +63,6 @@ private class ChangeFeedTable(val session: SparkSession,
 
   log.logTrace(s"Instantiated ${this.getClass.getSimpleName}")
 
-  // This can only be used for data operation against a certain container.
-  private lazy val containerStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot] =
-    initializeAndBroadcastCosmosClientStateForContainer()
   private val effectiveUserConfig = CosmosConfig.getEffectiveConfig(None, None, userConfig.asScala.toMap)
   private val clientConfig = CosmosAccountConfig.parseCosmosAccountConfig(effectiveUserConfig)
   private val cosmosContainerConfig = CosmosContainerConfig.parseCosmosContainerConfig(effectiveUserConfig)
@@ -73,11 +70,12 @@ private class ChangeFeedTable(val session: SparkSession,
   private val readConfig = CosmosReadConfig.parseCosmosReadConfig(effectiveUserConfig)
   private val tableName = s"com.azure.cosmos.spark.changeFeed.items.${clientConfig.accountName}." +
     s"${cosmosContainerConfig.database}.${cosmosContainerConfig.container}"
-  private val client = CosmosClientCache(
-    CosmosClientConfiguration(effectiveUserConfig,
-    useEventualConsistency = readConfig.forceEventualConsistency), None)
-  private val container = ThroughputControlHelper.getContainer(effectiveUserConfig, cosmosContainerConfig, client)
-  SparkUtils.safeOpenConnectionInitCaches(container, log)
+  private val cosmosClientConfig = CosmosClientConfiguration(
+    effectiveUserConfig,
+    useEventualConsistency = readConfig.forceEventualConsistency)
+  // This can only be used for data operation against a certain container.
+  private lazy val containerStateHandle: Broadcast[CosmosClientMetadataCachesSnapshot] =
+    initializeAndBroadcastCosmosClientStateForContainer()
 
   override def name(): String = tableName
 
@@ -101,7 +99,14 @@ private class ChangeFeedTable(val session: SparkSession,
   }
 
   override def schema(): StructType = {
-    userProvidedSchema.getOrElse(this.inferSchema(client, effectiveUserConfig))
+    Loan(CosmosClientCache(
+      cosmosClientConfig,
+      None,
+      s"ChangeFeedTable(name ${tableName}).schema"
+    ))
+      .to(clientCacheItem =>
+      userProvidedSchema.getOrElse(this.inferSchema(clientCacheItem.client, effectiveUserConfig))
+    )
   }
 
   private def inferSchema(client: CosmosAsyncClient,
@@ -124,19 +129,28 @@ private class ChangeFeedTable(val session: SparkSession,
   private[spark] def initializeAndBroadcastCosmosClientStateForContainer()
   : Broadcast[CosmosClientMetadataCachesSnapshot] = {
 
-    try {
+    Loan(CosmosClientCache(
+      cosmosClientConfig,
+      None,
+      s"ChangeFeedTable(name ${tableName}).initializeAndBroadcastCosmosClientStateForContainer"))
+      .to(clientCacheItem => {
+      val container = ThroughputControlHelper
+        .getContainer(effectiveUserConfig, cosmosContainerConfig, clientCacheItem.client)
+
+      try {
         container.readItem(
-            UUID.randomUUID().toString, new PartitionKey(UUID.randomUUID().toString), classOf[ObjectNode])
-        .block()
-    } catch {
-      case _: CosmosException => None
-    }
+          UUID.randomUUID().toString, new PartitionKey(UUID.randomUUID().toString), classOf[ObjectNode])
+          .block()
+      } catch {
+        case _: CosmosException =>
+      }
 
-    val state = new CosmosClientMetadataCachesSnapshot()
-    state.serialize(client)
+      val state = new CosmosClientMetadataCachesSnapshot()
+      state.serialize(clientCacheItem.client)
 
-    val sparkSession = SparkSession.active
-    sparkSession.sparkContext.broadcast(state)
+      val sparkSession = SparkSession.active
+      sparkSession.sparkContext.broadcast(state)
+    })
   }
 }
 

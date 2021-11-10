@@ -21,6 +21,12 @@ public final class OperationServiceSpecificationDefinition {
     @JsonProperty(value = "metricSpecifications")
     private List<OperationMetricSpecificationDefinition> metricSpecifications;
 
+    /*
+     * A list of Azure Monitoring log definitions.
+     */
+    @JsonProperty(value = "logSpecifications")
+    private List<OperationLogSpecificationDefinition> logSpecifications;
+
     /**
      * Get the metricSpecifications property: A list of Azure Monitoring metrics definition.
      *
@@ -43,6 +49,27 @@ public final class OperationServiceSpecificationDefinition {
     }
 
     /**
+     * Get the logSpecifications property: A list of Azure Monitoring log definitions.
+     *
+     * @return the logSpecifications value.
+     */
+    public List<OperationLogSpecificationDefinition> logSpecifications() {
+        return this.logSpecifications;
+    }
+
+    /**
+     * Set the logSpecifications property: A list of Azure Monitoring log definitions.
+     *
+     * @param logSpecifications the logSpecifications value to set.
+     * @return the OperationServiceSpecificationDefinition object itself.
+     */
+    public OperationServiceSpecificationDefinition withLogSpecifications(
+        List<OperationLogSpecificationDefinition> logSpecifications) {
+        this.logSpecifications = logSpecifications;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -50,6 +77,9 @@ public final class OperationServiceSpecificationDefinition {
     public void validate() {
         if (metricSpecifications() != null) {
             metricSpecifications().forEach(e -> e.validate());
+        }
+        if (logSpecifications() != null) {
+            logSpecifications().forEach(e -> e.validate());
         }
     }
 }

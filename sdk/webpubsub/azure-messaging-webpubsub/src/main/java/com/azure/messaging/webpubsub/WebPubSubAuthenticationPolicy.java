@@ -10,7 +10,7 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.messaging.webpubsub.models.GetAuthenticationTokenOptions;
+import com.azure.messaging.webpubsub.models.GetClientAccessTokenOptions;
 import com.nimbusds.jose.JOSEException;
 import com.nimbusds.jose.JWSAlgorithm;
 import com.nimbusds.jose.JWSHeader;
@@ -29,10 +29,10 @@ import static java.time.LocalDateTime.now;
 
 /**
  * An {@link HttpPipelinePolicy} for authenticating against the Azure Web Pub Sub service. Used in the default HTTP
- * pipeline when built using the {@link WebPubSubClientBuilder}, but available here in case an HTTP pipeline is built
- * outside of the {@link WebPubSubClientBuilder}.
+ * pipeline when built using the {@link WebPubSubServiceClientBuilder}, but available here in case an HTTP pipeline is built
+ * outside of the {@link WebPubSubServiceClientBuilder}.
  *
- * @see WebPubSubClientBuilder
+ * @see WebPubSubServiceClientBuilder
  */
 public final class WebPubSubAuthenticationPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(WebPubSubAuthenticationPolicy.class);
@@ -75,7 +75,7 @@ public final class WebPubSubAuthenticationPolicy implements HttpPipelinePolicy {
     }
 
     static String getAuthenticationToken(final String audienceUrl,
-                                         GetAuthenticationTokenOptions options,
+                                         GetClientAccessTokenOptions options,
                                          final AzureKeyCredential credential) {
         try {
             Duration expiresAfter = Duration.ofHours(1);

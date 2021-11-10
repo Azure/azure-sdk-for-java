@@ -633,6 +633,7 @@ public final class KeyAsyncClient {
 
         KeyRequestParameters parameters = new KeyRequestParameters()
             .setKty(createOctKeyOptions.getKeyType())
+            .setKeySize(createOctKeyOptions.getKeySize())
             .setKeyOps(createOctKeyOptions.getKeyOperations())
             .setKeyAttributes(new KeyRequestAttributes(createOctKeyOptions))
             .setTags(createOctKeyOptions.getTags())

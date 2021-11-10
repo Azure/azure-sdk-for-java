@@ -16,6 +16,7 @@ import com.azure.cosmos.implementation.batch.BatchResponseParser;
 import com.azure.cosmos.implementation.batch.PartitionKeyRangeServerBatchRequest;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
 import com.azure.cosmos.implementation.batch.SinglePartitionKeyServerBatchRequest;
+import com.azure.cosmos.implementation.caches.SizeLimitingLRUCache;
 import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
 import com.azure.cosmos.implementation.caches.RxCollectionCache;
 import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
@@ -142,11 +143,12 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private RxPartitionKeyRangeCache partitionKeyRangeCache;
     private Map<String, List<PartitionKeyAndResourceTokenPair>> resourceTokensMap;
     private final boolean contentResponseOnWriteEnabled;
-    private ConcurrentMap<String, PartitionedQueryExecutionInfo> queryPlanCache;
+    private Map<String, PartitionedQueryExecutionInfo> queryPlanCache;
 
     private final AtomicBoolean closed = new AtomicBoolean(false);
     private final int clientId;
     private ClientTelemetry clientTelemetry;
+    private ApiType apiType;
 
     // RetryPolicy retries a request when it encounters session unavailable (see ClientRetryPolicy).
     // Once it exhausts all write regions it clears the session container, then it uses RxClientCollectionCache
@@ -187,9 +189,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 boolean sessionCapturingOverride,
                                 boolean connectionSharingAcrossClientsEnabled,
                                 boolean contentResponseOnWriteEnabled,
-                                CosmosClientMetadataCachesSnapshot metadataCachesSnapshot) {
+                                CosmosClientMetadataCachesSnapshot metadataCachesSnapshot,
+                                ApiType apiType) {
         this(serviceEndpoint, masterKeyOrResourceToken, permissionFeed, connectionPolicy, consistencyLevel, configs,
-            credential, null, sessionCapturingOverride, connectionSharingAcrossClientsEnabled, contentResponseOnWriteEnabled, metadataCachesSnapshot);
+            credential, null, sessionCapturingOverride, connectionSharingAcrossClientsEnabled, contentResponseOnWriteEnabled, metadataCachesSnapshot, apiType);
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
     }
 
@@ -205,9 +208,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 boolean sessionCapturingOverride,
                                 boolean connectionSharingAcrossClientsEnabled,
                                 boolean contentResponseOnWriteEnabled,
-                                CosmosClientMetadataCachesSnapshot metadataCachesSnapshot) {
+                                CosmosClientMetadataCachesSnapshot metadataCachesSnapshot,
+                                ApiType apiType) {
         this(serviceEndpoint, masterKeyOrResourceToken, permissionFeed, connectionPolicy, consistencyLevel, configs,
-            credential, tokenCredential, sessionCapturingOverride, connectionSharingAcrossClientsEnabled, contentResponseOnWriteEnabled, metadataCachesSnapshot);
+            credential, tokenCredential, sessionCapturingOverride, connectionSharingAcrossClientsEnabled, contentResponseOnWriteEnabled, metadataCachesSnapshot, apiType);
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
     }
 
@@ -222,9 +226,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 boolean sessionCapturingOverrideEnabled,
                                 boolean connectionSharingAcrossClientsEnabled,
                                 boolean contentResponseOnWriteEnabled,
-                                CosmosClientMetadataCachesSnapshot metadataCachesSnapshot) {
+                                CosmosClientMetadataCachesSnapshot metadataCachesSnapshot,
+                                ApiType apiType) {
         this(serviceEndpoint, masterKeyOrResourceToken, connectionPolicy, consistencyLevel, configs,
-            credential, tokenCredential, sessionCapturingOverrideEnabled, connectionSharingAcrossClientsEnabled, contentResponseOnWriteEnabled, metadataCachesSnapshot);
+            credential, tokenCredential, sessionCapturingOverrideEnabled, connectionSharingAcrossClientsEnabled, contentResponseOnWriteEnabled, metadataCachesSnapshot, apiType);
 
         if (permissionFeed != null && permissionFeed.size() > 0) {
             this.resourceTokensMap = new HashMap<>();
@@ -278,7 +283,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                          boolean sessionCapturingOverrideEnabled,
                          boolean connectionSharingAcrossClientsEnabled,
                          boolean contentResponseOnWriteEnabled,
-                         CosmosClientMetadataCachesSnapshot metadataCachesSnapshot) {
+                         CosmosClientMetadataCachesSnapshot metadataCachesSnapshot,
+                         ApiType apiType) {
 
         activeClientsCnt.incrementAndGet();
         this.clientId = clientIdGenerator.getAndDecrement();
@@ -362,7 +368,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.retryPolicy = new RetryPolicy(this, this.globalEndpointManager, this.connectionPolicy);
             this.resetSessionTokenRetryPolicy = retryPolicy;
             CpuMemoryMonitor.register(this);
-            this.queryPlanCache = new ConcurrentHashMap<>();
+            this.queryPlanCache = Collections.synchronizedMap(new SizeLimitingLRUCache(Constants.QUERYPLAN_CACHE_SIZE));
+            this.apiType = apiType;
         } catch (RuntimeException e) {
             logger.error("unexpected failure in initializing client.", e);
             close();
@@ -447,7 +454,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             clientTelemetry = new ClientTelemetry(null, UUID.randomUUID().toString(),
                 ManagementFactory.getRuntimeMXBean().getName(), userAgentContainer.getUserAgent(),
                 connectionPolicy.getConnectionMode(), globalEndpointManager.getLatestDatabaseAccount().getId(),
-                null, null, this.reactorHttpClient, connectionPolicy.isClientTelemetryEnabled(), this);
+                null, null, this.reactorHttpClient, connectionPolicy.isClientTelemetryEnabled(), this, this.connectionPolicy.getPreferredRegions());
             clientTelemetry.init();
             this.queryPlanCache = new ConcurrentHashMap<>();
         } catch (Exception e) {
@@ -531,7 +538,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             .withMaxIdleConnectionTimeout(this.connectionPolicy.getIdleHttpConnectionTimeout())
             .withPoolSize(this.connectionPolicy.getMaxConnectionPoolSize())
             .withProxy(this.connectionPolicy.getProxy())
-            .withRequestTimeout(this.connectionPolicy.getRequestTimeout());
+            .withNetworkRequestTimeout(this.connectionPolicy.getHttpNetworkRequestTimeout());
 
         if (connectionSharingAcrossClientsEnabled) {
             return SharedGatewayHttpClient.getOrCreateInstance(httpClientConfig, diagnosticsClientConfig);
@@ -1504,6 +1511,10 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             request.getHeaders().put(HttpConstants.HttpHeaders.AUTHORIZATION, authorization);
         }
 
+        if (this.apiType != null)   {
+            request.getHeaders().put(HttpConstants.HttpHeaders.API_TYPE, this.apiType.toString());
+        }
+
         if ((RequestVerb.POST.equals(httpMethod) || RequestVerb.PUT.equals(httpMethod))
                 && !request.getHeaders().containsKey(HttpConstants.HttpHeaders.CONTENT_TYPE)) {
             request.getHeaders().put(HttpConstants.HttpHeaders.CONTENT_TYPE, RuntimeConstants.MediaTypes.JSON);
@@ -2462,7 +2473,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     @Override
-    public ConcurrentMap<String, PartitionedQueryExecutionInfo> getQueryPlanCache() {
+    public Map<String, PartitionedQueryExecutionInfo> getQueryPlanCache() {
         return queryPlanCache;
     }
 

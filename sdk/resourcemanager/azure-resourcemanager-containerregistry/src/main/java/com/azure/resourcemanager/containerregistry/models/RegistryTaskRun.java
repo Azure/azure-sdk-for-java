@@ -66,7 +66,7 @@ public interface RegistryTaskRun extends HasInnerModel<RunInner>, Refreshable<Re
 
     /** Grouping of registry task run definition stages. */
     interface DefinitionStages {
-        /** The first stage of a a RegistryTaskRun definition if originating from a call on a registry. */
+        /** The first stage of a RegistryTaskRun definition if originating from a call on a registry. */
         interface BlankFromRegistry extends PlatformAltTaskRunRequest {
         }
 

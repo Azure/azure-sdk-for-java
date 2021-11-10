@@ -139,6 +139,7 @@ public class ModelHelper {
         properties.setProtocols(parseShareProtocols(sharePropertiesInternal.getEnabledProtocols()));
         properties.setRootSquash(sharePropertiesInternal.getRootSquash());
         properties.setMetadata(sharePropertiesInternal.getMetadata());
+        properties.setProvisionedBandwidthMiBps(sharePropertiesInternal.getProvisionedBandwidthMiBps());
 
         return properties;
     }

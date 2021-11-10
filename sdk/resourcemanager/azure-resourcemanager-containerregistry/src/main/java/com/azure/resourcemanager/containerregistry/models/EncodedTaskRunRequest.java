@@ -238,6 +238,27 @@ public final class EncodedTaskRunRequest extends RunRequest {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public EncodedTaskRunRequest withIsArchiveEnabled(Boolean isArchiveEnabled) {
+        super.withIsArchiveEnabled(isArchiveEnabled);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EncodedTaskRunRequest withAgentPoolName(String agentPoolName) {
+        super.withAgentPoolName(agentPoolName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EncodedTaskRunRequest withLogTemplate(String logTemplate) {
+        super.withLogTemplate(logTemplate);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

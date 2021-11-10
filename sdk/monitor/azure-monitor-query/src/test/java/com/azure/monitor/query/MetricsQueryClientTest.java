@@ -5,8 +5,6 @@ package com.azure.monitor.query;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestBase;
@@ -14,7 +12,6 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.identity.ClientSecretCredentialBuilder;
-import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.monitor.query.models.AggregationType;
 import com.azure.monitor.query.models.MetricDefinition;
 import com.azure.monitor.query.models.MetricNamespace;
@@ -55,17 +52,16 @@ public class MetricsQueryClientTest extends TestBase {
                 .addPolicy(interceptorManager.getRecordPolicy())
                 .credential(getCredential());
         } else if (getTestMode() == TestMode.LIVE) {
-            clientBuilder.credential(new DefaultAzureCredentialBuilder().build());
+            clientBuilder.credential(getCredential());
         }
         this.client = clientBuilder
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .buildClient();
     }
 
     private TokenCredential getCredential() {
         return new ClientSecretCredentialBuilder()
-            .clientId(Configuration.getGlobalConfiguration().get("AZURE_MONITOR_CLIENT_ID"))
-            .clientSecret(Configuration.getGlobalConfiguration().get("AZURE_MONITOR_CLIENT_SECRET"))
+            .clientId(Configuration.getGlobalConfiguration().get("AZURE_CLIENT_ID"))
+            .clientSecret(Configuration.getGlobalConfiguration().get("AZURE_CLIENT_SECRET"))
             .tenantId(Configuration.getGlobalConfiguration().get("AZURE_TENANT_ID"))
             .build();
     }

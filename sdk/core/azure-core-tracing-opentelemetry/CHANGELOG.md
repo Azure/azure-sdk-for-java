@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.16 (Unreleased)
+## 1.0.0-beta.17 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,23 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.16 (2021-11-05)
+
+### Features Added
+
+- Provide HTTP URL and method before span is started to allow for sampling decisions to be based on them. ([#24996](https://github.com/Azure/azure-sdk-for-java/pull/24996))
+
+### Bugs Fixed
+
+- Fixed OpenTelemetry context propagation and span duplication. ([#25012](https://github.com/Azure/azure-sdk-for-java/pull/25012))
+- Fixed inconsistencies in span creation and the OpenTelemetry specification. ([#24954](https://github.com/Azure/azure-sdk-for-java/pull/24954))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.21.0` to `1.22.0`.
 
 ## 1.0.0-beta.15 (2021-10-01)
 

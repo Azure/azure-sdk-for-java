@@ -19,8 +19,6 @@ public final class EventSubscriptionUpdateParameters {
     /*
      * Information about the destination where events have to be delivered for
      * the event subscription.
-     * Uses Azure Event Grid's identity to acquire the authentication tokens
-     * being used during delivery / dead-lettering.
      */
     @JsonProperty(value = "destination")
     private EventSubscriptionDestination destination;
@@ -67,11 +65,7 @@ public final class EventSubscriptionUpdateParameters {
     private RetryPolicy retryPolicy;
 
     /*
-     * The dead letter destination of the event subscription. Any event that
-     * cannot be delivered to its' destination is sent to the dead letter
-     * destination.
-     * Uses Azure Event Grid's identity to acquire the authentication tokens
-     * being used during delivery / dead-lettering.
+     * The DeadLetter destination of the event subscription.
      */
     @JsonProperty(value = "deadLetterDestination")
     private DeadLetterDestination deadLetterDestination;
@@ -89,8 +83,7 @@ public final class EventSubscriptionUpdateParameters {
 
     /**
      * Get the destination property: Information about the destination where events have to be delivered for the event
-     * subscription. Uses Azure Event Grid's identity to acquire the authentication tokens being used during delivery /
-     * dead-lettering.
+     * subscription.
      *
      * @return the destination value.
      */
@@ -100,8 +93,7 @@ public final class EventSubscriptionUpdateParameters {
 
     /**
      * Set the destination property: Information about the destination where events have to be delivered for the event
-     * subscription. Uses Azure Event Grid's identity to acquire the authentication tokens being used during delivery /
-     * dead-lettering.
+     * subscription.
      *
      * @param destination the destination value to set.
      * @return the EventSubscriptionUpdateParameters object itself.
@@ -239,9 +231,7 @@ public final class EventSubscriptionUpdateParameters {
     }
 
     /**
-     * Get the deadLetterDestination property: The dead letter destination of the event subscription. Any event that
-     * cannot be delivered to its' destination is sent to the dead letter destination. Uses Azure Event Grid's identity
-     * to acquire the authentication tokens being used during delivery / dead-lettering.
+     * Get the deadLetterDestination property: The DeadLetter destination of the event subscription.
      *
      * @return the deadLetterDestination value.
      */
@@ -250,9 +240,7 @@ public final class EventSubscriptionUpdateParameters {
     }
 
     /**
-     * Set the deadLetterDestination property: The dead letter destination of the event subscription. Any event that
-     * cannot be delivered to its' destination is sent to the dead letter destination. Uses Azure Event Grid's identity
-     * to acquire the authentication tokens being used during delivery / dead-lettering.
+     * Set the deadLetterDestination property: The DeadLetter destination of the event subscription.
      *
      * @param deadLetterDestination the deadLetterDestination value to set.
      * @return the EventSubscriptionUpdateParameters object itself.

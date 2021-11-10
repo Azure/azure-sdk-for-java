@@ -1,6 +1,6 @@
 # Release History
 
-## 12.0.0-beta.10 (Unreleased)
+## 12.0.0-beta.12 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,21 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.0.0-beta.11 (2021-11-05)
+
+### Features Added
+- Added support for the 2020-12-06 service version.
+
+### Bugs Fixed
+- Fixes an off-by-one error in read() returns 0 bytes read instead of -1 (EOF) when reading at channel position == size.
+- Fixes a bug where read() (and write()) do not respect initial position (and limit) of provided ByteBuffer when backed by an array
+
+## 12.0.0-beta.10 (2021-10-12)
+
+### Other Changes
+#### Dependency Updates
+- Updated `azure-storage-blob` to version `12.14.1`
 
 ## 12.0.0-beta.9 (2021-09-15)
 ### Other changes

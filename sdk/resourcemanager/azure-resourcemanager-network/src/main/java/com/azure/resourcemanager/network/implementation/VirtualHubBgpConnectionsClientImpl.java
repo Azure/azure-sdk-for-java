@@ -477,7 +477,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Appliance Site resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<BgpConnectionInner>, BgpConnectionInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String virtualHubName, String connectionName, BgpConnectionInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -501,7 +501,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Appliance Site resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BgpConnectionInner>, BgpConnectionInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String virtualHubName,
@@ -529,7 +529,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Appliance Site resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BgpConnectionInner>, BgpConnectionInner> beginCreateOrUpdate(
         String resourceGroupName, String virtualHubName, String connectionName, BgpConnectionInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, virtualHubName, connectionName, parameters).getSyncPoller();
@@ -548,7 +548,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtual Appliance Site resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BgpConnectionInner>, BgpConnectionInner> beginCreateOrUpdate(
         String resourceGroupName,
         String virtualHubName,
@@ -762,7 +762,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String virtualHubName, String connectionName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -784,7 +784,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String virtualHubName, String connectionName, Context context) {
         context = this.client.mergeContext(context);
@@ -806,7 +806,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String virtualHubName, String connectionName) {
         return beginDeleteAsync(resourceGroupName, virtualHubName, connectionName).getSyncPoller();
@@ -824,7 +824,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String virtualHubName, String connectionName, Context context) {
         return beginDeleteAsync(resourceGroupName, virtualHubName, connectionName, context).getSyncPoller();
@@ -1196,7 +1196,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of virtual router peer routes.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<PeerRouteListInner>, PeerRouteListInner> beginListLearnedRoutesAsync(
         String resourceGroupName, String hubName, String connectionName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1219,7 +1219,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of virtual router peer routes.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PeerRouteListInner>, PeerRouteListInner> beginListLearnedRoutesAsync(
         String resourceGroupName, String hubName, String connectionName, Context context) {
         context = this.client.mergeContext(context);
@@ -1242,7 +1242,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of virtual router peer routes.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PeerRouteListInner>, PeerRouteListInner> beginListLearnedRoutes(
         String resourceGroupName, String hubName, String connectionName) {
         return beginListLearnedRoutesAsync(resourceGroupName, hubName, connectionName).getSyncPoller();
@@ -1260,7 +1260,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of virtual router peer routes.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PeerRouteListInner>, PeerRouteListInner> beginListLearnedRoutes(
         String resourceGroupName, String hubName, String connectionName, Context context) {
         return beginListLearnedRoutesAsync(resourceGroupName, hubName, connectionName, context).getSyncPoller();
@@ -1456,7 +1456,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of virtual router peer routes.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<PeerRouteListInner>, PeerRouteListInner> beginListAdvertisedRoutesAsync(
         String resourceGroupName, String hubName, String connectionName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1479,7 +1479,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of virtual router peer routes.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<PeerRouteListInner>, PeerRouteListInner> beginListAdvertisedRoutesAsync(
         String resourceGroupName, String hubName, String connectionName, Context context) {
         context = this.client.mergeContext(context);
@@ -1502,7 +1502,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of virtual router peer routes.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PeerRouteListInner>, PeerRouteListInner> beginListAdvertisedRoutes(
         String resourceGroupName, String hubName, String connectionName) {
         return beginListAdvertisedRoutesAsync(resourceGroupName, hubName, connectionName).getSyncPoller();
@@ -1520,7 +1520,7 @@ public final class VirtualHubBgpConnectionsClientImpl implements VirtualHubBgpCo
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of virtual router peer routes.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<PeerRouteListInner>, PeerRouteListInner> beginListAdvertisedRoutes(
         String resourceGroupName, String hubName, String connectionName, Context context) {
         return beginListAdvertisedRoutesAsync(resourceGroupName, hubName, connectionName, context).getSyncPoller();

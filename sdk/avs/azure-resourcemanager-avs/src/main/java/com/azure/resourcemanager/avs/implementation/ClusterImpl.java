@@ -7,10 +7,8 @@ package com.azure.resourcemanager.avs.implementation;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.avs.fluent.models.ClusterInner;
 import com.azure.resourcemanager.avs.models.Cluster;
-import com.azure.resourcemanager.avs.models.ClusterProvisioningState;
 import com.azure.resourcemanager.avs.models.ClusterUpdate;
 import com.azure.resourcemanager.avs.models.Sku;
-import java.util.Collections;
 import java.util.List;
 
 public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.Update {
@@ -32,27 +30,6 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
 
     public Sku sku() {
         return this.innerModel().sku();
-    }
-
-    public Integer clusterSize() {
-        return this.innerModel().clusterSize();
-    }
-
-    public ClusterProvisioningState provisioningState() {
-        return this.innerModel().provisioningState();
-    }
-
-    public Integer clusterId() {
-        return this.innerModel().clusterId();
-    }
-
-    public List<String> hosts() {
-        List<String> inner = this.innerModel().hosts();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
     }
 
     public ClusterInner innerModel() {
@@ -158,16 +135,12 @@ public final class ClusterImpl implements Cluster, Cluster.Definition, Cluster.U
     }
 
     public ClusterImpl withClusterSize(Integer clusterSize) {
-        if (isInCreateMode()) {
-            this.innerModel().withClusterSize(clusterSize);
-            return this;
-        } else {
-            this.updateClusterUpdate.withClusterSize(clusterSize);
-            return this;
-        }
+        this.updateClusterUpdate.withClusterSize(clusterSize);
+        return this;
     }
 
-    private boolean isInCreateMode() {
-        return this.innerModel().id() == null;
+    public ClusterImpl withHosts(List<String> hosts) {
+        this.updateClusterUpdate.withHosts(hosts);
+        return this;
     }
 }
