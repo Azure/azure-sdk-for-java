@@ -6,12 +6,6 @@
 
 - Supported `tags` in `KubernetesClusterAgentPool` during create and update.
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
 ## 2.9.0 (2021-10-21)
 
 ### Other Changes
