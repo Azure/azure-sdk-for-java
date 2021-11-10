@@ -2,16 +2,19 @@
 // Licensed under the MIT License.
 package com.azure.communication.common;
 
-import java.util.function.Supplier;
 import reactor.core.publisher.Mono;
+import java.time.Duration;
+import java.util.function.Supplier;
 
 /**
  * Options for refreshing CommunicationTokenCredential
  */
 public final class CommunicationTokenRefreshOptions {
+    private static final int DEFAULT_EXPIRING_OFFSET_MINUTES = 5;
     private final Supplier<Mono<String>> tokenRefresher;
     private final boolean refreshProactively;
     private final String initialToken;
+    private final Duration refreshOffsetTime;
 
     /**
      * Creates a CommunicationTokenRefreshOptions object
@@ -26,9 +29,10 @@ public final class CommunicationTokenRefreshOptions {
         this.tokenRefresher = tokenRefresher;
         this.refreshProactively = refreshProactively;
         this.initialToken = null;
+        this.refreshOffsetTime = getDefaultRefreshOffsetTime();
     }
 
-     /**
+    /**
      * Creates a CommunicationTokenRefreshOptions object
      *
      * @param tokenRefresher the token refresher to provide capacity to fetch fresh token
@@ -42,6 +46,25 @@ public final class CommunicationTokenRefreshOptions {
         this.tokenRefresher = tokenRefresher;
         this.refreshProactively = refreshProactively;
         this.initialToken = initialToken;
+        this.refreshOffsetTime = getDefaultRefreshOffsetTime();
+    }
+
+    /**
+     * Creates a CommunicationTokenRefreshOptions object
+     *
+     * @param tokenRefresher the token refresher to provide capacity to fetch fresh token
+     * @param refreshProactively when set to true, turn on proactive fetching to call
+     *                           tokenRefresher before token expiry by minutes set
+     *                           with setCallbackOffsetMinutes or default value of
+     *                           two minutes
+     * @param initialToken the optional serialized JWT token
+     * @param refreshOffsetTime proactive refresh interval.
+     */
+    public CommunicationTokenRefreshOptions(Supplier<Mono<String>> tokenRefresher, boolean refreshProactively, String initialToken, Duration refreshOffsetTime) {
+        this.tokenRefresher = tokenRefresher;
+        this.refreshProactively = refreshProactively;
+        this.initialToken = initialToken;
+        this.refreshOffsetTime = refreshOffsetTime;
     }
 
     /**
@@ -64,4 +87,19 @@ public final class CommunicationTokenRefreshOptions {
     public String getInitialToken() {
         return initialToken;
     }
+
+    /**
+     * @return the proactive refresh interval
+     */
+    public Duration getRefreshOffsetTime() {
+        return refreshOffsetTime;
+    }
+
+    /**
+     * @return default proactive refresh interval
+     */
+    public static Duration getDefaultRefreshOffsetTime() {
+        return Duration.ofMinutes(DEFAULT_EXPIRING_OFFSET_MINUTES);
+    }
+
 }
