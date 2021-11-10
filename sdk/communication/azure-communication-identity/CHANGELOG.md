@@ -1,5 +1,14 @@
 # Release History
 
+## 1.1.4 (2021-11-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-communication-common` to 1.0.6
+- Upgraded `azure-core` to 1.22.0
+
 ## 1.1.3 (2021-10-08)
 
 ### Other Changes
