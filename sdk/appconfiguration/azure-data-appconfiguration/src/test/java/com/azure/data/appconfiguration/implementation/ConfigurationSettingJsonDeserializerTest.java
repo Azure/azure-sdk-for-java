@@ -8,8 +8,6 @@ import com.azure.data.appconfiguration.models.FeatureFlagConfigurationSetting;
 import com.azure.data.appconfiguration.models.FeatureFlagFilter;
 import com.azure.data.appconfiguration.models.SecretReferenceConfigurationSetting;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.parallel.Execution;
-import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -57,7 +55,6 @@ public class ConfigurationSettingJsonDeserializerTest {
 
     @ParameterizedTest
     @MethodSource("deserializeSupplier")
-    @Execution(ExecutionMode.SAME_THREAD)
     public <T extends ConfigurationSetting> void deserialize(String json, Class<T> type, T expectedGeo)
         throws IOException {
         if (expectedGeo instanceof FeatureFlagConfigurationSetting) {
