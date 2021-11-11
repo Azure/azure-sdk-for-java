@@ -765,6 +765,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                 continue;
             }
 
+            maybeEmitEvent(new AfterLoadEvent<>(jsonNode, returnType, containerName));
             final T entity = mappingCosmosConverter.read(returnType, jsonNode);
             result.add(entity);
         }
@@ -972,12 +973,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     }
 
     private void maybeEmitEvent(CosmosMappingEvent<?> event) {
-        try {
-            if (canPublishEvent()) {
-                this.applicationContext.publishEvent(event);
-            }
-        } catch (Exception ex) {
-            LOGGER.warn("Encountered an exception while trying to emit spring application event", ex);
+        if (canPublishEvent()) {
+            this.applicationContext.publishEvent(event);
         }
     }
 
