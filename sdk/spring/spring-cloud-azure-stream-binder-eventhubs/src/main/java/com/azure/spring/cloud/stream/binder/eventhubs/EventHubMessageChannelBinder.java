@@ -160,7 +160,7 @@ public class EventHubMessageChannelBinder extends
         return key -> {
             Map<String, EventHubBindingProperties> bindings = bindingProperties.getBindings();
             for (Map.Entry<String, EventHubBindingProperties> entry : bindings.entrySet()) {
-                BatchableProducerProperties properties = (BatchableProducerProperties) bindings.get(entry.getKey()).getProducer().getProducer();
+                BatchableProducerProperties properties = bindings.get(entry.getKey()).getProducer().getProducer();
                 if (properties.getEventHubName() == null) {
                     continue;
                 }
