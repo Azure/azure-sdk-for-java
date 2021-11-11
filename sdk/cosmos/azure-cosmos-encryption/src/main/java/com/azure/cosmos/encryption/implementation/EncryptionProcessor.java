@@ -325,8 +325,10 @@ public class EncryptionProcessor {
                 Map.Entry<String, JsonNode> child = it.next();
                 if (child.getValue().isObject() || child.getValue().isArray()) {
                     JsonNode encryptedValue = encryptAndSerializePatchProperty(encryptionSettings, child.getValue(), child.getKey());
+                    assert propertyValueHolder instanceof ObjectNode;
                     ((ObjectNode) propertyValueHolder).put(child.getKey(), encryptedValue);
                 } else if (!child.getValue().isNull()){
+                    assert propertyValueHolder instanceof ObjectNode;
                     encryptAndSerializeValue(encryptionSettings, (ObjectNode) propertyValueHolder, child.getValue(),
                         child.getKey());
                 }
