@@ -5,42 +5,37 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.appservice.fluent.models.StorageMigrationOptionsProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Options for app content migration. */
-@JsonFlatten
 @Fluent
-public class StorageMigrationOptions extends ProxyOnlyResource {
+public final class StorageMigrationOptions extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(StorageMigrationOptions.class);
 
     /*
-     * AzureFiles connection string.
+     * StorageMigrationOptions resource specific properties
      */
-    @JsonProperty(value = "properties.azurefilesConnectionString")
-    private String azurefilesConnectionString;
+    @JsonProperty(value = "properties")
+    private StorageMigrationOptionsProperties innerProperties;
 
-    /*
-     * AzureFiles share.
+    /**
+     * Get the innerProperties property: StorageMigrationOptions resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.azurefilesShare")
-    private String azurefilesShare;
+    private StorageMigrationOptionsProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * <code>true</code>if the app should be switched over; otherwise,
-     * <code>false</code>.
-     */
-    @JsonProperty(value = "properties.switchSiteAfterMigration")
-    private Boolean switchSiteAfterMigration;
-
-    /*
-     * <code>true</code> if the app should be read only during copy operation;
-     * otherwise, <code>false</code>.
-     */
-    @JsonProperty(value = "properties.blockWriteAccessToSite")
-    private Boolean blockWriteAccessToSite;
+    /** {@inheritDoc} */
+    @Override
+    public StorageMigrationOptions withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the azurefilesConnectionString property: AzureFiles connection string.
@@ -48,7 +43,7 @@ public class StorageMigrationOptions extends ProxyOnlyResource {
      * @return the azurefilesConnectionString value.
      */
     public String azurefilesConnectionString() {
-        return this.azurefilesConnectionString;
+        return this.innerProperties() == null ? null : this.innerProperties().azurefilesConnectionString();
     }
 
     /**
@@ -58,7 +53,10 @@ public class StorageMigrationOptions extends ProxyOnlyResource {
      * @return the StorageMigrationOptions object itself.
      */
     public StorageMigrationOptions withAzurefilesConnectionString(String azurefilesConnectionString) {
-        this.azurefilesConnectionString = azurefilesConnectionString;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageMigrationOptionsProperties();
+        }
+        this.innerProperties().withAzurefilesConnectionString(azurefilesConnectionString);
         return this;
     }
 
@@ -68,7 +66,7 @@ public class StorageMigrationOptions extends ProxyOnlyResource {
      * @return the azurefilesShare value.
      */
     public String azurefilesShare() {
-        return this.azurefilesShare;
+        return this.innerProperties() == null ? null : this.innerProperties().azurefilesShare();
     }
 
     /**
@@ -78,7 +76,10 @@ public class StorageMigrationOptions extends ProxyOnlyResource {
      * @return the StorageMigrationOptions object itself.
      */
     public StorageMigrationOptions withAzurefilesShare(String azurefilesShare) {
-        this.azurefilesShare = azurefilesShare;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageMigrationOptionsProperties();
+        }
+        this.innerProperties().withAzurefilesShare(azurefilesShare);
         return this;
     }
 
@@ -89,7 +90,7 @@ public class StorageMigrationOptions extends ProxyOnlyResource {
      * @return the switchSiteAfterMigration value.
      */
     public Boolean switchSiteAfterMigration() {
-        return this.switchSiteAfterMigration;
+        return this.innerProperties() == null ? null : this.innerProperties().switchSiteAfterMigration();
     }
 
     /**
@@ -100,7 +101,10 @@ public class StorageMigrationOptions extends ProxyOnlyResource {
      * @return the StorageMigrationOptions object itself.
      */
     public StorageMigrationOptions withSwitchSiteAfterMigration(Boolean switchSiteAfterMigration) {
-        this.switchSiteAfterMigration = switchSiteAfterMigration;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageMigrationOptionsProperties();
+        }
+        this.innerProperties().withSwitchSiteAfterMigration(switchSiteAfterMigration);
         return this;
     }
 
@@ -111,7 +115,7 @@ public class StorageMigrationOptions extends ProxyOnlyResource {
      * @return the blockWriteAccessToSite value.
      */
     public Boolean blockWriteAccessToSite() {
-        return this.blockWriteAccessToSite;
+        return this.innerProperties() == null ? null : this.innerProperties().blockWriteAccessToSite();
     }
 
     /**
@@ -122,14 +126,10 @@ public class StorageMigrationOptions extends ProxyOnlyResource {
      * @return the StorageMigrationOptions object itself.
      */
     public StorageMigrationOptions withBlockWriteAccessToSite(Boolean blockWriteAccessToSite) {
-        this.blockWriteAccessToSite = blockWriteAccessToSite;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public StorageMigrationOptions withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StorageMigrationOptionsProperties();
+        }
+        this.innerProperties().withBlockWriteAccessToSite(blockWriteAccessToSite);
         return this;
     }
 
@@ -141,5 +141,8 @@ public class StorageMigrationOptions extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

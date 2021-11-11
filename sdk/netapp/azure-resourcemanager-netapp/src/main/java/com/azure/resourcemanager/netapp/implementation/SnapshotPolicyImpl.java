@@ -46,6 +46,10 @@ public final class SnapshotPolicyImpl implements SnapshotPolicy, SnapshotPolicy.
         }
     }
 
+    public String etag() {
+        return this.innerModel().etag();
+    }
+
     public HourlySchedule hourlySchedule() {
         return this.innerModel().hourlySchedule();
     }

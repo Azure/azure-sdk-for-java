@@ -41,7 +41,7 @@ public class RandomBytes {
      * @param bytes The random bytes to set.
      * @return The updated {@link RandomBytes} object.
      */
-    public RandomBytes setValue(byte[] bytes) {
+    public RandomBytes setBytes(byte[] bytes) {
         this.bytes = ByteExtensions.clone(bytes);
 
         return this;

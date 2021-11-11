@@ -37,7 +37,7 @@ public final class CertificateProperties {
     /*
      * Determines whether certificate has been verified.
      */
-    @JsonProperty(value = "isVerified", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "isVerified")
     private Boolean isVerified;
 
     /*
@@ -95,6 +95,17 @@ public final class CertificateProperties {
      */
     public Boolean isVerified() {
         return this.isVerified;
+    }
+
+    /**
+     * Set the isVerified property: Determines whether certificate has been verified.
+     *
+     * @param isVerified the isVerified value to set.
+     * @return the CertificateProperties object itself.
+     */
+    public CertificateProperties withIsVerified(Boolean isVerified) {
+        this.isVerified = isVerified;
+        return this;
     }
 
     /**

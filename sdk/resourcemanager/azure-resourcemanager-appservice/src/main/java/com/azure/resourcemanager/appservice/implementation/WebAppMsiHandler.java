@@ -6,9 +6,9 @@ package com.azure.resourcemanager.appservice.implementation;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.appservice.models.ManagedServiceIdentityType;
-import com.azure.resourcemanager.appservice.models.ManagedServiceIdentityUserAssignedIdentities;
 import com.azure.resourcemanager.appservice.fluent.models.SiteInner;
 import com.azure.resourcemanager.appservice.fluent.models.SitePatchResourceInner;
+import com.azure.resourcemanager.appservice.models.UserAssignedIdentity;
 import com.azure.resourcemanager.appservice.models.WebAppBase;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.utils.RoleAssignmentHelper;
@@ -36,7 +36,7 @@ public class WebAppMsiHandler<FluentT extends WebAppBase, FluentImplT extends We
     private WebAppBaseImpl<FluentT, FluentImplT> webAppBase;
 
     private List<String> creatableIdentityKeys;
-    private Map<String, ManagedServiceIdentityUserAssignedIdentities> userAssignedIdentities;
+    private Map<String, UserAssignedIdentity> userAssignedIdentities;
 
     /**
      * Creates VirtualMachineMsiHandler.
@@ -111,7 +111,7 @@ public class WebAppMsiHandler<FluentT extends WebAppBase, FluentImplT extends We
      */
     WebAppMsiHandler<FluentT, FluentImplT> withExistingExternalManagedServiceIdentity(Identity identity) {
         this.initSiteIdentity(ManagedServiceIdentityType.USER_ASSIGNED);
-        this.userAssignedIdentities.put(identity.id(), new ManagedServiceIdentityUserAssignedIdentities());
+        this.userAssignedIdentities.put(identity.id(), new UserAssignedIdentity());
         return this;
     }
 
@@ -131,7 +131,7 @@ public class WebAppMsiHandler<FluentT extends WebAppBase, FluentImplT extends We
         for (String key : this.creatableIdentityKeys) {
             Identity identity = (Identity) this.webAppBase.taskGroup().taskResult(key);
             Objects.requireNonNull(identity);
-            this.userAssignedIdentities.put(identity.id(), new ManagedServiceIdentityUserAssignedIdentities());
+            this.userAssignedIdentities.put(identity.id(), new UserAssignedIdentity());
         }
         this.creatableIdentityKeys.clear();
     }
@@ -193,7 +193,7 @@ public class WebAppMsiHandler<FluentT extends WebAppBase, FluentImplT extends We
         SiteInner siteInner = this.webAppBase.innerModel();
         if (!this.userAssignedIdentities.isEmpty()) {
             int rmCount = 0;
-            for (ManagedServiceIdentityUserAssignedIdentities v : this.userAssignedIdentities.values()) {
+            for (UserAssignedIdentity v : this.userAssignedIdentities.values()) {
                 if (v == null) {
                     rmCount++;
                 } else {
@@ -211,7 +211,7 @@ public class WebAppMsiHandler<FluentT extends WebAppBase, FluentImplT extends We
                     }
                 }
                 Set<String> removeIds = new HashSet<>();
-                for (Map.Entry<String, ManagedServiceIdentityUserAssignedIdentities> entrySet
+                for (Map.Entry<String, UserAssignedIdentity> entrySet
                     : this.userAssignedIdentities.entrySet()) {
                     if (entrySet.getValue() == null) {
                         removeIds.add(entrySet.getKey().toLowerCase(Locale.ROOT));

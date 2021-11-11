@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.azure.resourcemanager.appservice.models.TriggeredJobRun;
@@ -14,16 +13,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Triggered Web Job History. List of Triggered Web Job Run Information elements. */
-@JsonFlatten
 @Fluent
-public class TriggeredJobHistoryInner extends ProxyOnlyResource {
+public final class TriggeredJobHistoryInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(TriggeredJobHistoryInner.class);
 
     /*
-     * List of triggered web job runs.
+     * TriggeredJobHistory resource specific properties
      */
-    @JsonProperty(value = "properties.runs")
-    private List<TriggeredJobRun> runs;
+    @JsonProperty(value = "properties")
+    private TriggeredJobHistoryProperties innerProperties;
+
+    /**
+     * Get the innerProperties property: TriggeredJobHistory resource specific properties.
+     *
+     * @return the innerProperties value.
+     */
+    private TriggeredJobHistoryProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public TriggeredJobHistoryInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the runs property: List of triggered web job runs.
@@ -31,7 +45,7 @@ public class TriggeredJobHistoryInner extends ProxyOnlyResource {
      * @return the runs value.
      */
     public List<TriggeredJobRun> runs() {
-        return this.runs;
+        return this.innerProperties() == null ? null : this.innerProperties().runs();
     }
 
     /**
@@ -41,14 +55,10 @@ public class TriggeredJobHistoryInner extends ProxyOnlyResource {
      * @return the TriggeredJobHistoryInner object itself.
      */
     public TriggeredJobHistoryInner withRuns(List<TriggeredJobRun> runs) {
-        this.runs = runs;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public TriggeredJobHistoryInner withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new TriggeredJobHistoryProperties();
+        }
+        this.innerProperties().withRuns(runs);
         return this;
     }
 
@@ -60,8 +70,8 @@ public class TriggeredJobHistoryInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
-        if (runs() != null) {
-            runs().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

@@ -4,8 +4,7 @@
 
 package com.azure.resourcemanager.appservice.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.CustomDomainStatus;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
@@ -14,86 +13,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** Static Site Custom Domain Overview ARM resource. */
-@JsonFlatten
-@Immutable
-public class StaticSiteCustomDomainOverviewArmResourceInner extends ProxyOnlyResource {
+@Fluent
+public final class StaticSiteCustomDomainOverviewArmResourceInner extends ProxyOnlyResource {
     @JsonIgnore
     private final ClientLogger logger = new ClientLogger(StaticSiteCustomDomainOverviewArmResourceInner.class);
 
     /*
-     * The domain name for the static site custom domain.
+     * StaticSiteCustomDomainOverviewARMResource resource specific properties
      */
-    @JsonProperty(value = "properties.domainName", access = JsonProperty.Access.WRITE_ONLY)
-    private String domainName;
-
-    /*
-     * The date and time on which the custom domain was created for the static
-     * site.
-     */
-    @JsonProperty(value = "properties.createdOn", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdOn;
-
-    /*
-     * The status of the custom domain
-     */
-    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
-    private CustomDomainStatus status;
-
-    /*
-     * The TXT record validation token
-     */
-    @JsonProperty(value = "properties.validationToken", access = JsonProperty.Access.WRITE_ONLY)
-    private String validationToken;
-
-    /*
-     * The errorMessage property.
-     */
-    @JsonProperty(value = "properties.errorMessage", access = JsonProperty.Access.WRITE_ONLY)
-    private String errorMessage;
+    @JsonProperty(value = "properties")
+    private StaticSiteCustomDomainOverviewArmResourceProperties innerProperties;
 
     /**
-     * Get the domainName property: The domain name for the static site custom domain.
+     * Get the innerProperties property: StaticSiteCustomDomainOverviewARMResource resource specific properties.
      *
-     * @return the domainName value.
+     * @return the innerProperties value.
      */
-    public String domainName() {
-        return this.domainName;
-    }
-
-    /**
-     * Get the createdOn property: The date and time on which the custom domain was created for the static site.
-     *
-     * @return the createdOn value.
-     */
-    public OffsetDateTime createdOn() {
-        return this.createdOn;
-    }
-
-    /**
-     * Get the status property: The status of the custom domain.
-     *
-     * @return the status value.
-     */
-    public CustomDomainStatus status() {
-        return this.status;
-    }
-
-    /**
-     * Get the validationToken property: The TXT record validation token.
-     *
-     * @return the validationToken value.
-     */
-    public String validationToken() {
-        return this.validationToken;
-    }
-
-    /**
-     * Get the errorMessage property: The errorMessage property.
-     *
-     * @return the errorMessage value.
-     */
-    public String errorMessage() {
-        return this.errorMessage;
+    private StaticSiteCustomDomainOverviewArmResourceProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -104,6 +41,51 @@ public class StaticSiteCustomDomainOverviewArmResourceInner extends ProxyOnlyRes
     }
 
     /**
+     * Get the domainName property: The domain name for the static site custom domain.
+     *
+     * @return the domainName value.
+     */
+    public String domainName() {
+        return this.innerProperties() == null ? null : this.innerProperties().domainName();
+    }
+
+    /**
+     * Get the createdOn property: The date and time on which the custom domain was created for the static site.
+     *
+     * @return the createdOn value.
+     */
+    public OffsetDateTime createdOn() {
+        return this.innerProperties() == null ? null : this.innerProperties().createdOn();
+    }
+
+    /**
+     * Get the status property: The status of the custom domain.
+     *
+     * @return the status value.
+     */
+    public CustomDomainStatus status() {
+        return this.innerProperties() == null ? null : this.innerProperties().status();
+    }
+
+    /**
+     * Get the validationToken property: The TXT record validation token.
+     *
+     * @return the validationToken value.
+     */
+    public String validationToken() {
+        return this.innerProperties() == null ? null : this.innerProperties().validationToken();
+    }
+
+    /**
+     * Get the errorMessage property: The errorMessage property.
+     *
+     * @return the errorMessage value.
+     */
+    public String errorMessage() {
+        return this.innerProperties() == null ? null : this.innerProperties().errorMessage();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -111,5 +93,8 @@ public class StaticSiteCustomDomainOverviewArmResourceInner extends ProxyOnlyRes
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

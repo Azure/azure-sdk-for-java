@@ -4,7 +4,7 @@
 
 package com.azure.analytics.synapse.artifacts.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -29,5 +29,5 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "AppendVariable", value = AppendVariableActivity.class),
     @JsonSubTypes.Type(name = "WebHook", value = WebHookActivity.class)
 })
-@Immutable
+@Fluent
 public class ControlActivity extends Activity {}

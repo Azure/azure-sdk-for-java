@@ -11,8 +11,11 @@ import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.kusto.fluent.AttachedDatabaseConfigurationsClient;
 import com.azure.resourcemanager.kusto.fluent.models.AttachedDatabaseConfigurationInner;
+import com.azure.resourcemanager.kusto.fluent.models.CheckNameResultInner;
 import com.azure.resourcemanager.kusto.models.AttachedDatabaseConfiguration;
 import com.azure.resourcemanager.kusto.models.AttachedDatabaseConfigurations;
+import com.azure.resourcemanager.kusto.models.AttachedDatabaseConfigurationsCheckNameRequest;
+import com.azure.resourcemanager.kusto.models.CheckNameResult;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class AttachedDatabaseConfigurationsImpl implements AttachedDatabaseConfigurations {
@@ -26,6 +29,37 @@ public final class AttachedDatabaseConfigurationsImpl implements AttachedDatabas
         AttachedDatabaseConfigurationsClient innerClient, com.azure.resourcemanager.kusto.KustoManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public CheckNameResult checkNameAvailability(
+        String resourceGroupName, String clusterName, AttachedDatabaseConfigurationsCheckNameRequest resourceName) {
+        CheckNameResultInner inner =
+            this.serviceClient().checkNameAvailability(resourceGroupName, clusterName, resourceName);
+        if (inner != null) {
+            return new CheckNameResultImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public Response<CheckNameResult> checkNameAvailabilityWithResponse(
+        String resourceGroupName,
+        String clusterName,
+        AttachedDatabaseConfigurationsCheckNameRequest resourceName,
+        Context context) {
+        Response<CheckNameResultInner> inner =
+            this
+                .serviceClient()
+                .checkNameAvailabilityWithResponse(resourceGroupName, clusterName, resourceName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(
+                inner.getRequest(),
+                inner.getStatusCode(),
+                inner.getHeaders(),
+                new CheckNameResultImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public PagedIterable<AttachedDatabaseConfiguration> listByCluster(String resourceGroupName, String clusterName) {

@@ -13,14 +13,19 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.test.http.MockHttpResponse;
+import com.azure.core.util.Configuration;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
+import com.azure.data.tables.models.TableServiceProperties;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Common test utilities.
@@ -42,7 +47,7 @@ public final class TestUtils {
     public static String getConnectionString(boolean isPlaybackMode) {
         return isPlaybackMode
             ? "DefaultEndpointsProtocol=https;AccountName=dummyAccount;AccountKey=xyzDummy;EndpointSuffix=core.windows.net"
-            : System.getenv("AZURE_TABLES_CONNECTION_STRING");
+            : Configuration.getGlobalConfiguration().get("AZURE_TABLES_CONNECTION_STRING");
     }
 
     public static HttpRequest request(String url) throws MalformedURLException {
@@ -93,5 +98,98 @@ public final class TestUtils {
             context.getHttpRequest().setHeader("Custom-Header", "Some Value");
             return next.process();
         }
+    }
+
+    static void assertPropertiesEquals(TableServiceProperties expected,
+                                       TableServiceProperties actual) {
+        if (expected.getLogging() != null && actual.getLogging() != null) {
+            assertEquals(expected.getLogging().isReadLogged(), actual.getLogging().isReadLogged());
+            assertEquals(expected.getLogging().isDeleteLogged(), actual.getLogging().isDeleteLogged());
+            assertEquals(expected.getLogging().isWriteLogged(), actual.getLogging().isWriteLogged());
+            assertEquals(expected.getLogging().getAnalyticsVersion(), actual.getLogging().getAnalyticsVersion());
+
+            if (expected.getLogging().getRetentionPolicy() != null
+                && actual.getLogging().getRetentionPolicy() != null) {
+
+                assertEquals(expected.getLogging().getRetentionPolicy().getDaysToRetain(),
+                    actual.getLogging().getRetentionPolicy().getDaysToRetain());
+                assertEquals(expected.getLogging().getRetentionPolicy().isEnabled(),
+                    actual.getLogging().getRetentionPolicy().isEnabled());
+            } else {
+                assertNull(expected.getLogging().getRetentionPolicy());
+                assertNull(actual.getLogging().getRetentionPolicy());
+            }
+        } else {
+            assertNull(expected.getLogging());
+            assertNull(actual.getLogging());
+        }
+
+        if (expected.getCorsRules() != null && actual.getCorsRules() != null) {
+            assertEquals(expected.getCorsRules().size(), actual.getCorsRules().size());
+
+            for (int i = 0; i < expected.getCorsRules().size(); i++) {
+                assertEquals(expected.getCorsRules().get(i).getAllowedMethods(),
+                    actual.getCorsRules().get(i).getAllowedMethods());
+                assertEquals(expected.getCorsRules().get(i).getAllowedHeaders(),
+                    actual.getCorsRules().get(i).getAllowedHeaders());
+                assertEquals(expected.getCorsRules().get(i).getAllowedOrigins(),
+                    actual.getCorsRules().get(i).getAllowedOrigins());
+                assertEquals(expected.getCorsRules().get(i).getExposedHeaders(),
+                    actual.getCorsRules().get(i).getExposedHeaders());
+                assertEquals(expected.getCorsRules().get(i).getMaxAgeInSeconds(),
+                    actual.getCorsRules().get(i).getMaxAgeInSeconds());
+            }
+        } else {
+            assertNull(expected.getCorsRules());
+            assertNull(actual.getCorsRules());
+        }
+
+        if (expected.getHourMetrics() != null && actual.getHourMetrics() != null) {
+            assertEquals(expected.getHourMetrics().isEnabled(), actual.getHourMetrics().isEnabled());
+            assertEquals(expected.getHourMetrics().isIncludeApis(), actual.getHourMetrics().isIncludeApis());
+            assertEquals(expected.getHourMetrics().getVersion(), actual.getHourMetrics().getVersion());
+
+            if (expected.getHourMetrics().getTableServiceRetentionPolicy() != null
+                && actual.getHourMetrics().getTableServiceRetentionPolicy() != null) {
+
+                assertEquals(expected.getHourMetrics().getTableServiceRetentionPolicy().isEnabled(),
+                    actual.getHourMetrics().getTableServiceRetentionPolicy().isEnabled());
+                assertEquals(expected.getHourMetrics().getTableServiceRetentionPolicy().getDaysToRetain(),
+                    actual.getHourMetrics().getTableServiceRetentionPolicy().getDaysToRetain());
+            } else {
+                assertNull(expected.getHourMetrics().getTableServiceRetentionPolicy());
+                assertNull(actual.getHourMetrics().getTableServiceRetentionPolicy());
+            }
+        } else {
+            assertNull(expected.getHourMetrics());
+            assertNull(actual.getHourMetrics());
+        }
+
+        if (expected.getMinuteMetrics() != null && actual.getMinuteMetrics() != null) {
+            assertEquals(expected.getMinuteMetrics().isEnabled(), actual.getMinuteMetrics().isEnabled());
+            assertEquals(expected.getMinuteMetrics().isIncludeApis(), actual.getMinuteMetrics().isIncludeApis());
+            assertEquals(expected.getMinuteMetrics().getVersion(), actual.getMinuteMetrics().getVersion());
+
+            if (expected.getMinuteMetrics().getTableServiceRetentionPolicy() != null
+                && actual.getMinuteMetrics().getTableServiceRetentionPolicy() != null) {
+
+                assertEquals(expected.getMinuteMetrics().getTableServiceRetentionPolicy().isEnabled(),
+                    actual.getMinuteMetrics().getTableServiceRetentionPolicy().isEnabled());
+                assertEquals(expected.getMinuteMetrics().getTableServiceRetentionPolicy().getDaysToRetain(),
+                    actual.getMinuteMetrics().getTableServiceRetentionPolicy().getDaysToRetain());
+            } else {
+                assertNull(expected.getMinuteMetrics().getTableServiceRetentionPolicy());
+                assertNull(actual.getMinuteMetrics().getTableServiceRetentionPolicy());
+            }
+        } else {
+            assertNull(expected.getMinuteMetrics());
+            assertNull(actual.getMinuteMetrics());
+        }
+    }
+
+    static boolean isCosmosTest() {
+        Configuration globalConfiguration = Configuration.getGlobalConfiguration();
+        return globalConfiguration.get("AZURE_TABLES_CONNECTION_STRING") != null
+            && globalConfiguration.get("AZURE_TABLES_CONNECTION_STRING").contains("cosmos.azure.com");
     }
 }

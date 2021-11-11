@@ -25,6 +25,10 @@ private object Exceptions {
     cosmosException.getStatusCode == CosmosConstants.StatusCodes.Timeout
   }
 
+  def isTimeout(cosmosException: CosmosException): Boolean = {
+    cosmosException.getStatusCode == CosmosConstants.StatusCodes.Timeout
+  }
+
   def isNotFoundException(throwable: Throwable): Boolean = {
     throwable match {
       case cosmosException: CosmosException =>

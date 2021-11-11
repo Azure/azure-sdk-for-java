@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ConfigReferenceSource;
 import com.azure.resourcemanager.appservice.models.ManagedServiceIdentity;
@@ -15,64 +14,31 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Description of site key vault references. */
-@JsonFlatten
 @Fluent
-public class ApiKVReferenceInner extends ProxyOnlyResource {
+public final class ApiKVReferenceInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ApiKVReferenceInner.class);
 
     /*
-     * The reference property.
+     * ApiKVReference resource specific properties
      */
-    @JsonProperty(value = "properties.reference")
-    private String reference;
+    @JsonProperty(value = "properties")
+    private ApiKVReferenceProperties innerProperties;
 
-    /*
-     * The status property.
+    /**
+     * Get the innerProperties property: ApiKVReference resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.status")
-    private ResolveStatus status;
+    private ApiKVReferenceProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * The vaultName property.
-     */
-    @JsonProperty(value = "properties.vaultName")
-    private String vaultName;
-
-    /*
-     * The secretName property.
-     */
-    @JsonProperty(value = "properties.secretName")
-    private String secretName;
-
-    /*
-     * The secretVersion property.
-     */
-    @JsonProperty(value = "properties.secretVersion")
-    private String secretVersion;
-
-    /*
-     * Managed service identity.
-     */
-    @JsonProperty(value = "properties.identityType")
-    private ManagedServiceIdentity identityType;
-
-    /*
-     * The details property.
-     */
-    @JsonProperty(value = "properties.details")
-    private String details;
-
-    /*
-     * The source property.
-     */
-    @JsonProperty(value = "properties.source")
-    private ConfigReferenceSource source;
-
-    /*
-     * The activeVersion property.
-     */
-    @JsonProperty(value = "properties.activeVersion")
-    private String activeVersion;
+    /** {@inheritDoc} */
+    @Override
+    public ApiKVReferenceInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the reference property: The reference property.
@@ -80,7 +46,7 @@ public class ApiKVReferenceInner extends ProxyOnlyResource {
      * @return the reference value.
      */
     public String reference() {
-        return this.reference;
+        return this.innerProperties() == null ? null : this.innerProperties().reference();
     }
 
     /**
@@ -90,7 +56,10 @@ public class ApiKVReferenceInner extends ProxyOnlyResource {
      * @return the ApiKVReferenceInner object itself.
      */
     public ApiKVReferenceInner withReference(String reference) {
-        this.reference = reference;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiKVReferenceProperties();
+        }
+        this.innerProperties().withReference(reference);
         return this;
     }
 
@@ -100,7 +69,7 @@ public class ApiKVReferenceInner extends ProxyOnlyResource {
      * @return the status value.
      */
     public ResolveStatus status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -110,7 +79,10 @@ public class ApiKVReferenceInner extends ProxyOnlyResource {
      * @return the ApiKVReferenceInner object itself.
      */
     public ApiKVReferenceInner withStatus(ResolveStatus status) {
-        this.status = status;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiKVReferenceProperties();
+        }
+        this.innerProperties().withStatus(status);
         return this;
     }
 
@@ -120,7 +92,7 @@ public class ApiKVReferenceInner extends ProxyOnlyResource {
      * @return the vaultName value.
      */
     public String vaultName() {
-        return this.vaultName;
+        return this.innerProperties() == null ? null : this.innerProperties().vaultName();
     }
 
     /**
@@ -130,7 +102,10 @@ public class ApiKVReferenceInner extends ProxyOnlyResource {
      * @return the ApiKVReferenceInner object itself.
      */
     public ApiKVReferenceInner withVaultName(String vaultName) {
-        this.vaultName = vaultName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiKVReferenceProperties();
+        }
+        this.innerProperties().withVaultName(vaultName);
         return this;
     }
 
@@ -140,7 +115,7 @@ public class ApiKVReferenceInner extends ProxyOnlyResource {
      * @return the secretName value.
      */
     public String secretName() {
-        return this.secretName;
+        return this.innerProperties() == null ? null : this.innerProperties().secretName();
     }
 
     /**
@@ -150,7 +125,10 @@ public class ApiKVReferenceInner extends ProxyOnlyResource {
      * @return the ApiKVReferenceInner object itself.
      */
     public ApiKVReferenceInner withSecretName(String secretName) {
-        this.secretName = secretName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiKVReferenceProperties();
+        }
+        this.innerProperties().withSecretName(secretName);
         return this;
     }
 
@@ -160,7 +138,7 @@ public class ApiKVReferenceInner extends ProxyOnlyResource {
      * @return the secretVersion value.
      */
     public String secretVersion() {
-        return this.secretVersion;
+        return this.innerProperties() == null ? null : this.innerProperties().secretVersion();
     }
 
     /**
@@ -170,7 +148,10 @@ public class ApiKVReferenceInner extends ProxyOnlyResource {
      * @return the ApiKVReferenceInner object itself.
      */
     public ApiKVReferenceInner withSecretVersion(String secretVersion) {
-        this.secretVersion = secretVersion;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiKVReferenceProperties();
+        }
+        this.innerProperties().withSecretVersion(secretVersion);
         return this;
     }
 
@@ -180,7 +161,7 @@ public class ApiKVReferenceInner extends ProxyOnlyResource {
      * @return the identityType value.
      */
     public ManagedServiceIdentity identityType() {
-        return this.identityType;
+        return this.innerProperties() == null ? null : this.innerProperties().identityType();
     }
 
     /**
@@ -190,7 +171,10 @@ public class ApiKVReferenceInner extends ProxyOnlyResource {
      * @return the ApiKVReferenceInner object itself.
      */
     public ApiKVReferenceInner withIdentityType(ManagedServiceIdentity identityType) {
-        this.identityType = identityType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiKVReferenceProperties();
+        }
+        this.innerProperties().withIdentityType(identityType);
         return this;
     }
 
@@ -200,7 +184,7 @@ public class ApiKVReferenceInner extends ProxyOnlyResource {
      * @return the details value.
      */
     public String details() {
-        return this.details;
+        return this.innerProperties() == null ? null : this.innerProperties().details();
     }
 
     /**
@@ -210,7 +194,10 @@ public class ApiKVReferenceInner extends ProxyOnlyResource {
      * @return the ApiKVReferenceInner object itself.
      */
     public ApiKVReferenceInner withDetails(String details) {
-        this.details = details;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiKVReferenceProperties();
+        }
+        this.innerProperties().withDetails(details);
         return this;
     }
 
@@ -220,7 +207,7 @@ public class ApiKVReferenceInner extends ProxyOnlyResource {
      * @return the source value.
      */
     public ConfigReferenceSource source() {
-        return this.source;
+        return this.innerProperties() == null ? null : this.innerProperties().source();
     }
 
     /**
@@ -230,7 +217,10 @@ public class ApiKVReferenceInner extends ProxyOnlyResource {
      * @return the ApiKVReferenceInner object itself.
      */
     public ApiKVReferenceInner withSource(ConfigReferenceSource source) {
-        this.source = source;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiKVReferenceProperties();
+        }
+        this.innerProperties().withSource(source);
         return this;
     }
 
@@ -240,7 +230,7 @@ public class ApiKVReferenceInner extends ProxyOnlyResource {
      * @return the activeVersion value.
      */
     public String activeVersion() {
-        return this.activeVersion;
+        return this.innerProperties() == null ? null : this.innerProperties().activeVersion();
     }
 
     /**
@@ -250,14 +240,10 @@ public class ApiKVReferenceInner extends ProxyOnlyResource {
      * @return the ApiKVReferenceInner object itself.
      */
     public ApiKVReferenceInner withActiveVersion(String activeVersion) {
-        this.activeVersion = activeVersion;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public ApiKVReferenceInner withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ApiKVReferenceProperties();
+        }
+        this.innerProperties().withActiveVersion(activeVersion);
         return this;
     }
 
@@ -269,8 +255,8 @@ public class ApiKVReferenceInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
-        if (identityType() != null) {
-            identityType().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

@@ -1,7 +1,57 @@
 ## Release History
 
-## 3.10.0-beta.1 (Unreleased)
+### 3.14.0-beta.1 (Unreleased)
 
+#### Features Added
+
+#### Breaking Changes
+
+#### Bugs Fixed
+* Fixed issue with spring onLoad event not firing for paged queries
+* Exceptions thrown from spring application event listeners for onLoad events will now propagate up the call stack
+
+#### Other Changes
+
+### 3.13.1 (2021-10-27)
+#### Key Bug Fixes
+* Fixed support for slice query in annotated `@Query` queries.
+* Fixed issue with preserving priority for closed queries.
+* Updated `azure-cosmos` to version `4.20.1`.
+
+### 3.13.0 (2021-10-14)
+#### New Features
+* Added support for setting throughput on database creation.
+* Pagination improvement with slice query API.
+* Updated `azure-cosmos` to version `4.20.0`.
+
+### 3.12.0 (2021-09-24)
+#### New Features
+* Added support for UUID id type to spring data cosmos SDK.
+* Updated `azure-cosmos` to version 4.19.1.
+
+### 3.11.0 (2021-09-09)
+#### New Features
+* Added Spring `ApplicationEventListener` support.
+* Updated `Spring Boot` to version 2.5.4.
+* Updated `azure-cosmos` to version 4.19.0.
+
+#### Key Bug Fixes
+* Fixed spring data cosmos query plan caching.
+* Fixed query parameter name generation for nested properties containing space.
+
+### 3.11.0-beta.1 (2021-09-02)
+#### New Features
+* Updated `azure-cosmos` to version 4.19.0-beta.1.
+
+#### Key Bug Fixes
+* Fixed spring data cosmos query plan caching.
+
+### 3.10.0 (2021-08-16)
+> [!IMPORTANT]
+> We strongly recommend our customers to use version 3.10.0 and above.
+#### New Features
+* Updated `Spring Boot` to version 2.5.3.
+* Updated `azure-cosmos` to version 4.18.0.
 
 ### 3.9.0 (2021-07-08)
 #### New Features

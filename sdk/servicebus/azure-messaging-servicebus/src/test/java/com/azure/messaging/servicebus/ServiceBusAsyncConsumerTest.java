@@ -100,7 +100,7 @@ class ServiceBusAsyncConsumerTest {
     void teardown(TestInfo testInfo) {
         logger.info("[{}]: Tearing down.", testInfo.getDisplayName());
 
-        Mockito.framework().clearInlineMocks();
+        Mockito.framework().clearInlineMock(this);
 
         linkProcessor.dispose();
         linkPublisher.complete();

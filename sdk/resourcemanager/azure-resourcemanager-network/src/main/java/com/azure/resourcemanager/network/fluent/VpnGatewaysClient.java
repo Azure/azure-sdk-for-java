@@ -14,11 +14,13 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.network.fluent.models.VpnGatewayInner;
+import com.azure.resourcemanager.network.models.TagsObject;
+import com.azure.resourcemanager.network.models.VpnGatewayPacketCaptureStartParameters;
+import com.azure.resourcemanager.network.models.VpnGatewayPacketCaptureStopParameters;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsDelete;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGet;
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import java.nio.ByteBuffer;
-import java.util.Map;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -105,7 +107,7 @@ public interface VpnGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnGateway Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<VpnGatewayInner>, VpnGatewayInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String gatewayName, VpnGatewayInner vpnGatewayParameters);
 
@@ -120,7 +122,7 @@ public interface VpnGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnGateway Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VpnGatewayInner>, VpnGatewayInner> beginCreateOrUpdate(
         String resourceGroupName, String gatewayName, VpnGatewayInner vpnGatewayParameters);
 
@@ -136,7 +138,7 @@ public interface VpnGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnGateway Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VpnGatewayInner>, VpnGatewayInner> beginCreateOrUpdate(
         String resourceGroupName, String gatewayName, VpnGatewayInner vpnGatewayParameters, Context context);
 
@@ -190,7 +192,7 @@ public interface VpnGatewaysClient
      *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
-     * @param tags Resource tags.
+     * @param vpnGatewayParameters Parameters supplied to update a virtual wan vpn gateway tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -198,44 +200,89 @@ public interface VpnGatewaysClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> updateTagsWithResponseAsync(
-        String resourceGroupName, String gatewayName, Map<String, String> tags);
+        String resourceGroupName, String gatewayName, TagsObject vpnGatewayParameters);
 
     /**
      * Updates virtual wan vpn gateway tags.
      *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
-     * @param tags Resource tags.
+     * @param vpnGatewayParameters Parameters supplied to update a virtual wan vpn gateway tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnGateway Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<VpnGatewayInner>, VpnGatewayInner> beginUpdateTagsAsync(
-        String resourceGroupName, String gatewayName, Map<String, String> tags);
+        String resourceGroupName, String gatewayName, TagsObject vpnGatewayParameters);
 
     /**
      * Updates virtual wan vpn gateway tags.
      *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
-     * @param tags Resource tags.
+     * @param vpnGatewayParameters Parameters supplied to update a virtual wan vpn gateway tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return vpnGateway Resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<VpnGatewayInner>, VpnGatewayInner> beginUpdateTags(
+        String resourceGroupName, String gatewayName, TagsObject vpnGatewayParameters);
+
+    /**
+     * Updates virtual wan vpn gateway tags.
+     *
+     * @param resourceGroupName The resource group name of the VpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param vpnGatewayParameters Parameters supplied to update a virtual wan vpn gateway tags.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return vpnGateway Resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<VpnGatewayInner>, VpnGatewayInner> beginUpdateTags(
+        String resourceGroupName, String gatewayName, TagsObject vpnGatewayParameters, Context context);
+
+    /**
+     * Updates virtual wan vpn gateway tags.
+     *
+     * @param resourceGroupName The resource group name of the VpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param vpnGatewayParameters Parameters supplied to update a virtual wan vpn gateway tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnGateway Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<VpnGatewayInner>, VpnGatewayInner> beginUpdateTags(
-        String resourceGroupName, String gatewayName, Map<String, String> tags);
+    Mono<VpnGatewayInner> updateTagsAsync(
+        String resourceGroupName, String gatewayName, TagsObject vpnGatewayParameters);
 
     /**
      * Updates virtual wan vpn gateway tags.
      *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
-     * @param tags Resource tags.
+     * @param vpnGatewayParameters Parameters supplied to update a virtual wan vpn gateway tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return vpnGateway Resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    VpnGatewayInner updateTags(String resourceGroupName, String gatewayName, TagsObject vpnGatewayParameters);
+
+    /**
+     * Updates virtual wan vpn gateway tags.
+     *
+     * @param resourceGroupName The resource group name of the VpnGateway.
+     * @param gatewayName The name of the gateway.
+     * @param vpnGatewayParameters Parameters supplied to update a virtual wan vpn gateway tags.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -243,77 +290,8 @@ public interface VpnGatewaysClient
      * @return vpnGateway Resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SyncPoller<PollResult<VpnGatewayInner>, VpnGatewayInner> beginUpdateTags(
-        String resourceGroupName, String gatewayName, Map<String, String> tags, Context context);
-
-    /**
-     * Updates virtual wan vpn gateway tags.
-     *
-     * @param resourceGroupName The resource group name of the VpnGateway.
-     * @param gatewayName The name of the gateway.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnGateway Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VpnGatewayInner> updateTagsAsync(String resourceGroupName, String gatewayName, Map<String, String> tags);
-
-    /**
-     * Updates virtual wan vpn gateway tags.
-     *
-     * @param resourceGroupName The resource group name of the VpnGateway.
-     * @param gatewayName The name of the gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnGateway Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VpnGatewayInner> updateTagsAsync(String resourceGroupName, String gatewayName);
-
-    /**
-     * Updates virtual wan vpn gateway tags.
-     *
-     * @param resourceGroupName The resource group name of the VpnGateway.
-     * @param gatewayName The name of the gateway.
-     * @param tags Resource tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnGateway Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VpnGatewayInner updateTags(String resourceGroupName, String gatewayName, Map<String, String> tags);
-
-    /**
-     * Updates virtual wan vpn gateway tags.
-     *
-     * @param resourceGroupName The resource group name of the VpnGateway.
-     * @param gatewayName The name of the gateway.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnGateway Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VpnGatewayInner updateTags(String resourceGroupName, String gatewayName);
-
-    /**
-     * Updates virtual wan vpn gateway tags.
-     *
-     * @param resourceGroupName The resource group name of the VpnGateway.
-     * @param gatewayName The name of the gateway.
-     * @param tags Resource tags.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return vpnGateway Resource.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    VpnGatewayInner updateTags(String resourceGroupName, String gatewayName, Map<String, String> tags, Context context);
+    VpnGatewayInner updateTags(
+        String resourceGroupName, String gatewayName, TagsObject vpnGatewayParameters, Context context);
 
     /**
      * Deletes a virtual wan vpn gateway.
@@ -338,7 +316,7 @@ public interface VpnGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String gatewayName);
 
     /**
@@ -351,7 +329,7 @@ public interface VpnGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String gatewayName);
 
     /**
@@ -365,7 +343,7 @@ public interface VpnGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String gatewayName, Context context);
 
     /**
@@ -429,7 +407,7 @@ public interface VpnGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnGateway Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<VpnGatewayInner>, VpnGatewayInner> beginResetAsync(
         String resourceGroupName, String gatewayName);
 
@@ -443,7 +421,7 @@ public interface VpnGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnGateway Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VpnGatewayInner>, VpnGatewayInner> beginReset(String resourceGroupName, String gatewayName);
 
     /**
@@ -457,7 +435,7 @@ public interface VpnGatewaysClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return vpnGateway Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VpnGatewayInner>, VpnGatewayInner> beginReset(
         String resourceGroupName, String gatewayName, Context context);
 
@@ -506,7 +484,7 @@ public interface VpnGatewaysClient
      *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
-     * @param filterData Start Packet capture parameters on vpn gateway.
+     * @param parameters Vpn gateway packet capture parameters supplied to start packet capture on vpn gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -514,67 +492,71 @@ public interface VpnGatewaysClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> startPacketCaptureWithResponseAsync(
-        String resourceGroupName, String gatewayName, String filterData);
+        String resourceGroupName, String gatewayName, VpnGatewayPacketCaptureStartParameters parameters);
 
     /**
      * Starts packet capture on vpn gateway in the specified resource group.
      *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
-     * @param filterData Start Packet capture parameters on vpn gateway.
+     * @param parameters Vpn gateway packet capture parameters supplied to start packet capture on vpn gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<String>, String> beginStartPacketCaptureAsync(
-        String resourceGroupName, String gatewayName, String filterData);
+        String resourceGroupName, String gatewayName, VpnGatewayPacketCaptureStartParameters parameters);
 
     /**
      * Starts packet capture on vpn gateway in the specified resource group.
      *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
-     * @param filterData Start Packet capture parameters on vpn gateway.
+     * @param parameters Vpn gateway packet capture parameters supplied to start packet capture on vpn gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<String>, String> beginStartPacketCapture(
-        String resourceGroupName, String gatewayName, String filterData);
+        String resourceGroupName, String gatewayName, VpnGatewayPacketCaptureStartParameters parameters);
 
     /**
      * Starts packet capture on vpn gateway in the specified resource group.
      *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
-     * @param filterData Start Packet capture parameters on vpn gateway.
+     * @param parameters Vpn gateway packet capture parameters supplied to start packet capture on vpn gateway.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<String>, String> beginStartPacketCapture(
-        String resourceGroupName, String gatewayName, String filterData, Context context);
+        String resourceGroupName,
+        String gatewayName,
+        VpnGatewayPacketCaptureStartParameters parameters,
+        Context context);
 
     /**
      * Starts packet capture on vpn gateway in the specified resource group.
      *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
-     * @param filterData Start Packet capture parameters on vpn gateway.
+     * @param parameters Vpn gateway packet capture parameters supplied to start packet capture on vpn gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<String> startPacketCaptureAsync(String resourceGroupName, String gatewayName, String filterData);
+    Mono<String> startPacketCaptureAsync(
+        String resourceGroupName, String gatewayName, VpnGatewayPacketCaptureStartParameters parameters);
 
     /**
      * Starts packet capture on vpn gateway in the specified resource group.
@@ -594,14 +576,15 @@ public interface VpnGatewaysClient
      *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
-     * @param filterData Start Packet capture parameters on vpn gateway.
+     * @param parameters Vpn gateway packet capture parameters supplied to start packet capture on vpn gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    String startPacketCapture(String resourceGroupName, String gatewayName, String filterData);
+    String startPacketCapture(
+        String resourceGroupName, String gatewayName, VpnGatewayPacketCaptureStartParameters parameters);
 
     /**
      * Starts packet capture on vpn gateway in the specified resource group.
@@ -621,7 +604,7 @@ public interface VpnGatewaysClient
      *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
-     * @param filterData Start Packet capture parameters on vpn gateway.
+     * @param parameters Vpn gateway packet capture parameters supplied to start packet capture on vpn gateway.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -629,14 +612,18 @@ public interface VpnGatewaysClient
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    String startPacketCapture(String resourceGroupName, String gatewayName, String filterData, Context context);
+    String startPacketCapture(
+        String resourceGroupName,
+        String gatewayName,
+        VpnGatewayPacketCaptureStartParameters parameters,
+        Context context);
 
     /**
      * Stops packet capture on vpn gateway in the specified resource group.
      *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
-     * @param sasUrl SAS url for packet capture on vpn gateway.
+     * @param parameters Vpn gateway packet capture parameters supplied to stop packet capture on vpn gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -644,67 +631,71 @@ public interface VpnGatewaysClient
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<Flux<ByteBuffer>>> stopPacketCaptureWithResponseAsync(
-        String resourceGroupName, String gatewayName, String sasUrl);
+        String resourceGroupName, String gatewayName, VpnGatewayPacketCaptureStopParameters parameters);
 
     /**
      * Stops packet capture on vpn gateway in the specified resource group.
      *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
-     * @param sasUrl SAS url for packet capture on vpn gateway.
+     * @param parameters Vpn gateway packet capture parameters supplied to stop packet capture on vpn gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<String>, String> beginStopPacketCaptureAsync(
-        String resourceGroupName, String gatewayName, String sasUrl);
+        String resourceGroupName, String gatewayName, VpnGatewayPacketCaptureStopParameters parameters);
 
     /**
      * Stops packet capture on vpn gateway in the specified resource group.
      *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
-     * @param sasUrl SAS url for packet capture on vpn gateway.
+     * @param parameters Vpn gateway packet capture parameters supplied to stop packet capture on vpn gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<String>, String> beginStopPacketCapture(
-        String resourceGroupName, String gatewayName, String sasUrl);
+        String resourceGroupName, String gatewayName, VpnGatewayPacketCaptureStopParameters parameters);
 
     /**
      * Stops packet capture on vpn gateway in the specified resource group.
      *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
-     * @param sasUrl SAS url for packet capture on vpn gateway.
+     * @param parameters Vpn gateway packet capture parameters supplied to stop packet capture on vpn gateway.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<String>, String> beginStopPacketCapture(
-        String resourceGroupName, String gatewayName, String sasUrl, Context context);
+        String resourceGroupName,
+        String gatewayName,
+        VpnGatewayPacketCaptureStopParameters parameters,
+        Context context);
 
     /**
      * Stops packet capture on vpn gateway in the specified resource group.
      *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
-     * @param sasUrl SAS url for packet capture on vpn gateway.
+     * @param parameters Vpn gateway packet capture parameters supplied to stop packet capture on vpn gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<String> stopPacketCaptureAsync(String resourceGroupName, String gatewayName, String sasUrl);
+    Mono<String> stopPacketCaptureAsync(
+        String resourceGroupName, String gatewayName, VpnGatewayPacketCaptureStopParameters parameters);
 
     /**
      * Stops packet capture on vpn gateway in the specified resource group.
@@ -724,14 +715,15 @@ public interface VpnGatewaysClient
      *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
-     * @param sasUrl SAS url for packet capture on vpn gateway.
+     * @param parameters Vpn gateway packet capture parameters supplied to stop packet capture on vpn gateway.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    String stopPacketCapture(String resourceGroupName, String gatewayName, String sasUrl);
+    String stopPacketCapture(
+        String resourceGroupName, String gatewayName, VpnGatewayPacketCaptureStopParameters parameters);
 
     /**
      * Stops packet capture on vpn gateway in the specified resource group.
@@ -751,7 +743,7 @@ public interface VpnGatewaysClient
      *
      * @param resourceGroupName The resource group name of the VpnGateway.
      * @param gatewayName The name of the gateway.
-     * @param sasUrl SAS url for packet capture on vpn gateway.
+     * @param parameters Vpn gateway packet capture parameters supplied to stop packet capture on vpn gateway.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -759,7 +751,11 @@ public interface VpnGatewaysClient
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    String stopPacketCapture(String resourceGroupName, String gatewayName, String sasUrl, Context context);
+    String stopPacketCapture(
+        String resourceGroupName,
+        String gatewayName,
+        VpnGatewayPacketCaptureStopParameters parameters,
+        Context context);
 
     /**
      * Lists all the VpnGateways in a resource group.

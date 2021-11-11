@@ -4,24 +4,31 @@
 
 package com.azure.resourcemanager.billing.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An enrollment account resource. */
-@JsonFlatten
-@Immutable
-public class EnrollmentAccountSummaryInner extends ProxyResource {
+@Fluent
+public final class EnrollmentAccountSummaryInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EnrollmentAccountSummaryInner.class);
 
     /*
-     * The account owner's principal name.
+     * An enrollment account.
      */
-    @JsonProperty(value = "properties.principalName", access = JsonProperty.Access.WRITE_ONLY)
-    private String principalName;
+    @JsonProperty(value = "properties")
+    private EnrollmentAccountSummaryProperties innerProperties;
+
+    /**
+     * Get the innerProperties property: An enrollment account.
+     *
+     * @return the innerProperties value.
+     */
+    private EnrollmentAccountSummaryProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the principalName property: The account owner's principal name.
@@ -29,7 +36,7 @@ public class EnrollmentAccountSummaryInner extends ProxyResource {
      * @return the principalName value.
      */
     public String principalName() {
-        return this.principalName;
+        return this.innerProperties() == null ? null : this.innerProperties().principalName();
     }
 
     /**
@@ -38,5 +45,8 @@ public class EnrollmentAccountSummaryInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

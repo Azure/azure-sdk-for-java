@@ -1,6 +1,10 @@
 package com.azure.storage.file.datalake
 
 import com.azure.core.exception.UnexpectedLengthException
+import com.azure.core.http.HttpPipelineCallContext
+import com.azure.core.http.HttpPipelineNextPolicy
+import com.azure.core.http.HttpResponse
+import com.azure.core.http.policy.HttpPipelinePolicy
 import com.azure.core.test.TestMode
 import com.azure.core.util.Context
 import com.azure.core.util.FluxUtil
@@ -11,12 +15,10 @@ import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.common.ParallelTransferOptions
 import com.azure.storage.common.ProgressReceiver
 import com.azure.storage.common.implementation.Constants
-import com.azure.storage.common.test.shared.TestHttpClientType
 import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
 import com.azure.storage.common.test.shared.policy.MockFailureResponsePolicy
 import com.azure.storage.common.test.shared.policy.MockRetryRangeResponsePolicy
-import com.azure.storage.file.datalake.models.DownloadRetryOptions
 import com.azure.storage.file.datalake.models.AccessTier
 import com.azure.storage.file.datalake.models.DataLakeRequestConditions
 import com.azure.storage.file.datalake.models.DataLakeStorageException
@@ -46,10 +48,9 @@ import com.azure.storage.file.datalake.options.FileScheduleDeletionOptions
 import reactor.core.Exceptions
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Hooks
+import reactor.core.publisher.Mono
 import reactor.test.StepVerifier
-import spock.lang.Ignore
 import spock.lang.IgnoreIf
-import spock.lang.Requires
 import spock.lang.Retry
 import spock.lang.Unroll
 
@@ -63,6 +64,7 @@ import java.security.MessageDigest
 import java.time.Duration
 import java.time.OffsetDateTime
 import java.time.temporal.ChronoUnit
+import java.util.concurrent.atomic.AtomicInteger
 import java.util.function.Consumer
 
 class FileAPITest extends APISpec {
@@ -980,7 +982,7 @@ class FileAPITest extends APISpec {
         constructed in BlobClient.download().
          */
         setup:
-        def fileClient = getFileClient(env.dataLakeAccount.credential, fc.getPathUrl(), new MockRetryRangeResponsePolicy("bytes=2-6"))
+        def fileClient = getFileClient(environment.dataLakeAccount.credential, fc.getPathUrl(), new MockRetryRangeResponsePolicy("bytes=2-6"))
 
         fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
         fc.flush(data.defaultDataSize)
@@ -1107,7 +1109,7 @@ class FileAPITest extends APISpec {
         setup:
         fc.append(new ByteArrayInputStream(data.defaultBytes), 0, data.defaultDataSize)
         fc.flush(data.defaultDataSize)
-        def failureFileClient = getFileClient(env.dataLakeAccount.credential, fc.getFileUrl(), new MockFailureResponsePolicy(5))
+        def failureFileClient = getFileClient(environment.dataLakeAccount.credential, fc.getFileUrl(), new MockFailureResponsePolicy(5))
 
         when:
         def outStream = new ByteArrayOutputStream()
@@ -1237,7 +1239,6 @@ class FileAPITest extends APISpec {
 
     @LiveOnly
     @Unroll
-    @IgnoreIf({ getEnv().httpClientType == TestHttpClientType.OK_HTTP}) // https://github.com/Azure/azure-sdk-for-java/issues/23243
     def "Download file"() {
         setup:
         def file = getRandomFile(fileSize)
@@ -1274,8 +1275,8 @@ class FileAPITest extends APISpec {
         setup:
         def fileSystemName = generateFileSystemName()
         def datalakeServiceClient = new DataLakeServiceClientBuilder()
-            .endpoint(env.dataLakeAccount.dataLakeEndpoint)
-            .credential(env.dataLakeAccount.credential)
+            .endpoint(environment.dataLakeAccount.dataLakeEndpoint)
+            .credential(environment.dataLakeAccount.credential)
             .buildClient()
 
         def fileClient = datalakeServiceClient.createFileSystem(fileSystemName)
@@ -1316,8 +1317,8 @@ class FileAPITest extends APISpec {
         setup:
         def fileSystemName = generateFileSystemName()
         def datalakeServiceAsyncClient = new DataLakeServiceClientBuilder()
-            .endpoint(env.dataLakeAccount.dataLakeEndpoint)
-            .credential(env.dataLakeAccount.credential)
+            .endpoint(environment.dataLakeAccount.dataLakeEndpoint)
+            .credential(environment.dataLakeAccount.credential)
             .buildAsyncClient()
 
         def fileAsyncClient = datalakeServiceAsyncClient.createFileSystem(fileSystemName).block()
@@ -1503,18 +1504,43 @@ class FileAPITest extends APISpec {
     }
 
     @LiveOnly
-    @Ignore("failing in ci")
     def "Download file etag lock"() {
         setup:
         def file = getRandomFile(Constants.MB)
         fc.uploadFromFile(file.toPath().toString(), true)
         def outFile = new File(namer.getResourcePrefix())
         Files.deleteIfExists(file.toPath())
+        def counter = new AtomicInteger()
 
         expect:
-        def fac = new DataLakePathClientBuilder()
-            .pipeline(fc.getHttpPipeline())
+
+        def facUploading = instrument(new DataLakePathClientBuilder()
             .endpoint(fc.getPathUrl())
+            .credential(environment.dataLakeAccount.credential))
+            .buildFileAsyncClient()
+
+        def localData = data
+        def policy = new HttpPipelinePolicy() {
+            @Override
+            Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
+                return next.process()
+                    .flatMap({ r ->
+                        if (counter.incrementAndGet() == 1) {
+                            /*
+                             * When the download begins trigger an upload to overwrite the downloading blob
+                             * so that the download is able to get an ETag before it is changed.
+                             */
+                            return facUploading.upload(localData.defaultFlux, null, true)
+                                .thenReturn(r)
+                        }
+                        return Mono.just(r)
+                    })
+            }
+        }
+        def facDownloading = instrument(new DataLakePathClientBuilder()
+            .addPolicy(policy)
+            .endpoint(fc.getPathUrl())
+            .credential(environment.dataLakeAccount.credential))
             .buildFileAsyncClient()
 
         /*
@@ -1532,12 +1558,7 @@ class FileAPITest extends APISpec {
          */
         Hooks.onErrorDropped({ ignored -> /* do nothing with it */ })
 
-        /*
-         * When the download begins trigger an upload to overwrite the downloading blob after waiting 500 milliseconds
-         * so that the download is able to get an ETag before it is changed.
-         */
-        StepVerifier.create(fac.readToFileWithResponse(outFile.toPath().toString(), null, options, null, null, false, null)
-            .doOnSubscribe({ fac.upload(data.defaultFlux, null, true).delaySubscription(Duration.ofMillis(500)).subscribe() }))
+        StepVerifier.create(facDownloading.readToFileWithResponse(outFile.toPath().toString(), null, options, null, null, false, null))
             .verifyErrorSatisfies({
                 /*
                  * If an operation is running on multiple threads and multiple return an exception Reactor will combine
@@ -1919,7 +1940,7 @@ class FileAPITest extends APISpec {
     def "Append data retry on transient failure"() {
         setup:
         def clientWithFailure = getFileClient(
-            env.dataLakeAccount.credential,
+            environment.dataLakeAccount.credential,
             fc.getFileUrl(),
             new TransientFailureInjectingHttpPipelinePolicy()
         )
@@ -2516,7 +2537,7 @@ class FileAPITest extends APISpec {
     def "Buffered upload handle pathing hot flux with transient failure"() {
         setup:
         def clientWithFailure = getFileAsyncClient(
-            env.dataLakeAccount.credential,
+            environment.dataLakeAccount.credential,
             fc.getFileUrl(),
             new TransientFailureInjectingHttpPipelinePolicy()
         )
@@ -2528,7 +2549,7 @@ class FileAPITest extends APISpec {
             new ParallelTransferOptions().setMaxSingleUploadSizeLong(4 * Constants.MB), true)
 
         then:
-        def fcAsync = getFileAsyncClient(env.dataLakeAccount.credential, fc.getFileUrl())
+        def fcAsync = getFileAsyncClient(environment.dataLakeAccount.credential, fc.getFileUrl())
         StepVerifier.create(uploadOperation.then(collectBytesInBuffer(fcAsync.read())))
             .assertNext({ assert compareListToBuffer(dataList, it) })
             .verifyComplete()
@@ -2549,7 +2570,7 @@ class FileAPITest extends APISpec {
          */
         setup:
         def clientWithFailure = getFileClient(
-            env.dataLakeAccount.credential,
+            environment.dataLakeAccount.credential,
             fc.getFileUrl(),
             new TransientFailureInjectingHttpPipelinePolicy()
         )
@@ -2646,6 +2667,8 @@ class FileAPITest extends APISpec {
         "foo" | "bar"  | "fizz" | "buzz"
     }
 
+    // TODO https://github.com/cglib/cglib/issues/191 CGLib used to generate Spy doesn't work in Java 17
+    @IgnoreIf( { Runtime.version().feature() > 11 } )
     @Unroll
     @LiveOnly
     def "Buffered upload options"() {
@@ -2937,7 +2960,7 @@ class FileAPITest extends APISpec {
     def "Upload successful retry"() {
         given:
         def clientWithFailure = getFileClient(
-            env.dataLakeAccount.credential,
+            environment.dataLakeAccount.credential,
             fc.getFileUrl(),
             new TransientFailureInjectingHttpPipelinePolicy())
 
@@ -3020,7 +3043,7 @@ class FileAPITest extends APISpec {
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     @Unroll
-    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
+    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
     def "Query min"() {
         setup:
         FileQueryDelimitedSerialization ser = new FileQueryDelimitedSerialization()
@@ -3067,7 +3090,7 @@ class FileAPITest extends APISpec {
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     @Unroll
-    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
+    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
     def "Query csv serialization separator"() {
         setup:
         FileQueryDelimitedSerialization serIn = new FileQueryDelimitedSerialization()
@@ -3151,7 +3174,7 @@ class FileAPITest extends APISpec {
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     @Unroll
-    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
+    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
     def "Query csv serialization escape and field quote"() {
         setup:
         FileQueryDelimitedSerialization ser = new FileQueryDelimitedSerialization()
@@ -3193,7 +3216,7 @@ class FileAPITest extends APISpec {
     /* Note: Input delimited tested everywhere else. */
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     @Unroll
-    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
+    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
     def "Query Input json"() {
         setup:
         FileQueryJsonSerialization ser = new FileQueryJsonSerialization()
@@ -3236,7 +3259,7 @@ class FileAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_10_02")
-    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
+    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
     def "Query Input parquet"() {
         setup:
         String fileName = "parquet.parquet"
@@ -3272,7 +3295,7 @@ class FileAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
-    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
+    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
     def "Query Input csv Output json"() {
         setup:
         FileQueryDelimitedSerialization inSer = new FileQueryDelimitedSerialization()
@@ -3314,7 +3337,7 @@ class FileAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
-    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
+    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
     def "Query Input json Output csv"() {
         setup:
         FileQueryJsonSerialization inSer = new FileQueryJsonSerialization()
@@ -3356,7 +3379,7 @@ class FileAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
-    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
+    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
     def "Query Input csv Output arrow"() {
         setup:
         FileQueryDelimitedSerialization inSer = new FileQueryDelimitedSerialization()
@@ -3394,7 +3417,7 @@ class FileAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
-    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
+    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
     def "Query non fatal error"() {
         setup:
         FileQueryDelimitedSerialization base = new FileQueryDelimitedSerialization()
@@ -3434,7 +3457,7 @@ class FileAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
-    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
+    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
     def "Query fatal error"() {
         setup:
         FileQueryDelimitedSerialization base = new FileQueryDelimitedSerialization()
@@ -3466,7 +3489,7 @@ class FileAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
-    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
+    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
     def "Query progress receiver"() {
         setup:
         FileQueryDelimitedSerialization base = new FileQueryDelimitedSerialization()
@@ -3511,7 +3534,7 @@ class FileAPITest extends APISpec {
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     @LiveOnly // Large amount of data.
-    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
+    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
     def "Query multiple records with progress receiver"() {
         setup:
         FileQueryDelimitedSerialization ser = new FileQueryDelimitedSerialization()
@@ -3564,7 +3587,7 @@ class FileAPITest extends APISpec {
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     @Unroll
-    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
+    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
     def "Query input output IA"() {
         setup:
         /* Mock random impl of QQ Serialization*/
@@ -3599,7 +3622,7 @@ class FileAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
-    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
+    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
     def "Query arrow input IA"() {
         setup:
         def inSer = new FileQueryArrowSerialization()
@@ -3623,7 +3646,7 @@ class FileAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_10_02")
-    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
+    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
     def "Query parquet output IA"() {
         setup:
         def outSer = new FileQueryParquetSerialization()
@@ -3647,7 +3670,7 @@ class FileAPITest extends APISpec {
     }
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
-    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
+    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
     def "Query error"() {
         setup:
         fc = fsc.getFileClient(generatePathName())
@@ -3667,7 +3690,7 @@ class FileAPITest extends APISpec {
 
     @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2019_12_12")
     @Unroll
-    @Retry(count = 5, delay = 5, condition = { env.testMode == TestMode.LIVE })
+    @Retry(count = 5, delay = 5, condition = { environment.testMode == TestMode.LIVE })
     def "Query AC"() {
         setup:
         match = setupPathMatchCondition(fc, match)
@@ -3909,6 +3932,8 @@ class FileAPITest extends APISpec {
     }
 
     /* Due to the inability to spy on a private method, we are just calling the async client with the input stream constructor */
+    // TODO https://github.com/cglib/cglib/issues/191 CGLib used to generate Spy doesn't work in Java 17
+    @IgnoreIf( { Runtime.version().feature() > 11 } )
     @Unroll
     @LiveOnly /* Flaky in playback. */
     def "Upload numAppends"() {
@@ -3956,11 +3981,11 @@ class FileAPITest extends APISpec {
         thrown(IllegalStateException)
     }
 
-    @IgnoreIf( { getEnv().serviceVersion != null } )
+    @IgnoreIf( { getEnvironment().serviceVersion != null } )
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
     def "Per call policy"() {
         setup:
-        def fileClient = getFileClient(env.dataLakeAccount.credential, fc.getFileUrl(), getPerCallVersionPolicy())
+        def fileClient = getFileClient(environment.dataLakeAccount.credential, fc.getFileUrl(), getPerCallVersionPolicy())
 
         when: "blob endpoint"
         def response = fileClient.getPropertiesWithResponse(null, null, null)

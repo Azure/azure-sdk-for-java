@@ -10,6 +10,7 @@ import com.azure.cosmos.spark.ChangeFeedPartitionReader.LsnPropertyName
 import com.azure.cosmos.spark.CosmosPredicates.requireNotNull
 import com.azure.cosmos.spark.CosmosTableSchemaInferrer.LsnAttributeName
 import com.azure.cosmos.spark.diagnostics.LoggerHelper
+import com.azure.cosmos.util.CosmosPagedIterable
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.Row
@@ -44,26 +45,37 @@ private case class ChangeFeedPartitionReader
   log.logInfo(s"Reading from feed range ${partition.feedRange} of " +
     s"container ${containerTargetConfig.database}.${containerTargetConfig.container}")
   private val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
-  private val client = CosmosClientCache(
-    CosmosClientConfiguration(config, readConfig.forceEventualConsistency), Some(cosmosClientStateHandle))
+  private val clientCacheItem = CosmosClientCache(
+    CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
+    Some(cosmosClientStateHandle),
+    s"ChangeFeedPartitionReader(partition ${partition})")
 
-  private val cosmosAsyncContainer = ThroughputControlHelper.getContainer(config, containerTargetConfig, client)
+  private val cosmosAsyncContainer =
+    ThroughputControlHelper
+      .getContainer(config, containerTargetConfig, clientCacheItem.client)
+  SparkUtils.safeOpenConnectionInitCaches(cosmosAsyncContainer, log)
+
+  private val cosmosSerializationConfig = CosmosSerializationConfig.parseSerializationConfig(config)
+  private val cosmosRowConverter = CosmosRowConverter.get(cosmosSerializationConfig)
 
   private val changeFeedRequestOptions = {
 
     val startLsn =
       SparkBridgeImplementationInternal.extractLsnFromChangeFeedContinuation(this.partition.continuationState.get)
-    log.logDebug(s"Request options for Range '${partition.feedRange.min}-${partition.feedRange.max}' LSN '$startLsn'")
+    log.logDebug(
+      s"Request options for Range '${partition.feedRange.min}-${partition.feedRange.max}' LSN '$startLsn'")
 
-    CosmosChangeFeedRequestOptions.createForProcessingFromContinuation(this.partition.continuationState.get)
+    CosmosChangeFeedRequestOptions
+      .createForProcessingFromContinuation(this.partition.continuationState.get)
+      .setMaxItemCount(readConfig.maxItemCount)
   }
 
   private val rowSerializer: ExpressionEncoder.Serializer[Row] = RowSerializerPool.getOrCreateSerializer(readSchema)
 
   private lazy val iterator: PeekingIterator[ObjectNode] =  Iterators.peekingIterator(
-    cosmosAsyncContainer
-      .queryChangeFeed(changeFeedRequestOptions, classOf[ObjectNode])
-      .toIterable
+    new CosmosPagedIterable[ObjectNode](
+      cosmosAsyncContainer.queryChangeFeed(changeFeedRequestOptions, classOf[ObjectNode]),
+      readConfig.maxItemCount)
       .iterator()
   )
 
@@ -89,7 +101,7 @@ private case class ChangeFeedPartitionReader
 
   override def get(): InternalRow = {
     val objectNode = this.iterator.next()
-    CosmosRowConverter.fromObjectNodeToInternalRow(
+    cosmosRowConverter.fromObjectNodeToInternalRow(
       readSchema,
       rowSerializer,
       objectNode,
@@ -98,5 +110,6 @@ private case class ChangeFeedPartitionReader
 
   override def close(): Unit = {
     RowSerializerPool.returnSerializerToPool(readSchema, rowSerializer)
+    clientCacheItem.close()
   }
 }

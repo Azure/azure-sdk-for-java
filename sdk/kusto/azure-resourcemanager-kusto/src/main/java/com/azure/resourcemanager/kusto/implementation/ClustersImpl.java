@@ -16,6 +16,7 @@ import com.azure.resourcemanager.kusto.fluent.models.ClusterInner;
 import com.azure.resourcemanager.kusto.fluent.models.DiagnoseVirtualNetworkResultInner;
 import com.azure.resourcemanager.kusto.fluent.models.FollowerDatabaseDefinitionInner;
 import com.azure.resourcemanager.kusto.fluent.models.LanguageExtensionInner;
+import com.azure.resourcemanager.kusto.fluent.models.OutboundNetworkDependenciesEndpointInner;
 import com.azure.resourcemanager.kusto.fluent.models.SkuDescriptionInner;
 import com.azure.resourcemanager.kusto.models.AzureResourceSku;
 import com.azure.resourcemanager.kusto.models.CheckNameResult;
@@ -26,6 +27,7 @@ import com.azure.resourcemanager.kusto.models.DiagnoseVirtualNetworkResult;
 import com.azure.resourcemanager.kusto.models.FollowerDatabaseDefinition;
 import com.azure.resourcemanager.kusto.models.LanguageExtension;
 import com.azure.resourcemanager.kusto.models.LanguageExtensionsList;
+import com.azure.resourcemanager.kusto.models.OutboundNetworkDependenciesEndpoint;
 import com.azure.resourcemanager.kusto.models.SkuDescription;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -202,6 +204,20 @@ public final class ClustersImpl implements Clusters {
         PagedIterable<AzureResourceSkuInner> inner =
             this.serviceClient().listSkusByResource(resourceGroupName, clusterName, context);
         return Utils.mapPage(inner, inner1 -> new AzureResourceSkuImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<OutboundNetworkDependenciesEndpoint> listOutboundNetworkDependenciesEndpoints(
+        String resourceGroupName, String clusterName) {
+        PagedIterable<OutboundNetworkDependenciesEndpointInner> inner =
+            this.serviceClient().listOutboundNetworkDependenciesEndpoints(resourceGroupName, clusterName);
+        return Utils.mapPage(inner, inner1 -> new OutboundNetworkDependenciesEndpointImpl(inner1, this.manager()));
+    }
+
+    public PagedIterable<OutboundNetworkDependenciesEndpoint> listOutboundNetworkDependenciesEndpoints(
+        String resourceGroupName, String clusterName, Context context) {
+        PagedIterable<OutboundNetworkDependenciesEndpointInner> inner =
+            this.serviceClient().listOutboundNetworkDependenciesEndpoints(resourceGroupName, clusterName, context);
+        return Utils.mapPage(inner, inner1 -> new OutboundNetworkDependenciesEndpointImpl(inner1, this.manager()));
     }
 
     public PagedIterable<LanguageExtension> listLanguageExtensions(String resourceGroupName, String clusterName) {

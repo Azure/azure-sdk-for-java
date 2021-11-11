@@ -7,7 +7,7 @@ import java.math.BigInteger;
 
 /**
  * encode signature
- * Ref: https://docs.microsoft.com/en-us/windows/win32/seccertenroll/about-der-encoding-of-asn-1-types
+ * Ref: https://docs.microsoft.com/windows/win32/seccertenroll/about-der-encoding-of-asn-1-types
  */
 public class KeyVaultEncode {
 

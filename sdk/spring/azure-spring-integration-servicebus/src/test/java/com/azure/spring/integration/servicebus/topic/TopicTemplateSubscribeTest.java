@@ -32,8 +32,7 @@ public class TopicTemplateSubscribeTest extends SubscribeByGroupOperationTest<Se
         this.processorClientWrapper = new ServiceBusProcessorClientWrapper();
         ServiceBusProcessorClientWrapper anotherProcessorClientWrapper = new ServiceBusProcessorClientWrapper();
 
-        this.subscribeByGroupOperation = new ServiceBusTopicTemplate(mockClientFactory,
-                                                                     new ServiceBusMessageConverter());
+        this.subscribeByGroupOperation = new ServiceBusTopicTemplate(mockClientFactory, new ServiceBusMessageConverter());
         when(this.mockClientFactory.getOrCreateProcessor(eq(this.destination),
                                                          eq(this.consumerGroup),
                                                          any(),

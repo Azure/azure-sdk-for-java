@@ -22,7 +22,7 @@ import java.util.UUID;
 public abstract class AbstractOAuth2AuthorizationCodeGrantRequestEntityConverter
     extends OAuth2AuthorizationCodeGrantRequestEntityConverter {
 
-    protected String azureModule;
+    protected abstract String getApplicationId();
 
     @Override
     @SuppressWarnings("unchecked")
@@ -36,7 +36,7 @@ public abstract class AbstractOAuth2AuthorizationCodeGrantRequestEntityConverter
                 .ifPresent(headers -> headers.forEach(httpHeaders::put));
         MultiValueMap<String, String> body = (MultiValueMap<String, String>) requestEntity.getBody();
         Assert.notNull(body, "body can not be null");
-        Optional.ofNullable(getHttpBody(request)).ifPresent(ext -> body.putAll(ext));
+        Optional.ofNullable(getHttpBody(request)).ifPresent(body::putAll);
         return new RequestEntity<>(body, httpHeaders, requestEntity.getMethod(), requestEntity.getUrl());
     }
 
@@ -46,7 +46,7 @@ public abstract class AbstractOAuth2AuthorizationCodeGrantRequestEntityConverter
      */
     public HttpHeaders getHttpHeaders() {
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.put("x-client-SKU", Collections.singletonList(azureModule));
+        httpHeaders.put("x-client-SKU", Collections.singletonList(getApplicationId()));
         httpHeaders.put("x-client-VER", Collections.singletonList(ApplicationId.VERSION));
         httpHeaders.put("client-request-id", Collections.singletonList(UUID.randomUUID().toString()));
         return httpHeaders;

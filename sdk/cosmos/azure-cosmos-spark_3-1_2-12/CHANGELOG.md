@@ -1,6 +1,26 @@
 ## Release History
+### 4.5.0-beta.1 (Unreleased)
 
-### 4.2.1-beta.2 (Unreleased)
+### 4.4.0 (2021-11-10)
+#### New Features
+* Added support for writing an RDD to Cosmos with opaque json payload to avoid risk of unwanted modification due to schema-inference/mapping - See [PR 24319](https://github.com/Azure/azure-sdk-for-java/pull/24319).
+* Added an option to control how null/empty-default values are serialized to json documents in Cosmos - See [PR 24797](https://github.com/Azure/azure-sdk-for-java/pull/24797).
+#### Key Bug Fixes
+* Fixed a regression (compared to Cosmos DB connector on Spark 2.4) that resulted in casting error `["java.lang.Integer" cannot be cast to "java.sql.Date"]` when trying to write RDD row with an Integer value if the schema's `FiledType` is Date for this column. See [PR 25156](https://github.com/Azure/azure-sdk-for-java/pull/25156) 
+* Fixed issue that could result in `PoolAcquirePendingLimitException` error especially on Spark clusters which large executors (high number of cores per executor) See [PR 25047](https://github.com/Azure/azure-sdk-for-java/pull/25047)
+* Improved robustness for bulk ingestion jobs to reduce the memory footprint. See [PR 25215](https://github.com/Azure/azure-sdk-for-java/pull/25215)
+
+### 4.3.1 (2021-09-13)
+#### Key Bug Fixes
+* Fixed issue resulting in option `spark.cosmos.read.maxItemCount` not always being honored
+* Fixed issue resulting in dropping some events when using Spark Streaming when config option `spark.cosmos.changeFeed.itemCountPerTriggerHint` is configured.
+
+### 4.3.0 (2021-08-11)
+#### Configuration Changes
+* Introduced a new config option `spark.cosmos.read.maxItemCount` to allow modifying the page size for query and change feed requests against the Cosmos DB backend. The previous default was 100 items per request - the new default is 1000 and can be modified via the new config option if necessary, see [PR](https://github.com/Azure/azure-sdk-for-java/pull/23466).
+
+#### Key Bug Fixes
+* Improved robustness for bulk ingestion jobs to avoid transient hangs - when the Spark job did not finish gracefully although the actual ingestion work has been finished. See [PR 22950](https://github.com/Azure/azure-sdk-for-java/pull/22950), [PR 23262](https://github.com/Azure/azure-sdk-for-java/pull/23262), [PR 23329](https://github.com/Azure/azure-sdk-for-java/pull/23329), [PR 23334](https://github.com/Azure/azure-sdk-for-java/pull/23334), [PR 23360](https://github.com/Azure/azure-sdk-for-java/pull/23360), [PR 23335](https://github.com/Azure/azure-sdk-for-java/pull/23335) and [PR 23461](https://github.com/Azure/azure-sdk-for-java/pull/23461)  
 
 ### 4.2.1-beta.1 (2021-07-15)
 * Fixed Catalog api synapse integration.
@@ -42,7 +62,7 @@
 
 #### Key Bug Fixes
 * Added validation for all config-settings with a name starting with "spark.cosmos."
-* Fixed a bug in bulk write causing hang.
+* Fixed a bug in bulk write causing nonresponse.
 
 ### 4.0.0-beta.2 (2021-04-19)
 * Cosmos DB Spark 3.1.1 Connector Preview `4.0.0-beta.2` Release.

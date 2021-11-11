@@ -4,7 +4,7 @@
 package com.azure.storage.file.share.options;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.experimental.http.HttpAuthorization;
+import com.azure.core.http.HttpAuthorization;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import com.azure.storage.file.share.models.ShareRequestConditions;
 
@@ -12,7 +12,7 @@ import com.azure.storage.file.share.models.ShareRequestConditions;
  * Extended options that may be passed when uploading a range from a source URL.
  */
 @Fluent
-public class ShareFileUploadRangeFromUrlOptions {
+public final class ShareFileUploadRangeFromUrlOptions {
     private final long length;
     private final String sourceUrl;
     private long destinationOffset;

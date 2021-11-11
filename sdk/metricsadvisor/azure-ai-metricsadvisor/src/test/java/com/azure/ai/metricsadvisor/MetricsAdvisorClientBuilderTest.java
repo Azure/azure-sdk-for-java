@@ -32,7 +32,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * Tests for Metrics Advisor client builder
  */
 public class MetricsAdvisorClientBuilderTest extends TestBase {
-    private static final String METRIC_ID = "27e3015f-04fd-44ba-a20b-bc529a0aebae";
+    private static final String METRIC_ID = "390d1139-98fb-45af-b831-8d5ad61b150a";
     private static final int PAGE_SIZE = 10;
     private static final int LISTING_LIMIT = 100;
 

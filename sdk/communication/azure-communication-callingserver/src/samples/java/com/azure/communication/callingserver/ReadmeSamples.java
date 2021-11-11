@@ -8,6 +8,8 @@ import com.azure.communication.callingserver.models.EventSubscriptionType;
 import com.azure.communication.callingserver.models.MediaType;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
+import com.azure.core.credential.TokenCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.nio.file.Paths;
 import java.util.Arrays;
@@ -103,5 +105,27 @@ public class ReadmeSamples {
             null,
             true
         );
+    }
+
+    /**
+     * Sample code for creating async calling server client with token credential.
+     *
+     * @return the calling server client.
+     */
+    public CallingServerClient createCallingServerClientWithTokenCredential() {
+        // Your endpoint retrieved from your Azure Communication Service
+        String endpoint = "https://<resource-name>.communication.azure.com";
+
+        // Token credential used for managed identity authentication. Depends on `AZURE_CLIENT_SECRET`,
+        // `AZURE_CLIENT_ID`, and `AZURE_TENANT_ID` environment variables to be set up.
+        TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+
+        // Initialize the calling server client
+        CallingServerClient callingServerClient  = new CallingServerClientBuilder()
+            .endpoint(endpoint)
+            .credential(tokenCredential)
+            .buildClient();
+
+        return callingServerClient;
     }
 }

@@ -3,7 +3,8 @@
 
 package com.azure.cosmos.implementation.batch;
 
-import com.azure.cosmos.BulkProcessingOptions;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
+import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import org.testng.annotations.Test;
 
 import java.util.Random;
@@ -15,12 +16,15 @@ public class PartitionScopeThresholdsTest {
     private static final Random rnd = new Random();
 
     @Test(groups = { "unit" })
-    public void neverThrottledShouldResultInMaxBatSize() {
+    public void neverThrottledShouldResultInMaxBatchSize() {
         String pkRangeId = UUID.randomUUID().toString();
-        int maxBatchSize = rnd.nextInt(1_000);
-        maxBatchSize = 1_000;
-        PartitionScopeThresholds<Object> thresholds =
-            new PartitionScopeThresholds<>(pkRangeId, new BulkProcessingOptions<>().setMaxMicroBatchSize(maxBatchSize));
+        int maxBatchSize = 1_000;
+        PartitionScopeThresholds thresholds =
+            new PartitionScopeThresholds(
+                pkRangeId,
+                ImplementationBridgeHelpers.CosmosBulkExecutionOptionsHelper
+                    .getCosmosBulkExecutionOptionsAccessor()
+                    .setMaxMicroBatchSize(new CosmosBulkExecutionOptions(), maxBatchSize));
 
         assertThat(thresholds.getTargetMicroBatchSizeSnapshot())
             .isEqualTo(maxBatchSize);
@@ -42,8 +46,8 @@ public class PartitionScopeThresholdsTest {
     @Test(groups = { "unit" })
     public void alwaysThrottledShouldResultInBatSizeOfOne() {
         String pkRangeId = UUID.randomUUID().toString();
-        PartitionScopeThresholds<Object> thresholds =
-            new PartitionScopeThresholds<>(pkRangeId, new BulkProcessingOptions<>());
+        PartitionScopeThresholds thresholds =
+            new PartitionScopeThresholds(pkRangeId, new CosmosBulkExecutionOptions());
 
         assertThat(thresholds.getTargetMicroBatchSizeSnapshot())
             .isEqualTo(BatchRequestResponseConstants.MAX_OPERATIONS_IN_DIRECT_MODE_BATCH_REQUEST);

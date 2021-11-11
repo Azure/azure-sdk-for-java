@@ -19,7 +19,7 @@ public final class StorageAccount {
      * queues, and blobs. The primary storage account must be a Standard
      * Storage account (either Microsoft.ClassicStorage or Microsoft.Storage).
      */
-    @JsonProperty(value = "id")
+    @JsonProperty(value = "id", required = true)
     private String id;
 
     /*
@@ -94,6 +94,11 @@ public final class StorageAccount {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (id() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException("Missing required property id in model StorageAccount"));
+        }
         if (identity() != null) {
             identity().validate();
         }

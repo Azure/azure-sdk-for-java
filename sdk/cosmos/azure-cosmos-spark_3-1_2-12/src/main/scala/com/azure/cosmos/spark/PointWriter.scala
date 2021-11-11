@@ -71,9 +71,9 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
       case ItemWriteStrategy.ItemOverwrite => upsertWithRetryAsync(partitionKeyValue, objectNode)
       case ItemWriteStrategy.ItemAppend => createWithRetryAsync(partitionKeyValue, objectNode)
       case ItemWriteStrategy.ItemDelete =>
-        deleteWithRetryAsync(partitionKeyValue, objectNode, false)
+        deleteWithRetryAsync(partitionKeyValue, objectNode, onlyIfNotModified=false)
       case ItemWriteStrategy.ItemDeleteIfNotModified =>
-        deleteWithRetryAsync(partitionKeyValue, objectNode, true)
+        deleteWithRetryAsync(partitionKeyValue, objectNode, onlyIfNotModified=true)
     }
   }
 
@@ -111,7 +111,7 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
           log.logItemWriteCompletion(createOperation)
         case Failure(e) =>
           promise.failure(e)
-          capturedFailure.set(e)
+          captureIfFirstFailure(e)
           log.logItemWriteFailure(createOperation, e)
           pendingPointWrites.remove(promise.future)
       }
@@ -133,7 +133,7 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
           log.logItemWriteCompletion(upsertOperation)
         case Failure(e) =>
           promise.failure(e)
-          capturedFailure.set(e)
+          captureIfFirstFailure(e)
           pendingPointWrites.remove(promise.future)
           log.logItemWriteFailure(upsertOperation, e)
       }
@@ -157,7 +157,7 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
           log.logItemWriteCompletion(deleteOperation)
         case Failure(e) =>
           promise.failure(e)
-          capturedFailure.set(e)
+          captureIfFirstFailure(e)
           pendingPointWrites.remove(promise.future)
           log.logItemWriteFailure(deleteOperation, e)
       }
@@ -173,7 +173,7 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
       try {
         // TODO: moderakh, there is room for further improvement by making this code nonblocking
         // using reactive stream retry pattern
-        container.createItem(objectNode, partitionKeyValue, getOptions()).block()
+        container.createItem(objectNode, partitionKeyValue, getOptions).block()
         return
       } catch {
         case e: CosmosException if Exceptions.isResourceExistsException(e) =>
@@ -205,7 +205,7 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
         // using reactive stream retry pattern
         container.upsertItem(objectNode,
           partitionKeyValue,
-          getOptions())
+          getOptions)
           .block()
         return
       } catch {
@@ -238,10 +238,10 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
         val itemId = objectNode.get(CosmosConstants.Properties.Id).asText()
 
         val options = if (onlyIfNotModified) {
-          getOptions()
+          getOptions
             .setIfMatchETag(objectNode.get(CosmosConstants.Properties.ETag).asText())
         } else {
-          getOptions()
+          getOptions
         }
 
         container.deleteItem(itemId,
@@ -285,7 +285,7 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
     future.toScala
   }
 
-  private def getOptions(): CosmosItemRequestOptions = {
+  private def getOptions: CosmosItemRequestOptions = {
     val options =  new CosmosItemRequestOptions()
     if (diagnosticsConfig.mode.isDefined) {
       val taskDiagnosticsContext = SparkTaskContext(
@@ -300,10 +300,37 @@ class PointWriter(container: CosmosAsyncContainer, cosmosWriteConfig: CosmosWrit
 
       val operationContextAndListenerTuple = new OperationContextAndListenerTuple(taskDiagnosticsContext, listener)
       CosmosItemRequestOptionsHelper
-        .getCosmosItemRequestOptionsAccessor()
+        .getCosmosItemRequestOptionsAccessor
         .setOperationContext(options, operationContextAndListenerTuple)
     }
     options
+  }
+
+  /**
+   * Don't wait for any remaining work but signal to the writer the ungraceful close
+   * Should not throw any exceptions
+   */
+  override def abort(): Unit = {
+    // signal an exception that will be thrown for any pending work/flushAndClose if no other exception has
+    // been registered
+    captureIfFirstFailure(
+      new IllegalStateException(s"The Spark task was aborted, Context: ${taskDiagnosticsContext.toString}"))
+
+    closed.set(true)
+
+    try {
+      executorService.shutdownNow()
+    } catch {
+      case e: Throwable =>
+        log.logWarning(s"Exception when trying to shut down executor service", e)
+    }
+  }
+
+  private def captureIfFirstFailure(throwable: Throwable): Unit = {
+    log.logError(s"capture failure, Context: {${taskDiagnosticsContext.toString}}", throwable)
+    //scalastyle:off null
+    capturedFailure.compareAndSet(null, throwable)
+    //scalastyle:on null
   }
 }
 

@@ -10,6 +10,7 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
@@ -22,7 +23,6 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.time.Duration;
-import java.util.Map;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 
@@ -106,9 +106,8 @@ public final class PollOperation {
                 } else {
                     return FluxUtil
                         .fluxContext(fluxContext -> {
-                            for (Map.Entry<Object, Object> entry : context.getValues().entrySet()) {
-                                fluxContext = fluxContext.addData(entry.getKey(), entry.getValue());
-                            }
+                            fluxContext = CoreUtils.mergeContexts(fluxContext, context);
+
                             return pipeline.send(decorateRequest(new HttpRequest(HttpMethod.GET,
                                 finalResult.getResultUri())), fluxContext).flux();
                         }).next()
@@ -169,9 +168,8 @@ public final class PollOperation {
     private static Mono<PollingState> doSinglePoll(HttpPipeline pipeline, PollingState pollingState, Context context) {
         return FluxUtil
             .fluxContext(fluxContext -> {
-                for (Map.Entry<Object, Object> entry : context.getValues().entrySet()) {
-                    fluxContext = fluxContext.addData(entry.getKey(), entry.getValue());
-                }
+                fluxContext = CoreUtils.mergeContexts(fluxContext, context);
+
                 return pipeline.send(decorateRequest(new HttpRequest(HttpMethod.GET, pollingState.getPollUrl())),
                     fluxContext).flux();
             }).next()

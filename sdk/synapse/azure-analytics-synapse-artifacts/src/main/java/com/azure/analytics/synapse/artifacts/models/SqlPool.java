@@ -9,12 +9,12 @@ import com.azure.core.annotation.JsonFlatten;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** A SQL Analytics pool. */
+/** SQL pool A SQL Analytics pool. */
 @JsonFlatten
 @Fluent
 public class SqlPool extends TrackedResource {
     /*
-     * SQL pool SKU
+     * Sku SQL pool SKU
      */
     @JsonProperty(value = "sku")
     private Sku sku;
@@ -74,7 +74,7 @@ public class SqlPool extends TrackedResource {
     private OffsetDateTime creationDate;
 
     /**
-     * Get the sku property: SQL pool SKU.
+     * Get the sku property: Sku SQL pool SKU.
      *
      * @return the sku value.
      */
@@ -83,7 +83,7 @@ public class SqlPool extends TrackedResource {
     }
 
     /**
-     * Set the sku property: SQL pool SKU.
+     * Set the sku property: Sku SQL pool SKU.
      *
      * @param sku the sku value to set.
      * @return the SqlPool object itself.

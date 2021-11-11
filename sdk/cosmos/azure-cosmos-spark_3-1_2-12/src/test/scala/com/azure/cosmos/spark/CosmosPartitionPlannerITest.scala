@@ -297,19 +297,22 @@ class CosmosPartitionPlannerITest
       rawPartitionMetadata
     }
 
-    val client = CosmosClientCache.apply(clientConfig, None)
-    val container = client
-      .getDatabase(containerConfig.database)
-      .getContainer(containerConfig.container)
+    Loan(CosmosClientCache.apply(clientConfig, None, "CosmosPartitionPlannerITest-01"))
+      .to(clientCacheItem => {
+        val container = clientCacheItem
+          .client
+          .getDatabase(containerConfig.database)
+          .getContainer(containerConfig.container)
 
-    createInputPartitions(
-      CosmosPartitioningConfig.parseCosmosPartitioningConfig(userConfig),
-      container,
-      partitionMetadata: Array[PartitionMetadata],
-      defaultMinimalPartitionCount,
-      defaultMaxPartitionSizeInMB,
-      ReadLimit.allAvailable()
-    )
+        createInputPartitions(
+          CosmosPartitioningConfig.parseCosmosPartitioningConfig(userConfig),
+          container,
+          partitionMetadata: Array[PartitionMetadata],
+          defaultMinimalPartitionCount,
+          defaultMaxPartitionSizeInMB,
+          ReadLimit.allAvailable()
+        )
+    })
   }
 
   //scalastyle:off magic.number

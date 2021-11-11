@@ -5,69 +5,37 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Hybrid Connection contract. This is used to configure a Hybrid Connection. */
-@JsonFlatten
 @Fluent
-public class HybridConnectionInner extends ProxyOnlyResource {
+public final class HybridConnectionInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(HybridConnectionInner.class);
 
     /*
-     * The name of the Service Bus namespace.
+     * HybridConnection resource specific properties
      */
-    @JsonProperty(value = "properties.serviceBusNamespace")
-    private String serviceBusNamespace;
+    @JsonProperty(value = "properties")
+    private HybridConnectionProperties innerProperties;
 
-    /*
-     * The name of the Service Bus relay.
+    /**
+     * Get the innerProperties property: HybridConnection resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.relayName")
-    private String relayName;
+    private HybridConnectionProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * The ARM URI to the Service Bus relay.
-     */
-    @JsonProperty(value = "properties.relayArmUri")
-    private String relayArmUri;
-
-    /*
-     * The hostname of the endpoint.
-     */
-    @JsonProperty(value = "properties.hostname")
-    private String hostname;
-
-    /*
-     * The port of the endpoint.
-     */
-    @JsonProperty(value = "properties.port")
-    private Integer port;
-
-    /*
-     * The name of the Service Bus key which has Send permissions. This is used
-     * to authenticate to Service Bus.
-     */
-    @JsonProperty(value = "properties.sendKeyName")
-    private String sendKeyName;
-
-    /*
-     * The value of the Service Bus key. This is used to authenticate to
-     * Service Bus. In ARM this key will not be returned
-     * normally, use the POST /listKeys API instead.
-     */
-    @JsonProperty(value = "properties.sendKeyValue")
-    private String sendKeyValue;
-
-    /*
-     * The suffix for the service bus endpoint. By default this is
-     * .servicebus.windows.net
-     */
-    @JsonProperty(value = "properties.serviceBusSuffix")
-    private String serviceBusSuffix;
+    /** {@inheritDoc} */
+    @Override
+    public HybridConnectionInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the serviceBusNamespace property: The name of the Service Bus namespace.
@@ -75,7 +43,7 @@ public class HybridConnectionInner extends ProxyOnlyResource {
      * @return the serviceBusNamespace value.
      */
     public String serviceBusNamespace() {
-        return this.serviceBusNamespace;
+        return this.innerProperties() == null ? null : this.innerProperties().serviceBusNamespace();
     }
 
     /**
@@ -85,7 +53,10 @@ public class HybridConnectionInner extends ProxyOnlyResource {
      * @return the HybridConnectionInner object itself.
      */
     public HybridConnectionInner withServiceBusNamespace(String serviceBusNamespace) {
-        this.serviceBusNamespace = serviceBusNamespace;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new HybridConnectionProperties();
+        }
+        this.innerProperties().withServiceBusNamespace(serviceBusNamespace);
         return this;
     }
 
@@ -95,7 +66,7 @@ public class HybridConnectionInner extends ProxyOnlyResource {
      * @return the relayName value.
      */
     public String relayName() {
-        return this.relayName;
+        return this.innerProperties() == null ? null : this.innerProperties().relayName();
     }
 
     /**
@@ -105,7 +76,10 @@ public class HybridConnectionInner extends ProxyOnlyResource {
      * @return the HybridConnectionInner object itself.
      */
     public HybridConnectionInner withRelayName(String relayName) {
-        this.relayName = relayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new HybridConnectionProperties();
+        }
+        this.innerProperties().withRelayName(relayName);
         return this;
     }
 
@@ -115,7 +89,7 @@ public class HybridConnectionInner extends ProxyOnlyResource {
      * @return the relayArmUri value.
      */
     public String relayArmUri() {
-        return this.relayArmUri;
+        return this.innerProperties() == null ? null : this.innerProperties().relayArmUri();
     }
 
     /**
@@ -125,7 +99,10 @@ public class HybridConnectionInner extends ProxyOnlyResource {
      * @return the HybridConnectionInner object itself.
      */
     public HybridConnectionInner withRelayArmUri(String relayArmUri) {
-        this.relayArmUri = relayArmUri;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new HybridConnectionProperties();
+        }
+        this.innerProperties().withRelayArmUri(relayArmUri);
         return this;
     }
 
@@ -135,7 +112,7 @@ public class HybridConnectionInner extends ProxyOnlyResource {
      * @return the hostname value.
      */
     public String hostname() {
-        return this.hostname;
+        return this.innerProperties() == null ? null : this.innerProperties().hostname();
     }
 
     /**
@@ -145,7 +122,10 @@ public class HybridConnectionInner extends ProxyOnlyResource {
      * @return the HybridConnectionInner object itself.
      */
     public HybridConnectionInner withHostname(String hostname) {
-        this.hostname = hostname;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new HybridConnectionProperties();
+        }
+        this.innerProperties().withHostname(hostname);
         return this;
     }
 
@@ -155,7 +135,7 @@ public class HybridConnectionInner extends ProxyOnlyResource {
      * @return the port value.
      */
     public Integer port() {
-        return this.port;
+        return this.innerProperties() == null ? null : this.innerProperties().port();
     }
 
     /**
@@ -165,7 +145,10 @@ public class HybridConnectionInner extends ProxyOnlyResource {
      * @return the HybridConnectionInner object itself.
      */
     public HybridConnectionInner withPort(Integer port) {
-        this.port = port;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new HybridConnectionProperties();
+        }
+        this.innerProperties().withPort(port);
         return this;
     }
 
@@ -176,7 +159,7 @@ public class HybridConnectionInner extends ProxyOnlyResource {
      * @return the sendKeyName value.
      */
     public String sendKeyName() {
-        return this.sendKeyName;
+        return this.innerProperties() == null ? null : this.innerProperties().sendKeyName();
     }
 
     /**
@@ -187,7 +170,10 @@ public class HybridConnectionInner extends ProxyOnlyResource {
      * @return the HybridConnectionInner object itself.
      */
     public HybridConnectionInner withSendKeyName(String sendKeyName) {
-        this.sendKeyName = sendKeyName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new HybridConnectionProperties();
+        }
+        this.innerProperties().withSendKeyName(sendKeyName);
         return this;
     }
 
@@ -198,7 +184,7 @@ public class HybridConnectionInner extends ProxyOnlyResource {
      * @return the sendKeyValue value.
      */
     public String sendKeyValue() {
-        return this.sendKeyValue;
+        return this.innerProperties() == null ? null : this.innerProperties().sendKeyValue();
     }
 
     /**
@@ -209,7 +195,10 @@ public class HybridConnectionInner extends ProxyOnlyResource {
      * @return the HybridConnectionInner object itself.
      */
     public HybridConnectionInner withSendKeyValue(String sendKeyValue) {
-        this.sendKeyValue = sendKeyValue;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new HybridConnectionProperties();
+        }
+        this.innerProperties().withSendKeyValue(sendKeyValue);
         return this;
     }
 
@@ -220,7 +209,7 @@ public class HybridConnectionInner extends ProxyOnlyResource {
      * @return the serviceBusSuffix value.
      */
     public String serviceBusSuffix() {
-        return this.serviceBusSuffix;
+        return this.innerProperties() == null ? null : this.innerProperties().serviceBusSuffix();
     }
 
     /**
@@ -231,14 +220,10 @@ public class HybridConnectionInner extends ProxyOnlyResource {
      * @return the HybridConnectionInner object itself.
      */
     public HybridConnectionInner withServiceBusSuffix(String serviceBusSuffix) {
-        this.serviceBusSuffix = serviceBusSuffix;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public HybridConnectionInner withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new HybridConnectionProperties();
+        }
+        this.innerProperties().withServiceBusSuffix(serviceBusSuffix);
         return this;
     }
 
@@ -250,5 +235,8 @@ public class HybridConnectionInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

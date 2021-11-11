@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -13,29 +12,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Full view of networking configuration for an ASE. */
-@JsonFlatten
 @Fluent
-public class AseV3NetworkingConfigurationInner extends ProxyOnlyResource {
+public final class AseV3NetworkingConfigurationInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(AseV3NetworkingConfigurationInner.class);
 
     /*
-     * The windowsOutboundIpAddresses property.
+     * AseV3NetworkingConfiguration resource specific properties
      */
-    @JsonProperty(value = "properties.windowsOutboundIpAddresses", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> windowsOutboundIpAddresses;
+    @JsonProperty(value = "properties")
+    private AseV3NetworkingConfigurationProperties innerProperties;
 
-    /*
-     * The linuxOutboundIpAddresses property.
+    /**
+     * Get the innerProperties property: AseV3NetworkingConfiguration resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.linuxOutboundIpAddresses", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> linuxOutboundIpAddresses;
+    private AseV3NetworkingConfigurationProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Property to enable and disable new private endpoint connection creation
-     * on ASE
-     */
-    @JsonProperty(value = "properties.allowNewPrivateEndpointConnections")
-    private Boolean allowNewPrivateEndpointConnections;
+    /** {@inheritDoc} */
+    @Override
+    public AseV3NetworkingConfigurationInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the windowsOutboundIpAddresses property: The windowsOutboundIpAddresses property.
@@ -43,7 +44,7 @@ public class AseV3NetworkingConfigurationInner extends ProxyOnlyResource {
      * @return the windowsOutboundIpAddresses value.
      */
     public List<String> windowsOutboundIpAddresses() {
-        return this.windowsOutboundIpAddresses;
+        return this.innerProperties() == null ? null : this.innerProperties().windowsOutboundIpAddresses();
     }
 
     /**
@@ -52,7 +53,25 @@ public class AseV3NetworkingConfigurationInner extends ProxyOnlyResource {
      * @return the linuxOutboundIpAddresses value.
      */
     public List<String> linuxOutboundIpAddresses() {
-        return this.linuxOutboundIpAddresses;
+        return this.innerProperties() == null ? null : this.innerProperties().linuxOutboundIpAddresses();
+    }
+
+    /**
+     * Get the externalInboundIpAddresses property: The externalInboundIpAddresses property.
+     *
+     * @return the externalInboundIpAddresses value.
+     */
+    public List<String> externalInboundIpAddresses() {
+        return this.innerProperties() == null ? null : this.innerProperties().externalInboundIpAddresses();
+    }
+
+    /**
+     * Get the internalInboundIpAddresses property: The internalInboundIpAddresses property.
+     *
+     * @return the internalInboundIpAddresses value.
+     */
+    public List<String> internalInboundIpAddresses() {
+        return this.innerProperties() == null ? null : this.innerProperties().internalInboundIpAddresses();
     }
 
     /**
@@ -62,7 +81,7 @@ public class AseV3NetworkingConfigurationInner extends ProxyOnlyResource {
      * @return the allowNewPrivateEndpointConnections value.
      */
     public Boolean allowNewPrivateEndpointConnections() {
-        return this.allowNewPrivateEndpointConnections;
+        return this.innerProperties() == null ? null : this.innerProperties().allowNewPrivateEndpointConnections();
     }
 
     /**
@@ -74,14 +93,10 @@ public class AseV3NetworkingConfigurationInner extends ProxyOnlyResource {
      */
     public AseV3NetworkingConfigurationInner withAllowNewPrivateEndpointConnections(
         Boolean allowNewPrivateEndpointConnections) {
-        this.allowNewPrivateEndpointConnections = allowNewPrivateEndpointConnections;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public AseV3NetworkingConfigurationInner withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AseV3NetworkingConfigurationProperties();
+        }
+        this.innerProperties().withAllowNewPrivateEndpointConnections(allowNewPrivateEndpointConnections);
         return this;
     }
 
@@ -93,5 +108,8 @@ public class AseV3NetworkingConfigurationInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

@@ -20,8 +20,8 @@ import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.AdaptiveRecvByteBufAllocator;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelOption;
-import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.channel.EventLoopGroup;
+import io.netty.channel.epoll.EpollChannelOption;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.ssl.SslContext;
 import io.netty.util.concurrent.DefaultEventExecutor;
@@ -78,6 +78,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     private final RntbdRequestTimer requestTimer;
     private final Tag tag;
     private final int maxConcurrentRequests;
+    private final boolean channelAcquisitionContextEnabled;
 
     private final RntbdConnectionStateListener connectionStateListener;
 
@@ -88,21 +89,13 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     private RntbdServiceEndpoint(
         final Provider provider,
         final Config config,
-        final NioEventLoopGroup group,
+        final EventLoopGroup group,
         final RntbdRequestTimer timer,
         final URI physicalAddress) {
 
         this.serverKey = RntbdUtils.getServerKey(physicalAddress);
 
-        final Bootstrap bootstrap = new Bootstrap()
-            .channel(NioSocketChannel.class)
-            .group(group)
-            .option(ChannelOption.ALLOCATOR, config.allocator())
-            .option(ChannelOption.AUTO_READ, true)
-            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, config.connectTimeoutInMillis())
-            .option(ChannelOption.RCVBUF_ALLOCATOR, receiveBufferAllocator)
-            .option(ChannelOption.SO_KEEPALIVE, true)
-            .remoteAddress(this.serverKey.getHost(), this.serverKey.getPort());
+        final Bootstrap bootstrap = this.getBootStrap(group, config);
 
         this.createdTime = Instant.now();
         this.channelPool = new RntbdClientChannelPool(this, bootstrap, config);
@@ -128,6 +121,34 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         this.connectionStateListener = this.provider.addressResolver != null && config.isConnectionEndpointRediscoveryEnabled()
             ? new RntbdConnectionStateListener(this.provider.addressResolver, this)
             : null;
+
+        this.channelAcquisitionContextEnabled = config.isChannelAcquisitionContextEnabled();
+    }
+
+    private Bootstrap getBootStrap(EventLoopGroup eventLoopGroup, Config config) {
+        checkNotNull(eventLoopGroup, "expected non-null eventLoopGroup");
+        checkNotNull(config, "expected non-null config");
+
+        RntbdLoop rntbdLoop = RntbdLoopNativeDetector.getRntbdLoop(config.preferTcpNative());
+        Bootstrap bootstrap = new Bootstrap()
+            .group(eventLoopGroup)
+            .channel(rntbdLoop.getChannelClass())
+            .option(ChannelOption.ALLOCATOR, config.allocator())
+            .option(ChannelOption.AUTO_READ, true)
+            .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, config.connectTimeoutInMillis())
+            .option(ChannelOption.RCVBUF_ALLOCATOR, receiveBufferAllocator)
+            .option(ChannelOption.SO_KEEPALIVE, true)
+            .remoteAddress(this.serverKey.getHost(), this.serverKey.getPort());
+
+        if (rntbdLoop instanceof RntbdLoopEpoll) {
+            // Override the default Linux os config for tcp keep-alive, so a broken connection can be detected faster.
+            // see man 7 tcp for more details.
+            bootstrap
+                .option(EpollChannelOption.TCP_KEEPINTVL, config.tcpKeepIntvl()) // default value 75s
+                .option(EpollChannelOption.TCP_KEEPIDLE, config.tcpKeepIdle()); // default value 2hrs
+        }
+
+        return bootstrap;
     }
 
     // endregion
@@ -353,8 +374,9 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
     private RntbdRequestRecord write(final RntbdRequestArgs requestArgs) {
 
         final RntbdRequestRecord requestRecord = new AsyncRntbdRequestRecord(requestArgs, this.requestTimer);
+        requestRecord.channelAcquisitionContextEnabled(this.channelAcquisitionContextEnabled);
         requestRecord.stage(RntbdRequestRecord.Stage.CHANNEL_ACQUISITION_STARTED);
-        final Future<Channel> connectedChannel = this.channelPool.acquire();
+        final Future<Channel> connectedChannel = this.channelPool.acquire(requestRecord.getChannelAcquisitionTimeline());
 
         logger.debug("\n  [{}]\n  {}\n  WRITE WHEN CONNECTED {}", this, requestArgs, connectedChannel);
 
@@ -448,7 +470,7 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
         private final AtomicBoolean closed;
         private final Config config;
         private final ConcurrentHashMap<String, RntbdEndpoint> endpoints;
-        private final NioEventLoopGroup eventLoopGroup;
+        private final EventLoopGroup eventLoopGroup;
         private final AtomicInteger evictions;
         private final RntbdEndpointMonitoringProvider monitoring;
         private final RntbdRequestTimer requestTimer;
@@ -465,7 +487,6 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             checkNotNull(options, "expected non-null options");
             checkNotNull(sslContext, "expected non-null sslContext");
 
-            final DefaultThreadFactory threadFactory = new DefaultThreadFactory("cosmos-rntbd-nio", true);
             final LogLevel wireLogLevel;
 
             if (logger.isDebugEnabled()) {
@@ -479,15 +500,28 @@ public final class RntbdServiceEndpoint implements RntbdEndpoint {
             this.config = new Config(options, sslContext, wireLogLevel);
 
             this.requestTimer = new RntbdRequestTimer(
-                config.requestTimeoutInNanos(),
+                config.tcpNetworkRequestTimeoutInNanos(),
                 config.requestTimerResolutionInNanos());
 
-            this.eventLoopGroup = new NioEventLoopGroup(options.threadCount(), threadFactory);
+            this.eventLoopGroup = this.getEventLoopGroup(options);
             this.endpoints = new ConcurrentHashMap<>();
             this.evictions = new AtomicInteger();
             this.closed = new AtomicBoolean();
             this.monitoring = new RntbdEndpointMonitoringProvider(this);
             this.monitoring.init();
+        }
+
+        private EventLoopGroup getEventLoopGroup(Options options) {
+            checkNotNull(options, "expected non-null options");
+
+            RntbdLoop rntbdEventLoop = RntbdLoopNativeDetector.getRntbdLoop(options.preferTcpNative());
+            DefaultThreadFactory threadFactory =
+                new DefaultThreadFactory(
+                    "cosmos-rntbd-" + rntbdEventLoop.getName(),
+                    true,
+                    options.ioThreadPriority());
+
+            return rntbdEventLoop.newEventLoopGroup(options.threadCount(), threadFactory);
         }
 
         @Override

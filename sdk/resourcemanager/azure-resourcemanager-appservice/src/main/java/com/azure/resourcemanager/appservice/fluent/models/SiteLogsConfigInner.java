@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ApplicationLogsConfig;
 import com.azure.resourcemanager.appservice.models.EnabledConfig;
@@ -15,34 +14,31 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Configuration of App Service site logs. */
-@JsonFlatten
 @Fluent
-public class SiteLogsConfigInner extends ProxyOnlyResource {
+public final class SiteLogsConfigInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SiteLogsConfigInner.class);
 
     /*
-     * Application logs configuration.
+     * SiteLogsConfig resource specific properties
      */
-    @JsonProperty(value = "properties.applicationLogs")
-    private ApplicationLogsConfig applicationLogs;
+    @JsonProperty(value = "properties")
+    private SiteLogsConfigProperties innerProperties;
 
-    /*
-     * HTTP logs configuration.
+    /**
+     * Get the innerProperties property: SiteLogsConfig resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.httpLogs")
-    private HttpLogsConfig httpLogs;
+    private SiteLogsConfigProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Failed requests tracing configuration.
-     */
-    @JsonProperty(value = "properties.failedRequestsTracing")
-    private EnabledConfig failedRequestsTracing;
-
-    /*
-     * Detailed error messages configuration.
-     */
-    @JsonProperty(value = "properties.detailedErrorMessages")
-    private EnabledConfig detailedErrorMessages;
+    /** {@inheritDoc} */
+    @Override
+    public SiteLogsConfigInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the applicationLogs property: Application logs configuration.
@@ -50,7 +46,7 @@ public class SiteLogsConfigInner extends ProxyOnlyResource {
      * @return the applicationLogs value.
      */
     public ApplicationLogsConfig applicationLogs() {
-        return this.applicationLogs;
+        return this.innerProperties() == null ? null : this.innerProperties().applicationLogs();
     }
 
     /**
@@ -60,7 +56,10 @@ public class SiteLogsConfigInner extends ProxyOnlyResource {
      * @return the SiteLogsConfigInner object itself.
      */
     public SiteLogsConfigInner withApplicationLogs(ApplicationLogsConfig applicationLogs) {
-        this.applicationLogs = applicationLogs;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteLogsConfigProperties();
+        }
+        this.innerProperties().withApplicationLogs(applicationLogs);
         return this;
     }
 
@@ -70,7 +69,7 @@ public class SiteLogsConfigInner extends ProxyOnlyResource {
      * @return the httpLogs value.
      */
     public HttpLogsConfig httpLogs() {
-        return this.httpLogs;
+        return this.innerProperties() == null ? null : this.innerProperties().httpLogs();
     }
 
     /**
@@ -80,7 +79,10 @@ public class SiteLogsConfigInner extends ProxyOnlyResource {
      * @return the SiteLogsConfigInner object itself.
      */
     public SiteLogsConfigInner withHttpLogs(HttpLogsConfig httpLogs) {
-        this.httpLogs = httpLogs;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteLogsConfigProperties();
+        }
+        this.innerProperties().withHttpLogs(httpLogs);
         return this;
     }
 
@@ -90,7 +92,7 @@ public class SiteLogsConfigInner extends ProxyOnlyResource {
      * @return the failedRequestsTracing value.
      */
     public EnabledConfig failedRequestsTracing() {
-        return this.failedRequestsTracing;
+        return this.innerProperties() == null ? null : this.innerProperties().failedRequestsTracing();
     }
 
     /**
@@ -100,7 +102,10 @@ public class SiteLogsConfigInner extends ProxyOnlyResource {
      * @return the SiteLogsConfigInner object itself.
      */
     public SiteLogsConfigInner withFailedRequestsTracing(EnabledConfig failedRequestsTracing) {
-        this.failedRequestsTracing = failedRequestsTracing;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteLogsConfigProperties();
+        }
+        this.innerProperties().withFailedRequestsTracing(failedRequestsTracing);
         return this;
     }
 
@@ -110,7 +115,7 @@ public class SiteLogsConfigInner extends ProxyOnlyResource {
      * @return the detailedErrorMessages value.
      */
     public EnabledConfig detailedErrorMessages() {
-        return this.detailedErrorMessages;
+        return this.innerProperties() == null ? null : this.innerProperties().detailedErrorMessages();
     }
 
     /**
@@ -120,14 +125,10 @@ public class SiteLogsConfigInner extends ProxyOnlyResource {
      * @return the SiteLogsConfigInner object itself.
      */
     public SiteLogsConfigInner withDetailedErrorMessages(EnabledConfig detailedErrorMessages) {
-        this.detailedErrorMessages = detailedErrorMessages;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public SiteLogsConfigInner withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SiteLogsConfigProperties();
+        }
+        this.innerProperties().withDetailedErrorMessages(detailedErrorMessages);
         return this;
     }
 
@@ -139,17 +140,8 @@ public class SiteLogsConfigInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
-        if (applicationLogs() != null) {
-            applicationLogs().validate();
-        }
-        if (httpLogs() != null) {
-            httpLogs().validate();
-        }
-        if (failedRequestsTracing() != null) {
-            failedRequestsTracing().validate();
-        }
-        if (detailedErrorMessages() != null) {
-            detailedErrorMessages().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

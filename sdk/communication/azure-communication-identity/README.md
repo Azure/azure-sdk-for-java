@@ -16,6 +16,39 @@ The identity package is used for managing users and tokens for Azure Communicati
 - A Communication Services resource. You can use the [Azure Portal](https://docs.microsoft.com/azure/communication-services/quickstarts/create-communication-resource?tabs=windows&pivots=platform-azp) or the [Azure PowerShell](https://docs.microsoft.com/powershell/module/az.communication/new-azcommunicationservice) to set it up.
 
 ### Include the package
+#### Include the BOM file
+
+Please include the azure-sdk-bom to your project to take dependency on the General Availability (GA) version of the library. In the following snippet, replace the {bom_version_to_target} placeholder with the version number.
+To learn more about the BOM, see the [AZURE SDK BOM README](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/boms/azure-sdk-bom/README.md).
+
+```xml
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-sdk-bom</artifactId>
+            <version>{bom_version_to_target}</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+```
+and then include the direct dependency in the dependencies section without the version tag.
+
+```xml
+<dependencies>
+  <dependency>
+    <groupId>com.azure</groupId>
+    <artifactId>azure-communication-identity</artifactId>
+  </dependency>
+</dependencies>
+```
+
+#### Include direct dependency
+If you want to take dependency on a particular version of the library that is not present in the BOM,
+add the direct dependency to your project as follows.
+
 
 [//]: # ({x-version-update-start;com.azure:azure-communication-identity;current})
 ```xml
@@ -93,7 +126,7 @@ System.out.println("User id: " + user.getId());
 
 ### Getting a token for an existing user
 Use the `getToken` function to get a token for an existing user. The function
-also takes in a list of `CommunicationIdentityTokenScope`. Scope options include:
+also takes in a list of `CommunicationTokenScope`. Scope options include:
 - `chat` (Chat)
 - `voip` (Voice over IP)
 
@@ -137,10 +170,19 @@ Use the `deleteUser` function to delete a user.
 communicationIdentityClient.deleteUser(user);
 ```
 
+### Exchanging AAD access token of a Teams User for a Communication Identity access token
+Use the `getTokenForTeamsUser` function to exchanges an AAD access token of a Teams User for a new Communication Identity access token.
+
+<!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L139-L146 -->
+```java
+// exchanges an AAD access token of a Teams User for a new Communication Identity access token.
+communicationIdentityClient.getTokenForTeamsUser(teamsUserAadToken);
+```
+
 ## Troubleshooting
 
 All user token service operations will throw an exception on failure.
-<!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L139-L143 -->
+<!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L151-L159 -->
 ```java
 try {
     CommunicationUserIdentifier user = communicationIdentityClient.createUser();

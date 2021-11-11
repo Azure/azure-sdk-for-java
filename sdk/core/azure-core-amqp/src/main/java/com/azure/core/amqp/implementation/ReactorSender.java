@@ -403,10 +403,18 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
         return Mono.fromRunnable(() -> {
             try {
                 reactorProvider.getReactorDispatcher().invoke(closeWork);
-            } catch (IOException | RejectedExecutionException e) {
-                logger.info("connectionId[{}] entityPath[{}] linkName[{}]: Could not schedule close work. Running"
-                    + " manually.", handler.getConnectionId(), entityPath, getLinkName(), e);
+            } catch (IOException e) {
+                logger.warning("connectionId[{}] entityPath[{}] linkName[{}]: Could not schedule close work. Running"
+                    + " manually. And completing close.", handler.getConnectionId(), entityPath, getLinkName(), e);
+
                 closeWork.run();
+                handleClose();
+            } catch (RejectedExecutionException e) {
+                logger.info("connectionId[{}] entityPath[{}] linkName[{}]: RejectedExecutionException scheduling close"
+                    + " work. And completing close.", handler.getConnectionId(), entityPath, getLinkName());
+
+                closeWork.run();
+                handleClose();
             }
         }).then(isClosedMono.asMono())
             .publishOn(Schedulers.boundedElastic());
@@ -622,7 +630,11 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
         try {
             reactorProvider.getReactorDispatcher().invoke(this::processSendWork);
         } catch (IOException e) {
-            logger.error("Error scheduling work on reactor.", e);
+            logger.warning("connectionId[{}] linkName[{}]: Error scheduling work on reactor.",
+                handler.getConnectionId(), getLinkName(), e);
+        } catch (RejectedExecutionException e) {
+            logger.info("connectionId[{}] linkName[{}]: Error scheduling work on reactor because of"
+                + " RejectedExecutionException.", handler.getConnectionId(), getLinkName());
         }
     }
 
@@ -651,13 +663,13 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
      * @param error Error to pass to pending sends.
      */
     private void handleError(Throwable error) {
-        final String logMessage = isDisposed.getAndSet(true)
-            ? "This was already disposed. Dropping error."
-            : "Disposing pending sends with error.";
-        logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] {}", handler.getConnectionId(), entityPath,
-            getLinkName(), logMessage, error);
-
         synchronized (pendingSendLock) {
+            final String logMessage = isDisposed.getAndSet(true)
+                ? "This was already disposed. Dropping error."
+                : String.format("Disposing of '%d' pending sends with error.", pendingSendsMap.size());
+            logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] {}", handler.getConnectionId(), entityPath,
+                getLinkName(), logMessage);
+
             pendingSendsMap.forEach((key, value) -> value.error(error));
             pendingSendsMap.clear();
             pendingSendsQueue.clear();
@@ -667,17 +679,18 @@ class ReactorSender implements AmqpSendLink, AsyncCloseable, AutoCloseable {
     }
 
     private void handleClose() {
-        final String logMessage = isDisposed.getAndSet(true)
-            ? "This was already disposed."
-            : "Disposing pending sends.";
-        logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] {}", handler.getConnectionId(), entityPath,
-            getLinkName(), logMessage);
-
         final String message = String.format("Could not complete sends because link '%s' for '%s' is closed.",
             getLinkName(), entityPath);
         final AmqpErrorContext context = handler.getErrorContext(sender);
 
         synchronized (pendingSendLock) {
+            final String logMessage = isDisposed.getAndSet(true)
+                ? "This was already disposed."
+                : String.format("Disposing of '%d' pending sends.", pendingSendsMap.size());
+
+            logger.verbose("connectionId[{}] entityPath[{}] linkName[{}] {}", handler.getConnectionId(), entityPath,
+                getLinkName(), logMessage);
+
             pendingSendsMap.forEach((key, value) -> value.error(new AmqpException(true, message, context)));
             pendingSendsMap.clear();
             pendingSendsQueue.clear();

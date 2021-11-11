@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.LoadBalancerOutboundRuleProtocol;
@@ -15,10 +14,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Outbound rule of the load balancer. */
-@JsonFlatten
 @Fluent
-public class OutboundRuleInner extends SubResource {
+public final class OutboundRuleInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OutboundRuleInner.class);
+
+    /*
+     * Properties of load balancer outbound rule.
+     */
+    @JsonProperty(value = "properties")
+    private OutboundRulePropertiesFormat innerProperties;
 
     /*
      * The name of the resource that is unique within the set of outbound rules
@@ -39,50 +43,14 @@ public class OutboundRuleInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * The number of outbound ports to be used for NAT.
+    /**
+     * Get the innerProperties property: Properties of load balancer outbound rule.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.allocatedOutboundPorts")
-    private Integer allocatedOutboundPorts;
-
-    /*
-     * The Frontend IP addresses of the load balancer.
-     */
-    @JsonProperty(value = "properties.frontendIPConfigurations")
-    private List<SubResource> frontendIpConfigurations;
-
-    /*
-     * A reference to a pool of DIPs. Outbound traffic is randomly load
-     * balanced across IPs in the backend IPs.
-     */
-    @JsonProperty(value = "properties.backendAddressPool")
-    private SubResource backendAddressPool;
-
-    /*
-     * The provisioning state of the outbound rule resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * The protocol for the outbound rule in load balancer.
-     */
-    @JsonProperty(value = "properties.protocol")
-    private LoadBalancerOutboundRuleProtocol protocol;
-
-    /*
-     * Receive bidirectional TCP Reset on TCP flow idle timeout or unexpected
-     * connection termination. This element is only used when the protocol is
-     * set to TCP.
-     */
-    @JsonProperty(value = "properties.enableTcpReset")
-    private Boolean enableTcpReset;
-
-    /*
-     * The timeout for the TCP idle connection.
-     */
-    @JsonProperty(value = "properties.idleTimeoutInMinutes")
-    private Integer idleTimeoutInMinutes;
+    private OutboundRulePropertiesFormat innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the name property: The name of the resource that is unique within the set of outbound rules used by the load
@@ -124,13 +92,20 @@ public class OutboundRuleInner extends SubResource {
         return this.type;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public OutboundRuleInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the allocatedOutboundPorts property: The number of outbound ports to be used for NAT.
      *
      * @return the allocatedOutboundPorts value.
      */
     public Integer allocatedOutboundPorts() {
-        return this.allocatedOutboundPorts;
+        return this.innerProperties() == null ? null : this.innerProperties().allocatedOutboundPorts();
     }
 
     /**
@@ -140,7 +115,10 @@ public class OutboundRuleInner extends SubResource {
      * @return the OutboundRuleInner object itself.
      */
     public OutboundRuleInner withAllocatedOutboundPorts(Integer allocatedOutboundPorts) {
-        this.allocatedOutboundPorts = allocatedOutboundPorts;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OutboundRulePropertiesFormat();
+        }
+        this.innerProperties().withAllocatedOutboundPorts(allocatedOutboundPorts);
         return this;
     }
 
@@ -150,7 +128,7 @@ public class OutboundRuleInner extends SubResource {
      * @return the frontendIpConfigurations value.
      */
     public List<SubResource> frontendIpConfigurations() {
-        return this.frontendIpConfigurations;
+        return this.innerProperties() == null ? null : this.innerProperties().frontendIpConfigurations();
     }
 
     /**
@@ -160,7 +138,10 @@ public class OutboundRuleInner extends SubResource {
      * @return the OutboundRuleInner object itself.
      */
     public OutboundRuleInner withFrontendIpConfigurations(List<SubResource> frontendIpConfigurations) {
-        this.frontendIpConfigurations = frontendIpConfigurations;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OutboundRulePropertiesFormat();
+        }
+        this.innerProperties().withFrontendIpConfigurations(frontendIpConfigurations);
         return this;
     }
 
@@ -171,7 +152,7 @@ public class OutboundRuleInner extends SubResource {
      * @return the backendAddressPool value.
      */
     public SubResource backendAddressPool() {
-        return this.backendAddressPool;
+        return this.innerProperties() == null ? null : this.innerProperties().backendAddressPool();
     }
 
     /**
@@ -182,7 +163,10 @@ public class OutboundRuleInner extends SubResource {
      * @return the OutboundRuleInner object itself.
      */
     public OutboundRuleInner withBackendAddressPool(SubResource backendAddressPool) {
-        this.backendAddressPool = backendAddressPool;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OutboundRulePropertiesFormat();
+        }
+        this.innerProperties().withBackendAddressPool(backendAddressPool);
         return this;
     }
 
@@ -192,7 +176,7 @@ public class OutboundRuleInner extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -201,7 +185,7 @@ public class OutboundRuleInner extends SubResource {
      * @return the protocol value.
      */
     public LoadBalancerOutboundRuleProtocol protocol() {
-        return this.protocol;
+        return this.innerProperties() == null ? null : this.innerProperties().protocol();
     }
 
     /**
@@ -211,7 +195,10 @@ public class OutboundRuleInner extends SubResource {
      * @return the OutboundRuleInner object itself.
      */
     public OutboundRuleInner withProtocol(LoadBalancerOutboundRuleProtocol protocol) {
-        this.protocol = protocol;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OutboundRulePropertiesFormat();
+        }
+        this.innerProperties().withProtocol(protocol);
         return this;
     }
 
@@ -222,7 +209,7 @@ public class OutboundRuleInner extends SubResource {
      * @return the enableTcpReset value.
      */
     public Boolean enableTcpReset() {
-        return this.enableTcpReset;
+        return this.innerProperties() == null ? null : this.innerProperties().enableTcpReset();
     }
 
     /**
@@ -233,7 +220,10 @@ public class OutboundRuleInner extends SubResource {
      * @return the OutboundRuleInner object itself.
      */
     public OutboundRuleInner withEnableTcpReset(Boolean enableTcpReset) {
-        this.enableTcpReset = enableTcpReset;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OutboundRulePropertiesFormat();
+        }
+        this.innerProperties().withEnableTcpReset(enableTcpReset);
         return this;
     }
 
@@ -243,7 +233,7 @@ public class OutboundRuleInner extends SubResource {
      * @return the idleTimeoutInMinutes value.
      */
     public Integer idleTimeoutInMinutes() {
-        return this.idleTimeoutInMinutes;
+        return this.innerProperties() == null ? null : this.innerProperties().idleTimeoutInMinutes();
     }
 
     /**
@@ -253,14 +243,10 @@ public class OutboundRuleInner extends SubResource {
      * @return the OutboundRuleInner object itself.
      */
     public OutboundRuleInner withIdleTimeoutInMinutes(Integer idleTimeoutInMinutes) {
-        this.idleTimeoutInMinutes = idleTimeoutInMinutes;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public OutboundRuleInner withId(String id) {
-        super.withId(id);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OutboundRulePropertiesFormat();
+        }
+        this.innerProperties().withIdleTimeoutInMinutes(idleTimeoutInMinutes);
         return this;
     }
 
@@ -270,5 +256,8 @@ public class OutboundRuleInner extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

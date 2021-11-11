@@ -4,18 +4,18 @@
 
 package com.azure.resourcemanager.network.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.network.fluent.models.HopLinkProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
 /** Hop link. */
-@JsonFlatten
-@Immutable
-public class HopLink {
+@Fluent
+public final class HopLink {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(HopLink.class);
 
     /*
@@ -31,6 +31,12 @@ public class HopLink {
     private String linkType;
 
     /*
+     * Hop link properties.
+     */
+    @JsonProperty(value = "properties")
+    private HopLinkProperties innerProperties;
+
+    /*
      * List of issues.
      */
     @JsonProperty(value = "issues", access = JsonProperty.Access.WRITE_ONLY)
@@ -40,6 +46,7 @@ public class HopLink {
      * Provides additional context on links.
      */
     @JsonProperty(value = "context", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> context;
 
     /*
@@ -47,24 +54,6 @@ public class HopLink {
      */
     @JsonProperty(value = "resourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceId;
-
-    /*
-     * Minimum roundtrip time in milliseconds.
-     */
-    @JsonProperty(value = "properties.roundTripTimeMin", access = JsonProperty.Access.WRITE_ONLY)
-    private Long roundTripTimeMin;
-
-    /*
-     * Average roundtrip time in milliseconds.
-     */
-    @JsonProperty(value = "properties.roundTripTimeAvg", access = JsonProperty.Access.WRITE_ONLY)
-    private Long roundTripTimeAvg;
-
-    /*
-     * Maximum roundtrip time in milliseconds.
-     */
-    @JsonProperty(value = "properties.roundTripTimeMax", access = JsonProperty.Access.WRITE_ONLY)
-    private Long roundTripTimeMax;
 
     /**
      * Get the nextHopId property: The ID of the next hop.
@@ -82,6 +71,15 @@ public class HopLink {
      */
     public String linkType() {
         return this.linkType;
+    }
+
+    /**
+     * Get the innerProperties property: Hop link properties.
+     *
+     * @return the innerProperties value.
+     */
+    private HopLinkProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -117,7 +115,7 @@ public class HopLink {
      * @return the roundTripTimeMin value.
      */
     public Long roundTripTimeMin() {
-        return this.roundTripTimeMin;
+        return this.innerProperties() == null ? null : this.innerProperties().roundTripTimeMin();
     }
 
     /**
@@ -126,7 +124,7 @@ public class HopLink {
      * @return the roundTripTimeAvg value.
      */
     public Long roundTripTimeAvg() {
-        return this.roundTripTimeAvg;
+        return this.innerProperties() == null ? null : this.innerProperties().roundTripTimeAvg();
     }
 
     /**
@@ -135,7 +133,7 @@ public class HopLink {
      * @return the roundTripTimeMax value.
      */
     public Long roundTripTimeMax() {
-        return this.roundTripTimeMax;
+        return this.innerProperties() == null ? null : this.innerProperties().roundTripTimeMax();
     }
 
     /**
@@ -144,6 +142,9 @@ public class HopLink {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
         if (issues() != null) {
             issues().forEach(e -> e.validate());
         }

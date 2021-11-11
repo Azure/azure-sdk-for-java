@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.azure.resourcemanager.appservice.models.VnetValidationTestFailure;
@@ -14,34 +13,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** A class that describes the reason for a validation failure. */
-@JsonFlatten
 @Fluent
-public class VnetValidationFailureDetailsInner extends ProxyOnlyResource {
+public final class VnetValidationFailureDetailsInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VnetValidationFailureDetailsInner.class);
 
     /*
-     * Text describing the validation outcome.
+     * VnetValidationFailureDetails resource specific properties
      */
-    @JsonProperty(value = "properties.message")
-    private String message;
+    @JsonProperty(value = "properties")
+    private VnetValidationFailureDetailsProperties innerProperties;
 
-    /*
-     * A flag describing whether or not validation failed.
+    /**
+     * Get the innerProperties property: VnetValidationFailureDetails resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.failed")
-    private Boolean failed;
+    private VnetValidationFailureDetailsProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * A list of tests that failed in the validation.
-     */
-    @JsonProperty(value = "properties.failedTests")
-    private List<VnetValidationTestFailure> failedTests;
-
-    /*
-     * A list of warnings generated during validation.
-     */
-    @JsonProperty(value = "properties.warnings")
-    private List<VnetValidationTestFailure> warnings;
+    /** {@inheritDoc} */
+    @Override
+    public VnetValidationFailureDetailsInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the message property: Text describing the validation outcome.
@@ -49,7 +45,7 @@ public class VnetValidationFailureDetailsInner extends ProxyOnlyResource {
      * @return the message value.
      */
     public String message() {
-        return this.message;
+        return this.innerProperties() == null ? null : this.innerProperties().message();
     }
 
     /**
@@ -59,7 +55,10 @@ public class VnetValidationFailureDetailsInner extends ProxyOnlyResource {
      * @return the VnetValidationFailureDetailsInner object itself.
      */
     public VnetValidationFailureDetailsInner withMessage(String message) {
-        this.message = message;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VnetValidationFailureDetailsProperties();
+        }
+        this.innerProperties().withMessage(message);
         return this;
     }
 
@@ -69,7 +68,7 @@ public class VnetValidationFailureDetailsInner extends ProxyOnlyResource {
      * @return the failed value.
      */
     public Boolean failed() {
-        return this.failed;
+        return this.innerProperties() == null ? null : this.innerProperties().failed();
     }
 
     /**
@@ -79,7 +78,10 @@ public class VnetValidationFailureDetailsInner extends ProxyOnlyResource {
      * @return the VnetValidationFailureDetailsInner object itself.
      */
     public VnetValidationFailureDetailsInner withFailed(Boolean failed) {
-        this.failed = failed;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VnetValidationFailureDetailsProperties();
+        }
+        this.innerProperties().withFailed(failed);
         return this;
     }
 
@@ -89,7 +91,7 @@ public class VnetValidationFailureDetailsInner extends ProxyOnlyResource {
      * @return the failedTests value.
      */
     public List<VnetValidationTestFailure> failedTests() {
-        return this.failedTests;
+        return this.innerProperties() == null ? null : this.innerProperties().failedTests();
     }
 
     /**
@@ -99,7 +101,10 @@ public class VnetValidationFailureDetailsInner extends ProxyOnlyResource {
      * @return the VnetValidationFailureDetailsInner object itself.
      */
     public VnetValidationFailureDetailsInner withFailedTests(List<VnetValidationTestFailure> failedTests) {
-        this.failedTests = failedTests;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VnetValidationFailureDetailsProperties();
+        }
+        this.innerProperties().withFailedTests(failedTests);
         return this;
     }
 
@@ -109,7 +114,7 @@ public class VnetValidationFailureDetailsInner extends ProxyOnlyResource {
      * @return the warnings value.
      */
     public List<VnetValidationTestFailure> warnings() {
-        return this.warnings;
+        return this.innerProperties() == null ? null : this.innerProperties().warnings();
     }
 
     /**
@@ -119,14 +124,10 @@ public class VnetValidationFailureDetailsInner extends ProxyOnlyResource {
      * @return the VnetValidationFailureDetailsInner object itself.
      */
     public VnetValidationFailureDetailsInner withWarnings(List<VnetValidationTestFailure> warnings) {
-        this.warnings = warnings;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public VnetValidationFailureDetailsInner withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VnetValidationFailureDetailsProperties();
+        }
+        this.innerProperties().withWarnings(warnings);
         return this;
     }
 
@@ -138,11 +139,8 @@ public class VnetValidationFailureDetailsInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
-        if (failedTests() != null) {
-            failedTests().forEach(e -> e.validate());
-        }
-        if (warnings() != null) {
-            warnings().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

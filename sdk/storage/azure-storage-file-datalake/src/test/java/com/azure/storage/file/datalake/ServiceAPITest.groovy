@@ -8,8 +8,15 @@ import com.azure.core.http.rest.Response
 import com.azure.core.test.TestMode
 import com.azure.core.util.Context
 import com.azure.identity.DefaultAzureCredentialBuilder
+import com.azure.storage.blob.BlobContainerClient
+import com.azure.storage.blob.BlobServiceVersion
 import com.azure.storage.blob.BlobUrlParts
+import com.azure.storage.blob.models.BlobAnalyticsLogging
+import com.azure.storage.blob.models.BlobContainerListDetails
+import com.azure.storage.blob.models.BlobRetentionPolicy
+import com.azure.storage.blob.models.BlobServiceProperties
 import com.azure.storage.blob.models.BlobStorageException
+import com.azure.storage.blob.models.ListBlobContainersOptions
 import com.azure.storage.common.ParallelTransferOptions
 import com.azure.storage.common.test.shared.extensions.PlaybackOnly
 import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion
@@ -191,7 +198,7 @@ class ServiceAPITest extends APISpec {
     @ResourceLock("ServiceProperties")
     def "Set props error"() {
         when:
-        getServiceClient(env.dataLakeAccount.credential, "https://error.blob.core.windows.net")
+        getServiceClient(environment.dataLakeAccount.credential, "https://error.blob.core.windows.net")
             .setProperties(new DataLakeServiceProperties())
 
         then:
@@ -207,7 +214,7 @@ class ServiceAPITest extends APISpec {
     @ResourceLock("ServiceProperties")
     def "Get props error"() {
         when:
-        getServiceClient(env.dataLakeAccount.credential, "https://error.blob.core.windows.net")
+        getServiceClient(environment.dataLakeAccount.credential, "https://error.blob.core.windows.net")
             .getProperties()
 
         then:
@@ -345,6 +352,28 @@ class ServiceAPITest extends APISpec {
         fileSystems.each { fileSystem -> fileSystem.delete() }
     }
 
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_10_02")
+    def "List system file systems"() {
+        setup:
+        def retentionPolicy = new DataLakeRetentionPolicy().setDays(5).setEnabled(true)
+        def logging = new DataLakeAnalyticsLogging().setRead(true).setVersion("1.0")
+            .setRetentionPolicy(retentionPolicy)
+        def serviceProps = new DataLakeServiceProperties()
+            .setLogging(logging)
+
+        // Ensure $logs container exists. These will be reverted in test cleanup
+        primaryDataLakeServiceClient.setPropertiesWithResponse(serviceProps, null, null)
+
+        sleepIfRecord(30 * 1000) // allow the service properties to take effect
+
+        when:
+        def fileSystems = primaryDataLakeServiceClient.listFileSystems(
+            new ListFileSystemsOptions().setDetails(new FileSystemListDetails().setRetrieveSystem(true)), null)
+
+        then:
+        fileSystems.any {item -> return item.getName() == BlobContainerClient.LOG_CONTAINER_NAME }
+    }
+
     def "Get UserDelegationKey"() {
         setup:
         def start = OffsetDateTime.now()
@@ -402,10 +431,10 @@ class ServiceAPITest extends APISpec {
         thrown(IllegalArgumentException)
     }
 
-    @IgnoreIf( { getEnv().serviceVersion != null } )
+    @IgnoreIf( { getEnvironment().serviceVersion != null } )
     // This tests the policy is in the right place because if it were added per retry, it would be after the credentials and auth would fail because we changed a signed header.
     def "Per call policy"() {
-        def serviceClient = getServiceClient(env.dataLakeAccount.credential, primaryDataLakeServiceClient.getAccountUrl(), getPerCallVersionPolicy())
+        def serviceClient = getServiceClient(environment.dataLakeAccount.credential, primaryDataLakeServiceClient.getAccountUrl(), getPerCallVersionPolicy())
 
         when: "blob endpoint"
         def response = serviceClient.createFileSystemWithResponse(generateFileSystemName(), null, null, null)
@@ -505,7 +534,7 @@ class ServiceAPITest extends APISpec {
         given:
         def cc1 = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(generateFileSystemName())
         def blobName = generatePathName()
-        def delay = env.testMode == TestMode.PLAYBACK ? 0L : 30000L
+        def delay = environment.testMode == TestMode.PLAYBACK ? 0L : 30000L
 
         def blobContainerItemMono = cc1.create()
             .then(cc1.getFileAsyncClient(blobName).upload(data.defaultFlux, new ParallelTransferOptions()))
@@ -536,7 +565,7 @@ class ServiceAPITest extends APISpec {
         given:
         def cc1 = primaryDataLakeServiceAsyncClient.getFileSystemAsyncClient(generateFileSystemName())
         def blobName = generatePathName()
-        def delay = env.testMode == TestMode.PLAYBACK ? 0L : 30000L
+        def delay = environment.testMode == TestMode.PLAYBACK ? 0L : 30000L
 
         def blobContainerItemMono = cc1.create()
             .then(cc1.getFileAsyncClient(blobName).upload(data.defaultFlux, new ParallelTransferOptions()))

@@ -4,14 +4,14 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.implementation.routing.LocationHelper
-import com.azure.cosmos.implementation.spark.OperationListener
 import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, CosmosParameterizedQuery, FeedRange}
 import com.azure.cosmos.spark.ChangeFeedModes.ChangeFeedMode
 import com.azure.cosmos.spark.ChangeFeedStartFromModes.{ChangeFeedStartFromMode, PointInTime}
 import com.azure.cosmos.spark.ItemWriteStrategy.{ItemWriteStrategy, values}
 import com.azure.cosmos.spark.PartitioningStrategies.PartitioningStrategy
 import com.azure.cosmos.spark.SchemaConversionModes.SchemaConversionMode
-import com.azure.cosmos.spark.diagnostics.SimpleDiagnosticsProvider
+import com.azure.cosmos.spark.SerializationInclusionModes.SerializationInclusionMode
+import com.azure.cosmos.spark.diagnostics.{DiagnosticsProvider, SimpleDiagnosticsProvider}
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.catalyst.util.CaseInsensitiveMap
@@ -29,6 +29,7 @@ import scala.collection.JavaConverters._
 
 // scalastyle:off multiple.string.literals
 // scalastyle:off file.size.limit
+// scalastyle:off number.of.types
 
 private object CosmosConfigNames {
   val AccountEndpoint = "spark.cosmos.accountEndpoint"
@@ -36,9 +37,11 @@ private object CosmosConfigNames {
   val Database = "spark.cosmos.database"
   val Container = "spark.cosmos.container"
   val PreferredRegionsList = "spark.cosmos.preferredRegionsList"
+  val PreferredRegions = "spark.cosmos.preferredRegions"
   val ApplicationName = "spark.cosmos.applicationName"
   val UseGatewayMode = "spark.cosmos.useGatewayMode"
   val ReadCustomQuery = "spark.cosmos.read.customQuery"
+  val ReadMaxItemCount = "spark.cosmos.read.maxItemCount"
   val ReadForceEventualConsistency = "spark.cosmos.read.forceEventualConsistency"
   val ReadSchemaConversionMode = "spark.cosmos.read.schemaConversionMode"
   val ReadInferSchemaSamplingSize = "spark.cosmos.read.inferSchema.samplingSize"
@@ -69,6 +72,8 @@ private object CosmosConfigNames {
     "spark.cosmos.throughputControl.globalControl.renewIntervalInMS"
   val ThroughputControlGlobalControlExpireIntervalInMS =
     "spark.cosmos.throughputControl.globalControl.expireIntervalInMS"
+  val SerializationInclusionMode =
+    "spark.cosmos.serialization.inclusionMode"
 
   private val cosmosPrefix = "spark.cosmos."
 
@@ -78,11 +83,13 @@ private object CosmosConfigNames {
     Database,
     Container,
     PreferredRegionsList,
+    PreferredRegions,
     ApplicationName,
     UseGatewayMode,
     ReadCustomQuery,
     ReadForceEventualConsistency,
     ReadSchemaConversionMode,
+    ReadMaxItemCount,
     ReadInferSchemaSamplingSize,
     ReadInferSchemaEnabled,
     ReadInferSchemaIncludeSystemProperties,
@@ -108,7 +115,8 @@ private object CosmosConfigNames {
     ThroughputControlGlobalControlDatabase,
     ThroughputControlGlobalControlContainer,
     ThroughputControlGlobalControlRenewalIntervalInMS,
-    ThroughputControlGlobalControlExpireIntervalInMS
+    ThroughputControlGlobalControlExpireIntervalInMS,
+    SerializationInclusionMode
   )
 
   def validateConfigName(name: String): Unit = {
@@ -123,8 +131,6 @@ private object CosmosConfigNames {
     }
   }
 }
-
-
 
 private object CosmosConfig {
   def getEffectiveConfig
@@ -222,6 +228,7 @@ private object CosmosAccountConfig {
 
   private val PreferredRegionRegex = "^[a-z0-9]+$"r // this is for the final form after lower-casing and trimming the whitespaces
   private val PreferredRegionsList = CosmosConfigEntry[Array[String]](key = CosmosConfigNames.PreferredRegionsList,
+    Option.apply(CosmosConfigNames.PreferredRegions),
     mandatory = false,
     parseFromStringFunction = preferredRegionsListAsString => {
       var trimmedInput = preferredRegionsListAsString.trim
@@ -297,6 +304,7 @@ private object CosmosAccountConfig {
 
 private case class CosmosReadConfig(forceEventualConsistency: Boolean,
                                     schemaConversionMode: SchemaConversionMode,
+                                    maxItemCount: Int,
                                     customQuery: Option[CosmosParameterizedQuery])
 
 private object SchemaConversionModes extends Enumeration {
@@ -308,6 +316,7 @@ private object SchemaConversionModes extends Enumeration {
 
 private object CosmosReadConfig {
   private val DefaultSchemaConversionMode: SchemaConversionMode = SchemaConversionModes.Relaxed
+  private val DefaultMaxItemCount : Int = 1000
 
   private val ForceEventualConsistency = CosmosConfigEntry[Boolean](key = CosmosConfigNames.ReadForceEventualConsistency,
     mandatory = false,
@@ -336,12 +345,20 @@ private object CosmosReadConfig {
       "etc.) that cannot be pushed down yet (at least in Spark 3.1) - so the custom query is a fallback to allow " +
       "them to be pushed into the query sent to Cosmos.")
 
+  private val MaxItemCount = CosmosConfigEntry[Int](
+    key = CosmosConfigNames.ReadMaxItemCount,
+    mandatory = false,
+    defaultValue = Some(DefaultMaxItemCount),
+    parseFromStringFunction = queryText => queryText.toInt,
+    helpMessage = "The maximum number of documents returned in a single request. The default is 1000.")
+
   def parseCosmosReadConfig(cfg: Map[String, String]): CosmosReadConfig = {
     val forceEventualConsistency = CosmosConfigEntry.parse(cfg, ForceEventualConsistency)
     val jsonSchemaConversionMode = CosmosConfigEntry.parse(cfg, JsonSchemaConversion)
     val customQuery = CosmosConfigEntry.parse(cfg, CustomQuery)
+    val maxItemCount = CosmosConfigEntry.parse(cfg, MaxItemCount)
 
-    CosmosReadConfig(forceEventualConsistency.get, jsonSchemaConversionMode.get, customQuery)
+    CosmosReadConfig(forceEventualConsistency.get, jsonSchemaConversionMode.get, maxItemCount.get, customQuery)
   }
 }
 
@@ -395,7 +412,7 @@ private object DiagnosticsConfig {
         classOf[SimpleDiagnosticsProvider].getName
       } else {
         // this is experimental and to be used by cosmos db dev engineers.
-        Class.forName(diagnostics).asSubclass(classOf[OperationListener]).getDeclaredConstructor()
+        Class.forName(diagnostics).asSubclass(classOf[DiagnosticsProvider]).getDeclaredConstructor()
         diagnostics
       }
     },
@@ -476,6 +493,39 @@ private object CosmosWriteConfig {
       bulkEnabled = bulkEnabledOpt.get,
       bulkMaxPendingOperations = CosmosConfigEntry.parse(cfg, bulkMaxPendingOperations),
       pointMaxConcurrency = CosmosConfigEntry.parse(cfg, pointWriteConcurrency))
+  }
+}
+
+private object SerializationInclusionModes extends Enumeration {
+  type SerializationInclusionMode = Value
+
+  val Always: SerializationInclusionModes.Value = Value("Always")
+  val NonEmpty: SerializationInclusionModes.Value = Value("NonEmpty")
+  val NonNull: SerializationInclusionModes.Value = Value("NonNull")
+  val NonDefault: SerializationInclusionModes.Value = Value("NonDefault")
+}
+
+private case class CosmosSerializationConfig(serializationInclusionMode: SerializationInclusionMode)
+
+private object CosmosSerializationConfig {
+  private val inclusionMode = CosmosConfigEntry[SerializationInclusionMode](
+    key = CosmosConfigNames.SerializationInclusionMode,
+    mandatory = false,
+    defaultValue = Some(SerializationInclusionModes.Always),
+    parseFromStringFunction = value => CosmosConfigEntry.parseEnumeration(value, SerializationInclusionModes),
+    helpMessage = "The serialization inclusion mode (`Always`, `NonNull`, `NonEmpty` or `NonDefault`)." +
+      " When serializing json documents this setting determines whether json properties will be emitted" +
+      " for columns in the RDD that are null/empty. The default value is `Always`.")
+
+  def parseSerializationConfig(cfg: Map[String, String]): CosmosSerializationConfig = {
+    val inclusionModeOpt = CosmosConfigEntry.parse(cfg, inclusionMode)
+
+    // parsing above already validated this
+    assert(inclusionModeOpt.isDefined)
+
+    CosmosSerializationConfig(
+      serializationInclusionMode = inclusionModeOpt.get
+    )
   }
 }
 
@@ -840,13 +890,17 @@ private object CosmosThroughputControlConfig {
     }
 }
 
+
 private case class CosmosConfigEntry[T](key: String,
+                                        keyAlias: Option[String] = Option.empty,
                                         mandatory: Boolean,
                                         defaultValue: Option[T] = Option.empty,
                                         parseFromStringFunction: String => T,
                                         helpMessage: String,
                                         keySuffix: Option[String] = None) {
+
   CosmosConfigEntry.configEntriesDefinitions.put(key + keySuffix.getOrElse(""), this)
+  CosmosConfigEntry.configEntriesDefinitions.put(keyAlias + keySuffix.getOrElse(""), this)
 
   def parse(paramAsString: String) : T = {
     try {
@@ -874,9 +928,20 @@ private object CosmosConfigEntry {
 
   def parse[T](configuration: Map[String, String], configEntry: CosmosConfigEntry[T]): Option[T] = {
     // we are doing this here per config parsing for now
-    val opt = configuration
+    val loweredCaseConfiguration = configuration
       .map { case (key, value) => (key.toLowerCase(Locale.ROOT), value) }
-      .get(configEntry.key.toLowerCase(Locale.ROOT))
+
+    var opt = loweredCaseConfiguration.get(configEntry.key.toLowerCase(Locale.ROOT))
+    val optAlias = if (configEntry.keyAlias.isDefined) loweredCaseConfiguration.get(configEntry.keyAlias.get.toLowerCase(Locale.ROOT)) else Option.empty
+
+    if (opt.isDefined && optAlias.isDefined) {
+      throw new RuntimeException(s"specified multiple conflicting options [${configEntry.key}] and [${configEntry.keyAlias.get}]. Only one should be specified")
+    }
+
+    if (opt.isEmpty) {
+      opt = optAlias
+    }
+
     if (opt.isDefined) {
       Option.apply(configEntry.parse(opt.get))
     }
@@ -892,3 +957,4 @@ private object CosmosConfigEntry {
 }
 // scalastyle:on multiple.string.literals
 // scalastyle:on file.size.limit
+// scalastyle:on number.of.types

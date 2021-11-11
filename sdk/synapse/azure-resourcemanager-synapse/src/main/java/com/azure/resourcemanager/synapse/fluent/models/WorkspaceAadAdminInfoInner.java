@@ -5,41 +5,30 @@
 package com.azure.resourcemanager.synapse.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Workspace active directory administrator. */
-@JsonFlatten
 @Fluent
-public class WorkspaceAadAdminInfoInner extends ProxyResource {
+public final class WorkspaceAadAdminInfoInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkspaceAadAdminInfoInner.class);
 
     /*
-     * Tenant ID of the workspace active directory administrator
+     * Workspace active directory administrator properties
      */
-    @JsonProperty(value = "properties.tenantId")
-    private String tenantId;
+    @JsonProperty(value = "properties")
+    private AadAdminProperties innerProperties;
 
-    /*
-     * Login of the workspace active directory administrator
+    /**
+     * Get the innerProperties property: Workspace active directory administrator properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.login")
-    private String login;
-
-    /*
-     * Workspace active directory administrator type
-     */
-    @JsonProperty(value = "properties.administratorType")
-    private String administratorType;
-
-    /*
-     * Object ID of the workspace active directory administrator
-     */
-    @JsonProperty(value = "properties.sid")
-    private String sid;
+    private AadAdminProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the tenantId property: Tenant ID of the workspace active directory administrator.
@@ -47,7 +36,7 @@ public class WorkspaceAadAdminInfoInner extends ProxyResource {
      * @return the tenantId value.
      */
     public String tenantId() {
-        return this.tenantId;
+        return this.innerProperties() == null ? null : this.innerProperties().tenantId();
     }
 
     /**
@@ -57,7 +46,10 @@ public class WorkspaceAadAdminInfoInner extends ProxyResource {
      * @return the WorkspaceAadAdminInfoInner object itself.
      */
     public WorkspaceAadAdminInfoInner withTenantId(String tenantId) {
-        this.tenantId = tenantId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AadAdminProperties();
+        }
+        this.innerProperties().withTenantId(tenantId);
         return this;
     }
 
@@ -67,7 +59,7 @@ public class WorkspaceAadAdminInfoInner extends ProxyResource {
      * @return the login value.
      */
     public String login() {
-        return this.login;
+        return this.innerProperties() == null ? null : this.innerProperties().login();
     }
 
     /**
@@ -77,7 +69,10 @@ public class WorkspaceAadAdminInfoInner extends ProxyResource {
      * @return the WorkspaceAadAdminInfoInner object itself.
      */
     public WorkspaceAadAdminInfoInner withLogin(String login) {
-        this.login = login;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AadAdminProperties();
+        }
+        this.innerProperties().withLogin(login);
         return this;
     }
 
@@ -87,7 +82,7 @@ public class WorkspaceAadAdminInfoInner extends ProxyResource {
      * @return the administratorType value.
      */
     public String administratorType() {
-        return this.administratorType;
+        return this.innerProperties() == null ? null : this.innerProperties().administratorType();
     }
 
     /**
@@ -97,7 +92,10 @@ public class WorkspaceAadAdminInfoInner extends ProxyResource {
      * @return the WorkspaceAadAdminInfoInner object itself.
      */
     public WorkspaceAadAdminInfoInner withAdministratorType(String administratorType) {
-        this.administratorType = administratorType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AadAdminProperties();
+        }
+        this.innerProperties().withAdministratorType(administratorType);
         return this;
     }
 
@@ -107,7 +105,7 @@ public class WorkspaceAadAdminInfoInner extends ProxyResource {
      * @return the sid value.
      */
     public String sid() {
-        return this.sid;
+        return this.innerProperties() == null ? null : this.innerProperties().sid();
     }
 
     /**
@@ -117,7 +115,10 @@ public class WorkspaceAadAdminInfoInner extends ProxyResource {
      * @return the WorkspaceAadAdminInfoInner object itself.
      */
     public WorkspaceAadAdminInfoInner withSid(String sid) {
-        this.sid = sid;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AadAdminProperties();
+        }
+        this.innerProperties().withSid(sid);
         return this;
     }
 
@@ -127,5 +128,8 @@ public class WorkspaceAadAdminInfoInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

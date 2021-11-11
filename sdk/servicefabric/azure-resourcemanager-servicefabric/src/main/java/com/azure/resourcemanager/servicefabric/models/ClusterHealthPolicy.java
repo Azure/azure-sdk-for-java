@@ -7,6 +7,7 @@ package com.azure.resourcemanager.servicefabric.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
@@ -62,6 +63,7 @@ public final class ClusterHealthPolicy {
      * an application or one of its children entities.
      */
     @JsonProperty(value = "applicationHealthPolicies")
+    @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ApplicationHealthPolicy> applicationHealthPolicies;
 
     /**

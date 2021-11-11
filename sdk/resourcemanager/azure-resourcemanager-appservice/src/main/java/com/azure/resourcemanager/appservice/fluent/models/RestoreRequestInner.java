@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.BackupRestoreOperationType;
 import com.azure.resourcemanager.appservice.models.DatabaseBackupSetting;
@@ -15,85 +14,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Description of a restore request. */
-@JsonFlatten
 @Fluent
-public class RestoreRequestInner extends ProxyOnlyResource {
+public final class RestoreRequestInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RestoreRequestInner.class);
 
     /*
-     * SAS URL to the container.
+     * RestoreRequest resource specific properties
      */
-    @JsonProperty(value = "properties.storageAccountUrl")
-    private String storageAccountUrl;
+    @JsonProperty(value = "properties")
+    private RestoreRequestProperties innerProperties;
 
-    /*
-     * Name of a blob which contains the backup.
+    /**
+     * Get the innerProperties property: RestoreRequest resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.blobName")
-    private String blobName;
+    private RestoreRequestProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * <code>true</code> if the restore operation can overwrite target app;
-     * otherwise, <code>false</code>. <code>true</code> is needed if trying to
-     * restore over an existing app.
-     */
-    @JsonProperty(value = "properties.overwrite")
-    private Boolean overwrite;
-
-    /*
-     * Name of an app.
-     */
-    @JsonProperty(value = "properties.siteName")
-    private String siteName;
-
-    /*
-     * Collection of databases which should be restored. This list has to match
-     * the list of databases included in the backup.
-     */
-    @JsonProperty(value = "properties.databases")
-    private List<DatabaseBackupSetting> databases;
-
-    /*
-     * Changes a logic when restoring an app with custom domains.
-     * <code>true</code> to remove custom domains automatically. If
-     * <code>false</code>, custom domains are added to
-     * the app's object when it is being restored, but that might fail due to
-     * conflicts during the operation.
-     */
-    @JsonProperty(value = "properties.ignoreConflictingHostNames")
-    private Boolean ignoreConflictingHostNames;
-
-    /*
-     * Ignore the databases and only restore the site content
-     */
-    @JsonProperty(value = "properties.ignoreDatabases")
-    private Boolean ignoreDatabases;
-
-    /*
-     * Specify app service plan that will own restored site.
-     */
-    @JsonProperty(value = "properties.appServicePlan")
-    private String appServicePlan;
-
-    /*
-     * Operation type.
-     */
-    @JsonProperty(value = "properties.operationType")
-    private BackupRestoreOperationType operationType;
-
-    /*
-     * <code>true</code> if SiteConfig.ConnectionStrings should be set in new
-     * app; otherwise, <code>false</code>.
-     */
-    @JsonProperty(value = "properties.adjustConnectionStrings")
-    private Boolean adjustConnectionStrings;
-
-    /*
-     * App Service Environment name, if needed (only when restoring an app to
-     * an App Service Environment).
-     */
-    @JsonProperty(value = "properties.hostingEnvironment")
-    private String hostingEnvironment;
+    /** {@inheritDoc} */
+    @Override
+    public RestoreRequestInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the storageAccountUrl property: SAS URL to the container.
@@ -101,7 +46,7 @@ public class RestoreRequestInner extends ProxyOnlyResource {
      * @return the storageAccountUrl value.
      */
     public String storageAccountUrl() {
-        return this.storageAccountUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().storageAccountUrl();
     }
 
     /**
@@ -111,7 +56,10 @@ public class RestoreRequestInner extends ProxyOnlyResource {
      * @return the RestoreRequestInner object itself.
      */
     public RestoreRequestInner withStorageAccountUrl(String storageAccountUrl) {
-        this.storageAccountUrl = storageAccountUrl;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RestoreRequestProperties();
+        }
+        this.innerProperties().withStorageAccountUrl(storageAccountUrl);
         return this;
     }
 
@@ -121,7 +69,7 @@ public class RestoreRequestInner extends ProxyOnlyResource {
      * @return the blobName value.
      */
     public String blobName() {
-        return this.blobName;
+        return this.innerProperties() == null ? null : this.innerProperties().blobName();
     }
 
     /**
@@ -131,7 +79,10 @@ public class RestoreRequestInner extends ProxyOnlyResource {
      * @return the RestoreRequestInner object itself.
      */
     public RestoreRequestInner withBlobName(String blobName) {
-        this.blobName = blobName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RestoreRequestProperties();
+        }
+        this.innerProperties().withBlobName(blobName);
         return this;
     }
 
@@ -143,7 +94,7 @@ public class RestoreRequestInner extends ProxyOnlyResource {
      * @return the overwrite value.
      */
     public Boolean overwrite() {
-        return this.overwrite;
+        return this.innerProperties() == null ? null : this.innerProperties().overwrite();
     }
 
     /**
@@ -155,7 +106,10 @@ public class RestoreRequestInner extends ProxyOnlyResource {
      * @return the RestoreRequestInner object itself.
      */
     public RestoreRequestInner withOverwrite(Boolean overwrite) {
-        this.overwrite = overwrite;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RestoreRequestProperties();
+        }
+        this.innerProperties().withOverwrite(overwrite);
         return this;
     }
 
@@ -165,7 +119,7 @@ public class RestoreRequestInner extends ProxyOnlyResource {
      * @return the siteName value.
      */
     public String siteName() {
-        return this.siteName;
+        return this.innerProperties() == null ? null : this.innerProperties().siteName();
     }
 
     /**
@@ -175,7 +129,10 @@ public class RestoreRequestInner extends ProxyOnlyResource {
      * @return the RestoreRequestInner object itself.
      */
     public RestoreRequestInner withSiteName(String siteName) {
-        this.siteName = siteName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RestoreRequestProperties();
+        }
+        this.innerProperties().withSiteName(siteName);
         return this;
     }
 
@@ -186,7 +143,7 @@ public class RestoreRequestInner extends ProxyOnlyResource {
      * @return the databases value.
      */
     public List<DatabaseBackupSetting> databases() {
-        return this.databases;
+        return this.innerProperties() == null ? null : this.innerProperties().databases();
     }
 
     /**
@@ -197,7 +154,10 @@ public class RestoreRequestInner extends ProxyOnlyResource {
      * @return the RestoreRequestInner object itself.
      */
     public RestoreRequestInner withDatabases(List<DatabaseBackupSetting> databases) {
-        this.databases = databases;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RestoreRequestProperties();
+        }
+        this.innerProperties().withDatabases(databases);
         return this;
     }
 
@@ -210,7 +170,7 @@ public class RestoreRequestInner extends ProxyOnlyResource {
      * @return the ignoreConflictingHostNames value.
      */
     public Boolean ignoreConflictingHostNames() {
-        return this.ignoreConflictingHostNames;
+        return this.innerProperties() == null ? null : this.innerProperties().ignoreConflictingHostNames();
     }
 
     /**
@@ -223,7 +183,10 @@ public class RestoreRequestInner extends ProxyOnlyResource {
      * @return the RestoreRequestInner object itself.
      */
     public RestoreRequestInner withIgnoreConflictingHostNames(Boolean ignoreConflictingHostNames) {
-        this.ignoreConflictingHostNames = ignoreConflictingHostNames;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RestoreRequestProperties();
+        }
+        this.innerProperties().withIgnoreConflictingHostNames(ignoreConflictingHostNames);
         return this;
     }
 
@@ -233,7 +196,7 @@ public class RestoreRequestInner extends ProxyOnlyResource {
      * @return the ignoreDatabases value.
      */
     public Boolean ignoreDatabases() {
-        return this.ignoreDatabases;
+        return this.innerProperties() == null ? null : this.innerProperties().ignoreDatabases();
     }
 
     /**
@@ -243,7 +206,10 @@ public class RestoreRequestInner extends ProxyOnlyResource {
      * @return the RestoreRequestInner object itself.
      */
     public RestoreRequestInner withIgnoreDatabases(Boolean ignoreDatabases) {
-        this.ignoreDatabases = ignoreDatabases;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RestoreRequestProperties();
+        }
+        this.innerProperties().withIgnoreDatabases(ignoreDatabases);
         return this;
     }
 
@@ -253,7 +219,7 @@ public class RestoreRequestInner extends ProxyOnlyResource {
      * @return the appServicePlan value.
      */
     public String appServicePlan() {
-        return this.appServicePlan;
+        return this.innerProperties() == null ? null : this.innerProperties().appServicePlan();
     }
 
     /**
@@ -263,7 +229,10 @@ public class RestoreRequestInner extends ProxyOnlyResource {
      * @return the RestoreRequestInner object itself.
      */
     public RestoreRequestInner withAppServicePlan(String appServicePlan) {
-        this.appServicePlan = appServicePlan;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RestoreRequestProperties();
+        }
+        this.innerProperties().withAppServicePlan(appServicePlan);
         return this;
     }
 
@@ -273,7 +242,7 @@ public class RestoreRequestInner extends ProxyOnlyResource {
      * @return the operationType value.
      */
     public BackupRestoreOperationType operationType() {
-        return this.operationType;
+        return this.innerProperties() == null ? null : this.innerProperties().operationType();
     }
 
     /**
@@ -283,7 +252,10 @@ public class RestoreRequestInner extends ProxyOnlyResource {
      * @return the RestoreRequestInner object itself.
      */
     public RestoreRequestInner withOperationType(BackupRestoreOperationType operationType) {
-        this.operationType = operationType;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RestoreRequestProperties();
+        }
+        this.innerProperties().withOperationType(operationType);
         return this;
     }
 
@@ -294,7 +266,7 @@ public class RestoreRequestInner extends ProxyOnlyResource {
      * @return the adjustConnectionStrings value.
      */
     public Boolean adjustConnectionStrings() {
-        return this.adjustConnectionStrings;
+        return this.innerProperties() == null ? null : this.innerProperties().adjustConnectionStrings();
     }
 
     /**
@@ -305,7 +277,10 @@ public class RestoreRequestInner extends ProxyOnlyResource {
      * @return the RestoreRequestInner object itself.
      */
     public RestoreRequestInner withAdjustConnectionStrings(Boolean adjustConnectionStrings) {
-        this.adjustConnectionStrings = adjustConnectionStrings;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RestoreRequestProperties();
+        }
+        this.innerProperties().withAdjustConnectionStrings(adjustConnectionStrings);
         return this;
     }
 
@@ -316,7 +291,7 @@ public class RestoreRequestInner extends ProxyOnlyResource {
      * @return the hostingEnvironment value.
      */
     public String hostingEnvironment() {
-        return this.hostingEnvironment;
+        return this.innerProperties() == null ? null : this.innerProperties().hostingEnvironment();
     }
 
     /**
@@ -327,14 +302,10 @@ public class RestoreRequestInner extends ProxyOnlyResource {
      * @return the RestoreRequestInner object itself.
      */
     public RestoreRequestInner withHostingEnvironment(String hostingEnvironment) {
-        this.hostingEnvironment = hostingEnvironment;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public RestoreRequestInner withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RestoreRequestProperties();
+        }
+        this.innerProperties().withHostingEnvironment(hostingEnvironment);
         return this;
     }
 
@@ -346,8 +317,8 @@ public class RestoreRequestInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
-        if (databases() != null) {
-            databases().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

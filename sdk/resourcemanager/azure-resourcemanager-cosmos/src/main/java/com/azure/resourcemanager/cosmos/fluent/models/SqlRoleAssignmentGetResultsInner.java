@@ -5,39 +5,30 @@
 package com.azure.resourcemanager.cosmos.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.ArmProxyResource;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An Azure Cosmos DB Role Assignment. */
-@JsonFlatten
 @Fluent
-public class SqlRoleAssignmentGetResultsInner extends ArmProxyResource {
+public final class SqlRoleAssignmentGetResultsInner extends ArmProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(SqlRoleAssignmentGetResultsInner.class);
 
     /*
-     * The unique identifier for the associated Role Definition.
+     * Properties related to the Role Assignment.
      */
-    @JsonProperty(value = "properties.roleDefinitionId")
-    private String roleDefinitionId;
+    @JsonProperty(value = "properties")
+    private SqlRoleAssignmentResource innerProperties;
 
-    /*
-     * The data plane resource path for which access is being granted through
-     * this Role Assignment.
+    /**
+     * Get the innerProperties property: Properties related to the Role Assignment.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.scope")
-    private String scope;
-
-    /*
-     * The unique identifier for the associated AAD principal in the AAD graph
-     * to which access is being granted through this Role Assignment. Tenant ID
-     * for the principal is inferred using the tenant associated with the
-     * subscription.
-     */
-    @JsonProperty(value = "properties.principalId")
-    private String principalId;
+    private SqlRoleAssignmentResource innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the roleDefinitionId property: The unique identifier for the associated Role Definition.
@@ -45,7 +36,7 @@ public class SqlRoleAssignmentGetResultsInner extends ArmProxyResource {
      * @return the roleDefinitionId value.
      */
     public String roleDefinitionId() {
-        return this.roleDefinitionId;
+        return this.innerProperties() == null ? null : this.innerProperties().roleDefinitionId();
     }
 
     /**
@@ -55,7 +46,10 @@ public class SqlRoleAssignmentGetResultsInner extends ArmProxyResource {
      * @return the SqlRoleAssignmentGetResultsInner object itself.
      */
     public SqlRoleAssignmentGetResultsInner withRoleDefinitionId(String roleDefinitionId) {
-        this.roleDefinitionId = roleDefinitionId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SqlRoleAssignmentResource();
+        }
+        this.innerProperties().withRoleDefinitionId(roleDefinitionId);
         return this;
     }
 
@@ -66,7 +60,7 @@ public class SqlRoleAssignmentGetResultsInner extends ArmProxyResource {
      * @return the scope value.
      */
     public String scope() {
-        return this.scope;
+        return this.innerProperties() == null ? null : this.innerProperties().scope();
     }
 
     /**
@@ -77,7 +71,10 @@ public class SqlRoleAssignmentGetResultsInner extends ArmProxyResource {
      * @return the SqlRoleAssignmentGetResultsInner object itself.
      */
     public SqlRoleAssignmentGetResultsInner withScope(String scope) {
-        this.scope = scope;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SqlRoleAssignmentResource();
+        }
+        this.innerProperties().withScope(scope);
         return this;
     }
 
@@ -89,7 +86,7 @@ public class SqlRoleAssignmentGetResultsInner extends ArmProxyResource {
      * @return the principalId value.
      */
     public String principalId() {
-        return this.principalId;
+        return this.innerProperties() == null ? null : this.innerProperties().principalId();
     }
 
     /**
@@ -101,7 +98,10 @@ public class SqlRoleAssignmentGetResultsInner extends ArmProxyResource {
      * @return the SqlRoleAssignmentGetResultsInner object itself.
      */
     public SqlRoleAssignmentGetResultsInner withPrincipalId(String principalId) {
-        this.principalId = principalId;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SqlRoleAssignmentResource();
+        }
+        this.innerProperties().withPrincipalId(principalId);
         return this;
     }
 
@@ -113,5 +113,8 @@ public class SqlRoleAssignmentGetResultsInner extends ArmProxyResource {
     @Override
     public void validate() {
         super.validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

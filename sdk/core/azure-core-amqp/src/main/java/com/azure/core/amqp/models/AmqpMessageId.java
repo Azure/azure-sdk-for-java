@@ -10,7 +10,14 @@ import java.util.Objects;
  * {@link String} representation at present.
  *
  * <p><strong>Create and retrieve message id </strong></p>
- * {@codesnippet com.azure.core.amqp.models.AmqpMessageId.createAndGet}
+ * <!-- src_embed com.azure.core.amqp.models.AmqpMessageId.createAndGet -->
+ * <pre>
+ * AmqpMessageId messageId = new AmqpMessageId&#40;&quot;my-message-id&quot;&#41;;
+ * &#47;&#47; Retrieve Message id
+ * String id = messageId.toString&#40;&#41;;
+ * System.out.println&#40;&quot;Message Id &quot; + id&#41;;
+ * </pre>
+ * <!-- end com.azure.core.amqp.models.AmqpMessageId.createAndGet -->
  *
  * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-message-id-string" target="_blank">
  *     String </a>

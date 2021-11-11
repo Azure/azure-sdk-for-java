@@ -4,16 +4,14 @@
 
 package com.azure.resourcemanager.compute.fluent.models;
 
-import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
+import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Describes the properties of a Compute Operation value. */
-@JsonFlatten
-@Immutable
-public class ComputeOperationValueInner {
+@Fluent
+public final class ComputeOperationValueInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ComputeOperationValueInner.class);
 
     /*
@@ -29,28 +27,10 @@ public class ComputeOperationValueInner {
     private String name;
 
     /*
-     * The display name of the compute operation.
+     * Describes the properties of a Compute Operation Value Display.
      */
-    @JsonProperty(value = "display.operation", access = JsonProperty.Access.WRITE_ONLY)
-    private String operation;
-
-    /*
-     * The display name of the resource the operation applies to.
-     */
-    @JsonProperty(value = "display.resource", access = JsonProperty.Access.WRITE_ONLY)
-    private String resource;
-
-    /*
-     * The description of the operation.
-     */
-    @JsonProperty(value = "display.description", access = JsonProperty.Access.WRITE_ONLY)
-    private String description;
-
-    /*
-     * The resource provider for the operation.
-     */
-    @JsonProperty(value = "display.provider", access = JsonProperty.Access.WRITE_ONLY)
-    private String provider;
+    @JsonProperty(value = "display")
+    private ComputeOperationValueDisplay innerDisplay;
 
     /**
      * Get the origin property: The origin of the compute operation.
@@ -71,12 +51,21 @@ public class ComputeOperationValueInner {
     }
 
     /**
+     * Get the innerDisplay property: Describes the properties of a Compute Operation Value Display.
+     *
+     * @return the innerDisplay value.
+     */
+    private ComputeOperationValueDisplay innerDisplay() {
+        return this.innerDisplay;
+    }
+
+    /**
      * Get the operation property: The display name of the compute operation.
      *
      * @return the operation value.
      */
     public String operation() {
-        return this.operation;
+        return this.innerDisplay() == null ? null : this.innerDisplay().operation();
     }
 
     /**
@@ -85,7 +74,7 @@ public class ComputeOperationValueInner {
      * @return the resource value.
      */
     public String resource() {
-        return this.resource;
+        return this.innerDisplay() == null ? null : this.innerDisplay().resource();
     }
 
     /**
@@ -94,7 +83,7 @@ public class ComputeOperationValueInner {
      * @return the description value.
      */
     public String description() {
-        return this.description;
+        return this.innerDisplay() == null ? null : this.innerDisplay().description();
     }
 
     /**
@@ -103,7 +92,7 @@ public class ComputeOperationValueInner {
      * @return the provider value.
      */
     public String provider() {
-        return this.provider;
+        return this.innerDisplay() == null ? null : this.innerDisplay().provider();
     }
 
     /**
@@ -112,5 +101,8 @@ public class ComputeOperationValueInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerDisplay() != null) {
+            innerDisplay().validate();
+        }
     }
 }

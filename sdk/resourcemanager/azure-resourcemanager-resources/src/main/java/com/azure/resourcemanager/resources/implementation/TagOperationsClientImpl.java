@@ -34,7 +34,6 @@ import com.azure.resourcemanager.resources.fluent.TagOperationsClient;
 import com.azure.resourcemanager.resources.fluent.models.TagDetailsInner;
 import com.azure.resourcemanager.resources.fluent.models.TagValueInner;
 import com.azure.resourcemanager.resources.fluent.models.TagsResourceInner;
-import com.azure.resourcemanager.resources.models.Tags;
 import com.azure.resourcemanager.resources.models.TagsListResult;
 import com.azure.resourcemanager.resources.models.TagsPatchResource;
 import reactor.core.publisher.Mono;
@@ -905,14 +904,15 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
      * specified entity can have a maximum of 50 tags.
      *
      * @param scope The resource scope.
-     * @param properties The set of tags.
+     * @param parameters Wrapper resource for tags API requests and responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return wrapper resource for tags API requests and responses.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TagsResourceInner>> createOrUpdateAtScopeWithResponseAsync(String scope, Tags properties) {
+    public Mono<Response<TagsResourceInner>> createOrUpdateAtScopeWithResponseAsync(
+        String scope, TagsResourceInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -922,14 +922,12 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
-            properties.validate();
+            parameters.validate();
         }
         final String accept = "application/json";
-        TagsResourceInner parameters = new TagsResourceInner();
-        parameters.withProperties(properties);
         return FluxUtil
             .withContext(
                 context ->
@@ -944,7 +942,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
      * specified entity can have a maximum of 50 tags.
      *
      * @param scope The resource scope.
-     * @param properties The set of tags.
+     * @param parameters Wrapper resource for tags API requests and responses.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -953,7 +951,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<TagsResourceInner>> createOrUpdateAtScopeWithResponseAsync(
-        String scope, Tags properties, Context context) {
+        String scope, TagsResourceInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -963,14 +961,12 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
         }
-        if (properties == null) {
-            return Mono.error(new IllegalArgumentException("Parameter properties is required and cannot be null."));
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
-            properties.validate();
+            parameters.validate();
         }
         final String accept = "application/json";
-        TagsResourceInner parameters = new TagsResourceInner();
-        parameters.withProperties(properties);
         context = this.client.mergeContext(context);
         return service
             .createOrUpdateAtScope(
@@ -982,15 +978,15 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
      * specified entity can have a maximum of 50 tags.
      *
      * @param scope The resource scope.
-     * @param properties The set of tags.
+     * @param parameters Wrapper resource for tags API requests and responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return wrapper resource for tags API requests and responses.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TagsResourceInner> createOrUpdateAtScopeAsync(String scope, Tags properties) {
-        return createOrUpdateAtScopeWithResponseAsync(scope, properties)
+    public Mono<TagsResourceInner> createOrUpdateAtScopeAsync(String scope, TagsResourceInner parameters) {
+        return createOrUpdateAtScopeWithResponseAsync(scope, parameters)
             .flatMap(
                 (Response<TagsResourceInner> res) -> {
                     if (res.getValue() != null) {
@@ -1006,15 +1002,15 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
      * specified entity can have a maximum of 50 tags.
      *
      * @param scope The resource scope.
-     * @param properties The set of tags.
+     * @param parameters Wrapper resource for tags API requests and responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return wrapper resource for tags API requests and responses.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TagsResourceInner createOrUpdateAtScope(String scope, Tags properties) {
-        return createOrUpdateAtScopeAsync(scope, properties).block();
+    public TagsResourceInner createOrUpdateAtScope(String scope, TagsResourceInner parameters) {
+        return createOrUpdateAtScopeAsync(scope, parameters).block();
     }
 
     /**
@@ -1022,7 +1018,7 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
      * specified entity can have a maximum of 50 tags.
      *
      * @param scope The resource scope.
-     * @param properties The set of tags.
+     * @param parameters Wrapper resource for tags API requests and responses.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1031,8 +1027,8 @@ public final class TagOperationsClientImpl implements TagOperationsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<TagsResourceInner> createOrUpdateAtScopeWithResponse(
-        String scope, Tags properties, Context context) {
-        return createOrUpdateAtScopeWithResponseAsync(scope, properties, context).block();
+        String scope, TagsResourceInner parameters, Context context) {
+        return createOrUpdateAtScopeWithResponseAsync(scope, parameters, context).block();
     }
 
     /**

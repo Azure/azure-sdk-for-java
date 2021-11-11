@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.redis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -14,22 +13,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * A firewall rule on a redis cache has a name, and describes a contiguous range of IP addresses permitted to connect.
  */
-@JsonFlatten
 @Fluent
 public class RedisFirewallRuleInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(RedisFirewallRuleInner.class);
 
     /*
-     * lowest IP address included in the range
+     * redis cache firewall rule properties
      */
-    @JsonProperty(value = "properties.startIP", required = true)
-    private String startIp;
+    @JsonProperty(value = "properties", required = true)
+    private RedisFirewallRuleProperties innerProperties = new RedisFirewallRuleProperties();
 
-    /*
-     * highest IP address included in the range
+    /**
+     * Get the innerProperties property: redis cache firewall rule properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.endIP", required = true)
-    private String endIp;
+    private RedisFirewallRuleProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the startIp property: lowest IP address included in the range.
@@ -37,7 +38,7 @@ public class RedisFirewallRuleInner extends ProxyResource {
      * @return the startIp value.
      */
     public String startIp() {
-        return this.startIp;
+        return this.innerProperties() == null ? null : this.innerProperties().startIp();
     }
 
     /**
@@ -47,7 +48,10 @@ public class RedisFirewallRuleInner extends ProxyResource {
      * @return the RedisFirewallRuleInner object itself.
      */
     public RedisFirewallRuleInner withStartIp(String startIp) {
-        this.startIp = startIp;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RedisFirewallRuleProperties();
+        }
+        this.innerProperties().withStartIp(startIp);
         return this;
     }
 
@@ -57,7 +61,7 @@ public class RedisFirewallRuleInner extends ProxyResource {
      * @return the endIp value.
      */
     public String endIp() {
-        return this.endIp;
+        return this.innerProperties() == null ? null : this.innerProperties().endIp();
     }
 
     /**
@@ -67,7 +71,10 @@ public class RedisFirewallRuleInner extends ProxyResource {
      * @return the RedisFirewallRuleInner object itself.
      */
     public RedisFirewallRuleInner withEndIp(String endIp) {
-        this.endIp = endIp;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new RedisFirewallRuleProperties();
+        }
+        this.innerProperties().withEndIp(endIp);
         return this;
     }
 
@@ -77,15 +84,13 @@ public class RedisFirewallRuleInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (startIp() == null) {
+        if (innerProperties() == null) {
             throw logger
                 .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property startIp in model RedisFirewallRuleInner"));
-        }
-        if (endIp() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property endIp in model RedisFirewallRuleInner"));
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model RedisFirewallRuleInner"));
+        } else {
+            innerProperties().validate();
         }
     }
 }

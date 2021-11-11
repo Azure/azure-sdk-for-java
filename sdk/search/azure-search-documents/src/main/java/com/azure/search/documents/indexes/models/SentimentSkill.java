@@ -7,7 +7,9 @@
 package com.azure.search.documents.indexes.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeId;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
@@ -23,6 +25,9 @@ import java.util.List;
 @JsonTypeName("#Microsoft.Skills.Text.SentimentSkill")
 @Fluent
 public final class SentimentSkill extends SearchIndexerSkill {
+    @JsonIgnore
+    private final ClientLogger logger = new ClientLogger(SentimentSkill.class);
+
     /*
      * A value indicating which language code to use. Default is en.
      */
@@ -122,8 +127,15 @@ public final class SentimentSkill extends SearchIndexerSkill {
      *
      * @param includeOpinionMining the includeOpinionMining value to set.
      * @return the SentimentSkill object itself.
+     * @throws IllegalArgumentException If {@code includeOpinionMining} is supplied when {@link #getSkillVersion()} is
+     * {@link SentimentSkillVersion#V1}.
      */
     public SentimentSkill setIncludeOpinionMining(Boolean includeOpinionMining) {
+        if (includeOpinionMining != null && version == SentimentSkillVersion.V1) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("SentimentSkill using V1 doesn't support 'includeOpinionMining'."));
+        }
+
         this.includeOpinionMining = includeOpinionMining;
         return this;
     }
@@ -146,8 +158,15 @@ public final class SentimentSkill extends SearchIndexerSkill {
      *
      * @param modelVersion the modelVersion value to set.
      * @return the SentimentSkill object itself.
+     * @throws IllegalArgumentException If {@code modelVersion} is supplied when {@link #getSkillVersion()} is {@link
+     * SentimentSkillVersion#V1}.
      */
     public SentimentSkill setModelVersion(String modelVersion) {
+        if (modelVersion != null && version == SentimentSkillVersion.V1) {
+            throw logger.logExceptionAsError(
+                new IllegalArgumentException("SentimentSkill using V1 doesn't support 'modelVersion'."));
+        }
+
         this.modelVersion = modelVersion;
         return this;
     }

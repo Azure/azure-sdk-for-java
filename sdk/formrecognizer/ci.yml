@@ -14,14 +14,13 @@ trigger:
       - sdk/formrecognizer/azure-ai-formrecognizer/pom.xml
       - sdk/formrecognizer/azure-ai-formrecognizer-perf/pom.xml
 
-
 pr:
   branches:
     include:
       - main
       - feature/*
-      - hotfix/*
-      - release/*
+       - hotfix/*
+       - release/*
   paths:
     include:
       - sdk/formrecognizer/
@@ -34,6 +33,7 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: formrecognizer
+    SDKType: client
     Artifacts:
       - name: azure-ai-formrecognizer
         groupId: com.azure

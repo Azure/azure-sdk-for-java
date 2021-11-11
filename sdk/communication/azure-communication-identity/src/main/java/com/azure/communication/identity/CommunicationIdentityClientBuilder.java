@@ -54,7 +54,7 @@ public final class CommunicationIdentityClientBuilder {
     private ClientOptions clientOptions;
     private final Map<String, String> properties = CoreUtils.getProperties(COMMUNICATION_IDENTITY_PROPERTIES);
     private final List<HttpPipelinePolicy> customPolicies = new ArrayList<HttpPipelinePolicy>();
-
+    private CommunicationIdentityServiceVersion serviceVersion;
     /**
      * Set endpoint of the service
      *
@@ -202,6 +202,7 @@ public final class CommunicationIdentityClientBuilder {
      * @return the updated CommunicationIdentityClientBuilder object
      */
     public CommunicationIdentityClientBuilder serviceVersion(CommunicationIdentityServiceVersion version) {
+        this.serviceVersion = version;
         return this;
     }
 
@@ -237,8 +238,11 @@ public final class CommunicationIdentityClientBuilder {
                 customPolicies);
         }
 
+        CommunicationIdentityServiceVersion apiVersion = serviceVersion != null ? serviceVersion : CommunicationIdentityServiceVersion.getLatest();
+
         CommunicationIdentityClientImplBuilder clientBuilder = new CommunicationIdentityClientImplBuilder();
         clientBuilder.endpoint(endpoint)
+            .apiVersion(apiVersion.getVersion())
             .pipeline(builderPipeline);
 
         return clientBuilder.buildClient();

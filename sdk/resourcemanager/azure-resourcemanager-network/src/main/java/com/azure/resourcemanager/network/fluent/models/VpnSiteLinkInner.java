@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.SubResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
@@ -15,10 +14,15 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** VpnSiteLink Resource. */
-@JsonFlatten
 @Fluent
-public class VpnSiteLinkInner extends SubResource {
+public final class VpnSiteLinkInner extends SubResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(VpnSiteLinkInner.class);
+
+    /*
+     * Properties of the VPN site link.
+     */
+    @JsonProperty(value = "properties")
+    private VpnSiteLinkProperties innerProperties;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
@@ -39,35 +43,14 @@ public class VpnSiteLinkInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /*
-     * The link provider properties.
+    /**
+     * Get the innerProperties property: Properties of the VPN site link.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.linkProperties")
-    private VpnLinkProviderProperties linkProperties;
-
-    /*
-     * The ip-address for the vpn-site-link.
-     */
-    @JsonProperty(value = "properties.ipAddress")
-    private String ipAddress;
-
-    /*
-     * FQDN of vpn-site-link.
-     */
-    @JsonProperty(value = "properties.fqdn")
-    private String fqdn;
-
-    /*
-     * The set of bgp properties.
-     */
-    @JsonProperty(value = "properties.bgpProperties")
-    private VpnLinkBgpSettings bgpProperties;
-
-    /*
-     * The provisioning state of the VPN site link resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
+    private VpnSiteLinkProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
@@ -109,13 +92,20 @@ public class VpnSiteLinkInner extends SubResource {
         return this.type;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public VpnSiteLinkInner withId(String id) {
+        super.withId(id);
+        return this;
+    }
+
     /**
      * Get the linkProperties property: The link provider properties.
      *
      * @return the linkProperties value.
      */
     public VpnLinkProviderProperties linkProperties() {
-        return this.linkProperties;
+        return this.innerProperties() == null ? null : this.innerProperties().linkProperties();
     }
 
     /**
@@ -125,7 +115,10 @@ public class VpnSiteLinkInner extends SubResource {
      * @return the VpnSiteLinkInner object itself.
      */
     public VpnSiteLinkInner withLinkProperties(VpnLinkProviderProperties linkProperties) {
-        this.linkProperties = linkProperties;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VpnSiteLinkProperties();
+        }
+        this.innerProperties().withLinkProperties(linkProperties);
         return this;
     }
 
@@ -135,7 +128,7 @@ public class VpnSiteLinkInner extends SubResource {
      * @return the ipAddress value.
      */
     public String ipAddress() {
-        return this.ipAddress;
+        return this.innerProperties() == null ? null : this.innerProperties().ipAddress();
     }
 
     /**
@@ -145,7 +138,10 @@ public class VpnSiteLinkInner extends SubResource {
      * @return the VpnSiteLinkInner object itself.
      */
     public VpnSiteLinkInner withIpAddress(String ipAddress) {
-        this.ipAddress = ipAddress;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VpnSiteLinkProperties();
+        }
+        this.innerProperties().withIpAddress(ipAddress);
         return this;
     }
 
@@ -155,7 +151,7 @@ public class VpnSiteLinkInner extends SubResource {
      * @return the fqdn value.
      */
     public String fqdn() {
-        return this.fqdn;
+        return this.innerProperties() == null ? null : this.innerProperties().fqdn();
     }
 
     /**
@@ -165,7 +161,10 @@ public class VpnSiteLinkInner extends SubResource {
      * @return the VpnSiteLinkInner object itself.
      */
     public VpnSiteLinkInner withFqdn(String fqdn) {
-        this.fqdn = fqdn;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VpnSiteLinkProperties();
+        }
+        this.innerProperties().withFqdn(fqdn);
         return this;
     }
 
@@ -175,7 +174,7 @@ public class VpnSiteLinkInner extends SubResource {
      * @return the bgpProperties value.
      */
     public VpnLinkBgpSettings bgpProperties() {
-        return this.bgpProperties;
+        return this.innerProperties() == null ? null : this.innerProperties().bgpProperties();
     }
 
     /**
@@ -185,7 +184,10 @@ public class VpnSiteLinkInner extends SubResource {
      * @return the VpnSiteLinkInner object itself.
      */
     public VpnSiteLinkInner withBgpProperties(VpnLinkBgpSettings bgpProperties) {
-        this.bgpProperties = bgpProperties;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VpnSiteLinkProperties();
+        }
+        this.innerProperties().withBgpProperties(bgpProperties);
         return this;
     }
 
@@ -195,14 +197,7 @@ public class VpnSiteLinkInner extends SubResource {
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public VpnSiteLinkInner withId(String id) {
-        super.withId(id);
-        return this;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -211,11 +206,8 @@ public class VpnSiteLinkInner extends SubResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (linkProperties() != null) {
-            linkProperties().validate();
-        }
-        if (bgpProperties() != null) {
-            bgpProperties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

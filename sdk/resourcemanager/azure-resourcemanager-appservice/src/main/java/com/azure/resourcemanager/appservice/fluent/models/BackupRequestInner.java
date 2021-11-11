@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.appservice.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.appservice.models.BackupSchedule;
 import com.azure.resourcemanager.appservice.models.DatabaseBackupSetting;
@@ -15,41 +14,31 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** Description of a backup which will be performed. */
-@JsonFlatten
 @Fluent
-public class BackupRequestInner extends ProxyOnlyResource {
+public final class BackupRequestInner extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupRequestInner.class);
 
     /*
-     * Name of the backup.
+     * BackupRequest resource specific properties
      */
-    @JsonProperty(value = "properties.backupName")
-    private String backupName;
+    @JsonProperty(value = "properties")
+    private BackupRequestProperties innerProperties;
 
-    /*
-     * True if the backup schedule is enabled (must be included in that case),
-     * false if the backup schedule should be disabled.
+    /**
+     * Get the innerProperties property: BackupRequest resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.enabled")
-    private Boolean enabled;
+    private BackupRequestProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * SAS URL to the container.
-     */
-    @JsonProperty(value = "properties.storageAccountUrl")
-    private String storageAccountUrl;
-
-    /*
-     * Schedule for the backup if it is executed periodically.
-     */
-    @JsonProperty(value = "properties.backupSchedule")
-    private BackupSchedule backupSchedule;
-
-    /*
-     * Databases included in the backup.
-     */
-    @JsonProperty(value = "properties.databases")
-    private List<DatabaseBackupSetting> databases;
+    /** {@inheritDoc} */
+    @Override
+    public BackupRequestInner withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the backupName property: Name of the backup.
@@ -57,7 +46,7 @@ public class BackupRequestInner extends ProxyOnlyResource {
      * @return the backupName value.
      */
     public String backupName() {
-        return this.backupName;
+        return this.innerProperties() == null ? null : this.innerProperties().backupName();
     }
 
     /**
@@ -67,7 +56,10 @@ public class BackupRequestInner extends ProxyOnlyResource {
      * @return the BackupRequestInner object itself.
      */
     public BackupRequestInner withBackupName(String backupName) {
-        this.backupName = backupName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BackupRequestProperties();
+        }
+        this.innerProperties().withBackupName(backupName);
         return this;
     }
 
@@ -78,7 +70,7 @@ public class BackupRequestInner extends ProxyOnlyResource {
      * @return the enabled value.
      */
     public Boolean enabled() {
-        return this.enabled;
+        return this.innerProperties() == null ? null : this.innerProperties().enabled();
     }
 
     /**
@@ -89,7 +81,10 @@ public class BackupRequestInner extends ProxyOnlyResource {
      * @return the BackupRequestInner object itself.
      */
     public BackupRequestInner withEnabled(Boolean enabled) {
-        this.enabled = enabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BackupRequestProperties();
+        }
+        this.innerProperties().withEnabled(enabled);
         return this;
     }
 
@@ -99,7 +94,7 @@ public class BackupRequestInner extends ProxyOnlyResource {
      * @return the storageAccountUrl value.
      */
     public String storageAccountUrl() {
-        return this.storageAccountUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().storageAccountUrl();
     }
 
     /**
@@ -109,7 +104,10 @@ public class BackupRequestInner extends ProxyOnlyResource {
      * @return the BackupRequestInner object itself.
      */
     public BackupRequestInner withStorageAccountUrl(String storageAccountUrl) {
-        this.storageAccountUrl = storageAccountUrl;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BackupRequestProperties();
+        }
+        this.innerProperties().withStorageAccountUrl(storageAccountUrl);
         return this;
     }
 
@@ -119,7 +117,7 @@ public class BackupRequestInner extends ProxyOnlyResource {
      * @return the backupSchedule value.
      */
     public BackupSchedule backupSchedule() {
-        return this.backupSchedule;
+        return this.innerProperties() == null ? null : this.innerProperties().backupSchedule();
     }
 
     /**
@@ -129,7 +127,10 @@ public class BackupRequestInner extends ProxyOnlyResource {
      * @return the BackupRequestInner object itself.
      */
     public BackupRequestInner withBackupSchedule(BackupSchedule backupSchedule) {
-        this.backupSchedule = backupSchedule;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BackupRequestProperties();
+        }
+        this.innerProperties().withBackupSchedule(backupSchedule);
         return this;
     }
 
@@ -139,7 +140,7 @@ public class BackupRequestInner extends ProxyOnlyResource {
      * @return the databases value.
      */
     public List<DatabaseBackupSetting> databases() {
-        return this.databases;
+        return this.innerProperties() == null ? null : this.innerProperties().databases();
     }
 
     /**
@@ -149,14 +150,10 @@ public class BackupRequestInner extends ProxyOnlyResource {
      * @return the BackupRequestInner object itself.
      */
     public BackupRequestInner withDatabases(List<DatabaseBackupSetting> databases) {
-        this.databases = databases;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public BackupRequestInner withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BackupRequestProperties();
+        }
+        this.innerProperties().withDatabases(databases);
         return this;
     }
 
@@ -168,11 +165,8 @@ public class BackupRequestInner extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
-        if (backupSchedule() != null) {
-            backupSchedule().validate();
-        }
-        if (databases() != null) {
-            databases().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

@@ -7,11 +7,12 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.ProxyOptions;
 import com.azure.core.util.Configuration;
-import com.azure.identity.AuthenticationRecord;
 import com.azure.identity.AzureAuthorityHosts;
-import com.azure.identity.RegionalAuthority;
+import com.azure.identity.AuthenticationRecord;
 import com.azure.identity.TokenCachePersistenceOptions;
+import com.azure.identity.implementation.util.IdentityConstants;
 import com.azure.identity.implementation.util.ValidationUtil;
+import com.microsoft.aad.msal4j.UserAssertion;
 
 import java.time.Duration;
 import java.util.concurrent.ExecutorService;
@@ -23,8 +24,11 @@ import java.util.function.Function;
  */
 public final class IdentityClientOptions {
     private static final int MAX_RETRY_DEFAULT_LIMIT = 3;
+    public static final String AZURE_IDENTITY_DISABLE_MULTI_TENANT_AUTH = "AZURE_IDENTITY_DISABLE_MULTITENANTAUTH";
+    public static final String AZURE_POD_IDENTITY_AUTHORITY_HOST = "AZURE_POD_IDENTITY_AUTHORITY_HOST";
 
     private String authorityHost;
+    private String imdsAuthorityHost;
     private int maxRetry;
     private Function<Duration, Duration> retryTimeout;
     private ProxyOptions proxyOptions;
@@ -39,20 +43,18 @@ public final class IdentityClientOptions {
     private TokenCachePersistenceOptions tokenCachePersistenceOptions;
     private boolean cp1Disabled;
     private RegionalAuthority regionalAuthority;
+    private UserAssertion userAssertion;
+    private boolean multiTenantAuthDisabled;
+    private Configuration configuration;
 
     /**
      * Creates an instance of IdentityClientOptions with default settings.
      */
     public IdentityClientOptions() {
-        Configuration configuration = Configuration.getGlobalConfiguration();
-        authorityHost = configuration.get(Configuration.PROPERTY_AZURE_AUTHORITY_HOST,
-            AzureAuthorityHosts.AZURE_PUBLIC_CLOUD);
-        cp1Disabled = configuration.get(Configuration.PROPERTY_AZURE_IDENTITY_DISABLE_CP1, false);
-        ValidationUtil.validateAuthHost(getClass().getSimpleName(), authorityHost);
+        Configuration configuration = Configuration.getGlobalConfiguration().clone();
+        loadFromConfiugration(configuration);
         maxRetry = MAX_RETRY_DEFAULT_LIMIT;
         retryTimeout = i -> Duration.ofSeconds((long) Math.pow(2, i.getSeconds() - 1));
-        regionalAuthority = RegionalAuthority.fromString(
-            configuration.get(Configuration.PROPERTY_AZURE_REGIONAL_AUTHORITY_NAME));
     }
 
     /**
@@ -70,6 +72,13 @@ public final class IdentityClientOptions {
     public IdentityClientOptions setAuthorityHost(String authorityHost) {
         this.authorityHost = authorityHost;
         return this;
+    }
+
+    /**
+     * @return the AKS Pod Authority endpoint to acquire tokens.
+     */
+    public String getImdsAuthorityHost() {
+        return imdsAuthorityHost;
     }
 
     /**
@@ -327,5 +336,81 @@ public final class IdentityClientOptions {
      */
     public RegionalAuthority getRegionalAuthority() {
         return regionalAuthority;
+    }
+
+
+    /**
+     * Configure the User Assertion Scope to be used for OnBehalfOf Authentication request.
+     *
+     * @param userAssertion the user assertion access token to be used for On behalf Of authentication flow
+     * @return the updated identity client options
+     */
+    public IdentityClientOptions userAssertion(String userAssertion) {
+        this.userAssertion = new UserAssertion(userAssertion);
+        return this;
+    }
+
+    /**
+     * Get the configured {@link UserAssertion}
+     *
+     * @return the configured user assertion scope
+     */
+    public UserAssertion getUserAssertion() {
+        return this.userAssertion;
+    }
+
+    /**
+     * Gets the status whether multi tenant auth is disabled or not.
+     * @return the flag indicating if multi tenant is disabled or not.
+     */
+    public boolean isMultiTenantAuthenticationDisabled() {
+        return multiTenantAuthDisabled;
+    }
+
+    /**
+     * Disable the multi tenant authentication.
+     * @return the updated identity client options
+     */
+    public IdentityClientOptions disableMultiTenantAuthentication() {
+        this.multiTenantAuthDisabled = true;
+        return this;
+    }
+
+    /**
+     * Sets the specified configuration store.
+     *
+     * @param configuration the configuration store to be used to read env variables and/or system properties.
+     * @return the updated identity client options
+     */
+    public IdentityClientOptions setConfiguration(Configuration configuration) {
+        this.configuration = configuration;
+        loadFromConfiugration(configuration);
+        return this;
+    }
+
+    /**
+     * Gets the configured configuration store.
+     *
+     * @return the configured {@link Configuration} store.
+     */
+    public Configuration getConfiguration() {
+        return this.configuration;
+    }
+
+    /**
+     * Loads the details from the specified Configuration Store.
+     *
+     * @return the updated identity client options
+     */
+    private IdentityClientOptions loadFromConfiugration(Configuration configuration) {
+        authorityHost = configuration.get(Configuration.PROPERTY_AZURE_AUTHORITY_HOST,
+            AzureAuthorityHosts.AZURE_PUBLIC_CLOUD);
+        imdsAuthorityHost = configuration.get(AZURE_POD_IDENTITY_AUTHORITY_HOST,
+            IdentityConstants.DEFAULT_IMDS_ENDPOINT);
+        ValidationUtil.validateAuthHost(getClass().getSimpleName(), authorityHost);
+        cp1Disabled = configuration.get(Configuration.PROPERTY_AZURE_IDENTITY_DISABLE_CP1, false);
+        multiTenantAuthDisabled = configuration
+            .get(AZURE_IDENTITY_DISABLE_MULTI_TENANT_AUTH, false);
+        return  this;
     }
 }

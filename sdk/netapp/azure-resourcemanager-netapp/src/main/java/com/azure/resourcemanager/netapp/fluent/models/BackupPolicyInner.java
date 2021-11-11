@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.netapp.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.netapp.models.VolumeBackups;
@@ -15,206 +14,38 @@ import java.util.List;
 import java.util.Map;
 
 /** Backup policy information. */
-@JsonFlatten
 @Fluent
-public class BackupPolicyInner extends Resource {
+public final class BackupPolicyInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(BackupPolicyInner.class);
 
     /*
-     * Azure lifecycle management
+     * A unique read-only string that changes whenever the resource is updated.
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
+    private String etag;
 
     /*
-     * Daily backups count to keep
+     * Backup policy Properties
      */
-    @JsonProperty(value = "properties.dailyBackupsToKeep")
-    private Integer dailyBackupsToKeep;
-
-    /*
-     * Weekly backups count to keep
-     */
-    @JsonProperty(value = "properties.weeklyBackupsToKeep")
-    private Integer weeklyBackupsToKeep;
-
-    /*
-     * Monthly backups count to keep
-     */
-    @JsonProperty(value = "properties.monthlyBackupsToKeep")
-    private Integer monthlyBackupsToKeep;
-
-    /*
-     * Yearly backups count to keep
-     */
-    @JsonProperty(value = "properties.yearlyBackupsToKeep")
-    private Integer yearlyBackupsToKeep;
-
-    /*
-     * Volumes using current backup policy
-     */
-    @JsonProperty(value = "properties.volumesAssigned")
-    private Integer volumesAssigned;
-
-    /*
-     * The property to decide policy is enabled or not
-     */
-    @JsonProperty(value = "properties.enabled")
-    private Boolean enabled;
-
-    /*
-     * A list of volumes assigned to this policy
-     */
-    @JsonProperty(value = "properties.volumeBackups")
-    private List<VolumeBackups> volumeBackups;
+    @JsonProperty(value = "properties", required = true)
+    private BackupPolicyProperties innerProperties = new BackupPolicyProperties();
 
     /**
-     * Get the provisioningState property: Azure lifecycle management.
+     * Get the etag property: A unique read-only string that changes whenever the resource is updated.
      *
-     * @return the provisioningState value.
+     * @return the etag value.
      */
-    public String provisioningState() {
-        return this.provisioningState;
+    public String etag() {
+        return this.etag;
     }
 
     /**
-     * Get the dailyBackupsToKeep property: Daily backups count to keep.
+     * Get the innerProperties property: Backup policy Properties.
      *
-     * @return the dailyBackupsToKeep value.
+     * @return the innerProperties value.
      */
-    public Integer dailyBackupsToKeep() {
-        return this.dailyBackupsToKeep;
-    }
-
-    /**
-     * Set the dailyBackupsToKeep property: Daily backups count to keep.
-     *
-     * @param dailyBackupsToKeep the dailyBackupsToKeep value to set.
-     * @return the BackupPolicyInner object itself.
-     */
-    public BackupPolicyInner withDailyBackupsToKeep(Integer dailyBackupsToKeep) {
-        this.dailyBackupsToKeep = dailyBackupsToKeep;
-        return this;
-    }
-
-    /**
-     * Get the weeklyBackupsToKeep property: Weekly backups count to keep.
-     *
-     * @return the weeklyBackupsToKeep value.
-     */
-    public Integer weeklyBackupsToKeep() {
-        return this.weeklyBackupsToKeep;
-    }
-
-    /**
-     * Set the weeklyBackupsToKeep property: Weekly backups count to keep.
-     *
-     * @param weeklyBackupsToKeep the weeklyBackupsToKeep value to set.
-     * @return the BackupPolicyInner object itself.
-     */
-    public BackupPolicyInner withWeeklyBackupsToKeep(Integer weeklyBackupsToKeep) {
-        this.weeklyBackupsToKeep = weeklyBackupsToKeep;
-        return this;
-    }
-
-    /**
-     * Get the monthlyBackupsToKeep property: Monthly backups count to keep.
-     *
-     * @return the monthlyBackupsToKeep value.
-     */
-    public Integer monthlyBackupsToKeep() {
-        return this.monthlyBackupsToKeep;
-    }
-
-    /**
-     * Set the monthlyBackupsToKeep property: Monthly backups count to keep.
-     *
-     * @param monthlyBackupsToKeep the monthlyBackupsToKeep value to set.
-     * @return the BackupPolicyInner object itself.
-     */
-    public BackupPolicyInner withMonthlyBackupsToKeep(Integer monthlyBackupsToKeep) {
-        this.monthlyBackupsToKeep = monthlyBackupsToKeep;
-        return this;
-    }
-
-    /**
-     * Get the yearlyBackupsToKeep property: Yearly backups count to keep.
-     *
-     * @return the yearlyBackupsToKeep value.
-     */
-    public Integer yearlyBackupsToKeep() {
-        return this.yearlyBackupsToKeep;
-    }
-
-    /**
-     * Set the yearlyBackupsToKeep property: Yearly backups count to keep.
-     *
-     * @param yearlyBackupsToKeep the yearlyBackupsToKeep value to set.
-     * @return the BackupPolicyInner object itself.
-     */
-    public BackupPolicyInner withYearlyBackupsToKeep(Integer yearlyBackupsToKeep) {
-        this.yearlyBackupsToKeep = yearlyBackupsToKeep;
-        return this;
-    }
-
-    /**
-     * Get the volumesAssigned property: Volumes using current backup policy.
-     *
-     * @return the volumesAssigned value.
-     */
-    public Integer volumesAssigned() {
-        return this.volumesAssigned;
-    }
-
-    /**
-     * Set the volumesAssigned property: Volumes using current backup policy.
-     *
-     * @param volumesAssigned the volumesAssigned value to set.
-     * @return the BackupPolicyInner object itself.
-     */
-    public BackupPolicyInner withVolumesAssigned(Integer volumesAssigned) {
-        this.volumesAssigned = volumesAssigned;
-        return this;
-    }
-
-    /**
-     * Get the enabled property: The property to decide policy is enabled or not.
-     *
-     * @return the enabled value.
-     */
-    public Boolean enabled() {
-        return this.enabled;
-    }
-
-    /**
-     * Set the enabled property: The property to decide policy is enabled or not.
-     *
-     * @param enabled the enabled value to set.
-     * @return the BackupPolicyInner object itself.
-     */
-    public BackupPolicyInner withEnabled(Boolean enabled) {
-        this.enabled = enabled;
-        return this;
-    }
-
-    /**
-     * Get the volumeBackups property: A list of volumes assigned to this policy.
-     *
-     * @return the volumeBackups value.
-     */
-    public List<VolumeBackups> volumeBackups() {
-        return this.volumeBackups;
-    }
-
-    /**
-     * Set the volumeBackups property: A list of volumes assigned to this policy.
-     *
-     * @param volumeBackups the volumeBackups value to set.
-     * @return the BackupPolicyInner object itself.
-     */
-    public BackupPolicyInner withVolumeBackups(List<VolumeBackups> volumeBackups) {
-        this.volumeBackups = volumeBackups;
-        return this;
+    private BackupPolicyProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /** {@inheritDoc} */
@@ -232,13 +63,155 @@ public class BackupPolicyInner extends Resource {
     }
 
     /**
+     * Get the name property: Name of backup policy.
+     *
+     * @return the name value.
+     */
+    public String namePropertiesName() {
+        return this.innerProperties() == null ? null : this.innerProperties().name();
+    }
+
+    /**
+     * Get the backupPolicyId property: Backup Policy Resource ID.
+     *
+     * @return the backupPolicyId value.
+     */
+    public String backupPolicyId() {
+        return this.innerProperties() == null ? null : this.innerProperties().backupPolicyId();
+    }
+
+    /**
+     * Get the provisioningState property: Azure lifecycle management.
+     *
+     * @return the provisioningState value.
+     */
+    public String provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the dailyBackupsToKeep property: Daily backups count to keep.
+     *
+     * @return the dailyBackupsToKeep value.
+     */
+    public Integer dailyBackupsToKeep() {
+        return this.innerProperties() == null ? null : this.innerProperties().dailyBackupsToKeep();
+    }
+
+    /**
+     * Set the dailyBackupsToKeep property: Daily backups count to keep.
+     *
+     * @param dailyBackupsToKeep the dailyBackupsToKeep value to set.
+     * @return the BackupPolicyInner object itself.
+     */
+    public BackupPolicyInner withDailyBackupsToKeep(Integer dailyBackupsToKeep) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BackupPolicyProperties();
+        }
+        this.innerProperties().withDailyBackupsToKeep(dailyBackupsToKeep);
+        return this;
+    }
+
+    /**
+     * Get the weeklyBackupsToKeep property: Weekly backups count to keep.
+     *
+     * @return the weeklyBackupsToKeep value.
+     */
+    public Integer weeklyBackupsToKeep() {
+        return this.innerProperties() == null ? null : this.innerProperties().weeklyBackupsToKeep();
+    }
+
+    /**
+     * Set the weeklyBackupsToKeep property: Weekly backups count to keep.
+     *
+     * @param weeklyBackupsToKeep the weeklyBackupsToKeep value to set.
+     * @return the BackupPolicyInner object itself.
+     */
+    public BackupPolicyInner withWeeklyBackupsToKeep(Integer weeklyBackupsToKeep) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BackupPolicyProperties();
+        }
+        this.innerProperties().withWeeklyBackupsToKeep(weeklyBackupsToKeep);
+        return this;
+    }
+
+    /**
+     * Get the monthlyBackupsToKeep property: Monthly backups count to keep.
+     *
+     * @return the monthlyBackupsToKeep value.
+     */
+    public Integer monthlyBackupsToKeep() {
+        return this.innerProperties() == null ? null : this.innerProperties().monthlyBackupsToKeep();
+    }
+
+    /**
+     * Set the monthlyBackupsToKeep property: Monthly backups count to keep.
+     *
+     * @param monthlyBackupsToKeep the monthlyBackupsToKeep value to set.
+     * @return the BackupPolicyInner object itself.
+     */
+    public BackupPolicyInner withMonthlyBackupsToKeep(Integer monthlyBackupsToKeep) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BackupPolicyProperties();
+        }
+        this.innerProperties().withMonthlyBackupsToKeep(monthlyBackupsToKeep);
+        return this;
+    }
+
+    /**
+     * Get the volumesAssigned property: Volumes using current backup policy.
+     *
+     * @return the volumesAssigned value.
+     */
+    public Integer volumesAssigned() {
+        return this.innerProperties() == null ? null : this.innerProperties().volumesAssigned();
+    }
+
+    /**
+     * Get the enabled property: The property to decide policy is enabled or not.
+     *
+     * @return the enabled value.
+     */
+    public Boolean enabled() {
+        return this.innerProperties() == null ? null : this.innerProperties().enabled();
+    }
+
+    /**
+     * Set the enabled property: The property to decide policy is enabled or not.
+     *
+     * @param enabled the enabled value to set.
+     * @return the BackupPolicyInner object itself.
+     */
+    public BackupPolicyInner withEnabled(Boolean enabled) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new BackupPolicyProperties();
+        }
+        this.innerProperties().withEnabled(enabled);
+        return this;
+    }
+
+    /**
+     * Get the volumeBackups property: A list of volumes assigned to this policy.
+     *
+     * @return the volumeBackups value.
+     */
+    public List<VolumeBackups> volumeBackups() {
+        return this.innerProperties() == null ? null : this.innerProperties().volumeBackups();
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (volumeBackups() != null) {
-            volumeBackups().forEach(e -> e.validate());
+        if (innerProperties() == null) {
+            throw logger
+                .logExceptionAsError(
+                    new IllegalArgumentException(
+                        "Missing required property innerProperties in model BackupPolicyInner"));
+        } else {
+            innerProperties().validate();
         }
     }
 }

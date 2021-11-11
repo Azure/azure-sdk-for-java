@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ExpressRouteGatewayPropertiesAutoScaleConfiguration;
@@ -17,10 +16,15 @@ import java.util.List;
 import java.util.Map;
 
 /** ExpressRoute gateway resource. */
-@JsonFlatten
 @Fluent
-public class ExpressRouteGatewayInner extends Resource {
+public final class ExpressRouteGatewayInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ExpressRouteGatewayInner.class);
+
+    /*
+     * Properties of the express route gateway.
+     */
+    @JsonProperty(value = "properties")
+    private ExpressRouteGatewayProperties innerProperties;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
@@ -29,34 +33,19 @@ public class ExpressRouteGatewayInner extends Resource {
     private String etag;
 
     /*
-     * Configuration for auto scaling.
-     */
-    @JsonProperty(value = "properties.autoScaleConfiguration")
-    private ExpressRouteGatewayPropertiesAutoScaleConfiguration autoScaleConfiguration;
-
-    /*
-     * List of ExpressRoute connections to the ExpressRoute gateway.
-     */
-    @JsonProperty(value = "properties.expressRouteConnections", access = JsonProperty.Access.WRITE_ONLY)
-    private List<ExpressRouteConnectionInner> expressRouteConnections;
-
-    /*
-     * The provisioning state of the express route gateway resource.
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ProvisioningState provisioningState;
-
-    /*
-     * The Virtual Hub where the ExpressRoute gateway is or will be deployed.
-     */
-    @JsonProperty(value = "properties.virtualHub")
-    private VirtualHubId virtualHub;
-
-    /*
      * Resource ID.
      */
     @JsonProperty(value = "id")
     private String id;
+
+    /**
+     * Get the innerProperties property: Properties of the express route gateway.
+     *
+     * @return the innerProperties value.
+     */
+    private ExpressRouteGatewayProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
@@ -65,65 +54,6 @@ public class ExpressRouteGatewayInner extends Resource {
      */
     public String etag() {
         return this.etag;
-    }
-
-    /**
-     * Get the autoScaleConfiguration property: Configuration for auto scaling.
-     *
-     * @return the autoScaleConfiguration value.
-     */
-    public ExpressRouteGatewayPropertiesAutoScaleConfiguration autoScaleConfiguration() {
-        return this.autoScaleConfiguration;
-    }
-
-    /**
-     * Set the autoScaleConfiguration property: Configuration for auto scaling.
-     *
-     * @param autoScaleConfiguration the autoScaleConfiguration value to set.
-     * @return the ExpressRouteGatewayInner object itself.
-     */
-    public ExpressRouteGatewayInner withAutoScaleConfiguration(
-        ExpressRouteGatewayPropertiesAutoScaleConfiguration autoScaleConfiguration) {
-        this.autoScaleConfiguration = autoScaleConfiguration;
-        return this;
-    }
-
-    /**
-     * Get the expressRouteConnections property: List of ExpressRoute connections to the ExpressRoute gateway.
-     *
-     * @return the expressRouteConnections value.
-     */
-    public List<ExpressRouteConnectionInner> expressRouteConnections() {
-        return this.expressRouteConnections;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning state of the express route gateway resource.
-     *
-     * @return the provisioningState value.
-     */
-    public ProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the virtualHub property: The Virtual Hub where the ExpressRoute gateway is or will be deployed.
-     *
-     * @return the virtualHub value.
-     */
-    public VirtualHubId virtualHub() {
-        return this.virtualHub;
-    }
-
-    /**
-     * Set the virtualHub property: The Virtual Hub where the ExpressRoute gateway is or will be deployed.
-     *
-     * @param virtualHub the virtualHub value to set.
-     * @return the ExpressRouteGatewayInner object itself.
-     */
-    public ExpressRouteGatewayInner withVirtualHub(VirtualHubId virtualHub) {
-        this.virtualHub = virtualHub;
-        return this;
     }
 
     /**
@@ -161,19 +91,78 @@ public class ExpressRouteGatewayInner extends Resource {
     }
 
     /**
+     * Get the autoScaleConfiguration property: Configuration for auto scaling.
+     *
+     * @return the autoScaleConfiguration value.
+     */
+    public ExpressRouteGatewayPropertiesAutoScaleConfiguration autoScaleConfiguration() {
+        return this.innerProperties() == null ? null : this.innerProperties().autoScaleConfiguration();
+    }
+
+    /**
+     * Set the autoScaleConfiguration property: Configuration for auto scaling.
+     *
+     * @param autoScaleConfiguration the autoScaleConfiguration value to set.
+     * @return the ExpressRouteGatewayInner object itself.
+     */
+    public ExpressRouteGatewayInner withAutoScaleConfiguration(
+        ExpressRouteGatewayPropertiesAutoScaleConfiguration autoScaleConfiguration) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRouteGatewayProperties();
+        }
+        this.innerProperties().withAutoScaleConfiguration(autoScaleConfiguration);
+        return this;
+    }
+
+    /**
+     * Get the expressRouteConnections property: List of ExpressRoute connections to the ExpressRoute gateway.
+     *
+     * @return the expressRouteConnections value.
+     */
+    public List<ExpressRouteConnectionInner> expressRouteConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().expressRouteConnections();
+    }
+
+    /**
+     * Get the provisioningState property: The provisioning state of the express route gateway resource.
+     *
+     * @return the provisioningState value.
+     */
+    public ProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the virtualHub property: The Virtual Hub where the ExpressRoute gateway is or will be deployed.
+     *
+     * @return the virtualHub value.
+     */
+    public VirtualHubId virtualHub() {
+        return this.innerProperties() == null ? null : this.innerProperties().virtualHub();
+    }
+
+    /**
+     * Set the virtualHub property: The Virtual Hub where the ExpressRoute gateway is or will be deployed.
+     *
+     * @param virtualHub the virtualHub value to set.
+     * @return the ExpressRouteGatewayInner object itself.
+     */
+    public ExpressRouteGatewayInner withVirtualHub(VirtualHubId virtualHub) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ExpressRouteGatewayProperties();
+        }
+        this.innerProperties().withVirtualHub(virtualHub);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (autoScaleConfiguration() != null) {
-            autoScaleConfiguration().validate();
-        }
-        if (expressRouteConnections() != null) {
-            expressRouteConnections().forEach(e -> e.validate());
-        }
-        if (virtualHub() != null) {
-            virtualHub().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

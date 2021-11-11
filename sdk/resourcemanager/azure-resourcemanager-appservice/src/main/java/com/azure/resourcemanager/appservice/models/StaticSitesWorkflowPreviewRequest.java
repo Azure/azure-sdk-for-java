@@ -5,34 +5,37 @@
 package com.azure.resourcemanager.appservice.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.appservice.fluent.models.StaticSitesWorkflowPreviewRequestProperties;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** Request entity for previewing the Static Site workflow. */
-@JsonFlatten
 @Fluent
-public class StaticSitesWorkflowPreviewRequest extends ProxyOnlyResource {
+public final class StaticSitesWorkflowPreviewRequest extends ProxyOnlyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(StaticSitesWorkflowPreviewRequest.class);
 
     /*
-     * URL for the repository of the static site.
+     * StaticSitesWorkflowPreviewRequest resource specific properties
      */
-    @JsonProperty(value = "properties.repositoryUrl")
-    private String repositoryUrl;
+    @JsonProperty(value = "properties")
+    private StaticSitesWorkflowPreviewRequestProperties innerProperties;
 
-    /*
-     * The target branch in the repository.
+    /**
+     * Get the innerProperties property: StaticSitesWorkflowPreviewRequest resource specific properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.branch")
-    private String branch;
+    private StaticSitesWorkflowPreviewRequestProperties innerProperties() {
+        return this.innerProperties;
+    }
 
-    /*
-     * Build properties to configure on the repository.
-     */
-    @JsonProperty(value = "properties.buildProperties")
-    private StaticSiteBuildProperties buildProperties;
+    /** {@inheritDoc} */
+    @Override
+    public StaticSitesWorkflowPreviewRequest withKind(String kind) {
+        super.withKind(kind);
+        return this;
+    }
 
     /**
      * Get the repositoryUrl property: URL for the repository of the static site.
@@ -40,7 +43,7 @@ public class StaticSitesWorkflowPreviewRequest extends ProxyOnlyResource {
      * @return the repositoryUrl value.
      */
     public String repositoryUrl() {
-        return this.repositoryUrl;
+        return this.innerProperties() == null ? null : this.innerProperties().repositoryUrl();
     }
 
     /**
@@ -50,7 +53,10 @@ public class StaticSitesWorkflowPreviewRequest extends ProxyOnlyResource {
      * @return the StaticSitesWorkflowPreviewRequest object itself.
      */
     public StaticSitesWorkflowPreviewRequest withRepositoryUrl(String repositoryUrl) {
-        this.repositoryUrl = repositoryUrl;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StaticSitesWorkflowPreviewRequestProperties();
+        }
+        this.innerProperties().withRepositoryUrl(repositoryUrl);
         return this;
     }
 
@@ -60,7 +66,7 @@ public class StaticSitesWorkflowPreviewRequest extends ProxyOnlyResource {
      * @return the branch value.
      */
     public String branch() {
-        return this.branch;
+        return this.innerProperties() == null ? null : this.innerProperties().branch();
     }
 
     /**
@@ -70,7 +76,10 @@ public class StaticSitesWorkflowPreviewRequest extends ProxyOnlyResource {
      * @return the StaticSitesWorkflowPreviewRequest object itself.
      */
     public StaticSitesWorkflowPreviewRequest withBranch(String branch) {
-        this.branch = branch;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StaticSitesWorkflowPreviewRequestProperties();
+        }
+        this.innerProperties().withBranch(branch);
         return this;
     }
 
@@ -80,7 +89,7 @@ public class StaticSitesWorkflowPreviewRequest extends ProxyOnlyResource {
      * @return the buildProperties value.
      */
     public StaticSiteBuildProperties buildProperties() {
-        return this.buildProperties;
+        return this.innerProperties() == null ? null : this.innerProperties().buildProperties();
     }
 
     /**
@@ -90,14 +99,10 @@ public class StaticSitesWorkflowPreviewRequest extends ProxyOnlyResource {
      * @return the StaticSitesWorkflowPreviewRequest object itself.
      */
     public StaticSitesWorkflowPreviewRequest withBuildProperties(StaticSiteBuildProperties buildProperties) {
-        this.buildProperties = buildProperties;
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public StaticSitesWorkflowPreviewRequest withKind(String kind) {
-        super.withKind(kind);
+        if (this.innerProperties() == null) {
+            this.innerProperties = new StaticSitesWorkflowPreviewRequestProperties();
+        }
+        this.innerProperties().withBuildProperties(buildProperties);
         return this;
     }
 
@@ -109,8 +114,8 @@ public class StaticSitesWorkflowPreviewRequest extends ProxyOnlyResource {
     @Override
     public void validate() {
         super.validate();
-        if (buildProperties() != null) {
-            buildProperties().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

@@ -3,12 +3,17 @@
 
 package com.azure.security.keyvault.jca;
 
+import javax.crypto.SecretKey;
 import java.security.PrivateKey;
 
 /**
  * KeyVault fake private which work when key less
+ *
+ * @deprecated Should not use this class outside of azure-security-keyvault-jca.jar.
+ * Move this class to implementation package.
  */
-public class KeyVaultPrivateKey implements PrivateKey {
+@Deprecated
+public class KeyVaultPrivateKey implements PrivateKey, SecretKey {
 
     /**
      * Stores the serial version UID.
@@ -60,11 +65,11 @@ public class KeyVaultPrivateKey implements PrivateKey {
 
     @Override
     public String getFormat() {
-        return null;
+        return "RAW";
     }
 
     @Override
     public byte[] getEncoded() {
-        return new byte[0];
+        return new byte[2048];
     }
 }

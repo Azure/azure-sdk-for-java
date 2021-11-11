@@ -6,7 +6,6 @@ package com.azure.resourcemanager.network.fluent.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.network.models.ServiceTagInformation;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -50,7 +49,7 @@ public final class ServiceTagsListResultInner {
      * The list of service tag information resources.
      */
     @JsonProperty(value = "values", access = JsonProperty.Access.WRITE_ONLY)
-    private List<ServiceTagInformation> values;
+    private List<ServiceTagInformationInner> values;
 
     /*
      * The URL to get next page of service tag information resources.
@@ -108,7 +107,7 @@ public final class ServiceTagsListResultInner {
      *
      * @return the values value.
      */
-    public List<ServiceTagInformation> values() {
+    public List<ServiceTagInformationInner> values() {
         return this.values;
     }
 
