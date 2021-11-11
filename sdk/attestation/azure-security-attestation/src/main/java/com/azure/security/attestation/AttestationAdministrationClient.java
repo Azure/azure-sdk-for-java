@@ -14,6 +14,7 @@ import com.azure.security.attestation.models.AttestationType;
 import com.azure.security.attestation.models.PolicyResult;
 
 /**
+ *
  * The AttestationAdministrationClient provides access to the administrative policy APIs
  * implemented by the Attestation Service.
  *
@@ -35,21 +36,10 @@ import com.azure.security.attestation.models.PolicyResult;
  *     <li>Isolated - an attestation instance where the customer does *not* trust Azure Active Directory
  *     (and RBAC) to manage the security of their enclave </li>
  * </ul>
- *
+ *<p>
  * When an attestation instance is in Isolated mode, additional proof needs to be provided by the customer
  * to verify that they are authorized to perform the operation specified.
- *
- * When presented to the attestation service (via the <a href='https://docs.microsoft.com/en-us/rest/api/attestation/policy/set'>SetPolicy REST API</a>),
- * the client sends a JSON Web Token to the service. If the service is in AAD mode, this JSON Web Token can
- * be an unsecured attestation token, or it can be signed with a key of the customer's choice.
- *
- * If the service is in Isolated mode, this JSON Web Token *must* be a token signed by the private key
- * associated with one of the policy management certificates specified by
- * the @link AttestationAdministrationClient#getPolicyManagementSigners} API. This verifies that the caller
- * is in possession of a private key associated with the instance and is thus authorized to make changes to policy.
- *
- * The Java SDK simplifies the experience of creating the Attestation Policy JWT used to sign
- *
+ *</p>
  */
 @ServiceClient(builder = AttestationAdministrationClientBuilder.class)
 public final class AttestationAdministrationClient {
@@ -77,6 +67,16 @@ public final class AttestationAdministrationClient {
 
     /**
      * Retrieves the current policy for an attestation type.
+     *  <p>
+     *      <b>NOTE:</b>
+     *     The {@link AttestationAdministrationClient#getAttestationPolicy(AttestationType)} API returns the underlying
+     *     attestation policy specified by the user. This is NOT the full attestation policy maintained by
+     *     the attestation service. Specifically it does not include the signing certificates used to verify the attestation
+     *     policy.
+     *     </p>
+     *     <p>
+     *         To retrieve the signing certificates used to sign the policy, use the {@link AttestationAdministrationClient#getAttestationPolicyWithResponse(AttestationType, Context)} API.
+     *  </p>
      *
      * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -164,9 +164,7 @@ public final class AttestationAdministrationClient {
 
     //region Reset Attestation Policy
     /**
-     * Sets the attestation policy for the specified attestation type, with policy and signing key.
-     *
-     * More information about Attestation Policy can be found <a href='https://docs.microsoft.com/en-us/azure/attestation/basic-concepts#attestation-policy'>here.</a>
+     * Resets the attestation policy for the specified attestation type, using the specified signing key.
      *
      * @param attestationType The {@link AttestationType} to be updated.
      * @param options {@link AttestationPolicySetOptions} for the request.
@@ -178,12 +176,10 @@ public final class AttestationAdministrationClient {
     }
 
     /**
-     * Sets the attestation policy for the specified attestation type for an AAD mode attestation instance.
+     * Resets the attestation policy for the specified attestation type for an AAD mode attestation instance to the default value.
      *
      * Note that this function will only work on AAD mode attestation instances, because there is
-     * no key signing certificate provided.
-     *
-     * More information about Attestation Policy can be found <a href='https://docs.microsoft.com/en-us/azure/attestation/basic-concepts#attestation-policy'>here.</a>
+     * no token signing certificate provided.
      *
      * @param attestationType The {@link AttestationType} to be updated.
      * @return {@link PolicyResult} expressing the result of the attestation operation.
@@ -194,12 +190,7 @@ public final class AttestationAdministrationClient {
     }
 
     /**
-     * Sets the attestation policy for the specified attestation type
-     *
-     * Note that this function will only work on AAD mode attestation instances, because there is
-     * no key signing certificate provided.
-     *
-     * More information about Attestation Policy can be found <a href='https://docs.microsoft.com/en-us/azure/attestation/basic-concepts#attestation-policy'>here.</a>
+     * Resets the attestation policy for the specified attestation type to the default value.
      *
      * @param attestationType The {@link AttestationType} to be updated.
      * @param options {@link AttestationPolicySetOptions} for the request.
@@ -212,12 +203,10 @@ public final class AttestationAdministrationClient {
     }
 
     /**
-     * Sets the attestation policy for the specified attestation type for an AAD mode attestation instance.
+     * Resets the attestation policy for the specified attestation type to the default value.
      *
      * Note that this function will only work on AAD mode attestation instances, because there is
-     * no key signing certificate provided.
-     *
-     * More information about Attestation Policy can be found <a href='https://docs.microsoft.com/en-us/azure/attestation/basic-concepts#attestation-policy'>here.</a>
+     * no token signing certificate provided.
      *
      * @param attestationType The {@link AttestationType} to be updated.
      * @param context Context for the operation.
