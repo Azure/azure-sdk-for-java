@@ -37,9 +37,9 @@ public final class EdgeModulesImpl implements EdgeModules {
     }
 
     public PagedIterable<EdgeModuleEntity> list(
-        String resourceGroupName, String accountName, String filter, Integer top, String orderby, Context context) {
+        String resourceGroupName, String accountName, Integer top, Context context) {
         PagedIterable<EdgeModuleEntityInner> inner =
-            this.serviceClient().list(resourceGroupName, accountName, filter, top, orderby, context);
+            this.serviceClient().list(resourceGroupName, accountName, top, context);
         return Utils.mapPage(inner, inner1 -> new EdgeModuleEntityImpl(inner1, this.manager()));
     }
 

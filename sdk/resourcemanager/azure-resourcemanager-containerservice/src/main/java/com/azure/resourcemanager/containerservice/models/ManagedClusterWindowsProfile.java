@@ -55,6 +55,12 @@ public final class ManagedClusterWindowsProfile {
     @JsonProperty(value = "enableCSIProxy")
     private Boolean enableCsiProxy;
 
+    /*
+     * The Windows gMSA Profile in the Managed Cluster.
+     */
+    @JsonProperty(value = "gmsaProfile")
+    private WindowsGmsaProfile gmsaProfile;
+
     /**
      * Get the adminUsername property: Specifies the name of the administrator account. &lt;br&gt;&lt;br&gt;
      * **Restriction:** Cannot end in "." &lt;br&gt;&lt;br&gt; **Disallowed values:** "administrator", "admin", "user",
@@ -160,6 +166,26 @@ public final class ManagedClusterWindowsProfile {
     }
 
     /**
+     * Get the gmsaProfile property: The Windows gMSA Profile in the Managed Cluster.
+     *
+     * @return the gmsaProfile value.
+     */
+    public WindowsGmsaProfile gmsaProfile() {
+        return this.gmsaProfile;
+    }
+
+    /**
+     * Set the gmsaProfile property: The Windows gMSA Profile in the Managed Cluster.
+     *
+     * @param gmsaProfile the gmsaProfile value to set.
+     * @return the ManagedClusterWindowsProfile object itself.
+     */
+    public ManagedClusterWindowsProfile withGmsaProfile(WindowsGmsaProfile gmsaProfile) {
+        this.gmsaProfile = gmsaProfile;
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -170,6 +196,9 @@ public final class ManagedClusterWindowsProfile {
                 .logExceptionAsError(
                     new IllegalArgumentException(
                         "Missing required property adminUsername in model ManagedClusterWindowsProfile"));
+        }
+        if (gmsaProfile() != null) {
+            gmsaProfile().validate();
         }
     }
 }

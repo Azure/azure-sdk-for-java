@@ -100,7 +100,7 @@
 
         <!-- Schema Registry -->
         <module>sdk/schemaregistry/azure-data-schemaregistry</module>
-        <module>sdk/schemaregistry/azure-data-schemaregistry-avro</module>
+        <module>sdk/schemaregistry/azure-data-schemaregistry-apacheavro</module>
 
         <!-- Cognitive Search -->
         <module>sdk/search/azure-search-documents</module>
@@ -751,8 +751,10 @@
         <module>sdk/datalakeanalytics</module>
         <module>sdk/datalakestore</module>
         <module>sdk/datamigration</module>
+        <module>sdk/dataprotection</module>
         <module>sdk/delegatednetwork</module>
         <module>sdk/deploymentmanager</module>
+        <module>sdk/desktopvirtualization</module>
         <module>sdk/deviceprovisioningservices</module>
         <module>sdk/deviceupdate</module>
         <module>sdk/devspaces</module>
@@ -781,6 +783,7 @@
         <module>sdk/labservices</module>
         <module>sdk/loganalytics</module>
         <module>sdk/logic</module>
+        <module>sdk/logz</module>
         <module>sdk/machinelearningservices</module>
         <module>sdk/maintenance</module>
         <module>sdk/managedapplications</module>
@@ -825,6 +828,7 @@
         <module>sdk/storage</module>
         <module>sdk/storagecache</module>
         <module>sdk/storageimportexport</module>
+        <module>sdk/storagepool</module>
         <module>sdk/streamanalytics</module>
         <module>sdk/subscription</module>
         <module>sdk/support</module>

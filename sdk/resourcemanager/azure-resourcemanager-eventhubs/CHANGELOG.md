@@ -1,14 +1,25 @@
 # Release History
 
-## 2.9.0-beta.1 (Unreleased)
-
-### Features Added
+## 2.10.0-beta.1 (Unreleased)
 
 ### Breaking Changes
 
-### Bugs Fixed
+- Enum `KeyType` changed to subclass of `ExpandableStringEnum`.
+- `RegionsClient` removed.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2021-11-01`.
+
+## 2.9.0 (2021-10-21)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources
 
 ## 2.8.0 (2021-09-15)
 

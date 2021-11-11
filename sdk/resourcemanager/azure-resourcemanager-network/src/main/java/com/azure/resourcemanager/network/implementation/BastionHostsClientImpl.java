@@ -291,7 +291,7 @@ public final class BastionHostsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String bastionHostname) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, bastionHostname);
         return this
@@ -310,7 +310,7 @@ public final class BastionHostsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String bastionHostname, Context context) {
         context = this.client.mergeContext(context);
@@ -330,7 +330,7 @@ public final class BastionHostsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String bastionHostname) {
         return beginDeleteAsync(resourceGroupName, bastionHostname).getSyncPoller();
     }
@@ -346,7 +346,7 @@ public final class BastionHostsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String bastionHostname, Context context) {
         return beginDeleteAsync(resourceGroupName, bastionHostname, context).getSyncPoller();
@@ -692,7 +692,7 @@ public final class BastionHostsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bastion Host resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<BastionHostInner>, BastionHostInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String bastionHostname, BastionHostInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -715,7 +715,7 @@ public final class BastionHostsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bastion Host resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BastionHostInner>, BastionHostInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String bastionHostname, BastionHostInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -738,7 +738,7 @@ public final class BastionHostsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bastion Host resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BastionHostInner>, BastionHostInner> beginCreateOrUpdate(
         String resourceGroupName, String bastionHostname, BastionHostInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, bastionHostname, parameters).getSyncPoller();
@@ -756,7 +756,7 @@ public final class BastionHostsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bastion Host resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BastionHostInner>, BastionHostInner> beginCreateOrUpdate(
         String resourceGroupName, String bastionHostname, BastionHostInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, bastionHostname, parameters, context).getSyncPoller();
@@ -959,7 +959,7 @@ public final class BastionHostsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bastion Host resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<BastionHostInner>, BastionHostInner> beginUpdateTagsAsync(
         String resourceGroupName, String bastionHostname, TagsObject parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -982,7 +982,7 @@ public final class BastionHostsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bastion Host resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<BastionHostInner>, BastionHostInner> beginUpdateTagsAsync(
         String resourceGroupName, String bastionHostname, TagsObject parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -1005,7 +1005,7 @@ public final class BastionHostsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bastion Host resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BastionHostInner>, BastionHostInner> beginUpdateTags(
         String resourceGroupName, String bastionHostname, TagsObject parameters) {
         return beginUpdateTagsAsync(resourceGroupName, bastionHostname, parameters).getSyncPoller();
@@ -1023,7 +1023,7 @@ public final class BastionHostsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return bastion Host resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<BastionHostInner>, BastionHostInner> beginUpdateTags(
         String resourceGroupName, String bastionHostname, TagsObject parameters, Context context) {
         return beginUpdateTagsAsync(resourceGroupName, bastionHostname, parameters, context).getSyncPoller();

@@ -50,7 +50,7 @@ public interface NetworkSecurityGroupsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkSecurityGroupName);
 
     /**
@@ -63,7 +63,7 @@ public interface NetworkSecurityGroupsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkSecurityGroupName);
 
     /**
@@ -77,7 +77,7 @@ public interface NetworkSecurityGroupsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String networkSecurityGroupName, Context context);
 
@@ -217,7 +217,7 @@ public interface NetworkSecurityGroupsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return networkSecurityGroup resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<NetworkSecurityGroupInner>, NetworkSecurityGroupInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String networkSecurityGroupName, NetworkSecurityGroupInner parameters);
 
@@ -232,7 +232,7 @@ public interface NetworkSecurityGroupsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return networkSecurityGroup resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkSecurityGroupInner>, NetworkSecurityGroupInner> beginCreateOrUpdate(
         String resourceGroupName, String networkSecurityGroupName, NetworkSecurityGroupInner parameters);
 
@@ -248,7 +248,7 @@ public interface NetworkSecurityGroupsClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return networkSecurityGroup resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<NetworkSecurityGroupInner>, NetworkSecurityGroupInner> beginCreateOrUpdate(
         String resourceGroupName,
         String networkSecurityGroupName,

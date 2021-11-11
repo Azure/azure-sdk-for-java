@@ -13,7 +13,7 @@ Azure Tables is a service that stores structured NoSQL data in the cloud, provid
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-data-tables</artifactId>
-  <version>12.1.2</version>
+  <version>12.1.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -137,7 +137,7 @@ Common uses of the Tables service include:
 
 - [Authenticate a client](#authenticate-a-client)
   - [Authenticate with a Connection String](#authenticate-with-a-connection-string)
-  - [Authenticate with a Named Key](#authenticate-with-a-named-key)
+  - [Authenticate with a Shared Key](#authenticate-with-a-shared-key)
   - [Authenticate with a Shared Access Signature (SAS)](#authenticate-with-a-shared-access-signature-sas)
 - [Create, List, and Delete Azure tables](#create-list-and-delete-azure-tables)
   - [Construct a `TableServiceClient`](#construct-a-tableserviceclient)

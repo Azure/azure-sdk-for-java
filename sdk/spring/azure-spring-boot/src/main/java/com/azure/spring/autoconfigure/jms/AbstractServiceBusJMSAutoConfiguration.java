@@ -69,9 +69,6 @@ public abstract class AbstractServiceBusJMSAutoConfiguration {
 
     private void configureTopicListenerContainerFactory(DefaultJmsListenerContainerFactory jmsListenerContainerFactory) {
         AzureServiceBusJMSProperties.Listener listener = azureServiceBusJMSProperties.getListener();
-        if (azureServiceBusJMSProperties.getTopicClientId() != null) {
-            jmsListenerContainerFactory.setClientId(azureServiceBusJMSProperties.getTopicClientId());
-        }
         if (listener.isReplyPubSubDomain() != null) {
             jmsListenerContainerFactory.setReplyPubSubDomain(listener.isReplyPubSubDomain());
         }

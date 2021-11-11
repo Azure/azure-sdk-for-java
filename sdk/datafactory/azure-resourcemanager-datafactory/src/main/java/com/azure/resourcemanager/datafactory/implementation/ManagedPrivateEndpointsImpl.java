@@ -242,8 +242,7 @@ public final class ManagedPrivateEndpointsImpl implements ManagedPrivateEndpoint
         }
         this
             .deleteWithResponse(
-                resourceGroupName, factoryName, managedVirtualNetworkName, managedPrivateEndpointName, Context.NONE)
-            .getValue();
+                resourceGroupName, factoryName, managedVirtualNetworkName, managedPrivateEndpointName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {

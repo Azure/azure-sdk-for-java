@@ -12,7 +12,6 @@ import com.azure.cosmos.spark.CosmosTableSchemaInferrer.LsnAttributeName
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.spark.broadcast.Broadcast
-import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.connector.read.streaming.{ReadAllAvailable, ReadLimit, ReadMaxFiles, ReadMaxRows}
 import reactor.core.scala.publisher.SFlux
 import reactor.core.scala.publisher.SMono.PimpJMono
@@ -451,21 +450,26 @@ private object CosmosPartitionPlanner extends BasicLoggingTrait {
     cosmosContainerConfig: CosmosContainerConfig
   ) = {
 
-  assertNotNull(cosmosClientConfig, "cosmosClientConfig")
+    assertNotNull(cosmosClientConfig, "cosmosClientConfig")
     assertNotNull(cosmosContainerConfig, "cosmosContainerConfig")
-    val client =
-      CosmosClientCache.apply(cosmosClientConfig, cosmosClientStateHandle)
+    Loan(CosmosClientCache.apply(
+      cosmosClientConfig,
+      cosmosClientStateHandle,
+      "CosmosPartitionPlanner.getFeedRanges(database " +
+        s"${cosmosContainerConfig.database}, container ${cosmosContainerConfig.container})"
+    ))
+      .to(clientCacheItem => {
+        val container = ThroughputControlHelper.getContainer(userConfig, cosmosContainerConfig, clientCacheItem.client)
+        SparkUtils.safeOpenConnectionInitCaches(container, (msg, e) => logWarning(msg, e))
 
-    val container = ThroughputControlHelper.getContainer(userConfig, cosmosContainerConfig, client)
-    SparkUtils.safeOpenConnectionInitCaches(container, (msg, e) => logWarning(msg, e))
-
-    container
-      .getFeedRanges
-      .asScala
-      .map(feedRanges => feedRanges
-        .asScala
-        .map(feedRange => SparkBridgeImplementationInternal.toNormalizedRange(feedRange))
-        .toArray)
+        container
+          .getFeedRanges
+          .asScala
+          .map(feedRanges => feedRanges
+            .asScala
+            .map(feedRange => SparkBridgeImplementationInternal.toNormalizedRange(feedRange))
+            .toArray)
+      })
   }
 
   def getPartitionMetadata(

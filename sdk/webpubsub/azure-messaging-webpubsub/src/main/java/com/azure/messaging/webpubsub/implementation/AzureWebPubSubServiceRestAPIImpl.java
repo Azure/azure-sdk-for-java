@@ -11,31 +11,32 @@ import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
+import com.azure.messaging.webpubsub.WebPubSubServiceVersion;
 
 /** Initializes a new instance of the AzureWebPubSubServiceRestAPI type. */
 public final class AzureWebPubSubServiceRestAPIImpl {
-    /** server parameter. */
-    private final String host;
+    /** HTTP or HTTPS endpoint for the Web PubSub service instance. */
+    private final String endpoint;
 
     /**
-     * Gets server parameter.
+     * Gets HTTP or HTTPS endpoint for the Web PubSub service instance.
      *
-     * @return the host value.
+     * @return the endpoint value.
      */
-    public String getHost() {
-        return this.host;
+    public String getEndpoint() {
+        return this.endpoint;
     }
 
-    /** Api Version. */
-    private final String apiVersion;
+    /** Service version. */
+    private final WebPubSubServiceVersion serviceVersion;
 
     /**
-     * Gets Api Version.
+     * Gets Service version.
      *
-     * @return the apiVersion value.
+     * @return the serviceVersion value.
      */
-    public String getApiVersion() {
-        return this.apiVersion;
+    public WebPubSubServiceVersion getServiceVersion() {
+        return this.serviceVersion;
     }
 
     /** The HTTP pipeline to send requests through. */
@@ -89,28 +90,29 @@ public final class AzureWebPubSubServiceRestAPIImpl {
     /**
      * Initializes an instance of AzureWebPubSubServiceRestAPI client.
      *
-     * @param host server parameter.
-     * @param apiVersion Api Version.
+     * @param endpoint HTTP or HTTPS endpoint for the Web PubSub service instance.
+     * @param serviceVersion Service version.
      */
-    AzureWebPubSubServiceRestAPIImpl(String host, String apiVersion) {
+    public AzureWebPubSubServiceRestAPIImpl(String endpoint, WebPubSubServiceVersion serviceVersion) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
                 JacksonAdapter.createDefaultSerializerAdapter(),
-                host,
-                apiVersion);
+                endpoint,
+                serviceVersion);
     }
 
     /**
      * Initializes an instance of AzureWebPubSubServiceRestAPI client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
-     * @param host server parameter.
-     * @param apiVersion Api Version.
+     * @param endpoint HTTP or HTTPS endpoint for the Web PubSub service instance.
+     * @param serviceVersion Service version.
      */
-    AzureWebPubSubServiceRestAPIImpl(HttpPipeline httpPipeline, String host, String apiVersion) {
-        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), host, apiVersion);
+    public AzureWebPubSubServiceRestAPIImpl(
+            HttpPipeline httpPipeline, String endpoint, WebPubSubServiceVersion serviceVersion) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), endpoint, serviceVersion);
     }
 
     /**
@@ -118,15 +120,18 @@ public final class AzureWebPubSubServiceRestAPIImpl {
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
-     * @param host server parameter.
-     * @param apiVersion Api Version.
+     * @param endpoint HTTP or HTTPS endpoint for the Web PubSub service instance.
+     * @param serviceVersion Service version.
      */
-    AzureWebPubSubServiceRestAPIImpl(
-            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String host, String apiVersion) {
+    public AzureWebPubSubServiceRestAPIImpl(
+            HttpPipeline httpPipeline,
+            SerializerAdapter serializerAdapter,
+            String endpoint,
+            WebPubSubServiceVersion serviceVersion) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
-        this.host = host;
-        this.apiVersion = apiVersion;
+        this.endpoint = endpoint;
+        this.serviceVersion = serviceVersion;
         this.healthApis = new HealthApisImpl(this);
         this.webPubSubs = new WebPubSubsImpl(this);
     }

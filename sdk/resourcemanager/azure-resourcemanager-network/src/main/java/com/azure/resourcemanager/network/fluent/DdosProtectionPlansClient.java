@@ -50,7 +50,7 @@ public interface DdosProtectionPlansClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String ddosProtectionPlanName);
 
     /**
@@ -63,7 +63,7 @@ public interface DdosProtectionPlansClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String ddosProtectionPlanName);
 
     /**
@@ -77,7 +77,7 @@ public interface DdosProtectionPlansClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String ddosProtectionPlanName, Context context);
 
@@ -200,7 +200,7 @@ public interface DdosProtectionPlansClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a DDoS protection plan in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<DdosProtectionPlanInner>, DdosProtectionPlanInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String ddosProtectionPlanName, DdosProtectionPlanInner parameters);
 
@@ -215,7 +215,7 @@ public interface DdosProtectionPlansClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a DDoS protection plan in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DdosProtectionPlanInner>, DdosProtectionPlanInner> beginCreateOrUpdate(
         String resourceGroupName, String ddosProtectionPlanName, DdosProtectionPlanInner parameters);
 
@@ -231,7 +231,7 @@ public interface DdosProtectionPlansClient
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a DDoS protection plan in a resource group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<DdosProtectionPlanInner>, DdosProtectionPlanInner> beginCreateOrUpdate(
         String resourceGroupName, String ddosProtectionPlanName, DdosProtectionPlanInner parameters, Context context);
 

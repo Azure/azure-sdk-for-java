@@ -110,7 +110,7 @@ public interface VirtualHubRouteTableV2SClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualHubRouteTableV2 Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<VirtualHubRouteTableV2Inner>, VirtualHubRouteTableV2Inner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String virtualHubName,
@@ -129,7 +129,7 @@ public interface VirtualHubRouteTableV2SClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualHubRouteTableV2 Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualHubRouteTableV2Inner>, VirtualHubRouteTableV2Inner> beginCreateOrUpdate(
         String resourceGroupName,
         String virtualHubName,
@@ -149,7 +149,7 @@ public interface VirtualHubRouteTableV2SClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return virtualHubRouteTableV2 Resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualHubRouteTableV2Inner>, VirtualHubRouteTableV2Inner> beginCreateOrUpdate(
         String resourceGroupName,
         String virtualHubName,
@@ -242,7 +242,7 @@ public interface VirtualHubRouteTableV2SClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String virtualHubName, String routeTableName);
 
@@ -257,7 +257,7 @@ public interface VirtualHubRouteTableV2SClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String virtualHubName, String routeTableName);
 
@@ -273,7 +273,7 @@ public interface VirtualHubRouteTableV2SClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String virtualHubName, String routeTableName, Context context);
 

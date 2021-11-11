@@ -30,8 +30,9 @@ public final class ManagedIdentityCredential implements TokenCredential {
 
 
     /**
-     * Creates an instance of the ManagedIdentityCredential.
-     * @param clientId the client id of user assigned or system assigned identity
+     * Creates an instance of the ManagedIdentityCredential with the client ID of a
+     * user-assigned identity, or app registration (when working with AKS pod-identity).
+     * @param clientId the client id of user assigned or app registration (when working with AKS pod-identity).
      * @param identityClientOptions the options for configuring the identity client.
      */
     ManagedIdentityCredential(String clientId, IdentityClientOptions identityClientOptions) {
@@ -39,7 +40,8 @@ public final class ManagedIdentityCredential implements TokenCredential {
             .clientId(clientId)
             .identityClientOptions(identityClientOptions);
 
-        Configuration configuration = Configuration.getGlobalConfiguration().clone();
+        Configuration configuration = identityClientOptions.getConfiguration() == null
+            ? Configuration.getGlobalConfiguration().clone() : identityClientOptions.getConfiguration();
 
         if (configuration.contains(Configuration.PROPERTY_MSI_ENDPOINT)) {
             managedIdentityServiceCredential = new AppServiceMsiCredential(clientId, clientBuilder.build());
@@ -83,7 +85,9 @@ public final class ManagedIdentityCredential implements TokenCredential {
         if (managedIdentityServiceCredential == null) {
             return Mono.error(logger.logExceptionAsError(
                 new CredentialUnavailableException("ManagedIdentityCredential authentication unavailable. "
-                   + "The Target Azure platform could not be determined from environment variables.")));
+                   + "The Target Azure platform could not be determined from environment variables."
+                    + "To mitigate this issue, please refer to the troubleshooting guidelines here at"
+                    + " https://aka.ms/azsdk/net/identity/managedidentitycredential/troubleshoot")));
         }
         return managedIdentityServiceCredential.authenticate(request)
             .doOnSuccess(t -> logger.info("Azure Identity => Managed Identity environment: {}",

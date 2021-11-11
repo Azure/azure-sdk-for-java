@@ -14,10 +14,8 @@ import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Link;
 import org.apache.qpid.proton.engine.Session;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -49,6 +47,7 @@ import static org.mockito.Mockito.when;
  * Tests {@link LinkHandler}.
  */
 public class LinkHandlerTest {
+    private static final Duration VERIFY_TIMEOUT = Duration.ofSeconds(10);
     private static final String CONNECTION_ID = "connection-id";
     private static final String HOSTNAME = "test-hostname";
     private static final String ENTITY_PATH = "test-entity-path";
@@ -66,16 +65,6 @@ public class LinkHandlerTest {
     private final String description = "test-description";
     private final LinkHandler handler = new MockLinkHandler(CONNECTION_ID, HOSTNAME, ENTITY_PATH, logger);
     private AutoCloseable mocksCloseable;
-
-    @BeforeAll
-    static void beforeAll() {
-        StepVerifier.setDefaultTimeout(Duration.ofSeconds(10));
-    }
-
-    @AfterAll
-    static void afterAll() {
-        StepVerifier.resetDefaultTimeout();
-    }
 
     @BeforeEach
     void setup() {
@@ -175,7 +164,7 @@ public class LinkHandlerTest {
                 AmqpException exception = (AmqpException) error;
                 Assertions.assertEquals(LINK_STOLEN, exception.getErrorCondition());
             })
-            .verify();
+            .verify(VERIFY_TIMEOUT);
 
         // Assert
         verify(link).setCondition(errorCondition);
@@ -208,7 +197,7 @@ public class LinkHandlerTest {
                 AmqpException exception = (AmqpException) error;
                 Assertions.assertEquals(LINK_STOLEN, exception.getErrorCondition());
             })
-            .verify();
+            .verify(VERIFY_TIMEOUT);
 
         // Assert
         verify(link).setCondition(errorCondition);
@@ -240,7 +229,7 @@ public class LinkHandlerTest {
                 AmqpException exception = (AmqpException) error;
                 Assertions.assertEquals(LINK_STOLEN, exception.getErrorCondition());
             })
-            .verify();
+            .verify(VERIFY_TIMEOUT);
 
         // Assert
         verify(link, never()).setCondition(errorCondition);
@@ -272,7 +261,7 @@ public class LinkHandlerTest {
             })
             .expectNext(EndpointState.CLOSED)
             .expectComplete()
-            .verify();
+            .verify(VERIFY_TIMEOUT);
 
         // Assert
         verify(link, never()).setCondition(errorCondition);
@@ -314,7 +303,7 @@ public class LinkHandlerTest {
                 AmqpException exception = (AmqpException) error;
                 Assertions.assertEquals(LINK_STOLEN, exception.getErrorCondition());
             })
-            .verify();
+            .verify(VERIFY_TIMEOUT);
 
         // Assert
         verify(link, never()).setCondition(errorCondition);
@@ -333,7 +322,8 @@ public class LinkHandlerTest {
         StepVerifier.create(handler.getEndpointStates())
             .then(() -> handler.onLinkFinal(event))
             .expectNext(EndpointState.UNINITIALIZED, EndpointState.CLOSED)
-            .verifyComplete();
+            .expectComplete()
+            .verify(VERIFY_TIMEOUT);
     }
 
     /**

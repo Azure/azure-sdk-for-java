@@ -6,10 +6,10 @@ package com.azure.data.schemaregistry;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.credential.TokenRequestContext;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.test.TestBase;
-import com.azure.data.schemaregistry.implementation.models.ServiceErrorResponseException;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;
 import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
@@ -42,6 +42,9 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
     static final Pattern WHITESPACE_PATTERN = Pattern.compile("\\s+", Pattern.MULTILINE);
     static final String SCHEMA_CONTENT_NO_WHITESPACE = WHITESPACE_PATTERN.matcher(SCHEMA_CONTENT).replaceAll("");
 
+    // When we regenerate recordings, make sure that the schema group matches what we are persisting.
+    static final String PLAYBACK_TEST_GROUP = "testgroup001";
+
     private String schemaGroup;
     private SchemaRegistryClientBuilder builder;
 
@@ -52,7 +55,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
 
         if (interceptorManager.isPlaybackMode()) {
             tokenCredential = mock(TokenCredential.class);
-            schemaGroup = "at";
+            schemaGroup = PLAYBACK_TEST_GROUP;
 
             // Sometimes it throws an "NotAMockException", so we had to change from thenReturn to thenAnswer.
             when(tokenCredential.getToken(any(TokenRequestContext.class))).thenAnswer(invocationOnMock -> {
@@ -103,8 +106,8 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         // Act & Assert
         StepVerifier.create(client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT, SchemaFormat.AVRO))
             .assertNext(response -> {
-                assertNotNull(response.getSchemaId());
-                schemaId.set(response.getSchemaId());
+                assertNotNull(response.getId());
+                schemaId.set(response.getId());
             }).verifyComplete();
 
 
@@ -117,11 +120,11 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         StepVerifier.create(client2.getSchema(schemaIdToGet))
             .assertNext(schema -> {
                 assertNotNull(schema.getProperties());
-                assertEquals(schemaIdToGet, schema.getProperties().getSchemaId());
+                assertEquals(schemaIdToGet, schema.getProperties().getId());
                 assertEquals(SchemaFormat.AVRO, schema.getProperties().getFormat());
 
                 // Replace white space.
-                final String actualContents = WHITESPACE_PATTERN.matcher(schema.getSchemaDefinition()).replaceAll("");
+                final String actualContents = WHITESPACE_PATTERN.matcher(schema.getDefinition()).replaceAll("");
                 assertEquals(SCHEMA_CONTENT_NO_WHITESPACE, actualContents);
             })
             .verifyComplete();
@@ -146,15 +149,15 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         StepVerifier.create(client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT, SchemaFormat.AVRO))
             .assertNext(response -> {
                 assertEquals(SchemaFormat.AVRO, response.getFormat());
-                assertNotNull(response.getSchemaId());
-                schemaId.set(response.getSchemaId());
+                assertNotNull(response.getId());
+                schemaId.set(response.getId());
             }).verifyComplete();
 
         StepVerifier.create(client1.registerSchema(schemaGroup, schemaName, schemaContentModified, SchemaFormat.AVRO))
             .assertNext(response -> {
                 assertEquals(SchemaFormat.AVRO, response.getFormat());
-                assertNotNull(response.getSchemaId());
-                schemaId2.set(response.getSchemaId());
+                assertNotNull(response.getId());
+                schemaId2.set(response.getId());
             }).verifyComplete();
 
         // Assert that we can get a schema based on its id. We registered a schema with client1 and its response is
@@ -184,7 +187,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         StepVerifier.create(client1.registerSchema(schemaGroup, schemaName, SCHEMA_CONTENT, SchemaFormat.AVRO))
             .assertNext(response -> {
                 assertSchemaProperties(response, null, SchemaFormat.AVRO);
-                schemaId.set(response.getSchemaId());
+                schemaId.set(response.getId());
             }).verifyComplete();
 
         // Assert that we can get a schema based on its id. We registered a schema with client1 and its response is
@@ -194,7 +197,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
 
         // Act & Assert
         StepVerifier.create(client2.getSchemaProperties(schemaGroup, schemaName, SCHEMA_CONTENT, SchemaFormat.AVRO))
-            .assertNext(schema -> assertEquals(schemaIdToGet, schema.getSchemaId()))
+            .assertNext(schema -> assertEquals(schemaIdToGet, schema.getId()))
             .verifyComplete();
     }
 
@@ -211,9 +214,9 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         // Act & Assert
         StepVerifier.create(client1.registerSchema(schemaGroup, schemaName, invalidContent, SchemaFormat.AVRO))
             .expectErrorSatisfies(error -> {
-                assertTrue(error instanceof ServiceErrorResponseException);
+                assertTrue(error instanceof HttpResponseException);
 
-                final ServiceErrorResponseException exception = (ServiceErrorResponseException) error;
+                final HttpResponseException exception = (HttpResponseException) error;
                 assertEquals(400, exception.getResponse().getStatusCode());
             }).verify();
     }
@@ -245,7 +248,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         final SchemaRegistryAsyncClient client1 = builder.buildAsyncClient();
 
         // Act & Assert
-        StepVerifier.create(client1.getSchemaProperties("at", "bar", SCHEMA_CONTENT, SchemaFormat.AVRO))
+        StepVerifier.create(client1.getSchemaProperties(PLAYBACK_TEST_GROUP, "bar", SCHEMA_CONTENT, SchemaFormat.AVRO))
             .expectErrorSatisfies(error -> {
                 assertTrue(error instanceof ResourceNotFoundException);
                 assertEquals(404, ((ResourceNotFoundException) error).getResponse().getStatusCode());
@@ -260,14 +263,14 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
 
         assertEquals(format, actual.getProperties().getFormat());
 
-        assertNotNull(actual.getProperties().getSchemaId());
+        assertNotNull(actual.getProperties().getId());
 
         if (expectedSchemaId != null) {
-            assertEquals(expectedSchemaId, actual.getProperties().getSchemaId());
+            assertEquals(expectedSchemaId, actual.getProperties().getId());
         }
 
         // Replace white space.
-        final String actualContents = WHITESPACE_PATTERN.matcher(actual.getSchemaDefinition()).replaceAll("");
+        final String actualContents = WHITESPACE_PATTERN.matcher(actual.getDefinition()).replaceAll("");
         final String expectedContentsNoWhitespace = WHITESPACE_PATTERN.matcher(actualContents).replaceAll("");
 
         assertEquals(expectedContentsNoWhitespace, actualContents);
@@ -277,7 +280,7 @@ public class SchemaRegistryAsyncClientTests extends TestBase {
         assertNotNull(actual);
 
         if (expectedSchemaId != null) {
-            assertEquals(expectedSchemaId, actual.getSchemaId());
+            assertEquals(expectedSchemaId, actual.getId());
         }
 
         assertEquals(schemaFormat, actual.getFormat());

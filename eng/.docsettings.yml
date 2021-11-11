@@ -161,6 +161,7 @@ known_content_issues:
   - ['sdk/parents/azure-client-sdk-parent/README.md', '#3113']
   - ['sdk/purview/azure-analytics-purview-catalog/swagger/README.md', '#3113']
   - ['sdk/purview/azure-analytics-purview-scanning/swagger/README.md', '#3113']
+  - ['sdk/schemaregistry/azure-data-schemaregistry/swagger/README.md', '#3113']
   - ['sdk/search/azure-search-documents/swagger/README.md', '#3113']
   - ['sdk/search/azure-search-documents/src/test/README.md', '#3113']
   - ['sdk/search/open-api/readme.md', '#3113']

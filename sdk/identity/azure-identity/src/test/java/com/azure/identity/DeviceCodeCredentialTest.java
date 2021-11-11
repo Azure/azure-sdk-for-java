@@ -114,7 +114,6 @@ public class DeviceCodeCredentialTest {
         // test
         DeviceCodeCredential credential =
             new DeviceCodeCredentialBuilder().challengeConsumer(consumer)
-                .allowMultiTenantAuthentication()
                 .clientId(clientId)
                 .disableAutomaticAuthentication().build();
         StepVerifier.create(credential.authenticate(request1))

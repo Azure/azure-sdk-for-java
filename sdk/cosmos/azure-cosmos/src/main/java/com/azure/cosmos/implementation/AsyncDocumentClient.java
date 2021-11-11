@@ -27,7 +27,7 @@ import reactor.core.publisher.Mono;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.concurrent.ConcurrentMap;
+import java.util.Map;
 
 /**
  * Provides a client-side logical representation of the Azure Cosmos DB
@@ -90,6 +90,7 @@ public interface AsyncDocumentClient {
         boolean transportClientSharing;
         boolean contentResponseOnWriteEnabled;
         private CosmosClientMetadataCachesSnapshot state;
+        private ApiType apiType;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
@@ -102,6 +103,11 @@ public interface AsyncDocumentClient {
 
         public Builder withState(CosmosClientMetadataCachesSnapshot state) {
             this.state = state;
+            return this;
+        }
+
+        public Builder withApiType(ApiType apiType) {
+            this.apiType = apiType;
             return this;
         }
 
@@ -232,7 +238,8 @@ public interface AsyncDocumentClient {
                 sessionCapturingOverride,
                 transportClientSharing,
                 contentResponseOnWriteEnabled,
-                state);
+                state,
+                apiType);
 
             client.init(state, null);
             return client;
@@ -1570,7 +1577,7 @@ public interface AsyncDocumentClient {
         CosmosQueryRequestOptions options
     );
 
-    ConcurrentMap<String, PartitionedQueryExecutionInfo> getQueryPlanCache();
+    Map<String, PartitionedQueryExecutionInfo> getQueryPlanCache();
 
     /**
      * Gets the collection cache.

@@ -1,10 +1,28 @@
 # Release History
 
-## 12.15.0-beta.1 (Unreleased)
+## 12.15.0-beta.2 (Unreleased)
 
 ### Features Added
+- Added support for 2021-02-12 service version.
+- Added support for listing system containers.
+- Added support for listing blobs which contain invalid xml characters.
 
 ### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 12.15.0-beta.1 (2021-11-05)
+
+### Features Added
+- Added support for permanent delete permissions in blob and account level SAS.
+
+- Added support for the 2020-12-06 service version.
+- Added support for setting an encryption scope on a BlobServiceSas and an AccountSas.
+- Added support for setting encryption scopes on the destination of a sync copy.
+
+## 12.14.1 (2021-10-12)
 
 ### Bugs Fixed
 
@@ -12,6 +30,9 @@
   empty component path, the parsing fails with StringIndexOutOfBoundsException
 
 ### Other Changes
+#### Dependency Updates
+- Updated to version `1.21.0` of `azure-core`
+- Updated to version `12.14.0` of `azure-storage-common`
 
 ## 12.14.0 (2021-09-15)
 - GA release

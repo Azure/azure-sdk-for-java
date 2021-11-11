@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.models.SegmentStatusEnum;
@@ -17,52 +16,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** NSX Segment. */
-@JsonFlatten
 @Fluent
-public class WorkloadNetworkSegmentInner extends ProxyResource {
+public final class WorkloadNetworkSegmentInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkloadNetworkSegmentInner.class);
 
     /*
-     * Display name of the segment.
+     * The properties of a Workload Segment proxy resource.
      */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
+    @JsonProperty(value = "properties")
+    private WorkloadNetworkSegmentProperties innerProperties;
 
-    /*
-     * Gateway which to connect segment to.
+    /**
+     * Get the innerProperties property: The properties of a Workload Segment proxy resource.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.connectedGateway")
-    private String connectedGateway;
-
-    /*
-     * Subnet which to connect segment to.
-     */
-    @JsonProperty(value = "properties.subnet")
-    private WorkloadNetworkSegmentSubnet subnet;
-
-    /*
-     * Port Vif which segment is associated with.
-     */
-    @JsonProperty(value = "properties.portVif", access = JsonProperty.Access.WRITE_ONLY)
-    private List<WorkloadNetworkSegmentPortVif> portVif;
-
-    /*
-     * Segment status.
-     */
-    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
-    private SegmentStatusEnum status;
-
-    /*
-     * The provisioning state
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private WorkloadNetworkSegmentProvisioningState provisioningState;
-
-    /*
-     * NSX revision number.
-     */
-    @JsonProperty(value = "properties.revision")
-    private Long revision;
+    private WorkloadNetworkSegmentProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the displayName property: Display name of the segment.
@@ -70,7 +41,7 @@ public class WorkloadNetworkSegmentInner extends ProxyResource {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -80,7 +51,10 @@ public class WorkloadNetworkSegmentInner extends ProxyResource {
      * @return the WorkloadNetworkSegmentInner object itself.
      */
     public WorkloadNetworkSegmentInner withDisplayName(String displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkloadNetworkSegmentProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -90,7 +64,7 @@ public class WorkloadNetworkSegmentInner extends ProxyResource {
      * @return the connectedGateway value.
      */
     public String connectedGateway() {
-        return this.connectedGateway;
+        return this.innerProperties() == null ? null : this.innerProperties().connectedGateway();
     }
 
     /**
@@ -100,7 +74,10 @@ public class WorkloadNetworkSegmentInner extends ProxyResource {
      * @return the WorkloadNetworkSegmentInner object itself.
      */
     public WorkloadNetworkSegmentInner withConnectedGateway(String connectedGateway) {
-        this.connectedGateway = connectedGateway;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkloadNetworkSegmentProperties();
+        }
+        this.innerProperties().withConnectedGateway(connectedGateway);
         return this;
     }
 
@@ -110,7 +87,7 @@ public class WorkloadNetworkSegmentInner extends ProxyResource {
      * @return the subnet value.
      */
     public WorkloadNetworkSegmentSubnet subnet() {
-        return this.subnet;
+        return this.innerProperties() == null ? null : this.innerProperties().subnet();
     }
 
     /**
@@ -120,7 +97,10 @@ public class WorkloadNetworkSegmentInner extends ProxyResource {
      * @return the WorkloadNetworkSegmentInner object itself.
      */
     public WorkloadNetworkSegmentInner withSubnet(WorkloadNetworkSegmentSubnet subnet) {
-        this.subnet = subnet;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkloadNetworkSegmentProperties();
+        }
+        this.innerProperties().withSubnet(subnet);
         return this;
     }
 
@@ -130,7 +110,7 @@ public class WorkloadNetworkSegmentInner extends ProxyResource {
      * @return the portVif value.
      */
     public List<WorkloadNetworkSegmentPortVif> portVif() {
-        return this.portVif;
+        return this.innerProperties() == null ? null : this.innerProperties().portVif();
     }
 
     /**
@@ -139,7 +119,7 @@ public class WorkloadNetworkSegmentInner extends ProxyResource {
      * @return the status value.
      */
     public SegmentStatusEnum status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -148,7 +128,7 @@ public class WorkloadNetworkSegmentInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public WorkloadNetworkSegmentProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -157,7 +137,7 @@ public class WorkloadNetworkSegmentInner extends ProxyResource {
      * @return the revision value.
      */
     public Long revision() {
-        return this.revision;
+        return this.innerProperties() == null ? null : this.innerProperties().revision();
     }
 
     /**
@@ -167,7 +147,10 @@ public class WorkloadNetworkSegmentInner extends ProxyResource {
      * @return the WorkloadNetworkSegmentInner object itself.
      */
     public WorkloadNetworkSegmentInner withRevision(Long revision) {
-        this.revision = revision;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkloadNetworkSegmentProperties();
+        }
+        this.innerProperties().withRevision(revision);
         return this;
     }
 
@@ -177,11 +160,8 @@ public class WorkloadNetworkSegmentInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (subnet() != null) {
-            subnet().validate();
-        }
-        if (portVif() != null) {
-            portVif().forEach(e -> e.validate());
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }
