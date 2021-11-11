@@ -337,6 +337,7 @@ public class EncryptionProcessor {
         }
 
         else if (propertyValueHolder.isArray()) {
+            assert propertyValueHolder instanceof ArrayNode;
             ArrayNode arrayNode = (ArrayNode) propertyValueHolder;
             if (arrayNode.elements().next().isObject() || arrayNode.elements().next().isArray()) {
                 List<JsonNode> encryptedArray = new ArrayList<>();
