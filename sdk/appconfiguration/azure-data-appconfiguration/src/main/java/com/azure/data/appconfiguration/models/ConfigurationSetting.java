@@ -176,7 +176,7 @@ public class ConfigurationSetting {
         return lastModified;
     }
 
-    ConfigurationSetting setLastModified(OffsetDateTime lastModified) {
+    private ConfigurationSetting setLastModified(OffsetDateTime lastModified) {
         this.lastModified = lastModified;
         return this;
     }
@@ -193,7 +193,7 @@ public class ConfigurationSetting {
         return readOnly;
     }
 
-    ConfigurationSetting setReadOnly(boolean readOnly) {
+    private ConfigurationSetting setReadOnly(boolean readOnly) {
         this.readOnly = readOnly;
         return this;
     }
