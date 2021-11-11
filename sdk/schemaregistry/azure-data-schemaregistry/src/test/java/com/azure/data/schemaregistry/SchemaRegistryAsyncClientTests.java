@@ -11,7 +11,6 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.RetryPolicy;
-import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.test.TestBase;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.data.schemaregistry.models.SchemaProperties;

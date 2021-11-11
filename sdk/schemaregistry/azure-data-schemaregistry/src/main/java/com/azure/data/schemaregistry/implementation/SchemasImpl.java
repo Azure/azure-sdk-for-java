@@ -120,7 +120,7 @@ public final class SchemasImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SchemasGetByIdResponse> getByIdWithResponseAsync(String id, Context context) {
-        final String accept = "application/json; serialization=Avro";
+        final String accept = "application/json; serialization=avro";
         return service.getById(this.client.getEndpoint(), id, this.client.getApiVersion(), accept, context);
     }
 
