@@ -32,6 +32,7 @@ import reactor.core.publisher.Mono;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.security.InvalidParameterException;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -165,7 +166,7 @@ public final class AttestationAdministrationAsyncClient {
 //endregion
 //region Set Attestation Policy
 
-    //region AAD mode helper functions.
+//region Simplified string based AAD mode helper functions.
     /**
      * Sets the current policy for an attestation type with an unsecured attestation policy.
      * <p>Note that this API will only work on AAD mode attestation instances, because it sets the policy
@@ -305,8 +306,116 @@ public final class AttestationAdministrationAsyncClient {
             });
     }
 
-
 //endregion
+
+    //region Reset Attestation Policy
+
+    //region AAD support methods
+    /**
+     * Resets the current policy for an attestation type to the default value.
+     *
+     * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to an attestation policy operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<PolicyResult>> resetAttestationPolicyWithResponse(AttestationType attestationType) {
+        return withContext(context -> resetAttestationPolicyWithResponse(attestationType, new AttestationPolicySetOptions(), context));
+    }
+
+    /**
+     * Sets the current policy for an attestation type.
+     *
+     * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to an attestation policy operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PolicyResult> resetAttestationPolicy(AttestationType attestationType) {
+        return resetAttestationPolicyWithResponse(attestationType, new AttestationPolicySetOptions())
+            .flatMap(FluxUtil::toMono);
+    }
+    //endregion
+    /**
+     * Resets the current policy for an attestation type to the default value.
+     *
+     * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
+     * @param options Options containing the signing key for the reset operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to an attestation policy operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<PolicyResult>> resetAttestationPolicyWithResponse(AttestationType attestationType, AttestationPolicySetOptions options) {
+        return withContext(context -> resetAttestationPolicyWithResponse(attestationType, options, context));
+    }
+
+    /**
+     * Sets the current policy for an attestation type.
+     *
+     * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
+     * @param options Options for the setPolicy operation, including the new policy to be set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to an attestation policy operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PolicyResult> resetAttestationPolicy(AttestationType attestationType, AttestationPolicySetOptions options) {
+        return resetAttestationPolicyWithResponse(attestationType, options)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Sets the current policy for an attestation type.
+     *
+     * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
+     * @param options Options for setPolicy API, including policy to set and signing key.
+     * @param context Context for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to an attestation policy operation.
+     */
+    public Mono<Response<PolicyResult>> resetAttestationPolicyWithResponse(AttestationType attestationType, AttestationPolicySetOptions options, Context context) {
+        if (options.getAttestationPolicy() != null) {
+            logger.logThrowableAsError(new InvalidParameterException("Attestation policy should not be set in resetAttestationPolicy"));
+        }
+
+        // Ensure that the incoming request makes sense.
+        AttestationTokenValidationOptions validationOptions = options.getValidationOptions();
+        if (validationOptions == null) {
+            validationOptions = this.tokenValidationOptions;
+        }
+
+        final AttestationTokenValidationOptions finalOptions = validationOptions;
+
+        // And generate an attestation token for that stored attestation policy.
+        AttestationToken setToken;
+        if (options.getAttestationSigner() == null) {
+            setToken = AttestationTokenImpl.createUnsecuredToken();
+        } else {
+            setToken = AttestationTokenImpl.createSecuredToken(options.getAttestationSigner());
+        }
+        return this.policyImpl.resetWithResponseAsync(attestationType, setToken.serialize(), context)
+            .flatMap(response -> {
+                Response<AttestationTokenImpl> token = Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken()));
+                return getCachedAttestationSigners()
+                    .map(signers -> {
+                        token.getValue().validate(signers, finalOptions);
+                        PolicyResult policyResult = PolicyResultImpl.fromGenerated(token.getValue().getBody(com.azure.security.attestation.implementation.models.PolicyResult.class));
+                        return Utilities.generateAttestationResponseFromModelType(response, token.getValue(), policyResult);
+                    });
+            });
+    }
+
+
+    //endregion
 
     /**
      * Return cached attestation signers, fetching from the internet if needed.

@@ -59,7 +59,11 @@ public final class PolicyResultImpl implements com.azure.security.attestation.mo
         } else {
             this.policySigner = null;
         }
-        this.policyTokenHash = BinaryData.fromBytes(policyTokenHash);
+        if (policyTokenHash != null) {
+            this.policyTokenHash = BinaryData.fromBytes(policyTokenHash);
+        } else {
+            this.policyTokenHash = null;
+        }
         this.policyResolution = resolution;
     }
 

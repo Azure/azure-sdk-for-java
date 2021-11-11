@@ -161,4 +161,72 @@ public final class AttestationAdministrationClient {
     }
 
     //endregion
+
+    //region Reset Attestation Policy
+    /**
+     * Sets the attestation policy for the specified attestation type, with policy and signing key.
+     *
+     * More information about Attestation Policy can be found <a href='https://docs.microsoft.com/en-us/azure/attestation/basic-concepts#attestation-policy'>here.</a>
+     *
+     * @param attestationType The {@link AttestationType} to be updated.
+     * @param options {@link AttestationPolicySetOptions} for the request.
+     * @return {@link PolicyResult} expressing the result of the attestation operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PolicyResult resetAttestationPolicy(AttestationType attestationType, AttestationPolicySetOptions options) {
+        return asyncClient.resetAttestationPolicy(attestationType, options).block();
+    }
+
+    /**
+     * Sets the attestation policy for the specified attestation type for an AAD mode attestation instance.
+     *
+     * Note that this function will only work on AAD mode attestation instances, because there is
+     * no key signing certificate provided.
+     *
+     * More information about Attestation Policy can be found <a href='https://docs.microsoft.com/en-us/azure/attestation/basic-concepts#attestation-policy'>here.</a>
+     *
+     * @param attestationType The {@link AttestationType} to be updated.
+     * @return {@link PolicyResult} expressing the result of the attestation operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PolicyResult resetAttestationPolicy(AttestationType attestationType) {
+        return asyncClient.resetAttestationPolicy(attestationType).block();
+    }
+
+    /**
+     * Sets the attestation policy for the specified attestation type
+     *
+     * Note that this function will only work on AAD mode attestation instances, because there is
+     * no key signing certificate provided.
+     *
+     * More information about Attestation Policy can be found <a href='https://docs.microsoft.com/en-us/azure/attestation/basic-concepts#attestation-policy'>here.</a>
+     *
+     * @param attestationType The {@link AttestationType} to be updated.
+     * @param options {@link AttestationPolicySetOptions} for the request.
+     * @param context Context for the operation.
+     * @return {@link PolicyResult} expressing the result of the attestation operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PolicyResult> resetAttestationPolicyWithResponse(AttestationType attestationType, AttestationPolicySetOptions options, Context context) {
+        return asyncClient.resetAttestationPolicyWithResponse(attestationType, options, context).block();
+    }
+
+    /**
+     * Sets the attestation policy for the specified attestation type for an AAD mode attestation instance.
+     *
+     * Note that this function will only work on AAD mode attestation instances, because there is
+     * no key signing certificate provided.
+     *
+     * More information about Attestation Policy can be found <a href='https://docs.microsoft.com/en-us/azure/attestation/basic-concepts#attestation-policy'>here.</a>
+     *
+     * @param attestationType The {@link AttestationType} to be updated.
+     * @param context Context for the operation.
+     * @return {@link PolicyResult} expressing the result of the attestation operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<PolicyResult> resetAttestationPolicyWithResponse(AttestationType attestationType, Context context) {
+        return asyncClient.resetAttestationPolicyWithResponse(attestationType, new AttestationPolicySetOptions(), context).block();
+    }
+
+//  endregion
 };
