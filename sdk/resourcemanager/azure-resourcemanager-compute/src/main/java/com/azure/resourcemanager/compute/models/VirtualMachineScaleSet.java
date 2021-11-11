@@ -383,7 +383,7 @@ public interface VirtualMachineScaleSet
     AdditionalCapabilities additionalCapabilities();
 
     /**
-     * @return the plan value
+     * @return the purchase plan information about marketplace image
      */
     Plan plan();
 
