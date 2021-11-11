@@ -127,7 +127,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .withSpecificLinuxImageVersion(imageReference)
                 .withRootUsername(uname)
                 .withSsh(sshPublicKey())
-                .withUnmanagedDisks()
+                .withNewDataDisk(1)
                 .withNewStorageAccount(generateRandomResourceName("stg", 15))
                 .withPlan(plan)
                 .create();
