@@ -20,7 +20,7 @@ import com.azure.security.attestation.models.PolicyResult;
  * The AttestationAdministrationClient provides access to the administrative policy APIs
  * implemented by the Attestation Service.
  *
- * More information on attestation policies can be found <a href='https://docs.microsoft.com/en-us/azure/attestation/basic-concepts#attestation-policy'>here</a>
+ * More information on attestation policies can be found <a href='https://docs.microsoft.com/azure/attestation/basic-concepts#attestation-policy'>here</a>
  *
  * There are two main families of APIs available from the Administration client.
  * <ul>
@@ -98,7 +98,7 @@ public final class AttestationAdministrationClient {
     /**
      * Sets the attestation policy for the specified attestation type, with policy and signing key.
      *
-     * More information about Attestation Policy can be found <a href='https://docs.microsoft.com/en-us/azure/attestation/basic-concepts#attestation-policy'>here.</a>
+     * More information about Attestation Policy can be found <a href='https://docs.microsoft.com/azure/attestation/basic-concepts#attestation-policy'>here.</a>
      *
      * @param attestationType The {@link AttestationType} to be updated.
      * @param options {@link AttestationPolicySetOptions} for the request.
@@ -115,7 +115,7 @@ public final class AttestationAdministrationClient {
      * Note that this function will only work on AAD mode attestation instances, because there is
      * no key signing certificate provided.
      *
-     * More information about Attestation Policy can be found <a href='https://docs.microsoft.com/en-us/azure/attestation/basic-concepts#attestation-policy'>here.</a>
+     * More information about Attestation Policy can be found <a href='https://docs.microsoft.com/azure/attestation/basic-concepts#attestation-policy'>here.</a>
      *
      * @param attestationType The {@link AttestationType} to be updated.
      * @param policyToSet Attestation Policy to set on the instance.
@@ -132,7 +132,7 @@ public final class AttestationAdministrationClient {
      * Note that this function will only work on AAD mode attestation instances, because there is
      * no key signing certificate provided.
      *
-     * More information about Attestation Policy can be found <a href='https://docs.microsoft.com/en-us/azure/attestation/basic-concepts#attestation-policy'>here.</a>
+     * More information about Attestation Policy can be found <a href='https://docs.microsoft.com/azure/attestation/basic-concepts#attestation-policy'>here.</a>
      *
      * @param attestationType The {@link AttestationType} to be updated.
      * @param options {@link AttestationPolicySetOptions} for the request.
@@ -150,7 +150,7 @@ public final class AttestationAdministrationClient {
      * Note that this function will only work on AAD mode attestation instances, because there is
      * no key signing certificate provided.
      *
-     * More information about Attestation Policy can be found <a href='https://docs.microsoft.com/en-us/azure/attestation/basic-concepts#attestation-policy'>here.</a>
+     * More information about Attestation Policy can be found <a href='https://docs.microsoft.com/azure/attestation/basic-concepts#attestation-policy'>here.</a>
      *
      * @param attestationType The {@link AttestationType} to be updated.
      * @param policyToSet Attestation Policy to set on the instance.

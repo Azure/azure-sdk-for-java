@@ -46,7 +46,7 @@ import static com.azure.core.util.FluxUtil.withContext;
  * The AttestationAdministrationClient provides access to the administrative policy APIs
  * implemented by the Attestation Service.
  *
- * More information on attestation policies can be found <a href='https://docs.microsoft.com/en-us/azure/attestation/basic-concepts#attestation-policy'>here</a>
+ * More information on attestation policies can be found <a href='https://docs.microsoft.com/azure/attestation/basic-concepts#attestation-policy'>here</a>
  *
  * There are two main families of APIs available from the Administration client.
  * <ul>
