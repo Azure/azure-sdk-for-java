@@ -29,7 +29,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(classes = EventHubBinderBatchSendingIT.TestConfig.class)
 @TestPropertySource(properties =
     {
-        "spring.cloud.stream.eventhub.bindings.supply-out-0.producer.producer.maxWaitTime=PT10S",
+        "spring.cloud.stream.eventhub.bindings.supply-out-0.producer.maxWaitTime=PT10S",
         "spring.cloud.stream.bindings.consume-in-0.destination=test-eventhub-batch-sending",
         "spring.cloud.stream.bindings.supply-out-0.destination=test-eventhub-batch-sending",
         "spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name=test-eventhub-batch-sending"
