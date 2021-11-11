@@ -1,6 +1,10 @@
 # Release History
 
-## 1.0.0-beta.6 (Unreleased)
+## 1.0.0-beta.6 (2021-11-11)
+
+### Breaking Changes
+
+- The `Context` parameter is merged into the `RequestOptions` parameter in methods of `WebPubSubServiceClient`.
 
 ### Other Changes
 
