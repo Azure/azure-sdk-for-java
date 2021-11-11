@@ -72,8 +72,8 @@ az extension add --name storage-preview
 az storage account create -n my-storage-account-name -g my-resource-group --sku Standard_LRS --kind StorageV2 --hierarchical-namespace true
 ```
 
-Your storage account URL, subsequently identified as <your-storage-account-url>, would be formatted as follows
-http(s)://<storage-account-name>.dfs.core.windows.net
+Your storage account URL, subsequently identified as `<your-storage-account-url>`, would be formatted as follows
+`http(s)://<storage-account-name>.dfs.core.windows.net`
 
 ### Authenticate the client
 

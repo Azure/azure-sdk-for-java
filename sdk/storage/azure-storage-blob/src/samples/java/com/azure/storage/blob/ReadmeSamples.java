@@ -55,7 +55,7 @@ public class ReadmeSamples {
 
     public void getBlobServiceClient2() {
         // BEGIN: readme-sample-getBlobServiceClient2
-        // Only one "?" is needed here. If the sastoken starts with "?", please removing one "?".
+        // Only one "?" is needed here. If the SAS token starts with "?", please removing one "?".
         BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
             .endpoint("<your-storage-account-url>" + "?" + "<your-sasToken>")
             .buildClient();
@@ -80,7 +80,7 @@ public class ReadmeSamples {
 
     public void getBlobContainerClient3() {
         // BEGIN: readme-sample-getBlobContainerClient3
-        // Only one "?" is needed here. If the sastoken starts with "?", please removing one "?".
+        // Only one "?" is needed here. If the SAS token starts with "?", please removing one "?".
         BlobContainerClient blobContainerClient = new BlobContainerClientBuilder()
             .endpoint("<your-storage-account-url>" + "/" + "mycontainer" + "?" + "<your-sasToken>")
             .buildClient();
@@ -106,7 +106,7 @@ public class ReadmeSamples {
 
     public void getBlobClient3() {
         // BEGIN: readme-sample-getBlobClient3
-        // Only one "?" is needed here. If the sastoken starts with "?", please removing one "?".
+        // Only one "?" is needed here. If the SAS token starts with "?", please removing one "?".
         BlobClient blobClient = new BlobClientBuilder()
             .endpoint("<your-storage-account-url>" + "/" + "mycontainer" + "/" + "myblob" + "?" + "<your-sasToken>")
             .buildClient();
@@ -155,8 +155,8 @@ public class ReadmeSamples {
     public void uploadIfNotExists() {
         // BEGIN: readme-sample-uploadIfNotExists
         /*
-       Rather than use an if block conditioned on an exists call, there are three ways to upload-if-not-exists using one
-       network call instead of two. Equivalent options are present on all upload methods.
+         * Rather than use an if block conditioned on an exists call, there are three ways to upload-if-not-exists using
+         * one network call instead of two. Equivalent options are present on all upload methods.
          */
         // 1. The minimal upload method defaults to no overwriting
         String dataSample = "samples";
@@ -189,8 +189,8 @@ public class ReadmeSamples {
     public void overwriteBlob() {
         // BEGIN: readme-sample-overwriteBlob
         /*
-       Rather than use an if block conditioned on an exists call, there are three ways to upload-if-exists in one
-       network call instead of two. Equivalent options are present on all upload methods.
+         * Rather than use an if block conditioned on an exists call, there are three ways to upload-if-exists in one
+         * network call instead of two. Equivalent options are present on all upload methods.
          */
         String dataSample = "samples";
 
@@ -202,8 +202,8 @@ public class ReadmeSamples {
         }
 
         /*
-         2. If the max overload is needed and no access conditions are passed, the upload will succeed as both a
-         create and overwrite.
+         * 2. If the max overload is needed and no access conditions are passed, the upload will succeed as both a
+         * create and overwrite.
          */
         try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBytes())) {
             BlobParallelUploadOptions options =
@@ -214,8 +214,8 @@ public class ReadmeSamples {
         }
 
         /*
-         3. If the max overload is needed, access conditions may be used to assert that the upload is an overwrite and
-         not simply a create.
+         * 3. If the max overload is needed, access conditions may be used to assert that the upload is an overwrite and
+         * not simply a create.
          */
         try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBytes())) {
             BlobParallelUploadOptions options =
@@ -232,10 +232,11 @@ public class ReadmeSamples {
     public void openBlobOutputStream() {
         // BEGIN: readme-sample-openBlobOutputStream
         /*
-        Opening a blob input stream allows you to write to a blob through a normal stream interface. It will not be
-        committed until the stream is closed.
-        This option is convenient when the length of the data is unknown.
-        This can only be done for block blobs. If the target blob already exists as another type of blob, it will fail.
+         * Opening a blob input stream allows you to write to a blob through a normal stream interface. It will not be
+         * committed until the stream is closed.
+         * This option is convenient when the length of the data is unknown.
+         * This can only be done for block blobs. If the target blob already exists as another type of blob, it will
+         * fail.
          */
         try (BlobOutputStream blobOS = blobClient.getBlockBlobClient().getBlobOutputStream()) {
             blobOS.write(new byte[0]);
@@ -270,8 +271,8 @@ public class ReadmeSamples {
     public void openBlobInputStream() {
         // BEGIN: readme-sample-openBlobInputStream
         /*
-        Opening a blob input stream allows you to read from a blob through a normal stream interface. It is also
-        markable.
+         * Opening a blob input stream allows you to read from a blob through a normal stream interface. It is also
+         * mark-able.
         */
         try (BlobInputStream blobIS = blobClient.openInputStream()) {
             blobIS.read();
@@ -319,7 +320,8 @@ public class ReadmeSamples {
     public void generateSas() {
         // BEGIN: readme-sample-generateSas
         /*
-        Generate an account sas. Other samples in this file will demonstrate how to create a client with the sas token.
+         * Generate an account sas. Other samples in this file will demonstrate how to create a client with the sas
+         * token.
          */
         // Configure the sas parameters. This is the minimal set.
         OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);

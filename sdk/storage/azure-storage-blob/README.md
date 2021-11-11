@@ -70,8 +70,8 @@ az storage account create \
     --location <location>
 ```
 
-Your storage account URL, subsequently identified as <your-storage-account-url>, would be formatted as follows:
-http(s)://<storage-account-name>.blob.core.windows.net
+Your storage account URL, subsequently identified as `<your-storage-account-url>`, would be formatted as follows:
+`http(s)://<storage-account-name>.blob.core.windows.net`
 
 ### Authenticate the client
 
@@ -201,7 +201,7 @@ BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
 or
 
 ```java readme-sample-getBlobServiceClient2
-// Only one "?" is needed here. If the sastoken starts with "?", please removing one "?".
+// Only one "?" is needed here. If the SAS token starts with "?", please removing one "?".
 BlobServiceClient blobServiceClient = new BlobServiceClientBuilder()
     .endpoint("<your-storage-account-url>" + "?" + "<your-sasToken>")
     .buildClient();
@@ -228,7 +228,7 @@ BlobContainerClient blobContainerClient = new BlobContainerClientBuilder()
 or
 
 ```java readme-sample-getBlobContainerClient3
-// Only one "?" is needed here. If the sastoken starts with "?", please removing one "?".
+// Only one "?" is needed here. If the SAS token starts with "?", please removing one "?".
 BlobContainerClient blobContainerClient = new BlobContainerClientBuilder()
     .endpoint("<your-storage-account-url>" + "/" + "mycontainer" + "?" + "<your-sasToken>")
     .buildClient();
@@ -258,7 +258,7 @@ BlobClient blobClient = new BlobClientBuilder()
 or
 
 ```java readme-sample-getBlobClient3
-// Only one "?" is needed here. If the sastoken starts with "?", please removing one "?".
+// Only one "?" is needed here. If the SAS token starts with "?", please removing one "?".
 BlobClient blobClient = new BlobClientBuilder()
     .endpoint("<your-storage-account-url>" + "/" + "mycontainer" + "/" + "myblob" + "?" + "<your-sasToken>")
     .buildClient();
@@ -318,35 +318,35 @@ blobClient.uploadFromFile("local-file.jpg");
 Upload data to a blob and fail if one already exists.
 
 ```java readme-sample-uploadIfNotExists
- /*
-Rather than use an if block conditioned on an exists call, there are three ways to upload-if-not-exists using one
-network call instead of two. Equivalent options are present on all upload methods.
-  */
- // 1. The minimal upload method defaults to no overwriting
- String dataSample = "samples";
- try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBytes())) {
-     blobClient.upload(dataStream, dataSample.length());
- } catch (IOException e) {
-     e.printStackTrace();
- }
+/*
+ * Rather than use an if block conditioned on an exists call, there are three ways to upload-if-not-exists using
+ * one network call instead of two. Equivalent options are present on all upload methods.
+ */
+// 1. The minimal upload method defaults to no overwriting
+String dataSample = "samples";
+try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBytes())) {
+    blobClient.upload(dataStream, dataSample.length());
+} catch (IOException e) {
+    e.printStackTrace();
+}
 
- // 2. The overwrite flag can explicitly be set to false to make intention clear
- try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBytes())) {
-     blobClient.upload(dataStream, dataSample.length(), false /* overwrite */);
- } catch (IOException e) {
-     e.printStackTrace();
- }
+// 2. The overwrite flag can explicitly be set to false to make intention clear
+try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBytes())) {
+    blobClient.upload(dataStream, dataSample.length(), false /* overwrite */);
+} catch (IOException e) {
+    e.printStackTrace();
+}
 
- // 3. If the max overload is needed, access conditions must be used to prevent overwriting
- try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBytes())) {
-     BlobParallelUploadOptions options =
-         new BlobParallelUploadOptions(dataStream, dataSample.length());
-     // Setting IfNoneMatch="*" ensures the upload will fail if there is already a blob at the destination.
-     options.setRequestConditions(new BlobRequestConditions().setIfNoneMatch("*"));
-     blobClient.uploadWithResponse(options, null, Context.NONE);
- } catch (IOException e) {
-     e.printStackTrace();
- }
+// 3. If the max overload is needed, access conditions must be used to prevent overwriting
+try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBytes())) {
+    BlobParallelUploadOptions options =
+        new BlobParallelUploadOptions(dataStream, dataSample.length());
+    // Setting IfNoneMatch="*" ensures the upload will fail if there is already a blob at the destination.
+    options.setRequestConditions(new BlobRequestConditions().setIfNoneMatch("*"));
+    blobClient.uploadWithResponse(options, null, Context.NONE);
+} catch (IOException e) {
+    e.printStackTrace();
+}
 ```
 
 ### Upload a blob and overwrite if one already exists
@@ -354,44 +354,44 @@ network call instead of two. Equivalent options are present on all upload method
 Upload data to a blob and overwrite any existing data at the destination.
 
 ```java readme-sample-overwriteBlob
- /*
-Rather than use an if block conditioned on an exists call, there are three ways to upload-if-exists in one
-network call instead of two. Equivalent options are present on all upload methods.
-  */
- String dataSample = "samples";
+/*
+ * Rather than use an if block conditioned on an exists call, there are three ways to upload-if-exists in one
+ * network call instead of two. Equivalent options are present on all upload methods.
+ */
+String dataSample = "samples";
 
- // 1. The overwrite flag can explicitly be set to true. This will succeed as a create and overwrite.
- try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBytes())) {
-     blobClient.upload(dataStream, dataSample.length(), true /* overwrite */);
- } catch (IOException e) {
-     e.printStackTrace();
- }
+// 1. The overwrite flag can explicitly be set to true. This will succeed as a create and overwrite.
+try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBytes())) {
+    blobClient.upload(dataStream, dataSample.length(), true /* overwrite */);
+} catch (IOException e) {
+    e.printStackTrace();
+}
 
- /*
-  2. If the max overload is needed and no access conditions are passed, the upload will succeed as both a
-  create and overwrite.
-  */
- try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBytes())) {
-     BlobParallelUploadOptions options =
-         new BlobParallelUploadOptions(dataStream, dataSample.length());
-     blobClient.uploadWithResponse(options, null, Context.NONE);
- } catch (IOException e) {
-     e.printStackTrace();
- }
+/*
+ * 2. If the max overload is needed and no access conditions are passed, the upload will succeed as both a
+ * create and overwrite.
+ */
+try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBytes())) {
+    BlobParallelUploadOptions options =
+        new BlobParallelUploadOptions(dataStream, dataSample.length());
+    blobClient.uploadWithResponse(options, null, Context.NONE);
+} catch (IOException e) {
+    e.printStackTrace();
+}
 
- /*
-  3. If the max overload is needed, access conditions may be used to assert that the upload is an overwrite and
-  not simply a create.
-  */
- try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBytes())) {
-     BlobParallelUploadOptions options =
-         new BlobParallelUploadOptions(dataStream, dataSample.length());
-     // Setting IfMatch="*" ensures the upload will succeed only if there is already a blob at the destination.
-     options.setRequestConditions(new BlobRequestConditions().setIfMatch("*"));
-     blobClient.uploadWithResponse(options, null, Context.NONE);
- } catch (IOException e) {
-     e.printStackTrace();
- }
+/*
+ * 3. If the max overload is needed, access conditions may be used to assert that the upload is an overwrite and
+ * not simply a create.
+ */
+try (ByteArrayInputStream dataStream = new ByteArrayInputStream(dataSample.getBytes())) {
+    BlobParallelUploadOptions options =
+        new BlobParallelUploadOptions(dataStream, dataSample.length());
+    // Setting IfMatch="*" ensures the upload will succeed only if there is already a blob at the destination.
+    options.setRequestConditions(new BlobRequestConditions().setIfMatch("*"));
+    blobClient.uploadWithResponse(options, null, Context.NONE);
+} catch (IOException e) {
+    e.printStackTrace();
+}
 ```
 
 ### Upload a blob via an `OutputStream`
@@ -400,10 +400,11 @@ Upload a blob by opening a `BlobOutputStream` and writing to it through standard
 
 ```java readme-sample-openBlobOutputStream
 /*
-Opening a blob input stream allows you to write to a blob through a normal stream interface. It will not be
-committed until the stream is closed.
-This option is convenient when the length of the data is unknown.
-This can only be done for block blobs. If the target blob already exists as another type of blob, it will fail.
+ * Opening a blob input stream allows you to write to a blob through a normal stream interface. It will not be
+ * committed until the stream is closed.
+ * This option is convenient when the length of the data is unknown.
+ * This can only be done for block blobs. If the target blob already exists as another type of blob, it will
+ * fail.
  */
 try (BlobOutputStream blobOS = blobClient.getBlockBlobClient().getBlobOutputStream()) {
     blobOS.write(new byte[0]);
@@ -446,8 +447,8 @@ Download a blob by opening a `BlobInputStream` and reading from it through stand
 
 ```java readme-sample-openBlobInputStream
 /*
-Opening a blob input stream allows you to read from a blob through a normal stream interface. It is also
-markable.
+ * Opening a blob input stream allows you to read from a blob through a normal stream interface. It is also
+ * mark-able.
 */
 try (BlobInputStream blobIS = blobClient.openInputStream()) {
     blobIS.read();
@@ -505,7 +506,8 @@ Use an instance of a client to generate a new SAS token.
 
 ```java readme-sample-generateSas
 /*
-Generate an account sas. Other samples in this file will demonstrate how to create a client with the sas token.
+ * Generate an account sas. Other samples in this file will demonstrate how to create a client with the sas
+ * token.
  */
 // Configure the sas parameters. This is the minimal set.
 OffsetDateTime expiryTime = OffsetDateTime.now().plusDays(1);
@@ -525,7 +527,7 @@ BlobServiceSasSignatureValues serviceSasValues =
 blobContainerClient.generateSas(serviceSasValues);
 
 // Generate a sas using a blob client
-BlobSasPermission blobSasPermission =  new BlobSasPermission().setReadPermission(true);
+BlobSasPermission blobSasPermission = new BlobSasPermission().setReadPermission(true);
 serviceSasValues = new BlobServiceSasSignatureValues(expiryTime, blobSasPermission);
 blobClient.generateSas(serviceSasValues);
 ```

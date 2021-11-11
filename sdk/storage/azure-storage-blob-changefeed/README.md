@@ -35,8 +35,8 @@ az storage account create \
     --location <location>
 ```
 
-Your storage account URL, subsequently identified as <your-storage-account-url>, would be formatted as follows
-http(s)://<storage-account-name>.blob.core.windows.net
+Your storage account URL, subsequently identified as `<your-storage-account-url>`, would be formatted as follows
+`http(s)://<storage-account-name>.blob.core.windows.net`
 
 ### Authenticate the client
 
