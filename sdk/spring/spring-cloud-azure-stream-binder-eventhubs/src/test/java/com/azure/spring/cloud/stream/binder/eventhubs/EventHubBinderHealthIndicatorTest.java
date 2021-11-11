@@ -3,8 +3,8 @@
 
 package com.azure.spring.cloud.stream.binder.eventhubs;
 
-import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubProperties;
+import com.azure.spring.eventhubs.core.producer.BatchableProducerAsyncClient;
 import com.azure.spring.eventhubs.core.producer.EventHubProducerFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -32,7 +32,7 @@ public class EventHubBinderHealthIndicatorTest {
     private EventHubProducerFactory producerFactory;
 
     @Mock
-    private EventHubProducerAsyncClient producerAsyncClient;
+    private BatchableProducerAsyncClient producerAsyncClient;
 
     private EventHubHealthIndicator healthIndicator;
 

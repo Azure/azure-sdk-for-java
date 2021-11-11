@@ -3,7 +3,6 @@
 
 package com.azure.spring.eventhubs.core.producer;
 
-import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,7 +32,7 @@ class DefaultEventHubNamespaceProducerFactoryTest {
 
     @Test
     void testCreateEventProducerClient() {
-        EventHubProducerAsyncClient producer = producerFactory.createProducer(eventHubName);
+        EventHubProducer producer = producerFactory.createProducer(eventHubName);
 
         assertNotNull(producer);
         assertEquals(1, producerAddedTimes);
@@ -41,7 +40,7 @@ class DefaultEventHubNamespaceProducerFactoryTest {
 
     @Test
     void testCreateEventProducerClientTwice() {
-        EventHubProducerAsyncClient producer = producerFactory.createProducer(eventHubName);
+        EventHubProducer producer = producerFactory.createProducer(eventHubName);
         assertNotNull(producer);
 
         producer = producerFactory.createProducer(eventHubName);
@@ -50,11 +49,11 @@ class DefaultEventHubNamespaceProducerFactoryTest {
 
     @Test
     void testRecreateEventProducerClient() {
-        final EventHubProducerAsyncClient producer = producerFactory.createProducer(eventHubName);
+        final EventHubProducer producer = producerFactory.createProducer(eventHubName);
         assertNotNull(producer);
 
         String anotherEventHubName = "eventHub2";
-        final EventHubProducerAsyncClient anotherProducer = producerFactory.createProducer(anotherEventHubName);
+        final EventHubProducer anotherProducer = producerFactory.createProducer(anotherEventHubName);
         assertNotNull(anotherProducer);
         assertEquals(2, producerAddedTimes);
     }

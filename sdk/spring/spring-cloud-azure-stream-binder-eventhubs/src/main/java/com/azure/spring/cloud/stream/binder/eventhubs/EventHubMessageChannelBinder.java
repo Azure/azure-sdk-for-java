@@ -15,7 +15,7 @@ import com.azure.spring.eventhubs.core.processor.DefaultEventHubNamespaceProcess
 import com.azure.spring.eventhubs.core.producer.DefaultEventHubNamespaceProducerFactory;
 import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
 import com.azure.spring.eventhubs.core.properties.ProcessorProperties;
-import com.azure.spring.eventhubs.core.properties.ProducerProperties;
+import com.azure.spring.eventhubs.properties.BatchableProducerProperties;
 import com.azure.spring.integration.eventhubs.inbound.EventHubInboundChannelAdapter;
 import com.azure.spring.integration.handler.DefaultMessageHandler;
 import com.azure.spring.messaging.PropertiesSupplier;
@@ -82,7 +82,6 @@ public class EventHubMessageChannelBinder extends
         handler.setSync(producerProperties.getExtension().isSync());
         handler.setSendTimeout(producerProperties.getExtension().getSendTimeout());
         handler.setSendFailureChannel(errorChannel);
-        handler.setBatchSendingConfig(producerProperties.getExtension().getBatchConfig());
 
         if (producerProperties.isPartitioned()) {
             handler.setPartitionIdExpression(
@@ -157,11 +156,11 @@ public class EventHubMessageChannelBinder extends
         }
     }
 
-    private PropertiesSupplier<String, ProducerProperties> getProducerPropertiesSupplier() {
+    private PropertiesSupplier<String, BatchableProducerProperties> getProducerPropertiesSupplier() {
         return key -> {
             Map<String, EventHubBindingProperties> bindings = bindingProperties.getBindings();
             for (Map.Entry<String, EventHubBindingProperties> entry : bindings.entrySet()) {
-                ProducerProperties properties = bindings.get(entry.getKey()).getProducer().getProducer();
+                BatchableProducerProperties properties = (BatchableProducerProperties) bindings.get(entry.getKey()).getProducer().getProducer();
                 if (properties.getEventHubName() == null) {
                     continue;
                 }

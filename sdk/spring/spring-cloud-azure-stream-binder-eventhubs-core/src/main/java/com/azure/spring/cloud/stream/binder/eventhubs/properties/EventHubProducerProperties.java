@@ -3,8 +3,7 @@
 
 package com.azure.spring.cloud.stream.binder.eventhubs.properties;
 
-import com.azure.spring.eventhubs.core.properties.ProducerProperties;
-import com.azure.spring.messaging.batch.BatchSendingConfig;
+import com.azure.spring.eventhubs.properties.BatchableProducerProperties;
 
 /**
  * @author Warren Zhu
@@ -27,9 +26,7 @@ public class EventHubProducerProperties {
      */
     private long sendTimeout = 10000;
 
-    private final ProducerProperties producer = new ProducerProperties();
-
-    private BatchSendingConfig batchConfig = new BatchSendingConfig();
+    private final BatchableProducerProperties producer = new BatchableProducerProperties();
 
 
     public boolean isSync() {
@@ -48,15 +45,8 @@ public class EventHubProducerProperties {
         this.sendTimeout = sendTimeout;
     }
 
-    public ProducerProperties getProducer() {
+    public BatchableProducerProperties getProducer() {
         return producer;
     }
 
-    public BatchSendingConfig getBatchConfig() {
-        return batchConfig;
-    }
-
-    public void setBatchConfig(BatchSendingConfig batchConfig) {
-        this.batchConfig = batchConfig;
-    }
 }

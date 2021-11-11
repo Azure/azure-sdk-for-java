@@ -10,7 +10,7 @@ import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
  */
 public interface EventHubProducerFactory {
 
-    EventHubProducerAsyncClient createProducer(String eventHub);
+    EventHubProducer createProducer(String eventHub);
 
     default void addListener(Listener listener) {
 

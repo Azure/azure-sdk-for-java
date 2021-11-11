@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.stream.binder.eventhubs;
 
-import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
+import com.azure.spring.eventhubs.core.producer.BatchableProducerAsyncClient;
 import com.azure.spring.eventhubs.core.producer.EventHubProducerFactory;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
@@ -22,7 +22,7 @@ public class EventHubHealthIndicator implements HealthIndicator {
 
     private final EventHubProducerFactory producerFactory;
 
-    private EventHubProducerAsyncClient producerAsyncClient;
+    private BatchableProducerAsyncClient producerAsyncClient;
 
     private int timeout = DEFAULT_TIMEOUT;
 
@@ -34,7 +34,7 @@ public class EventHubHealthIndicator implements HealthIndicator {
     private synchronized void initProducerClient() {
         if (this.producerAsyncClient == null) {
             final Optional<String> eventHubName = binder.getEventHubsInUse().keySet().stream().findFirst();
-            eventHubName.ifPresent(n -> this.producerAsyncClient = producerFactory.createProducer(n));
+            eventHubName.ifPresent(n -> this.producerAsyncClient = (BatchableProducerAsyncClient) producerFactory.createProducer(n));
         }
     }
 
