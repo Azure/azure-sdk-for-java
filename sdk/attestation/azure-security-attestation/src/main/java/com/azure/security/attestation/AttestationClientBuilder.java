@@ -25,9 +25,7 @@ import java.util.Objects;
 /** A builder for creating a new instance of the AttestationClient type. */
 @ServiceClientBuilder(
         serviceClients = {
-            PolicyCertificatesClient.class,
             AttestationClient.class,
-            PolicyCertificatesAsyncClient.class,
         })
 public final class AttestationClientBuilder {
     private static final String SDK_NAME = "name";

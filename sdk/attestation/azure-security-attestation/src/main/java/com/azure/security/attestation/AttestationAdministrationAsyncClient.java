@@ -118,8 +118,7 @@ public final class AttestationAdministrationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the attestation policy expressed as a string.
      */
-    public Mono<Response<String>> getAttestationPolicyWithResponse(AttestationType attestationType, Context context) {
-
+    Mono<Response<String>> getAttestationPolicyWithResponse(AttestationType attestationType, Context context) {
         return this.policyImpl.getWithResponseAsync(attestationType, context)
             .flatMap(response -> {
                 Response<AttestationTokenImpl> token = Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken()));
@@ -211,7 +210,7 @@ public final class AttestationAdministrationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an attestation policy operation.
      */
-    public Mono<Response<PolicyResult>> setAttestationPolicyWithResponse(AttestationType attestationType, String newAttestationPolicy, Context context) {
+    Mono<Response<PolicyResult>> setAttestationPolicyWithResponse(AttestationType attestationType, String newAttestationPolicy, Context context) {
         AttestationPolicySetOptions options = new AttestationPolicySetOptions()
             .setPolicy(newAttestationPolicy);
         return setAttestationPolicyWithResponse(attestationType, options, context);
@@ -260,7 +259,7 @@ public final class AttestationAdministrationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an attestation policy operation.
      */
-    public Mono<Response<PolicyResult>> setAttestationPolicyWithResponse(AttestationType attestationType, AttestationPolicySetOptions options, Context context) {
+    Mono<Response<PolicyResult>> setAttestationPolicyWithResponse(AttestationType attestationType, AttestationPolicySetOptions options, Context context) {
         // Ensure that the incoming request makes sense.
         AttestationTokenValidationOptions validationOptions = options.getValidationOptions();
         if (validationOptions == null) {
@@ -417,7 +416,7 @@ public final class AttestationAdministrationAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an attestation policy operation.
      */
-    public Mono<Response<PolicyResult>> resetAttestationPolicyWithResponse(AttestationType attestationType, AttestationPolicySetOptions options, Context context) {
+    Mono<Response<PolicyResult>> resetAttestationPolicyWithResponse(AttestationType attestationType, AttestationPolicySetOptions options, Context context) {
         if (options.getAttestationPolicy() != null) {
             logger.logThrowableAsError(new InvalidParameterException("Attestation policy should not be set in resetAttestationPolicy"));
         }
@@ -454,6 +453,19 @@ public final class AttestationAdministrationAsyncClient {
 
     /**
      * Return cached attestation signers, fetching from the internet if needed.
+     *<p>
+     * Validating an attestation JWT requires a set of attestation signers retrieved from the
+     * attestation service using the `signingCertificatesImpl.getAsync()` API. This API can take
+     * more than 100ms to complete, so caching the value locally can significantly reduce the time
+     * needed to validate the attestation JWT.
+     * </p><p>
+     *  Note that there is a possible race condition if two threads on the same client are making
+     *  calls to the attestation service. In that case, two calls to `signingCertificatesImpl.getAsync()`
+     *  may be made. That should not result in any problems - one of the two calls will complete first
+     *  and the `compareAndSet` will update the `cachedSigners`. The second call's result will be discarded
+     *  because the `compareAndSet` API won't capture a reference to the second `signers` object.
+     *
+     * </p>
      * @return cached signers.
      */
     Mono<List<AttestationSigner>> getCachedAttestationSigners() {
