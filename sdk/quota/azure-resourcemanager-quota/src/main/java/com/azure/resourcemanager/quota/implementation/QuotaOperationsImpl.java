@@ -7,20 +7,21 @@ package com.azure.resourcemanager.quota.implementation;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.quota.fluent.OperationsClient;
+import com.azure.resourcemanager.quota.fluent.QuotaOperationsClient;
 import com.azure.resourcemanager.quota.fluent.models.OperationResponseInner;
 import com.azure.resourcemanager.quota.models.OperationResponse;
-import com.azure.resourcemanager.quota.models.Operations;
+import com.azure.resourcemanager.quota.models.QuotaOperations;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public final class OperationsImpl implements Operations {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationsImpl.class);
+public final class QuotaOperationsImpl implements QuotaOperations {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(QuotaOperationsImpl.class);
 
-    private final OperationsClient innerClient;
+    private final QuotaOperationsClient innerClient;
 
     private final com.azure.resourcemanager.quota.QuotaManager serviceManager;
 
-    public OperationsImpl(OperationsClient innerClient, com.azure.resourcemanager.quota.QuotaManager serviceManager) {
+    public QuotaOperationsImpl(
+        QuotaOperationsClient innerClient, com.azure.resourcemanager.quota.QuotaManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -35,7 +36,7 @@ public final class OperationsImpl implements Operations {
         return Utils.mapPage(inner, inner1 -> new OperationResponseImpl(inner1, this.manager()));
     }
 
-    private OperationsClient serviceClient() {
+    private QuotaOperationsClient serviceClient() {
         return this.innerClient;
     }
 
