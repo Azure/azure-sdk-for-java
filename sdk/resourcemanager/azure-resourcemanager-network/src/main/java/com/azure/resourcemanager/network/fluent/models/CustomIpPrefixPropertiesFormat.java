@@ -15,8 +15,8 @@ import java.util.List;
 
 /** Custom IP prefix properties. */
 @Fluent
-public final class CustomIpPrefixPropertiesFormatInner {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomIpPrefixPropertiesFormatInner.class);
+public final class CustomIpPrefixPropertiesFormat {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(CustomIpPrefixPropertiesFormat.class);
 
     /*
      * The prefix range in CIDR notation. Should include the start address and
@@ -41,13 +41,13 @@ public final class CustomIpPrefixPropertiesFormatInner {
      * The Parent CustomIpPrefix for IPv6 /64 CustomIpPrefix.
      */
     @JsonProperty(value = "customIpPrefixParent")
-    private CustomIpPrefixInner customIpPrefixParent;
+    private SubResource customIpPrefixParent;
 
     /*
      * The list of all Children for IPv6 /48 CustomIpPrefix.
      */
     @JsonProperty(value = "childCustomIpPrefixes", access = JsonProperty.Access.WRITE_ONLY)
-    private List<CustomIpPrefixInner> childCustomIpPrefixes;
+    private List<SubResource> childCustomIpPrefixes;
 
     /*
      * The commissioned state of the Custom IP Prefix.
@@ -92,9 +92,9 @@ public final class CustomIpPrefixPropertiesFormatInner {
      * Set the cidr property: The prefix range in CIDR notation. Should include the start address and the prefix length.
      *
      * @param cidr the cidr value to set.
-     * @return the CustomIpPrefixPropertiesFormatInner object itself.
+     * @return the CustomIpPrefixPropertiesFormat object itself.
      */
-    public CustomIpPrefixPropertiesFormatInner withCidr(String cidr) {
+    public CustomIpPrefixPropertiesFormat withCidr(String cidr) {
         this.cidr = cidr;
         return this;
     }
@@ -112,9 +112,9 @@ public final class CustomIpPrefixPropertiesFormatInner {
      * Set the signedMessage property: Signed message for WAN validation.
      *
      * @param signedMessage the signedMessage value to set.
-     * @return the CustomIpPrefixPropertiesFormatInner object itself.
+     * @return the CustomIpPrefixPropertiesFormat object itself.
      */
-    public CustomIpPrefixPropertiesFormatInner withSignedMessage(String signedMessage) {
+    public CustomIpPrefixPropertiesFormat withSignedMessage(String signedMessage) {
         this.signedMessage = signedMessage;
         return this;
     }
@@ -132,9 +132,9 @@ public final class CustomIpPrefixPropertiesFormatInner {
      * Set the authorizationMessage property: Authorization message for WAN validation.
      *
      * @param authorizationMessage the authorizationMessage value to set.
-     * @return the CustomIpPrefixPropertiesFormatInner object itself.
+     * @return the CustomIpPrefixPropertiesFormat object itself.
      */
-    public CustomIpPrefixPropertiesFormatInner withAuthorizationMessage(String authorizationMessage) {
+    public CustomIpPrefixPropertiesFormat withAuthorizationMessage(String authorizationMessage) {
         this.authorizationMessage = authorizationMessage;
         return this;
     }
@@ -144,7 +144,7 @@ public final class CustomIpPrefixPropertiesFormatInner {
      *
      * @return the customIpPrefixParent value.
      */
-    public CustomIpPrefixInner customIpPrefixParent() {
+    public SubResource customIpPrefixParent() {
         return this.customIpPrefixParent;
     }
 
@@ -152,9 +152,9 @@ public final class CustomIpPrefixPropertiesFormatInner {
      * Set the customIpPrefixParent property: The Parent CustomIpPrefix for IPv6 /64 CustomIpPrefix.
      *
      * @param customIpPrefixParent the customIpPrefixParent value to set.
-     * @return the CustomIpPrefixPropertiesFormatInner object itself.
+     * @return the CustomIpPrefixPropertiesFormat object itself.
      */
-    public CustomIpPrefixPropertiesFormatInner withCustomIpPrefixParent(CustomIpPrefixInner customIpPrefixParent) {
+    public CustomIpPrefixPropertiesFormat withCustomIpPrefixParent(SubResource customIpPrefixParent) {
         this.customIpPrefixParent = customIpPrefixParent;
         return this;
     }
@@ -164,7 +164,7 @@ public final class CustomIpPrefixPropertiesFormatInner {
      *
      * @return the childCustomIpPrefixes value.
      */
-    public List<CustomIpPrefixInner> childCustomIpPrefixes() {
+    public List<SubResource> childCustomIpPrefixes() {
         return this.childCustomIpPrefixes;
     }
 
@@ -181,9 +181,9 @@ public final class CustomIpPrefixPropertiesFormatInner {
      * Set the commissionedState property: The commissioned state of the Custom IP Prefix.
      *
      * @param commissionedState the commissionedState value to set.
-     * @return the CustomIpPrefixPropertiesFormatInner object itself.
+     * @return the CustomIpPrefixPropertiesFormat object itself.
      */
-    public CustomIpPrefixPropertiesFormatInner withCommissionedState(CommissionedState commissionedState) {
+    public CustomIpPrefixPropertiesFormat withCommissionedState(CommissionedState commissionedState) {
         this.commissionedState = commissionedState;
         return this;
     }
@@ -230,11 +230,5 @@ public final class CustomIpPrefixPropertiesFormatInner {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (customIpPrefixParent() != null) {
-            customIpPrefixParent().validate();
-        }
-        if (childCustomIpPrefixes() != null) {
-            childCustomIpPrefixes().forEach(e -> e.validate());
-        }
     }
 }
