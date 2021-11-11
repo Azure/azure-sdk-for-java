@@ -104,7 +104,7 @@ public class CertificateClientTest extends CertificateClientTestBase {
         });
         KeyVaultCredentialPolicy.clearCache(); // Ensure we don't have anything cached and try again.
         createCertificateRunner((policy) -> {
-            String certName = generateResourceId("testCer");
+            String certName = generateResourceId("testCer2");
             SyncPoller<CertificateOperation, KeyVaultCertificateWithPolicy> certPoller =
                 client.beginCreateCertificate(certName, policy);
             certPoller.waitForCompletion();
