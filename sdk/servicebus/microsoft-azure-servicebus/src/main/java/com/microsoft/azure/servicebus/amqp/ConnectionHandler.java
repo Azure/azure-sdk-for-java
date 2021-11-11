@@ -175,9 +175,7 @@ public class ConnectionHandler extends BaseHandler {
 			    connection.getTransport().unbind();
 			}
 			
-			if (connection != null) {
-			    connection.free();
-			}
+			connection.free();
         }
 
         this.notifyTransportErrors(event);
