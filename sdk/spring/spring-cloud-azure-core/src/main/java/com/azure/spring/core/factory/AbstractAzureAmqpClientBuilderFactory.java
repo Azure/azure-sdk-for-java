@@ -8,6 +8,7 @@ import com.azure.core.amqp.AmqpTransportType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.core.util.ClientOptions;
 import com.azure.spring.core.aware.ClientAware;
+import com.azure.spring.core.aware.ProxyAware;
 import com.azure.spring.core.aware.RetryAware;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -76,11 +77,12 @@ public abstract class AbstractAzureAmqpClientBuilderFactory<T> extends AbstractA
 
     @Override
     protected void configureProxy(T builder) {
-        if (getAzureProperties().getProxy() == null) {
+        ProxyAware.Proxy proxy = getAzureProperties().getProxy();
+        if (proxy == null) {
             return;
         }
 
-        final ProxyOptions proxyOptions = AMQP_PROXY_CONVERTER.convert(getAzureProperties().getProxy());
+        final ProxyOptions proxyOptions = AMQP_PROXY_CONVERTER.convert(proxy);
         if (proxyOptions != null) {
             consumeProxyOptions().accept(builder, proxyOptions);
         } else {

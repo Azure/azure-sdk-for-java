@@ -4,6 +4,7 @@
 package com.azure.spring.core.converter;
 
 import com.azure.core.http.ProxyOptions;
+import com.azure.spring.core.aware.ProxyAware;
 import com.azure.spring.core.properties.proxy.HttpProxyProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,19 +16,19 @@ import java.net.InetSocketAddress;
 /**
  * Converts a {@link HttpProxyProperties} to a {@link ProxyOptions}.
  */
-public final class AzureHttpProxyOptionsConverter implements Converter<HttpProxyProperties, ProxyOptions> {
+public final class AzureHttpProxyOptionsConverter implements Converter<ProxyAware.Proxy, ProxyOptions> {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureHttpProxyOptionsConverter.class);
     public static final AzureHttpProxyOptionsConverter HTTP_PROXY_CONVERTER = new AzureHttpProxyOptionsConverter();
 
     @Override
-    public ProxyOptions convert(HttpProxyProperties proxyProperties) {
-        if (!StringUtils.hasText(proxyProperties.getHostname()) || proxyProperties.getPort() == null) {
+    public ProxyOptions convert(ProxyAware.Proxy proxy) {
+        if (!StringUtils.hasText(proxy.getHostname()) || proxy.getPort() == null) {
             LOGGER.debug("Proxy hostname or port is not set.");
             return null;
         }
 
-        final String type = proxyProperties.getType();
+        final String type = proxy.getType();
         ProxyOptions.Type sdkProxyType;
         if ("http".equalsIgnoreCase(type)) {
             sdkProxyType = ProxyOptions.Type.HTTP;
@@ -35,13 +36,17 @@ public final class AzureHttpProxyOptionsConverter implements Converter<HttpProxy
             sdkProxyType = ProxyOptions.Type.SOCKS4;
         }
 
-        ProxyOptions proxyOptions = new ProxyOptions(sdkProxyType, new InetSocketAddress(proxyProperties.getHostname(),
-                                                                                         proxyProperties.getPort()));
-        if (StringUtils.hasText(proxyProperties.getUsername()) && StringUtils.hasText(proxyProperties.getPassword())) {
-            proxyOptions.setCredentials(proxyProperties.getUsername(), proxyProperties.getPassword());
+        ProxyOptions proxyOptions = new ProxyOptions(sdkProxyType, new InetSocketAddress(proxy.getHostname(),
+                                                                                         proxy.getPort()));
+        if (StringUtils.hasText(proxy.getUsername()) && StringUtils.hasText(proxy.getPassword())) {
+            proxyOptions.setCredentials(proxy.getUsername(), proxy.getPassword());
         }
-        if (StringUtils.hasText(proxyProperties.getNonProxyHosts())) {
-            proxyOptions.setNonProxyHosts(proxyProperties.getNonProxyHosts());
+
+        if (proxy instanceof HttpProxyProperties) {
+            HttpProxyProperties httpProxyProperties = (HttpProxyProperties) proxy;
+            if (StringUtils.hasText(httpProxyProperties.getNonProxyHosts())) {
+                proxyOptions.setNonProxyHosts(httpProxyProperties.getNonProxyHosts());
+            }
         }
         return proxyOptions;
     }

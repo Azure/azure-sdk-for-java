@@ -3,6 +3,10 @@
 
 package com.azure.spring.core.factory;
 
+import com.azure.core.http.ProxyOptions;
+import com.azure.spring.core.aware.ProxyAware;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
@@ -15,14 +19,20 @@ import com.azure.spring.core.aware.RetryAware;
 import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.core.properties.AzureProperties;
 
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
+import java.util.function.Function;
+
+import static com.azure.spring.core.converter.AzureHttpProxyOptionsConverter.HTTP_PROXY_CONVERTER;
 
 /**
  *
  */
 public class AzureCredentialBuilderFactory<T extends CredentialBuilderBase<T>> extends AbstractAzureHttpClientBuilderFactory<T> {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(AzureCredentialBuilderFactory.class);
 
     private final AzureProperties azureProperties;
     private final T builder;
@@ -69,12 +79,20 @@ public class AzureCredentialBuilderFactory<T extends CredentialBuilderBase<T>> e
 
     @Override
     protected void configureService(T builder) {
+        final ProxyAware.Proxy proxy = getAzureProperties().getProxy();
+        if (proxy == null) {
+            return;
+        }
 
+        ProxyOptions proxyOptions = HTTP_PROXY_CONVERTER.convert(proxy);
+        if (proxyOptions != null) {
+            builder.proxyOptions(proxyOptions);
+        }
     }
 
     @Override
     protected BiConsumer<T, Configuration> consumeConfiguration() {
-        return (a, b) -> { };
+        return T::configuration;
     }
 
     @Override
@@ -90,15 +108,34 @@ public class AzureCredentialBuilderFactory<T extends CredentialBuilderBase<T>> e
     @Override
     protected void configureRetry(T builder) {
         RetryAware.Retry retry = getAzureProperties().getRetry();
-        if (retry != null && retry.getMaxAttempts() != null) {
-            builder.maxRetry(retry.getMaxAttempts());
-            // TODO (xiada): don't know how to specify the retryTimeout
-//            builder.retryTimeout()
+        if (retry == null) {
+            return;
         }
+
+        if (retry.getMaxAttempts() != null) {
+            builder.maxRetry(retry.getMaxAttempts());
+        }
+        Function<Duration, Duration> retryTimeout = retryTimeout();
+        if (retryTimeout != null) {
+            builder.retryTimeout(retryTimeout);
+        }
+    }
+
+    /**
+     * Default timeout implementation
+     * @return Timeout function
+     */
+    protected Function<Duration, Duration> retryTimeout() {
+        RetryAware.Retry retry = getAzureProperties().getRetry();
+        if (retry == null || retry.getTimeout() == null) {
+            return null;
+        }
+        return timeout -> retry.getTimeout();
     }
 
     @Override
     protected BiConsumer<T, RetryPolicy> consumeRetryPolicy() {
+        LOGGER.debug("No need to specify retry policy.");
         return null;
     }
 }

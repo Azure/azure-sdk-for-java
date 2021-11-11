@@ -8,14 +8,19 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.core.factory.AbstractAzureServiceClientBuilderFactory;
 import com.azure.spring.core.factory.AzureCredentialBuilderFactory;
+import com.azure.spring.service.credential.AzureDefaultAzureCredentialBuilderFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+
+import java.util.concurrent.ThreadPoolExecutor;
 
 import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME;
 
@@ -39,8 +44,11 @@ public class AzureDefaultTokenCredentialAutoConfiguration {
     }
 
     @Bean
-    public AzureCredentialBuilderFactory<DefaultAzureCredentialBuilder> defaultAzureCredentialBuilderFactory() {
-        return new AzureCredentialBuilderFactory<>(azureGlobalProperties, new DefaultAzureCredentialBuilder());
+    public AzureCredentialBuilderFactory<DefaultAzureCredentialBuilder> defaultAzureCredentialBuilderFactory(
+        @Autowired(required = false) ThreadPoolTaskExecutor taskExecutor) {
+        ThreadPoolExecutor threadPoolExecutor = taskExecutor == null ? null : taskExecutor.getThreadPoolExecutor();
+        return new AzureDefaultAzureCredentialBuilderFactory(azureGlobalProperties,
+            new DefaultAzureCredentialBuilder(), threadPoolExecutor);
     }
 
     @Bean
@@ -71,5 +79,5 @@ public class AzureDefaultTokenCredentialAutoConfiguration {
             this.beanFactory = beanFactory;
         }
     }
-    
+
 }
