@@ -5,32 +5,40 @@
 package com.azure.resourcemanager.signalr.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.signalr.models.ShareablePrivateLinkResourceType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Private link resource. */
+/** Private link resource properties. */
 @Fluent
-public final class PrivateLinkResourceInner extends ProxyResource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourceInner.class);
+public final class PrivateLinkResourceProperties {
+    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateLinkResourceProperties.class);
 
     /*
-     * Properties of a private link resource
+     * Group Id of the private link resource
      */
-    @JsonProperty(value = "properties")
-    private PrivateLinkResourceProperties innerProperties;
+    @JsonProperty(value = "groupId")
+    private String groupId;
 
-    /**
-     * Get the innerProperties property: Properties of a private link resource.
-     *
-     * @return the innerProperties value.
+    /*
+     * Required members of the private link resource
      */
-    private PrivateLinkResourceProperties innerProperties() {
-        return this.innerProperties;
-    }
+    @JsonProperty(value = "requiredMembers")
+    private List<String> requiredMembers;
+
+    /*
+     * Required private DNS zone names
+     */
+    @JsonProperty(value = "requiredZoneNames")
+    private List<String> requiredZoneNames;
+
+    /*
+     * The list of resources that are onboarded to private link service
+     */
+    @JsonProperty(value = "shareablePrivateLinkResourceTypes")
+    private List<ShareablePrivateLinkResourceType> shareablePrivateLinkResourceTypes;
 
     /**
      * Get the groupId property: Group Id of the private link resource.
@@ -38,20 +46,17 @@ public final class PrivateLinkResourceInner extends ProxyResource {
      * @return the groupId value.
      */
     public String groupId() {
-        return this.innerProperties() == null ? null : this.innerProperties().groupId();
+        return this.groupId;
     }
 
     /**
      * Set the groupId property: Group Id of the private link resource.
      *
      * @param groupId the groupId value to set.
-     * @return the PrivateLinkResourceInner object itself.
+     * @return the PrivateLinkResourceProperties object itself.
      */
-    public PrivateLinkResourceInner withGroupId(String groupId) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new PrivateLinkResourceProperties();
-        }
-        this.innerProperties().withGroupId(groupId);
+    public PrivateLinkResourceProperties withGroupId(String groupId) {
+        this.groupId = groupId;
         return this;
     }
 
@@ -61,20 +66,17 @@ public final class PrivateLinkResourceInner extends ProxyResource {
      * @return the requiredMembers value.
      */
     public List<String> requiredMembers() {
-        return this.innerProperties() == null ? null : this.innerProperties().requiredMembers();
+        return this.requiredMembers;
     }
 
     /**
      * Set the requiredMembers property: Required members of the private link resource.
      *
      * @param requiredMembers the requiredMembers value to set.
-     * @return the PrivateLinkResourceInner object itself.
+     * @return the PrivateLinkResourceProperties object itself.
      */
-    public PrivateLinkResourceInner withRequiredMembers(List<String> requiredMembers) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new PrivateLinkResourceProperties();
-        }
-        this.innerProperties().withRequiredMembers(requiredMembers);
+    public PrivateLinkResourceProperties withRequiredMembers(List<String> requiredMembers) {
+        this.requiredMembers = requiredMembers;
         return this;
     }
 
@@ -84,20 +86,17 @@ public final class PrivateLinkResourceInner extends ProxyResource {
      * @return the requiredZoneNames value.
      */
     public List<String> requiredZoneNames() {
-        return this.innerProperties() == null ? null : this.innerProperties().requiredZoneNames();
+        return this.requiredZoneNames;
     }
 
     /**
      * Set the requiredZoneNames property: Required private DNS zone names.
      *
      * @param requiredZoneNames the requiredZoneNames value to set.
-     * @return the PrivateLinkResourceInner object itself.
+     * @return the PrivateLinkResourceProperties object itself.
      */
-    public PrivateLinkResourceInner withRequiredZoneNames(List<String> requiredZoneNames) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new PrivateLinkResourceProperties();
-        }
-        this.innerProperties().withRequiredZoneNames(requiredZoneNames);
+    public PrivateLinkResourceProperties withRequiredZoneNames(List<String> requiredZoneNames) {
+        this.requiredZoneNames = requiredZoneNames;
         return this;
     }
 
@@ -108,7 +107,7 @@ public final class PrivateLinkResourceInner extends ProxyResource {
      * @return the shareablePrivateLinkResourceTypes value.
      */
     public List<ShareablePrivateLinkResourceType> shareablePrivateLinkResourceTypes() {
-        return this.innerProperties() == null ? null : this.innerProperties().shareablePrivateLinkResourceTypes();
+        return this.shareablePrivateLinkResourceTypes;
     }
 
     /**
@@ -116,14 +115,11 @@ public final class PrivateLinkResourceInner extends ProxyResource {
      * service.
      *
      * @param shareablePrivateLinkResourceTypes the shareablePrivateLinkResourceTypes value to set.
-     * @return the PrivateLinkResourceInner object itself.
+     * @return the PrivateLinkResourceProperties object itself.
      */
-    public PrivateLinkResourceInner withShareablePrivateLinkResourceTypes(
+    public PrivateLinkResourceProperties withShareablePrivateLinkResourceTypes(
         List<ShareablePrivateLinkResourceType> shareablePrivateLinkResourceTypes) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new PrivateLinkResourceProperties();
-        }
-        this.innerProperties().withShareablePrivateLinkResourceTypes(shareablePrivateLinkResourceTypes);
+        this.shareablePrivateLinkResourceTypes = shareablePrivateLinkResourceTypes;
         return this;
     }
 
@@ -133,8 +129,8 @@ public final class PrivateLinkResourceInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (shareablePrivateLinkResourceTypes() != null) {
+            shareablePrivateLinkResourceTypes().forEach(e -> e.validate());
         }
     }
 }
