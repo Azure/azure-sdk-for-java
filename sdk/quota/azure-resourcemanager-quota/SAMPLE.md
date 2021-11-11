@@ -1,16 +1,16 @@
 # Code snippets and samples
 
 
-## Operation
-
-- [List](#operation_list)
-
 ## Quota
 
 - [CreateOrUpdate](#quota_createorupdate)
 - [Get](#quota_get)
 - [List](#quota_list)
 - [Update](#quota_update)
+
+## QuotaOperation
+
+- [List](#quotaoperation_list)
 
 ## QuotaRequestStatus
 
@@ -21,32 +21,10 @@
 
 - [Get](#usages_get)
 - [List](#usages_list)
-### Operation_List
-
-```java
-import com.azure.core.util.Context;
-
-/** Samples for Operation List. */
-public final class OperationListSamples {
-    /*
-     * x-ms-original-file: specification/quota/resource-manager/Microsoft.Quota/preview/2021-03-15-preview/examples/GetOperations.json
-     */
-    /**
-     * Sample code: GetOperations.
-     *
-     * @param manager Entry point to QuotaManager.
-     */
-    public static void getOperations(com.azure.resourcemanager.quota.QuotaManager manager) {
-        manager.operations().list(Context.NONE);
-    }
-}
-```
-
 ### Quota_CreateOrUpdate
 
 ```java
-import com.azure.resourcemanager.quota.models.LimitType;
-import com.azure.resourcemanager.quota.models.LimitValue;
+import com.azure.resourcemanager.quota.models.LimitObject;
 import com.azure.resourcemanager.quota.models.QuotaProperties;
 import com.azure.resourcemanager.quota.models.ResourceName;
 
@@ -69,7 +47,7 @@ public final class QuotaCreateOrUpdateSamples {
                 "subscriptions/D7EC67B3-7657-4966-BFFC-41EFD36BAAB3/providers/Microsoft.MachineLearningServices/locations/eastus")
             .withProperties(
                 new QuotaProperties()
-                    .withLimit(new LimitValue().withValue(10).withLimitObjectType(LimitType.LIMIT_VALUE))
+                    .withLimit(new LimitObject().withValue(10))
                     .withName(new ResourceName().withValue("TotalLowPriorityCores"))
                     .withResourceType("lowPriority"))
             .create();
@@ -92,7 +70,7 @@ public final class QuotaCreateOrUpdateSamples {
                 "subscriptions/D7EC67B3-7657-4966-BFFC-41EFD36BAAB3/providers/Microsoft.Network/locations/eastus")
             .withProperties(
                 new QuotaProperties()
-                    .withLimit(new LimitValue().withValue(10).withLimitObjectType(LimitType.LIMIT_VALUE))
+                    .withLimit(new LimitObject().withValue(10))
                     .withName(new ResourceName().withValue("StandardSkuPublicIpAddresses"))
                     .withResourceType("PublicIpAddresses"))
             .create();
@@ -114,7 +92,7 @@ public final class QuotaCreateOrUpdateSamples {
                 "subscriptions/D7EC67B3-7657-4966-BFFC-41EFD36BAAB3/providers/Microsoft.Compute/locations/eastus")
             .withProperties(
                 new QuotaProperties()
-                    .withLimit(new LimitValue().withValue(10).withLimitObjectType(LimitType.LIMIT_VALUE))
+                    .withLimit(new LimitObject().withValue(10))
                     .withName(new ResourceName().withValue("standardFSv2Family")))
             .create();
     }
@@ -135,7 +113,7 @@ public final class QuotaCreateOrUpdateSamples {
                 "subscriptions/D7EC67B3-7657-4966-BFFC-41EFD36BAAB3/providers/Microsoft.Network/locations/eastus")
             .withProperties(
                 new QuotaProperties()
-                    .withLimit(new LimitValue().withValue(10).withLimitObjectType(LimitType.LIMIT_VALUE))
+                    .withLimit(new LimitObject().withValue(10))
                     .withName(new ResourceName().withValue("MinPublicIpInterNetworkPrefixLength"))
                     .withResourceType("MinPublicIpInterNetworkPrefixLength"))
             .create();
@@ -249,8 +227,7 @@ public final class QuotaListSamples {
 ```java
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.quota.models.CurrentQuotaLimitBase;
-import com.azure.resourcemanager.quota.models.LimitType;
-import com.azure.resourcemanager.quota.models.LimitValue;
+import com.azure.resourcemanager.quota.models.LimitObject;
 import com.azure.resourcemanager.quota.models.QuotaProperties;
 import com.azure.resourcemanager.quota.models.ResourceName;
 
@@ -277,7 +254,7 @@ public final class QuotaUpdateSamples {
             .update()
             .withProperties(
                 new QuotaProperties()
-                    .withLimit(new LimitValue().withValue(10).withLimitObjectType(LimitType.LIMIT_VALUE))
+                    .withLimit(new LimitObject().withValue(10))
                     .withName(new ResourceName().withValue("standardFSv2Family")))
             .apply();
     }
@@ -303,10 +280,31 @@ public final class QuotaUpdateSamples {
             .update()
             .withProperties(
                 new QuotaProperties()
-                    .withLimit(new LimitValue().withValue(10).withLimitObjectType(LimitType.LIMIT_VALUE))
+                    .withLimit(new LimitObject().withValue(10))
                     .withName(new ResourceName().withValue("MinPublicIpInterNetworkPrefixLength"))
                     .withResourceType("MinPublicIpInterNetworkPrefixLength"))
             .apply();
+    }
+}
+```
+
+### QuotaOperation_List
+
+```java
+import com.azure.core.util.Context;
+
+/** Samples for QuotaOperation List. */
+public final class QuotaOperationListSamples {
+    /*
+     * x-ms-original-file: specification/quota/resource-manager/Microsoft.Quota/preview/2021-03-15-preview/examples/GetOperations.json
+     */
+    /**
+     * Sample code: GetOperations.
+     *
+     * @param manager Entry point to QuotaManager.
+     */
+    public static void getOperations(com.azure.resourcemanager.quota.QuotaManager manager) {
+        manager.quotaOperations().list(Context.NONE);
     }
 }
 ```

@@ -10,6 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.AddressSpace;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VirtualNetworkBgpCommunities;
+import com.azure.resourcemanager.network.models.VirtualNetworkEncryption;
 import com.azure.resourcemanager.network.models.VirtualNetworkPeeringLevel;
 import com.azure.resourcemanager.network.models.VirtualNetworkPeeringState;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -313,6 +314,15 @@ public final class VirtualNetworkPeeringInner extends SubResource {
         }
         this.innerProperties().withRemoteBgpCommunities(remoteBgpCommunities);
         return this;
+    }
+
+    /**
+     * Get the remoteVirtualNetworkEncryption property: The reference to the remote virtual network's encryption.
+     *
+     * @return the remoteVirtualNetworkEncryption value.
+     */
+    public VirtualNetworkEncryption remoteVirtualNetworkEncryption() {
+        return this.innerProperties() == null ? null : this.innerProperties().remoteVirtualNetworkEncryption();
     }
 
     /**

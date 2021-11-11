@@ -30,7 +30,7 @@ import java.util.Set;
 public class ClientSideRequestStatistics {
     private static final int MAX_SUPPLEMENTAL_REQUESTS_FOR_TO_STRING = 10;
     private final DiagnosticsClientContext diagnosticsClientContext;
-
+    private String activityId;
     private List<StoreResponseStatistics> responseStatisticsList;
     private List<StoreResponseStatistics> supplementalResponseStatisticsList;
     private Map<String, AddressResolutionStatistics> addressResolutionStatistics;
@@ -82,6 +82,8 @@ public class ClientSideRequestStatistics {
         storeResponseStatistics.storeResult = storeResult;
         storeResponseStatistics.requestOperationType = request.getOperationType();
         storeResponseStatistics.requestResourceType = request.getResourceType();
+        activityId = request.getActivityId().toString();
+
 
         URI locationEndPoint = null;
         if (request.requestContext != null) {
@@ -100,7 +102,7 @@ public class ClientSideRequestStatistics {
             }
 
             if (storeResponseStatistics.requestOperationType == OperationType.Head
-                    || storeResponseStatistics.requestOperationType == OperationType.HeadFeed) {
+                || storeResponseStatistics.requestOperationType == OperationType.HeadFeed) {
                 this.supplementalResponseStatisticsList.add(storeResponseStatistics);
             } else {
                 this.responseStatisticsList.add(storeResponseStatistics);
@@ -136,15 +138,18 @@ public class ClientSideRequestStatistics {
                 this.gatewayStatistics.statusCode = storeResponse.getStatus();
                 this.gatewayStatistics.subStatusCode = DirectBridgeInternal.getSubStatusCode(storeResponse);
                 this.gatewayStatistics.sessionToken = storeResponse
-                                                          .getHeaderValue(HttpConstants.HttpHeaders.SESSION_TOKEN);
+                    .getHeaderValue(HttpConstants.HttpHeaders.SESSION_TOKEN);
                 this.gatewayStatistics.requestCharge = storeResponse
-                                                           .getHeaderValue(HttpConstants.HttpHeaders.REQUEST_CHARGE);
+                    .getHeaderValue(HttpConstants.HttpHeaders.REQUEST_CHARGE);
                 this.gatewayStatistics.requestTimeline = DirectBridgeInternal.getRequestTimeline(storeResponse);
                 this.gatewayStatistics.partitionKeyRangeId = storeResponse.getPartitionKeyRangeId();
+                this.activityId= storeResponse.getHeaderValue(HttpConstants.HttpHeaders.ACTIVITY_ID);
             } else if (exception != null) {
                 this.gatewayStatistics.statusCode = exception.getStatusCode();
                 this.gatewayStatistics.subStatusCode = exception.getSubStatusCode();
                 this.gatewayStatistics.requestTimeline = this.gatewayRequestTimeline;
+                this.gatewayStatistics.requestCharge= String.valueOf(exception.getRequestCharge());
+                this.activityId=exception.getActivityId();
             }
         }
     }
@@ -161,7 +166,9 @@ public class ClientSideRequestStatistics {
         URI targetEndpoint,
         boolean forceRefresh,
         boolean forceCollectionRoutingMapRefresh) {
-        String identifier = Utils.randomUUID().toString();
+        String identifier = Utils
+            .randomUUID()
+            .toString();
 
         AddressResolutionStatistics resolutionStatistics = new AddressResolutionStatistics();
         resolutionStatistics.startTimeUTC = Instant.now();
@@ -186,7 +193,7 @@ public class ClientSideRequestStatistics {
         synchronized (this) {
             if (!this.addressResolutionStatistics.containsKey(identifier)) {
                 throw new IllegalArgumentException("Identifier " + identifier + " does not exist. Please call start "
-                                                       + "before calling end");
+                    + "before calling end");
             }
 
             if (responseTime.isAfter(this.requestEndTimeUTC)) {
@@ -224,11 +231,11 @@ public class ClientSideRequestStatistics {
         this.regionsContacted = Collections.synchronizedSet(regionsContacted);
     }
 
-    public MetadataDiagnosticsContext getMetadataDiagnosticsContext(){
+    public MetadataDiagnosticsContext getMetadataDiagnosticsContext() {
         return this.metadataDiagnosticsContext;
     }
 
-    public SerializationDiagnosticsContext getSerializationDiagnosticsContext(){
+    public SerializationDiagnosticsContext getSerializationDiagnosticsContext() {
         return this.serializationDiagnosticsContext;
     }
 
@@ -319,8 +326,11 @@ public class ClientSideRequestStatistics {
             ClientSideRequestStatistics statistics, JsonGenerator generator, SerializerProvider provider) throws
             IOException {
             generator.writeStartObject();
-            long requestLatency = statistics.getDuration().toMillis();
+            long requestLatency = statistics
+                .getDuration()
+                .toMillis();
             generator.writeStringField("userAgent", Utils.getUserAgent());
+            generator.writeStringField("activityId", statistics.activityId);
             generator.writeNumberField("requestLatencyInMs", requestLatency);
             generator.writeStringField("requestStartTimeUTC", DiagnosticsInstantSerializer.fromInstant(statistics.requestStartTimeUTC));
             generator.writeStringField("requestEndTimeUTC", DiagnosticsInstantSerializer.fromInstant(statistics.requestEndTimeUTC));
@@ -402,7 +412,9 @@ public class ClientSideRequestStatistics {
             return forceRefresh;
         }
 
-        public boolean isForceCollectionRoutingMapRefresh() { return forceCollectionRoutingMapRefresh; }
+        public boolean isForceCollectionRoutingMapRefresh() {
+            return forceCollectionRoutingMapRefresh;
+        }
     }
 
     public static class GatewayStatistics {
@@ -459,7 +471,9 @@ public class ClientSideRequestStatistics {
         systemInformation.availableProcessors = runtime.availableProcessors();
 
         // TODO: other system related info also can be captured using a similar approach
-        systemInformation.systemCpuLoad = CpuMemoryMonitor.getCpuLoad().toString();
+        systemInformation.systemCpuLoad = CpuMemoryMonitor
+            .getCpuLoad()
+            .toString();
         return systemInformation;
     }
 }
