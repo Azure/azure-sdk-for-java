@@ -4,7 +4,7 @@
 
 ### Breaking Changes
 
-- The `Context` parameter is merged into the `RequestOptions` parameter in methods of `WebPubSubServiceClient`.
+- Merged the `Context` parameter into the `RequestOptions` parameter in methods of `WebPubSubServiceClient`.
 
 ### Other Changes
 
