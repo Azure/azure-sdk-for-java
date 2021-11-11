@@ -24,6 +24,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.core.io.Resource;
 import reactor.core.publisher.Mono;
 
@@ -36,6 +37,7 @@ class AzureStorageResourcePatternResolverTest {
 
     private AzureStorageBlobProtocolResolver blobProtocolResolver;
     private AzureStorageFileProtocolResolver fileProtocolResolver;
+    private ConfigurableListableBeanFactory beanFactory;
     private BlobServiceClient blobServiceClient;
     private ShareServiceClient shareServiceClient;
 
@@ -44,8 +46,15 @@ class AzureStorageResourcePatternResolverTest {
         blobServiceClient = getBlobServiceClient();
         shareServiceClient = getShareServiceClient();
 
-        blobProtocolResolver = new AzureStorageBlobProtocolResolver(blobServiceClient);
-        fileProtocolResolver = new AzureStorageFileProtocolResolver(shareServiceClient);
+        beanFactory = mock(ConfigurableListableBeanFactory.class);
+        when(beanFactory.getBean(BlobServiceClient.class)).thenReturn(blobServiceClient);
+        when(beanFactory.getBean(ShareServiceClient.class)).thenReturn(shareServiceClient);
+
+        blobProtocolResolver = new AzureStorageBlobProtocolResolver();
+        fileProtocolResolver = new AzureStorageFileProtocolResolver();
+        blobProtocolResolver.postProcessBeanFactory(beanFactory);
+        fileProtocolResolver.postProcessBeanFactory(beanFactory);
+
 
     }
 

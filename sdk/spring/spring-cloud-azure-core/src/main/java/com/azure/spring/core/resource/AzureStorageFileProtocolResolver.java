@@ -18,10 +18,6 @@ public class AzureStorageFileProtocolResolver extends AbstractAzureStorageProtoc
 
     private ShareServiceClient shareServiceClient;
 
-    public AzureStorageFileProtocolResolver(ShareServiceClient shareServiceClient) {
-        this.shareServiceClient = shareServiceClient;
-    }
-
     public AzureStorageFileProtocolResolver() {
     }
 

@@ -10,6 +10,7 @@ import com.azure.storage.file.share.StorageFileInputStream;
 import com.azure.storage.file.share.StorageFileOutputStream;
 import com.azure.storage.file.share.models.ShareFileProperties;
 import com.azure.storage.file.share.models.ShareFileRange;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.core.io.ProtocolResolver;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -20,10 +21,15 @@ import static org.mockito.Mockito.when;
 class AzureStorageFileProtocolResolverTest extends AbstractAzureStorageProtocolResolverTest {
 
     private ShareServiceClient shareServiceClient;
+    private ConfigurableListableBeanFactory beanFactory;
 
     @Override
     protected ProtocolResolver createInstance() {
-        return new AzureStorageFileProtocolResolver(shareServiceClient);
+        beanFactory = mock(ConfigurableListableBeanFactory.class);
+        when(beanFactory.getBean(ShareServiceClient.class)).thenReturn(shareServiceClient);
+        AzureStorageFileProtocolResolver protocolResolver = new AzureStorageFileProtocolResolver();
+        protocolResolver.postProcessBeanFactory(beanFactory);
+        return protocolResolver;
     }
 
     @Override

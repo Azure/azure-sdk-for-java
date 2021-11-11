@@ -13,6 +13,7 @@ import com.azure.storage.blob.specialized.BlobInputStream;
 import com.azure.storage.blob.specialized.BlobOutputStream;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.core.io.ProtocolResolver;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -30,6 +31,7 @@ class AzureStorageBlobProtocolResolverTest extends AbstractAzureStorageProtocolR
     private BlobClient blobClient;
     private BlockBlobClient blockBlobClient;
     private BlobContainerClient blobContainerClient;
+    private ConfigurableListableBeanFactory beanFactory;
 
 
     @Override
@@ -82,15 +84,15 @@ class AzureStorageBlobProtocolResolverTest extends AbstractAzureStorageProtocolR
 
     @Override
     protected ProtocolResolver createInstance() {
-        return new AzureStorageBlobProtocolResolver(blobServiceClient);
+        beanFactory = mock(ConfigurableListableBeanFactory.class);
+        when(beanFactory.getBean(BlobServiceClient.class)).thenReturn(blobServiceClient);
+        AzureStorageBlobProtocolResolver protocolResolver = new AzureStorageBlobProtocolResolver();
+        protocolResolver.postProcessBeanFactory(beanFactory);
+        return protocolResolver;
     }
 
     @Test
     void testGetResourceWithExistingResource() {
-//        String resourceName = CONTAINER_NAME + "/" + BLOB_NAME;
-//        Resource resource = getResource(resourceName);
-//        assertNotNull(resource);
-//        assertTrue(resource.exists());
         super.testGetResourceWithExistingResource();
         verify(blobContainerClient, times(1)).exists();
         verify(blockBlobClient, times(1)).exists();
@@ -99,9 +101,6 @@ class AzureStorageBlobProtocolResolverTest extends AbstractAzureStorageProtocolR
 
     @Test
     void testValidObject() throws Exception {
-//        Resource resource = getResource("container/blob");
-//        assertTrue(resource.exists());
-//        assertEquals(CONTENT_LENGTH, resource.contentLength());
         super.testValidObject();
         verify(blockBlobClient, times(1)).getProperties();
     }
