@@ -83,6 +83,10 @@ microservice using **Spring Cloud Stream** based on [Azure Service Bus Topic][az
 ## Examples
 You could check [Spring Integration Guides][spring-integration-guides] articles to learn more on usage of specific starters.
 
+## Troubleshooting
+
+## Next steps
+
 ## Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
 
