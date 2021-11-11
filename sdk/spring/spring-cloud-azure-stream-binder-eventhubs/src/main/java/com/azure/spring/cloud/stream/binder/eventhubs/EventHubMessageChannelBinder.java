@@ -4,7 +4,6 @@
 package com.azure.spring.cloud.stream.binder.eventhubs;
 
 import com.azure.messaging.eventhubs.CheckpointStore;
-import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubBindingProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubConsumerProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubExtendedBindingProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubProducerProperties;
@@ -19,6 +18,8 @@ import com.azure.spring.eventhubs.properties.BatchableProducerProperties;
 import com.azure.spring.integration.eventhubs.inbound.EventHubInboundChannelAdapter;
 import com.azure.spring.integration.handler.DefaultMessageHandler;
 import com.azure.spring.messaging.PropertiesSupplier;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cloud.stream.binder.AbstractMessageChannelBinder;
 import org.springframework.cloud.stream.binder.BinderHeaders;
 import org.springframework.cloud.stream.binder.BinderSpecificPropertiesProvider;
@@ -53,6 +54,7 @@ public class EventHubMessageChannelBinder extends
     implements
     ExtendedPropertiesBinder<MessageChannel, EventHubConsumerProperties, EventHubProducerProperties> {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(EventHubMessageChannelBinder.class);
     private static final ExpressionParser EXPRESSION_PARSER = new SpelExpressionParser();
 
     private NamespaceProperties namespaceProperties;
@@ -60,6 +62,10 @@ public class EventHubMessageChannelBinder extends
     private CheckpointStore checkpointStore;
     private EventHubProcessorContainer processorContainer;
     private EventHubExtendedBindingProperties bindingProperties = new EventHubExtendedBindingProperties();
+    private final Map<String, ExtendedProducerProperties<EventHubProducerProperties>>
+        extendedProducerPropertiesMap = new ConcurrentHashMap<>();
+    private final Map<Tuple2<String, String>, ExtendedConsumerProperties<EventHubConsumerProperties>>
+        extendedConsumerPropertiesMap = new ConcurrentHashMap<>();
 
     private final Map<String, EventHubInformation> eventHubsInUse = new ConcurrentHashMap<>();
 
@@ -72,6 +78,7 @@ public class EventHubMessageChannelBinder extends
         ProducerDestination destination,
         ExtendedProducerProperties<EventHubProducerProperties> producerProperties,
         MessageChannel errorChannel) {
+        extendedProducerPropertiesMap.put(destination.getName(), producerProperties);
         Assert.notNull(getEventHubTemplate(), "eventHubsTemplate can't be null when create a producer");
 
         eventHubsInUse.put(destination.getName(), new EventHubInformation(null));
@@ -95,6 +102,7 @@ public class EventHubMessageChannelBinder extends
     @Override
     protected MessageProducer createConsumerEndpoint(ConsumerDestination destination, String group,
             ExtendedConsumerProperties<EventHubConsumerProperties> properties) {
+        extendedConsumerPropertiesMap.put(Tuples.of(destination.getName(), group), properties);
         Assert.notNull(getProcessorContainer(), "eventProcessorsContainer can't be null when create a consumer");
 
         eventHubsInUse.put(destination.getName(), new EventHubInformation(group));
@@ -158,33 +166,30 @@ public class EventHubMessageChannelBinder extends
 
     private PropertiesSupplier<String, BatchableProducerProperties> getProducerPropertiesSupplier() {
         return key -> {
-            Map<String, EventHubBindingProperties> bindings = bindingProperties.getBindings();
-            for (Map.Entry<String, EventHubBindingProperties> entry : bindings.entrySet()) {
-                BatchableProducerProperties properties = bindings.get(entry.getKey()).getProducer().getProducer();
-                if (properties.getEventHubName() == null) {
-                    continue;
-                }
-                if (key.equalsIgnoreCase(properties.getEventHubName())) {
-                    return properties;
-                }
+            if (this.extendedProducerPropertiesMap.containsKey(key)) {
+                BatchableProducerProperties producerProperties = this.extendedProducerPropertiesMap.get(key)
+                                                                                                  .getExtension();
+                producerProperties.setEventHubName(key);
+                return producerProperties;
+            } else {
+                LOGGER.debug("Can't find extended properties for {}", key);
+                return null;
             }
-            return null;
         };
     }
 
     private PropertiesSupplier<Tuple2<String, String>, ProcessorProperties> getProcessorPropertiesSupplier() {
         return key -> {
-            Map<String, EventHubBindingProperties> bindings = bindingProperties.getBindings();
-            for (Map.Entry<String, EventHubBindingProperties> entry : bindings.entrySet()) {
-                ProcessorProperties properties = bindings.get(entry.getKey()).getConsumer().getProcessor();
-                if (properties.getEventHubName() == null || properties.getConsumerGroup() == null) {
-                    continue;
-                }
-                if (key.equals(Tuples.of(properties.getEventHubName(), properties.getConsumerGroup()))) {
-                    return properties;
-                }
+            if (this.extendedConsumerPropertiesMap.containsKey(key)) {
+                EventHubConsumerProperties consumerProperties = this.extendedConsumerPropertiesMap.get(key)
+                                                                                         .getExtension();
+                consumerProperties.setEventHubName(key.getT1());
+                consumerProperties.setConsumerGroup(key.getT2());
+                return consumerProperties;
+            } else {
+                LOGGER.debug("Can't find extended properties for destination {}, group {}", key.getT1(), key.getT2());
+                return null;
             }
-            return null;
         };
     }
 

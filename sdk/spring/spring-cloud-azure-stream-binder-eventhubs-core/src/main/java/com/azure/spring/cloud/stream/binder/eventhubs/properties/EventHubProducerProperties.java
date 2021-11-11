@@ -8,7 +8,7 @@ import com.azure.spring.eventhubs.properties.BatchableProducerProperties;
 /**
  * @author Warren Zhu
  */
-public class EventHubProducerProperties {
+public class EventHubProducerProperties extends BatchableProducerProperties {
     /**
      * Whether the producer should act in a synchronous manner with respect to sending messages into destination.
      * If true, the producer will wait for a response from Event Hub after a send operation before sending next message.
@@ -26,9 +26,6 @@ public class EventHubProducerProperties {
      */
     private long sendTimeout = 10000;
 
-    private final BatchableProducerProperties producer = new BatchableProducerProperties();
-
-
     public boolean isSync() {
         return sync;
     }
@@ -43,10 +40,6 @@ public class EventHubProducerProperties {
 
     public void setSendTimeout(long sendTimeout) {
         this.sendTimeout = sendTimeout;
-    }
-
-    public BatchableProducerProperties getProducer() {
-        return producer;
     }
 
 }

@@ -23,6 +23,7 @@ import org.springframework.util.StringUtils;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -42,13 +43,13 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
 
     protected abstract List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(T builder);
 
-    protected abstract void configureApplicationId(T builder);
-
     protected abstract void configureProxy(T builder);
 
     protected abstract void configureRetry(T builder);
 
     protected abstract void configureService(T builder);
+
+    protected abstract BiConsumer<T, String> consumeApplicationId();
 
     protected abstract BiConsumer<T, Configuration> consumeConfiguration();
 
@@ -63,9 +64,12 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
     private boolean credentialConfigured = false;
 
     /**
-     * 1. create a builder instance 2. configure builder 2.1 configure azure core level configuration 2.1.1 configure
-     * http client getHttpClientInstance 2.2 configure service level configuration 3. customize builder 4. return
-     * builder
+     * <ol>
+     *  <li>Create a builder instance.</li>
+     *  <li>Configure Azure core level configuration.</li>
+     *  <li>Configure service level configuration.</li>
+     *  <li>Customize builder.</li>
+     * </ol>
      *
      * @return the service client builder
      */
@@ -85,6 +89,17 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
         configureCredential(builder);
         configureConnectionString(builder);
         configureDefaultCredential(builder);
+    }
+
+    /**
+     * The application id provided to sdk should be a concatenation of customer-application-id and
+     * azure-spring-identifier.
+     *
+     * @param builder the service client builder
+     */
+    protected void configureApplicationId(T builder) {
+        String applicationId = getApplicationId() + this.springIdentifier;
+        consumeApplicationId().accept(builder, applicationId);
     }
 
     protected void configureAzureEnvironment(T builder) {
@@ -163,13 +178,19 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
         return credentialResolvers.resolve(azureProperties);
     }
 
-    protected String getApplicationId() {
+    private String getApplicationId() {
         final ClientAware.Client client = getAzureProperties().getClient();
-        return this.applicationId != null ? this.applicationId : (client != null ? client.getApplicationId() : null);
+        return Optional.ofNullable(client)
+                       .map(ClientAware.Client::getApplicationId)
+                       .orElse("");
     }
 
-    public void setApplicationId(String applicationId) {
-        this.applicationId = applicationId;
+    public void setSpringIdentifier(String springIdentifier) {
+        if (!StringUtils.hasText(springIdentifier)) {
+            LOGGER.warn("SpringIdentifier is null or empty.");
+            return;
+        }
+        this.springIdentifier = springIdentifier;
     }
 
     public void setDefaultTokenCredential(TokenCredential defaultTokenCredential) {
@@ -178,9 +199,5 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
 
     public void setConnectionStringProvider(ConnectionStringProvider<?> connectionStringProvider) {
         this.connectionStringProvider = connectionStringProvider;
-    }
-
-    public void setSpringIdentifier(String springIdentifier) {
-        this.springIdentifier = springIdentifier;
     }
 }

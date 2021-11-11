@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.context.core;
 
-import com.azure.spring.core.ApplicationId;
+import com.azure.spring.core.AzureSpringIdentifier;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -11,7 +11,7 @@ public class ApplicationIdTest {
 
     @Test
     public void testPomVersion() {
-        Assertions.assertNotNull(ApplicationId.VERSION);
-        Assertions.assertNotEquals("unknown", ApplicationId.VERSION);
+        Assertions.assertNotNull(AzureSpringIdentifier.VERSION);
+        Assertions.assertNotEquals("unknown", AzureSpringIdentifier.VERSION);
     }
 }
