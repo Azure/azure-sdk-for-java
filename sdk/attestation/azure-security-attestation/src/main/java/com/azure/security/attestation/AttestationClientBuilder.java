@@ -26,6 +26,7 @@ import java.util.Objects;
 @ServiceClientBuilder(
         serviceClients = {
             AttestationClient.class,
+            AttestationAsyncClient.class,
         })
 public final class AttestationClientBuilder {
     private static final String SDK_NAME = "name";
