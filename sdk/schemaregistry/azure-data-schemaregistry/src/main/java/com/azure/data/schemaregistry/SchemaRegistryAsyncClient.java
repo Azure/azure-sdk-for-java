@@ -121,7 +121,9 @@ public final class SchemaRegistryAsyncClient {
         logger.verbose("Registering schema. Group: '{}', name: '{}', serialization type: '{}', payload: '{}'",
             groupName, name, format, schemaDefinition);
 
-        return restService.getSchemas().registerWithResponseAsync(groupName, name, schemaDefinition, context)
+        final String contentType = getContentType(format);
+
+        return restService.getSchemas().registerWithResponseAsync(groupName, name, schemaDefinition, contentType, context)
             .map(response -> {
                 final SchemasRegisterHeaders deserializedHeaders = response.getDeserializedHeaders();
                 final SchemaProperties registered = new SchemaProperties(deserializedHeaders.getSchemaId(), format);
@@ -262,8 +264,10 @@ public final class SchemaRegistryAsyncClient {
             context = Context.NONE;
         }
 
+        final String contentType = getContentType(format);
+
         return restService.getSchemas()
-            .queryIdByContentWithResponseAsync(groupName, name, schemaDefinition, context)
+            .queryIdByContentWithResponseAsync(groupName, name, schemaDefinition, contentType, context)
             .onErrorMap(ErrorException.class, SchemaRegistryAsyncClient::remapError)
             .map(response -> {
                 final SchemasQueryIdByContentHeaders deserializedHeaders = response.getDeserializedHeaders();
@@ -295,5 +299,9 @@ public final class SchemaRegistryAsyncClient {
         }
 
         return error;
+    }
+
+    private static String getContentType(SchemaFormat schemaFormat) {
+        return "application/json; serialization=" + schemaFormat;
     }
 }
