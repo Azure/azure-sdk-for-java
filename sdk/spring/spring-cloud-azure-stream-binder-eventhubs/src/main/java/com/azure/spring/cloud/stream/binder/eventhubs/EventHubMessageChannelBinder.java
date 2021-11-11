@@ -18,6 +18,7 @@ import com.azure.spring.eventhubs.core.properties.ProcessorProperties;
 import com.azure.spring.eventhubs.core.properties.ProducerProperties;
 import com.azure.spring.integration.eventhubs.inbound.EventHubInboundChannelAdapter;
 import com.azure.spring.integration.handler.DefaultMessageHandler;
+import com.azure.spring.messaging.ListenerMode;
 import com.azure.spring.messaging.PropertiesSupplier;
 import org.springframework.cloud.stream.binder.AbstractMessageChannelBinder;
 import org.springframework.cloud.stream.binder.BinderHeaders;
@@ -94,19 +95,23 @@ public class EventHubMessageChannelBinder extends
 
     @Override
     protected MessageProducer createConsumerEndpoint(ConsumerDestination destination, String group,
-            ExtendedConsumerProperties<EventHubConsumerProperties> properties) {
+                                                     ExtendedConsumerProperties<EventHubConsumerProperties> properties) {
         Assert.notNull(getProcessorContainer(), "eventProcessorsContainer can't be null when create a consumer");
 
         eventHubsInUse.put(destination.getName(), new EventHubInformation(group));
-
         boolean anonymous = !StringUtils.hasText(group);
         if (anonymous) {
             group = "anonymous." + UUID.randomUUID();
         }
 
-        EventHubInboundChannelAdapter inboundAdapter = new EventHubInboundChannelAdapter(this.processorContainer,
-            destination.getName(), group, properties.getExtension().getCheckpoint());
-
+        EventHubInboundChannelAdapter inboundAdapter;
+        if(properties.isBatchMode()) {
+            inboundAdapter = new EventHubInboundChannelAdapter(this.processorContainer,
+                destination.getName(), group, ListenerMode.BATCH, properties.getExtension().getCheckpoint());
+        }else{//default is record mode
+            inboundAdapter = new EventHubInboundChannelAdapter(this.processorContainer,
+                destination.getName(), group, properties.getExtension().getCheckpoint());
+        }
         inboundAdapter.setBeanFactory(getBeanFactory());
 
         ErrorInfrastructure errorInfrastructure = registerErrorInfrastructure(destination, group, properties);

@@ -6,6 +6,8 @@ package com.azure.spring.cloud.stream.binder.eventhubs.properties;
 import com.azure.spring.eventhubs.core.properties.ProcessorProperties;
 import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 
+import java.time.Duration;
+
 /**
  *
  */
@@ -20,14 +22,6 @@ public class EventHubConsumerProperties {
     private final CheckpointConfig checkpoint = new CheckpointConfig();
     private final ProcessorProperties processor = new ProcessorProperties();
 
-//    public EventProcessingProperties.StartPosition getStartPosition() {
-//        return startPosition;
-//    }
-//
-//    public void setStartPosition(EventProcessingProperties.StartPosition startPosition) {
-//        this.startPosition = startPosition;
-//    }
-//
     public CheckpointConfig getCheckpoint() {
         return checkpoint;
     }

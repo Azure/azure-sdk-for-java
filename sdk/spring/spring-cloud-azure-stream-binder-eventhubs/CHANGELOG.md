@@ -3,7 +3,7 @@
 ## 4.0.0-beta.1 (Unreleased)
 
 ### Features Added
-
+- Support batch consumers.
 ### Breaking Changes
 - Change artifact id from `azure-spring-cloud-stream-binder-eventhubs` to `spring-cloud-azure-stream-binder-eventhubs`.
 

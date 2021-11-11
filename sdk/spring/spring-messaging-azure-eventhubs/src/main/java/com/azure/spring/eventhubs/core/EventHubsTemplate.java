@@ -72,7 +72,4 @@ public class EventHubsTemplate implements SendOperation, BatchSendOperation {
             .setPartitionKey(partitionSupplier != null ? partitionSupplier.getPartitionKey() : null);
     }
 
-    public void setMessageConverter(EventHubMessageConverter messageConverter) {
-        this.messageConverter = messageConverter;
-    }
 }

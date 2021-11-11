@@ -55,6 +55,7 @@ public class DefaultEventHubNamespaceProcessorFactory implements EventHubProcess
                                                         ProcessorProperties> supplier) {
         this(checkpointStore, null, supplier);
     }
+
     public DefaultEventHubNamespaceProcessorFactory(CheckpointStore checkpointStore,
                                                     NamespaceProperties namespaceProperties,
                                                     PropertiesSupplier<Tuple2<String, String>,
