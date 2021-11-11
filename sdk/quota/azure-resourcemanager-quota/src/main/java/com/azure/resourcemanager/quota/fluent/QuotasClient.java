@@ -72,7 +72,7 @@ public interface QuotasClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return quota limit.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner> beginCreateOrUpdate(
         String resourceName, String scope, CurrentQuotaLimitBaseInner createQuotaRequest);
 
@@ -97,7 +97,7 @@ public interface QuotasClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return quota limit.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner> beginCreateOrUpdate(
         String resourceName, String scope, CurrentQuotaLimitBaseInner createQuotaRequest, Context context);
 
@@ -170,7 +170,7 @@ public interface QuotasClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return quota limit.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner> beginUpdate(
         String resourceName, String scope, CurrentQuotaLimitBaseInner createQuotaRequest);
 
@@ -195,7 +195,7 @@ public interface QuotasClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return quota limit.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<CurrentQuotaLimitBaseInner>, CurrentQuotaLimitBaseInner> beginUpdate(
         String resourceName, String scope, CurrentQuotaLimitBaseInner createQuotaRequest, Context context);
 

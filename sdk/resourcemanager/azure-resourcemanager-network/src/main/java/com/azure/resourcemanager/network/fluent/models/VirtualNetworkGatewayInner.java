@@ -290,6 +290,29 @@ public final class VirtualNetworkGatewayInner extends Resource {
     }
 
     /**
+     * Get the disableIpSecReplayProtection property: disableIPSecReplayProtection flag.
+     *
+     * @return the disableIpSecReplayProtection value.
+     */
+    public Boolean disableIpSecReplayProtection() {
+        return this.innerProperties() == null ? null : this.innerProperties().disableIpSecReplayProtection();
+    }
+
+    /**
+     * Set the disableIpSecReplayProtection property: disableIPSecReplayProtection flag.
+     *
+     * @param disableIpSecReplayProtection the disableIpSecReplayProtection value to set.
+     * @return the VirtualNetworkGatewayInner object itself.
+     */
+    public VirtualNetworkGatewayInner withDisableIpSecReplayProtection(Boolean disableIpSecReplayProtection) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VirtualNetworkGatewayPropertiesFormat();
+        }
+        this.innerProperties().withDisableIpSecReplayProtection(disableIpSecReplayProtection);
+        return this;
+    }
+
+    /**
      * Get the gatewayDefaultSite property: The reference to the LocalNetworkGateway resource which represents local
      * network site having default routes. Assign Null value in case of removing existing default site setting.
      *
