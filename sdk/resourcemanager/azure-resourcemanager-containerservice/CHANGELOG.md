@@ -4,11 +4,7 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Supported `tags` in `KubernetesClusterAgentPool` during create and update.
 
 ## 2.9.0 (2021-10-21)
 
