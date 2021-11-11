@@ -8,6 +8,7 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
@@ -24,6 +25,7 @@ import com.azure.security.attestation.implementation.models.PolicyResultImpl;
 import com.azure.security.attestation.implementation.models.StoredAttestationPolicy;
 import com.azure.security.attestation.models.AttestationPolicySetOptions;
 import com.azure.security.attestation.models.AttestationSigner;
+import com.azure.security.attestation.models.AttestationSigningKey;
 import com.azure.security.attestation.models.AttestationToken;
 import com.azure.security.attestation.models.AttestationTokenValidationOptions;
 import com.azure.security.attestation.models.AttestationType;
@@ -33,6 +35,8 @@ import reactor.core.publisher.Mono;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.security.InvalidParameterException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -265,24 +269,10 @@ public final class AttestationAdministrationAsyncClient {
 
         final AttestationTokenValidationOptions finalOptions = validationOptions;
 
-        StoredAttestationPolicy policyToSet = new StoredAttestationPolicy();
-        policyToSet.setAttestationPolicy(options.getAttestationPolicy().getBytes(StandardCharsets.UTF_8));
+        // Generate an attestation token for that stored attestation policy. We use the common function in
+        // PolicyResult which is used in creating the SetPolicy hash.
+        AttestationToken setToken = generatePolicySetToken(options.getAttestationPolicy(), options.getAttestationSigner());
 
-        // Serialize the StoredAttestationPolicy.
-        String serializedPolicy = null;
-        try {
-            serializedPolicy = SERIALIZER_ADAPTER.serialize(policyToSet, SerializerEncoding.JSON);
-        } catch (IOException e) {
-            throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
-        }
-
-        // And generate an attestation token for that stored attestation policy.
-        AttestationToken setToken;
-        if (options.getAttestationSigner() == null) {
-            setToken = AttestationTokenImpl.createUnsecuredToken(serializedPolicy);
-        } else {
-            setToken = AttestationTokenImpl.createSecuredToken(serializedPolicy, options.getAttestationSigner());
-        }
         return this.policyImpl.setWithResponseAsync(attestationType, setToken.serialize(), context)
             .flatMap(response -> {
                 Response<AttestationTokenImpl> token = Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken()));
@@ -294,6 +284,62 @@ public final class AttestationAdministrationAsyncClient {
                     });
             });
     }
+
+    /**
+     * Calculates the PolicyTokenHash for a given policy string.
+     *
+     * The policyTokenHash is calculated by generating a policy set JSON Web Token signed by the key
+     * specified in the (optional) {@link AttestationSigningKey}.
+     *
+     * @param policy AttestationPolicy document use in the underlying JWT.
+     * @param signer Optional signing key used to sign the underlying JWT.
+     * @return A {@link BinaryData} containing the SHA-256 hash of the attestation policy token corresponding
+     * to the policy and signer.
+     */
+    public BinaryData calculatePolicyTokenHash(String policy, AttestationSigningKey signer) {
+        AttestationToken policyToken = generatePolicySetToken(policy, signer);
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            md.reset();
+            md.update(policyToken.serialize().getBytes(StandardCharsets.UTF_8));
+            return BinaryData.fromBytes(md.digest());
+        } catch (NoSuchAlgorithmException e) {
+            throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
+        }
+    }
+
+    private AttestationToken generatePolicySetToken(String policy, AttestationSigningKey signer) {
+        String serializedPolicy = null;
+        if (policy != null) {
+            StoredAttestationPolicy policyToSet = new StoredAttestationPolicy();
+            policyToSet.setAttestationPolicy(policy.getBytes(StandardCharsets.UTF_8));
+
+            // Serialize the StoredAttestationPolicy.
+            try {
+                serializedPolicy = SERIALIZER_ADAPTER.serialize(policyToSet, SerializerEncoding.JSON);
+            } catch (IOException e) {
+                throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
+            }
+        }
+
+        // And generate an attestation token for that stored attestation policy.
+        AttestationToken setToken;
+        if (signer == null) {
+            if (policy != null) {
+                setToken = AttestationTokenImpl.createUnsecuredToken(serializedPolicy);
+            } else {
+                setToken = AttestationTokenImpl.createUnsecuredToken();
+            }
+        } else {
+            if (policy != null) {
+                setToken = AttestationTokenImpl.createSecuredToken(serializedPolicy, signer);
+            } else {
+                setToken = AttestationTokenImpl.createSecuredToken(signer);
+            }
+        }
+        return setToken;
+    }
+
 
 //endregion
 

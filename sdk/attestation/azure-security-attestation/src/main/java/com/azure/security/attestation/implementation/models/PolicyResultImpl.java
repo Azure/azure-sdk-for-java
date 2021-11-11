@@ -11,6 +11,7 @@ import com.azure.security.attestation.models.PolicyModification;
 /** The result of a policy certificate modification. */
 @Immutable
 public final class PolicyResultImpl implements com.azure.security.attestation.models.PolicyResult {
+
     /*
      * The result of the operation
      */

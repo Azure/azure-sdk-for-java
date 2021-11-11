@@ -4,6 +4,8 @@ package com.azure.security.attestation;
 
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.Base64Util;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.security.attestation.models.AttestationPolicySetOptions;
 import com.azure.security.attestation.models.AttestationResponse;
@@ -103,10 +105,14 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
 
     }
 
-    void verifySetPolicyResult(AttestationAdministrationClient client, PolicyResult result, AttestationType type, String expectedPolicy, PolicyModification expectedModification) {
+    void verifySetPolicyResult(AttestationAdministrationClient client, PolicyResult result, AttestationType type, String expectedPolicy, AttestationSigningKey signer, PolicyModification expectedModification) {
         assertEquals(expectedModification, result.getPolicyResolution());
         if (expectedPolicy != null) {
             assertEquals(expectedPolicy, client.getAttestationPolicy(type));
+            BinaryData expectedHash = client.calculatePolicyTokenHash(expectedPolicy, signer);
+            BinaryData actualHash = result.getPolicyTokenHash();
+            // Base64 encode the binary data for easier comparison if there is a mismatch.
+            assertEquals(Base64Util.encodeToString(expectedHash.toBytes()), Base64Util.encodeToString(actualHash.toBytes()));
         }
     }
     /**
@@ -154,7 +160,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
                 PolicyResult result = client.setAttestationPolicy(attestationType, new AttestationPolicySetOptions()
                     .setPolicy(policyToSet)
                     .setAttestationSigner(signingKey));
-                verifySetPolicyResult(client, result, attestationType, policyToSet, PolicyModification.UPDATED);
+                verifySetPolicyResult(client, result, attestationType, policyToSet, signingKey, PolicyModification.UPDATED);
             });
         }
 
@@ -171,12 +177,12 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
                 PolicyResult result = client.setAttestationPolicy(attestationType, new AttestationPolicySetOptions()
                     .setPolicy(policyToSet)
                     .setAttestationSigner(signingKey));
-                verifySetPolicyResult(client, result, attestationType, policyToSet, PolicyModification.UPDATED);
+                verifySetPolicyResult(client, result, attestationType, policyToSet, signingKey, PolicyModification.UPDATED);
             });
 
             assertDoesNotThrow(() -> {
                 PolicyResult result = client.resetAttestationPolicy(attestationType, new AttestationPolicySetOptions().setAttestationSigner(signingKey));
-                verifySetPolicyResult(client, result, attestationType, null, PolicyModification.REMOVED);
+                verifySetPolicyResult(client, result, attestationType, null, signingKey, PolicyModification.REMOVED);
             });
         }
 
@@ -185,13 +191,13 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
             assertDoesNotThrow(() -> {
                 PolicyResult result = client.setAttestationPolicy(attestationType, new AttestationPolicySetOptions()
                     .setPolicy(policyToSet));
-                verifySetPolicyResult(client, result, attestationType, policyToSet, PolicyModification.UPDATED);
+                verifySetPolicyResult(client, result, attestationType, policyToSet, null, PolicyModification.UPDATED);
             });
             assertEquals(policyToSet, client.getAttestationPolicy(attestationType));
 
             assertDoesNotThrow(() -> {
                 PolicyResult result = client.resetAttestationPolicy(attestationType);
-                verifySetPolicyResult(client, result, attestationType, null, PolicyModification.REMOVED);
+                verifySetPolicyResult(client, result, attestationType, null, null, PolicyModification.REMOVED);
             });
 
         }
@@ -199,12 +205,12 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
             String policyToSet = "version=1.0;authorizationrules{=> permit();}; issuancerules{};";
             assertDoesNotThrow(() -> {
                 PolicyResult result = client.setAttestationPolicy(attestationType, policyToSet);
-                verifySetPolicyResult(client, result, attestationType, policyToSet, PolicyModification.UPDATED);
+                verifySetPolicyResult(client, result, attestationType, policyToSet, null, PolicyModification.UPDATED);
             });
 
             assertDoesNotThrow(() -> {
                 PolicyResult result = client.resetAttestationPolicy(attestationType);
-                verifySetPolicyResult(client, result, attestationType, null, PolicyModification.REMOVED);
+                verifySetPolicyResult(client, result, attestationType, null, null, PolicyModification.REMOVED);
             });
         }
     }
@@ -239,7 +245,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
                 Response<PolicyResult> result = client.setAttestationPolicyWithResponse(attestationType, new AttestationPolicySetOptions()
                     .setPolicy(policyToSet)
                     .setAttestationSigner(signingKey), Context.NONE);
-                verifySetPolicyResult(client, result.getValue(), attestationType, policyToSet, PolicyModification.UPDATED);
+                verifySetPolicyResult(client, result.getValue(), attestationType, policyToSet, signingKey, PolicyModification.UPDATED);
             });
         }
 
@@ -256,12 +262,12 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
                 Response<PolicyResult> result = client.setAttestationPolicyWithResponse(attestationType, new AttestationPolicySetOptions()
                     .setPolicy(policyToSet)
                     .setAttestationSigner(signingKey), Context.NONE);
-                verifySetPolicyResult(client, result.getValue(), attestationType, policyToSet, PolicyModification.UPDATED);
+                verifySetPolicyResult(client, result.getValue(), attestationType, policyToSet, signingKey, PolicyModification.UPDATED);
             });
 
             assertDoesNotThrow(() -> {
                 Response<PolicyResult> result = client.resetAttestationPolicyWithResponse(attestationType, new AttestationPolicySetOptions().setAttestationSigner(signingKey), Context.NONE);
-                verifySetPolicyResult(client, result.getValue(), attestationType, null, PolicyModification.REMOVED);
+                verifySetPolicyResult(client, result.getValue(), attestationType, null, signingKey, PolicyModification.REMOVED);
             });
         }
 
@@ -270,13 +276,13 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
             assertDoesNotThrow(() -> {
                 Response<PolicyResult> result = client.setAttestationPolicyWithResponse(attestationType, new AttestationPolicySetOptions()
                     .setPolicy(policyToSet), Context.NONE);
-                verifySetPolicyResult(client, result.getValue(), attestationType, policyToSet, PolicyModification.UPDATED);
+                verifySetPolicyResult(client, result.getValue(), attestationType, policyToSet, null, PolicyModification.UPDATED);
             });
             assertEquals(policyToSet, client.getAttestationPolicy(attestationType));
 
             assertDoesNotThrow(() -> {
                 Response<PolicyResult> result = client.resetAttestationPolicyWithResponse(attestationType, Context.NONE);
-                verifySetPolicyResult(client, result.getValue(), attestationType, null, PolicyModification.REMOVED);
+                verifySetPolicyResult(client, result.getValue(), attestationType, null, null, PolicyModification.REMOVED);
             });
 
         }
@@ -284,12 +290,12 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
             String policyToSet = "version=1.0;authorizationrules{=> permit();}; issuancerules{};";
             assertDoesNotThrow(() -> {
                 Response<PolicyResult> result = client.setAttestationPolicyWithResponse(attestationType, policyToSet, Context.NONE);
-                verifySetPolicyResult(client, result.getValue(), attestationType, policyToSet, PolicyModification.UPDATED);
+                verifySetPolicyResult(client, result.getValue(), attestationType, policyToSet, null, PolicyModification.UPDATED);
             });
 
             assertDoesNotThrow(() -> {
                 Response<PolicyResult> result = client.resetAttestationPolicyWithResponse(attestationType, Context.NONE);
-                verifySetPolicyResult(client, result.getValue(), attestationType, null, PolicyModification.REMOVED);
+                verifySetPolicyResult(client, result.getValue(), attestationType, null, null, PolicyModification.REMOVED);
             });
         }
     }

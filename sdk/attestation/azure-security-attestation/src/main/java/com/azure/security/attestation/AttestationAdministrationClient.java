@@ -8,8 +8,10 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
+import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.security.attestation.models.AttestationPolicySetOptions;
+import com.azure.security.attestation.models.AttestationSigningKey;
 import com.azure.security.attestation.models.AttestationType;
 import com.azure.security.attestation.models.PolicyResult;
 
@@ -160,6 +162,20 @@ public final class AttestationAdministrationClient {
         return asyncClient.setAttestationPolicyWithResponse(attestationType, policyToSet, context).block();
     }
 
+    /**
+     * Calculates the PolicyTokenHash for a given policy string.
+     *
+     * The policyTokenHash is calculated by generating a policy set JSON Web Token signed by the key
+     * specified in the (optional) {@link AttestationSigningKey}.
+     *
+     * @param policy AttestationPolicy document use in the underlying JWT.
+     * @param signer Optional signing key used to sign the underlying JWT.
+     * @return A {@link BinaryData} containing the SHA-256 hash of the attestation policy token corresponding
+     * to the policy and signer.
+     */
+    public BinaryData calculatePolicyTokenHash(String policy, AttestationSigningKey signer) {
+        return asyncClient.calculatePolicyTokenHash(policy, signer);
+    }
     //endregion
 
     //region Reset Attestation Policy
