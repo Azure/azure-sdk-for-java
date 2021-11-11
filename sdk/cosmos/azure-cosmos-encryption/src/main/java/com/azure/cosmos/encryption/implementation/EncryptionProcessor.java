@@ -318,6 +318,7 @@ public class EncryptionProcessor {
         }));
     }
 
+    @SuppressWarnings("unchecked")
     public JsonNode encryptAndSerializePatchProperty(EncryptionSettings encryptionSettings,
                                                    JsonNode propertyValueHolder, String propertyName) throws MicrosoftDataEncryptionException, JsonProcessingException {
         if (propertyValueHolder.isObject()) {
