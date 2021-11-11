@@ -344,7 +344,7 @@ Azure SDKs for Java offer a consistent logging story to help aid in troubleshoot
 their resolution. The logs produced will capture the flow of an application before reaching the terminal state to help
 locate the root issue. View the [logging][logging] wiki for guidance about enabling logging.
 
-Sample code to enable logging in Azure Management Libraries.
+Sample code to enable logging in Azure Management Libraries for Java.
 
 <!-- embedme ./azure-resourcemanager/src/samples/java/com/azure/resourcemanager/ReadmeSamples.java#L76-L80 -->
 ```java
@@ -354,6 +354,14 @@ AzureResourceManager azure = AzureResourceManager
     .authenticate(credential, profile)
     .withDefaultSubscription();
 ```
+
+### Mocking SDK
+
+Please refer to [Unit Testing][unit_test] for guidance on mocking the SDK clients.
+In particular, since many classes in clients are `final`, "Mocking Final classes" section would be helpful on mocking `final` classes in Mockito.
+
+As Azure Management Libraries for Java uses Fluent interface extensively, it takes some extra effects to mock the Fluent interface.
+Samples can be found [here](https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/azure-resourcemanager/src/samples/java/com/azure/resourcemanager/MockSdkSamples.java).
 
 ### Dependency management
 
@@ -466,3 +474,4 @@ For details on contributing to this repository, see the [contributing guide](htt
 [throttling]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/THROTTLING.md
 [reactor]: https://projectreactor.io/
 [rbac]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/resourcemanager/docs/RBAC.md
+[unit_test]: https://github.com/Azure/azure-sdk-for-java/wiki/Unit-Testing
