@@ -197,7 +197,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
 
         ChallengeParameters(URI authorizationUri, String[] scopes) {
             this.authorizationUri = authorizationUri;
-            tenantId = authorizationUri.getPath().split("/")[0];
+            tenantId = authorizationUri.getPath().split("/")[1];
             this.scopes = scopes;
         }
 
@@ -224,7 +224,7 @@ public class KeyVaultCredentialPolicy extends BearerTokenAuthenticationPolicy {
         }
     }
 
-    static void clearCache() {
+    public static void clearCache() {
         CHALLENGE_CACHE.clear();
     }
 
