@@ -16,8 +16,7 @@
 ### Other Changes
 
 - Regenerated REST API based off 2021-10 swagger.
-- An HttpResponseException with status code 415 is returned if an invalid SchemaFormat is passed for registerSchema or
-  getSchemaById calls.
+- An `HttpResponseException` with status code 415 is returned if an invalid `SchemaFormat` is passed for `registerSchema` or `getSchemaById` calls.
 
 ## 1.0.0-beta.6 (2021-10-08)
 
