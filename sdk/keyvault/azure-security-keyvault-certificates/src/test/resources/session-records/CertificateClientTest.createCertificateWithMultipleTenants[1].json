@@ -7,33 +7,6 @@
       "Content-Type" : "application/json"
     },
     "Response" : {
-      "content-length" : "97",
-      "X-Content-Type-Options" : "nosniff",
-      "WWW-Authenticate" : "Bearer authorization=\"https://login.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47\", resource=\"https://vault.azure.net\"",
-      "Pragma" : "no-cache",
-      "retry-after" : "0",
-      "StatusCode" : "401",
-      "Date" : "Thu, 11 Nov 2021 15:49:22 GMT",
-      "Strict-Transport-Security" : "max-age=31536000;includeSubDomains",
-      "Cache-Control" : "no-cache",
-      "x-ms-keyvault-region" : "westus",
-      "x-ms-keyvault-network-info" : "conn_type=Ipv4;addr=174.127.169.154;act_addr_fam=InterNetwork;",
-      "Expires" : "-1",
-      "x-ms-request-id" : "40629d7d-48d3-419d-94d2-796553ab2e25",
-      "x-ms-keyvault-service-version" : "1.9.150.1",
-      "Body" : "{\"error\":{\"code\":\"Unauthorized\",\"message\":\"AKV10000: Request is missing a Bearer or PoP token.\"}}",
-      "Content-Type" : "application/json; charset=utf-8",
-      "X-Powered-By" : "ASP.NET"
-    },
-    "Exception" : null
-  }, {
-    "Method" : "POST",
-    "Uri" : "https://REDACTED.vault.azure.net/certificates/dfbcfcfa-f35d-4eef-a298-b93927ba85a3-testCer/create?api-version=7.3-preview",
-    "Headers" : {
-      "User-Agent" : "azsdk-java-client_name/client_version (11.0.6; Windows 10; 10.0)",
-      "Content-Type" : "application/json"
-    },
-    "Response" : {
       "content-length" : "1325",
       "X-Content-Type-Options" : "nosniff",
       "Pragma" : "no-cache",
