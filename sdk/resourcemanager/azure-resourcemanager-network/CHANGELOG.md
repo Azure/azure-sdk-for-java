@@ -2,7 +2,9 @@
 
 ## 2.10.0-beta.1 (Unreleased)
 
-### Dependency Updates
+### Other Changes
+
+#### Dependency Updates
 
 - Updated `api-version` to `2021-05-01`.
 
