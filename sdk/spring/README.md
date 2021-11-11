@@ -114,15 +114,9 @@ This project collects usage data and sends it to Microsoft to help improve our p
 
 <!--link-->
 [maven]: https://maven.apache.org/
-[spring-initializr]: https://start.spring.io/
-[maven-central-repository]: https://search.maven.org/
-[spring-cloud]: https://spring.io/projects/spring-cloud
-[spring-cloud-stream]: https://cloud.spring.io/spring-cloud-stream/
 [spring-boot-dependency-mapping]: https://github.com/Azure/azure-sdk-for-java/wiki/Spring-Versions-Mapping
 
 [spring-integration-guides]: https://docs.microsoft.com/java/azure/spring-framework
-[connect-to-feed-link]: https://dev.azure.com/azure-sdk/public/_packaging?_a=connect&feed=azure-sdk-for-java
-
 [spring-contributing]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/CONTRIBUTING.md
 [azure-sdk-for-java-issues]: https://github.com/Azure/azure-sdk-for-java/issues
 [gitter-spring-on-azure-img]: https://badges.gitter.im/Microsoft/spring-on-azure.svg
@@ -133,5 +127,5 @@ This project collects usage data and sends it to Microsoft to help improve our p
 [codeofconduct-faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [privacy-statement]: https://privacy.microsoft.com/privacystatement
 [azure_event_hub]: https://azure.microsoft.com/services/event-hubs/
-[source_code_eventhubs]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/spring/azure-spring-integration-eventhubs
+[source_code_eventhubs]: https://github.com/Azure/azure-sdk-for-java/tree/feature/azure-spring-cloud-4.0/sdk/spring/spring-integration-azure-eventhubs
 [azure_service_bus]: https://azure.microsoft.com/services/service-bus/
