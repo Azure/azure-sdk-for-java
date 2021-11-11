@@ -3,6 +3,7 @@
 ## 4.0.0-beta.1 (Unreleased)
 
 ### Features Added
+- Support batch sending.
 
 ### Breaking Changes
 - Change artifact id from `azure-spring-cloud-stream-binder-eventhubs` to `spring-cloud-azure-stream-binder-eventhubs`.

@@ -54,7 +54,16 @@ public class EventHubTemplateSendTest extends SendOperationTest<EventHubsTemplat
         assertNull(mono.block());
         verifySendCalled(1);
     }
+    @Test
+    public void testSendBatchWithTimeout() {
+        this.batchableProducerAsyncClient = new BatchableProducerAsyncClient(this.mockProducerClient, 0, Duration.ofMinutes(3));
+        when(this.producerFactory.createProducer(eq(this.destination))).thenReturn(this.batchableProducerAsyncClient);
 
+        final Mono<Void> mono = this.sendOperation.sendAsync(destination, Collections.nCopies(5, message), null);
+
+        assertNull(mono.block());
+        verifySendCalled(0);
+    }
     @Override
     protected void verifySendCalled(int times) {
         verify(this.mockProducerClient, times(times)).send(any(EventDataBatch.class));

@@ -9,11 +9,16 @@ import java.time.Duration;
 
 public class BatchableProducerProperties extends ProducerProperties implements EventHubBatchableProducerDescriptor {
 
+    /**
+     * The maximum size, in bytes, of a batch of events. The default value is 256 * 1024.
+     */
     private Integer maxBatchInBytes;
 
+    /**
+     * The maximum time duration to wait to send a batch of events when maxSizeInBytes is not reached. The default value
+     * is 5min.
+     */
     private Duration maxWaitTime;
-
-    private boolean batchMode;
 
     public BatchableProducerProperties() {
         this.maxWaitTime = Duration.ofMinutes(5);
@@ -33,13 +38,5 @@ public class BatchableProducerProperties extends ProducerProperties implements E
 
     public void setMaxWaitTime(Duration maxWaitTime) {
         this.maxWaitTime = maxWaitTime;
-    }
-
-    public boolean isBatchMode() {
-        return batchMode;
-    }
-
-    public void setBatchMode(boolean batchMode) {
-        this.batchMode = batchMode;
     }
 }

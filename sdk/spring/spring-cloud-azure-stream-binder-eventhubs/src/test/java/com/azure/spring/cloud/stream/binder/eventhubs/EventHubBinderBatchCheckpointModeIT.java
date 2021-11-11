@@ -24,7 +24,7 @@ import java.util.function.Supplier;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-@SpringBootTest(classes = EventHubBinderBatchModeIT.TestConfig.class)
+@SpringBootTest(classes = EventHubBinderBatchCheckpointModeIT.TestConfig.class)
 @TestPropertySource(properties =
     {
     "spring.cloud.stream.eventhub.bindings.consume-in-0.consumer.checkpoint.mode=BATCH",
@@ -32,9 +32,9 @@ import static org.assertj.core.api.Assertions.assertThat;
     "spring.cloud.stream.bindings.supply-out-0.destination=test-eventhub-batch",
     "spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name=test-eventhub-batch"
     })
-public class EventHubBinderBatchModeIT {
+public class EventHubBinderBatchCheckpointModeIT {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(EventHubBinderBatchModeIT.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EventHubBinderBatchCheckpointModeIT.class);
 
     private static final String MESSAGE = UUID.randomUUID().toString();
 
@@ -62,7 +62,7 @@ public class EventHubBinderBatchModeIT {
         public Consumer<Message<String>> consume() {
             return message -> {
                 LOGGER.info("EventHubBinderBatchModeIT: New message received: '{}'", message.getPayload());
-                if (message.getPayload().equals(EventHubBinderBatchModeIT.MESSAGE)) {
+                if (message.getPayload().equals(EventHubBinderBatchCheckpointModeIT.MESSAGE)) {
                     LATCH.countDown();
                 }
             };
@@ -72,10 +72,10 @@ public class EventHubBinderBatchModeIT {
     @Test
     public void testSendAndReceiveMessage() throws InterruptedException {
         LOGGER.info("EventHubBinderBatchModeIT begin.");
-        EventHubBinderBatchModeIT.LATCH.await(15, TimeUnit.SECONDS);
+        EventHubBinderBatchCheckpointModeIT.LATCH.await(15, TimeUnit.SECONDS);
         LOGGER.info("Send a message:" + MESSAGE + ".");
         many.emitNext(new GenericMessage<>(MESSAGE), Sinks.EmitFailureHandler.FAIL_FAST);
-        assertThat(EventHubBinderBatchModeIT.LATCH.await(30, TimeUnit.SECONDS)).isTrue();
+        assertThat(EventHubBinderBatchCheckpointModeIT.LATCH.await(30, TimeUnit.SECONDS)).isTrue();
         LOGGER.info("EventHubBinderBatchModeIT end.");
     }
 }

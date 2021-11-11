@@ -7,8 +7,7 @@ import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 class DefaultEventHubNamespaceProducerFactoryTest {
 
@@ -35,6 +34,7 @@ class DefaultEventHubNamespaceProducerFactoryTest {
         EventHubProducer producer = producerFactory.createProducer(eventHubName);
 
         assertNotNull(producer);
+        assertTrue(producer instanceof ProducerAsyncClient);
         assertEquals(1, producerAddedTimes);
     }
 

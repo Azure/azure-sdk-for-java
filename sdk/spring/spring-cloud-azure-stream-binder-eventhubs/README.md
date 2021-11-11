@@ -120,6 +120,18 @@ Effective only if `sync` is set to true. The amount of time to wait for a respon
 
 Default: `10000`
 
+**_max-batch-in-bytes_**
+
+The maximum size, in bytes, to wait before sending a batch of events.
+
+Default: 256 * 1024
+
+**_max-wait-time_**
+
+The maximum time duration to wait to send a batch of events when max-batch-in-bytes is not reached.
+     
+Default: 5min
+
 #### Event Hub Consumer Properties ####
 
 It supports the following configurations with the format of `spring.cloud.stream.eventhub.bindings.<channelName>.consumer`.
