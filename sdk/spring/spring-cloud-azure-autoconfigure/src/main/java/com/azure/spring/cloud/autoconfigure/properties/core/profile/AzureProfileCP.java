@@ -5,13 +5,13 @@ package com.azure.spring.cloud.autoconfigure.properties.core.profile;
 
 import com.azure.spring.core.aware.AzureProfileAware;
 import com.azure.spring.core.properties.profile.AzureEnvironment;
-import com.azure.spring.core.properties.profile.KnownAzureEnvironment;
+import com.azure.spring.core.properties.profile.AzureProfileAdapter;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
  * The AzureProfile defines the properties related to an Azure subscription.
  */
-public class AzureProfileCP implements AzureProfileAware.Profile {
+public class AzureProfileCP extends AzureProfileAdapter {
 
     /**
      * Tenant id for Azure resources.
@@ -27,10 +27,7 @@ public class AzureProfileCP implements AzureProfileAware.Profile {
     private AzureProfileAware.CloudType cloud = AzureProfileAware.CloudType.AZURE;
 
     @NestedConfigurationProperty
-    private AzureEnvironment environment = KnownAzureEnvironment.AZURE_ENV;
-
-    private final AzureEnvironment otherAzureEnvironment =
-        new AzureEnvironment(com.azure.core.management.AzureEnvironment.AZURE);
+    private final AzureEnvironment environment = new AzureEnvironment();
 
     public String getTenantId() {
         return tenantId;
@@ -51,7 +48,6 @@ public class AzureProfileCP implements AzureProfileAware.Profile {
 
     public void setCloud(AzureProfileAware.CloudType cloud) {
         this.cloud = cloud;
-        this.environment = decideAzureEnvironment();
     }
 
     public void setSubscriptionId(String subscriptionId) {
@@ -60,21 +56,6 @@ public class AzureProfileCP implements AzureProfileAware.Profile {
 
     public AzureEnvironment getEnvironment() {
         return this.environment;
-    }
-
-    private AzureEnvironment decideAzureEnvironment() {
-        switch (cloud) {
-            case AZURE_CHINA:
-                return KnownAzureEnvironment.AZURE_CHINA_ENV;
-            case AZURE_US_GOVERNMENT:
-                return KnownAzureEnvironment.AZURE_US_GOVERNMENT_ENV;
-            case AZURE_GERMANY:
-                return KnownAzureEnvironment.AZURE_GERMANY_ENV;
-            case AZURE:
-                return KnownAzureEnvironment.AZURE_ENV;
-            default:
-                return otherAzureEnvironment;
-        }
     }
 
 }

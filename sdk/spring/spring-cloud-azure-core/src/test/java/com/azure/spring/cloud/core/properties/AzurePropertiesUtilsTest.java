@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.core.properties;
 
+import com.azure.core.management.AzureEnvironment;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.core.properties.AzurePropertiesUtils;
 import com.azure.spring.core.properties.authentication.TokenCredentialProperties;
@@ -18,8 +19,6 @@ import java.time.Duration;
 import static com.azure.spring.core.aware.AzureProfileAware.CloudType.AZURE;
 import static com.azure.spring.core.aware.AzureProfileAware.CloudType.AZURE_CHINA;
 import static com.azure.spring.core.aware.AzureProfileAware.CloudType.OTHER;
-import static com.azure.spring.core.properties.profile.KnownAzureEnvironment.AZURE_CHINA_ENV;
-import static com.azure.spring.core.properties.profile.KnownAzureEnvironment.AZURE_ENV;
 
 
 /**
@@ -36,6 +35,7 @@ class AzurePropertiesUtilsTest {
         source.proxy.setHostname("hostname-A");
         source.retry.getBackoff().setDelay(Duration.ofSeconds(2));
         source.credential.setClientId("client-id-A");
+        source.profile.afterPropertiesSet();
 
         final AzurePropertiesB target = new AzurePropertiesB();
         AzurePropertiesUtils.copyAzureCommonProperties(source, target);
@@ -46,7 +46,8 @@ class AzurePropertiesUtilsTest {
         Assertions.assertEquals("hostname-A", target.proxy.getHostname());
         Assertions.assertEquals(Duration.ofSeconds(2), target.retry.getBackoff().getDelay());
         Assertions.assertEquals("client-id-A", target.credential.getClientId());
-        Assertions.assertEquals(AZURE_CHINA_ENV.getActiveDirectoryEndpoint(), target.profile.getEnvironment().getActiveDirectoryEndpoint());
+        Assertions.assertEquals(AzureEnvironment.AZURE_CHINA.getActiveDirectoryEndpoint(),
+            target.profile.getEnvironment().getActiveDirectoryEndpoint());
     }
 
     @Test
@@ -58,6 +59,7 @@ class AzurePropertiesUtilsTest {
         source.proxy.setHostname("hostname-A");
         source.retry.getBackoff().setDelay(Duration.ofSeconds(2));
         source.credential.setClientId("client-id-A");
+        source.profile.afterPropertiesSet();
 
         AzurePropertiesB target = new AzurePropertiesB();
         target.client.setApplicationId("application-id-B");
@@ -66,6 +68,7 @@ class AzurePropertiesUtilsTest {
         target.proxy.setHostname("hostname-B");
         target.retry.getBackoff().setDelay(Duration.ofSeconds(4));
         target.credential.setClientId("client-id-B");
+        target.profile.afterPropertiesSet();
 
         Assertions.assertEquals("application-id-B", target.client.getApplicationId());
         Assertions.assertEquals(AZURE, target.profile.getCloud());
@@ -73,7 +76,8 @@ class AzurePropertiesUtilsTest {
         Assertions.assertEquals("hostname-B", target.proxy.getHostname());
         Assertions.assertEquals(Duration.ofSeconds(4), target.retry.getBackoff().getDelay());
         Assertions.assertEquals("client-id-B", target.credential.getClientId());
-        Assertions.assertEquals(AZURE_ENV.getActiveDirectoryEndpoint(), target.profile.getEnvironment().getActiveDirectoryEndpoint());
+        Assertions.assertEquals(AzureEnvironment.AZURE.getActiveDirectoryEndpoint(),
+            target.profile.getEnvironment().getActiveDirectoryEndpoint());
 
         AzurePropertiesUtils.copyAzureCommonProperties(source, target);
 
@@ -83,7 +87,8 @@ class AzurePropertiesUtilsTest {
         Assertions.assertEquals("hostname-A", target.proxy.getHostname());
         Assertions.assertEquals(Duration.ofSeconds(2), target.retry.getBackoff().getDelay());
         Assertions.assertEquals("client-id-A", target.credential.getClientId());
-        Assertions.assertEquals(AZURE_CHINA_ENV.getActiveDirectoryEndpoint(), target.profile.getEnvironment().getActiveDirectoryEndpoint());
+        Assertions.assertEquals(AzureEnvironment.AZURE_CHINA.getActiveDirectoryEndpoint(),
+            target.profile.getEnvironment().getActiveDirectoryEndpoint());
 
 
     }
@@ -107,14 +112,18 @@ class AzurePropertiesUtilsTest {
     void testCopyPropertiesIgnoreNullToObjectWithDifferentFieldsSetShouldMerge() {
         AzurePropertiesA source = new AzurePropertiesA();
         source.credential.setClientId("client-id-A");
+        source.getProfile().afterPropertiesSet();
 
         AzurePropertiesB target = new AzurePropertiesB();
         target.credential.setClientSecret("client-secret-B");
         target.retry.getBackoff().setMaxDelay(Duration.ofSeconds(2));
         target.profile.setCloud(OTHER);
         target.profile.getEnvironment().setActiveDirectoryEndpoint("abc");
+        target.getProfile().afterPropertiesSet();
 
-        Assertions.assertEquals(AZURE_ENV.getActiveDirectoryEndpoint(), source.profile.getEnvironment().getActiveDirectoryEndpoint());
+        Assertions.assertEquals(AZURE, source.getProfile().getCloud());
+        Assertions.assertEquals(AzureEnvironment.AZURE.getActiveDirectoryEndpoint(),
+            source.profile.getEnvironment().getActiveDirectoryEndpoint());
         Assertions.assertEquals("client-secret-B", target.credential.getClientSecret());
         Assertions.assertEquals(Duration.ofSeconds(2), target.retry.getBackoff().getMaxDelay());
 
@@ -124,18 +133,22 @@ class AzurePropertiesUtilsTest {
         Assertions.assertEquals("client-id-A", target.credential.getClientId());
         Assertions.assertEquals("client-secret-B", target.credential.getClientSecret());
         Assertions.assertEquals(Duration.ofSeconds(2), target.retry.getBackoff().getMaxDelay());
-        Assertions.assertEquals(AZURE_ENV.getActiveDirectoryEndpoint(), target.profile.getEnvironment().getActiveDirectoryEndpoint());
+        Assertions.assertEquals(AZURE, source.getProfile().getCloud());
+        Assertions.assertEquals(AzureEnvironment.AZURE.getActiveDirectoryEndpoint(),
+            target.profile.getEnvironment().getActiveDirectoryEndpoint());
 
 
         // source properties should not be updated
         Assertions.assertNull(source.credential.getClientSecret());
-        Assertions.assertEquals(AZURE_ENV.getActiveDirectoryEndpoint(), source.profile.getEnvironment().getActiveDirectoryEndpoint());
+        Assertions.assertEquals(AzureEnvironment.AZURE.getActiveDirectoryEndpoint(),
+            source.profile.getEnvironment().getActiveDirectoryEndpoint());
     }
 
     @Test
     void testCopyPropertiesSourceNotChanged() {
         AzurePropertiesA source = new AzurePropertiesA();
         source.credential.setClientId("client-id-A");
+        source.getProfile().afterPropertiesSet();
 
         AzurePropertiesB target = new AzurePropertiesB();
 
@@ -147,9 +160,11 @@ class AzurePropertiesUtilsTest {
         target.retry.getBackoff().setDelay(Duration.ofSeconds(2));
         target.profile.setCloud(OTHER);
         target.profile.getEnvironment().setActiveDirectoryEndpoint("abc");
+        target.getProfile().afterPropertiesSet();
 
         Assertions.assertNull(source.retry.getBackoff().getDelay());
-        Assertions.assertEquals(AZURE_ENV.getActiveDirectoryEndpoint(), source.profile.getEnvironment().getActiveDirectoryEndpoint());
+        Assertions.assertEquals(AzureEnvironment.AZURE.getActiveDirectoryEndpoint(),
+            source.profile.getEnvironment().getActiveDirectoryEndpoint());
     }
 
 

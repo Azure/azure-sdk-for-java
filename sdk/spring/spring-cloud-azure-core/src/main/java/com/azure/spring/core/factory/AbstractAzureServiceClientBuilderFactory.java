@@ -104,6 +104,7 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
 
     protected void configureAzureEnvironment(T builder) {
         AzureProfileAware.Profile profile = getAzureProperties().getProfile();
+        profile.afterPropertiesSet();
 
         Configuration configuration = new Configuration();
         configuration.put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, profile.getEnvironment().getActiveDirectoryEndpoint());

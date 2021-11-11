@@ -5,15 +5,17 @@ package com.azure.spring.core.properties.profile;
 
 import com.azure.spring.core.aware.AzureProfileAware;
 
+import static com.azure.spring.core.aware.AzureProfileAware.CloudType.AZURE;
+
 /**
  * The AzureProfile defines the properties related to an Azure subscription.
  */
-public class AzureProfile implements AzureProfileAware.Profile {
+public class AzureProfile extends AzureProfileAdapter {
 
     private String tenantId;
     private String subscriptionId;
-    private AzureProfileAware.CloudType cloud = AzureProfileAware.CloudType.AZURE;
-    private final AzureEnvironment otherEnvironment = new AzureEnvironment(com.azure.core.management.AzureEnvironment.AZURE);
+    private AzureProfileAware.CloudType cloud = AZURE;
+    private final AzureEnvironment environment = new AzureEnvironment();
 
     public String getTenantId() {
         return tenantId;
@@ -40,23 +42,9 @@ public class AzureProfile implements AzureProfileAware.Profile {
         this.cloud = cloud;
     }
 
+    @Override
     public AzureEnvironment getEnvironment() {
-        switch (cloud) {
-            case AZURE_CHINA:
-                return KnownAzureEnvironment.AZURE_CHINA_ENV;
-            case AZURE_US_GOVERNMENT:
-                return KnownAzureEnvironment.AZURE_US_GOVERNMENT_ENV;
-            case AZURE_GERMANY:
-                return KnownAzureEnvironment.AZURE_GERMANY_ENV;
-            case AZURE:
-                return KnownAzureEnvironment.AZURE_ENV;
-            default:
-                return otherEnvironment;
-        }
+        return environment;
     }
-
-
-
-
 
 }

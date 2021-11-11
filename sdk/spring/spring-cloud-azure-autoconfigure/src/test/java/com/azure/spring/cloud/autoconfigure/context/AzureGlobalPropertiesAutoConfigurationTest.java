@@ -65,7 +65,7 @@ class AzureGlobalPropertiesAutoConfigurationTest {
     }
 
     @Test
-    void testAzureProfileOther() {
+    void testAzureProfileOtherCouldModifyEndpoint() {
         this.contextRunner
             .withPropertyValues(
                 "spring.cloud.azure.profile.environment.activeDirectoryEndpoint=abc",
@@ -79,7 +79,7 @@ class AzureGlobalPropertiesAutoConfigurationTest {
     }
 
     @Test
-    void testAzureProfileAzure() {
+    void testAzureProfileAzureCouldModifyEndpoint() {
         this.contextRunner
             .withPropertyValues(
                 "spring.cloud.azure.profile.environment.activeDirectoryEndpoint=abc",
@@ -89,7 +89,21 @@ class AzureGlobalPropertiesAutoConfigurationTest {
                 final AzureGlobalProperties azureProperties = context.getBean(AzureGlobalProperties.class);
                 assertThat(azureProperties).extracting("profile.cloud").isEqualTo(AZURE);
                 assertThat(azureProperties).extracting("profile.environment.activeDirectoryEndpoint")
-                                           .isEqualTo(AzureEnvironment.AZURE.getActiveDirectoryEndpoint());
+                                           .isEqualTo("abc");
+            });
+    }
+
+    @Test
+    void testAzureProfileAzureChina() {
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.profile.cloud=azure_china"
+            )
+            .run(context -> {
+                final AzureGlobalProperties azureProperties = context.getBean(AzureGlobalProperties.class);
+                assertThat(azureProperties).extracting("profile.cloud").isEqualTo(AZURE_CHINA);
+                assertThat(azureProperties).extracting("profile.environment.activeDirectoryEndpoint")
+                                           .isEqualTo(AzureEnvironment.AZURE_CHINA.getActiveDirectoryEndpoint());
             });
     }
 

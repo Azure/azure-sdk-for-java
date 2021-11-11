@@ -10,7 +10,9 @@ import org.springframework.beans.BeanWrapperImpl;
 
 import java.beans.PropertyDescriptor;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
+import java.util.function.Predicate;
 
 /**
  *
@@ -40,6 +42,7 @@ public class AzurePropertiesUtils {
         BeanUtils.copyProperties(source.getRetry(), target.getRetry());
         BeanUtils.copyProperties(source.getRetry().getBackoff(), target.getRetry().getBackoff());
         BeanUtils.copyProperties(source.getProfile(), target.getProfile());
+        BeanUtils.copyProperties(source.getProfile().getEnvironment(), target.getProfile().getEnvironment());
         BeanUtils.copyProperties(source.getCredential(), target.getCredential());
     }
 
@@ -60,6 +63,7 @@ public class AzurePropertiesUtils {
         copyPropertiesIgnoreNull(source.getRetry(), target.getRetry());
         copyPropertiesIgnoreNull(source.getRetry().getBackoff(), target.getRetry().getBackoff());
         copyPropertiesIgnoreNull(source.getProfile(), target.getProfile());
+        BeanUtils.copyProperties(source.getProfile().getEnvironment(), target.getProfile().getEnvironment());
         copyPropertiesIgnoreNull(source.getCredential(), target.getCredential());
     }
 
@@ -70,11 +74,15 @@ public class AzurePropertiesUtils {
         copyAzureCommonPropertiesIgnoreNull(properties, target);
     }
 
+    public static <T> void copyPropertiesWhenTargetIsNull(T source, T target) {
+        BeanUtils.copyProperties(source, target, findNonNullPropertyNames(target));
+    }
+
     private static void copyPropertiesIgnoreNull(Object source, Object target) {
         BeanUtils.copyProperties(source, target, findNullPropertyNames(source));
     }
 
-    private static String[] findNullPropertyNames(Object source) {
+    private static String[] findPropertyNames(Object source, Predicate<Object> predicate) {
         final Set<String> emptyNames = new HashSet<>();
 
         final BeanWrapper beanWrapper = new BeanWrapperImpl(source);
@@ -82,11 +90,19 @@ public class AzurePropertiesUtils {
 
         for (PropertyDescriptor pd : pds) {
             Object srcValue = beanWrapper.getPropertyValue(pd.getName());
-            if (srcValue == null) {
+            if (predicate.test(srcValue)) {
                 emptyNames.add(pd.getName());
             }
         }
         return emptyNames.toArray(new String[0]);
+    }
+
+    private static String[] findNonNullPropertyNames(Object source) {
+        return findPropertyNames(source, Objects::nonNull);
+    }
+
+    private static String[] findNullPropertyNames(Object source) {
+        return findPropertyNames(source, Objects::isNull);
     }
 
 
