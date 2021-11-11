@@ -26,39 +26,39 @@ import com.azure.core.management.exception.ManagementException;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.quota.fluent.OperationsClient;
+import com.azure.resourcemanager.quota.fluent.QuotaOperationsClient;
 import com.azure.resourcemanager.quota.fluent.models.OperationResponseInner;
 import com.azure.resourcemanager.quota.models.OperationList;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in OperationsClient. */
-public final class OperationsClientImpl implements OperationsClient {
-    private final ClientLogger logger = new ClientLogger(OperationsClientImpl.class);
+/** An instance of this class provides access to all the operations defined in QuotaOperationsClient. */
+public final class QuotaOperationsClientImpl implements QuotaOperationsClient {
+    private final ClientLogger logger = new ClientLogger(QuotaOperationsClientImpl.class);
 
     /** The proxy service used to perform REST calls. */
-    private final OperationsService service;
+    private final QuotaOperationsService service;
 
     /** The service client containing this operation class. */
     private final AzureQuotaExtensionApiImpl client;
 
     /**
-     * Initializes an instance of OperationsClientImpl.
+     * Initializes an instance of QuotaOperationsClientImpl.
      *
      * @param client the instance of the service client containing this operation class.
      */
-    OperationsClientImpl(AzureQuotaExtensionApiImpl client) {
+    QuotaOperationsClientImpl(AzureQuotaExtensionApiImpl client) {
         this.service =
-            RestProxy.create(OperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+            RestProxy.create(QuotaOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AzureQuotaExtensionApiOperations to be used by the proxy service to
-     * perform REST calls.
+     * The interface defining all the services for AzureQuotaExtensionApiQuotaOperations to be used by the proxy service
+     * to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "AzureQuotaExtensionA")
-    private interface OperationsService {
+    private interface QuotaOperationsService {
         @Headers({"Content-Type: application/json"})
         @Get("/providers/Microsoft.Quota/operations")
         @ExpectedResponses({200})
