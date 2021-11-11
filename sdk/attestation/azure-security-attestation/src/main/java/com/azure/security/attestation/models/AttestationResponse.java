@@ -4,7 +4,6 @@
 
 package com.azure.security.attestation.models;
 
-import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Immutable;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpRequest;
@@ -20,7 +19,7 @@ public final class AttestationResponse<T> extends ResponseBase<Void, T> {
      * An RFC 7519 JSON Web Token, the body of which is an AttestationResult
      * object.
      */
-    private AttestationToken token;
+    private final AttestationToken token;
 
     /**
      * Creates a {@link ResponseBase}.
