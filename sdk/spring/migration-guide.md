@@ -73,14 +73,14 @@ In the process of developing Spring Cloud Azure 4.0, we renamed some artifacts t
 
 | Legacy Artifact ID                                | Morden Artifact ID                                   | Description                                                  |
 | :------------------------------------------------ | ---------------------------------------------------- | ------------------------------------------------------------ |
-| azure-spring-boot-starter                         | N/A                                                  | This artifact has been deleted with all functionality be merged into the new `spring-cloud-azure-starter` artifact. |
+| azure-spring-boot-starter                         | spring-cloud-azure-starter                           | This artifact has been deleted with all functionality be merged into the new `spring-cloud-azure-starter` artifact. |
 | azure-spring-boot-starter-active-directory        | // TODO                                              |                                                              |
 | azure-spring-boot-starter-active-directory-b2c    | // TODO                                              |                                                              |
 | azure-spring-boot-starter-cosmos                  | spring-cloud-azure-starter-cosmos                    |                                                              |
 | azure-spring-boot-starter-keyvault-certificates   | // TODO                                              |                                                              |
 | azure-spring-boot-starter-keyvault-secrets        | spring-cloud-azure-starter-keyvault-secrets          |                                                              |
 | azure-spring-boot-starter-servicebus-jms          | spring-cloud-azure-starter-servicebus-jms            |                                                              |
-| azure-spring-boot-starter-storage                 | N/A                                                  | spring-cloud-azure-starter-storage-blob <br/>spring-cloud-azure-starter-storage-file-share |
+| azure-spring-boot-starter-storage                 | spring-cloud-azure-starter-storage-blob <br/>spring-cloud-azure-starter-storage-file-share                          | spring-cloud-azure-starter-storage-blob <br/>spring-cloud-azure-starter-storage-file-share |
 | azure-spring-boot                                 | N/A                                                  | This artifact has been deleted with all functionality be merged into the new `spring-cloud-azure-autoconfigure` artifact. |
 | azure-spring-cloud-autoconfigure                  | N/A                                                  | This artifact has been deleted with all functionality be merged into the new `spring-cloud-azure-autoconfigure` artifact. |
 | azure-spring-cloud-context                        | N/A                                                  | This artifact has been deleted with all functionality be merged into the new `spring-cloud-azure-autoconfigure`  and `spring-cloud-azure-resourcemanager` artifacts. |
@@ -115,6 +115,10 @@ In the process of developing Spring Cloud Azure 4.0, we renamed some artifacts t
 | N/A                                               | spring-cloud-azure-starter-stream-eventhubs          |                                                              |
 | N/A                                               | spring-cloud-azure-starter-stream-servicebus         |                                                              |
 
+## Dependencies changes
+Some unnecesary dependecies were included in the legacy artifacts, which we have removed in the morden Spring Cloud Azure 4.0 libaries. Below are some ...
+
+/// starter
 
 
 ## Configuration properties
