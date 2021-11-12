@@ -24,7 +24,7 @@ public interface PolicyResult {
     BinaryData getPolicyTokenHash();
 
     /**
-     * Get the policySigner property: The certificate used to sign the policy object, if specified.
+     * Get the policySigner property: The certificate used to sign the policy object, if one was provided.
      *
      * @return the policySigner value.
      */
