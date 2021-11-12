@@ -34,6 +34,5 @@ jobs:
           jdkFile: ${{ steps.sdkman.outputs.file }}
       - name: Build with Maven
         run: |
-            pwd
-            git update-index --chmod=+x mvnw
+            chmod +x mvnw
             ./mvnw -V -B verify
