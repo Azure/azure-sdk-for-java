@@ -128,12 +128,6 @@
       {
         "regex": true,
         "code": "java\\.class\\.externalClassExposedInAPI",
-        "new": "(interface|enum|class) reactor\\..*",
-        "justification": "We allow reactor classes in our external APIs. This also occurs because we check transitive dependencies, so it checks reactor jars."
-      },
-      {
-        "regex": true,
-        "code": "java\\.class\\.externalClassExposedInAPI",
         "new": "(class|interface|enum) com\\.azure\\.communication\\.common\\..*",
         "justification": "azure-communication-common classes are allowed to be exposed."
       },
