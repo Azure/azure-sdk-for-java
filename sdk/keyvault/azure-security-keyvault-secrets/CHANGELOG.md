@@ -4,11 +4,13 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
+- Added support for multi-tenant authentication in clients.
 
 ### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.22.0`
+- Upgraded `azure-core-http-netty` dependency to `1.11.2`
 
 ## 4.3.4 (2021-10-06)
 
