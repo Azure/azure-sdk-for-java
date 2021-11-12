@@ -54,7 +54,7 @@ public final class AttestationPolicySetOptions {
      * @param policy Attestation Token to be set.
      * @return This {@link AttestationPolicySetOptions}.
      */
-    public AttestationPolicySetOptions setPolicy(String policy) {
+    public AttestationPolicySetOptions setAttestationPolicy(String policy) {
         this.policy = policy;
         return this;
     }

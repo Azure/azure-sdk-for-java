@@ -161,7 +161,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
             String policyToSet = "version =1.0; authorizationrules{=> permit();}; issuancerules{};";
             assertDoesNotThrow(() -> {
                 PolicyResult result = client.setAttestationPolicy(attestationType, new AttestationPolicySetOptions()
-                    .setPolicy(policyToSet)
+                    .setAttestationPolicy(policyToSet)
                     .setAttestationSigner(signingKey));
                 verifySetPolicyResult(client, result, attestationType, policyToSet, signingKey, PolicyModification.UPDATED);
             });
@@ -178,7 +178,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
             String policyToSet = "version=1.0; authorizationrules{=> permit();}; issuancerules{ };";
             assertDoesNotThrow(() -> {
                 PolicyResult result = client.setAttestationPolicy(attestationType, new AttestationPolicySetOptions()
-                    .setPolicy(policyToSet)
+                    .setAttestationPolicy(policyToSet)
                     .setAttestationSigner(signingKey));
                 verifySetPolicyResult(client, result, attestationType, policyToSet, signingKey, PolicyModification.UPDATED);
             });
@@ -193,7 +193,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
             String policyToSet = "version=1.0; authorizationrules{=> permit( );}; issuancerules{};";
             assertDoesNotThrow(() -> {
                 PolicyResult result = client.setAttestationPolicy(attestationType, new AttestationPolicySetOptions()
-                    .setPolicy(policyToSet));
+                    .setAttestationPolicy(policyToSet));
                 verifySetPolicyResult(client, result, attestationType, policyToSet, null, PolicyModification.UPDATED);
             });
             assertEquals(policyToSet, client.getAttestationPolicy(attestationType));
@@ -246,7 +246,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
             String policyToSet = "version =1.0; authorizationrules{=> permit();}; issuancerules{};";
             assertDoesNotThrow(() -> {
                 Response<PolicyResult> result = client.setAttestationPolicyWithResponse(attestationType, new AttestationPolicySetOptions()
-                    .setPolicy(policyToSet)
+                    .setAttestationPolicy(policyToSet)
                     .setAttestationSigner(signingKey), Context.NONE);
                 verifySetPolicyResult(client, result.getValue(), attestationType, policyToSet, signingKey, PolicyModification.UPDATED);
             });
@@ -263,7 +263,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
             String policyToSet = "version=1.0; authorizationrules{=> permit();}; issuancerules{ };";
             assertDoesNotThrow(() -> {
                 Response<PolicyResult> result = client.setAttestationPolicyWithResponse(attestationType, new AttestationPolicySetOptions()
-                    .setPolicy(policyToSet)
+                    .setAttestationPolicy(policyToSet)
                     .setAttestationSigner(signingKey), Context.NONE);
                 verifySetPolicyResult(client, result.getValue(), attestationType, policyToSet, signingKey, PolicyModification.UPDATED);
             });
@@ -278,7 +278,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
             String policyToSet = "version=1.0; authorizationrules{=> permit( );}; issuancerules{};";
             assertDoesNotThrow(() -> {
                 Response<PolicyResult> result = client.setAttestationPolicyWithResponse(attestationType, new AttestationPolicySetOptions()
-                    .setPolicy(policyToSet), Context.NONE);
+                    .setAttestationPolicy(policyToSet), Context.NONE);
                 verifySetPolicyResult(client, result.getValue(), attestationType, policyToSet, null, PolicyModification.UPDATED);
             });
             assertEquals(policyToSet, client.getAttestationPolicy(attestationType));
@@ -314,7 +314,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
 
             // Test setting the policy. This works for both AAD and Isolated mode.
             StepVerifier.create(client.setAttestationPolicy(attestationType, new AttestationPolicySetOptions()
-                    .setPolicy(policyToSet)
+                    .setAttestationPolicy(policyToSet)
                     .setAttestationSigner(signingKey))
                 )
                 .assertNext(result -> {
@@ -358,7 +358,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
             String policyToSet = "version=1.0; authorizationrules{=> permit();}; issuancerules{};";
             // Test setting the policy. This works for both AAD and Isolated mode.
             StepVerifier.create(client.setAttestationPolicy(attestationType, new AttestationPolicySetOptions()
-                    .setPolicy(policyToSet)
+                    .setAttestationPolicy(policyToSet)
                     .setAttestationSigner(signingKey)))
                 .assertNext(result -> {
                     assertEquals(PolicyModification.UPDATED, result.getPolicyResolution());
@@ -394,7 +394,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
             // Test setting the policy. This works for both AAD and Isolated mode.
             String policyToSet = "version=1.0; authorizationrules{=> permit();}; issuancerules{};";
             StepVerifier.create(client.setAttestationPolicy(attestationType, new AttestationPolicySetOptions()
-                    .setPolicy(policyToSet)))
+                    .setAttestationPolicy(policyToSet)))
                 .assertNext(result -> {
                     assertEquals(PolicyModification.UPDATED, result.getPolicyResolution());
                 })
@@ -466,7 +466,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
 
             // Test setting the policy. This works for both AAD and Isolated mode.
             StepVerifier.create(client.setAttestationPolicyWithResponse(attestationType, new AttestationPolicySetOptions()
-                    .setPolicy("version=1.0; authorizationrules{=> permit();}; issuancerules{};")
+                    .setAttestationPolicy("version=1.0; authorizationrules{=> permit();}; issuancerules{};")
                     .setAttestationSigner(signingKey)))
                 .assertNext(response -> {
                     assertEquals(PolicyModification.UPDATED, response.getValue().getPolicyResolution());
@@ -491,7 +491,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
 
             // Test setting the policy. This works for both AAD and Isolated mode.
             StepVerifier.create(client.setAttestationPolicyWithResponse(attestationType, new AttestationPolicySetOptions()
-                    .setPolicy("version=1.0; authorizationrules{=> permit();}; issuancerules{};")
+                    .setAttestationPolicy("version=1.0; authorizationrules{=> permit();}; issuancerules{};")
                     .setAttestationSigner(signingKey)))
                 .assertNext(response -> {
                     assertEquals(PolicyModification.UPDATED, response.getValue().getPolicyResolution());
@@ -504,7 +504,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
         if (clientType == ClientTypes.AAD) {
             // Test setting the policy. This works for both AAD and Isolated mode.
             StepVerifier.create(client.setAttestationPolicyWithResponse(attestationType, new AttestationPolicySetOptions()
-                    .setPolicy("version=1.0; authorizationrules{=> permit();}; issuancerules{};")))
+                    .setAttestationPolicy("version=1.0; authorizationrules{=> permit();}; issuancerules{};")))
                 .assertNext(response -> {
                     assertEquals(PolicyModification.UPDATED, response.getValue().getPolicyResolution());
                 })

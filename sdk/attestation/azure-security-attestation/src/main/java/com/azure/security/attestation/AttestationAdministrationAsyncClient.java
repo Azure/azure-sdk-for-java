@@ -24,6 +24,7 @@ import com.azure.security.attestation.implementation.models.AttestationTokenImpl
 import com.azure.security.attestation.implementation.models.PolicyResultImpl;
 import com.azure.security.attestation.implementation.models.StoredAttestationPolicy;
 import com.azure.security.attestation.models.AttestationPolicySetOptions;
+import com.azure.security.attestation.models.AttestationResponse;
 import com.azure.security.attestation.models.AttestationSigner;
 import com.azure.security.attestation.models.AttestationSigningKey;
 import com.azure.security.attestation.models.AttestationToken;
@@ -96,6 +97,22 @@ public final class AttestationAdministrationAsyncClient {
 //region Get Attestation Policy.
     /**
      * Retrieves the current policy for an attestation type.
+     * <p>
+     * <b>NOTE:</b>
+     *     The {@link AttestationAdministrationAsyncClient#getAttestationPolicyWithResponse(AttestationType, Context)} API returns the underlying
+     *     attestation policy specified by the user. This is NOT the full attestation policy maintained by
+     *     the attestation service. Specifically it does not include the signing certificates used to verify the attestation
+     *     policy.
+     *     </p>
+     *     <p>
+     *         To retrieve the signing certificates used to sign the policy, {@link Response} object returned from this API
+     *         is an instance of an {@link com.azure.security.attestation.models.AttestationResponse} object
+     *         and the caller can retrieve the full policy object maintained by the service by calling the
+     *         {@link AttestationResponse#getToken()} method.
+     *         The returned {@link com.azure.security.attestation.models.AttestationToken} object will be
+     *         the value stored by the attestation service.
+     *  </p>
+     *
      *
      * @param attestationType Specifies the trusted execution environment whose policy should be retrieved.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -106,6 +123,37 @@ public final class AttestationAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<String>> getAttestationPolicyWithResponse(AttestationType attestationType) {
         return withContext(context -> getAttestationPolicyWithResponse(attestationType, context));
+    }
+
+    /**
+     * Retrieves the current policy for an attestation type.
+     *  <p>
+     *      <b>NOTE:</b>
+     *     The {@link AttestationAdministrationAsyncClient#getAttestationPolicy(AttestationType)} API returns the underlying
+     *     attestation policy specified by the user. This is NOT the full attestation policy maintained by
+     *     the attestation service. Specifically it does not include the signing certificates used to verify the attestation
+     *     policy.
+     *     </p>
+     *     <p>
+     *         To retrieve the signing certificates used to sign the policy, use the {@link AttestationAdministrationAsyncClient#getAttestationPolicyWithResponse(AttestationType, Context)} API.
+     *         The {@link Response} object is an instance of an {@link com.azure.security.attestation.models.AttestationResponse} object
+     *         and the caller can retrieve the full information maintained by the service by calling the {@link AttestationResponse#getToken()} method.
+     *         The returned {@link com.azure.security.attestation.models.AttestationToken} object will be
+     *         the value stored by the attestation service.
+     *  </p>
+     *
+     *
+     * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to an attestation policy operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<String> getAttestationPolicy(AttestationType attestationType) {
+        return getAttestationPolicyWithResponse(attestationType)
+            .flatMap(FluxUtil::toMono);
+
     }
 
     /**
@@ -140,26 +188,12 @@ public final class AttestationAdministrationAsyncClient {
             });
     }
 
-    /**
-     * Retrieves the current policy for an attestation type.
-     *
-     * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to an attestation policy operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<String> getAttestationPolicy(AttestationType attestationType) {
-        return getAttestationPolicyWithResponse(attestationType)
-            .flatMap(FluxUtil::toMono);
-
-    }
 //endregion
 //region Set Attestation Policy
 
     /**
      * Sets the current policy for an attestation type with an unsecured attestation policy.
+     *
      * <p>Note that this API will only work on AAD mode attestation instances, because it sets the policy
      * using an unsecured attestation token.</p>
      *
@@ -173,7 +207,7 @@ public final class AttestationAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PolicyResult> setAttestationPolicy(AttestationType attestationType, String newAttestationPolicy) {
         AttestationPolicySetOptions options = new AttestationPolicySetOptions()
-            .setPolicy(newAttestationPolicy);
+            .setAttestationPolicy(newAttestationPolicy);
         return setAttestationPolicyWithResponse(attestationType, options)
             .flatMap(FluxUtil::toMono);
     }
@@ -248,8 +282,19 @@ public final class AttestationAdministrationAsyncClient {
     /**
      * Calculates the PolicyTokenHash for a given policy string.
      *
-     * The policyTokenHash is calculated by generating a policy set JSON Web Token signed by the key
-     * specified in the (optional) {@link AttestationSigningKey}.
+     * The policyTokenHash claim in the {@link PolicyResult} class is the SHA-256 hash
+     * of the underlying policy set JSON Web Token sent to the attestation service.
+     *
+     * This helper API allows the caller to independently calculate SHA-256 hash of an
+     * attestation token corresponding to the value which would be sent to the attestation
+     * service.
+     *
+     * The value returned by this API must always match the value in the {@link PolicyResult} object,
+     * if it does not, it means that the attestation policy received by the service is NOT the one
+     * which the customer specified.
+     *
+     * For an example of how to check the policy token hash:
+     * {@codesnippet com.azure.security.attestation.AttestationAdministrationAsyncClient.checkPolicyTokenHash}
      *
      * @param policy AttestationPolicy document use in the underlying JWT.
      * @param signer Optional signing key used to sign the underlying JWT.
@@ -306,7 +351,14 @@ public final class AttestationAdministrationAsyncClient {
     //region Reset Attestation Policy
 
     /**
-     * Sets the current policy for an attestation type.
+     * Resets the current policy for an attestation type to the default policy.
+     *
+     * Each AttestationType has a "default" attestation policy, the resetAttestationPolicy API resets the value
+     * of the attestation policy to the "default" policy.
+     *
+     * This API allows an attestation instance owner to undo the result of a
+     * {@link AttestationAdministrationAsyncClient#setAttestationPolicy(AttestationType, AttestationPolicySetOptions)} API call.
+     *
      *
      * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -321,7 +373,14 @@ public final class AttestationAdministrationAsyncClient {
     }
 
     /**
-     * Sets the current policy for an attestation type.
+     * Resets the current policy for an attestation type to the default policy.
+     *
+     * Each AttestationType has a "default" attestation policy, the resetAttestationPolicy API resets the value
+     * of the attestation policy to the "default" policy.
+     *
+     * This API allows an attestation instance owner to undo the result of a
+     * {@link AttestationAdministrationAsyncClient#setAttestationPolicy(AttestationType, AttestationPolicySetOptions)} API call.
+     *
      *
      * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
      * @param options Options for the setPolicy operation, including the new policy to be set.
@@ -337,7 +396,13 @@ public final class AttestationAdministrationAsyncClient {
     }
 
     /**
-     * Resets the current policy for an attestation type to the default value.
+     * Resets the current policy for an attestation type to the default policy.
+     *
+     * Each AttestationType has a "default" attestation policy, the resetAttestationPolicy API resets the value
+     * of the attestation policy to the "default" policy.
+     *
+     * This API allows an attestation instance owner to undo the result of a
+     * {@link AttestationAdministrationAsyncClient#setAttestationPolicy(AttestationType, AttestationPolicySetOptions)} API call.
      *
      * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
      * @param options Options containing the signing key for the reset operation.
@@ -352,7 +417,13 @@ public final class AttestationAdministrationAsyncClient {
     }
 
     /**
-     * Sets the current policy for an attestation type.
+     * Resets the current policy for an attestation type to the default policy.
+     *
+     * Each AttestationType has a "default" attestation policy, the resetAttestationPolicy API resets the value
+     * of the attestation policy to the "default" policy.
+     *
+     * This API allows an attestation instance owner to undo the result of a
+     * {@link AttestationAdministrationAsyncClient#setAttestationPolicy(AttestationType, AttestationPolicySetOptions)} API call.
      *
      * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
      * @param options Options for setPolicy API, including policy to set and signing key.
