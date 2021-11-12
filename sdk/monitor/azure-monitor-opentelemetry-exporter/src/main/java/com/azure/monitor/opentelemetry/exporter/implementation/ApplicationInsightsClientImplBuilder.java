@@ -23,12 +23,18 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.monitor.opentelemetry.exporter.AzureMonitorRedirectPolicy;
 
 import java.util.ArrayList;
-import java.util.List;;
+import java.util.List;
+import java.util.Map;
 
 /** A builder for creating a new instance of the ApplicationInsightsClient type. */
 @ServiceClientBuilder(serviceClients = {ApplicationInsightsClientImpl.class})
 public final class ApplicationInsightsClientImplBuilder {
+    private static final String SDK_NAME = "name";
 
+    private static final String SDK_VERSION = "version";
+
+    private final Map<String, String> properties =
+            CoreUtils.getProperties("azure-monitor-opentelemetry-exporter.properties");
     private ClientOptions clientOptions;
 
     /** Create an instance of the ApplicationInsightsClientImplBuilder. */
@@ -207,8 +213,8 @@ public final class ApplicationInsightsClientImplBuilder {
             clientOptions = new ClientOptions();
         }
         List<HttpPipelinePolicy> policies = new ArrayList<>();
-        String clientName = Version.getArtifactName();
-        String clientVersion = Version.getArtifactVersion();
+        String clientName = properties.getOrDefault(SDK_NAME, "UnknownName");
+        String clientVersion = properties.getOrDefault(SDK_VERSION, "UnknownVersion");
 
         String applicationId = CoreUtils.getApplicationId(clientOptions, httpLogOptions);
 

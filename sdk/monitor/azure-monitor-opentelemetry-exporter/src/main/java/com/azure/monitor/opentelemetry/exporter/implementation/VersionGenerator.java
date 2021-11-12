@@ -1,13 +1,16 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.monitor.opentelemetry.exporter.implementation;
 
 import com.azure.core.util.CoreUtils;
-import io.opentelemetry.api.OpenTelemetry;
-
-import java.net.URL;
 import java.util.Map;
 
-public final class Version {
-    public static final String UNKNOWN_VERSION_VALUE = "unknown";
+/**
+ * This class contains several utility functions to populate sdk version string
+ */
+public final class VersionGenerator {
+    private static final String UNKNOWN_VERSION_VALUE = "unknown";
 
     private static final String artifactName;
     private static final String artifactVersion;
@@ -26,31 +29,37 @@ public final class Version {
             ":" +
             "ot" + getOpenTelemetryApiVersion() +
             ":" +
-            "ext" + artifactVersion;
+            "ext" +artifactVersion;
     }
 
+    /**
+     * This method returns artifact name.
+     * @return artifactName.
+     */
     public static String getArtifactName() {
         return artifactName;
     }
 
+    /**
+     * This method returns artifact version.
+     * @return artifactVersion.
+     */
     public static String getArtifactVersion() {
         return artifactVersion;
     }
 
+    /**
+     * This method returns sdk version string as per the below format
+     * javaX:otelY:extZ
+     * X = Java version, Y = opentelemetry version, Z = exporter version
+     * @return sdkVersionString.
+     */
     public static String getSdkVersion() {
         return sdkVersionString;
     }
 
     private static String getJavaVersion() {
-        String version = System.getProperty("java.version");
-        if (version.startsWith("1.8")) {
-            return "1.8";
-        }
-        int dot = version.indexOf(".");
-        if (dot != -1) {
-            return version.substring(0, dot);
-        }
-        return version;
+        return System.getProperty("java.version");
     }
 
     private static String getOpenTelemetryApiVersion() {
@@ -63,6 +72,6 @@ public final class Version {
         return version != null ? version : UNKNOWN_VERSION_VALUE;
     }
 
-    private Version() {
+    private VersionGenerator() {
     }
 }
