@@ -2,7 +2,7 @@
 
 ## 1.0.0-beta.5 (2021-11-12)
 
-### NEW Features
+### New Features
 - Added Azure Active Directory authentication support.
 - Added Stamp Specific Endpoint redirect support.
 - Added support for EventHubs.
