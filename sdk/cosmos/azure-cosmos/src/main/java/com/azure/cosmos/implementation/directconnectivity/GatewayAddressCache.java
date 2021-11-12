@@ -669,6 +669,11 @@ public class GatewayAddressCache implements IAddressCache {
             headers.put(HttpConstants.HttpHeaders.AUTHORIZATION, HttpUtils.urlEncode(token));
         }
 
+        if(request.getHeaders().containsKey(HttpConstants.HttpHeaders.API_TYPE))
+        {
+            headers.put(HttpConstants.HttpHeaders.API_TYPE, request.getHeaders().get(HttpConstants.HttpHeaders.API_TYPE));
+        }
+
         URI targetEndpoint = Utils.setQuery(this.addressEndpoint.toString(), Utils.createQuery(queryParameters));
         String identifier = logAddressResolutionStart(
             request, targetEndpoint, true, true);
