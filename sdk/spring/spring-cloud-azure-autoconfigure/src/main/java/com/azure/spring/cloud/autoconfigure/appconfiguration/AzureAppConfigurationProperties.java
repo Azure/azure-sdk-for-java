@@ -19,6 +19,7 @@ public class AzureAppConfigurationProperties extends AbstractAzureHttpCP
     private String connectionString;
     private ConfigurationServiceVersion serviceVersion;
 
+    @Override
     public String getEndpoint() {
         return endpoint;
     }
@@ -27,6 +28,7 @@ public class AzureAppConfigurationProperties extends AbstractAzureHttpCP
         this.endpoint = endpoint;
     }
 
+    @Override
     public String getConnectionString() {
         return connectionString;
     }
