@@ -1,5 +1,7 @@
 name: Issue triager Azure
 on:
+  push:
+    branches: [ yonghui/move-starter-readme ]
   issues:
     types: [opened]
 
