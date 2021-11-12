@@ -1,16 +1,12 @@
 ## Release History
 
-### 3.14.0-beta.1 (Unreleased)
-
+### 3.14.0 (2021-11-12)
 #### Features Added
+* Updated `azure-cosmos` to version `4.21.0`.
 
-#### Breaking Changes
-
-#### Bugs Fixed
-* Fixed issue with spring onLoad event not firing for paged queries
-* Exceptions thrown from spring application event listeners for onLoad events will now propagate up the call stack
-
-#### Other Changes
+#### Key Bug Fixes
+* Fixed issue with spring onLoad event not firing for paged queries.
+* Exceptions thrown from spring application event listeners for onLoad events will now propagate up the call stack.
 
 ### 3.13.1 (2021-10-27)
 #### Key Bug Fixes

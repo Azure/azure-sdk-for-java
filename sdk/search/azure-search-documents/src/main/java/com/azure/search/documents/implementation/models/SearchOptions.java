@@ -110,6 +110,13 @@ public final class SearchOptions {
     private String scoringProfile;
 
     /*
+     * The name of the semantic configuration that lists which fields should be
+     * used for semantic ranking, captions, highlights, and answers
+     */
+    @JsonProperty(value = "semanticConfiguration")
+    private String semanticConfiguration;
+
+    /*
      * The list of field names to which to scope the full-text search. When
      * using fielded search (fieldName:searchExpression) in a full Lucene
      * query, the field names of each fielded search expression take precedence
@@ -460,6 +467,28 @@ public final class SearchOptions {
      */
     public SearchOptions setScoringProfile(String scoringProfile) {
         this.scoringProfile = scoringProfile;
+        return this;
+    }
+
+    /**
+     * Get the semanticConfiguration property: The name of the semantic configuration that lists which fields should be
+     * used for semantic ranking, captions, highlights, and answers.
+     *
+     * @return the semanticConfiguration value.
+     */
+    public String getSemanticConfiguration() {
+        return this.semanticConfiguration;
+    }
+
+    /**
+     * Set the semanticConfiguration property: The name of the semantic configuration that lists which fields should be
+     * used for semantic ranking, captions, highlights, and answers.
+     *
+     * @param semanticConfiguration the semanticConfiguration value to set.
+     * @return the SearchOptions object itself.
+     */
+    public SearchOptions setSemanticConfiguration(String semanticConfiguration) {
+        this.semanticConfiguration = semanticConfiguration;
         return this;
     }
 
