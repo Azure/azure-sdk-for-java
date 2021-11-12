@@ -36,4 +36,4 @@ jobs:
         run: |
             pwd
             git update-index --chmod=+x mvnw
-            mvnw -V -B verify
+            ./mvnw -V -B verify
