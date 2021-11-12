@@ -3,8 +3,6 @@ name: Java CI with Maven
 on:
   push:
     branches: [ yonghui/move-starter-readme ]
-  pull_request:
-    branches: [ yonghui/move-starter-readme ]
 
 jobs:
   build:
