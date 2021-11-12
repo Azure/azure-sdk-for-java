@@ -1,0 +1,76 @@
+<!-- Copyright (c) Microsoft Corporation. All rights reserved.
+     Licensed under the MIT License. -->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.azure.spring</groupId>
+  <artifactId>spring-cloud-azure-docs</artifactId>
+  <packaging>pom</packaging>
+  <name>Spring Cloud Azure Docs</name>
+  <version>1.0-SNAPSHOT</version>
+  <description>Spring Cloud Azure Docs</description>
+
+
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.source>1.8</maven.compiler.source>
+    <maven.compiler.target>1.8</maven.compiler.target>
+    <asciidoctor.maven.plugin.version>2.2.1</asciidoctor.maven.plugin.version>
+    <asciidoctorj.version>2.5.2</asciidoctorj.version>
+    <jruby.version>9.2.17.0</jruby.version>
+  </properties>
+
+  <build>
+    <defaultGoal>process-resources</defaultGoal>
+    <plugins>
+      <plugin>
+        <groupId>org.asciidoctor</groupId>
+        <artifactId>asciidoctor-maven-plugin</artifactId>
+        <version>${asciidoctor.maven.plugin.version}</version>
+        <dependencies>
+          <!-- Comment this section to use the default jruby artifact provided by the plugin -->
+          <dependency>
+            <groupId>org.jruby</groupId>
+            <artifactId>jruby-complete</artifactId>
+            <version>${jruby.version}</version>
+          </dependency>
+          <!-- Comment this section to use the default AsciidoctorJ artifact provided by the plugin -->
+          <dependency>
+            <groupId>org.asciidoctor</groupId>
+            <artifactId>asciidoctorj</artifactId>
+            <version>${asciidoctorj.version}</version>
+          </dependency>
+        </dependencies>
+        <configuration>
+          <sourceDirectory>src/main/asciidoc/subdir</sourceDirectory>
+          <outputDirectory>target/generated-docs/${project.version}</outputDirectory>
+        </configuration>
+        <executions>
+          <execution>
+            <id>asciidoc-to-html</id>
+            <phase>generate-resources</phase>
+            <goals>
+              <goal>process-asciidoc</goal>
+            </goals>
+            <configuration>
+              <backend>html5</backend>
+              <attributes>
+                <source-highlighter>coderay</source-highlighter>
+                <imagesdir>src/main/asciidoc/images</imagesdir>
+                <toc>left</toc>
+                <icons>font</icons>
+                <sectanchors>true</sectanchors>
+                <!-- set the idprefix to blank -->
+                <idprefix/>
+                <idseparator>-</idseparator>
+                <docinfo1>true</docinfo1>
+              </attributes>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>

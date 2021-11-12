@@ -1,0 +1,9 @@
+= Spring Cloud Azure
+include::_attributes.adoc[]
+
+include::intro.adoc[]
+
+include::spring-cloud-azure-starter-cosmos.adoc[]
+
+include::spring-cloud-azure-starter-eventhubs.adoc[]
+

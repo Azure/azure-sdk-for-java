@@ -16,7 +16,7 @@ https://mvnrepository.com/artifact/com.azure.spring/azure-spring-cloud-starter-e
 ==== Include the package
 
 1. https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#add-azure-spring-cloud-dependencies[Add azure-spring-cloud-dependencies].
-1. Add dependency. `<version>` can be skipped because we already add `azure-spring-cloud-dependencies`.
+2. Add dependency. `<version>` can be skipped because we already add `azure-spring-cloud-dependencies`.
 
 [source,xml,indent=0]
 ----

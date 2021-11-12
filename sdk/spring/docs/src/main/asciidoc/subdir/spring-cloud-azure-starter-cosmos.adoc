@@ -13,7 +13,7 @@ https://mvnrepository.com/artifact/com.azure.spring/azure-spring-boot-starter-co
 ==== Include the package
 
 1. https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/AZURE_SPRING_BOMS_USAGE.md#add-azure-spring-boot-bom[Add azure-spring-boot-bom].
-1. Add dependency. `<version>` can be skipped because we already add `azure-spring-boot-bom`.
+2. Add dependency. `<version>` can be skipped because we already add `azure-spring-boot-bom`.
 
 [source,xml,indent=0]
 ----
