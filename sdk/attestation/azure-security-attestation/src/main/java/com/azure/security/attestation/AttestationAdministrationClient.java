@@ -51,7 +51,7 @@ public final class AttestationAdministrationClient {
         this.asyncClient = asyncClient;
     }
 
-//region Get Attestation Policy
+    //region Get Attestation Policy
     /**
      * Retrieves the current policy for an attestation type.
      *
@@ -145,24 +145,6 @@ public final class AttestationAdministrationClient {
     }
 
     /**
-     * Sets the attestation policy for the specified attestation type for an AAD mode attestation instance.
-     *
-     * Note that this function will only work on AAD mode attestation instances, because there is
-     * no key signing certificate provided.
-     *
-     * More information about Attestation Policy can be found <a href='https://docs.microsoft.com/azure/attestation/basic-concepts#attestation-policy'>here.</a>
-     *
-     * @param attestationType The {@link AttestationType} to be updated.
-     * @param policyToSet Attestation Policy to set on the instance.
-     * @param context Context for the operation.
-     * @return {@link PolicyResult} expressing the result of the attestation operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PolicyResult> setAttestationPolicyWithResponse(AttestationType attestationType, String policyToSet, Context context) {
-        return asyncClient.setAttestationPolicyWithResponse(attestationType, policyToSet, context).block();
-    }
-
-    /**
      * Calculates the PolicyTokenHash for a given policy string.
      *
      * The policyTokenHash is calculated by generating a policy set JSON Web Token signed by the key
@@ -216,21 +198,6 @@ public final class AttestationAdministrationClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<PolicyResult> resetAttestationPolicyWithResponse(AttestationType attestationType, AttestationPolicySetOptions options, Context context) {
         return asyncClient.resetAttestationPolicyWithResponse(attestationType, options, context).block();
-    }
-
-    /**
-     * Resets the attestation policy for the specified attestation type to the default value.
-     *
-     * Note that this function will only work on AAD mode attestation instances, because there is
-     * no token signing certificate provided.
-     *
-     * @param attestationType The {@link AttestationType} to be updated.
-     * @param context Context for the operation.
-     * @return {@link PolicyResult} expressing the result of the attestation operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PolicyResult> resetAttestationPolicyWithResponse(AttestationType attestationType, Context context) {
-        return asyncClient.resetAttestationPolicyWithResponse(attestationType, new AttestationPolicySetOptions(), context).block();
     }
 
 //  endregion

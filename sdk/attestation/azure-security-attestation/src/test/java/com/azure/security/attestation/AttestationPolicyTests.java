@@ -284,21 +284,8 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
             assertEquals(policyToSet, client.getAttestationPolicy(attestationType));
 
             assertDoesNotThrow(() -> {
-                Response<PolicyResult> result = client.resetAttestationPolicyWithResponse(attestationType, Context.NONE);
-                verifySetPolicyResult(client, result.getValue(), attestationType, null, null, PolicyModification.REMOVED);
-            });
-
-        }
-        if (clientType == ClientTypes.AAD) {
-            String policyToSet = "version=1.0;authorizationrules{=> permit();}; issuancerules{};";
-            assertDoesNotThrow(() -> {
-                Response<PolicyResult> result = client.setAttestationPolicyWithResponse(attestationType, policyToSet, Context.NONE);
-                verifySetPolicyResult(client, result.getValue(), attestationType, policyToSet, null, PolicyModification.UPDATED);
-            });
-
-            assertDoesNotThrow(() -> {
-                Response<PolicyResult> result = client.resetAttestationPolicyWithResponse(attestationType, Context.NONE);
-                verifySetPolicyResult(client, result.getValue(), attestationType, null, null, PolicyModification.REMOVED);
+                PolicyResult result = client.resetAttestationPolicy(attestationType);
+                verifySetPolicyResult(client, result, attestationType, null, null, PolicyModification.REMOVED);
             });
         }
     }

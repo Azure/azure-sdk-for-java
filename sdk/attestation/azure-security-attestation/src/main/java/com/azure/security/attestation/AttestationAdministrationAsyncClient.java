@@ -158,7 +158,6 @@ public final class AttestationAdministrationAsyncClient {
 //endregion
 //region Set Attestation Policy
 
-//region Simplified string based AAD mode helper functions.
     /**
      * Sets the current policy for an attestation type with an unsecured attestation policy.
      * <p>Note that this API will only work on AAD mode attestation instances, because it sets the policy
@@ -178,44 +177,6 @@ public final class AttestationAdministrationAsyncClient {
         return setAttestationPolicyWithResponse(attestationType, options)
             .flatMap(FluxUtil::toMono);
     }
-
-
-    /**
-     * Sets the current policy for an attestation type with an unsecured attestation policy.
-     * <p>Note that this API will only work on AAD mode attestation instances, because it sets the policy
-     * using an unsecured attestation token.</p>
-     *
-     * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
-     * @param newAttestationPolicy Specifies the policy to be set on the instance.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to an attestation policy operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PolicyResult>> setAttestationPolicyWithResponse(AttestationType attestationType, String newAttestationPolicy) {
-        return withContext(context -> setAttestationPolicyWithResponse(attestationType, newAttestationPolicy, context));
-    }
-
-    /**
-     * Sets the current policy for an attestation type with an unsecured attestation policy.
-     * <p>Note that this API will only work on AAD mode attestation instances, because it sets the policy
-     * using an unsecured attestation token.</p>
-     *
-     * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
-     * @param newAttestationPolicy Specifies the policy to be set on the instance.
-     * @param context Context for this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to an attestation policy operation.
-     */
-    Mono<Response<PolicyResult>> setAttestationPolicyWithResponse(AttestationType attestationType, String newAttestationPolicy, Context context) {
-        AttestationPolicySetOptions options = new AttestationPolicySetOptions()
-            .setPolicy(newAttestationPolicy);
-        return setAttestationPolicyWithResponse(attestationType, options, context);
-    }
-//endregion
 
     /**
      * Sets the current policy for an attestation type.
@@ -344,21 +305,6 @@ public final class AttestationAdministrationAsyncClient {
 
     //region Reset Attestation Policy
 
-    //region AAD support methods
-    /**
-     * Resets the current policy for an attestation type to the default value.
-     *
-     * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to an attestation policy operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PolicyResult>> resetAttestationPolicyWithResponse(AttestationType attestationType) {
-        return withContext(context -> resetAttestationPolicyWithResponse(attestationType, new AttestationPolicySetOptions(), context));
-    }
-
     /**
      * Sets the current policy for an attestation type.
      *
@@ -372,21 +318,6 @@ public final class AttestationAdministrationAsyncClient {
     public Mono<PolicyResult> resetAttestationPolicy(AttestationType attestationType) {
         return resetAttestationPolicyWithResponse(attestationType, new AttestationPolicySetOptions())
             .flatMap(FluxUtil::toMono);
-    }
-    //endregion
-    /**
-     * Resets the current policy for an attestation type to the default value.
-     *
-     * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
-     * @param options Options containing the signing key for the reset operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response to an attestation policy operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PolicyResult>> resetAttestationPolicyWithResponse(AttestationType attestationType, AttestationPolicySetOptions options) {
-        return withContext(context -> resetAttestationPolicyWithResponse(attestationType, options, context));
     }
 
     /**
@@ -403,6 +334,21 @@ public final class AttestationAdministrationAsyncClient {
     public Mono<PolicyResult> resetAttestationPolicy(AttestationType attestationType, AttestationPolicySetOptions options) {
         return resetAttestationPolicyWithResponse(attestationType, options)
             .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Resets the current policy for an attestation type to the default value.
+     *
+     * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
+     * @param options Options containing the signing key for the reset operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to an attestation policy operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<PolicyResult>> resetAttestationPolicyWithResponse(AttestationType attestationType, AttestationPolicySetOptions options) {
+        return withContext(context -> resetAttestationPolicyWithResponse(attestationType, options, context));
     }
 
     /**
