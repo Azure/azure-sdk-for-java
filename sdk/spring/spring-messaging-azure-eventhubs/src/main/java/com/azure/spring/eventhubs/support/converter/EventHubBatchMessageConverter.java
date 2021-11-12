@@ -68,10 +68,10 @@ public class EventHubBatchMessageConverter extends AbstractAzureMessageConverter
     /**
      * adapt the payload and header for the target message
      *
-     * @param azureMessage       the context holding the original message payload
-     * @param headers            headers of original message
+     * @param azureMessage the context holding the original message payload
+     * @param headers headers of original message
      * @param targetPayloadClass the type of target message
-     * @param <U>                targetPayloadType
+     * @param <U> targetPayloadType
      * @return the target message
      */
     @Override

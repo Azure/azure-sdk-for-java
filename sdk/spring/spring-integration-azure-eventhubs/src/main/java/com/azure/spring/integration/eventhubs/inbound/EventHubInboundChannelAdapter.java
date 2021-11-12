@@ -32,7 +32,6 @@ import org.springframework.messaging.MessageHeaders;
 import org.springframework.util.Assert;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -74,12 +73,12 @@ public class EventHubInboundChannelAdapter extends MessageProducerSupport {
 
     @Override
     protected void onInit() {
-        if(ListenerMode.RECORD.equals(this.listenerMode)) {
+        if (ListenerMode.RECORD.equals(this.listenerMode)) {
             this.listener = recordEventProcessor;
             this.checkpointManager = CheckpointManager.of(checkpointConfig);
-        }else{
+        } else {
             this.listener = batchEventProcessor;
-            this.checkpointManager  = BatchCheckpointManager.of(checkpointConfig);
+            this.checkpointManager = BatchCheckpointManager.of(checkpointConfig);
         }
 
         this.processorContainer.subscribe(this.eventHubName, this.consumerGroup, this.listener);
@@ -215,8 +214,8 @@ public class EventHubInboundChannelAdapter extends MessageProducerSupport {
             Message<?> message = this.messageConverter.toMessage(eventBatchContext, new MessageHeaders(headers), payloadType);
 
             sendMessage(message);
-            if(checkpointConfig.getMode().equals(CheckpointMode.BATCH)) {
-                ((BatchCheckpointManager)checkpointManager).onMessage(eventBatchContext);
+            if (checkpointConfig.getMode().equals(CheckpointMode.BATCH)) {
+                ((BatchCheckpointManager) checkpointManager).onMessage(eventBatchContext);
             }
         }
     }
