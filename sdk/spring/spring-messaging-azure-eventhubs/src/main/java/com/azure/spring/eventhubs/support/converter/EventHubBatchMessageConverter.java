@@ -14,14 +14,18 @@ import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.util.Assert;
 
 import java.nio.charset.StandardCharsets;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
  * A converter to turn a {@link com.azure.messaging.eventhubs.models.EventBatchContext} to
  * {@link Message} and vice versa.
- *
- *
  */
 public class EventHubBatchMessageConverter extends AbstractAzureMessageConverter<EventBatchContext, EventData> {
 
@@ -58,19 +62,17 @@ public class EventHubBatchMessageConverter extends AbstractAzureMessageConverter
 
     @Override
     protected Object getPayload(EventBatchContext azureMessage) {
-
         return azureMessage.getEvents().stream().map(EventData::getBody).collect(Collectors.toList());
     }
 
     /**
-     * to do ...
-     * fromPayloadType always List<byte[]>
-     * targetPayloadType is generic parameter U
-     * @param azureMessage
-     * @param headers
-     * @param targetPayloadClass
-     * @param <U> targetPayloadType
-     * @return
+     * adapt the payload and header for the target message
+     *
+     * @param azureMessage       the context holding the original message payload
+     * @param headers            headers of original message
+     * @param targetPayloadClass the type of target message
+     * @param <U>                targetPayloadType
+     * @return the target message
      */
     @Override
     @SuppressWarnings("unchecked")
