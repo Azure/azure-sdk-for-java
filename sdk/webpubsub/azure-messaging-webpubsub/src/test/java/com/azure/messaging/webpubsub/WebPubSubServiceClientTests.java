@@ -242,9 +242,9 @@ public class WebPubSubServiceClientTests extends TestBase {
     }
 
     @Test
-    @DisabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE", disabledReason = "This requires real " +
-            "connection id that is created when a client connects to Web PubSub service. So, run this in PLAYBACK " +
-            "mode only.")
+    @DisabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE", disabledReason = "This requires real "
+            + "connection id that is created when a client connects to Web PubSub service. So, run this in PLAYBACK "
+            + "mode only.")
     public void testCheckPermission() {
         RequestOptions requestOptions = new RequestOptions()
             .addQueryParam("targetName", "java");
