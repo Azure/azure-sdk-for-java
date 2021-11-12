@@ -4,7 +4,6 @@
 package com.azure.spring.cloud.stream.binder.eventhubs;
 
 import com.azure.messaging.eventhubs.CheckpointStore;
-import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubBindingProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubConsumerProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubExtendedBindingProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubProducerProperties;
@@ -103,7 +102,7 @@ public class EventHubMessageChannelBinder extends
 
     @Override
     protected MessageProducer createConsumerEndpoint(ConsumerDestination destination, String group,
-            ExtendedConsumerProperties<EventHubConsumerProperties> properties) {
+                                                     ExtendedConsumerProperties<EventHubConsumerProperties> properties) {
         extendedConsumerPropertiesMap.put(Tuples.of(destination.getName(), group), properties);
         Assert.notNull(getProcessorContainer(), "eventProcessorsContainer can't be null when create a consumer");
 
@@ -115,10 +114,10 @@ public class EventHubMessageChannelBinder extends
         }
 
         EventHubInboundChannelAdapter inboundAdapter;
-        if(properties.isBatchMode()) {
+        if (properties.isBatchMode()) {
             inboundAdapter = new EventHubInboundChannelAdapter(this.processorContainer,
                 destination.getName(), group, ListenerMode.BATCH, properties.getExtension().getCheckpoint());
-        }else{//default is record mode
+        } else {
             inboundAdapter = new EventHubInboundChannelAdapter(this.processorContainer,
                 destination.getName(), group, properties.getExtension().getCheckpoint());
         }
@@ -175,7 +174,7 @@ public class EventHubMessageChannelBinder extends
         return key -> {
             if (this.extendedProducerPropertiesMap.containsKey(key)) {
                 EventHubProducerProperties producerProperties = this.extendedProducerPropertiesMap.get(key)
-                                                                                                  .getExtension();
+                    .getExtension();
                 producerProperties.setEventHubName(key);
                 return producerProperties;
             } else {
@@ -189,7 +188,7 @@ public class EventHubMessageChannelBinder extends
         return key -> {
             if (this.extendedConsumerPropertiesMap.containsKey(key)) {
                 EventHubConsumerProperties consumerProperties = this.extendedConsumerPropertiesMap.get(key)
-                                                                                         .getExtension();
+                    .getExtension();
                 consumerProperties.setEventHubName(key.getT1());
                 consumerProperties.setConsumerGroup(key.getT2());
                 return consumerProperties;
