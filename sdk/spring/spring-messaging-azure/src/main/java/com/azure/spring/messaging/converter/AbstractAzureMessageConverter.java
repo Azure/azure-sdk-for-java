@@ -59,9 +59,9 @@ public abstract class AbstractAzureMessageConverter<I, O> implements AzureMessag
      */
     protected <U> U fromPayload(Object payload, Class<U> payloadType) {
         try {
-            return getObjectMapper().readerFor(payloadType).readValue((byte[])payload);
+            return getObjectMapper().readerFor(payloadType).readValue((byte[]) payload);
         } catch (IOException e) {
-            throw new ConversionException("Failed to read JSON: " + Arrays.toString((byte[])payload), e);
+            throw new ConversionException("Failed to read JSON: " + Arrays.toString((byte[]) payload), e);
         }
     }
 
@@ -129,7 +129,7 @@ public abstract class AbstractAzureMessageConverter<I, O> implements AzureMessag
         }
 
         if (targetPayloadClass == String.class) {
-            return MessageBuilder.withPayload(new String((byte[])payload, StandardCharsets.UTF_8)).copyHeaders(headers).build();
+            return MessageBuilder.withPayload(new String((byte[]) payload, StandardCharsets.UTF_8)).copyHeaders(headers).build();
         }
 
         if (targetPayloadClass == byte[].class) {

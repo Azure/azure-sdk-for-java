@@ -30,7 +30,7 @@ public class EventHubsTemplate implements SendOperation, BatchSendOperation {
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsTemplate.class);
 
     private final EventHubProducerFactory producerFactory;
-    private EventHubMessageConverter messageConverter = new EventHubMessageConverter();
+    private final EventHubMessageConverter messageConverter = new EventHubMessageConverter();
 
     public EventHubsTemplate(EventHubProducerFactory producerFactory) {
         this.producerFactory = producerFactory;

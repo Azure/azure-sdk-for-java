@@ -11,7 +11,7 @@ import java.time.Duration;
 /**
  *
  */
-public class EventHubConsumerProperties {
+public class EventHubConsumerProperties extends ProcessorProperties {
 //    /**
 //     * Whether the consumer receives messages from the beginning or end of event hub.
 //     * If {@link StartPosition#EARLIEST}, from beginning. If {@link StartPosition#LATEST}, from end.
@@ -20,14 +20,9 @@ public class EventHubConsumerProperties {
 //     */
 //    private EventProcessingProperties.StartPosition startPosition = EventProcessingProperties.StartPosition.LATEST;
     private final CheckpointConfig checkpoint = new CheckpointConfig();
-    private final ProcessorProperties processor = new ProcessorProperties();
 
     public CheckpointConfig getCheckpoint() {
         return checkpoint;
-    }
-
-    public ProcessorProperties getProcessor() {
-        return processor;
     }
 
 }
