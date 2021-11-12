@@ -242,11 +242,51 @@ public class EncryptionProcessor {
         return encrypt(itemJObj);
     }
 
-    public Mono<byte[]> encrypt(ObjectNode itemJObj) {
+    public Mono<byte[]> encrypt(JsonNode itemJObj) {
         return encryptObjectNode(itemJObj).map(encryptedObjectNode -> EncryptionUtils.serializeJsonToByteArray(EncryptionUtils.getSimpleObjectMapper(), encryptedObjectNode));
     }
 
-    public Mono<ObjectNode> encryptObjectNode(ObjectNode itemJObj) {
+    public Mono<JsonNode> encryptPatchNode(JsonNode itemObj, String patchPropertyPath) {
+        assert (itemObj != null);
+        return initEncryptionSettingsIfNotInitializedAsync().then(Mono.defer(() -> {
+            for (ClientEncryptionIncludedPath includedPath : this.clientEncryptionPolicy.getIncludedPaths()) {
+                if (StringUtils.isEmpty(includedPath.getPath()) || includedPath.getPath().charAt(0) != '/' || includedPath.getPath().lastIndexOf('/') != 0) {
+                    return Mono.error(new IllegalArgumentException("Invalid encryption path: " + includedPath.getPath()));
+                }
+            }
+
+            for (ClientEncryptionIncludedPath includedPath : this.clientEncryptionPolicy.getIncludedPaths()) {
+                String propertyName = includedPath.getPath().substring(1);
+                if (patchPropertyPath.substring(1).equals(propertyName)) {
+                    if (itemObj.isValueNode()) {
+                        return this.encryptionSettings.getEncryptionSettingForPropertyAsync(propertyName,
+                            this).flatMap(settings -> {
+                            try {
+                                return Mono.just(EncryptionUtils.getSimpleObjectMapper().readTree(EncryptionUtils.getSimpleObjectMapper()
+                                    .writeValueAsString(encryptAndSerializeValue(settings,
+                                    null, itemObj, propertyName))));
+                            } catch (MicrosoftDataEncryptionException | JsonProcessingException ex) {
+                                return Mono.error(ex);
+                            }
+                        });
+                    } else {
+                        return this.encryptionSettings.getEncryptionSettingForPropertyAsync(propertyName,
+                            this).flatMap(settings -> {
+                            try {
+                                return Mono.just(encryptAndSerializePatchProperty(settings,
+                                    itemObj, propertyName));
+                            } catch (MicrosoftDataEncryptionException | JsonProcessingException ex) {
+                                return Mono.error(ex);
+                            }
+                        });
+                    }
+                }
+            }
+            return Mono.empty();
+        }));
+    }
+
+    public Mono<JsonNode> encryptObjectNode(JsonNode itemJObj) {
         assert (itemJObj != null);
         return initEncryptionSettingsIfNotInitializedAsync().then(Mono.defer(() -> {
             for (ClientEncryptionIncludedPath includedPath : this.clientEncryptionPolicy.getIncludedPaths()) {
@@ -265,7 +305,7 @@ public class EncryptionProcessor {
                         this).flatMap(settings -> {
                         try {
                             encryptAndSerializeProperty(settings, itemJObj, propertyValueHolder, propertyName);
-                        } catch (MicrosoftDataEncryptionException ex) {
+                        } catch (MicrosoftDataEncryptionException | JsonProcessingException ex) {
                             return Mono.error(ex);
                         }
                         return Mono.empty();
@@ -278,8 +318,73 @@ public class EncryptionProcessor {
         }));
     }
 
-    public void encryptAndSerializeProperty(EncryptionSettings encryptionSettings, ObjectNode objectNode,
-                                            JsonNode propertyValueHolder, String propertyName) throws MicrosoftDataEncryptionException {
+    @SuppressWarnings("unchecked")
+    public JsonNode encryptAndSerializePatchProperty(EncryptionSettings encryptionSettings,
+                                                   JsonNode propertyValueHolder, String propertyName) throws MicrosoftDataEncryptionException, JsonProcessingException {
+        if (propertyValueHolder.isObject()) {
+            for (Iterator<Map.Entry<String, JsonNode>> it = propertyValueHolder.fields(); it.hasNext(); ) {
+                Map.Entry<String, JsonNode> child = it.next();
+                if (child.getValue().isObject() || child.getValue().isArray()) {
+                    JsonNode encryptedValue = encryptAndSerializePatchProperty(encryptionSettings, child.getValue(), child.getKey());
+                    assert propertyValueHolder instanceof ObjectNode;
+                    ((ObjectNode) propertyValueHolder).put(child.getKey(), encryptedValue);
+                } else if (!child.getValue().isNull()){
+                    assert propertyValueHolder instanceof ObjectNode;
+                    encryptAndSerializeValue(encryptionSettings, (ObjectNode) propertyValueHolder, child.getValue(),
+                        child.getKey());
+                }
+            }
+        }
+
+        else if (propertyValueHolder.isArray()) {
+            assert propertyValueHolder instanceof ArrayNode;
+            ArrayNode arrayNode = (ArrayNode) propertyValueHolder;
+            if (arrayNode.elements().next().isObject() || arrayNode.elements().next().isArray()) {
+                List<JsonNode> encryptedArray = new ArrayList<>();
+                for (Iterator<JsonNode> arrayIterator = arrayNode.elements(); arrayIterator.hasNext(); ) {
+                    JsonNode nodeInArray = arrayIterator.next();
+                    if (nodeInArray.isArray()) {
+                        encryptedArray.add(encryptAndSerializePatchProperty(encryptionSettings, nodeInArray, propertyName));
+                    } else {
+                        for (Iterator<Map.Entry<String, JsonNode>> it = nodeInArray.fields(); it.hasNext(); ) {
+                            Map.Entry<String, JsonNode> child = it.next();
+                            if (child.getValue().isObject() || child.getValue().isArray()) {
+                                JsonNode encryptedValue = encryptAndSerializePatchProperty(encryptionSettings,
+                                    child.getValue(), child.getKey());
+                                ((ObjectNode) nodeInArray).put(child.getKey(), encryptedValue);
+
+                            } else if (!child.getValue().isNull()) {
+                                encryptAndSerializeValue(encryptionSettings, (ObjectNode) nodeInArray, child.getValue(),
+                                    child.getKey());
+                            }
+                        }
+                        encryptedArray.add(nodeInArray);
+                    }
+                }
+                arrayNode.removeAll();
+                for (JsonNode encryptedValue : encryptedArray) {
+                    arrayNode.add(encryptedValue);
+                }
+            } else {
+                List<byte[]> encryptedArray = new ArrayList<>();
+                for (Iterator<JsonNode> it = arrayNode.elements(); it.hasNext(); ) {
+                    encryptedArray.add(encryptAndSerializeValue(encryptionSettings, null, it.next(),
+                        StringUtils.EMPTY));
+                }
+                arrayNode.removeAll();
+                for (byte[] encryptedValue : encryptedArray) {
+                    arrayNode.add(encryptedValue);
+                }
+            }
+            return arrayNode;
+        } else {
+            encryptAndSerializeValue(encryptionSettings, null, propertyValueHolder, propertyName);
+        }
+        return propertyValueHolder;
+    }
+
+    public void encryptAndSerializeProperty(EncryptionSettings encryptionSettings, JsonNode objectNode,
+                                            JsonNode propertyValueHolder, String propertyName) throws MicrosoftDataEncryptionException, JsonProcessingException {
 
         if (propertyValueHolder.isObject()) {
             for (Iterator<Map.Entry<String, JsonNode>> it = propertyValueHolder.fields(); it.hasNext(); ) {
@@ -325,7 +430,7 @@ public class EncryptionProcessor {
                 }
             }
         } else {
-            encryptAndSerializeValue(encryptionSettings, objectNode, propertyValueHolder, propertyName);
+            encryptAndSerializeValue(encryptionSettings, (ObjectNode) objectNode, propertyValueHolder, propertyName);
         }
     }
 
@@ -458,7 +563,6 @@ public class EncryptionProcessor {
                                              JsonNode propertyValueHolder, String propertyName) throws MicrosoftDataEncryptionException, IOException {
         byte[] cipherText;
         byte[] cipherTextWithTypeMarker;
-
         cipherTextWithTypeMarker = propertyValueHolder.binaryValue();
         cipherText = new byte[cipherTextWithTypeMarker.length - 1];
         System.arraycopy(cipherTextWithTypeMarker, 1, cipherText, 0,
