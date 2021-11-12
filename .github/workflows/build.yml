@@ -33,6 +33,4 @@ jobs:
           java-version: 8
           jdkFile: ${{ steps.sdkman.outputs.file }}
       - name: Build with Maven
-        run: |
-            chmod +x mvnw
-            ./mvnw -V -B verify
+        run: mvn -f pom.xml -pl ,com.azure.spring:spring-cloud-azure-starter-cosmos,com.azure.spring:spring-cloud-azure-stream-binder-eventhubs -am -DskipTests -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -Djacoco.skip=true -DskipTests -Dparallel-test-playback clean install
