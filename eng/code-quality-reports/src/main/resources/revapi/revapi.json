@@ -131,32 +131,14 @@
         {
           "regex": true,
           "code": "java\\.class\\.externalClassExposedInAPI",
-          "new": "(class|interface|enum) com\\.azure\\.communication\\.common\\..*",
-          "justification": "azure-communication-common classes are allowed to be exposed."
-        },
-        {
-          "regex": true,
-          "code": "java\\.class\\.externalClassExposedInAPI",
-          "new": "(interface|class|enum) com\\.azure\\.core.*",
-          "justification": "azure-core classes are allowed to be exposed by dependencies using them."
+          "new": "(interface|class|enum) com\\.azure\\.(communication\\.common|core|cosmos|data\\.schemaregistry|resourcemanager|security\\.keyvault|storage).*",
+          "justification": "SDK classes are allowed to be exposed by dependencies using them."
         },
         {
           "regex": true,
           "code": "java\\.class\\.externalClassExposedInAPI",
           "new": "interface org\\.reactivestreams\\.(Publisher|Subscriber|Subscription).*",
           "justification": "These classes exposed are publisher, subscriber, and Subscription."
-        },
-        {
-          "regex": true,
-          "code": "java\\.class\\.externalClassExposedInAPI",
-          "new": "(class|interface|enum) com\\.azure\\.storage\\..*",
-          "justification": "azure-storage-common and storage blob classes are allowed to be exposed."
-        },
-        {
-          "regex": true,
-          "code": "java\\.class\\.externalClassExposedInAPI",
-          "new": "(class|interface|enum) com\\.azure\\.resourcemanager\\..*",
-          "justification": "resourcemanager classes are allowed to be exposed."
         },
         {
           "regex": true,
@@ -167,26 +149,8 @@
         {
           "regex": true,
           "code": "java\\.class\\.externalClassExposedInAPI",
-          "new": "(class|interface|enum) com\\.azure\\.security\\.keyvault\\..*",
-          "justification": "keyvault classes are allowed to be exposed."
-        },
-        {
-          "regex": true,
-          "code": "java\\.class\\.externalClassExposedInAPI",
           "new": "(class|interface|enum) com\\.azure\\.perf\\.test\\.core\\..*",
           "justification": "perf-test classes are allowed to be exposed."
-        },
-        {
-          "regex": true,
-          "code": "java\\.class\\.externalClassExposedInAPI",
-          "new": "(interface|class|enum) com\\.azure\\.cosmos.*",
-          "justification": "azure-cosmos classes are allowed to be exposed by dependencies using them."
-        },
-        {
-          "regex": true,
-          "code": "java\\.class\\.externalClassExposedInAPI",
-          "new": "(class|enum) com\\.azure\\.data\\.schemaregistry\\..+",
-          "justification": "azure-data-schemaregistry-avro depends on the schema registry classes."
         },
         {
           "regex": true,

@@ -5,14 +5,16 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.avs.models.AvailabilityProperties;
 import com.azure.resourcemanager.avs.models.Circuit;
+import com.azure.resourcemanager.avs.models.Encryption;
 import com.azure.resourcemanager.avs.models.Endpoints;
 import com.azure.resourcemanager.avs.models.IdentitySource;
 import com.azure.resourcemanager.avs.models.InternetEnum;
 import com.azure.resourcemanager.avs.models.ManagementCluster;
+import com.azure.resourcemanager.avs.models.PrivateCloudIdentity;
 import com.azure.resourcemanager.avs.models.PrivateCloudProvisioningState;
 import com.azure.resourcemanager.avs.models.Sku;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -21,9 +23,8 @@ import java.util.List;
 import java.util.Map;
 
 /** A private cloud resource. */
-@JsonFlatten
 @Fluent
-public class PrivateCloudInner extends Resource {
+public final class PrivateCloudInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateCloudInner.class);
 
     /*
@@ -33,99 +34,16 @@ public class PrivateCloudInner extends Resource {
     private Sku sku;
 
     /*
-     * The default cluster used for management
+     * The properties of a private cloud resource
      */
-    @JsonProperty(value = "properties.managementCluster")
-    private ManagementCluster managementCluster;
+    @JsonProperty(value = "properties")
+    private PrivateCloudProperties innerProperties;
 
     /*
-     * Connectivity to internet is enabled or disabled
+     * The identity of the private cloud, if configured.
      */
-    @JsonProperty(value = "properties.internet")
-    private InternetEnum internet;
-
-    /*
-     * vCenter Single Sign On Identity Sources
-     */
-    @JsonProperty(value = "properties.identitySources")
-    private List<IdentitySource> identitySources;
-
-    /*
-     * The provisioning state
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private PrivateCloudProvisioningState provisioningState;
-
-    /*
-     * An ExpressRoute Circuit
-     */
-    @JsonProperty(value = "properties.circuit")
-    private Circuit circuit;
-
-    /*
-     * The endpoints
-     */
-    @JsonProperty(value = "properties.endpoints", access = JsonProperty.Access.WRITE_ONLY)
-    private Endpoints endpoints;
-
-    /*
-     * The block of addresses should be unique across VNet in your subscription
-     * as well as on-premise. Make sure the CIDR format is conformed to
-     * (A.B.C.D/X) where A,B,C,D are between 0 and 255, and X is between 0 and
-     * 22
-     */
-    @JsonProperty(value = "properties.networkBlock")
-    private String networkBlock;
-
-    /*
-     * Network used to access vCenter Server and NSX-T Manager
-     */
-    @JsonProperty(value = "properties.managementNetwork", access = JsonProperty.Access.WRITE_ONLY)
-    private String managementNetwork;
-
-    /*
-     * Used for virtual machine cold migration, cloning, and snapshot migration
-     */
-    @JsonProperty(value = "properties.provisioningNetwork", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningNetwork;
-
-    /*
-     * Used for live migration of virtual machines
-     */
-    @JsonProperty(value = "properties.vmotionNetwork", access = JsonProperty.Access.WRITE_ONLY)
-    private String vmotionNetwork;
-
-    /*
-     * Optionally, set the vCenter admin password when the private cloud is
-     * created
-     */
-    @JsonProperty(value = "properties.vcenterPassword")
-    private String vcenterPassword;
-
-    /*
-     * Optionally, set the NSX-T Manager password when the private cloud is
-     * created
-     */
-    @JsonProperty(value = "properties.nsxtPassword")
-    private String nsxtPassword;
-
-    /*
-     * Thumbprint of the vCenter Server SSL certificate
-     */
-    @JsonProperty(value = "properties.vcenterCertificateThumbprint", access = JsonProperty.Access.WRITE_ONLY)
-    private String vcenterCertificateThumbprint;
-
-    /*
-     * Thumbprint of the NSX-T Manager SSL certificate
-     */
-    @JsonProperty(value = "properties.nsxtCertificateThumbprint", access = JsonProperty.Access.WRITE_ONLY)
-    private String nsxtCertificateThumbprint;
-
-    /*
-     * Array of cloud link IDs from other clouds that connect to this one
-     */
-    @JsonProperty(value = "properties.externalCloudLinks", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> externalCloudLinks;
+    @JsonProperty(value = "identity")
+    private PrivateCloudIdentity identity;
 
     /**
      * Get the sku property: The private cloud SKU.
@@ -148,219 +66,32 @@ public class PrivateCloudInner extends Resource {
     }
 
     /**
-     * Get the managementCluster property: The default cluster used for management.
+     * Get the innerProperties property: The properties of a private cloud resource.
      *
-     * @return the managementCluster value.
+     * @return the innerProperties value.
      */
-    public ManagementCluster managementCluster() {
-        return this.managementCluster;
+    private PrivateCloudProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
-     * Set the managementCluster property: The default cluster used for management.
+     * Get the identity property: The identity of the private cloud, if configured.
      *
-     * @param managementCluster the managementCluster value to set.
+     * @return the identity value.
+     */
+    public PrivateCloudIdentity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: The identity of the private cloud, if configured.
+     *
+     * @param identity the identity value to set.
      * @return the PrivateCloudInner object itself.
      */
-    public PrivateCloudInner withManagementCluster(ManagementCluster managementCluster) {
-        this.managementCluster = managementCluster;
+    public PrivateCloudInner withIdentity(PrivateCloudIdentity identity) {
+        this.identity = identity;
         return this;
-    }
-
-    /**
-     * Get the internet property: Connectivity to internet is enabled or disabled.
-     *
-     * @return the internet value.
-     */
-    public InternetEnum internet() {
-        return this.internet;
-    }
-
-    /**
-     * Set the internet property: Connectivity to internet is enabled or disabled.
-     *
-     * @param internet the internet value to set.
-     * @return the PrivateCloudInner object itself.
-     */
-    public PrivateCloudInner withInternet(InternetEnum internet) {
-        this.internet = internet;
-        return this;
-    }
-
-    /**
-     * Get the identitySources property: vCenter Single Sign On Identity Sources.
-     *
-     * @return the identitySources value.
-     */
-    public List<IdentitySource> identitySources() {
-        return this.identitySources;
-    }
-
-    /**
-     * Set the identitySources property: vCenter Single Sign On Identity Sources.
-     *
-     * @param identitySources the identitySources value to set.
-     * @return the PrivateCloudInner object itself.
-     */
-    public PrivateCloudInner withIdentitySources(List<IdentitySource> identitySources) {
-        this.identitySources = identitySources;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: The provisioning state.
-     *
-     * @return the provisioningState value.
-     */
-    public PrivateCloudProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the circuit property: An ExpressRoute Circuit.
-     *
-     * @return the circuit value.
-     */
-    public Circuit circuit() {
-        return this.circuit;
-    }
-
-    /**
-     * Set the circuit property: An ExpressRoute Circuit.
-     *
-     * @param circuit the circuit value to set.
-     * @return the PrivateCloudInner object itself.
-     */
-    public PrivateCloudInner withCircuit(Circuit circuit) {
-        this.circuit = circuit;
-        return this;
-    }
-
-    /**
-     * Get the endpoints property: The endpoints.
-     *
-     * @return the endpoints value.
-     */
-    public Endpoints endpoints() {
-        return this.endpoints;
-    }
-
-    /**
-     * Get the networkBlock property: The block of addresses should be unique across VNet in your subscription as well
-     * as on-premise. Make sure the CIDR format is conformed to (A.B.C.D/X) where A,B,C,D are between 0 and 255, and X
-     * is between 0 and 22.
-     *
-     * @return the networkBlock value.
-     */
-    public String networkBlock() {
-        return this.networkBlock;
-    }
-
-    /**
-     * Set the networkBlock property: The block of addresses should be unique across VNet in your subscription as well
-     * as on-premise. Make sure the CIDR format is conformed to (A.B.C.D/X) where A,B,C,D are between 0 and 255, and X
-     * is between 0 and 22.
-     *
-     * @param networkBlock the networkBlock value to set.
-     * @return the PrivateCloudInner object itself.
-     */
-    public PrivateCloudInner withNetworkBlock(String networkBlock) {
-        this.networkBlock = networkBlock;
-        return this;
-    }
-
-    /**
-     * Get the managementNetwork property: Network used to access vCenter Server and NSX-T Manager.
-     *
-     * @return the managementNetwork value.
-     */
-    public String managementNetwork() {
-        return this.managementNetwork;
-    }
-
-    /**
-     * Get the provisioningNetwork property: Used for virtual machine cold migration, cloning, and snapshot migration.
-     *
-     * @return the provisioningNetwork value.
-     */
-    public String provisioningNetwork() {
-        return this.provisioningNetwork;
-    }
-
-    /**
-     * Get the vmotionNetwork property: Used for live migration of virtual machines.
-     *
-     * @return the vmotionNetwork value.
-     */
-    public String vmotionNetwork() {
-        return this.vmotionNetwork;
-    }
-
-    /**
-     * Get the vcenterPassword property: Optionally, set the vCenter admin password when the private cloud is created.
-     *
-     * @return the vcenterPassword value.
-     */
-    public String vcenterPassword() {
-        return this.vcenterPassword;
-    }
-
-    /**
-     * Set the vcenterPassword property: Optionally, set the vCenter admin password when the private cloud is created.
-     *
-     * @param vcenterPassword the vcenterPassword value to set.
-     * @return the PrivateCloudInner object itself.
-     */
-    public PrivateCloudInner withVcenterPassword(String vcenterPassword) {
-        this.vcenterPassword = vcenterPassword;
-        return this;
-    }
-
-    /**
-     * Get the nsxtPassword property: Optionally, set the NSX-T Manager password when the private cloud is created.
-     *
-     * @return the nsxtPassword value.
-     */
-    public String nsxtPassword() {
-        return this.nsxtPassword;
-    }
-
-    /**
-     * Set the nsxtPassword property: Optionally, set the NSX-T Manager password when the private cloud is created.
-     *
-     * @param nsxtPassword the nsxtPassword value to set.
-     * @return the PrivateCloudInner object itself.
-     */
-    public PrivateCloudInner withNsxtPassword(String nsxtPassword) {
-        this.nsxtPassword = nsxtPassword;
-        return this;
-    }
-
-    /**
-     * Get the vcenterCertificateThumbprint property: Thumbprint of the vCenter Server SSL certificate.
-     *
-     * @return the vcenterCertificateThumbprint value.
-     */
-    public String vcenterCertificateThumbprint() {
-        return this.vcenterCertificateThumbprint;
-    }
-
-    /**
-     * Get the nsxtCertificateThumbprint property: Thumbprint of the NSX-T Manager SSL certificate.
-     *
-     * @return the nsxtCertificateThumbprint value.
-     */
-    public String nsxtCertificateThumbprint() {
-        return this.nsxtCertificateThumbprint;
-    }
-
-    /**
-     * Get the externalCloudLinks property: Array of cloud link IDs from other clouds that connect to this one.
-     *
-     * @return the externalCloudLinks value.
-     */
-    public List<String> externalCloudLinks() {
-        return this.externalCloudLinks;
     }
 
     /** {@inheritDoc} */
@@ -378,6 +109,314 @@ public class PrivateCloudInner extends Resource {
     }
 
     /**
+     * Get the provisioningState property: The provisioning state.
+     *
+     * @return the provisioningState value.
+     */
+    public PrivateCloudProvisioningState provisioningState() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the circuit property: An ExpressRoute Circuit.
+     *
+     * @return the circuit value.
+     */
+    public Circuit circuit() {
+        return this.innerProperties() == null ? null : this.innerProperties().circuit();
+    }
+
+    /**
+     * Set the circuit property: An ExpressRoute Circuit.
+     *
+     * @param circuit the circuit value to set.
+     * @return the PrivateCloudInner object itself.
+     */
+    public PrivateCloudInner withCircuit(Circuit circuit) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateCloudProperties();
+        }
+        this.innerProperties().withCircuit(circuit);
+        return this;
+    }
+
+    /**
+     * Get the endpoints property: The endpoints.
+     *
+     * @return the endpoints value.
+     */
+    public Endpoints endpoints() {
+        return this.innerProperties() == null ? null : this.innerProperties().endpoints();
+    }
+
+    /**
+     * Get the networkBlock property: The block of addresses should be unique across VNet in your subscription as well
+     * as on-premise. Make sure the CIDR format is conformed to (A.B.C.D/X) where A,B,C,D are between 0 and 255, and X
+     * is between 0 and 22.
+     *
+     * @return the networkBlock value.
+     */
+    public String networkBlock() {
+        return this.innerProperties() == null ? null : this.innerProperties().networkBlock();
+    }
+
+    /**
+     * Set the networkBlock property: The block of addresses should be unique across VNet in your subscription as well
+     * as on-premise. Make sure the CIDR format is conformed to (A.B.C.D/X) where A,B,C,D are between 0 and 255, and X
+     * is between 0 and 22.
+     *
+     * @param networkBlock the networkBlock value to set.
+     * @return the PrivateCloudInner object itself.
+     */
+    public PrivateCloudInner withNetworkBlock(String networkBlock) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateCloudProperties();
+        }
+        this.innerProperties().withNetworkBlock(networkBlock);
+        return this;
+    }
+
+    /**
+     * Get the managementNetwork property: Network used to access vCenter Server and NSX-T Manager.
+     *
+     * @return the managementNetwork value.
+     */
+    public String managementNetwork() {
+        return this.innerProperties() == null ? null : this.innerProperties().managementNetwork();
+    }
+
+    /**
+     * Get the provisioningNetwork property: Used for virtual machine cold migration, cloning, and snapshot migration.
+     *
+     * @return the provisioningNetwork value.
+     */
+    public String provisioningNetwork() {
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningNetwork();
+    }
+
+    /**
+     * Get the vmotionNetwork property: Used for live migration of virtual machines.
+     *
+     * @return the vmotionNetwork value.
+     */
+    public String vmotionNetwork() {
+        return this.innerProperties() == null ? null : this.innerProperties().vmotionNetwork();
+    }
+
+    /**
+     * Get the vcenterPassword property: Optionally, set the vCenter admin password when the private cloud is created.
+     *
+     * @return the vcenterPassword value.
+     */
+    public String vcenterPassword() {
+        return this.innerProperties() == null ? null : this.innerProperties().vcenterPassword();
+    }
+
+    /**
+     * Set the vcenterPassword property: Optionally, set the vCenter admin password when the private cloud is created.
+     *
+     * @param vcenterPassword the vcenterPassword value to set.
+     * @return the PrivateCloudInner object itself.
+     */
+    public PrivateCloudInner withVcenterPassword(String vcenterPassword) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateCloudProperties();
+        }
+        this.innerProperties().withVcenterPassword(vcenterPassword);
+        return this;
+    }
+
+    /**
+     * Get the nsxtPassword property: Optionally, set the NSX-T Manager password when the private cloud is created.
+     *
+     * @return the nsxtPassword value.
+     */
+    public String nsxtPassword() {
+        return this.innerProperties() == null ? null : this.innerProperties().nsxtPassword();
+    }
+
+    /**
+     * Set the nsxtPassword property: Optionally, set the NSX-T Manager password when the private cloud is created.
+     *
+     * @param nsxtPassword the nsxtPassword value to set.
+     * @return the PrivateCloudInner object itself.
+     */
+    public PrivateCloudInner withNsxtPassword(String nsxtPassword) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateCloudProperties();
+        }
+        this.innerProperties().withNsxtPassword(nsxtPassword);
+        return this;
+    }
+
+    /**
+     * Get the vcenterCertificateThumbprint property: Thumbprint of the vCenter Server SSL certificate.
+     *
+     * @return the vcenterCertificateThumbprint value.
+     */
+    public String vcenterCertificateThumbprint() {
+        return this.innerProperties() == null ? null : this.innerProperties().vcenterCertificateThumbprint();
+    }
+
+    /**
+     * Get the nsxtCertificateThumbprint property: Thumbprint of the NSX-T Manager SSL certificate.
+     *
+     * @return the nsxtCertificateThumbprint value.
+     */
+    public String nsxtCertificateThumbprint() {
+        return this.innerProperties() == null ? null : this.innerProperties().nsxtCertificateThumbprint();
+    }
+
+    /**
+     * Get the externalCloudLinks property: Array of cloud link IDs from other clouds that connect to this one.
+     *
+     * @return the externalCloudLinks value.
+     */
+    public List<String> externalCloudLinks() {
+        return this.innerProperties() == null ? null : this.innerProperties().externalCloudLinks();
+    }
+
+    /**
+     * Get the secondaryCircuit property: A secondary expressRoute circuit from a separate AZ. Only present in a
+     * stretched private cloud.
+     *
+     * @return the secondaryCircuit value.
+     */
+    public Circuit secondaryCircuit() {
+        return this.innerProperties() == null ? null : this.innerProperties().secondaryCircuit();
+    }
+
+    /**
+     * Set the secondaryCircuit property: A secondary expressRoute circuit from a separate AZ. Only present in a
+     * stretched private cloud.
+     *
+     * @param secondaryCircuit the secondaryCircuit value to set.
+     * @return the PrivateCloudInner object itself.
+     */
+    public PrivateCloudInner withSecondaryCircuit(Circuit secondaryCircuit) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateCloudProperties();
+        }
+        this.innerProperties().withSecondaryCircuit(secondaryCircuit);
+        return this;
+    }
+
+    /**
+     * Get the managementCluster property: The default cluster used for management.
+     *
+     * @return the managementCluster value.
+     */
+    public ManagementCluster managementCluster() {
+        return this.innerProperties() == null ? null : this.innerProperties().managementCluster();
+    }
+
+    /**
+     * Set the managementCluster property: The default cluster used for management.
+     *
+     * @param managementCluster the managementCluster value to set.
+     * @return the PrivateCloudInner object itself.
+     */
+    public PrivateCloudInner withManagementCluster(ManagementCluster managementCluster) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateCloudProperties();
+        }
+        this.innerProperties().withManagementCluster(managementCluster);
+        return this;
+    }
+
+    /**
+     * Get the internet property: Connectivity to internet is enabled or disabled.
+     *
+     * @return the internet value.
+     */
+    public InternetEnum internet() {
+        return this.innerProperties() == null ? null : this.innerProperties().internet();
+    }
+
+    /**
+     * Set the internet property: Connectivity to internet is enabled or disabled.
+     *
+     * @param internet the internet value to set.
+     * @return the PrivateCloudInner object itself.
+     */
+    public PrivateCloudInner withInternet(InternetEnum internet) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateCloudProperties();
+        }
+        this.innerProperties().withInternet(internet);
+        return this;
+    }
+
+    /**
+     * Get the identitySources property: vCenter Single Sign On Identity Sources.
+     *
+     * @return the identitySources value.
+     */
+    public List<IdentitySource> identitySources() {
+        return this.innerProperties() == null ? null : this.innerProperties().identitySources();
+    }
+
+    /**
+     * Set the identitySources property: vCenter Single Sign On Identity Sources.
+     *
+     * @param identitySources the identitySources value to set.
+     * @return the PrivateCloudInner object itself.
+     */
+    public PrivateCloudInner withIdentitySources(List<IdentitySource> identitySources) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateCloudProperties();
+        }
+        this.innerProperties().withIdentitySources(identitySources);
+        return this;
+    }
+
+    /**
+     * Get the availability property: Properties describing how the cloud is distributed across availability zones.
+     *
+     * @return the availability value.
+     */
+    public AvailabilityProperties availability() {
+        return this.innerProperties() == null ? null : this.innerProperties().availability();
+    }
+
+    /**
+     * Set the availability property: Properties describing how the cloud is distributed across availability zones.
+     *
+     * @param availability the availability value to set.
+     * @return the PrivateCloudInner object itself.
+     */
+    public PrivateCloudInner withAvailability(AvailabilityProperties availability) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateCloudProperties();
+        }
+        this.innerProperties().withAvailability(availability);
+        return this;
+    }
+
+    /**
+     * Get the encryption property: Customer managed key encryption, can be enabled or disabled.
+     *
+     * @return the encryption value.
+     */
+    public Encryption encryption() {
+        return this.innerProperties() == null ? null : this.innerProperties().encryption();
+    }
+
+    /**
+     * Set the encryption property: Customer managed key encryption, can be enabled or disabled.
+     *
+     * @param encryption the encryption value to set.
+     * @return the PrivateCloudInner object itself.
+     */
+    public PrivateCloudInner withEncryption(Encryption encryption) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new PrivateCloudProperties();
+        }
+        this.innerProperties().withEncryption(encryption);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
@@ -390,17 +429,11 @@ public class PrivateCloudInner extends Resource {
         } else {
             sku().validate();
         }
-        if (managementCluster() != null) {
-            managementCluster().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
-        if (identitySources() != null) {
-            identitySources().forEach(e -> e.validate());
-        }
-        if (circuit() != null) {
-            circuit().validate();
-        }
-        if (endpoints() != null) {
-            endpoints().validate();
+        if (identity() != null) {
+            identity().validate();
         }
     }
 }
