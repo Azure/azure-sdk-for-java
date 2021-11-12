@@ -10,6 +10,15 @@
 
 ### Other Changes
 
+## 12.14.1 (2021-11-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.21.0` to version `1.22.0`.
+- Upgraded `azure-core-http-netty` from `1.11.1` to version `1.11.2`.
+
 ## 12.15.0-beta.1 (2021-11-05)
 
 ### Features Added
