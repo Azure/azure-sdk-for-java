@@ -479,19 +479,19 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
 
         // AAD or isolated: We want to try setting policy with the Isolated signing certificate.
         if (clientType == ClientTypes.AAD || clientType == ClientTypes.ISOLATED) {
-            KeyPair rsaKey = assertDoesNotThrow(() -> createKeyPair("RSA"));
-            X509Certificate cert = assertDoesNotThrow(() -> createSelfSignedCertificate("Test Certificate Secured 2", rsaKey));
-            AttestationSigningKey signingKey = new AttestationSigningKey()
-                .setPrivateKey(rsaKey.getPrivate())
-                .setCertificate(cert)
-                .setAllowWeakKey(true);
-
-//            X509Certificate certificate = getIsolatedSigningCertificate();
-//            PrivateKey key = getIsolatedSigningKey();
-//
+//            KeyPair rsaKey = assertDoesNotThrow(() -> createKeyPair("RSA"));
+//            X509Certificate certificate = assertDoesNotThrow(() -> createSelfSignedCertificate("Test Certificate Secured 2", rsaKey));
 //            AttestationSigningKey signingKey = new AttestationSigningKey()
-//                .setPrivateKey(key)
-//                .setCertificate(certificate);
+//                .setPrivateKey(rsaKey.getPrivate())
+//                .setCertificate(certificate)
+//                .setAllowWeakKey(true);
+
+            X509Certificate certificate = getIsolatedSigningCertificate();
+            PrivateKey key = getIsolatedSigningKey();
+
+            AttestationSigningKey signingKey = new AttestationSigningKey()
+                .setPrivateKey(key)
+                .setCertificate(certificate);
 
             // Test setting the policy. This works for both AAD and Isolated mode.
             StepVerifier.create(client.setAttestationPolicyWithResponse(attestationType, new AttestationPolicySetOptions()
