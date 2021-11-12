@@ -21,6 +21,7 @@ import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
+import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 
@@ -348,12 +349,20 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
         // Try setting attestation policy with an arbitrary signing key - this should be allowed
         // in AAD mode.
         if (clientType == ClientTypes.AAD) {
-            X509Certificate certificate = getPolicySigningCertificate0();
-            PrivateKey key = getPolicySigningKey0();
 
+//            X509Certificate certificate = getPolicySigningCertificate0();
+//                        PrivateKey key = getPolicySigningKey0();
+//
+//            AttestationSigningKey signingKey = new AttestationSigningKey()
+//                .setPrivateKey(key)
+//                .setCertificate(certificate);
+            KeyPair rsaKey = assertDoesNotThrow(() -> createKeyPair("RSA"));
+            X509Certificate cert = assertDoesNotThrow(() -> createSelfSignedCertificate("Test Certificate Secured 2", rsaKey));
             AttestationSigningKey signingKey = new AttestationSigningKey()
-                .setPrivateKey(key)
-                .setCertificate(certificate);
+                .setPrivateKey(rsaKey.getPrivate())
+                .setCertificate(cert)
+                .setAllowWeakKey(true);
+
 
             String policyToSet = "version=1.0; authorizationrules{=> permit();}; issuancerules{};";
             // Test setting the policy. This works for both AAD and Isolated mode.

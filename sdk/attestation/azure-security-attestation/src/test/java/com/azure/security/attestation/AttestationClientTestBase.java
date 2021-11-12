@@ -17,22 +17,38 @@ import com.nimbusds.jose.crypto.RSASSAVerifier;
 import com.nimbusds.jose.util.X509CertUtils;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+import org.bouncycastle.asn1.x509.BasicConstraints;
+import org.bouncycastle.asn1.x509.Extension;
+import org.bouncycastle.x509.X509V3CertificateGenerator;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.params.provider.Arguments;
 import reactor.core.publisher.Mono;
 
+import javax.security.auth.x500.X500Principal;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.math.BigInteger;
+import java.security.InvalidKeyException;
 import java.security.KeyFactory;
+import java.security.KeyPair;
+import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.Security;
+import java.security.SignatureException;
+import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.text.ParseException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Base64;
+import java.util.Date;
+import java.util.Random;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -394,6 +410,42 @@ public class AttestationClientTestBase extends TestBase {
     PrivateKey getPolicySigningKey0() {
         return privateKeyFromBase64(getPolicySigningKey0Base64());
     }
+
+    protected KeyPair createKeyPair(String algorithm) throws NoSuchAlgorithmException {
+
+        KeyPairGenerator keyGen;
+        if (algorithm.equals("EC")) {
+            keyGen = KeyPairGenerator.getInstance(algorithm, Security.getProvider("SunEC"));
+        } else {
+            keyGen = KeyPairGenerator.getInstance(algorithm);
+        }
+        if (algorithm.equals("RSA")) {
+            keyGen.initialize(1024); // Generate a reasonably strong key.
+        }
+        return keyGen.generateKeyPair();
+    }
+
+    protected X509Certificate createSelfSignedCertificate(String subjectName, KeyPair certificateKey) throws CertificateException, NoSuchAlgorithmException, SignatureException, InvalidKeyException {
+        final X509V3CertificateGenerator generator = new X509V3CertificateGenerator();
+        generator.setIssuerDN(new X500Principal("CN=" + subjectName));
+        generator.setSubjectDN(new X500Principal("CN=" + subjectName));
+        generator.setPublicKey(certificateKey.getPublic());
+        if (certificateKey.getPublic().getAlgorithm().equals("EC")) {
+            generator.setSignatureAlgorithm("SHA256WITHECDSA");
+        } else {
+            generator.setSignatureAlgorithm("SHA256WITHRSA");
+        }
+        generator.setSerialNumber(BigInteger.valueOf(Math.abs(new Random().nextInt())));
+        // Valid from now to 1 day from now.
+        generator.setNotBefore(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
+        generator.setNotAfter(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().plus(1, ChronoUnit.DAYS)));
+
+        generator.addExtension(Extension.basicConstraints, false, new BasicConstraints(false));
+        return generator.generate(certificateKey.getPrivate());
+
+    }
+
+
     /**
      * Returns the location in which the tests are running.
      * @return returns the location in which the tests are running.

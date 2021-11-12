@@ -7,28 +7,15 @@ import com.azure.security.attestation.AttestationClientTestBase;
 import com.azure.security.attestation.implementation.models.AttestationResult;
 import com.azure.security.attestation.implementation.models.AttestationTokenImpl;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.bouncycastle.asn1.x509.BasicConstraints;
-import org.bouncycastle.asn1.x509.Extension;
-import org.bouncycastle.x509.X509V3CertificateGenerator;
 import org.junit.jupiter.api.Test;
-
-import java.math.BigInteger;
-import java.security.InvalidKeyException;
 import java.security.KeyPair;
-import java.security.KeyPairGenerator;
-import java.security.NoSuchAlgorithmException;
-import java.security.Security;
-import java.security.SignatureException;
-import java.security.cert.CertificateException;
+
 import java.security.cert.X509Certificate;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
-import java.time.temporal.ChronoUnit;
-import java.util.Date;
 import java.util.LinkedHashMap;
-import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
@@ -38,8 +25,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-
-import javax.security.auth.x500.X500Principal;
 
 final class TestObject {
     @JsonProperty(value = "alg")
@@ -554,40 +539,6 @@ public class AttestationTokenTests extends AttestationClientTestBase {
 
     }
 
-
-    KeyPair createKeyPair(String algorithm) throws NoSuchAlgorithmException {
-
-        KeyPairGenerator keyGen;
-        if (algorithm.equals("EC")) {
-            keyGen = KeyPairGenerator.getInstance(algorithm, Security.getProvider("SunEC"));
-        } else {
-            keyGen = KeyPairGenerator.getInstance(algorithm);
-        }
-        if (algorithm.equals("RSA")) {
-            keyGen.initialize(1024); // Generate a reasonably strong key.
-        }
-        return keyGen.generateKeyPair();
-    }
-
-    X509Certificate createSelfSignedCertificate(String subjectName, KeyPair certificateKey) throws CertificateException, NoSuchAlgorithmException, SignatureException, InvalidKeyException {
-        final X509V3CertificateGenerator generator = new X509V3CertificateGenerator();
-        generator.setIssuerDN(new X500Principal("CN=" + subjectName));
-        generator.setSubjectDN(new X500Principal("CN=" + subjectName));
-        generator.setPublicKey(certificateKey.getPublic());
-        if (certificateKey.getPublic().getAlgorithm().equals("EC")) {
-            generator.setSignatureAlgorithm("SHA256WITHECDSA");
-        } else {
-            generator.setSignatureAlgorithm("SHA256WITHRSA");
-        }
-        generator.setSerialNumber(BigInteger.valueOf(Math.abs(new Random().nextInt())));
-        // Valid from now to 1 day from now.
-        generator.setNotBefore(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant()));
-        generator.setNotAfter(Date.from(LocalDateTime.now().atZone(ZoneId.systemDefault()).toInstant().plus(1, ChronoUnit.DAYS)));
-
-        generator.addExtension(Extension.basicConstraints, false, new BasicConstraints(false));
-        return generator.generate(certificateKey.getPrivate());
-
-    }
 
 }
 
