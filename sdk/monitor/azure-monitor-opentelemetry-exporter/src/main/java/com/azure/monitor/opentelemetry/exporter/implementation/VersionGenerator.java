@@ -29,7 +29,7 @@ public final class VersionGenerator {
             ":" +
             "ot" + getOpenTelemetryApiVersion() +
             ":" +
-            "ext" +artifactVersion;
+            "ext" + artifactVersion;
     }
 
     /**
