@@ -16,7 +16,7 @@ import com.azure.core.util.Context;
 import java.util.Objects;
 
 /**
- * Synchronous client for Communication service phone number operations
+ * Synchronous client for Communication service media composition operations
  */
 @ServiceClient(builder = MediaCompositionClientBuilder.class, isAsync = false)
 public final class MediaCompositionClient {
