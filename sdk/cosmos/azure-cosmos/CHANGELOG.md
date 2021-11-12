@@ -1,14 +1,13 @@
 ## Release History
 
-### 4.21.0-beta.1 (Unreleased)
-
+### 4.21.0 (2021-11-12)
 #### Features Added
+* GA of `Patch`, `Batch` and `Bulk` API.
+* GA of `ChangeFeedProcessorState` API.
+* Added `networkRequestTimeout` API for `DirectConnectionConfig`.
 
-#### Breaking Changes
-
-#### Bugs Fixed
-
-#### Other Changes
+#### Key Bug Fixes
+* Override the default keep-alive config on linux to keep connections open and detect a broken connection faster.
 
 ### 4.20.1 (2021-10-27)
 #### Key Bug Fixes
