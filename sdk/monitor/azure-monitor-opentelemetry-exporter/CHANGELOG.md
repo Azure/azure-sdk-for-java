@@ -1,7 +1,13 @@
 # Release History
 
-## 1.0.0-beta.5 (Unreleased)
-
+## 1.0.0-beta.5 (2021-11-12)
+- Updated versions of `opentelemetry-api` and `opentelemetry-sdk` to `1.7.0` version.
+- Add sdk version string to telemetry item.
+- Fix formatted duration used in setDuration of RequestData and RemoteDependencyData.
+- Minor Fix to ndJsonSerialization issue.
+- Added Azure Active Directory authentication support.
+- Added Stamp Specific Endpoint redirect support.
+- Added support for EventHubs.
 
 ## 1.0.0-beta.4 (2021-03-10)
 
