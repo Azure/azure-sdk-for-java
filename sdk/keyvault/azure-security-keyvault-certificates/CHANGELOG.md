@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added support for multi-tenant authentication in clients.
+
 ### Breaking Changes
 
 ### Bugs Fixed
