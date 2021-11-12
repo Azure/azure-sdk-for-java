@@ -1,0 +1,15 @@
+rules:
+
+- valueFor: '**Component**'
+  contains: 'CloudWatch'
+  addLabels: ['component: cloudwatch']
+- valueFor: '**Component**'
+  contains: 'ElastiCache'
+  addLabels: ['component: elasticache']
+
+- valueFor: '**Type**'
+  contains: Feature
+  addLabels: ['type: enhancement']
+- valueFor: '**Type**'
+  contains: Bug
+  addLabels: ['type: bug']

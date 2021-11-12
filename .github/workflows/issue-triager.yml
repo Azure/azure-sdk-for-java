@@ -1,0 +1,29 @@
+name: Issue triager Azure
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  label:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v1
+
+      - uses: damccorm/tag-ur-it@master
+        with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
+          configuration-path: "triage-rules.yml"
+
+      - if: always()
+        uses: actions/github-script@0.4.0
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          script: |
+            github.issues.addLabels({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              labels: ['status: waiting-for-triage']
+            })
