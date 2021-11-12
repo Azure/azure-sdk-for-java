@@ -79,6 +79,10 @@ public final class EntityHelper {
             description.setAuthorizationRules(toImplementation(options.getAuthorizationRules()));
         }
 
+        if (options.getMaxMessageSizeInKilobytes() != 0) {
+            description.setMaxMessageSizeInKilobytes(options.getMaxMessageSizeInKilobytes());
+        }
+
         return description;
     }
 
@@ -115,6 +119,10 @@ public final class EntityHelper {
 
         if (!options.getAuthorizationRules().isEmpty()) {
             description.setAuthorizationRules(toImplementation(options.getAuthorizationRules()));
+        }
+
+        if (options.getMaxMessageSizeInKilobytes() != 0) {
+            description.setMaxMessageSizeInKilobytes(options.getMaxMessageSizeInKilobytes());
         }
 
         return description;

@@ -764,7 +764,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a Virtual Machine Scale Set.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualMachineScaleSetInner>, VirtualMachineScaleSetInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String vmScaleSetName, VirtualMachineScaleSetInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -791,7 +791,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a Virtual Machine Scale Set.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualMachineScaleSetInner>, VirtualMachineScaleSetInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String vmScaleSetName, VirtualMachineScaleSetInner parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -818,7 +818,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a Virtual Machine Scale Set.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineScaleSetInner>, VirtualMachineScaleSetInner> beginCreateOrUpdate(
         String resourceGroupName, String vmScaleSetName, VirtualMachineScaleSetInner parameters) {
         return beginCreateOrUpdateAsync(resourceGroupName, vmScaleSetName, parameters).getSyncPoller();
@@ -836,7 +836,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a Virtual Machine Scale Set.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineScaleSetInner>, VirtualMachineScaleSetInner> beginCreateOrUpdate(
         String resourceGroupName, String vmScaleSetName, VirtualMachineScaleSetInner parameters, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, vmScaleSetName, parameters, context).getSyncPoller();
@@ -1037,7 +1037,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a Virtual Machine Scale Set.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<VirtualMachineScaleSetInner>, VirtualMachineScaleSetInner> beginUpdateAsync(
         String resourceGroupName, String vmScaleSetName, VirtualMachineScaleSetUpdate parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, vmScaleSetName, parameters);
@@ -1063,7 +1063,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a Virtual Machine Scale Set.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<VirtualMachineScaleSetInner>, VirtualMachineScaleSetInner> beginUpdateAsync(
         String resourceGroupName, String vmScaleSetName, VirtualMachineScaleSetUpdate parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -1090,7 +1090,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a Virtual Machine Scale Set.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineScaleSetInner>, VirtualMachineScaleSetInner> beginUpdate(
         String resourceGroupName, String vmScaleSetName, VirtualMachineScaleSetUpdate parameters) {
         return beginUpdateAsync(resourceGroupName, vmScaleSetName, parameters).getSyncPoller();
@@ -1108,7 +1108,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes a Virtual Machine Scale Set.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<VirtualMachineScaleSetInner>, VirtualMachineScaleSetInner> beginUpdate(
         String resourceGroupName, String vmScaleSetName, VirtualMachineScaleSetUpdate parameters, Context context) {
         return beginUpdateAsync(resourceGroupName, vmScaleSetName, parameters, context).getSyncPoller();
@@ -1295,7 +1295,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String vmScaleSetName, Boolean forceDeletion) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1317,7 +1317,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String vmScaleSetName, Boolean forceDeletion, Context context) {
         context = this.client.mergeContext(context);
@@ -1339,7 +1339,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String vmScaleSetName, Boolean forceDeletion) {
         return beginDeleteAsync(resourceGroupName, vmScaleSetName, forceDeletion).getSyncPoller();
@@ -1357,7 +1357,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String vmScaleSetName, Boolean forceDeletion, Context context) {
         return beginDeleteAsync(resourceGroupName, vmScaleSetName, forceDeletion, context).getSyncPoller();
@@ -1771,7 +1771,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeallocateAsync(
         String resourceGroupName, String vmScaleSetName, VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1794,7 +1794,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeallocateAsync(
         String resourceGroupName,
         String vmScaleSetName,
@@ -1820,7 +1820,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeallocate(
         String resourceGroupName, String vmScaleSetName, VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs) {
         return beginDeallocateAsync(resourceGroupName, vmScaleSetName, vmInstanceIDs).getSyncPoller();
@@ -1839,7 +1839,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeallocate(
         String resourceGroupName,
         String vmScaleSetName,
@@ -2097,7 +2097,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginDeleteInstancesAsync(
         String resourceGroupName,
         String vmScaleSetName,
@@ -2124,7 +2124,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteInstancesAsync(
         String resourceGroupName,
         String vmScaleSetName,
@@ -2152,7 +2152,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteInstances(
         String resourceGroupName,
         String vmScaleSetName,
@@ -2176,7 +2176,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteInstances(
         String resourceGroupName,
         String vmScaleSetName,
@@ -3291,7 +3291,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginPowerOffAsync(
         String resourceGroupName,
         String vmScaleSetName,
@@ -3320,7 +3320,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginPowerOffAsync(
         String resourceGroupName,
         String vmScaleSetName,
@@ -3350,7 +3350,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPowerOff(
         String resourceGroupName,
         String vmScaleSetName,
@@ -3375,7 +3375,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPowerOff(
         String resourceGroupName,
         String vmScaleSetName,
@@ -3641,7 +3641,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginRestartAsync(
         String resourceGroupName, String vmScaleSetName, VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -3663,7 +3663,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRestartAsync(
         String resourceGroupName,
         String vmScaleSetName,
@@ -3688,7 +3688,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(
         String resourceGroupName, String vmScaleSetName, VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs) {
         return beginRestartAsync(resourceGroupName, vmScaleSetName, vmInstanceIDs).getSyncPoller();
@@ -3706,7 +3706,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRestart(
         String resourceGroupName,
         String vmScaleSetName,
@@ -3942,7 +3942,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginStartAsync(
         String resourceGroupName, String vmScaleSetName, VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -3964,7 +3964,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginStartAsync(
         String resourceGroupName,
         String vmScaleSetName,
@@ -3989,7 +3989,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName, String vmScaleSetName, VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs) {
         return beginStartAsync(resourceGroupName, vmScaleSetName, vmInstanceIDs).getSyncPoller();
@@ -4007,7 +4007,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginStart(
         String resourceGroupName,
         String vmScaleSetName,
@@ -4246,7 +4246,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginRedeployAsync(
         String resourceGroupName, String vmScaleSetName, VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -4269,7 +4269,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginRedeployAsync(
         String resourceGroupName,
         String vmScaleSetName,
@@ -4295,7 +4295,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRedeploy(
         String resourceGroupName, String vmScaleSetName, VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs) {
         return beginRedeployAsync(resourceGroupName, vmScaleSetName, vmInstanceIDs).getSyncPoller();
@@ -4314,7 +4314,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginRedeploy(
         String resourceGroupName,
         String vmScaleSetName,
@@ -4562,7 +4562,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginPerformMaintenanceAsync(
         String resourceGroupName, String vmScaleSetName, VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -4586,7 +4586,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginPerformMaintenanceAsync(
         String resourceGroupName,
         String vmScaleSetName,
@@ -4613,7 +4613,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPerformMaintenance(
         String resourceGroupName, String vmScaleSetName, VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs) {
         return beginPerformMaintenanceAsync(resourceGroupName, vmScaleSetName, vmInstanceIDs).getSyncPoller();
@@ -4633,7 +4633,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginPerformMaintenance(
         String resourceGroupName,
         String vmScaleSetName,
@@ -4885,7 +4885,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginUpdateInstancesAsync(
         String resourceGroupName, String vmScaleSetName, VirtualMachineScaleSetVMInstanceRequiredIDs vmInstanceIDs) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -4907,7 +4907,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginUpdateInstancesAsync(
         String resourceGroupName,
         String vmScaleSetName,
@@ -4932,7 +4932,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpdateInstances(
         String resourceGroupName, String vmScaleSetName, VirtualMachineScaleSetVMInstanceRequiredIDs vmInstanceIDs) {
         return beginUpdateInstancesAsync(resourceGroupName, vmScaleSetName, vmInstanceIDs).getSyncPoller();
@@ -4950,7 +4950,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginUpdateInstances(
         String resourceGroupName,
         String vmScaleSetName,
@@ -5161,7 +5161,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginReimageAsync(
         String resourceGroupName,
         String vmScaleSetName,
@@ -5187,7 +5187,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginReimageAsync(
         String resourceGroupName,
         String vmScaleSetName,
@@ -5214,7 +5214,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginReimage(
         String resourceGroupName,
         String vmScaleSetName,
@@ -5236,7 +5236,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginReimage(
         String resourceGroupName,
         String vmScaleSetName,
@@ -5491,7 +5491,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginReimageAllAsync(
         String resourceGroupName, String vmScaleSetName, VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -5514,7 +5514,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginReimageAllAsync(
         String resourceGroupName,
         String vmScaleSetName,
@@ -5540,7 +5540,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginReimageAll(
         String resourceGroupName, String vmScaleSetName, VirtualMachineScaleSetVMInstanceIDs vmInstanceIDs) {
         return beginReimageAllAsync(resourceGroupName, vmScaleSetName, vmInstanceIDs).getSyncPoller();
@@ -5559,7 +5559,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginReimageAll(
         String resourceGroupName,
         String vmScaleSetName,
@@ -6134,7 +6134,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<PollResult<Void>, Void> beginSetOrchestrationServiceStateAsync(
         String resourceGroupName, String vmScaleSetName, OrchestrationServiceStateInput parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -6156,7 +6156,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginSetOrchestrationServiceStateAsync(
         String resourceGroupName, String vmScaleSetName, OrchestrationServiceStateInput parameters, Context context) {
         context = this.client.mergeContext(context);
@@ -6178,7 +6178,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginSetOrchestrationServiceState(
         String resourceGroupName, String vmScaleSetName, OrchestrationServiceStateInput parameters) {
         return beginSetOrchestrationServiceStateAsync(resourceGroupName, vmScaleSetName, parameters).getSyncPoller();
@@ -6196,7 +6196,7 @@ public final class VirtualMachineScaleSetsClientImpl
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginSetOrchestrationServiceState(
         String resourceGroupName, String vmScaleSetName, OrchestrationServiceStateInput parameters, Context context) {
         return beginSetOrchestrationServiceStateAsync(resourceGroupName, vmScaleSetName, parameters, context)

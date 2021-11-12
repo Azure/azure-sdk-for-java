@@ -80,7 +80,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-messaging-eventgrid</artifactId>
-    <version>4.6.0</version>
+    <version>4.7.1</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -464,7 +464,7 @@ good place to start for problems involving configuration of topics/endpoints, as
 problems involving error codes from the service.
 
 ### Distributed Tracing
-The Event Grid library supports distributing tracing out of the box. In order to adhere to the CloudEvents specification's [guidance](https://github.com/cloudevents/spec/blob/master/extensions/distributed-tracing.md) on distributing tracing, the library will set the `traceparent` and `tracestate` on the `extensionAttributes` of a `CloudEvent` when distributed tracing is enabled. To learn more about how to enable distributed tracing in your application, take a look at the Azure SDK Java [distributed tracing documentation](https://docs.microsoft.com/azure/developer/java/sdk/tracing).
+The Event Grid library supports distributing tracing out of the box. In order to adhere to the CloudEvents specification's [guidance](https://github.com/cloudevents/spec/blob/v1.0.1/extensions/distributed-tracing.md) on distributing tracing, the library will set the `traceparent` and `tracestate` on the `extensionAttributes` of a `CloudEvent` when distributed tracing is enabled. To learn more about how to enable distributed tracing in your application, take a look at the Azure SDK Java [distributed tracing documentation](https://docs.microsoft.com/azure/developer/java/sdk/tracing).
 
 
 ### Help and Issues

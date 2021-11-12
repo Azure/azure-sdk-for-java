@@ -11,18 +11,17 @@ import com.azure.ai.formrecognizer.administration.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.administration.models.CreateComposedModelOptions;
 import com.azure.ai.formrecognizer.administration.models.DocumentModel;
 import com.azure.ai.formrecognizer.administration.models.DocumentModelInfo;
-import com.azure.ai.formrecognizer.administration.models.FormRecognizerError;
 import com.azure.ai.formrecognizer.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.Response;
+import com.azure.core.models.ResponseError;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -40,7 +39,7 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
 
     private DocumentModelAdministrationClient getDocumentModelAdministrationClient(HttpClient httpClient,
                                                                                    DocumentAnalysisServiceVersion serviceVersion) {
-        return getDocumentModelAdminClientBuilder(httpClient, serviceVersion).buildClient();
+        return getDocumentModelAdminClientBuilder(httpClient, serviceVersion, false).buildClient();
     }
 
     /**
@@ -80,9 +79,8 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         HttpResponseException exception = assertThrows(HttpResponseException.class, () ->
             client.getModel(NON_EXIST_MODEL_ID));
-        final FormRecognizerError errorInformation =
-            (FormRecognizerError) exception.getValue();
-        assertEquals("ModelNotFound", errorInformation.getInnerError().getCode());
+        final ResponseError responseError = (ResponseError) exception.getValue();
+        assertEquals("NotFound", responseError.getCode());
     }
 
     /**
@@ -138,9 +136,8 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         HttpResponseException exception = assertThrows(HttpResponseException.class, () ->
             client.deleteModel(NON_EXIST_MODEL_ID));
-        final FormRecognizerError errorInformation =
-            (FormRecognizerError) exception.getValue();
-        assertEquals("ModelNotFound", errorInformation.getInnerError().getCode());
+        final ResponseError responseError = (ResponseError) exception.getValue();
+        assertEquals("NotFound", responseError.getCode());
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -161,9 +158,8 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
             assertEquals(deleteModelWithResponse.getStatusCode(), HttpResponseStatus.NO_CONTENT.code());
             final HttpResponseException exception = assertThrows(HttpResponseException.class, () ->
                 client.getModelWithResponse(createdModel.getModelId(), Context.NONE));
-            final FormRecognizerError errorInformation =
-                (FormRecognizerError) exception.getValue();
-            assertEquals("ModelNotFound", errorInformation.getInnerError().getCode());
+            final ResponseError responseError = (ResponseError) exception.getValue();
+            assertEquals("NotFound", responseError.getCode());
         });
     }
 
@@ -229,9 +225,7 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled
     public void beginCopy(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
-        // TODO: (https://github.com/Azure/azure-sdk-for-java-pr/issues/1353)
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         buildModelRunner((trainingFilesUrl) -> {
             SyncPoller<DocumentOperationResult, DocumentModel> syncPoller =
@@ -268,10 +262,8 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled
     public void beginBuildModelWithJPGTrainingSet(HttpClient httpClient,
                                                   DocumentAnalysisServiceVersion serviceVersion) {
-        // TODO: (https://github.com/Azure/azure-sdk-for-java-pr/issues/1353)
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         buildModelRunner((trainingFilesUrl) -> {
             SyncPoller<DocumentOperationResult, DocumentModel> buildModelPoller =
@@ -288,10 +280,8 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled
     public void beginBuildModelWithMultiPagePDFTrainingSet(HttpClient httpClient,
                                                            DocumentAnalysisServiceVersion serviceVersion) {
-        // TODO: (https://github.com/Azure/azure-sdk-for-java-pr/issues/1353)
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         multipageTrainingRunner(trainingFilesUrl -> {
             SyncPoller<DocumentOperationResult, DocumentModel> buildModelPoller =
@@ -309,22 +299,18 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled
     public void beginBuildModelIncludeSubfolderWithPrefixName(HttpClient httpClient,
                                                               DocumentAnalysisServiceVersion serviceVersion) {
-        // "innererror": {
-        //     "code": "TrainingContentMissing",
-        //         "message": "Training data is missing: Could not find any training data at the given path."
-        // }
+
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         buildModelRunner((trainingFilesUrl) -> {
-            SyncPoller<DocumentOperationResult, DocumentModel> buildModelPoller =
+            HttpResponseException exception = assertThrows(HttpResponseException.class, () ->
                 client.beginBuildModel(trainingFilesUrl, null,
-                        new BuildModelOptions().setPrefix("subfolder"), Context.NONE)
-                    .setPollInterval(durationTestMode);
-            buildModelPoller.waitForCompletion();
+                    new BuildModelOptions().setPrefix("subfolder"), Context.NONE)
+                .setPollInterval(durationTestMode));
 
-            validateDocumentModelData(buildModelPoller.getFinalResult());
+            final ResponseError responseError  = (ResponseError) exception.getValue();
+            assertEquals("InvalidRequest", responseError.getCode());
         });
     }
 
@@ -334,22 +320,17 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled
     public void beginBuildModelIncludeSubfolderWithNonExistPrefixName(HttpClient httpClient,
                                                                       DocumentAnalysisServiceVersion serviceVersion) {
-        // confirm
-        // "code": "TrainingContentMissing",
-        //     "message": "Training data is missing: Could not find any training data at the given path."
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         multipageTrainingRunner(trainingFilesUrl -> {
             HttpResponseException exception = assertThrows(HttpResponseException.class, () ->
                 client.beginBuildModel(trainingFilesUrl, null,
-                        new BuildModelOptions().setPrefix("subfolder"), Context.NONE)
+                        new BuildModelOptions().setPrefix("subfolders"), Context.NONE)
                     .setPollInterval(durationTestMode));
 
-            final FormRecognizerError errorInformation =
-                (FormRecognizerError) exception.getValue();
-            assertEquals("ModelNotFound", errorInformation.getInnerError().getCode());
+            final ResponseError responseError = (ResponseError) exception.getValue();
+            assertEquals("InvalidRequest", responseError.getCode());
         });
     }
 
@@ -358,9 +339,7 @@ public class DocumentModelAdministrationClientTest extends DocumentModelAdminist
      */
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    @Disabled
     public void beginCreateComposedModel(HttpClient httpClient, DocumentAnalysisServiceVersion serviceVersion) {
-        // TODO: (https://github.com/Azure/azure-sdk-for-java-pr/issues/1353)
         client = getDocumentModelAdministrationClient(httpClient, serviceVersion);
         buildModelRunner((trainingFilesUrl) -> {
             SyncPoller<DocumentOperationResult, DocumentModel> syncPoller1 =

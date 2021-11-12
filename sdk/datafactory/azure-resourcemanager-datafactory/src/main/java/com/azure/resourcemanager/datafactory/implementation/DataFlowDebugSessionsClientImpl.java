@@ -283,7 +283,7 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response body structure for creating data flow debug session.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CreateDataFlowDebugSessionResponseInner>, CreateDataFlowDebugSessionResponseInner>
         beginCreateAsync(String resourceGroupName, String factoryName, CreateDataFlowDebugSessionRequest request) {
         Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceGroupName, factoryName, request);
@@ -309,7 +309,7 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response body structure for creating data flow debug session.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<CreateDataFlowDebugSessionResponseInner>, CreateDataFlowDebugSessionResponseInner>
         beginCreateAsync(
             String resourceGroupName, String factoryName, CreateDataFlowDebugSessionRequest request, Context context) {
@@ -337,7 +337,7 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response body structure for creating data flow debug session.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CreateDataFlowDebugSessionResponseInner>, CreateDataFlowDebugSessionResponseInner>
         beginCreate(String resourceGroupName, String factoryName, CreateDataFlowDebugSessionRequest request) {
         return beginCreateAsync(resourceGroupName, factoryName, request).getSyncPoller();
@@ -355,7 +355,7 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response body structure for creating data flow debug session.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<CreateDataFlowDebugSessionResponseInner>, CreateDataFlowDebugSessionResponseInner>
         beginCreate(
             String resourceGroupName, String factoryName, CreateDataFlowDebugSessionRequest request, Context context) {
@@ -1062,7 +1062,7 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response body structure of data flow result for data preview, statistics or expression preview.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DataFlowDebugCommandResponseInner>, DataFlowDebugCommandResponseInner>
         beginExecuteCommandAsync(String resourceGroupName, String factoryName, DataFlowDebugCommandRequest request) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1089,7 +1089,7 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response body structure of data flow result for data preview, statistics or expression preview.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<DataFlowDebugCommandResponseInner>, DataFlowDebugCommandResponseInner>
         beginExecuteCommandAsync(
             String resourceGroupName, String factoryName, DataFlowDebugCommandRequest request, Context context) {
@@ -1117,7 +1117,7 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response body structure of data flow result for data preview, statistics or expression preview.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DataFlowDebugCommandResponseInner>, DataFlowDebugCommandResponseInner>
         beginExecuteCommand(String resourceGroupName, String factoryName, DataFlowDebugCommandRequest request) {
         return beginExecuteCommandAsync(resourceGroupName, factoryName, request).getSyncPoller();
@@ -1135,7 +1135,7 @@ public final class DataFlowDebugSessionsClientImpl implements DataFlowDebugSessi
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response body structure of data flow result for data preview, statistics or expression preview.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<DataFlowDebugCommandResponseInner>, DataFlowDebugCommandResponseInner>
         beginExecuteCommand(
             String resourceGroupName, String factoryName, DataFlowDebugCommandRequest request, Context context) {

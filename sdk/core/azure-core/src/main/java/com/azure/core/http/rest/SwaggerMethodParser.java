@@ -12,6 +12,7 @@ import com.azure.core.annotation.Head;
 import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.Options;
 import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
 import com.azure.core.annotation.Post;
@@ -56,7 +57,7 @@ import java.util.stream.Collectors;
 class SwaggerMethodParser implements HttpResponseDecodeData {
     private static final Pattern PATTERN_COLON_SLASH_SLASH = Pattern.compile("://");
     private static final List<Class<? extends Annotation>> REQUIRED_HTTP_METHODS =
-        Arrays.asList(Get.class, Put.class, Head.class, Delete.class, Post.class, Patch.class);
+        Arrays.asList(Delete.class, Get.class, Head.class, Options.class, Patch.class, Post.class, Put.class);
 
     private final SerializerAdapter serializer;
     private final String rawHost;
@@ -116,6 +117,9 @@ class SwaggerMethodParser implements HttpResponseDecodeData {
         } else if (swaggerMethod.isAnnotationPresent(Patch.class)) {
             this.httpMethod = HttpMethod.PATCH;
             this.relativePath = swaggerMethod.getAnnotation(Patch.class).value();
+        } else if (swaggerMethod.isAnnotationPresent(Options.class)) {
+            this.httpMethod = HttpMethod.OPTIONS;
+            this.relativePath = swaggerMethod.getAnnotation(Options.class).value();
         } else {
             // Should this also check whether there are multiple HTTP method annotations as well?
             throw new MissingRequiredAnnotationException(REQUIRED_HTTP_METHODS, swaggerMethod);

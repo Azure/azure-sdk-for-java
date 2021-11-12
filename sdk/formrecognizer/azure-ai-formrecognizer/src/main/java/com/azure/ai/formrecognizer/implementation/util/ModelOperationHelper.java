@@ -4,7 +4,7 @@
 package com.azure.ai.formrecognizer.implementation.util;
 
 import com.azure.ai.formrecognizer.administration.models.DocTypeInfo;
-import com.azure.ai.formrecognizer.administration.models.FormRecognizerError;
+import com.azure.ai.formrecognizer.administration.models.DocumentModelOperationError;
 import com.azure.ai.formrecognizer.administration.models.ModelOperation;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationKind;
 import com.azure.ai.formrecognizer.administration.models.ModelOperationStatus;
@@ -34,7 +34,7 @@ public final class ModelOperationHelper {
 
         void setDocTypes(ModelOperation modelOperation, Map<String, DocTypeInfo> docTypes);
 
-        void setError(ModelOperation modelOperation, FormRecognizerError error);
+        void setError(ModelOperation modelOperation, DocumentModelOperationError error);
 
         void setOperationId(ModelOperation modelOperation, String operationId);
 
@@ -74,8 +74,8 @@ public final class ModelOperationHelper {
         accessor.setDocTypes(modelOperation, docTypes);
     }
 
-    static void setError(ModelOperation modelOperation, FormRecognizerError formRecognizerError) {
-        accessor.setError(modelOperation, formRecognizerError);
+    static void setError(ModelOperation modelOperation, DocumentModelOperationError documentModelOperationError) {
+        accessor.setError(modelOperation, documentModelOperationError);
     }
 
     static void setOperationId(ModelOperation modelOperation, String operationId) {

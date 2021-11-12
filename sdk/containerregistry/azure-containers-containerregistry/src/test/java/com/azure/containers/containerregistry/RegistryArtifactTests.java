@@ -9,24 +9,22 @@ import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.test.TestMode;
 import com.azure.core.util.Context;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
-import java.time.Duration;
 import java.util.Arrays;
 
 import static com.azure.containers.containerregistry.TestUtils.ALPINE_REPOSITORY_NAME;
+import static com.azure.containers.containerregistry.TestUtils.HTTP_STATUS_CODE_202;
 import static com.azure.containers.containerregistry.TestUtils.LATEST_TAG_NAME;
-import static com.azure.containers.containerregistry.TestUtils.SLEEP_TIME_IN_MILLISECONDS;
 import static com.azure.containers.containerregistry.TestUtils.V1_TAG_NAME;
 import static com.azure.containers.containerregistry.TestUtils.V2_TAG_NAME;
 import static com.azure.containers.containerregistry.TestUtils.V3_TAG_NAME;
 import static com.azure.containers.containerregistry.TestUtils.V4_TAG_NAME;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @Execution(ExecutionMode.SAME_THREAD)
@@ -94,16 +92,10 @@ public class RegistryArtifactTests extends ContainerRegistryClientsTestBase {
         String digest = getChildArtifactDigest(client.getManifestProperties().getRelatedArtifacts());
 
         asyncClient = getRegistryArtifactAsyncClient(digest);
-        Mono<Boolean> delete = asyncClient.delete()
-            .delaySubscription(Duration.ofMillis(SLEEP_TIME_IN_MILLISECONDS))
-            .then(asyncClient.getManifestProperties()
-                .flatMap(res -> Mono.just(false))
-                .onErrorResume(res -> asyncClient.delete()
-                    .then(Mono.just(true))
-                    .onErrorResume(err -> Mono.just(false))));
+        StepVerifier.create(asyncClient.delete())
+            .verifyComplete();
 
-        StepVerifier.create(delete)
-            .assertNext(Assertions::assertTrue)
+        StepVerifier.create(asyncClient.delete())
             .verifyComplete();
     }
 
@@ -111,55 +103,39 @@ public class RegistryArtifactTests extends ContainerRegistryClientsTestBase {
     public void deleteWithResponse() {
         client = getRegistryArtifactClient(V4_TAG_NAME);
         String digest = getChildArtifactDigest(client.getManifestProperties().getRelatedArtifacts());
-
         asyncClient = getRegistryArtifactAsyncClient(digest);
-        Mono<Boolean> delete = asyncClient.deleteWithResponse()
-            .delaySubscription(Duration.ofMillis(SLEEP_TIME_IN_MILLISECONDS))
-            .then(asyncClient.getManifestProperties()
-                .flatMap(res -> Mono.just(false))
-                .onErrorResume(res -> asyncClient.delete()
-                    .then(Mono.just(true))
-                    .onErrorResume(err -> Mono.just(false))));
 
-        StepVerifier.create(delete)
-            .assertNext(Assertions::assertTrue)
+        StepVerifier.create(asyncClient.deleteWithResponse())
+            .assertNext(res -> assertEquals(res.getStatusCode(), HTTP_STATUS_CODE_202))
+            .verifyComplete();
+
+        StepVerifier.create(asyncClient.deleteWithResponse())
+            .assertNext(res -> assertEquals(res.getStatusCode(), HTTP_STATUS_CODE_202))
             .verifyComplete();
     }
 
 
     @Test
     public void deleteTag() {
-        client = getRegistryArtifactClient(LATEST_TAG_NAME);
         asyncClient = getRegistryArtifactAsyncClient(LATEST_TAG_NAME);
 
-        Mono<Boolean> delete = asyncClient.deleteTag(V3_TAG_NAME)
-            .delaySubscription(Duration.ofMillis(SLEEP_TIME_IN_MILLISECONDS))
-            .then(asyncClient.getTagProperties(V3_TAG_NAME)
-                .flatMap(res -> Mono.just(false))
-                .onErrorResume(res -> asyncClient.deleteTag(V3_TAG_NAME)
-                    .then(Mono.just(true))
-                    .onErrorResume(err -> Mono.just(false))));
+        StepVerifier.create(asyncClient.deleteTag(V3_TAG_NAME))
+            .verifyComplete();
 
-        StepVerifier.create(delete)
-            .assertNext(Assertions::assertTrue)
+        StepVerifier.create(asyncClient.deleteTag(V3_TAG_NAME))
             .verifyComplete();
     }
 
     @Test
     public void deleteTagWithResponse() {
-        client = getRegistryArtifactClient(LATEST_TAG_NAME);
         asyncClient = getRegistryArtifactAsyncClient(LATEST_TAG_NAME);
 
-        Mono<Boolean> delete = asyncClient.deleteTagWithResponse(V3_TAG_NAME)
-            .delaySubscription(Duration.ofMillis(SLEEP_TIME_IN_MILLISECONDS))
-            .then(asyncClient.getTagProperties(V3_TAG_NAME)
-                .flatMap(res -> Mono.just(false))
-                .onErrorResume(res -> asyncClient.deleteTag(V3_TAG_NAME)
-                    .then(Mono.just(true))
-                    .onErrorResume(err -> Mono.just(false))));
+        StepVerifier.create(asyncClient.deleteTagWithResponse(V3_TAG_NAME))
+            .assertNext(res -> assertEquals(res.getStatusCode(), HTTP_STATUS_CODE_202))
+            .verifyComplete();
 
-        StepVerifier.create(delete)
-            .assertNext(Assertions::assertTrue)
+        StepVerifier.create(asyncClient.deleteTagWithResponse(V3_TAG_NAME))
+            .assertNext(res -> assertEquals(res.getStatusCode(), HTTP_STATUS_CODE_202))
             .verifyComplete();
     }
 

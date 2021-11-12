@@ -697,6 +697,13 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
         return sliceQuery(querySpec, query.getPageable(), query.getSort(), domainType, containerName, partitionKeyValue);
     }
 
+    @Override
+    public <T> Slice<T> runSliceQuery(SqlQuerySpec querySpec, Pageable pageable, Class<?> domainType, Class<T> returnType) {
+        final String containerName = getContainerName(domainType);
+        final SqlQuerySpec sortedQuerySpec = NativeQueryGenerator.getInstance().generateSortedQuery(querySpec, pageable.getSort());
+        return sliceQuery(sortedQuerySpec, pageable, pageable.getSort(), returnType, containerName, Optional.empty());
+    }
+
     private <T> Page<T> paginationQuery(SqlQuerySpec querySpec, SqlQuerySpec countQuerySpec,
                                        Pageable pageable, Sort sort,
                                        Class<T> returnType, String containerName,
@@ -758,6 +765,7 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
                 continue;
             }
 
+            maybeEmitEvent(new AfterLoadEvent<>(jsonNode, returnType, containerName));
             final T entity = mappingCosmosConverter.read(returnType, jsonNode);
             result.add(entity);
         }
@@ -965,12 +973,8 @@ public class CosmosTemplate implements CosmosOperations, ApplicationContextAware
     }
 
     private void maybeEmitEvent(CosmosMappingEvent<?> event) {
-        try {
-            if (canPublishEvent()) {
-                this.applicationContext.publishEvent(event);
-            }
-        } catch (Exception ex) {
-            LOGGER.warn("Encountered an exception while trying to emit spring application event", ex);
+        if (canPublishEvent()) {
+            this.applicationContext.publishEvent(event);
         }
     }
 

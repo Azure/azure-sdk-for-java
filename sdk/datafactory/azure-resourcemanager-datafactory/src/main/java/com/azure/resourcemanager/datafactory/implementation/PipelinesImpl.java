@@ -197,7 +197,7 @@ public final class PipelinesImpl implements Pipelines {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'pipelines'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, factoryName, pipelineName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, factoryName, pipelineName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {

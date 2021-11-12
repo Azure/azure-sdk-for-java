@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.models.HcxEnterpriseSiteStatus;
@@ -13,22 +12,24 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** An HCX Enterprise Site resource. */
-@JsonFlatten
 @Immutable
-public class HcxEnterpriseSiteInner extends ProxyResource {
+public final class HcxEnterpriseSiteInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(HcxEnterpriseSiteInner.class);
 
     /*
-     * The activation key
+     * The properties of an HCX Enterprise Site resource
      */
-    @JsonProperty(value = "properties.activationKey", access = JsonProperty.Access.WRITE_ONLY)
-    private String activationKey;
+    @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
+    private HcxEnterpriseSiteProperties innerProperties;
 
-    /*
-     * The status of the HCX Enterprise Site
+    /**
+     * Get the innerProperties property: The properties of an HCX Enterprise Site resource.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
-    private HcxEnterpriseSiteStatus status;
+    private HcxEnterpriseSiteProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the activationKey property: The activation key.
@@ -36,7 +37,7 @@ public class HcxEnterpriseSiteInner extends ProxyResource {
      * @return the activationKey value.
      */
     public String activationKey() {
-        return this.activationKey;
+        return this.innerProperties() == null ? null : this.innerProperties().activationKey();
     }
 
     /**
@@ -45,7 +46,7 @@ public class HcxEnterpriseSiteInner extends ProxyResource {
      * @return the status value.
      */
     public HcxEnterpriseSiteStatus status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -54,5 +55,8 @@ public class HcxEnterpriseSiteInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

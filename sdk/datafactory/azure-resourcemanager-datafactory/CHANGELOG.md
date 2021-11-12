@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.7 (Unreleased)
+## 1.0.0-beta.8 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,115 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.7 (2021-11-10)
+
+- Azure Resource Manager DataFactory client library for Java. This package contains Microsoft Azure SDK for DataFactory Management SDK. The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory V2 services. Package tag package-2018-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.DatasetTarGZipCompression` was removed
+
+* `models.DatasetTarCompression` was removed
+
+* `models.DatasetGZipCompression` was removed
+
+* `models.DatasetDeflateCompression` was removed
+
+* `models.DatasetBZip2Compression` was removed
+
+* `models.DatasetZipDeflateCompression` was removed
+
+#### `models.DataFlowSink` was modified
+
+* `dataset()` was removed
+* `linkedService()` was removed
+
+#### `models.DataFlowSource` was modified
+
+* `linkedService()` was removed
+* `dataset()` was removed
+
+### Features Added
+
+* `models.PowerQuerySinkMapping` was added
+
+* `models.Flowlet` was added
+
+#### `models.PowerQuerySource` was modified
+
+* `withFlowlet(models.DataFlowReference)` was added
+* `withFlowlet(models.DataFlowReference)` was added
+* `withDataset(models.DatasetReference)` was added
+* `withFlowlet(models.DataFlowReference)` was added
+* `withLinkedService(models.LinkedServiceReference)` was added
+
+#### `models.ExecuteWranglingDataflowActivity` was modified
+
+* `queries()` was added
+* `withQueries(java.util.List)` was added
+
+#### `models.DataFlowDebugPackage` was modified
+
+* `dataFlows()` was added
+* `withDataFlows(java.util.List)` was added
+
+#### `models.DatasetCompression` was modified
+
+* `withType(java.lang.Object)` was added
+* `level()` was added
+* `withLevel(java.lang.Object)` was added
+* `type()` was added
+
+#### `models.PowerQuerySink` was modified
+
+* `withFlowlet(models.DataFlowReference)` was added
+* `withFlowlet(models.DataFlowReference)` was added
+* `withFlowlet(models.DataFlowReference)` was added
+* `withLinkedService(models.LinkedServiceReference)` was added
+* `withDataset(models.DatasetReference)` was added
+
+#### `models.WranglingDataFlow` was modified
+
+* `documentLocale()` was added
+* `withDocumentLocale(java.lang.String)` was added
+
+#### `models.Transformation` was modified
+
+* `flowlet()` was added
+* `withLinkedService(models.LinkedServiceReference)` was added
+* `dataset()` was added
+* `withDataset(models.DatasetReference)` was added
+* `withFlowlet(models.DataFlowReference)` was added
+* `linkedService()` was added
+
+#### `models.Factory$Update` was modified
+
+* `withPublicNetworkAccess(models.PublicNetworkAccess)` was added
+
+#### `models.MappingDataFlow` was modified
+
+* `withScriptLines(java.util.List)` was added
+* `scriptLines()` was added
+
+#### `models.FactoryUpdateParameters` was modified
+
+* `publicNetworkAccess()` was added
+* `withPublicNetworkAccess(models.PublicNetworkAccess)` was added
+
+#### `models.DataFlowSink` was modified
+
+* `withDataset(models.DatasetReference)` was added
+* `withLinkedService(models.LinkedServiceReference)` was added
+* `withFlowlet(models.DataFlowReference)` was added
+* `withFlowlet(models.DataFlowReference)` was added
+
+#### `models.DataFlowSource` was modified
+
+* `withDataset(models.DatasetReference)` was added
+* `withLinkedService(models.LinkedServiceReference)` was added
+* `withFlowlet(models.DataFlowReference)` was added
+* `withFlowlet(models.DataFlowReference)` was added
 
 ## 1.0.0-beta.6 (2021-09-10)
 
