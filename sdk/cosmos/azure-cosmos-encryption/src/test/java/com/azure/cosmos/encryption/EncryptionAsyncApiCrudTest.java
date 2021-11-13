@@ -23,10 +23,9 @@ import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.models.CosmosPatchOperations;
+import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.util.CosmosPagedFlux;
-import com.azure.cosmos.util.CosmosPagedIterable;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.microsoft.data.encryption.cryptography.EncryptionKeyStoreProvider;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.testng.annotations.AfterClass;
@@ -34,6 +33,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Ignore;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Mono;
 
 import java.time.Instant;
 import java.util.*;
@@ -48,7 +48,7 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
     CosmosEncryptionAsyncContainer cosmosEncryptionAsyncContainer;
     CosmosEncryptionAsyncDatabase cosmosEncryptionAsyncDatabase;
 
-    @Factory(dataProvider = "clientBuilders")
+    @Factory(dataProvider = "clientBuildersWithSessionConsistency")
     public EncryptionAsyncApiCrudTest(CosmosClientBuilder clientBuilder) {
         super(clientBuilder);
     }
@@ -79,7 +79,7 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
         this.client.close();
     }
 
-    @Test(groups = {"encryption"}, priority = 1, timeOut = TIMEOUT)// Doing max of a string in the query_aggregate so has to set the priority for this one as 1.
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT)
     public void createItemEncrypt_readItemDecrypt() {
         EncryptionPojo properties = getItem(UUID.randomUUID().toString());
         CosmosItemResponse<EncryptionPojo> itemResponse = cosmosEncryptionAsyncContainer.createItem(properties,
@@ -104,6 +104,9 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
         assertThat(itemResponse.getRequestCharge()).isGreaterThan(0);
         responseItem = itemResponse.getItem();
         validateResponse(properties, responseItem);
+
+        // Deleting this item so query max of string in the query_aggregate test passes
+        cosmosEncryptionAsyncContainer.deleteItem(properties.getId(), new PartitionKey(properties.getMypk())).block();
     }
 
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)
@@ -498,6 +501,39 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
             assertThat(batchResponse.getResults().size()).isEqualTo(2);
             validateResponse(createPojo, batchResponse.getResults().get(0).getItem(EncryptionPojo.class));
             validateResponse(createPojo, batchResponse.getResults().get(1).getItem(EncryptionPojo.class));
+
+            //Deleting and creating container
+            encryptionAsyncContainerOriginal.getCosmosAsyncContainer().delete().block();
+            createEncryptionContainer(cosmosEncryptionAsyncDatabase, clientEncryptionPolicy, containerId);
+
+            itemId= UUID.randomUUID().toString();
+            createPojo = getItem(itemId);
+            CosmosItemResponse<EncryptionPojo> itemResponse = encryptionAsyncContainerOriginal.createItem(createPojo,
+                new PartitionKey(createPojo.getMypk()), new CosmosItemRequestOptions()).block();
+
+            int originalSensitiveInt = createPojo.getSensitiveInt();
+            int newSensitiveInt = originalSensitiveInt + 1;
+
+            CosmosPatchOperations cosmosPatchOperations = CosmosPatchOperations.create();
+            cosmosPatchOperations.add("/sensitiveString", "patched");
+            cosmosPatchOperations.remove("/sensitiveDouble");
+            cosmosPatchOperations.replace("/sensitiveInt", newSensitiveInt);
+
+            CosmosItemResponse<EncryptionPojo> patchResponse = encryptionAsyncContainerOriginal.patchItem(
+                createPojo.getId(),
+                new PartitionKey(createPojo.getMypk()),
+                cosmosPatchOperations,
+                new CosmosPatchItemRequestOptions(),
+                EncryptionPojo.class).block();
+
+            CosmosItemResponse<EncryptionPojo> readResponse = encryptionAsyncContainerOriginal.readItem(
+                createPojo.getId(),
+                new PartitionKey(createPojo.getMypk()),
+                new CosmosPatchItemRequestOptions(),
+                EncryptionPojo.class).block();
+
+            validateResponse(patchResponse.getItem(), readResponse.getItem());
+
         } finally {
             try {
                 //deleting the database created for this test
@@ -521,6 +557,56 @@ public class EncryptionAsyncApiCrudTest extends TestSuiteBase {
         } catch (IllegalArgumentException ex) {
             assertThat(ex.getMessage()).isEqualTo("Invalid Encryption Algorithm 'InvalidAlgorithm'");
         }
+    }
+
+    @Test(groups = {"encryption"}, timeOut = TIMEOUT)
+    public void patchItem() {
+        String itemId = UUID.randomUUID().toString();
+        EncryptionPojo createPojo = getItem(itemId);
+        CosmosItemResponse<EncryptionPojo> itemResponse = cosmosEncryptionAsyncContainer.createItem(createPojo,
+            new PartitionKey(createPojo.getMypk()), new CosmosItemRequestOptions()).block();
+
+        int originalSensitiveInt = createPojo.getSensitiveInt();
+        int newSensitiveInt = originalSensitiveInt + 1;
+
+        String itemIdToReplace = UUID.randomUUID().toString();
+        EncryptionPojo nestedEncryptionPojoToReplace = getItem(itemIdToReplace);
+        nestedEncryptionPojoToReplace.setSensitiveString("testing");
+
+        CosmosPatchOperations cosmosPatchOperations = CosmosPatchOperations.create();
+        cosmosPatchOperations.add("/sensitiveString", "patched");
+        cosmosPatchOperations.remove("/sensitiveDouble");
+        cosmosPatchOperations.replace("/sensitiveInt", newSensitiveInt);
+        cosmosPatchOperations.replace("/sensitiveNestedPojo", nestedEncryptionPojoToReplace);
+        cosmosPatchOperations.set("/sensitiveBoolean", false);
+
+        CosmosPatchItemRequestOptions options = new CosmosPatchItemRequestOptions();
+        CosmosItemResponse<EncryptionPojo> response = this.cosmosEncryptionAsyncContainer.patchItem(
+            createPojo.getId(),
+            new PartitionKey(createPojo.getMypk()),
+            cosmosPatchOperations,
+            options,
+            EncryptionPojo.class).block();
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+
+        EncryptionPojo patchedItem = response.getItem();
+        assertThat(patchedItem).isNotNull();
+
+        assertThat(patchedItem.getSensitiveString()).isEqualTo("patched");
+        assertThat(patchedItem.getSensitiveDouble()).isNull();
+        assertThat(patchedItem.getSensitiveNestedPojo()).isNotNull();
+        assertThat(patchedItem.getSensitiveInt()).isEqualTo(newSensitiveInt);
+        assertThat(patchedItem.isSensitiveBoolean()).isEqualTo(false);
+
+        response = this.cosmosEncryptionAsyncContainer.readItem(
+            createPojo.getId(),
+            new PartitionKey(createPojo.getMypk()),
+            options,
+            EncryptionPojo.class).block();
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpResponseStatus.OK.code());
+        validateResponse(patchedItem, response.getItem());
     }
 
     @Test(groups = {"encryption"}, timeOut = TIMEOUT)

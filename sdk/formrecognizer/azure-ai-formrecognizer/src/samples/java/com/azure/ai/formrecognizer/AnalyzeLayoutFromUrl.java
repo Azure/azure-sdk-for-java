@@ -43,19 +43,19 @@ public class AnalyzeLayoutFromUrl {
 
             // lines
             documentPage.getLines().forEach(documentLine ->
-                System.out.printf("Line %s is within a bounding box %s.%n",
+                System.out.printf("Line '%s' is within a bounding box %s.%n",
                     documentLine.getContent(),
                     documentLine.getBoundingBox().toString()));
 
             // words
             documentPage.getWords().forEach(documentWord ->
-                System.out.printf("Word %s has a confidence score of %.2f%n.",
+                System.out.printf("Word '%s' has a confidence score of %.2f.%n",
                     documentWord.getContent(),
                     documentWord.getConfidence()));
 
             // selection marks
             documentPage.getSelectionMarks().forEach(documentSelectionMark ->
-                System.out.printf("Selection mark is %s and is within a bounding box %s with confidence %.2f.%n",
+                System.out.printf("Selection mark is '%s' and is within a bounding box %s with confidence %.2f.%n",
                     documentSelectionMark.getState().toString(),
                     documentSelectionMark.getBoundingBox().toString(),
                     documentSelectionMark.getConfidence()));
@@ -76,6 +76,6 @@ public class AnalyzeLayoutFromUrl {
 
         // styles
         analyzeLayoutResult.getStyles().forEach(documentStyle
-            -> System.out.printf("Document is handwritten %s%n.", documentStyle.isHandwritten()));
+            -> System.out.printf("Document is handwritten %s.%n", documentStyle.isHandwritten()));
     }
 }

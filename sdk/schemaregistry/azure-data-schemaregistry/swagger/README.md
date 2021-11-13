@@ -16,7 +16,7 @@ autorest --java --use:@autorest/java@4.0.x
 
 ### Code generation settings
 ``` yaml
-input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/2f33c13f9d5964781f4b8954bf3909b5039fe129/specification/schemaregistry/data-plane/Microsoft.EventHub/stable/2021-10/schemaregistry.json
+input-file: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/77ace2a6387b5a210f6b822262bc68cffa55499d/specification/schemaregistry/data-plane/Microsoft.EventHub/stable/2021-10/schemaregistry.json
 java: true
 output-folder: ../
 namespace: com.azure.data.schemaregistry

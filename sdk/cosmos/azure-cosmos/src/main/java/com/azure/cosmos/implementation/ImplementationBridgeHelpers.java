@@ -62,7 +62,7 @@ public class ImplementationBridgeHelpers {
             accessor = newAccessor;
         }
 
-        static CosmosClientBuilderAccessor getCosmosClientBuilderAccessor() {
+        public static CosmosClientBuilderAccessor getCosmosClientBuilderAccessor() {
             if (accessor == null) {
                 throw new IllegalStateException("CosmosClientBuilder accessor is not initialized yet!");
             }
@@ -73,8 +73,12 @@ public class ImplementationBridgeHelpers {
         public interface CosmosClientBuilderAccessor {
             void setCosmosClientMetadataCachesSnapshot(CosmosClientBuilder builder,
                                                        CosmosClientMetadataCachesSnapshot metadataCache);
+
             CosmosClientMetadataCachesSnapshot getCosmosClientMetadataCachesSnapshot(CosmosClientBuilder builder);
 
+            void setCosmosClientApiType(CosmosClientBuilder builder, ApiType apiType);
+
+            ApiType getCosmosClientApiType(CosmosClientBuilder builder);
         }
     }
 
