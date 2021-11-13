@@ -157,7 +157,7 @@ public class ServiceBusBinderHealthIndicatorTest {
     protected ExtendedConsumerProperties<ServiceBusConsumerProperties> createConsumerProperties() {
 
         ServiceBusConsumerProperties serviceBusConsumerProperties = new ServiceBusConsumerProperties();
-        serviceBusConsumerProperties.getProcessor().setSessionAware(true);
+        serviceBusConsumerProperties.setSessionAware(true);
 
         ExtendedConsumerProperties<ServiceBusConsumerProperties> properties = new ExtendedConsumerProperties<>(
             serviceBusConsumerProperties);
@@ -166,9 +166,9 @@ public class ServiceBusBinderHealthIndicatorTest {
     }
 
     private void prepareProducerProperties() {
-        serviceBusProducerProperties.getProducer().setName(ENTITY_NAME);
-        serviceBusProducerProperties.getProducer().setType(ServiceBusEntityType.TOPIC);
-        serviceBusProducerProperties.getProducer().setNamespace(NAMESPACE_NAME);
+        serviceBusProducerProperties.setName(ENTITY_NAME);
+        serviceBusProducerProperties.setType(ServiceBusEntityType.TOPIC);
+        serviceBusProducerProperties.setNamespace(NAMESPACE_NAME);
         serviceBusProducerProperties.setSync(false);
         ServiceBusBindingProperties bindingProperties = new ServiceBusBindingProperties();
         bindingProperties.setProducer(serviceBusProducerProperties);
@@ -183,9 +183,9 @@ public class ServiceBusBinderHealthIndicatorTest {
     }
 
     private void prepareConsumerProperties() {
-        serviceBusConsumerProperties.getProcessor().setName(ENTITY_NAME);
-        serviceBusConsumerProperties.getProcessor().setType(ServiceBusEntityType.QUEUE);
-        serviceBusConsumerProperties.getProcessor().setNamespace(NAMESPACE_NAME);
+        serviceBusConsumerProperties.setName(ENTITY_NAME);
+        serviceBusConsumerProperties.setType(ServiceBusEntityType.QUEUE);
+        serviceBusConsumerProperties.setNamespace(NAMESPACE_NAME);
         serviceBusConsumerProperties.setCheckpointMode(CheckpointMode.RECORD);
         ServiceBusBindingProperties bindingProperties = new ServiceBusBindingProperties();
         bindingProperties.setConsumer(serviceBusConsumerProperties);

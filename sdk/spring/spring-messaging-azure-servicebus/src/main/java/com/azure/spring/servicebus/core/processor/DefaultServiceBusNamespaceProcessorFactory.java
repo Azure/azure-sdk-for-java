@@ -4,13 +4,13 @@
 package com.azure.spring.servicebus.core.processor;
 
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
+import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.service.servicebus.factory.ServiceBusProcessorClientBuilderFactory;
 import com.azure.spring.service.servicebus.factory.ServiceBusSessionProcessorClientBuilderFactory;
 import com.azure.spring.service.servicebus.processor.MessageProcessingListener;
 import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.servicebus.core.properties.ProcessorProperties;
-import com.azure.spring.servicebus.core.properties.SubscriptionPropertiesSupplier;
 import com.azure.spring.servicebus.core.properties.merger.ProcessorPropertiesParentMerger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,26 +37,21 @@ public class DefaultServiceBusNamespaceProcessorFactory implements ServiceBusPro
     private final Map<Tuple2<String, String>, ServiceBusProcessorClient> processorMap = new ConcurrentHashMap<>();
     private final List<Listener> listeners = new ArrayList<>();
     private final NamespaceProperties namespaceProperties;
-    private final SubscriptionPropertiesSupplier<ProcessorProperties> propertiesSupplier;
+    private final PropertiesSupplier<Tuple2<String, String>, ProcessorProperties> propertiesSupplier;
     private final ProcessorPropertiesParentMerger propertiesMerger = new ProcessorPropertiesParentMerger();
-    private static final String INVALID_SUBSCRIPTION =
+    public static final String INVALID_SUBSCRIPTION =
         DefaultServiceBusNamespaceProcessorFactory.class.getSimpleName() + "INVALID_SUBSCRIPTION";
 
     // TODO (xiada) the application id should be different for spring integration
     public DefaultServiceBusNamespaceProcessorFactory(NamespaceProperties namespaceProperties) {
-        this(namespaceProperties, new SubscriptionPropertiesSupplier<ProcessorProperties>() {
-        });
-    }
-
-    public DefaultServiceBusNamespaceProcessorFactory(SubscriptionPropertiesSupplier<ProcessorProperties> supplier) {
-        this(null, supplier);
+        this(namespaceProperties, key -> null);
     }
 
     public DefaultServiceBusNamespaceProcessorFactory(NamespaceProperties namespaceProperties,
-                                                      SubscriptionPropertiesSupplier<ProcessorProperties> supplier) {
+                                                      PropertiesSupplier<Tuple2<String, String>,
+                                                          ProcessorProperties> supplier) {
         this.namespaceProperties = namespaceProperties;
-        this.propertiesSupplier = supplier == null
-            ? new SubscriptionPropertiesSupplier<ProcessorProperties>() { } : supplier;
+        this.propertiesSupplier = supplier == null ? key -> null : supplier;
     }
 
     private <K, V> void close(Map<K, V> map, Consumer<V> close) {
@@ -77,7 +72,7 @@ public class DefaultServiceBusNamespaceProcessorFactory implements ServiceBusPro
     @Override
     public ServiceBusProcessorClient createProcessor(String queue, MessageProcessingListener messageProcessorListener) {
         return doCreateProcessor(queue, INVALID_SUBSCRIPTION, messageProcessorListener,
-            this.propertiesSupplier.getQueueSubscription(queue));
+            this.propertiesSupplier.getProperties(Tuples.of(queue, INVALID_SUBSCRIPTION)));
     }
 
     @Override
@@ -85,7 +80,7 @@ public class DefaultServiceBusNamespaceProcessorFactory implements ServiceBusPro
                                                      String subscription,
                                                      MessageProcessingListener messageProcessorListener) {
         return doCreateProcessor(topic, subscription, messageProcessorListener,
-            this.propertiesSupplier.getTopicSubscription(topic, subscription));
+            this.propertiesSupplier.getProperties(Tuples.of(topic, subscription)));
     }
 
     private ServiceBusProcessorClient doCreateProcessor(String name, String subscription,

@@ -8,10 +8,9 @@ import com.azure.spring.servicebus.core.properties.ProducerProperties;
 /**
  * @author Warren Zhu
  */
-public class ServiceBusProducerProperties {
+public class ServiceBusProducerProperties extends ProducerProperties{
     private boolean sync = false;
     private long sendTimeout = 10000;
-    private final ProducerProperties producer = new ProducerProperties();
 
     public boolean isSync() {
         return sync;
@@ -29,7 +28,4 @@ public class ServiceBusProducerProperties {
         this.sendTimeout = sendTimeout;
     }
 
-    public ProducerProperties getProducer() {
-        return producer;
-    }
 }

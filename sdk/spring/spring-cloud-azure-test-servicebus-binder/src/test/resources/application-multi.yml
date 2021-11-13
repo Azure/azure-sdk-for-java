@@ -38,22 +38,7 @@ spring:
         bindings:
           topicSupply-out-0:
             producer:
-              producer:
-                name: topic1
-                type: topic
+              type: topic
           queueSupply-out-0:
             producer:
-              producer:
-                name: queue1
-                type: queue
-          topicConsume-in-0:
-            consumer:
-              processor:
-                name: topic1
-                type: topic
-                subscription-name: topicSub
-          queueConsume-in-0:
-            consumer:
-              processor:
-                name: queue1
-                type: queue
+              type: queue

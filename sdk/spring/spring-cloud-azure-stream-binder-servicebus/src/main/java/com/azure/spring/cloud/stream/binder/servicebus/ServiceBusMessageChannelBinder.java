@@ -4,16 +4,16 @@
 package com.azure.spring.cloud.stream.binder.servicebus;
 
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
-import com.azure.spring.integration.instrumentation.DefaultInstrumentation;
-import com.azure.spring.integration.instrumentation.DefaultInstrumentationManager;
-import com.azure.spring.integration.instrumentation.Instrumentation;
-import com.azure.spring.integration.instrumentation.InstrumentationManager;
 import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusBindingProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusConsumerProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusExtendedBindingProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusProducerProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.provisioning.ServiceBusChannelProvisioner;
 import com.azure.spring.integration.handler.DefaultMessageHandler;
+import com.azure.spring.integration.instrumentation.DefaultInstrumentation;
+import com.azure.spring.integration.instrumentation.DefaultInstrumentationManager;
+import com.azure.spring.integration.instrumentation.Instrumentation;
+import com.azure.spring.integration.instrumentation.InstrumentationManager;
 import com.azure.spring.integration.servicebus.inbound.ServiceBusInboundChannelAdapter;
 import com.azure.spring.integration.servicebus.inbound.health.ServiceBusProcessorInstrumentation;
 import com.azure.spring.messaging.PropertiesSupplier;
@@ -29,6 +29,8 @@ import com.azure.spring.servicebus.core.properties.ProducerProperties;
 import com.azure.spring.servicebus.core.properties.SubscriptionPropertiesSupplier;
 import com.azure.spring.servicebus.support.ServiceBusMessageHeaders;
 import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.cloud.stream.binder.AbstractMessageChannelBinder;
 import org.springframework.cloud.stream.binder.BinderHeaders;
 import org.springframework.cloud.stream.binder.BinderSpecificPropertiesProvider;
@@ -48,12 +50,17 @@ import org.springframework.messaging.support.ErrorMessage;
 import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.util.concurrent.ListenableFutureCallback;
+import reactor.util.function.Tuple2;
+import reactor.util.function.Tuples;
 
+import java.awt.*;
 import java.time.Duration;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import static com.azure.spring.integration.instrumentation.Instrumentation.Type.CONSUMER;
 import static com.azure.spring.integration.instrumentation.Instrumentation.Type.PRODUCER;
+import static com.azure.spring.servicebus.core.processor.DefaultServiceBusNamespaceProcessorFactory.INVALID_SUBSCRIPTION;
 
 /**
  *
@@ -71,10 +78,14 @@ public class ServiceBusMessageChannelBinder extends
     private ServiceBusProcessorContainer processorContainer;
     private ServiceBusMessageConverter messageConverter = new ServiceBusMessageConverter();
     private final InstrumentationManager instrumentationManager = new DefaultInstrumentationManager();
+    private final Map<String, ExtendedProducerProperties<ServiceBusProducerProperties>>
+        extendedProducerPropertiesMap = new ConcurrentHashMap<>();
+    private final Map<Tuple2<String, String>, ExtendedConsumerProperties<ServiceBusConsumerProperties>>
+        extendedConsumerPropertiesMap = new ConcurrentHashMap<>();
     private static final DefaultErrorMessageStrategy DEFAULT_ERROR_MESSAGE_STRATEGY = new DefaultErrorMessageStrategy();
 
     private static final String EXCEPTION_MESSAGE = "exception-message";
-
+    private static final Logger LOGGER = LoggerFactory.getLogger(ServiceBusMessageChannelBinder.class);
     public ServiceBusMessageChannelBinder(String[] headersToEmbed, ServiceBusChannelProvisioner provisioningProvider) {
         super(headersToEmbed, provisioningProvider);
     }
@@ -84,10 +95,10 @@ public class ServiceBusMessageChannelBinder extends
         ProducerDestination destination,
         ExtendedProducerProperties<ServiceBusProducerProperties> producerProperties,
         MessageChannel errorChannel) {
-        ServiceBusEntityType type = producerProperties.getExtension().getProducer().getType();
-        Assert.notNull(type, "Type cannot be null.");
+        Assert.notNull(getServiceBusTemplate(), "ServiceBusTemplate can't be null when create a producer");
 
-        DefaultMessageHandler handler = new DefaultMessageHandler(destination.getName(), getServiceBusTemplate());
+        extendedProducerPropertiesMap.put(destination.getName(), producerProperties);
+        DefaultMessageHandler handler = new DefaultMessageHandler(destination.getName(), this.serviceBusTemplate);
         handler.setBeanFactory(getBeanFactory());
         handler.setSync(producerProperties.getExtension().isSync());
         handler.setSendTimeout(producerProperties.getExtension().getSendTimeout());
@@ -109,8 +120,12 @@ public class ServiceBusMessageChannelBinder extends
     @Override
     protected MessageProducer createConsumerEndpoint(ConsumerDestination destination, String group,
                                                      ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) {
+        if (group == null) {
+            group = INVALID_SUBSCRIPTION;
+        }
+        extendedConsumerPropertiesMap.put(Tuples.of(destination.getName(), group), properties);
         final ServiceBusInboundChannelAdapter inboundAdapter;
-        if (StringUtils.hasText(group)) {
+        if (!INVALID_SUBSCRIPTION.equals(group)) {
             inboundAdapter =
                 new ServiceBusInboundChannelAdapter(getProcessorContainer(), destination.getName(), group,
                     buildCheckpointConfig(properties));
@@ -120,10 +135,10 @@ public class ServiceBusMessageChannelBinder extends
                     buildCheckpointConfig(properties));
         }
         inboundAdapter.setBeanFactory(getBeanFactory());
-        String instrumentationId = Instrumentation.buildId(CONSUMER, destination.getName() + "/" + group != null ? group : "");
+        String instrumentationId = Instrumentation.buildId(CONSUMER, destination.getName() + "/" + (!INVALID_SUBSCRIPTION.equals(group) ? group : ""));
         inboundAdapter.setInstrumentationManager(instrumentationManager);
         inboundAdapter.setInstrumentationId(instrumentationId);
-        ErrorInfrastructure errorInfrastructure = registerErrorInfrastructure(destination, group, properties);
+        ErrorInfrastructure errorInfrastructure = registerErrorInfrastructure(destination, !INVALID_SUBSCRIPTION.equals(group) ? group : "", properties);
         inboundAdapter.setErrorChannel(errorInfrastructure.getErrorChannel());
         inboundAdapter.setMessageConverter(messageConverter);
         return inboundAdapter;
@@ -247,49 +262,28 @@ public class ServiceBusMessageChannelBinder extends
 
     private PropertiesSupplier<String, ProducerProperties> getProducerPropertiesSupplier() {
         return key -> {
-            Map<String, ServiceBusBindingProperties> bindings = bindingProperties.getBindings();
-            for (Map.Entry<String, ServiceBusBindingProperties> entry : bindings.entrySet()) {
-                ProducerProperties properties = bindings.get(entry.getKey()).getProducer().getProducer();
-                if (properties.getName() == null) {
-                    continue;
-                }
-                if (key.equalsIgnoreCase(properties.getName())) {
-                    return properties;
-                }
+            if (this.extendedProducerPropertiesMap.containsKey(key)) {
+                ServiceBusProducerProperties producerProperties = this.extendedProducerPropertiesMap.get(key)
+                    .getExtension();
+                producerProperties.setName(key);
+                return producerProperties;
+            } else {
+                LOGGER.debug("Can't find extended properties for {}", key);
+                return null;
             }
-            return null;
         };
     }
 
-    private SubscriptionPropertiesSupplier<ProcessorProperties> getProcessorPropertiesSupplier() {
-        return new SubscriptionPropertiesSupplier<ProcessorProperties>() {
-            @Override
-            public ProcessorProperties getQueueSubscription(String name) {
-                Map<String, ServiceBusBindingProperties> bindings = bindingProperties.getBindings();
-                for (Map.Entry<String, ServiceBusBindingProperties> entry : bindings.entrySet()) {
-                    ProcessorProperties properties = bindings.get(entry.getKey()).getConsumer().getProcessor();
-                    if (properties.getName() == null) {
-                        continue;
-                    }
-                    if (name.equals(properties.getName())) {
-                        return properties;
-                    }
-                }
-                return null;
-            }
-
-            @Override
-            public ProcessorProperties getTopicSubscription(String name, String subscription) {
-                Map<String, ServiceBusBindingProperties> bindings = bindingProperties.getBindings();
-                for (Map.Entry<String, ServiceBusBindingProperties> entry : bindings.entrySet()) {
-                    ProcessorProperties properties = bindings.get(entry.getKey()).getConsumer().getProcessor();
-                    if (properties.getName() == null || properties.getSubscriptionName() == null) {
-                        continue;
-                    }
-                    if (name.equals(properties.getName()) && subscription.equals(properties.getSubscriptionName())) {
-                        return properties;
-                    }
-                }
+    private PropertiesSupplier<Tuple2<String, String>, ProcessorProperties> getProcessorPropertiesSupplier() {
+        return key -> {
+            if (this.extendedConsumerPropertiesMap.containsKey(key)) {
+                ServiceBusConsumerProperties consumerProperties = this.extendedConsumerPropertiesMap.get(key)
+                    .getExtension();
+                consumerProperties.setName(key.getT1());
+                consumerProperties.setSubscriptionName(key.getT2());
+                return consumerProperties;
+            } else {
+                LOGGER.debug("Can't find extended properties for destination {}, group {}", key.getT1(), key.getT2());
                 return null;
             }
         };

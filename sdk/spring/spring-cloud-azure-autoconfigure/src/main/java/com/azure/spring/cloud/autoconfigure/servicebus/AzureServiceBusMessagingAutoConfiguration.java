@@ -15,7 +15,6 @@ import com.azure.spring.servicebus.core.producer.ServiceBusProducerFactory;
 import com.azure.spring.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.servicebus.core.properties.ProcessorProperties;
 import com.azure.spring.servicebus.core.properties.ProducerProperties;
-import com.azure.spring.servicebus.core.properties.SubscriptionPropertiesSupplier;
 import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.ObjectProvider;
@@ -27,6 +26,9 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
+import reactor.util.function.Tuple2;
+
+import static com.azure.spring.core.properties.AzurePropertiesUtils.copyAzureCommonProperties;
 
 /**
  * An auto-configuration for Service Bus Queue.
@@ -48,6 +50,7 @@ public class AzureServiceBusMessagingAutoConfiguration {
     public NamespaceProperties serviceBusNamespaceTopicProperties(AzureServiceBusProperties properties) {
         NamespaceProperties namespaceProperties = new NamespaceProperties();
         BeanUtils.copyProperties(properties, namespaceProperties);
+        copyAzureCommonProperties(properties, namespaceProperties);
         return namespaceProperties;
     }
 
@@ -60,7 +63,7 @@ public class AzureServiceBusMessagingAutoConfiguration {
         @Bean
         @ConditionalOnMissingBean
         public ServiceBusProcessorFactory defaultServiceBusNamespaceProcessorFactory(NamespaceProperties properties,
-                                                                                     ObjectProvider<SubscriptionPropertiesSupplier<ProcessorProperties>> suppliers) {
+                                                                                     ObjectProvider<PropertiesSupplier<Tuple2<String, String>, ProcessorProperties>> suppliers) {
             return new DefaultServiceBusNamespaceProcessorFactory(properties, suppliers.getIfAvailable());
         }
 
