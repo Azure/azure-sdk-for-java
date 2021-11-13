@@ -92,8 +92,8 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
     }
 
     @Override
-    protected void configureApplicationId(T builder) {
-        this.httpClientOptions.setApplicationId(getApplicationId());
+    protected BiConsumer<T, String> consumeApplicationId() {
+        return (builder, id) -> this.httpClientOptions.setApplicationId(id);
     }
 
     protected void configureHttpHeaders(T builder) {
@@ -117,6 +117,9 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
             httpClientOptions.setWriteTimeout(properties.getWriteTimeout());
             httpClientOptions.responseTimeout(properties.getResponseTimeout());
             httpClientOptions.readTimeout(properties.getReadTimeout());
+            httpClientOptions.setConnectTimeout(properties.getConnectTimeout());
+            httpClientOptions.setConnectionIdleTimeout(properties.getConnectionIdleTimeout());
+            httpClientOptions.setMaximumConnectionPoolSize(properties.getMaximumConnectionPoolSize());
         }
     }
 

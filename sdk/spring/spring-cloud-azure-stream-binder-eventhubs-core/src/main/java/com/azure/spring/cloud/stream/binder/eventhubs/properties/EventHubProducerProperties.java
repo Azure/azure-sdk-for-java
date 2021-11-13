@@ -8,7 +8,7 @@ import com.azure.spring.eventhubs.core.properties.ProducerProperties;
 /**
  * @author Warren Zhu
  */
-public class EventHubProducerProperties {
+public class EventHubProducerProperties extends ProducerProperties {
     /**
      * Whether the producer should act in a synchronous manner with respect to sending messages into destination.
      * If true, the producer will wait for a response from Event Hub after a send operation before sending next message.
@@ -26,9 +26,6 @@ public class EventHubProducerProperties {
      */
     private long sendTimeout = 10000;
 
-    private final ProducerProperties producer = new ProducerProperties();
-
-
     public boolean isSync() {
         return sync;
     }
@@ -45,7 +42,4 @@ public class EventHubProducerProperties {
         this.sendTimeout = sendTimeout;
     }
 
-    public ProducerProperties getProducer() {
-        return producer;
-    }
 }

@@ -27,7 +27,7 @@ public interface ProxyAware {
 
         String getHostname();
 
-        int getPort();
+        Integer getPort();
 
         String getAuthenticationType();
 

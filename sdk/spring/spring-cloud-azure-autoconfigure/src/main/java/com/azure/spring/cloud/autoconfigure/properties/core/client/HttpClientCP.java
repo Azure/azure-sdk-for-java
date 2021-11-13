@@ -15,6 +15,9 @@ public class HttpClientCP extends ClientCP implements ClientAware.HttpClient {
     private Duration writeTimeout;
     private Duration responseTimeout;
     private Duration readTimeout;
+    private Duration connectTimeout;
+    private Integer maximumConnectionPoolSize;
+    private Duration connectionIdleTimeout;
 
     @Override
     public Duration getWriteTimeout() {
@@ -41,5 +44,29 @@ public class HttpClientCP extends ClientCP implements ClientAware.HttpClient {
 
     public void setReadTimeout(Duration readTimeout) {
         this.readTimeout = readTimeout;
+    }
+
+    public Duration getConnectTimeout() {
+        return connectTimeout;
+    }
+
+    public void setConnectTimeout(Duration connectTimeout) {
+        this.connectTimeout = connectTimeout;
+    }
+
+    public Integer getMaximumConnectionPoolSize() {
+        return maximumConnectionPoolSize;
+    }
+
+    public void setMaximumConnectionPoolSize(Integer maximumConnectionPoolSize) {
+        this.maximumConnectionPoolSize = maximumConnectionPoolSize;
+    }
+
+    public Duration getConnectionIdleTimeout() {
+        return connectionIdleTimeout;
+    }
+
+    public void setConnectionIdleTimeout(Duration connectionIdleTimeout) {
+        this.connectionIdleTimeout = connectionIdleTimeout;
     }
 }

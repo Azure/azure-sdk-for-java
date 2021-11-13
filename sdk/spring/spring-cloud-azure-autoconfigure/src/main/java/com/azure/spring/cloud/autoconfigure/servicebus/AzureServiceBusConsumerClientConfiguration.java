@@ -9,7 +9,7 @@ import com.azure.messaging.servicebus.ServiceBusReceiverClient;
 import com.azure.messaging.servicebus.ServiceBusSessionReceiverAsyncClient;
 import com.azure.messaging.servicebus.ServiceBusSessionReceiverClient;
 import com.azure.spring.cloud.autoconfigure.servicebus.properties.AzureServiceBusProperties;
-import com.azure.spring.core.ApplicationId;
+import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.service.servicebus.factory.ServiceBusReceiverClientBuilderFactory;
 import com.azure.spring.service.servicebus.factory.ServiceBusSessionReceiverClientBuilderFactory;
 import org.springframework.beans.factory.ObjectProvider;
@@ -50,7 +50,7 @@ class AzureServiceBusConsumerClientConfiguration {
                 builderFactory = new ServiceBusReceiverClientBuilderFactory(
                     serviceBusClientBuilders.getIfAvailable(), serviceBusProperties.buildConsumerProperties());
             }
-            builderFactory.setSpringIdentifier(ApplicationId.AZURE_SPRING_SERVICE_BUS);
+            builderFactory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS);
             return builderFactory;
         }
 
@@ -95,7 +95,7 @@ class AzureServiceBusConsumerClientConfiguration {
                     serviceBusClientBuilders.getIfAvailable(), serviceBusProperties.buildConsumerProperties());
             }
 
-            builderFactory.setSpringIdentifier(ApplicationId.AZURE_SPRING_SERVICE_BUS);
+            builderFactory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS);
             return builderFactory;
         }
 
