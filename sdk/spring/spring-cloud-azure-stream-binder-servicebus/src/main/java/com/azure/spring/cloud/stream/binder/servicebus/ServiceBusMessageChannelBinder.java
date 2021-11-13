@@ -4,7 +4,6 @@
 package com.azure.spring.cloud.stream.binder.servicebus;
 
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
-import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusBindingProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusConsumerProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusExtendedBindingProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusProducerProperties;
@@ -18,7 +17,6 @@ import com.azure.spring.integration.servicebus.inbound.ServiceBusInboundChannelA
 import com.azure.spring.integration.servicebus.inbound.health.ServiceBusProcessorInstrumentation;
 import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.messaging.checkpoint.CheckpointConfig;
-import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.servicebus.core.ServiceBusProcessorContainer;
 import com.azure.spring.servicebus.core.ServiceBusTemplate;
 import com.azure.spring.servicebus.core.processor.DefaultServiceBusNamespaceProcessorFactory;
@@ -26,7 +24,6 @@ import com.azure.spring.servicebus.core.producer.DefaultServiceBusNamespaceProdu
 import com.azure.spring.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.servicebus.core.properties.ProcessorProperties;
 import com.azure.spring.servicebus.core.properties.ProducerProperties;
-import com.azure.spring.servicebus.core.properties.SubscriptionPropertiesSupplier;
 import com.azure.spring.servicebus.support.ServiceBusMessageHeaders;
 import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
 import org.slf4j.Logger;
@@ -48,12 +45,10 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
 import org.springframework.messaging.support.ErrorMessage;
 import org.springframework.util.Assert;
-import org.springframework.util.StringUtils;
 import org.springframework.util.concurrent.ListenableFutureCallback;
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
-import java.awt.*;
 import java.time.Duration;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -67,8 +62,8 @@ import static com.azure.spring.servicebus.core.processor.DefaultServiceBusNamesp
  */
 public class ServiceBusMessageChannelBinder extends
     AbstractMessageChannelBinder<ExtendedConsumerProperties<ServiceBusConsumerProperties>,
-        ExtendedProducerProperties<ServiceBusProducerProperties>,
-        ServiceBusChannelProvisioner>
+            ExtendedProducerProperties<ServiceBusProducerProperties>,
+            ServiceBusChannelProvisioner>
     implements
     ExtendedPropertiesBinder<MessageChannel, ServiceBusConsumerProperties, ServiceBusProducerProperties> {
 

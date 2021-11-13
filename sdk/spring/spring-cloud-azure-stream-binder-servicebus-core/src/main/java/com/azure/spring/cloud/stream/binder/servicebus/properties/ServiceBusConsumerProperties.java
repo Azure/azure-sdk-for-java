@@ -10,7 +10,7 @@ import com.azure.spring.servicebus.core.properties.ProcessorProperties;
  * @author Warren Zhu
  * @author Eduardo Sciullo
  */
-public class ServiceBusConsumerProperties extends ProcessorProperties{
+public class ServiceBusConsumerProperties extends ProcessorProperties {
 
     private boolean requeueRejected = false;
 

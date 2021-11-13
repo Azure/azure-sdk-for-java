@@ -120,7 +120,7 @@ public class ServiceBusBinderHealthIndicatorTest {
     public void testServiceBusProcessorHealthIndicatorIsUp() {
         prepareConsumerProperties();
         when(consumerDestination.getName()).thenReturn(ENTITY_NAME);
-        binder.createConsumerEndpoint(consumerDestination, null, createConsumerProperties());
+        binder.createConsumerEndpoint(consumerDestination, null, consumerProperties);
         ServiceBusProcessorContainer processorContainer =
             (ServiceBusProcessorContainer) ReflectionTestUtils.getField(binder,
             "processorContainer");
@@ -153,17 +153,6 @@ public class ServiceBusBinderHealthIndicatorTest {
 //        final Health health = serviceBusHealthIndicator.health();
 //        assertThat(health.getStatus()).isEqualTo(Status.UP);
 //    }
-
-    protected ExtendedConsumerProperties<ServiceBusConsumerProperties> createConsumerProperties() {
-
-        ServiceBusConsumerProperties serviceBusConsumerProperties = new ServiceBusConsumerProperties();
-        serviceBusConsumerProperties.setSessionAware(true);
-
-        ExtendedConsumerProperties<ServiceBusConsumerProperties> properties = new ExtendedConsumerProperties<>(
-            serviceBusConsumerProperties);
-        properties.setHeaderMode(HeaderMode.embeddedHeaders);
-        return properties;
-    }
 
     private void prepareProducerProperties() {
         serviceBusProducerProperties.setName(ENTITY_NAME);
