@@ -22,7 +22,6 @@ import org.openjdk.jmh.runner.RunnerException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_LOG_LEVEL;

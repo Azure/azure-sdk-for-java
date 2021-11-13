@@ -33,6 +33,7 @@ import java.util.stream.Stream;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_LOG_LEVEL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertSame;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -363,7 +364,7 @@ public class ClientLoggerTests {
 
         String message = String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3");
 
-        logger.atWarning()
+        logger.atInfo()
             .addKeyValue("connectionId", "foo")
             .addKeyValue("linkName", "bar")
             .log(() -> message);
@@ -372,7 +373,7 @@ public class ClientLoggerTests {
             "Param 1: test1, Param 2: test2, Param 3: test3, az.sdk.context={\"connectionId\":\"foo\",\"linkName\":\"bar\"}",
             byteArraySteamToString(logCaptureStream),
             logLevelToConfigure,
-            LogLevel.WARNING);
+            LogLevel.INFORMATIONAL);
     }
 
     /**
@@ -380,12 +381,12 @@ public class ClientLoggerTests {
      */
     @Test
     public void logWithContextNullMessage() {
-        setupLogLevel(LogLevel.INFORMATIONAL.getLogLevel());
+        setupLogLevel(LogLevel.VERBOSE.getLogLevel());
         ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
 
         String message = null;
 
-        logger.atWarning()
+        logger.atVerbose()
             .addKeyValue("connectionId", "foo")
             .addKeyValue("linkName", true)
             .log(message);
@@ -393,8 +394,8 @@ public class ClientLoggerTests {
         assertMessage(
             "az.sdk.context={\"connectionId\":\"foo\",\"linkName\":true}",
             byteArraySteamToString(logCaptureStream),
-            LogLevel.INFORMATIONAL,
-            LogLevel.WARNING);
+            LogLevel.VERBOSE,
+            LogLevel.INFORMATIONAL);
     }
 
     /**
@@ -407,16 +408,16 @@ public class ClientLoggerTests {
 
         Supplier<String> message = null;
 
-        logger.atWarning()
+        logger.atError()
             .addKeyValue("connectionId", "foo")
-            .addKeyValue("linkName", (String)null)
+            .addKeyValue("linkName", (String) null)
             .log(message);
 
         assertMessage(
             "az.sdk.context={\"connectionId\":\"foo\",\"linkName\":null}",
             byteArraySteamToString(logCaptureStream),
             LogLevel.INFORMATIONAL,
-            LogLevel.WARNING);
+            LogLevel.ERROR);
     }
 
     /**
@@ -429,7 +430,7 @@ public class ClientLoggerTests {
 
         logger.atWarning()
             // this is technically invalid, but we should not throw because of logging in runtime
-            .addKeyValue("connectionId", (Supplier<String>)null)
+            .addKeyValue("connectionId", (Supplier<String>) null)
             .addKeyValue("linkName", String.format("complex value %s", 123))
             .log("test");
 
@@ -502,10 +503,10 @@ public class ClientLoggerTests {
         String exceptionMessage = "An exception message";
         RuntimeException runtimeException = createIllegalStateException(exceptionMessage);
 
-        logger.atWarning()
+        assertSame(runtimeException, logger.atWarning()
             .addKeyValue("connectionId", "foo")
             .addKeyValue("linkName", "bar")
-            .log(runtimeException);
+            .log(runtimeException));
 
         String message = exceptionMessage + ", az.sdk.context={\"connectionId\":\"foo\",\"linkName\":\"bar\"}";
 
@@ -650,9 +651,9 @@ public class ClientLoggerTests {
     private void assertMessage(String expectedMessage, String fullLog, LogLevel configuredLevel, LogLevel loggedLevel) {
         if (loggedLevel.compareTo(configuredLevel) >= 0) {
             // remove date/time/level/etc from fullMessage
-            assertEquals(expectedMessage + System.lineSeparator(), fullLog.substring(105));
+            assertEquals(expectedMessage + System.lineSeparator(), fullLog.substring(fullLog.indexOf(" - ") + 3));
         } else {
-            assertTrue(fullLog.isEmpty());
+            assertEquals("", fullLog);
         }
     }
 

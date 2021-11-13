@@ -147,7 +147,7 @@ public class ClientLogger {
      */
     public void verbose(String format, Object... args) {
         if (logger.isDebugEnabled()) {
-            performLogging(LogLevel.VERBOSE, format, args);
+            performLogging(LogLevel.VERBOSE, false, format, args);
         }
     }
 
@@ -191,7 +191,7 @@ public class ClientLogger {
      */
     public void info(String format, Object... args) {
         if (logger.isInfoEnabled()) {
-            performLogging(LogLevel.INFORMATIONAL, format, args);
+            performLogging(LogLevel.INFORMATIONAL, false, format, args);
         }
     }
 
@@ -237,7 +237,7 @@ public class ClientLogger {
      */
     public void warning(String format, Object... args) {
         if (logger.isWarnEnabled()) {
-            performLogging(LogLevel.WARNING,  format, args);
+            performLogging(LogLevel.WARNING, false, format, args);
         }
     }
 
@@ -289,7 +289,7 @@ public class ClientLogger {
      */
     public void error(String format, Object... args) {
         if (logger.isErrorEnabled()) {
-            performLogging(LogLevel.ERROR, format, args);
+            performLogging(LogLevel.ERROR, false, format, args);
         }
     }
 
@@ -328,7 +328,7 @@ public class ClientLogger {
             return throwable;
         }
 
-        performThrowableLogging(LogLevel.WARNING, throwable.getMessage(), throwable);
+        performLogging(LogLevel.WARNING, true, throwable.getMessage(), throwable);
         return throwable;
     }
 
@@ -346,7 +346,7 @@ public class ClientLogger {
     public <T extends Throwable> T logThrowableAsWarning(T throwable) {
         Objects.requireNonNull(throwable, "'throwable' cannot be null.");
         if (logger.isWarnEnabled()) {
-            performThrowableLogging(LogLevel.WARNING, throwable.getMessage(), throwable);
+            performLogging(LogLevel.WARNING, true, throwable.getMessage(), throwable);
         }
 
         return throwable;
@@ -385,32 +385,8 @@ public class ClientLogger {
             return throwable;
         }
 
-        performThrowableLogging(LogLevel.ERROR, throwable.getMessage(), throwable);
+        performLogging(LogLevel.ERROR, true, throwable.getMessage(), throwable);
         return throwable;
-    }
-
-    void performThrowableLogging(LogLevel logLevel, String message, Throwable throwable) {
-        message = sanitizeLogMessageInput(message);
-
-        switch (logLevel) {
-            case WARNING:
-                if (logger.isDebugEnabled()) {
-                    logger.warn(message, throwable);
-                } else {
-                    logger.warn(message);
-                }
-                break;
-            case ERROR:
-                if (logger.isDebugEnabled()) {
-                    logger.error(message, throwable);
-                } else {
-                    logger.error(message);
-                }
-                break;
-            default:
-                // Don't do anything, this state shouldn't be possible.
-                break;
-        }
     }
 
     /*
@@ -419,15 +395,18 @@ public class ClientLogger {
      * @param format format-able message.
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
-    void performLogging(LogLevel logLevel, String format, Object... args) {
+    void performLogging(LogLevel logLevel, boolean isExceptionLogging, String format, Object... args) {
         // If the logging level is less granular than verbose remove the potential throwable from the args.
         String throwableMessage = "";
         if (doesArgsHaveThrowable(args)) {
-            Object throwable = args[args.length - 1];
+            // If we are logging an exception the format string is already the exception message, don't append it.
+            if (!isExceptionLogging) {
+                Object throwable = args[args.length - 1];
 
-            // This is true from before but is needed to appease SpotBugs.
-            if (throwable instanceof Throwable) {
-                throwableMessage = ((Throwable) throwable).getMessage();
+                // This is true from before but is needed to appease SpotBugs.
+                if (throwable instanceof Throwable) {
+                    throwableMessage = ((Throwable) throwable).getMessage();
+                }
             }
 
             /*
@@ -509,7 +488,6 @@ public class ClientLogger {
      * @param args The arguments passed to evaluate suppliers in args.
      * @return Return the argument with evaluated supplier
      */
-
     Object[] evaluateSupplierArgument(Object[] args) {
         if (isSupplierLogging(args)) {
             args[0] = ((Supplier<?>) args[0]).get();
@@ -550,24 +528,44 @@ public class ClientLogger {
         }
     }
 
-    private LogEntryBuilder atLevel(LogLevel level) {
-        return LogEntryBuilder.create(this, level, canLogAtLevel(level));
+    /**
+     * Creates {@link LoggingEventBuilder} for {@code error} log level that can be
+     * used to enrich log with additional context.
+     *
+     * @return instance of {@link LoggingEventBuilder}  or no-op if verbose logging is disabled.
+     */
+    public LoggingEventBuilder atError() {
+        return LoggingEventBuilder.create(this, LogLevel.ERROR);
     }
 
-    public LogEntryBuilder atError() {
-        return atLevel(LogLevel.ERROR);
+    /**
+     * Creates {@link LoggingEventBuilder} for {@code warning} log level that can be
+     * used to enrich log with additional context.
+     *
+     * @return instance of {@link LoggingEventBuilder} or no-op if verbose logging is disabled.
+     */
+    public LoggingEventBuilder atWarning() {
+        return LoggingEventBuilder.create(this, LogLevel.WARNING);
     }
 
-    public LogEntryBuilder atWarning() {
-        return atLevel(LogLevel.WARNING);
+    /**
+     * Creates {@link LoggingEventBuilder} for {@code info} log level that can be
+     * used to enrich log with additional context.
+     *
+     * @return instance of {@link LoggingEventBuilder} or no-op if verbose logging is disabled.
+     */
+    public LoggingEventBuilder atInfo() {
+        return LoggingEventBuilder.create(this, LogLevel.INFORMATIONAL);
     }
 
-    public LogEntryBuilder atInfo() {
-        return atLevel(LogLevel.INFORMATIONAL);
-    }
-
-    public LogEntryBuilder atVerbose() {
-        return atLevel(LogLevel.VERBOSE);
+    /**
+     * Creates {@link LoggingEventBuilder} for {@code verbose} log level that can be
+     * used to enrich log with additional context.
+     *
+     * @return instance of {@link LoggingEventBuilder} or no-op if verbose logging is disabled.
+     */
+    public LoggingEventBuilder atVerbose() {
+        return LoggingEventBuilder.create(this, LogLevel.VERBOSE);
     }
 
     /*
