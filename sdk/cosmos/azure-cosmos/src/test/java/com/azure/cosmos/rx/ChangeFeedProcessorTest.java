@@ -536,7 +536,10 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                 .leaseContainer(createdLeaseCollection)
                 .options(new ChangeFeedProcessorOptions()
                     .setLeasePrefix(leasePrefix)
-                    .setLeaseAcquireInterval(Duration.ofSeconds(5))
+                    .setLeaseRenewInterval(Duration.ofSeconds(1))
+                    .setLeaseAcquireInterval(Duration.ofSeconds(2))
+                    .setLeaseExpirationInterval(Duration.ofSeconds(20))
+                    .setFeedPollDelay(Duration.ofSeconds(1))
                 )
                 .buildChangeFeedProcessor();
 
@@ -573,9 +576,8 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
 
                 bulkInsert(createdFeedCollection, docDefList, FEED_COUNT)
                     .last()
-                    .delayElement(Duration.ofMillis(1000))
                     .flatMap(cosmosItemResponse -> {
-                        ChangeFeedProcessorTest.log.info("Start second Change feed processor");
+                        ChangeFeedProcessorTest.log.info("Start first Change feed processor");
                         return changeFeedProcessorFirst.start().subscribeOn(Schedulers.elastic())
                             .timeout(Duration.ofMillis(2 * CHANGE_FEED_PROCESSOR_TIMEOUT));
                     })
@@ -640,14 +642,14 @@ public class ChangeFeedProcessorTest extends TestSuiteBase {
                 throw ex;
             }
 
-            long remainingWork = 10 * CHANGE_FEED_PROCESSOR_TIMEOUT;
-            while (remainingWork > 0 && changeFeedProcessorFirst.isStarted() && !changeFeedProcessorSecond.isStarted()) {
+            long remainingWork = 20 * CHANGE_FEED_PROCESSOR_TIMEOUT;
+            while (remainingWork > 0 && changeFeedProcessorFirst.isStarted() && changeFeedProcessorSecond.isStarted()) {
                 remainingWork -= 100;
                 Thread.sleep(100);
             }
 
             // Wait for the feed processor to receive and process the documents.
-            waitToReceiveDocuments(receivedDocuments, 10 * CHANGE_FEED_PROCESSOR_TIMEOUT, FEED_COUNT);
+            waitToReceiveDocuments(receivedDocuments, 10 * CHANGE_FEED_PROCESSOR_TIMEOUT, 2 * FEED_COUNT);
 
             assertThat(changeFeedProcessorSecond.isStarted()).as("Change Feed Processor instance is running").isTrue();
 
