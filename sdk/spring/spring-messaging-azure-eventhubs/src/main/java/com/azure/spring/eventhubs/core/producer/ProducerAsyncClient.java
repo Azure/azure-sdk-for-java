@@ -6,20 +6,16 @@ package com.azure.spring.eventhubs.core.producer;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventDataBatch;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
-import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.spring.messaging.PartitionSupplier;
-import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
-
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  *
  */
 public class ProducerAsyncClient implements EventHubProducer {
 
-    private EventHubProducerAsyncClient client;
+    private final EventHubProducerAsyncClient client;
 
     public ProducerAsyncClient(EventHubProducerAsyncClient client) {
         this.client = client;

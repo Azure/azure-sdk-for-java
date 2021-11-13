@@ -3,6 +3,9 @@
 
 package com.azure.spring.eventhubs.properties;
 
+/**
+ * Batchable producer properties interface for configuration of batch sending.
+ */
 public interface EventHubBatchableProducerDescriptor {
 
     Integer getMaxBatchInBytes();

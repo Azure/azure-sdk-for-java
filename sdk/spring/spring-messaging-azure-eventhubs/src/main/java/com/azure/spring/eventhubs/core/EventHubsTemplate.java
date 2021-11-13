@@ -54,13 +54,6 @@ public class EventHubsTemplate implements SendOperation, BatchSendOperation {
         return producer.send(Flux.fromIterable(events), partitionSupplier);
     }
 
-
-    private <T> List<EventData> covertMessagesToList(Collection<Message<T>> messages) {
-        return messages.stream()
-                       .map(m -> messageConverter.fromMessage(m, EventData.class))
-                       .collect(Collectors.toList());
-    }
-
     public void setMessageConverter(EventHubMessageConverter messageConverter) {
         this.messageConverter = messageConverter;
     }

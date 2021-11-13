@@ -7,6 +7,9 @@ import com.azure.spring.eventhubs.core.properties.ProducerProperties;
 
 import java.time.Duration;
 
+/**
+ * Batchable producer properties for configuration of batch sending.
+ */
 public class BatchableProducerProperties extends ProducerProperties implements EventHubBatchableProducerDescriptor {
 
     /**

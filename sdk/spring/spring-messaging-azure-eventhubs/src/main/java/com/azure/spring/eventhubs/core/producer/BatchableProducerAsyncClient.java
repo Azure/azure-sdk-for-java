@@ -22,11 +22,11 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class BatchableProducerAsyncClient implements EventHubProducer {
 
-    private EventHubProducerAsyncClient client;
+    private final EventHubProducerAsyncClient client;
     private final int maxBatchInBytes;
     private final Duration maxWaitTime;
     private AtomicReference<EventDataBatch> currentBatch;
-    private final AtomicReference<LocalDateTime> lastSendTime = new AtomicReference<>(LocalDateTime.now());;
+    private final AtomicReference<LocalDateTime> lastSendTime = new AtomicReference<>(LocalDateTime.now());
 
     public BatchableProducerAsyncClient(EventHubProducerAsyncClient client, int maxBatchInBytes, Duration maxWaitTime) {
         this.client = client;
@@ -48,42 +48,42 @@ public class BatchableProducerAsyncClient implements EventHubProducer {
         }
 
         return events.flatMap(event -> {
-                         final EventDataBatch batch = currentBatch.get();
-                         if (batch.tryAdd(event)) {
-                             return Mono.empty();
-                         }
-                         // The batch is full, so we create a new batch and send the batch. Mono.when completes when
-                         // both operations
-                         // have completed.
-                         lastSendTime.set(LocalDateTime.now());
-                         return Mono.when(
-                             client.send(batch),
-                             client.createBatch(options).map(newBatch -> {
-                                 currentBatch.set(newBatch);
-                                 // Add that event that we couldn't before.
-                                 if (!newBatch.tryAdd(event)) {
-                                     throw Exceptions.propagate(new IllegalArgumentException(String.format(
-                                         "Event is too large for an empty batch. Max size: %s. Event: %s",
-                                         newBatch.getMaxSizeInBytes(), event.getBodyAsString())));
-                                 }
-                                 return newBatch;
-                             }));
-                     })
-                     .then(Mono.just(""))
-                     .flatMap(s -> {
-                         final EventDataBatch batch = currentBatch.get();
-                         if (batch != null && Duration.between(this.lastSendTime.get(), LocalDateTime.now())
-                                                      .compareTo(maxWaitTime) > 0) {
-                             lastSendTime.set(LocalDateTime.now());
-                             return Mono.when(
-                                 client.send(batch),
-                                 client.createBatch(options).map(newBatch -> {
-                                     currentBatch.set(newBatch);
-                                     return newBatch;
-                                 }));
-                         }
-                         return Mono.empty();
-                     });
+            final EventDataBatch batch = currentBatch.get();
+            if (batch.tryAdd(event)) {
+                return Mono.empty();
+            }
+            // The batch is full, so we create a new batch and send the batch. Mono.when completes when
+            // both operations
+            // have completed.
+            lastSendTime.set(LocalDateTime.now());
+            return Mono.when(
+                client.send(batch),
+                client.createBatch(options).map(newBatch -> {
+                    currentBatch.set(newBatch);
+                    // Add that event that we couldn't before.
+                    if (!newBatch.tryAdd(event)) {
+                        throw Exceptions.propagate(new IllegalArgumentException(String.format(
+                            "Event is too large for an empty batch. Max size: %s. Event: %s",
+                            newBatch.getMaxSizeInBytes(), event.getBodyAsString())));
+                    }
+                    return newBatch;
+                }));
+        })
+            .then(Mono.just(""))
+            .flatMap(s -> {
+                final EventDataBatch batch = currentBatch.get();
+                if (batch != null && Duration.between(this.lastSendTime.get(), LocalDateTime.now())
+                    .compareTo(maxWaitTime) > 0) {
+                    lastSendTime.set(LocalDateTime.now());
+                    return Mono.when(
+                        client.send(batch),
+                        client.createBatch(options).map(newBatch -> {
+                            currentBatch.set(newBatch);
+                            return newBatch;
+                        }));
+                }
+                return Mono.empty();
+            });
     }
 
     public Mono<Void> send(EventDataBatch batch) {
