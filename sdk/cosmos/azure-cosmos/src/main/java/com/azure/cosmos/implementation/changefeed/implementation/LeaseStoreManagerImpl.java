@@ -318,7 +318,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                         logger.info("Partition {} lease was taken over and released by a different owner", lease.getLeaseToken());
                         throw new LeaseLostException(lease);
                     }
-                    else if (serverLease.getOwner() != null && !serverLease.getOwner().equalsIgnoreCase(lease.getOwner())) {
+                    else if (!serverLease.getOwner().equalsIgnoreCase(lease.getOwner())) {
                         logger.info("Partition {} lease was taken over by owner '{}'", lease.getLeaseToken(), serverLease.getOwner());
                         throw new LeaseLostException(lease);
                     }
@@ -378,7 +378,7 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                         logger.info("Partition {} lease was taken over and released by a different owner", lease.getLeaseToken());
                         throw new LeaseLostException(lease);
                     }
-                    else if (serverLease.getOwner() != null && !serverLease.getOwner().equalsIgnoreCase(lease.getOwner())) {
+                    else if (!serverLease.getOwner().equalsIgnoreCase(lease.getOwner())) {
                         logger.info("Partition {} lease was taken over by owner '{}'", lease.getLeaseToken(), serverLease.getOwner());
                         throw new LeaseLostException(lease);
                     }
