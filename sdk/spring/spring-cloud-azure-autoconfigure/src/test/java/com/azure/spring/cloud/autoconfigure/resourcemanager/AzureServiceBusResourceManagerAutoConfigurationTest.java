@@ -8,8 +8,7 @@ import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.servicebus.properties.AzureServiceBusProperties;
 import com.azure.spring.cloud.resourcemanager.connectionstring.ServiceBusArmConnectionStringProvider;
-import com.azure.spring.servicebus.provisioning.ServiceBusQueueProvisioner;
-import com.azure.spring.servicebus.provisioning.ServiceBusTopicProvisioner;
+import com.azure.spring.servicebus.provisioning.ServiceBusProvisioner;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
@@ -29,8 +28,7 @@ class AzureServiceBusResourceManagerAutoConfigurationTest {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.servicebus.enabled=false")
             .run(context -> {
-                assertThat(context).doesNotHaveBean(ServiceBusTopicProvisioner.class);
-                assertThat(context).doesNotHaveBean(ServiceBusQueueProvisioner.class);
+                assertThat(context).doesNotHaveBean(ServiceBusProvisioner.class);
             });
     }
 
@@ -39,8 +37,7 @@ class AzureServiceBusResourceManagerAutoConfigurationTest {
         this.contextRunner
             .withClassLoader(new FilteredClassLoader(ServiceBusClientBuilder.class))
             .run(context -> {
-                assertThat(context).doesNotHaveBean(ServiceBusTopicProvisioner.class);
-                assertThat(context).doesNotHaveBean(ServiceBusQueueProvisioner.class);
+                assertThat(context).doesNotHaveBean(ServiceBusProvisioner.class);
             });
     }
 
@@ -59,8 +56,7 @@ class AzureServiceBusResourceManagerAutoConfigurationTest {
             .withBean(AzureResourceManager.class, TestAzureResourceManager::getAzureResourceManager)
             .withBean(AzureServiceBusProperties.class, AzureServiceBusProperties::new)
             .run(context -> {
-                assertThat(context).hasSingleBean(ServiceBusTopicProvisioner.class);
-                assertThat(context).hasSingleBean(ServiceBusQueueProvisioner.class);
+                assertThat(context).hasSingleBean(ServiceBusProvisioner.class);
             });
     }
 }
