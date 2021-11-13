@@ -1,19 +1,22 @@
 package com.azure.core.util.logging;
 
-import java.util.AbstractMap;
+import com.azure.core.util.CoreUtils;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.function.Supplier;
 
 // heavily inspired by http://www.slf4j.org/apidocs/org/slf4j/spi/LoggingEventBuilder.html
 public class LogEntryBuilder {
+
     private final ClientLogger logger;
     private final LogLevel level;
-    private int size=0;
 
     // instead of virtual methods and builder inheritance
     private final boolean isEnabled;
-    private List<AbstractMap.SimpleEntry<String, String>> context;
-    private Throwable throwable;
+
+    private List<ContextKeyValuePair> context;
 
     private static final LogEntryBuilder NOOP = new LogEntryBuilder(null, null, false);
 
@@ -30,62 +33,144 @@ public class LogEntryBuilder {
         this.level = level;
         this.isEnabled = isEnabled;
         this.context = null;
-        this.throwable = null;
     }
 
-    public LogEntryBuilder setCause(Throwable cause) {
+    public LogEntryBuilder addKeyValue(String key, String value) {
         if (this.isEnabled) {
-            this.throwable = cause;
+            addKeyValueInternal(key, value);
+        }
+
+        return this;
+    }
+
+    public LogEntryBuilder addKeyValue(String key, boolean value) {
+        if (this.isEnabled) {
+            addKeyValueInternal(key, value);
         }
         return this;
     }
 
-    public LogEntryBuilder addKeyValue(String key, String value) {
+    public LogEntryBuilder addKeyValue(String key, long value) {
+        if (this.isEnabled) {
+            addKeyValueInternal(key, value);
+        }
+        return this;
+    }
+
+    // presumably primitive values are always calculated and never need deferred value calculation
+    public LogEntryBuilder addKeyValue(String key, Supplier<String> valueSupplier) {
         if (this.isEnabled) {
             if (this.context == null) {
                 this.context = new ArrayList<>();
             }
 
-            this.context.add(new AbstractMap.SimpleEntry<>(key, value));
-            size += key.length() + value.length();
+            this.context.add(new ContextKeyValuePair(key, null, valueSupplier));
         }
         return this;
     }
 
-    // todo: overloads
     public void log(String message) {
         if (this.isEnabled) {
+            logger.performLogging(level, getMessageWithContext(message));
+        }
+    }
 
-            String messageAndContext;
-            if (this.context == null || this.context.isEmpty()) {
-                messageAndContext = message;
-            } else {
-                // can potentially calculate capacity
-                StringBuilder sb = new StringBuilder(message.length() + size + context.size() * 6)
-                    .append(message)
-                    .append(", az.sdk.context={\"")
-                    .append(context.get(0).getKey())
-                    .append("\":\"")
-                    // todo support for primitive types
-                    .append(context.get(0).getValue())
-                    .append("\"");
+    public void log(Supplier<String> messageSupplier) {
+        if (this.isEnabled) {
+            String message = messageSupplier != null ? messageSupplier.get() : null;
+            logger.performLogging(level, getMessageWithContext(message));
+        }
+    }
 
-                for (int i = 1; i < context.size(); i ++) {
-                    AbstractMap.SimpleEntry<String ,String> entry = context.get(i);
-                    sb.append(",\"")
-                        .append(entry.getKey())
-                        .append("\":\"")
-                        // todo support for primitive types
-                        .append(entry.getValue())
-                        .append("\"");
+    public void log(String format, Object... args) {
+        if (this.isEnabled) {
+            logger.performLogging(level, getMessageWithContext(format), args);
+        }
+    }
+
+    public void log(Throwable throwable) {
+        Objects.requireNonNull(throwable, "'throwable' cannot be null.");
+
+        if (this.isEnabled) {
+            logger.performThrowableLogging(level, getMessageWithContext(throwable.getMessage()), throwable);
+        }
+    }
+
+    public String getMessageWithContext(String message) {
+        if (this.context == null || this.context.isEmpty()) {
+            return message;
+        }
+
+        StringBuilder sb;
+
+        if (CoreUtils.isNullOrEmpty(message)) {
+            sb = new StringBuilder(16);
+        } else {
+            sb = new StringBuilder(message.length() + 18)
+                .append(message)
+                .append(", ");
+        }
+
+        sb.append("az.sdk.context={");
+
+        int i = 0;
+        for (; i < context.size() - 1; i ++) {
+            context.get(i)
+                .writeKeyAndValue(sb)
+                .append(",");
+        }
+
+        context.get(i)
+            .writeKeyAndValue(sb)
+            .append("}");
+
+        return sb.toString();
+    }
+
+    private void addKeyValueInternal(String key, Object value) {
+        if (this.context == null) {
+            this.context = new ArrayList<>();
+        }
+
+        this.context.add(new ContextKeyValuePair(key, value, null));
+    }
+
+    static private class ContextKeyValuePair {
+        private final String key;
+        private final Object value;
+        private final Supplier<String> valueSupplier;
+
+        public ContextKeyValuePair(String key, Object value, Supplier<String> valueSupplier) {
+            this.key = key;
+            this.value = value;
+            this.valueSupplier = valueSupplier;
+        }
+
+        public StringBuilder writeKeyAndValue(StringBuilder formatter) {
+            formatter.append("\"")
+                .append(key)
+                .append("\"")
+                .append(":");
+
+            String valueStr = null;
+            if (value != null) {
+                // LogEntryBuilder ensures only strings and primitives could be here
+                if (!(value instanceof String)) {
+                    return formatter.append(value);
                 }
 
-                sb.append("}");
-
-                messageAndContext = sb.toString();
+                valueStr = (String) value;
+            } else if (valueSupplier != null) {
+                valueStr = valueSupplier.get();
             }
 
-            logger.performDeferredLogging(level, messageAndContext, throwable);
+            if (valueStr == null) {
+                return formatter.append("null");
+            }
+
+            return formatter.append("\"")
+                .append(valueStr)
+                .append("\"");
         }
     }
 }

@@ -50,33 +50,28 @@ public class LoggingBenchmark {
 
     @Benchmark
     public void loggingAtDisabledLevel() {
-        logger.info("hello, connectionId={}, linkName={}", "foo", "bar");
+        logger.info("hello, connectionId={}, linkName={}", "foo", 1);
     }
 
     @Benchmark
     public void loggingAtDisabledLevelWithContext() {
-        logger.atLevel(LogLevel.INFORMATIONAL)
+        logger.atInfo()
             .addKeyValue("connectionId", "foo")
-            .addKeyValue("linkName", "bar")
+            .addKeyValue("linkName", 1)
             .log("hello");
     }
 
     @Benchmark
     public void loggingAtEnabledLevel() {
-        logger.error("hello, connectionId={}, linkName={}", "foo", "bar");
+        logger.error("hello, connectionId={}, linkName={}", "foo", 1);
     }
 
     @Benchmark
     public void loggingAtEnabledLevelWithContext() {
-        logger.atLevel(LogLevel.ERROR)
+        logger.atError()
             .addKeyValue("connectionId", "foo")
-            .addKeyValue("linkName", "bar")
+            .addKeyValue("linkName", 1)
             .log("hello");
-    }
-
-    @Benchmark
-    public void loggingAtEnabledLevelWithContext2() {
-        logger.error("hello", null, "connectionId", "foo", "linkName", "bar");
     }
 
     public static void main(String... args) throws IOException, RunnerException {

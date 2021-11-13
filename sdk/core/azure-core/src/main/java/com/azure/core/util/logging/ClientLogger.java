@@ -107,41 +107,6 @@ public class ClientLogger {
         }
     }
 
-    public void error(String message, Throwable throwable, Object ... context) {
-        if (message != null && logger.isErrorEnabled()) {
-            String messageAndContext;
-            if (context == null || context.length == 0) {
-                messageAndContext = message;
-            } else {
-                // can potentially calculate capacity
-                StringBuilder sb = new StringBuilder(message.length())
-                    .append(message)
-                    .append(", az.sdk.context={\"")
-                    .append(context[0])
-                    .append("\":\"")
-                    // todo support for primitive types
-                    .append(context[1])
-                    .append("\"");
-
-                for (int i = 2; i < context.length; i+=2) {
-
-                    sb.append(",\"")
-                        .append(context[i])
-                        .append("\":\"")
-                        // todo support for primitive types
-                        .append(context[i+1])
-                        .append("\"");
-                }
-
-                sb.append("}");
-
-                messageAndContext = sb.toString();
-            }
-
-            performDeferredLogging(LogLevel.ERROR, messageAndContext, throwable);
-        }
-    }
-
     /**
      * Logs a message at {@code verbose} log level.
      *
@@ -182,7 +147,7 @@ public class ClientLogger {
      */
     public void verbose(String format, Object... args) {
         if (logger.isDebugEnabled()) {
-            performLogging(LogLevel.VERBOSE, false, format, args);
+            performLogging(LogLevel.VERBOSE, format, args);
         }
     }
 
@@ -226,7 +191,7 @@ public class ClientLogger {
      */
     public void info(String format, Object... args) {
         if (logger.isInfoEnabled()) {
-            performLogging(LogLevel.INFORMATIONAL, false, format, args);
+            performLogging(LogLevel.INFORMATIONAL, format, args);
         }
     }
 
@@ -272,7 +237,7 @@ public class ClientLogger {
      */
     public void warning(String format, Object... args) {
         if (logger.isWarnEnabled()) {
-            performLogging(LogLevel.WARNING, false, format, args);
+            performLogging(LogLevel.WARNING,  format, args);
         }
     }
 
@@ -324,7 +289,7 @@ public class ClientLogger {
      */
     public void error(String format, Object... args) {
         if (logger.isErrorEnabled()) {
-            performLogging(LogLevel.ERROR, false, format, args);
+            performLogging(LogLevel.ERROR, format, args);
         }
     }
 
@@ -363,7 +328,7 @@ public class ClientLogger {
             return throwable;
         }
 
-        performLogging(LogLevel.WARNING, true, throwable.getMessage(), throwable);
+        performThrowableLogging(LogLevel.WARNING, throwable.getMessage(), throwable);
         return throwable;
     }
 
@@ -380,11 +345,10 @@ public class ClientLogger {
      */
     public <T extends Throwable> T logThrowableAsWarning(T throwable) {
         Objects.requireNonNull(throwable, "'throwable' cannot be null.");
-        if (!logger.isWarnEnabled()) {
-            return throwable;
+        if (logger.isWarnEnabled()) {
+            performThrowableLogging(LogLevel.WARNING, throwable.getMessage(), throwable);
         }
 
-        performLogging(LogLevel.WARNING, true, throwable.getMessage(), throwable);
         return throwable;
     }
 
@@ -421,8 +385,32 @@ public class ClientLogger {
             return throwable;
         }
 
-        performLogging(LogLevel.ERROR, true, throwable.getMessage(), throwable);
+        performThrowableLogging(LogLevel.ERROR, throwable.getMessage(), throwable);
         return throwable;
+    }
+
+    void performThrowableLogging(LogLevel logLevel, String message, Throwable throwable) {
+        message = sanitizeLogMessageInput(message);
+
+        switch (logLevel) {
+            case WARNING:
+                if (logger.isDebugEnabled()) {
+                    logger.warn(message, throwable);
+                } else {
+                    logger.warn(message);
+                }
+                break;
+            case ERROR:
+                if (logger.isDebugEnabled()) {
+                    logger.error(message, throwable);
+                } else {
+                    logger.error(message);
+                }
+                break;
+            default:
+                // Don't do anything, this state shouldn't be possible.
+                break;
+        }
     }
 
     /*
@@ -431,18 +419,15 @@ public class ClientLogger {
      * @param format format-able message.
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
-    private void performLogging(LogLevel logLevel, boolean isExceptionLogging, String format, Object... args) {
+    void performLogging(LogLevel logLevel, String format, Object... args) {
         // If the logging level is less granular than verbose remove the potential throwable from the args.
         String throwableMessage = "";
         if (doesArgsHaveThrowable(args)) {
-            // If we are logging an exception the format string is already the exception message, don't append it.
-            if (!isExceptionLogging) {
-                Object throwable = args[args.length - 1];
+            Object throwable = args[args.length - 1];
 
-                // This is true from before but is needed to appease SpotBugs.
-                if (throwable instanceof Throwable) {
-                    throwableMessage = ((Throwable) throwable).getMessage();
-                }
+            // This is true from before but is needed to appease SpotBugs.
+            if (throwable instanceof Throwable) {
+                throwableMessage = ((Throwable) throwable).getMessage();
             }
 
             /*
@@ -488,8 +473,9 @@ public class ClientLogger {
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
     private void performDeferredLogging(LogLevel logLevel, Supplier<String> messageSupplier, Throwable throwable) {
-        String throwableMessage = (throwable != null) ? throwable.getMessage() : "";
         String message = removeNewLinesFromLogMessage(messageSupplier.get());
+        String throwableMessage = (throwable != null) ? throwable.getMessage() : "";
+
         switch (logLevel) {
             case VERBOSE:
                 if (throwable != null) {
@@ -564,9 +550,24 @@ public class ClientLogger {
         }
     }
 
-    // todo: overloads similar to slf4j v2: atTrace(), atDebug(), atInfo(), atWarn() and atError()
-    public LogEntryBuilder atLevel(LogLevel level) {
+    private LogEntryBuilder atLevel(LogLevel level) {
         return LogEntryBuilder.create(this, level, canLogAtLevel(level));
+    }
+
+    public LogEntryBuilder atError() {
+        return atLevel(LogLevel.ERROR);
+    }
+
+    public LogEntryBuilder atWarning() {
+        return atLevel(LogLevel.WARNING);
+    }
+
+    public LogEntryBuilder atInfo() {
+        return atLevel(LogLevel.INFORMATIONAL);
+    }
+
+    public LogEntryBuilder atVerbose() {
+        return atLevel(LogLevel.VERBOSE);
     }
 
     /*

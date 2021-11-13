@@ -327,39 +327,197 @@ public class ClientLoggerTests {
         assertTrue(logger.isSupplierLogging(args));
     }
 
-    @Test
-    public void testLoginWithContext() {
-        setupLogLevel(LogLevel.INFORMATIONAL.getLogLevel());
-
-        Supplier<String> supplier = () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3");
+    /**
+     * Tests that logging with context of string message writes
+     * log message and context in correct format and depending on the level.
+     */
+    @ParameterizedTest
+    @MethodSource("provideLogLevels")
+    public void logWithContext(LogLevel logLevelToConfigure) {
+        setupLogLevel(logLevelToConfigure.getLogLevel());
         ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
 
-        LogEntryBuilder logBuilder = logger.atLevel(LogLevel.WARNING)
+        String message = String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3");
+
+        logger.atWarning()
             .addKeyValue("connectionId", "foo")
-            .addKeyValue("linkName", "bar");
+            .addKeyValue("linkName", 1)
+            .log(message);
 
-        logHelper(() -> logBuilder.log(supplier.get()),
-                  (args) -> logBuilder.log(supplier.get()),
-                  supplier);
-
-        String logValues = byteArraySteamToString(logCaptureStream);
-
-        assertTrue(logValues.endsWith(supplier.get() + ", az.sdk.context={\"connectionId\":\"foo\",\"linkName\":\"bar\"}\r\n"));
+        assertMessage(
+            "Param 1: test1, Param 2: test2, Param 3: test3, az.sdk.context={\"connectionId\":\"foo\",\"linkName\":1}",
+            byteArraySteamToString(logCaptureStream),
+            logLevelToConfigure,
+            LogLevel.WARNING);
     }
 
 
-    @Test
-    public void testLoginWithContext2() {
-        setupLogLevel(LogLevel.INFORMATIONAL.getLogLevel());
-
-        String message  = "hello";
+    /**
+     * Tests message supplier with context.
+     */
+    @ParameterizedTest
+    @MethodSource("provideLogLevels")
+    public void logWithContextMessageSupplier(LogLevel logLevelToConfigure) {
+        setupLogLevel(logLevelToConfigure.getLogLevel());
         ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
 
-        logger.error(message, null, "connectionId", "foo", "linkName", "bar");
+        String message = String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3");
 
-        String logValues = byteArraySteamToString(logCaptureStream);
+        logger.atWarning()
+            .addKeyValue("connectionId", "foo")
+            .addKeyValue("linkName", "bar")
+            .log(() -> message);
 
-        assertTrue(logValues.endsWith(message + ", az.sdk.context={\"connectionId\":\"foo\",\"linkName\":\"bar\"}\r\n"));
+        assertMessage(
+            "Param 1: test1, Param 2: test2, Param 3: test3, az.sdk.context={\"connectionId\":\"foo\",\"linkName\":\"bar\"}",
+            byteArraySteamToString(logCaptureStream),
+            logLevelToConfigure,
+            LogLevel.WARNING);
+    }
+
+    /**
+     * Tests that logging with context with null message does not throw.
+     */
+    @Test
+    public void logWithContextNullMessage() {
+        setupLogLevel(LogLevel.INFORMATIONAL.getLogLevel());
+        ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
+
+        String message = null;
+
+        logger.atWarning()
+            .addKeyValue("connectionId", "foo")
+            .addKeyValue("linkName", true)
+            .log(message);
+
+        assertMessage(
+            "az.sdk.context={\"connectionId\":\"foo\",\"linkName\":true}",
+            byteArraySteamToString(logCaptureStream),
+            LogLevel.INFORMATIONAL,
+            LogLevel.WARNING);
+    }
+
+    /**
+     * Tests that logging with context with null message supplier does not throw.
+     */
+    @Test
+    public void logWithContextNullSupplier() {
+        setupLogLevel(LogLevel.INFORMATIONAL.getLogLevel());
+        ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
+
+        Supplier<String> message = null;
+
+        logger.atWarning()
+            .addKeyValue("connectionId", "foo")
+            .addKeyValue("linkName", (String)null)
+            .log(message);
+
+        assertMessage(
+            "az.sdk.context={\"connectionId\":\"foo\",\"linkName\":null}",
+            byteArraySteamToString(logCaptureStream),
+            LogLevel.INFORMATIONAL,
+            LogLevel.WARNING);
+    }
+
+    /**
+     * Tests supplied context value.
+     */
+    @Test
+    public void logWithContextValueSupplier() {
+        setupLogLevel(LogLevel.INFORMATIONAL.getLogLevel());
+        ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
+
+        logger.atWarning()
+            // this is technically invalid, but we should not throw because of logging in runtime
+            .addKeyValue("connectionId", (Supplier<String>)null)
+            .addKeyValue("linkName", String.format("complex value %s", 123))
+            .log("test");
+
+        assertMessage(
+            "test, az.sdk.context={\"connectionId\":null,\"linkName\":\"complex value 123\"}",
+            byteArraySteamToString(logCaptureStream),
+            LogLevel.INFORMATIONAL,
+            LogLevel.WARNING);
+    }
+
+    /**
+     * Tests message with args and context.
+     */
+    @ParameterizedTest
+    @MethodSource("provideLogLevels")
+    public void logMessageAndArgsWithContext(LogLevel logLevelToConfigure) {
+        setupLogLevel(logLevelToConfigure.getLogLevel());
+        ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
+
+        logger.atWarning()
+            .addKeyValue("connectionId", () -> null)
+            .addKeyValue("linkName", "bar")
+            .log("Param 1: {}, Param 2: {}, Param 3: {}", "test1", "test2", "test3");
+
+        assertMessage(
+            "Param 1: test1, Param 2: test2, Param 3: test3, az.sdk.context={\"connectionId\":null,\"linkName\":\"bar\"}",
+            byteArraySteamToString(logCaptureStream),
+            logLevelToConfigure,
+            LogLevel.WARNING);
+    }
+
+    /**
+     * Tests logging with context when args have throwable (stack trace is only logged at debug)
+     */
+    @ParameterizedTest
+    @MethodSource("provideLogLevels")
+    public void logWithContextWithThrowableInArgs(LogLevel logLevelToConfigure) {
+        setupLogLevel(logLevelToConfigure.getLogLevel());
+        ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
+
+        String exceptionMessage = "An exception message";
+        RuntimeException runtimeException = createIllegalStateException(exceptionMessage);
+
+        logger.atWarning()
+            .addKeyValue("connectionId", "foo")
+            .addKeyValue("linkName", "bar")
+            .log("hello {}", "world", runtimeException);
+
+        String message = "hello world, az.sdk.context={\"connectionId\":\"foo\",\"linkName\":\"bar\"}" + System.lineSeparator() + exceptionMessage;
+        if (logLevelToConfigure.equals(LogLevel.VERBOSE)) {
+            message += System.lineSeparator() + runtimeException.toString() + System.lineSeparator() + "\tat " + runtimeException.getStackTrace()[0].toString();
+        }
+
+        assertMessage(
+            message,
+            byteArraySteamToString(logCaptureStream),
+            logLevelToConfigure,
+            LogLevel.WARNING);
+    }
+
+    /**
+     * Tests logging with context when cause is set
+     */
+    @ParameterizedTest
+    @MethodSource("provideLogLevels")
+    public void logWithContextWithThrowableInCause(LogLevel logLevelToConfigure) {
+        setupLogLevel(logLevelToConfigure.getLogLevel());
+        ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
+
+        String exceptionMessage = "An exception message";
+        RuntimeException runtimeException = createIllegalStateException(exceptionMessage);
+
+        logger.atWarning()
+            .addKeyValue("connectionId", "foo")
+            .addKeyValue("linkName", "bar")
+            .log(runtimeException);
+
+        String message = exceptionMessage + ", az.sdk.context={\"connectionId\":\"foo\",\"linkName\":\"bar\"}";
+
+        if (logLevelToConfigure.equals(LogLevel.VERBOSE)) {
+            message +=  System.lineSeparator() + runtimeException.toString() + System.lineSeparator() + "\tat " + runtimeException.getStackTrace()[0].toString();
+        }
+
+        assertMessage(
+            message,
+            byteArraySteamToString(logCaptureStream),
+            logLevelToConfigure,
+            LogLevel.WARNING);
     }
 
     @Test
@@ -486,6 +644,15 @@ public class ClientLoggerTests {
             return stream.toString(StandardCharsets.UTF_8.name());
         } catch (UnsupportedEncodingException ex) {
             throw new UncheckedIOException(ex);
+        }
+    }
+
+    private void assertMessage(String expectedMessage, String fullLog, LogLevel configuredLevel, LogLevel loggedLevel) {
+        if (loggedLevel.compareTo(configuredLevel) >= 0) {
+            // remove date/time/level/etc from fullMessage
+            assertEquals(expectedMessage + System.lineSeparator(), fullLog.substring(105));
+        } else {
+            assertTrue(fullLog.isEmpty());
         }
     }
 
