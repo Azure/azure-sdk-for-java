@@ -65,7 +65,7 @@ public class EventHubBinderBatchSendingIT {
         @Bean
         public Consumer<Message<String>> consume() {
             return message -> {
-                LOGGER.info("EventHubBinderRecordModeIT: New message received: '{}'", message.getPayload());
+                LOGGER.info("EventHubBinderBatchSendingIT: New message received: '{}'", message.getPayload());
                 if (message.getPayload().equals(EventHubBinderBatchSendingIT.MESSAGE) && message.getHeaders().containsKey("x-opt-enqueued-time")) {
                     LATCH.countDown();
                 }
@@ -75,11 +75,11 @@ public class EventHubBinderBatchSendingIT {
 
     @Test
     public void testSendAndReceiveMessage() throws InterruptedException {
-        LOGGER.info("EventHubBinderSyncModeIT begin.");
+        LOGGER.info("EventHubBinderBatchSendingIT begin.");
         EventHubBinderBatchSendingIT.LATCH.await(15, TimeUnit.SECONDS);
         LOGGER.info("Send a message:" + MESSAGE + ".");
         many.emitNext(new GenericMessage<>(MESSAGE), Sinks.EmitFailureHandler.FAIL_FAST);
         assertThat(EventHubBinderBatchSendingIT.LATCH.await(30, TimeUnit.SECONDS)).isTrue();
-        LOGGER.info("EventHubBinderSyncModeIT end.");
+        LOGGER.info("EventHubBinderBatchSendingIT end.");
     }
 }

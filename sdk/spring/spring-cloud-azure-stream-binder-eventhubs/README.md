@@ -130,7 +130,7 @@ Default: 256 * 1024
 
 The maximum time duration to wait to send a batch of events when max-batch-in-bytes is not reached.
      
-Default: 5min
+Default: Duration.ZERO, which means turning off batch-sending mode.
 
 #### Event Hub Consumer Properties ####
 

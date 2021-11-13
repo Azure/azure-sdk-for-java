@@ -8,6 +8,6 @@ package com.azure.spring.eventhubs.properties;
  */
 public interface EventHubBatchableProducerDescriptor {
 
-    Integer getMaxBatchInBytes();
+    int getMaxBatchInBytes();
 
 }

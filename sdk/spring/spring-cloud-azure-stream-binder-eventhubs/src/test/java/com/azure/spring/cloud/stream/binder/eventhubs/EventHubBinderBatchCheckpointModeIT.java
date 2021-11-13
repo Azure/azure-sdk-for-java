@@ -61,7 +61,7 @@ public class EventHubBinderBatchCheckpointModeIT {
         @Bean
         public Consumer<Message<String>> consume() {
             return message -> {
-                LOGGER.info("EventHubBinderBatchModeIT: New message received: '{}'", message.getPayload());
+                LOGGER.info("EventHubBinderBatchCheckpointModeIT: New message received: '{}'", message.getPayload());
                 if (message.getPayload().equals(EventHubBinderBatchCheckpointModeIT.MESSAGE)) {
                     LATCH.countDown();
                 }
@@ -71,11 +71,11 @@ public class EventHubBinderBatchCheckpointModeIT {
 
     @Test
     public void testSendAndReceiveMessage() throws InterruptedException {
-        LOGGER.info("EventHubBinderBatchModeIT begin.");
+        LOGGER.info("EventHubBinderBatchCheckpointModeIT begin.");
         EventHubBinderBatchCheckpointModeIT.LATCH.await(15, TimeUnit.SECONDS);
         LOGGER.info("Send a message:" + MESSAGE + ".");
         many.emitNext(new GenericMessage<>(MESSAGE), Sinks.EmitFailureHandler.FAIL_FAST);
         assertThat(EventHubBinderBatchCheckpointModeIT.LATCH.await(30, TimeUnit.SECONDS)).isTrue();
-        LOGGER.info("EventHubBinderBatchModeIT end.");
+        LOGGER.info("EventHubBinderBatchCheckpointModeIT end.");
     }
 }

@@ -15,23 +15,23 @@ public class BatchableProducerProperties extends ProducerProperties implements E
     /**
      * The maximum size, in bytes, of a batch of events. The default value is 256 * 1024.
      */
-    private Integer maxBatchInBytes;
+    private int maxBatchInBytes;
 
     /**
      * The maximum time duration to wait to send a batch of events when maxSizeInBytes is not reached. The default value
-     * is 5min.
+     * is Duration.ZERO, which means turning off the batch-sending mode.
      */
     private Duration maxWaitTime;
 
     public BatchableProducerProperties() {
-        this.maxWaitTime = Duration.ofMinutes(5);
+        this.maxWaitTime = Duration.ZERO;
     }
 
-    public Integer getMaxBatchInBytes() {
+    public int getMaxBatchInBytes() {
         return maxBatchInBytes;
     }
 
-    public void setMaxBatchInBytes(Integer maxBatchInBytes) {
+    public void setMaxBatchInBytes(int maxBatchInBytes) {
         this.maxBatchInBytes = maxBatchInBytes;
     }
 
