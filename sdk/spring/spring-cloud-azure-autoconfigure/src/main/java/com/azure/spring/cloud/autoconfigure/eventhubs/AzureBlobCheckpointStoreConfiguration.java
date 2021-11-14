@@ -51,8 +51,9 @@ public class AzureBlobCheckpointStoreConfiguration {
         return new BlobCheckpointStore(blobContainerAsyncClient);
     }
 
-    @Bean
-    @ConditionalOnMissingBean
+    // TODO (xiada): should we remove this initializer by default
+//    @Bean
+//    @ConditionalOnMissingBean
     public BlobCheckpointStoreContainerInitializer blobCheckpointStoreContainerInitializer() {
         return containerAsyncClient -> {
             if (Boolean.FALSE.equals(containerAsyncClient.exists().block(Duration.ofSeconds(3)))) {
