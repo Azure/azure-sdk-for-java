@@ -64,6 +64,13 @@ public final class BackendAddressPoolPropertiesFormat {
     private List<SubResource> outboundRules;
 
     /*
+     * An array of references to inbound NAT rules that use this backend
+     * address pool.
+     */
+    @JsonProperty(value = "inboundNatRules", access = JsonProperty.Access.WRITE_ONLY)
+    private List<SubResource> inboundNatRules;
+
+    /*
      * The provisioning state of the backend address pool resource.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
@@ -166,6 +173,15 @@ public final class BackendAddressPoolPropertiesFormat {
      */
     public List<SubResource> outboundRules() {
         return this.outboundRules;
+    }
+
+    /**
+     * Get the inboundNatRules property: An array of references to inbound NAT rules that use this backend address pool.
+     *
+     * @return the inboundNatRules value.
+     */
+    public List<SubResource> inboundNatRules() {
+        return this.inboundNatRules;
     }
 
     /**

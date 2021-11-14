@@ -31,7 +31,7 @@ public final class CustomIpPrefixInner extends Resource {
      * Custom IP prefix properties.
      */
     @JsonProperty(value = "properties")
-    private CustomIpPrefixPropertiesFormatInner innerProperties;
+    private CustomIpPrefixPropertiesFormat innerProperties;
 
     /*
      * A unique read-only string that changes whenever the resource is updated.
@@ -77,7 +77,7 @@ public final class CustomIpPrefixInner extends Resource {
      *
      * @return the innerProperties value.
      */
-    private CustomIpPrefixPropertiesFormatInner innerProperties() {
+    private CustomIpPrefixPropertiesFormat innerProperties() {
         return this.innerProperties;
     }
 
@@ -163,7 +163,7 @@ public final class CustomIpPrefixInner extends Resource {
      */
     public CustomIpPrefixInner withCidr(String cidr) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new CustomIpPrefixPropertiesFormatInner();
+            this.innerProperties = new CustomIpPrefixPropertiesFormat();
         }
         this.innerProperties().withCidr(cidr);
         return this;
@@ -186,7 +186,7 @@ public final class CustomIpPrefixInner extends Resource {
      */
     public CustomIpPrefixInner withSignedMessage(String signedMessage) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new CustomIpPrefixPropertiesFormatInner();
+            this.innerProperties = new CustomIpPrefixPropertiesFormat();
         }
         this.innerProperties().withSignedMessage(signedMessage);
         return this;
@@ -209,7 +209,7 @@ public final class CustomIpPrefixInner extends Resource {
      */
     public CustomIpPrefixInner withAuthorizationMessage(String authorizationMessage) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new CustomIpPrefixPropertiesFormatInner();
+            this.innerProperties = new CustomIpPrefixPropertiesFormat();
         }
         this.innerProperties().withAuthorizationMessage(authorizationMessage);
         return this;
@@ -220,7 +220,7 @@ public final class CustomIpPrefixInner extends Resource {
      *
      * @return the customIpPrefixParent value.
      */
-    public CustomIpPrefixInner customIpPrefixParent() {
+    public SubResource customIpPrefixParent() {
         return this.innerProperties() == null ? null : this.innerProperties().customIpPrefixParent();
     }
 
@@ -230,9 +230,9 @@ public final class CustomIpPrefixInner extends Resource {
      * @param customIpPrefixParent the customIpPrefixParent value to set.
      * @return the CustomIpPrefixInner object itself.
      */
-    public CustomIpPrefixInner withCustomIpPrefixParent(CustomIpPrefixInner customIpPrefixParent) {
+    public CustomIpPrefixInner withCustomIpPrefixParent(SubResource customIpPrefixParent) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new CustomIpPrefixPropertiesFormatInner();
+            this.innerProperties = new CustomIpPrefixPropertiesFormat();
         }
         this.innerProperties().withCustomIpPrefixParent(customIpPrefixParent);
         return this;
@@ -243,7 +243,7 @@ public final class CustomIpPrefixInner extends Resource {
      *
      * @return the childCustomIpPrefixes value.
      */
-    public List<CustomIpPrefixInner> childCustomIpPrefixes() {
+    public List<SubResource> childCustomIpPrefixes() {
         return this.innerProperties() == null ? null : this.innerProperties().childCustomIpPrefixes();
     }
 
@@ -264,7 +264,7 @@ public final class CustomIpPrefixInner extends Resource {
      */
     public CustomIpPrefixInner withCommissionedState(CommissionedState commissionedState) {
         if (this.innerProperties() == null) {
-            this.innerProperties = new CustomIpPrefixPropertiesFormatInner();
+            this.innerProperties = new CustomIpPrefixPropertiesFormat();
         }
         this.innerProperties().withCommissionedState(commissionedState);
         return this;

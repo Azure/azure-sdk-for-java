@@ -10,6 +10,7 @@ import com.azure.core.util.Configuration;
 import com.azure.identity.AzureAuthorityHosts;
 import com.azure.identity.AuthenticationRecord;
 import com.azure.identity.TokenCachePersistenceOptions;
+import com.azure.identity.implementation.util.IdentityConstants;
 import com.azure.identity.implementation.util.ValidationUtil;
 import com.microsoft.aad.msal4j.UserAssertion;
 
@@ -24,8 +25,10 @@ import java.util.function.Function;
 public final class IdentityClientOptions {
     private static final int MAX_RETRY_DEFAULT_LIMIT = 3;
     public static final String AZURE_IDENTITY_DISABLE_MULTI_TENANT_AUTH = "AZURE_IDENTITY_DISABLE_MULTITENANTAUTH";
+    public static final String AZURE_POD_IDENTITY_AUTHORITY_HOST = "AZURE_POD_IDENTITY_AUTHORITY_HOST";
 
     private String authorityHost;
+    private String imdsAuthorityHost;
     private int maxRetry;
     private Function<Duration, Duration> retryTimeout;
     private ProxyOptions proxyOptions;
@@ -69,6 +72,13 @@ public final class IdentityClientOptions {
     public IdentityClientOptions setAuthorityHost(String authorityHost) {
         this.authorityHost = authorityHost;
         return this;
+    }
+
+    /**
+     * @return the AKS Pod Authority endpoint to acquire tokens.
+     */
+    public String getImdsAuthorityHost() {
+        return imdsAuthorityHost;
     }
 
     /**
@@ -395,6 +405,8 @@ public final class IdentityClientOptions {
     private IdentityClientOptions loadFromConfiugration(Configuration configuration) {
         authorityHost = configuration.get(Configuration.PROPERTY_AZURE_AUTHORITY_HOST,
             AzureAuthorityHosts.AZURE_PUBLIC_CLOUD);
+        imdsAuthorityHost = configuration.get(AZURE_POD_IDENTITY_AUTHORITY_HOST,
+            IdentityConstants.DEFAULT_IMDS_ENDPOINT);
         ValidationUtil.validateAuthHost(getClass().getSimpleName(), authorityHost);
         cp1Disabled = configuration.get(Configuration.PROPERTY_AZURE_IDENTITY_DISABLE_CP1, false);
         multiTenantAuthDisabled = configuration

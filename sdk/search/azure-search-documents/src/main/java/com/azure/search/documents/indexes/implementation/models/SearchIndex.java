@@ -16,6 +16,7 @@ import com.azure.search.documents.indexes.models.ScoringProfile;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchResourceEncryptionKey;
 import com.azure.search.documents.indexes.models.SearchSuggester;
+import com.azure.search.documents.indexes.models.SemanticSettings;
 import com.azure.search.documents.indexes.models.SimilarityAlgorithm;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
@@ -114,6 +115,13 @@ public final class SearchIndex {
      */
     @JsonProperty(value = "similarity")
     private SimilarityAlgorithm similarity;
+
+    /*
+     * Defines parameters for a search index that influence semantic
+     * capabilities.
+     */
+    @JsonProperty(value = "semantic")
+    private SemanticSettings semanticSettings;
 
     /*
      * The ETag of the index.
@@ -398,6 +406,26 @@ public final class SearchIndex {
      */
     public SearchIndex setSimilarity(SimilarityAlgorithm similarity) {
         this.similarity = similarity;
+        return this;
+    }
+
+    /**
+     * Get the semanticSettings property: Defines parameters for a search index that influence semantic capabilities.
+     *
+     * @return the semanticSettings value.
+     */
+    public SemanticSettings getSemanticSettings() {
+        return this.semanticSettings;
+    }
+
+    /**
+     * Set the semanticSettings property: Defines parameters for a search index that influence semantic capabilities.
+     *
+     * @param semanticSettings the semanticSettings value to set.
+     * @return the SearchIndex object itself.
+     */
+    public SearchIndex setSemanticSettings(SemanticSettings semanticSettings) {
+        this.semanticSettings = semanticSettings;
         return this;
     }
 

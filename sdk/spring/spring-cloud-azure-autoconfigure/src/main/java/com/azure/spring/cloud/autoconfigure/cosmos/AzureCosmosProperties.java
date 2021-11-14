@@ -17,7 +17,6 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Pattern;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +35,6 @@ public class AzureCosmosProperties extends AbstractAzureServiceCP implements Cos
     private final ClientProperties client = new ClientProperties();
 
     @NotEmpty
-    @Pattern(regexp = "http[s]{0,1}://.*.documents.azure.com.*")
     private String endpoint;
 
     private String key;

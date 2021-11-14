@@ -90,6 +90,7 @@ public interface AsyncDocumentClient {
         boolean transportClientSharing;
         boolean contentResponseOnWriteEnabled;
         private CosmosClientMetadataCachesSnapshot state;
+        private ApiType apiType;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {
@@ -102,6 +103,11 @@ public interface AsyncDocumentClient {
 
         public Builder withState(CosmosClientMetadataCachesSnapshot state) {
             this.state = state;
+            return this;
+        }
+
+        public Builder withApiType(ApiType apiType) {
+            this.apiType = apiType;
             return this;
         }
 
@@ -232,7 +238,8 @@ public interface AsyncDocumentClient {
                 sessionCapturingOverride,
                 transportClientSharing,
                 contentResponseOnWriteEnabled,
-                state);
+                state,
+                apiType);
 
             client.init(state, null);
             return client;

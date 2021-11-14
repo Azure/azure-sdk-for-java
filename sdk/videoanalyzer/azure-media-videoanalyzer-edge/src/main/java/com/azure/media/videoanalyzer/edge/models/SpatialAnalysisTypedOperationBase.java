@@ -40,16 +40,34 @@ public class SpatialAnalysisTypedOperationBase extends SpatialAnalysisOperationB
     private String debug;
 
     /*
+     * Advanced calibration configuration.
+     */
+    @JsonProperty(value = "calibrationConfiguration")
+    private String calibrationConfiguration;
+
+    /*
      * Advanced camera configuration.
      */
     @JsonProperty(value = "cameraConfiguration")
     private String cameraConfiguration;
 
     /*
+     * Advanced camera calibrator configuration.
+     */
+    @JsonProperty(value = "cameraCalibratorNodeConfiguration")
+    private String cameraCalibratorNodeConfiguration;
+
+    /*
      * Advanced detector node configuration.
      */
     @JsonProperty(value = "detectorNodeConfiguration")
     private String detectorNodeConfiguration;
+
+    /*
+     * Advanced tracker node configuration.
+     */
+    @JsonProperty(value = "trackerNodeConfiguration")
+    private String trackerNodeConfiguration;
 
     /*
      * If set to 'true', enables face mask detection for this operation.
@@ -78,6 +96,26 @@ public class SpatialAnalysisTypedOperationBase extends SpatialAnalysisOperationB
     }
 
     /**
+     * Get the calibrationConfiguration property: Advanced calibration configuration.
+     *
+     * @return the calibrationConfiguration value.
+     */
+    public String getCalibrationConfiguration() {
+        return this.calibrationConfiguration;
+    }
+
+    /**
+     * Set the calibrationConfiguration property: Advanced calibration configuration.
+     *
+     * @param calibrationConfiguration the calibrationConfiguration value to set.
+     * @return the SpatialAnalysisTypedOperationBase object itself.
+     */
+    public SpatialAnalysisTypedOperationBase setCalibrationConfiguration(String calibrationConfiguration) {
+        this.calibrationConfiguration = calibrationConfiguration;
+        return this;
+    }
+
+    /**
      * Get the cameraConfiguration property: Advanced camera configuration.
      *
      * @return the cameraConfiguration value.
@@ -98,6 +136,27 @@ public class SpatialAnalysisTypedOperationBase extends SpatialAnalysisOperationB
     }
 
     /**
+     * Get the cameraCalibratorNodeConfiguration property: Advanced camera calibrator configuration.
+     *
+     * @return the cameraCalibratorNodeConfiguration value.
+     */
+    public String getCameraCalibratorNodeConfiguration() {
+        return this.cameraCalibratorNodeConfiguration;
+    }
+
+    /**
+     * Set the cameraCalibratorNodeConfiguration property: Advanced camera calibrator configuration.
+     *
+     * @param cameraCalibratorNodeConfiguration the cameraCalibratorNodeConfiguration value to set.
+     * @return the SpatialAnalysisTypedOperationBase object itself.
+     */
+    public SpatialAnalysisTypedOperationBase setCameraCalibratorNodeConfiguration(
+            String cameraCalibratorNodeConfiguration) {
+        this.cameraCalibratorNodeConfiguration = cameraCalibratorNodeConfiguration;
+        return this;
+    }
+
+    /**
      * Get the detectorNodeConfiguration property: Advanced detector node configuration.
      *
      * @return the detectorNodeConfiguration value.
@@ -114,6 +173,26 @@ public class SpatialAnalysisTypedOperationBase extends SpatialAnalysisOperationB
      */
     public SpatialAnalysisTypedOperationBase setDetectorNodeConfiguration(String detectorNodeConfiguration) {
         this.detectorNodeConfiguration = detectorNodeConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the trackerNodeConfiguration property: Advanced tracker node configuration.
+     *
+     * @return the trackerNodeConfiguration value.
+     */
+    public String getTrackerNodeConfiguration() {
+        return this.trackerNodeConfiguration;
+    }
+
+    /**
+     * Set the trackerNodeConfiguration property: Advanced tracker node configuration.
+     *
+     * @param trackerNodeConfiguration the trackerNodeConfiguration value to set.
+     * @return the SpatialAnalysisTypedOperationBase object itself.
+     */
+    public SpatialAnalysisTypedOperationBase setTrackerNodeConfiguration(String trackerNodeConfiguration) {
+        this.trackerNodeConfiguration = trackerNodeConfiguration;
         return this;
     }
 

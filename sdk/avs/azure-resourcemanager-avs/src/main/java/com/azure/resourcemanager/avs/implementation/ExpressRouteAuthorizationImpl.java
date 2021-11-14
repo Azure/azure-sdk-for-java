@@ -39,6 +39,10 @@ public final class ExpressRouteAuthorizationImpl
         return this.innerModel().expressRouteAuthorizationKey();
     }
 
+    public String expressRouteId() {
+        return this.innerModel().expressRouteId();
+    }
+
     public ExpressRouteAuthorizationInner innerModel() {
         return this.innerObject;
     }
