@@ -1,5 +1,9 @@
 ## Release History
 
+### 4.18.1 (2021-11-14)
+#### Key Bug Fixes
+* Fixed an issue in `ChangeFeedProcessor` where processing stops in some rare cases because of a race condition can occur which prevents work to be promptly assigned to other instances.
+
 ### 4.18.0 (2021-08-16)
 #### New Features
 * Integrated cosmos diagnostics with open telemetry tracer.
