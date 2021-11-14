@@ -22,11 +22,23 @@ import com.azure.monitor.query.implementation.metricsnamespaces.MetricsNamespace
  *
  * <p><strong>Instantiating an asynchronous Metrics query Client</strong></p>
  *
- * {@codesnippet com.azure.monitor.query.MetricsQueryAsyncClient.instantiation}
+ * <!-- src_embed com.azure.monitor.query.MetricsQueryAsyncClient.instantiation -->
+ * <pre>
+ * MetricsQueryAsyncClient metricsQueryAsyncClient = new MetricsQueryClientBuilder&#40;&#41;
+ *         .credential&#40;tokenCredential&#41;
+ *         .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.monitor.query.MetricsQueryAsyncClient.instantiation -->
  *
  * <p><strong>Instantiating a synchronous Metrics query Client</strong></p>
  *
- * {@codesnippet com.azure.monitor.query.MetricsQueryClient.instantiation}
+ * <!-- src_embed com.azure.monitor.query.MetricsQueryClient.instantiation -->
+ * <pre>
+ * MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder&#40;&#41;
+ *         .credential&#40;tokenCredential&#41;
+ *         .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.monitor.query.MetricsQueryClient.instantiation -->
  */
 @ServiceClientBuilder(serviceClients = {MetricsQueryClient.class, MetricsQueryAsyncClient.class})
 public final class MetricsQueryClientBuilder {

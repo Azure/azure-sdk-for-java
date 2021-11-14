@@ -15,6 +15,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import javax.jms.ConnectionFactory;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 import static com.azure.spring.core.AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS;
 import static com.azure.spring.core.AzureSpringIdentifier.VERSION;
@@ -41,14 +43,33 @@ public class PremiumServiceBusJmsAutoConfiguration extends AbstractServiceBusJms
         final int idleTimeout = serviceBusJMSProperties.getIdleTimeout();
 
         ServiceBusJmsConnectionFactorySettings settings =
-            new ServiceBusJmsConnectionFactorySettings(idleTimeout, false);
+            new ServiceBusJmsConnectionFactorySettings(new LinkedHashMap<>());
+        settings.setConnectionIdleTimeoutMS(idleTimeout);
+        settings.setTraceFrames(false);
         settings.setShouldReconnect(false);
+        configurePrefetch(serviceBusJMSProperties, settings.getConfigurationOptions());
+
         SpringServiceBusJmsConnectionFactory springServiceBusJmsConnectionFactory =
             new SpringServiceBusJmsConnectionFactory(connectionString, settings);
         springServiceBusJmsConnectionFactory.setClientId(clientId);
         springServiceBusJmsConnectionFactory.setCustomUserAgent(AZURE_SPRING_SERVICE_BUS + VERSION);
 
         return springServiceBusJmsConnectionFactory;
+    }
+
+    private void configurePrefetch(AzureServiceBusJmsProperties serviceBusJMSProperties,
+                                   Map<String, String> configurationOptions) {
+        AzureServiceBusJmsProperties.PrefetchPolicy prefetchPolicy = serviceBusJMSProperties.getPrefetchPolicy();
+        int prefetchPolicyAll = prefetchPolicy.getAll();
+        int durableTopicPrefetch = prefetchPolicy.getDurableTopicPrefetch();
+        int queueBrowserPrefetch = prefetchPolicy.getQueueBrowserPrefetch();
+        int queuePrefetch = prefetchPolicy.getQueuePrefetch();
+        int topicPrefetch = prefetchPolicy.getTopicPrefetch();
+        configurationOptions.put("jms.prefetchPolicy.all", String.valueOf(prefetchPolicyAll));
+        configurationOptions.put("jms.prefetchPolicy.durableTopicPrefetch", String.valueOf(durableTopicPrefetch));
+        configurationOptions.put("jms.prefetchPolicy.queueBrowserPrefetch", String.valueOf(queueBrowserPrefetch));
+        configurationOptions.put("jms.prefetchPolicy.queuePrefetch", String.valueOf(queuePrefetch));
+        configurationOptions.put("jms.prefetchPolicy.topicPrefetch", String.valueOf(topicPrefetch));
     }
 
 }

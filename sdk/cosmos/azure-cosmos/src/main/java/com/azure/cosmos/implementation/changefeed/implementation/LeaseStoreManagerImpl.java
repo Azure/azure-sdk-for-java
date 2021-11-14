@@ -314,7 +314,11 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                 this.requestOptionsFactory.createItemRequestOptions(lease),
                 serverLease ->
                 {
-                    if (serverLease.getOwner() != null && !serverLease.getOwner().equalsIgnoreCase(lease.getOwner())) {
+                    if (serverLease.getOwner() == null) {
+                        logger.info("Partition {} lease was taken over and released by a different owner", lease.getLeaseToken());
+                        throw new LeaseLostException(lease);
+                    }
+                    else if (!serverLease.getOwner().equalsIgnoreCase(lease.getOwner())) {
                         logger.info("Partition {} lease was taken over by owner '{}'", lease.getLeaseToken(), serverLease.getOwner());
                         throw new LeaseLostException(lease);
                     }
@@ -370,7 +374,11 @@ public class LeaseStoreManagerImpl implements LeaseStoreManager, LeaseStoreManag
                 lease.getId(), new PartitionKey(lease.getId()),
                 this.requestOptionsFactory.createItemRequestOptions(lease),
                 serverLease -> {
-                    if (serverLease.getOwner() != null && !serverLease.getOwner().equalsIgnoreCase(lease.getOwner())) {
+                    if (serverLease.getOwner() == null) {
+                        logger.info("Partition {} lease was taken over and released by a different owner", lease.getLeaseToken());
+                        throw new LeaseLostException(lease);
+                    }
+                    else if (!serverLease.getOwner().equalsIgnoreCase(lease.getOwner())) {
                         logger.info("Partition {} lease was taken over by owner '{}'", lease.getLeaseToken(), serverLease.getOwner());
                         throw new LeaseLostException(lease);
                     }

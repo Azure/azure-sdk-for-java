@@ -38,7 +38,7 @@ public class SpyClientUnderTestFactory {
 
             super(serviceEndpoint, masterKeyOrResourceToken, connectionPolicy, consistencyLevel, configs, credential,
                 null, false, false,
-                contentResponseOnWriteEnabled, null);
+                contentResponseOnWriteEnabled, null, null);
         }
 
         public abstract List<T> getCapturedRequests();

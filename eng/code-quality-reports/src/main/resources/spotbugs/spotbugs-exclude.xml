@@ -1268,10 +1268,10 @@
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
-  <!-- DocumentAnalysisException fields re serializable -->
+  <!-- DocumentModelOperationException fields re serializable -->
   <Match>
-    <Class name="com.azure.ai.formrecognizer.models.DocumentAnalysisException"/>
-    <Field name="errorInformation"/>
+    <Class name="com.azure.ai.formrecognizer.models.DocumentModelOperationException"/>
+    <Field name="documentModelOperationError"/>
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
@@ -1307,6 +1307,13 @@
   <Match>
     <Class name="com.azure.cosmos.implementation.ClientSideRequestStatistics$ClientSideRequestStatisticsSerializer"/>
     <Method name="serialize"/>
+    <Bug pattern="REC_CATCH_EXCEPTION"/>
+  </Match>
+
+    <!-- Exception is required to handle when getting java version  -->
+  <Match>
+    <Class name="com.azure.cosmos.implementation.Utils"/>
+    <Method name="getJavaVersion"/>
     <Bug pattern="REC_CATCH_EXCEPTION"/>
   </Match>
 
@@ -1880,6 +1887,13 @@
   <Match>
     <Class name="com.azure.cosmos.implementation.ClientSideRequestStatistics$ClientSideRequestStatisticsSerializer"/>
     <Method name="serialize"/>
+    <Bug pattern="DE_MIGHT_IGNORE"/>
+  </Match>
+
+  <!-- Exception in AutoCloseable.close is ignored -->
+  <Match>
+    <Class name="com.azure.core.tracing.opentelemetry.OpenTelemetryHttpPolicy$ScalarPropagatingMono"/>
+    <Method name="subscribe"/>
     <Bug pattern="DE_MIGHT_IGNORE"/>
   </Match>
 

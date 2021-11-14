@@ -186,9 +186,9 @@ public interface DiagnosticsClientContext {
             if (this.httpClientConfig == null) {
                 return null;
             }
-            return Strings.lenientFormat("(cps:%s, rto:%s, icto:%s, p:%s)",
+            return Strings.lenientFormat("(cps:%s, nrto:%s, icto:%s, p:%s)",
                 this.httpClientConfig.getMaxPoolSize(),
-                this.httpClientConfig.getRequestTimeout(),
+                this.httpClientConfig.getNetworkRequestTimeout(),
                 this.httpClientConfig.getMaxIdleConnectionTimeout(),
                 this.httpClientConfig.getProxy() != null);
         }
@@ -197,9 +197,9 @@ public interface DiagnosticsClientContext {
             if (rntbdOptions == null) {
                 return null;
             }
-            return Strings.lenientFormat("(cto:%s, rto:%s, icto:%s, ieto:%s, mcpe:%s, mrpc:%s, cer:%s)",
+            return Strings.lenientFormat("(cto:%s, nrto:%s, icto:%s, ieto:%s, mcpe:%s, mrpc:%s, cer:%s)",
                 rntbdOptions.connectTimeout(),
-                rntbdOptions.requestTimeout(),
+                rntbdOptions.tcpNetworkRequestTimeout(),
                 rntbdOptions.idleChannelTimeout(),
                 rntbdOptions.idleEndpointTimeout(),
                 rntbdOptions.maxChannelsPerEndpoint(),

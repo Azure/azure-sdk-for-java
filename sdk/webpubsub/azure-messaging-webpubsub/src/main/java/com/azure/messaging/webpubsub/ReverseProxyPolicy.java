@@ -16,7 +16,7 @@ import java.net.URL;
 /**
  * The reverse proxy policy.
  */
-public final class ReverseProxyPolicy implements HttpPipelinePolicy {
+final class ReverseProxyPolicy implements HttpPipelinePolicy {
 
     private final String reverseProxyEndpoint;
 
@@ -25,7 +25,7 @@ public final class ReverseProxyPolicy implements HttpPipelinePolicy {
      *
      * @param reverseProxyEndpoint The reverse proxy endpoint.
      */
-    public ReverseProxyPolicy(String reverseProxyEndpoint) {
+    ReverseProxyPolicy(String reverseProxyEndpoint) {
         this.reverseProxyEndpoint = reverseProxyEndpoint;
     }
 

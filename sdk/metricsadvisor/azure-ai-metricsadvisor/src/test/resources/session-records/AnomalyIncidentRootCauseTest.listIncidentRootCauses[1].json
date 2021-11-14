@@ -1,22 +1,22 @@
 {
   "networkCallRecords" : [ {
     "Method" : "GET",
-    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/fb5a6ed6-2b9e-4b72-8b0c-0046ead1c15c/incidents/2583ff47fef9174e6d6bfe73415ad914-174d2024c00/rootCause",
+    "Uri" : "https://REDACTED.cognitiveservices.azure.com/metricsadvisor/v1.0/enrichment/anomalyDetection/configurations/efaee305-f049-43ec-9f9b-76026d55c14a/incidents/aee0225fd93cfe42ec4acd365613c857-17bb8679000/rootCause",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.0.0-beta.5 (11.0.11; Mac OS X; 11.4)",
-      "x-ms-client-request-id" : "1870ee8c-c5c3-4b37-911c-947329b9e4b8"
+      "User-Agent" : "azsdk-java-azure-ai-metricsadvisor/1.1.0-beta.1 (11.0.9; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "831b4e80-68ff-4c16-b8e9-eed28efc2531"
     },
     "Response" : {
-      "x-request-id" : "49aa12e8-0e1e-4bc0-9270-26ccb7fa3ac3",
-      "content-length" : "259",
-      "x-envoy-upstream-service-time" : "5627",
+      "x-request-id" : "2b493dc5-0a93-4594-9557-f239fc322192",
+      "content-length" : "239",
+      "x-envoy-upstream-service-time" : "2932",
       "Strict-Transport-Security" : "max-age=31536000; includeSubDomains; preload",
       "x-content-type-options" : "nosniff",
-      "apim-request-id" : "49aa12e8-0e1e-4bc0-9270-26ccb7fa3ac3",
+      "apim-request-id" : "2b493dc5-0a93-4594-9557-f239fc322192",
       "retry-after" : "0",
       "StatusCode" : "200",
-      "Body" : "{\"value\":[{\"rootCause\":{\"dimension\":{\"category\":\"Electronics (Consumer)\",\"city\":\"Karachi\"}},\"path\":[\"city\"],\"score\":0.34265262137636504,\"description\":\"Increase on category = Electronics (Consumer) | city = Karachi contributes the most to current incident.\"}]}",
-      "Date" : "Tue, 06 Jul 2021 19:51:00 GMT",
+      "Body" : "{\"value\":[{\"rootCause\":{\"dimension\":{\"region\":\"Beijing\",\"category\":\"Handmade\"}},\"path\":[\"category\"],\"score\":0.05937581364487382,\"description\":\"Increase on region = Beijing | category = Handmade contributes the most to current incident.\"}]}",
+      "Date" : "Thu, 28 Oct 2021 22:36:19 GMT",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Exception" : null

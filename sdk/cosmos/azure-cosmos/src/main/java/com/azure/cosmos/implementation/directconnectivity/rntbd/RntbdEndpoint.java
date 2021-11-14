@@ -191,8 +191,8 @@ public interface RntbdEndpoint extends AutoCloseable {
         }
 
         @JsonProperty
-        public long requestTimeoutInNanos() {
-            return this.options.requestTimeout().toNanos();
+        public long tcpNetworkRequestTimeoutInNanos() {
+            return this.options.tcpNetworkRequestTimeout().toNanos();
         }
 
         @JsonProperty
@@ -227,6 +227,15 @@ public interface RntbdEndpoint extends AutoCloseable {
 
         @JsonProperty
         public boolean isChannelAcquisitionContextEnabled() { return this.options.isChannelAcquisitionContextEnabled(); }
+
+        @JsonProperty
+        public int tcpKeepIntvl() { return this.options.tcpKeepIntvl(); }
+
+        @JsonProperty
+        public int tcpKeepIdle() { return this.options.tcpKeepIdle(); }
+
+        @JsonProperty
+        public boolean preferTcpNative() { return this.options.preferTcpNative(); }
 
         @Override
         public String toString() {

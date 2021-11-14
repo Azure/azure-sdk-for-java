@@ -23,7 +23,7 @@ public class MethodRequest {
 
     /** Creates an instance of MethodRequest class. */
     public MethodRequest() {
-        apiVersion = "1.0";
+        apiVersion = "1.1";
     }
 
     /**
@@ -38,8 +38,8 @@ public class MethodRequest {
     /**
      * Get the payload as JSON: the serialized form of the request body
      *
-     * @throws UnsupportedEncodingException UnsupportedEncodingException
      * @return the payload as JSON
+     * @throws UnsupportedEncodingException UnsupportedEncodingException UnsupportedEncodingException
      */
     @JsonIgnore
     public String getPayloadAsJson() throws UnsupportedEncodingException {
