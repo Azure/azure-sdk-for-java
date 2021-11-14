@@ -171,12 +171,12 @@ communicationIdentityClient.deleteUser(user);
 ```
 
 ### Exchanging AAD access token of a Teams User for a Communication Identity access token
-Use the `exchangeTeamsUserAadToken` function to exchanges an AAD access token of a Teams User for a new Communication Identity access token.
+Use the `getTokenForTeamsUser` function to exchanges an AAD access token of a Teams User for a new Communication Identity access token.
 
 <!-- embedme ./src/samples/java/com/azure/communication/identity/ReadmeSamples.java#L139-L146 -->
 ```java
 // exchanges an AAD access token of a Teams User for a new Communication Identity access token.
-communicationIdentityClient.exchangeTeamsUserAadToken(teamsUserAadToken);
+communicationIdentityClient.getTokenForTeamsUser(teamsUserAadToken);
 ```
 
 ## Troubleshooting

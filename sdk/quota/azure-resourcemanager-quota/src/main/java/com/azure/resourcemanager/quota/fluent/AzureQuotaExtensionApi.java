@@ -59,9 +59,9 @@ public interface AzureQuotaExtensionApi {
     QuotaRequestStatusClient getQuotaRequestStatus();
 
     /**
-     * Gets the OperationsClient object to access its operations.
+     * Gets the QuotaOperationsClient object to access its operations.
      *
-     * @return the OperationsClient object.
+     * @return the QuotaOperationsClient object.
      */
-    OperationsClient getOperations();
+    QuotaOperationsClient getQuotaOperations();
 }

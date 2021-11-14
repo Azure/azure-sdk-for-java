@@ -8,6 +8,7 @@ import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
@@ -61,7 +62,7 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
     @Host("{$host}")
     @ServiceInterface(name = "EventHubManagementCl")
     private interface ConsumerGroupsService {
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Put(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces"
                 + "/{namespaceName}/eventhubs/{eventHubName}/consumergroups/{consumerGroupName}")
@@ -76,9 +77,10 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") ConsumerGroupInner parameters,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Delete(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces"
                 + "/{namespaceName}/eventhubs/{eventHubName}/consumergroups/{consumerGroupName}")
@@ -92,9 +94,10 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
             @PathParam("consumerGroupName") String consumerGroupName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces"
                 + "/{namespaceName}/eventhubs/{eventHubName}/consumergroups/{consumerGroupName}")
@@ -108,9 +111,10 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
             @PathParam("consumerGroupName") String consumerGroupName,
             @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get(
             "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventHub/namespaces"
                 + "/{namespaceName}/eventhubs/{eventHubName}/consumergroups")
@@ -125,14 +129,18 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
             @PathParam("subscriptionId") String subscriptionId,
             @QueryParam("$skip") Integer skip,
             @QueryParam("$top") Integer top,
+            @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Accept: application/json", "Content-Type: application/json"})
+        @Headers({"Content-Type: application/json"})
         @Get("{nextLink}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<ConsumerGroupListResult>> listByEventHubNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink, Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept,
+            Context context);
     }
 
     /**
@@ -142,9 +150,7 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
      * @param namespaceName The Namespace name.
      * @param eventHubName The Event Hub name.
      * @param consumerGroupName The consumer group name.
-     * @param userMetadata User Metadata is a placeholder to store user-defined string data with maximum length 1024.
-     *     e.g. it can be used to store descriptive data, such as list of teams and their contact information also
-     *     user-defined configuration settings can be stored.
+     * @param parameters Parameters supplied to create or update a consumer group resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -156,7 +162,7 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
         String namespaceName,
         String eventHubName,
         String consumerGroupName,
-        String userMetadata) {
+        ConsumerGroupInner parameters) {
         if (this.client.getEndpoint() == null) {
             return Mono
                 .error(
@@ -183,8 +189,12 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        ConsumerGroupInner parameters = new ConsumerGroupInner();
-        parameters.withUserMetadata(userMetadata);
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -198,8 +208,9 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
                             parameters,
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -209,9 +220,7 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
      * @param namespaceName The Namespace name.
      * @param eventHubName The Event Hub name.
      * @param consumerGroupName The consumer group name.
-     * @param userMetadata User Metadata is a placeholder to store user-defined string data with maximum length 1024.
-     *     e.g. it can be used to store descriptive data, such as list of teams and their contact information also
-     *     user-defined configuration settings can be stored.
+     * @param parameters Parameters supplied to create or update a consumer group resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -224,7 +233,7 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
         String namespaceName,
         String eventHubName,
         String consumerGroupName,
-        String userMetadata,
+        ConsumerGroupInner parameters,
         Context context) {
         if (this.client.getEndpoint() == null) {
             return Mono
@@ -252,8 +261,12 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
-        ConsumerGroupInner parameters = new ConsumerGroupInner();
-        parameters.withUserMetadata(userMetadata);
+        if (parameters == null) {
+            return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
+        } else {
+            parameters.validate();
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .createOrUpdate(
@@ -265,6 +278,7 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
                 parameters,
+                accept,
                 context);
     }
 
@@ -275,9 +289,7 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
      * @param namespaceName The Namespace name.
      * @param eventHubName The Event Hub name.
      * @param consumerGroupName The consumer group name.
-     * @param userMetadata User Metadata is a placeholder to store user-defined string data with maximum length 1024.
-     *     e.g. it can be used to store descriptive data, such as list of teams and their contact information also
-     *     user-defined configuration settings can be stored.
+     * @param parameters Parameters supplied to create or update a consumer group resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -289,9 +301,9 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
         String namespaceName,
         String eventHubName,
         String consumerGroupName,
-        String userMetadata) {
+        ConsumerGroupInner parameters) {
         return createOrUpdateWithResponseAsync(
-                resourceGroupName, namespaceName, eventHubName, consumerGroupName, userMetadata)
+                resourceGroupName, namespaceName, eventHubName, consumerGroupName, parameters)
             .flatMap(
                 (Response<ConsumerGroupInner> res) -> {
                     if (res.getValue() != null) {
@@ -309,34 +321,7 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
      * @param namespaceName The Namespace name.
      * @param eventHubName The Event Hub name.
      * @param consumerGroupName The consumer group name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return single item in List or Get Consumer group operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<ConsumerGroupInner> createOrUpdateAsync(
-        String resourceGroupName, String namespaceName, String eventHubName, String consumerGroupName) {
-        final String userMetadata = null;
-        return createOrUpdateWithResponseAsync(
-                resourceGroupName, namespaceName, eventHubName, consumerGroupName, userMetadata)
-            .flatMap(
-                (Response<ConsumerGroupInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
-    }
-
-    /**
-     * Creates or updates an Event Hubs consumer group as a nested resource within a Namespace.
-     *
-     * @param resourceGroupName Name of the resource group within the azure subscription.
-     * @param namespaceName The Namespace name.
-     * @param eventHubName The Event Hub name.
-     * @param consumerGroupName The consumer group name.
+     * @param parameters Parameters supplied to create or update a consumer group resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -344,9 +329,12 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ConsumerGroupInner createOrUpdate(
-        String resourceGroupName, String namespaceName, String eventHubName, String consumerGroupName) {
-        final String userMetadata = null;
-        return createOrUpdateAsync(resourceGroupName, namespaceName, eventHubName, consumerGroupName, userMetadata)
+        String resourceGroupName,
+        String namespaceName,
+        String eventHubName,
+        String consumerGroupName,
+        ConsumerGroupInner parameters) {
+        return createOrUpdateAsync(resourceGroupName, namespaceName, eventHubName, consumerGroupName, parameters)
             .block();
     }
 
@@ -357,9 +345,7 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
      * @param namespaceName The Namespace name.
      * @param eventHubName The Event Hub name.
      * @param consumerGroupName The consumer group name.
-     * @param userMetadata User Metadata is a placeholder to store user-defined string data with maximum length 1024.
-     *     e.g. it can be used to store descriptive data, such as list of teams and their contact information also
-     *     user-defined configuration settings can be stored.
+     * @param parameters Parameters supplied to create or update a consumer group resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -372,10 +358,10 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
         String namespaceName,
         String eventHubName,
         String consumerGroupName,
-        String userMetadata,
+        ConsumerGroupInner parameters,
         Context context) {
         return createOrUpdateWithResponseAsync(
-                resourceGroupName, namespaceName, eventHubName, consumerGroupName, userMetadata, context)
+                resourceGroupName, namespaceName, eventHubName, consumerGroupName, parameters, context)
             .block();
     }
 
@@ -420,6 +406,7 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -432,8 +419,9 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
                             consumerGroupName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -482,6 +470,7 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .delete(
@@ -492,6 +481,7 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
                 consumerGroupName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -595,6 +585,7 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -607,8 +598,9 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
                             consumerGroupName,
                             this.client.getApiVersion(),
                             this.client.getSubscriptionId(),
+                            accept,
                             context))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -657,6 +649,7 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .get(
@@ -667,6 +660,7 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
                 consumerGroupName,
                 this.client.getApiVersion(),
                 this.client.getSubscriptionId(),
+                accept,
                 context);
     }
 
@@ -778,6 +772,7 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context ->
@@ -791,6 +786,7 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
                             this.client.getSubscriptionId(),
                             skip,
                             top,
+                            accept,
                             context))
             .<PagedResponse<ConsumerGroupInner>>map(
                 res ->
@@ -801,7 +797,7 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -851,6 +847,7 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
                     new IllegalArgumentException(
                         "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listByEventHub(
@@ -862,6 +859,7 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
                 this.client.getSubscriptionId(),
                 skip,
                 top,
+                accept,
                 context)
             .map(
                 res ->
@@ -957,6 +955,26 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
      * @param resourceGroupName Name of the resource group within the azure subscription.
      * @param namespaceName The Namespace name.
      * @param eventHubName The Event Hub name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all the consumer groups in a Namespace.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ConsumerGroupInner> listByEventHub(
+        String resourceGroupName, String namespaceName, String eventHubName) {
+        final Integer skip = null;
+        final Integer top = null;
+        return new PagedIterable<>(listByEventHubAsync(resourceGroupName, namespaceName, eventHubName, skip, top));
+    }
+
+    /**
+     * Gets all the consumer groups in a Namespace. An empty feed is returned if no consumer group exists in the
+     * Namespace.
+     *
+     * @param resourceGroupName Name of the resource group within the azure subscription.
+     * @param namespaceName The Namespace name.
+     * @param eventHubName The Event Hub name.
      * @param skip Skip is only used if a previous operation returned a partial result. If a previous response contains
      *     a nextLink element, the value of the nextLink element will include a skip parameter that specifies a starting
      *     point to use for subsequent calls.
@@ -980,26 +998,6 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
     }
 
     /**
-     * Gets all the consumer groups in a Namespace. An empty feed is returned if no consumer group exists in the
-     * Namespace.
-     *
-     * @param resourceGroupName Name of the resource group within the azure subscription.
-     * @param namespaceName The Namespace name.
-     * @param eventHubName The Event Hub name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return all the consumer groups in a Namespace.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<ConsumerGroupInner> listByEventHub(
-        String resourceGroupName, String namespaceName, String eventHubName) {
-        final Integer skip = null;
-        final Integer top = null;
-        return new PagedIterable<>(listByEventHubAsync(resourceGroupName, namespaceName, eventHubName, skip, top));
-    }
-
-    /**
      * Get the next page of items.
      *
      * @param nextLink The nextLink parameter.
@@ -1013,8 +1011,15 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         return FluxUtil
-            .withContext(context -> service.listByEventHubNext(nextLink, context))
+            .withContext(context -> service.listByEventHubNext(nextLink, this.client.getEndpoint(), accept, context))
             .<PagedResponse<ConsumerGroupInner>>map(
                 res ->
                     new PagedResponseBase<>(
@@ -1024,7 +1029,7 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
                         res.getValue().value(),
                         res.getValue().nextLink(),
                         null))
-            .subscriberContext(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext())));
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
@@ -1043,9 +1048,16 @@ public final class ConsumerGroupsClientImpl implements ConsumerGroupsClient {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
+        if (this.client.getEndpoint() == null) {
+            return Mono
+                .error(
+                    new IllegalArgumentException(
+                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByEventHubNext(nextLink, context)
+            .listByEventHubNext(nextLink, this.client.getEndpoint(), accept, context)
             .map(
                 res ->
                     new PagedResponseBase<>(

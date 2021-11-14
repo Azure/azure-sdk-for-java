@@ -144,6 +144,20 @@ public final class VideoEntityInner extends ProxyResource {
     }
 
     /**
+     * Set the mediaInfo property: Contains information about the video and audio content.
+     *
+     * @param mediaInfo the mediaInfo value to set.
+     * @return the VideoEntityInner object itself.
+     */
+    public VideoEntityInner withMediaInfo(VideoMediaInfo mediaInfo) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new VideoProperties();
+        }
+        this.innerProperties().withMediaInfo(mediaInfo);
+        return this;
+    }
+
+    /**
      * Get the archival property: Video archival properties.
      *
      * @return the archival value.

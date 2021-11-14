@@ -122,7 +122,7 @@ String schemaContent = "{\n"
 SchemaProperties schemaProperties = schemaRegistryClient.registerSchema("{schema-group}", "{schema-name}",
     schemaContent, SchemaFormat.AVRO);
 
-System.out.println("Registered schema: " + schemaProperties.getSchemaId());
+System.out.println("Registered schema: " + schemaProperties.getId());
 ```
 
 ### Retrieve a schema's properties
@@ -139,8 +139,8 @@ SchemaRegistryClient schemaRegistryClient = new SchemaRegistryClientBuilder()
 
 SchemaRegistrySchema schema = schemaRegistryClient.getSchema("{schema-id}");
 
-System.out.printf("Retrieved schema: '%s'. Contents: %s%n", schema.getProperties().getSchemaId(),
-    schema.getSchemaDefinition());
+System.out.printf("Retrieved schema: '%s'. Contents: %s%n", schema.getProperties().getId(),
+    schema.getDefinition());
 ```
 
 ### Retrieve a schema
@@ -171,7 +171,7 @@ String schemaContent = "{\n"
 SchemaProperties properties = schemaRegistryClient.getSchemaProperties("{schema-group}", "{schema-name}",
     schemaContent, SchemaFormat.AVRO);
 
-System.out.println("Retrieved schema id: " + properties.getSchemaId());
+System.out.println("Retrieved schema id: " + properties.getId());
 ```
 
 ## Troubleshooting

@@ -115,13 +115,12 @@ public final class HealthApisImpl {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return service health status.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> getServiceStatusWithResponse(RequestOptions requestOptions, Context context) {
-        return getServiceStatusWithResponseAsync(requestOptions, context).block();
+    public Response<Void> getServiceStatusWithResponse(RequestOptions requestOptions) {
+        return getServiceStatusWithResponseAsync(requestOptions).block();
     }
 }
