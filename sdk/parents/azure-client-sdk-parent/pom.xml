@@ -105,7 +105,7 @@
     <build.context>azure-client-sdk-parent</build.context>
     <jacoco.min.linecoverage>0.40</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.30</jacoco.min.branchcoverage>
-    <jacoco.skip.coverage.check>false</jacoco.skip.coverage.check>
+    <jacoco.skip>false</jacoco.skip>
 
     <!-- This property determines the relative path from a pom.xml to the eng/ folder. -->
     <relative.path.to.eng.folder>../../..</relative.path.to.eng.folder>
@@ -140,7 +140,7 @@
     <parallelizeTests>true</parallelizeTests>
 
     <!-- This property configures whether the codesnippet-maven-plugin should be used. -->
-    <skipNewCodesnippetTooling>true</skipNewCodesnippetTooling>
+    <codesnippet.skip>true</codesnippet.skip>
 
     <!-- These properties exist for libraries using the new codesnippet-maven-plugin can easily disable the old doclet. -->
     <javadocDoclet>org.apidesign.javadoc.codesnippet.Doclet</javadocDoclet>
@@ -214,7 +214,7 @@
         <artifactId>codesnippet-maven-plugin</artifactId>
         <version>1.0.0-beta.2</version> <!-- {x-version-update;com.azure.tools:codesnippet-maven-plugin;external_dependency} -->
         <configuration>
-          <skip>${skipNewCodesnippetTooling}</skip>
+          <skip>${codesnippet.skip}</skip>
         </configuration>
         <executions>
           <execution>
@@ -338,7 +338,7 @@
               <goal>check</goal>
             </goals>
             <configuration>
-              <skip>${jacoco.skip.coverage.check}</skip>
+              <skip>${jacoco.skip}</skip>
               <rules>
                 <rule>
                   <element>BUNDLE</element>

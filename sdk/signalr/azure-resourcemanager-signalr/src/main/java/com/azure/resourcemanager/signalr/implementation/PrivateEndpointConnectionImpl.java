@@ -10,6 +10,8 @@ import com.azure.resourcemanager.signalr.models.PrivateEndpoint;
 import com.azure.resourcemanager.signalr.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.signalr.models.PrivateLinkServiceConnectionState;
 import com.azure.resourcemanager.signalr.models.ProvisioningState;
+import java.util.Collections;
+import java.util.List;
 
 public final class PrivateEndpointConnectionImpl implements PrivateEndpointConnection {
     private PrivateEndpointConnectionInner innerObject;
@@ -44,6 +46,15 @@ public final class PrivateEndpointConnectionImpl implements PrivateEndpointConne
 
     public PrivateEndpoint privateEndpoint() {
         return this.innerModel().privateEndpoint();
+    }
+
+    public List<String> groupIds() {
+        List<String> inner = this.innerModel().groupIds();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner);
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public PrivateLinkServiceConnectionState privateLinkServiceConnectionState() {

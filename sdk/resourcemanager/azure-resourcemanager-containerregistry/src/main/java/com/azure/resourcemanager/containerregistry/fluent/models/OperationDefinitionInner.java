@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.containerregistry.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.containerregistry.models.OperationDisplayDefinition;
 import com.azure.resourcemanager.containerregistry.models.OperationServiceSpecificationDefinition;
@@ -13,9 +12,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The definition of a container registry operation. */
-@JsonFlatten
 @Fluent
-public class OperationDefinitionInner {
+public final class OperationDefinitionInner {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(OperationDefinitionInner.class);
 
     /*
@@ -37,10 +35,10 @@ public class OperationDefinitionInner {
     private OperationDisplayDefinition display;
 
     /*
-     * The definition of Azure Monitoring service.
+     * The properties information for the container registry operation.
      */
-    @JsonProperty(value = "properties.serviceSpecification")
-    private OperationServiceSpecificationDefinition serviceSpecification;
+    @JsonProperty(value = "properties")
+    private OperationPropertiesDefinition innerProperties;
 
     /**
      * Get the origin property: The origin information of the container registry operation.
@@ -103,12 +101,21 @@ public class OperationDefinitionInner {
     }
 
     /**
+     * Get the innerProperties property: The properties information for the container registry operation.
+     *
+     * @return the innerProperties value.
+     */
+    private OperationPropertiesDefinition innerProperties() {
+        return this.innerProperties;
+    }
+
+    /**
      * Get the serviceSpecification property: The definition of Azure Monitoring service.
      *
      * @return the serviceSpecification value.
      */
     public OperationServiceSpecificationDefinition serviceSpecification() {
-        return this.serviceSpecification;
+        return this.innerProperties() == null ? null : this.innerProperties().serviceSpecification();
     }
 
     /**
@@ -119,7 +126,10 @@ public class OperationDefinitionInner {
      */
     public OperationDefinitionInner withServiceSpecification(
         OperationServiceSpecificationDefinition serviceSpecification) {
-        this.serviceSpecification = serviceSpecification;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OperationPropertiesDefinition();
+        }
+        this.innerProperties().withServiceSpecification(serviceSpecification);
         return this;
     }
 
@@ -132,8 +142,8 @@ public class OperationDefinitionInner {
         if (display() != null) {
             display().validate();
         }
-        if (serviceSpecification() != null) {
-            serviceSpecification().validate();
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

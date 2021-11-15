@@ -11,6 +11,10 @@
 
 ### Other Changes
 
+## 2.10.0 (2021-11-02)
+### Features Added
+- Support batch consumers.
+
 ## 2.9.0 (2021-09-27)
 This release is compatible with Spring Boot 2.5.0 - 2.5.4 and Spring Cloud 2020.0.3.
 ### Dependency Upgrades

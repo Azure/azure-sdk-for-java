@@ -42,20 +42,6 @@ public final class PowerQuerySource extends DataFlowSource {
 
     /** {@inheritDoc} */
     @Override
-    public PowerQuerySource withDataset(DatasetReference dataset) {
-        super.withDataset(dataset);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public PowerQuerySource withLinkedService(LinkedServiceReference linkedService) {
-        super.withLinkedService(linkedService);
-        return this;
-    }
-
-    /** {@inheritDoc} */
-    @Override
     public PowerQuerySource withSchemaLinkedService(LinkedServiceReference schemaLinkedService) {
         super.withSchemaLinkedService(schemaLinkedService);
         return this;
@@ -72,6 +58,27 @@ public final class PowerQuerySource extends DataFlowSource {
     @Override
     public PowerQuerySource withDescription(String description) {
         super.withDescription(description);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PowerQuerySource withDataset(DatasetReference dataset) {
+        super.withDataset(dataset);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PowerQuerySource withLinkedService(LinkedServiceReference linkedService) {
+        super.withLinkedService(linkedService);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public PowerQuerySource withFlowlet(DataFlowReference flowlet) {
+        super.withFlowlet(flowlet);
         return this;
     }
 

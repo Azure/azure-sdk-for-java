@@ -36,7 +36,7 @@ public class CommonClusterProperties {
     /*
      * The hosts
      */
-    @JsonProperty(value = "hosts", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "hosts")
     private List<String> hosts;
 
     /**
@@ -84,6 +84,17 @@ public class CommonClusterProperties {
      */
     public List<String> hosts() {
         return this.hosts;
+    }
+
+    /**
+     * Set the hosts property: The hosts.
+     *
+     * @param hosts the hosts value to set.
+     * @return the CommonClusterProperties object itself.
+     */
+    public CommonClusterProperties withHosts(List<String> hosts) {
+        this.hosts = hosts;
+        return this;
     }
 
     /**

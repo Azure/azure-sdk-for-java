@@ -15,7 +15,7 @@ import io.opentelemetry.sdk.trace.SdkTracerProvider;
 import io.opentelemetry.sdk.trace.export.SimpleSpanProcessor;
 import reactor.util.context.Context;
 
-import static com.azure.core.util.tracing.Tracer.PARENT_SPAN_KEY;
+import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
 
 /**
  * Sample to demonstrate using {@link LoggingSpanExporter} to export telemetry events when asynchronously creating
@@ -67,7 +67,7 @@ public class AsyncListKeyVaultSecretsLoggingExporterSample {
 
         Span userParentSpan = TRACER.spanBuilder("user-parent-span").startSpan();
 
-        Context traceContext = Context.of(PARENT_SPAN_KEY, Span.current());
+        Context traceContext = Context.of(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.current().with(userParentSpan));
 
         secretAsyncClient.setSecret(new KeyVaultSecret("Secret1", "password1"))
             .contextWrite(traceContext)

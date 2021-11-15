@@ -234,6 +234,16 @@ public final class NetworkInterfaceInner extends Resource {
     }
 
     /**
+     * Get the vnetEncryptionSupported property: Whether the virtual machine this nic is attached to supports
+     * encryption.
+     *
+     * @return the vnetEncryptionSupported value.
+     */
+    public Boolean vnetEncryptionSupported() {
+        return this.innerProperties() == null ? null : this.innerProperties().vnetEncryptionSupported();
+    }
+
+    /**
      * Get the enableAcceleratedNetworking property: If the network interface is accelerated networking enabled.
      *
      * @return the enableAcceleratedNetworking value.

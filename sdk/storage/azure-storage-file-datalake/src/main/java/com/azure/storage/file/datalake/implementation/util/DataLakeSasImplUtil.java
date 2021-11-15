@@ -363,7 +363,8 @@ public class DataLakeSasImplUtil {
                 this.contentLanguage == null ? "" : this.contentLanguage,
                 this.contentType == null ? "" : this.contentType
             );
-        } if (VERSION.compareTo(DataLakeServiceVersion.V2020_10_02.getVersion()) <= 0) {
+        }
+        if (VERSION.compareTo(DataLakeServiceVersion.V2020_10_02.getVersion()) <= 0) {
             return String.join("\n",
                 this.permissions == null ? "" : this.permissions,
                 this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),
@@ -389,8 +390,7 @@ public class DataLakeSasImplUtil {
                 this.contentLanguage == null ? "" : this.contentLanguage,
                 this.contentType == null ? "" : this.contentType
             );
-        }
-        else {
+        } else {
             return String.join("\n",
                 this.permissions == null ? "" : this.permissions,
                 this.startTime == null ? "" : Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.startTime),

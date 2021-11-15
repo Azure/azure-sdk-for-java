@@ -48,6 +48,13 @@ public interface NamespaceResource {
     Map<String, String> tags();
 
     /**
+     * Gets the sku property: The sku of the created namespace.
+     *
+     * @return the sku value.
+     */
+    Sku sku();
+
+    /**
      * Gets the namePropertiesName property: The name of the namespace.
      *
      * @return the namePropertiesName value.
@@ -150,13 +157,6 @@ public interface NamespaceResource {
     NamespaceType namespaceType();
 
     /**
-     * Gets the sku property: The sku of the created namespace.
-     *
-     * @return the sku value.
-     */
-    Sku sku();
-
-    /**
      * Gets the inner com.azure.resourcemanager.notificationhubs.fluent.models.NamespaceResourceInner object.
      *
      * @return the inner object.
@@ -209,6 +209,7 @@ public interface NamespaceResource {
          */
         interface WithCreate
             extends DefinitionStages.WithTags,
+                DefinitionStages.WithSku,
                 DefinitionStages.WithNamePropertiesName,
                 DefinitionStages.WithProvisioningState,
                 DefinitionStages.WithRegion,
@@ -221,8 +222,7 @@ public interface NamespaceResource {
                 DefinitionStages.WithEnabled,
                 DefinitionStages.WithCritical,
                 DefinitionStages.WithDataCenter,
-                DefinitionStages.WithNamespaceType,
-                DefinitionStages.WithSku {
+                DefinitionStages.WithNamespaceType {
             /**
              * Executes the create request.
              *
@@ -247,6 +247,16 @@ public interface NamespaceResource {
              * @return the next definition stage.
              */
             WithCreate withTags(Map<String, String> tags);
+        }
+        /** The stage of the NamespaceResource definition allowing to specify sku. */
+        interface WithSku {
+            /**
+             * Specifies the sku property: The sku of the created namespace.
+             *
+             * @param sku The sku of the created namespace.
+             * @return the next definition stage.
+             */
+            WithCreate withSku(Sku sku);
         }
         /** The stage of the NamespaceResource definition allowing to specify namePropertiesName. */
         interface WithNamePropertiesName {
@@ -385,16 +395,6 @@ public interface NamespaceResource {
              * @return the next definition stage.
              */
             WithCreate withNamespaceType(NamespaceType namespaceType);
-        }
-        /** The stage of the NamespaceResource definition allowing to specify sku. */
-        interface WithSku {
-            /**
-             * Specifies the sku property: The sku of the created namespace.
-             *
-             * @param sku The sku of the created namespace.
-             * @return the next definition stage.
-             */
-            WithCreate withSku(Sku sku);
         }
     }
     /**

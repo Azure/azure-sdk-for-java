@@ -56,7 +56,7 @@ public final class VideoProperties {
     /*
      * Contains information about the video and audio content.
      */
-    @JsonProperty(value = "mediaInfo", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "mediaInfo")
     private VideoMediaInfo mediaInfo;
 
     /*
@@ -143,6 +143,17 @@ public final class VideoProperties {
      */
     public VideoMediaInfo mediaInfo() {
         return this.mediaInfo;
+    }
+
+    /**
+     * Set the mediaInfo property: Contains information about the video and audio content.
+     *
+     * @param mediaInfo the mediaInfo value to set.
+     * @return the VideoProperties object itself.
+     */
+    public VideoProperties withMediaInfo(VideoMediaInfo mediaInfo) {
+        this.mediaInfo = mediaInfo;
+        return this;
     }
 
     /**

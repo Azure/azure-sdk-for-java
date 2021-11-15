@@ -388,9 +388,7 @@ public final class NamespacesImpl implements Namespaces {
                             .format(
                                 "The resource ID '%s' is not valid. Missing path segment 'AuthorizationRules'.", id)));
         }
-        this
-            .deleteAuthorizationRuleWithResponse(resourceGroupName, namespaceName, authorizationRuleName, Context.NONE)
-            .getValue();
+        this.deleteAuthorizationRuleWithResponse(resourceGroupName, namespaceName, authorizationRuleName, Context.NONE);
     }
 
     public Response<Void> deleteAuthorizationRuleByIdWithResponse(String id, Context context) {

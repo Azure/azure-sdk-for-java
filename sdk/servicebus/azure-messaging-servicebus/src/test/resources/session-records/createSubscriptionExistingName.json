@@ -1,7 +1,7 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://REDACTED.servicebus.windows.net/topic-1/subscriptions/subscription-session?api-version=2017-04",
+    "Uri" : "https://REDACTED.servicebus.windows.net/topic-1/subscriptions/subscription-session?api-version=2021-05",
     "Headers" : {
       "User-Agent" : "azsdk-java-azure-messaging-servicebus/7.0.0-beta.4 (11.0.5; Windows 10; 10.0)",
       "Content-Type" : "application/xml"

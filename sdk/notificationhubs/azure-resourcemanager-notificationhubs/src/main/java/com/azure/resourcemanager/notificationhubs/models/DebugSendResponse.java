@@ -45,6 +45,13 @@ public interface DebugSendResponse {
     Map<String, String> tags();
 
     /**
+     * Gets the sku property: The sku of the created namespace.
+     *
+     * @return the sku value.
+     */
+    Sku sku();
+
+    /**
      * Gets the success property: successful send.
      *
      * @return the success value.
@@ -64,13 +71,6 @@ public interface DebugSendResponse {
      * @return the results value.
      */
     Object results();
-
-    /**
-     * Gets the sku property: The sku of the created namespace.
-     *
-     * @return the sku value.
-     */
-    Sku sku();
 
     /**
      * Gets the inner com.azure.resourcemanager.notificationhubs.fluent.models.DebugSendResponseInner object.

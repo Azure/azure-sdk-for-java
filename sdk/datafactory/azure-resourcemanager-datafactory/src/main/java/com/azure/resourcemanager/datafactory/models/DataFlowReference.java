@@ -22,7 +22,7 @@ public final class DataFlowReference {
      * Data flow reference type.
      */
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private String type = "DataFlowReference";
 
     /*
      * Reference data flow name.

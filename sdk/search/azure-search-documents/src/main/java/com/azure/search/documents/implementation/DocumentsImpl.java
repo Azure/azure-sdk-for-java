@@ -108,6 +108,7 @@ public final class DocumentsImpl {
                 @QueryParam("queryType") QueryType queryType,
                 @QueryParam(value = "scoringParameter", multipleQueryParams = true) List<String> scoringParameters,
                 @QueryParam("scoringProfile") String scoringProfile,
+                @QueryParam("semanticConfiguration") String semanticConfiguration,
                 @QueryParam("searchFields") String searchFields,
                 @QueryParam("queryLanguage") QueryLanguage queryLanguage,
                 @QueryParam("speller") QuerySpellerType speller,
@@ -328,6 +329,11 @@ public final class DocumentsImpl {
             scoringProfileInternal = searchOptions.getScoringProfile();
         }
         String scoringProfile = scoringProfileInternal;
+        String semanticConfigurationInternal = null;
+        if (searchOptions != null) {
+            semanticConfigurationInternal = searchOptions.getSemanticConfiguration();
+        }
+        String semanticConfiguration = semanticConfigurationInternal;
         List<String> searchFieldsInternal = null;
         if (searchOptions != null) {
             searchFieldsInternal = searchOptions.getSearchFields();
@@ -430,6 +436,7 @@ public final class DocumentsImpl {
                 queryType,
                 scoringParametersConverted,
                 scoringProfile,
+                semanticConfiguration,
                 searchFieldsConverted,
                 queryLanguage,
                 speller,
