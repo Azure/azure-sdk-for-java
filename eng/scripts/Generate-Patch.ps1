@@ -123,6 +123,8 @@ function ResetSourcesToReleaseTag($ArtifactName, $ServiceDirectoryName, $Release
     $cmdOutput = git restore --source $ReleaseTag -W -S $TestResourcesFilePath
   }
 
+<# // Disabling the resetting of the sources for the common files as this may accidently remove other things. 
+    We may need this in future when we do patch releases from a single pipeline. 
   if(Test-Path $CheckStyleSuppressionFilePath) {
     $cmdOutput = git restore --source $ReleaseTag -W -S $CheckStyleSuppressionFilePath
   }
@@ -134,6 +136,7 @@ function ResetSourcesToReleaseTag($ArtifactName, $ServiceDirectoryName, $Release
   if(Test-Path $SpotBugsFilePath) {
     $cmdOutput = git restore --source $ReleaseTag -W -S $SpotBugsFilePath
   }
+#>
 
    ## Commit these changes.
   $cmdOutput = git commit -a -m "Reset changes to the patch version."
@@ -219,7 +222,7 @@ function CreatePatchRelease($ArtifactName, $ServiceDirectoryName, $PatchVersion,
     }
 	
 	
-  Set-ChangeLogContent -ChangeLogLocation $ChangelogPath -ChangeLogEntries $ChangeLogEntries
+  $cmdOutput = Set-ChangeLogContent -ChangeLogLocation $ChangelogPath -ChangeLogEntries $ChangeLogEntries
   if($LASTEXITCODE -ne 0) {
     LogError "Could not update the changelog.. Exiting..."
     exit 1
@@ -277,7 +280,7 @@ try {
   }
 
   if($PushToRemote) {
-    $cmdOutput = git push -f $RemoteName $BranchName
+    $cmdOutput = git push $RemoteName $BranchName
     if($LASTEXITCODE -ne 0) {
       LogError "Could not push the changes to $RemoteName\$BranchName. Exiting..."
       exit 1
