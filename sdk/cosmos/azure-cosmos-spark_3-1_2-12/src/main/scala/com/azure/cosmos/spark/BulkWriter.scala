@@ -208,6 +208,7 @@ class BulkWriter(container: CosmosAsyncContainer,
     throwIfCapturedExceptionExists()
 
     var acquisitionAttempt = 0
+    val activeOperationsSemaphoreTimeout = 10
     val operationContext = OperationContext(getId(objectNode), partitionKeyValue, getETag(objectNode), 1)
     var numberOfIntervalsWithIdenticalActiveOperationSnapshots = new AtomicLong(0)
     // Don't clone the activeOperations for the first iteration
@@ -216,7 +217,7 @@ class BulkWriter(container: CosmosAsyncContainer,
     // the first attempt will always assume it wasn't stale - so effectively we
     // allow staleness for ten additional minutes - which is perfectly fine
     var activeOperationsSnapshot = mutable.Set.empty[models.CosmosItemOperation]
-    while (!semaphore.tryAcquire(10, TimeUnit.MINUTES)) {
+    while (!semaphore.tryAcquire(activeOperationsSemaphoreTimeout, TimeUnit.MINUTES)) {
       if (subscriptionDisposable.isDisposed) {
         captureIfFirstFailure(
           new IllegalStateException("Can't accept any new work - BulkWriter has been disposed already"));
