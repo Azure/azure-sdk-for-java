@@ -20,4 +20,8 @@ public interface ServiceBusCommonDescriptor extends AzureProperties, ConnectionS
 
     String getConnectionString();
 
+    String getEntityName();
+
+    ServiceBusEntityType getEntityType();
+
 }

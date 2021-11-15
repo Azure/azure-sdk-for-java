@@ -260,7 +260,7 @@ public class ServiceBusMessageChannelBinder extends
             if (this.extendedProducerPropertiesMap.containsKey(key)) {
                 ServiceBusProducerProperties producerProperties = this.extendedProducerPropertiesMap.get(key)
                     .getExtension();
-                producerProperties.setName(key);
+                producerProperties.setEntityName(key);
                 return producerProperties;
             } else {
                 LOGGER.debug("Can't find extended properties for {}", key);
@@ -274,7 +274,7 @@ public class ServiceBusMessageChannelBinder extends
             if (this.extendedConsumerPropertiesMap.containsKey(key)) {
                 ServiceBusConsumerProperties consumerProperties = this.extendedConsumerPropertiesMap.get(key)
                     .getExtension();
-                consumerProperties.setName(key.getT1());
+                consumerProperties.setEntityName(key.getT1());
                 consumerProperties.setSubscriptionName(key.getT2());
                 return consumerProperties;
             } else {

@@ -92,11 +92,11 @@ public class DefaultServiceBusNamespaceProcessorFactory implements ServiceBusPro
         }
 
         ProcessorProperties processorProperties = propertiesMerger.mergeParent(properties, this.namespaceProperties);
-        processorProperties.setName(name);
+        processorProperties.setEntityName(name);
         if (INVALID_SUBSCRIPTION.equals(subscription)) {
-            processorProperties.setType(ServiceBusEntityType.QUEUE);
+            processorProperties.setEntityType(ServiceBusEntityType.QUEUE);
         } else {
-            processorProperties.setType(ServiceBusEntityType.TOPIC);
+            processorProperties.setEntityType(ServiceBusEntityType.TOPIC);
             processorProperties.setSubscriptionName(subscription);
         }
 

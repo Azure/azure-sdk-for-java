@@ -45,11 +45,11 @@ public class ProcessorPropertiesParentMerger implements ParentMerger<ProcessorPr
         propertyMapper.from(child.getSessionAware()).to(properties::setSessionAware);
         propertyMapper.from(child.getAutoComplete()).to(properties::setAutoComplete);
         propertyMapper.from(child.getPrefetchCount()).to(properties::setPrefetchCount);
-        propertyMapper.from(child.getName()).to(properties::setName);
+        propertyMapper.from(child.getEntityName()).to(properties::setEntityName);
         propertyMapper.from(child.getSubQueue()).to(properties::setSubQueue);
         propertyMapper.from(child.getReceiveMode()).to(properties::setReceiveMode);
         propertyMapper.from(child.getSubscriptionName()).to(properties::setSubscriptionName);
-        propertyMapper.from(child.getType()).to(properties::setType);
+        propertyMapper.from(child.getEntityType()).to(properties::setEntityType);
         propertyMapper.from(child.getMaxAutoLockRenewDuration()).to(properties::setMaxAutoLockRenewDuration);
 
         return properties;

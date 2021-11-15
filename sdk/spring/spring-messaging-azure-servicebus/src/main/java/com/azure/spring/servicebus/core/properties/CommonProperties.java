@@ -6,6 +6,7 @@ package com.azure.spring.servicebus.core.properties;
 import com.azure.spring.core.connectionstring.implementation.ServiceBusConnectionString;
 import com.azure.spring.core.properties.AbstractAzureSdkProperties;
 import com.azure.spring.service.servicebus.properties.ServiceBusCommonDescriptor;
+import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
 
 /**
  * Common properties shared by Service Bus namespace, a producer, and a consumer.
@@ -15,6 +16,8 @@ public class CommonProperties extends AbstractAzureSdkProperties implements Serv
     private String domainName = "servicebus.windows.net";
     private String namespace;
     private String connectionString;
+    private String entityName;
+    private ServiceBusEntityType entityType;
 
     private String extractFqdnFromConnectionString() {
         if (this.connectionString == null) {
@@ -55,4 +58,19 @@ public class CommonProperties extends AbstractAzureSdkProperties implements Serv
         this.connectionString = connectionString;
     }
 
+    public String getEntityName() {
+        return entityName;
+    }
+
+    public void setEntityName(String entityName) {
+        this.entityName = entityName;
+    }
+
+    public ServiceBusEntityType getEntityType() {
+        return entityType;
+    }
+
+    public void setEntityType(ServiceBusEntityType entityType) {
+        this.entityType = entityType;
+    }
 }

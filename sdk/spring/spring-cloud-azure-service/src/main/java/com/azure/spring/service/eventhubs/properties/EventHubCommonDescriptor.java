@@ -3,8 +3,8 @@
 
 package com.azure.spring.service.eventhubs.properties;
 
-import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.core.aware.authentication.ConnectionStringAware;
+import com.azure.spring.core.properties.AzureProperties;
 
 /**
  * Azure Event Hub common related properties.

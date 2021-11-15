@@ -40,18 +40,18 @@ public class ServiceBusProcessorClientBuilderFactory extends AbstractServiceBusS
 
     @Override
     protected void configureService(ServiceBusClientBuilder.ServiceBusProcessorClientBuilder builder) {
-        Assert.notNull(processorDescriptor.getType(), "Entity type cannot be null.");
-        Assert.notNull(processorDescriptor.getName(), "Entity name cannot be null.");
+        Assert.notNull(processorDescriptor.getEntityType(), "Entity type cannot be null.");
+        Assert.notNull(processorDescriptor.getEntityName(), "Entity name cannot be null.");
         final PropertyMapper propertyMapper = new PropertyMapper();
 
-        if (TOPIC.equals(processorDescriptor.getType())) {
+        if (TOPIC.equals(processorDescriptor.getEntityType())) {
             Assert.notNull(processorDescriptor.getSubscriptionName(), "Subscription cannot be null.");
         }
 
-        if (ServiceBusEntityType.QUEUE.equals(processorDescriptor.getType())) {
-            propertyMapper.from(processorDescriptor.getName()).to(builder::queueName);
-        } else if (ServiceBusEntityType.TOPIC.equals(processorDescriptor.getType())) {
-            propertyMapper.from(processorDescriptor.getName()).to(builder::topicName);
+        if (ServiceBusEntityType.QUEUE.equals(processorDescriptor.getEntityType())) {
+            propertyMapper.from(processorDescriptor.getEntityName()).to(builder::queueName);
+        } else if (ServiceBusEntityType.TOPIC.equals(processorDescriptor.getEntityType())) {
+            propertyMapper.from(processorDescriptor.getEntityName()).to(builder::topicName);
             propertyMapper.from(processorDescriptor.getSubscriptionName()).to(builder::subscriptionName);
         }
 

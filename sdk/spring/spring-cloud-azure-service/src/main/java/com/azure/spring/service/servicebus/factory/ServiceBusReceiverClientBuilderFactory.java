@@ -37,17 +37,17 @@ public class ServiceBusReceiverClientBuilderFactory
 
     @Override
     protected void configureService(ServiceBusClientBuilder.ServiceBusReceiverClientBuilder builder) {
-        Assert.notNull(consumerProperties.getType(), "Entity type cannot be null.");
-        Assert.notNull(consumerProperties.getName(), "Entity name cannot be null.");
-        if (TOPIC.equals(consumerProperties.getType())) {
+        Assert.notNull(consumerProperties.getEntityType(), "Entity type cannot be null.");
+        Assert.notNull(consumerProperties.getEntityName(), "Entity name cannot be null.");
+        if (TOPIC.equals(consumerProperties.getEntityType())) {
             Assert.notNull(consumerProperties.getSubscriptionName(), "Subscription cannot be null.");
         }
 
         final PropertyMapper propertyMapper = new PropertyMapper();
-        if (ServiceBusEntityType.QUEUE.equals(consumerProperties.getType())) {
-            propertyMapper.from(consumerProperties.getName()).to(builder::queueName);
-        } else if (TOPIC.equals(consumerProperties.getType())) {
-            propertyMapper.from(consumerProperties.getName()).to(builder::topicName);
+        if (ServiceBusEntityType.QUEUE.equals(consumerProperties.getEntityType())) {
+            propertyMapper.from(consumerProperties.getEntityName()).to(builder::queueName);
+        } else if (TOPIC.equals(consumerProperties.getEntityType())) {
+            propertyMapper.from(consumerProperties.getEntityName()).to(builder::topicName);
             propertyMapper.from(consumerProperties.getSubscriptionName()).to(builder::subscriptionName);
         }
 

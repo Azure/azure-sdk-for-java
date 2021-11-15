@@ -35,7 +35,7 @@ public class ProducerPropertiesParentMergerTest {
         ProxyProperties proxy = new ProxyProperties();
         proxy.setHostname("child-hostname");
         child.setProxy(proxy);
-        child.setName("test");
+        child.setEntityName("test");
 
         NamespaceProperties parent = new NamespaceProperties();
         parent.setConnectionString("parent-connection-str");
@@ -47,6 +47,6 @@ public class ProducerPropertiesParentMergerTest {
 
         Assertions.assertEquals("child-connection-str", result.getConnectionString());
         Assertions.assertEquals("child-hostname", result.getProxy().getHostname());
-        Assertions.assertEquals("test", result.getName());
+        Assertions.assertEquals("test", result.getEntityName());
     }
 }

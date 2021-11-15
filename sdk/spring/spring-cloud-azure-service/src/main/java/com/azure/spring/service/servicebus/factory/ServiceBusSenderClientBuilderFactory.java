@@ -35,14 +35,14 @@ public class ServiceBusSenderClientBuilderFactory
 
     @Override
     protected void configureService(ServiceBusClientBuilder.ServiceBusSenderClientBuilder builder) {
-        Assert.notNull(producerProperties.getType(), "Entity type cannot be null.");
-        Assert.notNull(producerProperties.getName(), "Entity name cannot be null.");
+        Assert.notNull(producerProperties.getEntityType(), "Entity type cannot be null.");
+        Assert.notNull(producerProperties.getEntityName(), "Entity name cannot be null.");
         final PropertyMapper propertyMapper = new PropertyMapper();
 
-        if (ServiceBusEntityType.QUEUE.equals(producerProperties.getType())) {
-            propertyMapper.from(producerProperties.getName()).to(builder::queueName);
-        } else if (ServiceBusEntityType.TOPIC.equals(producerProperties.getType())) {
-            propertyMapper.from(producerProperties.getName()).to(builder::topicName);
+        if (ServiceBusEntityType.QUEUE.equals(producerProperties.getEntityType())) {
+            propertyMapper.from(producerProperties.getEntityName()).to(builder::queueName);
+        } else if (ServiceBusEntityType.TOPIC.equals(producerProperties.getEntityType())) {
+            propertyMapper.from(producerProperties.getEntityName()).to(builder::topicName);
         }
 
     }

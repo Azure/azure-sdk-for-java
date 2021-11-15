@@ -155,8 +155,8 @@ public class ServiceBusBinderHealthIndicatorTest {
 //    }
 
     private void prepareProducerProperties() {
-        serviceBusProducerProperties.setName(ENTITY_NAME);
-        serviceBusProducerProperties.setType(ServiceBusEntityType.TOPIC);
+        serviceBusProducerProperties.setEntityName(ENTITY_NAME);
+        serviceBusProducerProperties.setEntityType(ServiceBusEntityType.TOPIC);
         serviceBusProducerProperties.setNamespace(NAMESPACE_NAME);
         serviceBusProducerProperties.setSync(false);
         ServiceBusBindingProperties bindingProperties = new ServiceBusBindingProperties();
@@ -172,8 +172,8 @@ public class ServiceBusBinderHealthIndicatorTest {
     }
 
     private void prepareConsumerProperties() {
-        serviceBusConsumerProperties.setName(ENTITY_NAME);
-        serviceBusConsumerProperties.setType(ServiceBusEntityType.QUEUE);
+        serviceBusConsumerProperties.setEntityName(ENTITY_NAME);
+        serviceBusConsumerProperties.setEntityType(ServiceBusEntityType.QUEUE);
         serviceBusConsumerProperties.setNamespace(NAMESPACE_NAME);
         serviceBusConsumerProperties.setCheckpointMode(CheckpointMode.RECORD);
         ServiceBusBindingProperties bindingProperties = new ServiceBusBindingProperties();

@@ -19,15 +19,11 @@ public interface ServiceBusConsumerDescriptor extends ServiceBusCommonDescriptor
 
     Integer getPrefetchCount();
 
-    String getName();
-
     SubQueue getSubQueue();
 
     ServiceBusReceiveMode getReceiveMode();
 
     String getSubscriptionName();
-
-    ServiceBusEntityType getType();
 
     Duration getMaxAutoLockRenewDuration();
 

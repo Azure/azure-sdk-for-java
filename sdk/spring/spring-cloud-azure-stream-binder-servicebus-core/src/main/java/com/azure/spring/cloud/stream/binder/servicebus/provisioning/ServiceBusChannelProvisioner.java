@@ -23,14 +23,14 @@ public class ServiceBusChannelProvisioner implements
     @Override
     public ProducerDestination provisionProducerDestination(String name,
             ExtendedProducerProperties<ServiceBusProducerProperties> properties) throws ProvisioningException {
-        validateOrCreateForProducer(name, properties.getExtension().getType());
+        validateOrCreateForProducer(name, properties.getExtension().getEntityType());
         return new ServiceBusProducerDestination(name);
     }
 
     @Override
     public ConsumerDestination provisionConsumerDestination(String name, String group,
             ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) throws ProvisioningException {
-        validateOrCreateForConsumer(name, group, properties.getExtension().getType());
+        validateOrCreateForConsumer(name, group, properties.getExtension().getEntityType());
         return new ServiceBusConsumerDestination(name);
     }
 
