@@ -28,13 +28,14 @@ import org.springframework.context.annotation.Bean;
 @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.storage.fileshare", name = { "account-name", "endpoint", "connection-string" })
 public class AzureStorageFileShareAutoConfiguration extends AzureServiceConfigurationBase {
 
-    public AzureStorageFileShareAutoConfiguration() {
+    public AzureStorageFileShareAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
+        super(azureGlobalProperties);
     }
 
     @Bean
     @ConfigurationProperties(AzureStorageFileShareProperties.PREFIX)
-    public AzureStorageFileShareProperties azureStorageFileShareProperties(AzureGlobalProperties azureGlobalProperties) {
-        return loadProperties(azureGlobalProperties, new AzureStorageFileShareProperties());
+    public AzureStorageFileShareProperties azureStorageFileShareProperties() {
+        return loadProperties(this.azureGlobalProperties, new AzureStorageFileShareProperties());
     }
 
     @Bean
