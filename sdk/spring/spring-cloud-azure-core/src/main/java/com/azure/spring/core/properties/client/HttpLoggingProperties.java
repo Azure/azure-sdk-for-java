@@ -13,11 +13,23 @@ import java.util.Set;
  * Options related to http logging. For example, if you want to log the http request or response, you could set the
  * level to {@link HttpLogDetailLevel#BASIC} or some other levels.
  */
-public class LoggingProperties implements ClientAware.Logging {
+public class HttpLoggingProperties implements ClientAware.HttpLogging {
 
+    /**
+     * Gets the level of detail to log on HTTP messages.
+     */
     private HttpLogDetailLevel level;
+    /**
+     * The whitelisted headers that should be logged.
+     */
     private final Set<String> allowedHeaderNames = new HashSet<>();
+    /**
+     * The whitelisted query parameters.
+     */
     private final Set<String> allowedQueryParamNames = new HashSet<>();
+    /**
+     * Whether to pretty print the message bodies.
+     */
     private Boolean prettyPrintBody;
 
     public HttpLogDetailLevel getLevel() {

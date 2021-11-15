@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.storage.blob;
+package com.azure.spring.cloud.autoconfigure.storage.blob.properties;
 
 import com.azure.spring.cloud.autoconfigure.storage.common.AzureStorageProperties;
 import com.azure.spring.service.storage.blob.StorageBlobProperties;
@@ -23,7 +23,6 @@ public class AzureStorageBlobProperties extends AzureStorageProperties implement
     private String containerName;
     private String blobName;
 
-    // TODO (xiada): should we calculate the endpoint from the account name
     public String getEndpoint() {
         return endpoint == null ? buildEndpointFromAccountName() : endpoint;
     }

@@ -17,8 +17,6 @@ public class ClientProperties implements ClientAware.Client {
 
     private final List<HeaderProperties> headers = new ArrayList<>();
 
-    private final LoggingProperties logging = new LoggingProperties();
-
     public String getApplicationId() {
         return applicationId;
     }
@@ -29,10 +27,6 @@ public class ClientProperties implements ClientAware.Client {
 
     public List<HeaderProperties> getHeaders() {
         return headers;
-    }
-
-    public LoggingProperties getLogging() {
-        return logging;
     }
 
 }

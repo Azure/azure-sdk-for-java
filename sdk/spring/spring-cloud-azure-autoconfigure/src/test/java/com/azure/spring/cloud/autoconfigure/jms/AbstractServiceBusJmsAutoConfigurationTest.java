@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.jms;
 
+import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer;

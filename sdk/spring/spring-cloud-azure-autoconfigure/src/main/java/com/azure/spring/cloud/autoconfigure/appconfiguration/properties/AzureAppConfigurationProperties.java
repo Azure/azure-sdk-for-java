@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.appconfiguration;
+package com.azure.spring.cloud.autoconfigure.appconfiguration.properties;
 
 import com.azure.data.appconfiguration.ConfigurationServiceVersion;
 import com.azure.spring.cloud.autoconfigure.properties.AbstractAzureHttpCP;

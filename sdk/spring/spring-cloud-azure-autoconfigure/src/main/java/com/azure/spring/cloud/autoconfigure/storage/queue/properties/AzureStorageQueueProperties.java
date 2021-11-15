@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.storage.queue;
+package com.azure.spring.cloud.autoconfigure.storage.queue.properties;
 
 import com.azure.spring.cloud.autoconfigure.storage.common.AzureStorageProperties;
 import com.azure.spring.service.storage.queue.StorageQueueProperties;

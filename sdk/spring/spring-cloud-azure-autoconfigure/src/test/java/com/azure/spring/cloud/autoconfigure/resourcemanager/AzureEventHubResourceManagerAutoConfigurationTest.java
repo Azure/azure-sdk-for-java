@@ -5,8 +5,8 @@ package com.azure.spring.cloud.autoconfigure.resourcemanager;
 
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
-import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubProperties;
+import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.resourcemanager.connectionstring.EventHubArmConnectionStringProvider;
 import com.azure.spring.eventhubs.provisioning.EventHubProvisioner;
 import org.junit.jupiter.api.Test;
@@ -15,6 +15,7 @@ import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 class AzureEventHubResourceManagerAutoConfigurationTest {
 
@@ -55,9 +56,9 @@ class AzureEventHubResourceManagerAutoConfigurationTest {
     @Test
     void testAzureEventHubResourceManagerAutoConfigurationBeans() {
         this.contextRunner
-            .withUserConfiguration(AzureGlobalPropertiesAutoConfiguration.class,
-                AzureResourceManagerAutoConfiguration.class)
-            .withBean(AzureResourceManager.class, TestAzureResourceManager::getAzureResourceManager)
+            .withUserConfiguration(AzureResourceManagerAutoConfiguration.class)
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean(AzureResourceManager.class, () -> mock(AzureResourceManager.class))
             .withBean(AzureEventHubProperties.class, AzureEventHubProperties::new)
             .run(context -> assertThat(context).hasSingleBean(EventHubProvisioner.class));
     }

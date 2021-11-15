@@ -5,8 +5,6 @@ package com.azure.spring.cloud.autoconfigure.properties.core.client;
 
 import com.azure.spring.core.aware.ClientAware;
 import com.azure.spring.core.properties.client.HeaderProperties;
-import com.azure.spring.core.properties.client.LoggingProperties;
-import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,10 +14,14 @@ import java.util.List;
  */
 public class ClientCP implements ClientAware.Client {
 
+    /**
+     * Represents current application and is used for telemetry/monitoring purposes.
+     */
     private String applicationId;
+    /**
+     * Comma-delimited list of headers applied to each request sent with client.
+     */
     private final List<HeaderProperties> headers = new ArrayList<>();
-    @NestedConfigurationProperty
-    private final LoggingProperties logging = new LoggingProperties();
 
     @Override
     public String getApplicationId() {
@@ -35,8 +37,4 @@ public class ClientCP implements ClientAware.Client {
         return headers;
     }
 
-    @Override
-    public LoggingProperties getLogging() {
-        return logging;
-    }
 }
