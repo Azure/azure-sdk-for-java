@@ -15,9 +15,11 @@ import com.azure.core.management.SubResource;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.authorization.models.RoleAssignment;
+import com.azure.resourcemanager.compute.models.ImageReference;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.PowerState;
+import com.azure.resourcemanager.compute.models.PurchasePlan;
 import com.azure.resourcemanager.compute.models.ResourceIdentityType;
 import com.azure.resourcemanager.compute.models.Sku;
 import com.azure.resourcemanager.compute.models.UpgradeMode;
@@ -57,7 +59,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
@@ -82,6 +83,60 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         if (rgName != null) {
             resourceManager.resourceGroups().beginDeleteByName(rgName);
         }
+    }
+
+    @Test
+    public void canCreateVMSSWithPlan() {
+        final String vmssName = generateRandomResourceName("vmss", 10);
+        ResourceGroup resourceGroup = this.resourceManager.resourceGroups().define(rgName).withRegion(region).create();
+        final String uname = "jvuser";
+
+        Network network =
+            this
+                .networkManager
+                .networks()
+                .define(generateRandomResourceName("vmssvnet", 15))
+                .withRegion(region)
+                .withExistingResourceGroup(resourceGroup)
+                .withAddressSpace("10.0.0.0/28")
+                .withSubnet("subnet1", "10.0.0.0/28")
+                .create();
+
+        PurchasePlan plan = new PurchasePlan()
+            .withName("access_server_byol")
+            .withPublisher("openvpn")
+            .withProduct("openvpnas");
+
+        ImageReference imageReference = new ImageReference()
+            .withPublisher("openvpn")
+            .withOffer("openvpnas")
+            .withSku("access_server_byol")
+            .withVersion("latest");
+
+        VirtualMachineScaleSet virtualMachineScaleSet =
+            this
+                .computeManager
+                .virtualMachineScaleSets()
+                .define(vmssName)
+                .withRegion(region)
+                .withExistingResourceGroup(resourceGroup)
+                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_A0)
+                .withExistingPrimaryNetworkSubnet(network, "subnet1")
+                .withoutPrimaryInternetFacingLoadBalancer()
+                .withoutPrimaryInternalLoadBalancer()
+                .withSpecificLinuxImageVersion(imageReference)
+                .withRootUsername(uname)
+                .withSsh(sshPublicKey())
+                .withNewDataDisk(1)
+                .withPlan(plan)
+                .create();
+
+        VirtualMachineScaleSet currentVirtualMachineScaleSet = this.computeManager.virtualMachineScaleSets().getByResourceGroup(rgName, vmssName);
+        // assertion for purchase plan
+        Assertions.assertEquals("access_server_byol", currentVirtualMachineScaleSet.plan().name());
+        Assertions.assertEquals("openvpn", currentVirtualMachineScaleSet.plan().publisher());
+        Assertions.assertEquals("openvpnas", currentVirtualMachineScaleSet.plan().product());
+
     }
 
     @Test
