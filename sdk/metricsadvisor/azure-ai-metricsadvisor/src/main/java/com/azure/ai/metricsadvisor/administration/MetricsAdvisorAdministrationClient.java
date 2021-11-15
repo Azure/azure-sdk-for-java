@@ -13,8 +13,8 @@ import com.azure.ai.metricsadvisor.administration.models.ListAnomalyAlertConfigs
 import com.azure.ai.metricsadvisor.administration.models.ListCredentialEntityOptions;
 import com.azure.ai.metricsadvisor.administration.models.ListDataFeedIngestionOptions;
 import com.azure.ai.metricsadvisor.administration.models.ListDataFeedOptions;
-import com.azure.ai.metricsadvisor.administration.models.ListHookOptions;
 import com.azure.ai.metricsadvisor.administration.models.ListDetectionConfigsOptions;
+import com.azure.ai.metricsadvisor.administration.models.ListHookOptions;
 import com.azure.ai.metricsadvisor.administration.models.NotificationHook;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -28,7 +28,11 @@ import java.time.OffsetDateTime;
 /**
  * This class provides an asynchronous client that contains all the operations that apply to Azure Metrics Advisor.
  * <p><strong>Instantiating a synchronous Metrics Advisor Administration Client</strong></p>
- * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.instantiation}
+ * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.instantiation -->
+ * <pre>
+ *
+ * </pre>
+ * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.instantiation -->
  *
  * @see MetricsAdvisorAdministrationClientBuilder
  */
@@ -51,7 +55,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Create a new data feed.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDataFeed#DataFeed}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDataFeed#DataFeed -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDataFeed#DataFeed -->
      *
      * @param dataFeed The data feed to be created.
      * @return The created data feed.
@@ -67,7 +75,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Create a new data feed with REST response.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDataFeedWithResponse#DataFeed-Context}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDataFeedWithResponse#DataFeed-Context -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDataFeedWithResponse#DataFeed-Context -->
      *
      * @param dataFeed The data feed to be created.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
@@ -85,7 +97,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Get a data feed by its id.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getDataFeed#String}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getDataFeed#String -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getDataFeed#String -->
      *
      * @param dataFeedId The data feed unique id.
      *
@@ -102,7 +118,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Get a data feed by its id with REST response.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getDataFeedWithResponse#String-Context}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getDataFeedWithResponse#String-Context -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getDataFeedWithResponse#String-Context -->
      *
      * @param dataFeedId The data feed unique id.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
@@ -120,7 +140,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Update a data feed.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateDataFeed#DataFeed}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateDataFeed#DataFeed -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateDataFeed#DataFeed -->
      *
      * @param dataFeed the data feed that needs to be updated.
      *
@@ -135,7 +159,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Update a data feed with REST response.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateDataFeedWithResponse#DataFeed-Context}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateDataFeedWithResponse#DataFeed-Context -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateDataFeedWithResponse#DataFeed-Context -->
      *
      * @param dataFeed the data feed that needs to be updated.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
@@ -151,7 +179,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Delete a data feed.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteDataFeed#String}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteDataFeed#String -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteDataFeed#String -->
      *
      * @param dataFeedId The data feed unique id.
      *
@@ -167,7 +199,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Delete a data feed with REST response.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteDataFeedWithResponse#String-Context}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteDataFeedWithResponse#String-Context -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteDataFeedWithResponse#String-Context -->
      *
      * @param dataFeedId The data feed unique id.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
@@ -185,7 +221,11 @@ public final class MetricsAdvisorAdministrationClient {
      * List information of all data feeds on the metrics advisor account.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDataFeeds}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDataFeeds -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDataFeeds -->
      *
      * @return A {@link PagedIterable} containing information of all the {@link DataFeed data feeds} in the account.
      */
@@ -198,7 +238,11 @@ public final class MetricsAdvisorAdministrationClient {
      * List information of all data feeds on the metrics advisor account with REST response.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDataFeeds#ListDataFeedOptions-Context}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDataFeeds#ListDataFeedOptions-Context -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDataFeeds#ListDataFeedOptions-Context -->
      *
      * @param options The configurable {@link ListDataFeedOptions options} to pass for filtering the output result.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -214,7 +258,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Fetch the ingestion status of a data feed.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDataFeedIngestionStatus#String-ListDataFeedIngestionOptions}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDataFeedIngestionStatus#String-ListDataFeedIngestionOptions -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDataFeedIngestionStatus#String-ListDataFeedIngestionOptions -->
      *
      * @param dataFeedId The data feed id.
      * @param options The additional parameters.
@@ -233,7 +281,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Fetch the ingestion status of a data feed.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDataFeedIngestionStatus#String-ListDataFeedIngestionOptions-Context}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDataFeedIngestionStatus#String-ListDataFeedIngestionOptions-Context -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDataFeedIngestionStatus#String-ListDataFeedIngestionOptions-Context -->
      *
      * @param dataFeedId The data feed id.
      * @param options The additional parameters.
@@ -260,7 +312,11 @@ public final class MetricsAdvisorAdministrationClient {
      * </p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.refreshDataFeedIngestion#String-OffsetDateTime-OffsetDateTime}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.refreshDataFeedIngestion#String-OffsetDateTime-OffsetDateTime -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.refreshDataFeedIngestion#String-OffsetDateTime-OffsetDateTime -->
      *
      * @param dataFeedId The data feed id.
      * @param startTime The start point of the period.
@@ -284,7 +340,11 @@ public final class MetricsAdvisorAdministrationClient {
      * </p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.refreshDataFeedIngestionWithResponse#String-OffsetDateTime-OffsetDateTime-Context}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.refreshDataFeedIngestionWithResponse#String-OffsetDateTime-OffsetDateTime-Context -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.refreshDataFeedIngestionWithResponse#String-OffsetDateTime-OffsetDateTime-Context -->
      *
      * @param dataFeedId The data feed id.
      * @param startTime The start point of the period.
@@ -309,7 +369,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Retrieve the ingestion progress of a data feed.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getDataFeedIngestionProgress#String}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getDataFeedIngestionProgress#String -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getDataFeedIngestionProgress#String -->
      *
      * @param dataFeedId The data feed id.
      * @return The {@link DataFeedIngestionProgress} of the data feed.
@@ -326,7 +390,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Retrieve the ingestion progress of a data feed.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getDataFeedIngestionProgressWithResponse#String-Context}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getDataFeedIngestionProgressWithResponse#String-Context -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getDataFeedIngestionProgressWithResponse#String-Context -->
      *
      * @param dataFeedId The data feed id.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -345,7 +413,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Create a configuration to detect anomalies in the time series of a metric.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDetectionConfig#String-AnomalyDetectionConfiguration}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDetectionConfig#String-AnomalyDetectionConfiguration -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDetectionConfig#String-AnomalyDetectionConfiguration -->
      *
      * @param metricId The metric id to associate the configuration with.
      * @param detectionConfiguration The anomaly detection configuration.
@@ -373,7 +445,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Create a configuration to detect anomalies in the time series of a metric.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDetectionConfigWithResponse#String-AnomalyDetectionConfiguration-Context}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDetectionConfigWithResponse#String-AnomalyDetectionConfiguration-Context -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDetectionConfigWithResponse#String-AnomalyDetectionConfiguration-Context -->
      *
      * @param metricId The metric id to associate the configuration with.
      * @param detectionConfiguration The anomaly detection configuration.
@@ -402,7 +478,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Get the anomaly detection configuration by its id.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getDetectionConfig#String}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getDetectionConfig#String -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getDetectionConfig#String -->
      *
      * @param detectionConfigurationId The anomaly detection configuration id.
      * @return The {@link AnomalyDetectionConfiguration} identified by the given id.
@@ -420,7 +500,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Get the anomaly detection configuration by its id.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getDetectionConfigWithResponse#String-Context}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getDetectionConfigWithResponse#String-Context -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getDetectionConfigWithResponse#String-Context -->
      *
      * @param detectionConfigurationId The anomaly detection configuration id.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -440,7 +524,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Update a configuration to detect anomalies in the time series of a metric.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateDetectionConfig#AnomalyDetectionConfiguration}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateDetectionConfig#AnomalyDetectionConfiguration -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateDetectionConfig#AnomalyDetectionConfiguration -->
      *
      * @param detectionConfiguration The anomaly detection configuration.
      * @return The updated {@link AnomalyDetectionConfiguration}.
@@ -458,7 +546,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Update a configuration to detect anomalies in the time series of a metric.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateDetectionConfigWithResponse#AnomalyDetectionConfiguration-Context}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateDetectionConfigWithResponse#AnomalyDetectionConfiguration-Context -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateDetectionConfigWithResponse#AnomalyDetectionConfiguration-Context -->
      *
      * @param detectionConfiguration The anomaly detection configuration.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -478,7 +570,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Delete a metric anomaly detection configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteDetectionConfig#String}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteDetectionConfig#String -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteDetectionConfig#String -->
      *
      * @param detectionConfigurationId The metric anomaly detection configuration unique id.
      *
@@ -496,7 +592,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Delete a metric anomaly detection configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteDetectionConfigWithResponse#String-Context}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteDetectionConfigWithResponse#String-Context -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteDetectionConfigWithResponse#String-Context -->
      *
      * @param detectionConfigurationId The metric anomaly detection configuration unique id.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -518,7 +618,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Given a metric id, retrieve all anomaly detection configurations applied to it.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDetectionConfigs#String}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDetectionConfigs#String -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDetectionConfigs#String -->
      *
      * @param metricId The metric id.
      * @return The anomaly detection configurations.
@@ -536,7 +640,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Given a metric id, retrieve all anomaly detection configurations applied to it.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDetectionConfigs#String-ListDetectionConfigsOptions-Context}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDetectionConfigs#String-ListDetectionConfigsOptions-Context -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDetectionConfigs#String-ListDetectionConfigsOptions-Context -->
      *
      * @param metricId The metric id.
      * @param options th e additional configurable options to specify when querying the result.
@@ -558,7 +666,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Creates a notificationHook that receives anomaly incident alerts.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createHook#NotificationHook}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createHook#NotificationHook -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createHook#NotificationHook -->
      *
      * @param notificationHook The notificationHook.
      * @return The created {@link NotificationHook}.
@@ -575,7 +687,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Creates a notificationHook that receives anomaly incident alerts.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createHookWithResponse#NotificationHook-Context}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createHookWithResponse#NotificationHook-Context -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createHookWithResponse#NotificationHook-Context -->
      *
      * @param notificationHook The notificationHook.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -594,7 +710,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Get a hook by its id.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getHook#String}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getHook#String -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getHook#String -->
      *
      * @param hookId The hook unique id.
      * @return The {@link NotificationHook} for the provided id.
@@ -610,7 +730,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Get a hook by its id.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getHookWithResponse#String-Context}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getHookWithResponse#String-Context -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getHookWithResponse#String-Context -->
      *
      * @param hookId The hook unique id.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -628,7 +752,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Update an existing notificationHook.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateHook#NotificationHook}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateHook#NotificationHook -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateHook#NotificationHook -->
      *
      * @param notificationHook The notificationHook to update.
      * @return The updated {@link NotificationHook}.
@@ -643,7 +771,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Update an existing notificationHook.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateHookWithResponse#NotificationHook-Context}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateHookWithResponse#NotificationHook-Context -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateHookWithResponse#NotificationHook-Context -->
      *
      * @param notificationHook The notificationHook to update.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -662,7 +794,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Delete a hook.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteHook#String}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteHook#String -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteHook#String -->
      *
      * @param hookId The hook unique id.
      *
@@ -678,7 +814,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Delete a hook.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteHookWithResponse#String-Context}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteHookWithResponse#String-Context -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteHookWithResponse#String-Context -->
      *
      * @param hookId The hook unique id.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -695,7 +835,11 @@ public final class MetricsAdvisorAdministrationClient {
      * List information of hooks on the metrics advisor account.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listHooks}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listHooks -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listHooks -->
      *
      * @return A {@link PagedIterable} containing information of all the {@link NotificationHook} in the account.
      */
@@ -708,7 +852,11 @@ public final class MetricsAdvisorAdministrationClient {
      * List information of hooks.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listHooks#ListHookOptions-Context}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listHooks#ListHookOptions-Context -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listHooks#ListHookOptions-Context -->
      *
      * @param options The additional parameters.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -723,7 +871,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Create a configuration to trigger alert when anomalies are detected.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createAlertConfig#AnomalyAlertConfiguration}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createAlertConfig#AnomalyAlertConfiguration -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createAlertConfig#AnomalyAlertConfiguration -->
      *
      * @param alertConfiguration The anomaly alerting configuration.
      *
@@ -739,7 +891,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Create a configuration to trigger alert when anomalies are detected.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createAlertConfigWithResponse#AnomalyAlertConfiguration-Context}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createAlertConfigWithResponse#AnomalyAlertConfiguration-Context -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createAlertConfigWithResponse#AnomalyAlertConfiguration-Context -->
      *
      * @param alertConfiguration The anomaly alerting configuration.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -757,7 +913,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Get the anomaly alert configuration identified by {@code alertConfigurationId}.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getAlertConfig#String}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getAlertConfig#String -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getAlertConfig#String -->
      *
      * @param alertConfigurationId The anomaly alert configuration id.
      *
@@ -776,7 +936,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Get the anomaly alert configuration identified by {@code alertConfigurationId}.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getAlertConfigWithResponse#String-Context}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getAlertConfigWithResponse#String-Context -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getAlertConfigWithResponse#String-Context -->
      *
      * @param alertConfigurationId The anomaly alert configuration id.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -796,7 +960,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Update anomaly alert configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateAlertConfig#AnomalyAlertConfiguration}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateAlertConfig#AnomalyAlertConfiguration -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateAlertConfig#AnomalyAlertConfiguration -->
      *
      * @param alertConfiguration The anomaly alert configuration to update.
      *
@@ -816,7 +984,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Update anomaly alert configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateAlertConfigWithResponse#AnomalyAlertConfiguration-Context}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateAlertConfigWithResponse#AnomalyAlertConfiguration-Context-->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateAlertConfigWithResponse#AnomalyAlertConfiguration-Context -->
      *
      * @param alertConfiguration The anomaly alert configuration to update.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -838,7 +1010,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Deletes the anomaly alert configuration identified by {@code alertConfigurationId}.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteAlertConfig#String}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteAlertConfig#String -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteAlertConfig#String -->
      *
      * @param alertConfigurationId The anomaly alert configuration id.
      * @throws NullPointerException thrown if the {@code alertConfigurationId} is null.
@@ -854,7 +1030,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Deletes the anomaly alert configuration identified by {@code alertConfigurationId}.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteAlertConfigWithResponse#String-Context}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteAlertConfigWithResponse#String-Context -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteAlertConfigWithResponse#String-Context -->
      *
      * @param alertConfigurationId The anomaly alert configuration id.
      * @param context Additional context that is passed through the Http pipeline during the service call.
@@ -874,7 +1054,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Fetch the anomaly alert configurations associated with a detection configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listAlertConfigs#String-ListAnomalyAlertConfigsOptions}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listAlertConfigs#String-ListAnomalyAlertConfigsOptions -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listAlertConfigs#String-ListAnomalyAlertConfigsOptions -->
      *
      * @param detectionConfigurationId The id of the detection configuration.
      * @param options th e additional configurable options to specify when querying the result.
@@ -895,7 +1079,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Fetch the anomaly alert configurations associated with a detection configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listAlertConfigs#String-ListAnomalyAlertConfigsOptions-Context}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listAlertConfigs#String-ListAnomalyAlertConfigsOptions-Context -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listAlertConfigs#String-ListAnomalyAlertConfigsOptions-Context -->
      *
      * @param detectionConfigurationId The id of the detection configuration.
      * @param options th e additional configurable options to specify when querying the result.
@@ -918,7 +1106,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Create a data source credential entity.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDataSourceCredential#DatasourceCredentialEntity}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDataSourceCredential#DatasourceCredentialEntity -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDataSourceCredential#DatasourceCredentialEntity -->
      *
      * @param dataSourceCredential The credential entity.
      * @return The created {@link DataSourceCredentialEntity}.
@@ -933,7 +1125,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Create a data source credential entity with REST response.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDataSourceCredentialWithResponse#DatasourceCredentialEntity-Context}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDataSourceCredentialWithResponse#DatasourceCredentialEntity-Context -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.createDataSourceCredentialWithResponse#DatasourceCredentialEntity-Context -->
      *
      * @param dataSourceCredential The credential entity.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
@@ -951,7 +1147,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Get a data source credential entity by its id.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getDataSourceCredential#String}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getDataSourceCredential#String -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getDataSourceCredential#String -->
      *
      * @param credentialId The data source credential entity unique id.
      *
@@ -968,7 +1168,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Get a data source credential entity by its id with REST response.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getDataSourceCredentialWithResponse#String-Context}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getDataSourceCredentialWithResponse#String-Context -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.getDataSourceCredentialWithResponse#String-Context -->
      *
      * @param credentialId The data source credential entity unique id.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
@@ -987,7 +1191,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Update a data source credential entity.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateDataSourceCredential#DatasourceCredentialEntity}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateDataSourceCredential#DatasourceCredentialEntity -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateDataSourceCredential#DatasourceCredentialEntity -->
      *
      * @param dataSourceCredential The credential entity.
      *
@@ -1003,7 +1211,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Update a data source credential entity.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateDataSourceCredentialWithResponse#DatasourceCredentialEntity-Context}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateDataSourceCredentialWithResponse#DatasourceCredentialEntity-Context -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.updateDataSourceCredentialWithResponse#DatasourceCredentialEntity-Context -->
      *
      * @param dataSourceCredential The credential entity.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
@@ -1021,7 +1233,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Delete a data source credential entity.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteDataSourceCredential#String}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteDataSourceCredential#String -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteDataSourceCredential#String -->
      *
      * @param credentialId The data source credential entity unique id.
      *
@@ -1037,7 +1253,11 @@ public final class MetricsAdvisorAdministrationClient {
      * Delete a data source credential entity with REST response.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteDataSourceCredentialWithResponse#String-Context}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteDataSourceCredentialWithResponse#String-Context -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.deleteDataSourceCredentialWithResponse#String-Context -->
      *
      * @param credentialId The data source credential entity unique id.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
@@ -1055,7 +1275,11 @@ public final class MetricsAdvisorAdministrationClient {
      * List information of all data source credential entities on the metrics advisor account.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDataSourceCredentials}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDataSourceCredentials -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDataSourceCredentials -->
      *
      * @return A {@link PagedIterable} containing information of all the {@link DataSourceCredentialEntity}
      * in the account.
@@ -1069,7 +1293,11 @@ public final class MetricsAdvisorAdministrationClient {
      * List information of all data source credential entities on the metrics advisor account.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDataSourceCredentials#ListCredentialEntityOptions-Context}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDataSourceCredentials#ListCredentialEntityOptions-Context -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationClient.listDataSourceCredentials#ListCredentialEntityOptions-Context -->
      *
      * @param options The configurable {@link ListCredentialEntityOptions options} to pass for filtering the output
      * result.

@@ -49,11 +49,19 @@ import java.util.Objects;
  *
  * <p><strong>Instantiating an asynchronous Metrics Advisor Client</strong></p>
  *
- * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.instantiation}
+ * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.instantiation -->
+ * <pre>
+ *
+ * </pre>
+ * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.instantiation -->
  *
  * <p><strong>Instantiating a synchronous Metrics Advisor Client</strong></p>
  *
- * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.instantiation}
+ * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.instantiation -->
+ * <pre>
+ *
+ * </pre>
+ * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.instantiation -->
  *
  * <p>
  * Another way to construct the client is using a {@link HttpPipeline}. The pipeline gives the client an
@@ -63,7 +71,11 @@ import java.util.Objects;
  * {@link MetricsAdvisorAsyncClient} is built.
  * </p>
  *
- * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.pipeline.instantiation}
+ * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.pipeline.instantiation -->
+ * <pre>
+ *
+ * </pre>
+ * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.pipeline.instantiation -->
  *
  * @see MetricsAdvisorAsyncClient
  * @see MetricsAdvisorClient

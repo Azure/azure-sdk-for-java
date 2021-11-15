@@ -39,7 +39,11 @@ import java.util.List;
  * This class provides an asynchronous client that contains all the operations that apply to Azure Metrics Advisor.
  *
  * <p><strong>Instantiating an synchronous DataFeedMetric Advisor Client</strong></p>
- * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.instantiation}
+ * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.instantiation -->
+ * <pre>
+ *
+ * </pre>
+ * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.instantiation -->
  *
  * @see MetricsAdvisorClientBuilder
  */
@@ -64,7 +68,11 @@ public final class MetricsAdvisorClient {
      * List series (dimension combinations) from metric.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricSeriesDefinitions#String-OffsetDateTime}
+     * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricSeriesDefinitions#String-OffsetDateTime -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricSeriesDefinitions#String-OffsetDateTime -->
      *
      * @param metricId metric unique id.
      * @param activeSince the start time for querying series ingested after this time.
@@ -84,7 +92,11 @@ public final class MetricsAdvisorClient {
      * List series (dimension combinations) from metric.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricSeriesDefinitions#String-OffsetDateTime-ListMetricSeriesDefinitionOptions-Context}
+     * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricSeriesDefinitions#String-OffsetDateTime-ListMetricSeriesDefinitionOptions-Context -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricSeriesDefinitions#String-OffsetDateTime-ListMetricSeriesDefinitionOptions-Context -->
      *
      * @param metricId metric unique id.
      * @param activeSince the start time for querying series ingested after this time.
@@ -108,7 +120,11 @@ public final class MetricsAdvisorClient {
      * Get time series data from metric.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricSeriesData#String-List-OffsetDateTime-OffsetDateTime}
+     * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricSeriesData#String-List-OffsetDateTime-OffsetDateTime -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricSeriesData#String-List-OffsetDateTime-OffsetDateTime -->
      *
      * @param metricId metric unique id.
      * @param seriesKeys the series key to filter.
@@ -134,7 +150,11 @@ public final class MetricsAdvisorClient {
      * Get time series data from metric.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricSeriesData#String-List-OffsetDateTime-OffsetDateTime-Context}
+     * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricSeriesData#String-List-OffsetDateTime-OffsetDateTime-Context -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricSeriesData#String-List-OffsetDateTime-OffsetDateTime-Context -->
      *
      * @param metricId metric unique id.
      * @param seriesKeys the series key to filter.
@@ -162,7 +182,11 @@ public final class MetricsAdvisorClient {
      * List the enrichment status for a metric.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricEnrichmentStatus#String-OffsetDateTime-OffsetDateTime}
+     * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricEnrichmentStatus#String-OffsetDateTime-OffsetDateTime -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricEnrichmentStatus#String-OffsetDateTime-OffsetDateTime -->
      *
      * @param metricId metric unique id.
      * @param startTime The start time for querying the time series data.
@@ -183,7 +207,11 @@ public final class MetricsAdvisorClient {
      * List the enrichment status for a metric.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricEnrichmentStatus#String-OffsetDateTime-OffsetDateTime-ListMetricEnrichmentStatusOptions-Context}
+     * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricEnrichmentStatus#String-OffsetDateTime-OffsetDateTime-ListMetricEnrichmentStatusOptions-Context -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricEnrichmentStatus#String-OffsetDateTime-OffsetDateTime-ListMetricEnrichmentStatusOptions-Context -->
      *
      * @param metricId metric unique id.
      * @param startTime The start time for querying the time series data.
@@ -210,18 +238,22 @@ public final class MetricsAdvisorClient {
      * a detection configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricEnrichedSeriesData#String-List-OffsetDateTime-OffsetDateTime}
+     * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricEnrichedSeriesData#String-List-OffsetDateTime-OffsetDateTime -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricEnrichedSeriesData#String-List-OffsetDateTime-OffsetDateTime -->
      *
      * @param detectionConfigurationId The id of the configuration used to enrich the time series
-     *     identified by the keys in {@code seriesKeys}.
+     * identified by the keys in {@code seriesKeys}.
      * @param seriesKeys The time series key list, each key identifies a specific time series.
      * @param startTime The start time.
      * @param endTime The end time.
      * @return The enriched time series.
      * @throws IllegalArgumentException thrown if {@code detectionConfigurationId} fail the UUID format validation
-     *     or if {@code seriesKeys} is empty.
+     * or if {@code seriesKeys} is empty.
      * @throws NullPointerException thrown if the {@code detectionConfigurationId}
-     *     or {@code startTime} or {@code endTime} is null.
+     * or {@code startTime} or {@code endTime} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricEnrichedSeriesData> listMetricEnrichedSeriesData(String detectionConfigurationId,
@@ -240,19 +272,23 @@ public final class MetricsAdvisorClient {
      * a detection configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricEnrichedSeriesData#String-List-OffsetDateTime-OffsetDateTime-Context}
+     * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricEnrichedSeriesData#String-List-OffsetDateTime-OffsetDateTime-Context -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricEnrichedSeriesData#String-List-OffsetDateTime-OffsetDateTime-Context -->
      *
      * @param detectionConfigurationId The id of the configuration used to enrich the time series
-     *     identified by the keys in {@code seriesKeys}.
+     * identified by the keys in {@code seriesKeys}.
      * @param seriesKeys The time series key list, each key identifies a specific time series.
      * @param startTime The start time of the time range within which the enriched data is returned.
      * @param endTime The end time of the time range within which the enriched data is returned.
      * @param context Additional context that is passed through the Http pipeline during the service call.
      * @return The enriched time series.
      * @throws IllegalArgumentException thrown if {@code detectionConfigurationId} fail the UUID format validation
-     *     or if {@code seriesKeys} is empty.
+     * or if {@code seriesKeys} is empty.
      * @throws NullPointerException thrown if the {@code detectionConfigurationId}
-     *     or {@code startTime} or {@code endTime} is null.
+     * or {@code startTime} or {@code endTime} is null.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<MetricEnrichedSeriesData> listMetricEnrichedSeriesData(
@@ -272,7 +308,11 @@ public final class MetricsAdvisorClient {
      * Fetch the anomalies identified by an anomaly detection configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAnomaliesForDetectionConfig#String-OffsetDateTime-OffsetDateTime}
+     * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAnomaliesForDetectionConfig#String-OffsetDateTime-OffsetDateTime -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAnomaliesForDetectionConfig#String-OffsetDateTime-OffsetDateTime -->
      *
      * @param detectionConfigurationId The anomaly detection configuration id.
      * @param startTime The start time of the time range within which the anomalies were detected.
@@ -294,7 +334,11 @@ public final class MetricsAdvisorClient {
      * Fetch the anomalies identified by an anomaly detection configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAnomaliesForDetectionConfig#String-OffsetDateTime-OffsetDateTime-ListAnomaliesDetectedOptions-Context}
+     * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAnomaliesForDetectionConfig#String-OffsetDateTime-OffsetDateTime-ListAnomaliesDetectedOptions-Context -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAnomaliesForDetectionConfig#String-OffsetDateTime-OffsetDateTime-ListAnomaliesDetectedOptions-Context -->
      *
      * @param detectionConfigurationId The anomaly detection configuration id.
      * @param startTime The start time of the time range within which the anomalies were detected.
@@ -323,7 +367,11 @@ public final class MetricsAdvisorClient {
      * Fetch the incidents identified by an anomaly detection configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentsForDetectionConfig#String-OffsetDateTime-OffsetDateTime}
+     * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentsForDetectionConfig#String-OffsetDateTime-OffsetDateTime -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentsForDetectionConfig#String-OffsetDateTime-OffsetDateTime -->
      *
      * @param detectionConfigurationId The anomaly detection configuration id.
      * @param startTime The start time of the time range within which the incidents were detected.
@@ -344,7 +392,11 @@ public final class MetricsAdvisorClient {
      * Fetch the incidents identified by an anomaly detection configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentsForDetectionConfig#String-OffsetDateTime-OffsetDateTime-ListIncidentsDetectedOptions-Context}
+     * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentsForDetectionConfig#String-OffsetDateTime-OffsetDateTime-ListIncidentsDetectedOptions-Context -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentsForDetectionConfig#String-OffsetDateTime-OffsetDateTime-ListIncidentsDetectedOptions-Context -->
      *
      * @param detectionConfigurationId The anomaly detection configuration id.
      * @param startTime The start time of the time range within which the incidents were detected.
@@ -370,7 +422,11 @@ public final class MetricsAdvisorClient {
      * List the root causes for an incident.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentRootCauses#String-String}
+     * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentRootCauses#String-String -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentRootCauses#String-String -->
      *
      * @param detectionConfigurationId anomaly detection configuration unique id.
      * @param incidentId the incident for which you want to query root causes for.
@@ -391,7 +447,11 @@ public final class MetricsAdvisorClient {
      * List the root causes for an incident.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentRootCauses#String-String-Context}
+     * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentRootCauses#String-String-Context -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentRootCauses#String-String-Context -->
      *
      * @param detectionConfigurationId anomaly detection configuration unique id.
      * @param incidentId the incident for which you want to query root causes for.
@@ -413,7 +473,11 @@ public final class MetricsAdvisorClient {
      * List the root causes for an anomalyIncident.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentRootCauses#AnomalyIncident}
+     * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentRootCauses#AnomalyIncident -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentRootCauses#AnomalyIncident -->
      *
      * @param anomalyIncident the anomalyIncident for which you want to query root causes for.
      *
@@ -431,7 +495,11 @@ public final class MetricsAdvisorClient {
      * Fetch dimension values that have anomalies.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAnomalyDimensionValues#String-String-OffsetDateTime-OffsetDateTime}
+     * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAnomalyDimensionValues#String-String-OffsetDateTime-OffsetDateTime -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAnomalyDimensionValues#String-String-OffsetDateTime-OffsetDateTime -->
      *
      * @param detectionConfigurationId Identifies the configuration used to detect the anomalies.
      * @param dimensionName The dimension name to retrieve the values for.
@@ -455,7 +523,11 @@ public final class MetricsAdvisorClient {
      * Fetch dimension values that have anomalies.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAnomalyDimensionValues#String-String-OffsetDateTime-OffsetDateTime-ListAnomalyDimensionValuesOptions-Context}
+     * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAnomalyDimensionValues#String-String-OffsetDateTime-OffsetDateTime-ListAnomalyDimensionValuesOptions-Context -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAnomalyDimensionValues#String-String-OffsetDateTime-OffsetDateTime-ListAnomalyDimensionValuesOptions-Context -->
      *
      * @param detectionConfigurationId Identifies the configuration used to detect the anomalies.
      * @param dimensionName The dimension name to retrieve the values for.
@@ -484,7 +556,11 @@ public final class MetricsAdvisorClient {
      * Fetch the alerts triggered by an anomaly alert configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAlerts#String-OffsetDateTime-OffsetDateTime}
+     * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAlerts#String-OffsetDateTime-OffsetDateTime -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAlerts#String-OffsetDateTime-OffsetDateTime -->
      *
      * @param alertConfigurationId The anomaly alert configuration id.
      * @param startTime The start time of the time range within which the alerts were triggered.
@@ -505,7 +581,11 @@ public final class MetricsAdvisorClient {
      * Fetch the alerts triggered by an anomaly alert configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAlerts#String-OffsetDateTime-OffsetDateTime-ListAlertOptions-Context}
+     * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAlerts#String-OffsetDateTime-OffsetDateTime-ListAlertOptions-Context -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAlerts#String-OffsetDateTime-OffsetDateTime-ListAlertOptions-Context -->
      *
      * @param alertConfigurationId The anomaly alert configuration id.
      * @param startTime The start time of the time range within which the alerts were triggered.
@@ -531,7 +611,11 @@ public final class MetricsAdvisorClient {
      * Fetch the anomalies in an alert.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAnomaliesForAlert#String-String}
+     * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAnomaliesForAlert#String-String -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAnomaliesForAlert#String-String -->
      *
      * @param alertConfigurationId The anomaly alert configuration id.
      * @param alertId The alert id.
@@ -551,7 +635,11 @@ public final class MetricsAdvisorClient {
      * Fetch the anomalies in an alert.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAnomaliesForAlert#String-String-ListAnomaliesAlertedOptions-Context}
+     * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAnomaliesForAlert#String-String-ListAnomaliesAlertedOptions-Context -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAnomaliesForAlert#String-String-ListAnomaliesAlertedOptions-Context -->
      *
      * @param alertConfigurationId The anomaly alert configuration id.
      * @param alertId The alert id.
@@ -578,7 +666,11 @@ public final class MetricsAdvisorClient {
      * Fetch the incidents in an alert.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentsForAlert#String-String}
+     * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentsForAlert#String-String -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentsForAlert#String-String -->
      *
      * @param alertConfigurationId The anomaly alert configuration id.
      * @param alertId The alert id.
@@ -602,7 +694,11 @@ public final class MetricsAdvisorClient {
      * Fetch the incidents in an alert.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentsForAlert#String-String-ListIncidentsAlertedOptions-Context}
+     * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentsForAlert#String-String-ListIncidentsAlertedOptions-Context -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentsForAlert#String-String-ListIncidentsAlertedOptions-Context -->
      *
      * @param alertConfigurationId The anomaly alert configuration id.
      * @param alertId The alert id.
@@ -629,7 +725,11 @@ public final class MetricsAdvisorClient {
      * Create a new metric feedback.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.addFeedback#String-MetricFeedback}
+     * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.addFeedback#String-MetricFeedback -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.addFeedback#String-MetricFeedback -->
      *
      * @param metricId the unique id for which the feedback needs to be submitted.
      * @param metricFeedback the actual metric feedback.
@@ -646,7 +746,11 @@ public final class MetricsAdvisorClient {
      * Create a new metric feedback.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.addFeedbackWithResponse#String-MetricFeedback-Context}
+     * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.addFeedbackWithResponse#String-MetricFeedback-Context -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.addFeedbackWithResponse#String-MetricFeedback-Context -->
      *
      * @param metricId the unique id for which the feedback needs to be submitted.
      * @param metricFeedback the actual metric feedback.
@@ -665,7 +769,11 @@ public final class MetricsAdvisorClient {
      * Get a metric feedback by its id.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.getFeedback#String}
+     * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.getFeedback#String -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.getFeedback#String -->
      *
      * @param feedbackId The metric feedback unique id.
      *
@@ -682,7 +790,11 @@ public final class MetricsAdvisorClient {
      * Get a metric feedback by its id.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.getFeedbackWithResponse#String-Context}
+     * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.getFeedbackWithResponse#String-Context -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.getFeedbackWithResponse#String-Context -->
      *
      * @param feedbackId The metric feedback unique id.
      * @param context Additional context that is passed through the HTTP pipeline during the service call.
@@ -700,7 +812,11 @@ public final class MetricsAdvisorClient {
      * List information of all metric feedbacks on the metrics advisor account.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listFeedback#String}
+     * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listFeedback#String -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listFeedback#String -->
      *
      * @param metricId the unique metric Id.
      *
@@ -720,7 +836,11 @@ public final class MetricsAdvisorClient {
      * List information of all metric feedbacks on the metrics advisor account.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listFeedback#String-ListMetricFeedbackOptions-Context}
+     * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listFeedback#String-ListMetricFeedbackOptions-Context -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listFeedback#String-ListMetricFeedbackOptions-Context -->
      *
      * @param metricId the unique metric Id.
      * @param options The configurable {@link ListMetricFeedbackOptions options} to pass for filtering the output
@@ -745,7 +865,11 @@ public final class MetricsAdvisorClient {
      * List dimension values from certain metric.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricDimensionValues#String-String}
+     * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricDimensionValues#String-String -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricDimensionValues#String-String -->
      *
      * @param metricId metric unique id.
      * @param dimensionName the query dimension name.
@@ -766,7 +890,11 @@ public final class MetricsAdvisorClient {
      * List dimension values from certain metric.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricDimensionValues#String-String-ListMetricDimensionValuesOptions-Context}
+     * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricDimensionValues#String-String-ListMetricDimensionValuesOptions-Context -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricDimensionValues#String-String-ListMetricDimensionValuesOptions-Context -->
      *
      * @param metricId metric unique id.
      * @param dimensionName the query dimension name.

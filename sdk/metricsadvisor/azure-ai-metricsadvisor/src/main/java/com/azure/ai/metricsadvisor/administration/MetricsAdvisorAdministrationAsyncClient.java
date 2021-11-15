@@ -3,28 +3,9 @@
 
 package com.azure.ai.metricsadvisor.administration;
 
-import com.azure.ai.metricsadvisor.implementation.AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl;
-import com.azure.ai.metricsadvisor.implementation.models.DataSourceCredential;
-import com.azure.ai.metricsadvisor.implementation.models.DataSourceCredentialPatch;
-import com.azure.ai.metricsadvisor.implementation.models.RollUpMethod;
-import com.azure.ai.metricsadvisor.implementation.util.DataSourceCredentialEntityTransforms;
-import com.azure.ai.metricsadvisor.implementation.util.DataFeedTransforms;
-import com.azure.ai.metricsadvisor.implementation.util.DetectionConfigurationTransforms;
-import com.azure.ai.metricsadvisor.implementation.models.AnomalyDetectionConfigurationPatch;
-import com.azure.ai.metricsadvisor.implementation.util.HookTransforms;
-import com.azure.ai.metricsadvisor.implementation.models.AnomalyAlertingConfiguration;
-import com.azure.ai.metricsadvisor.implementation.models.AnomalyAlertingConfigurationPatch;
-import com.azure.ai.metricsadvisor.implementation.models.DataSourceType;
-import com.azure.ai.metricsadvisor.implementation.models.EntityStatus;
-import com.azure.ai.metricsadvisor.implementation.models.FillMissingPointType;
-import com.azure.ai.metricsadvisor.implementation.models.Granularity;
-import com.azure.ai.metricsadvisor.implementation.models.IngestionProgressResetOptions;
-import com.azure.ai.metricsadvisor.implementation.models.IngestionStatusQueryOptions;
-import com.azure.ai.metricsadvisor.implementation.models.NeedRollupEnum;
-import com.azure.ai.metricsadvisor.implementation.models.ViewMode;
-import com.azure.ai.metricsadvisor.implementation.util.Utility;
-import com.azure.ai.metricsadvisor.implementation.util.AlertConfigurationTransforms;
+import com.azure.ai.metricsadvisor.MetricsAdvisorServiceVersion;
 import com.azure.ai.metricsadvisor.administration.models.AnomalyAlertConfiguration;
+import com.azure.ai.metricsadvisor.administration.models.AnomalyDetectionConfiguration;
 import com.azure.ai.metricsadvisor.administration.models.DataFeed;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedGranularity;
 import com.azure.ai.metricsadvisor.administration.models.DataFeedIngestionProgress;
@@ -38,14 +19,33 @@ import com.azure.ai.metricsadvisor.administration.models.DataFeedSchema;
 import com.azure.ai.metricsadvisor.administration.models.DataSourceCredentialEntity;
 import com.azure.ai.metricsadvisor.administration.models.ListAnomalyAlertConfigsOptions;
 import com.azure.ai.metricsadvisor.administration.models.ListCredentialEntityOptions;
-import com.azure.ai.metricsadvisor.administration.models.ListDetectionConfigsOptions;
-import com.azure.ai.metricsadvisor.administration.models.NotificationHook;
 import com.azure.ai.metricsadvisor.administration.models.ListDataFeedFilter;
 import com.azure.ai.metricsadvisor.administration.models.ListDataFeedIngestionOptions;
 import com.azure.ai.metricsadvisor.administration.models.ListDataFeedOptions;
+import com.azure.ai.metricsadvisor.administration.models.ListDetectionConfigsOptions;
 import com.azure.ai.metricsadvisor.administration.models.ListHookOptions;
-import com.azure.ai.metricsadvisor.administration.models.AnomalyDetectionConfiguration;
-import com.azure.ai.metricsadvisor.MetricsAdvisorServiceVersion;
+import com.azure.ai.metricsadvisor.administration.models.NotificationHook;
+import com.azure.ai.metricsadvisor.implementation.AzureCognitiveServiceMetricsAdvisorRestAPIOpenAPIV2Impl;
+import com.azure.ai.metricsadvisor.implementation.models.AnomalyAlertingConfiguration;
+import com.azure.ai.metricsadvisor.implementation.models.AnomalyAlertingConfigurationPatch;
+import com.azure.ai.metricsadvisor.implementation.models.AnomalyDetectionConfigurationPatch;
+import com.azure.ai.metricsadvisor.implementation.models.DataSourceCredential;
+import com.azure.ai.metricsadvisor.implementation.models.DataSourceCredentialPatch;
+import com.azure.ai.metricsadvisor.implementation.models.DataSourceType;
+import com.azure.ai.metricsadvisor.implementation.models.EntityStatus;
+import com.azure.ai.metricsadvisor.implementation.models.FillMissingPointType;
+import com.azure.ai.metricsadvisor.implementation.models.Granularity;
+import com.azure.ai.metricsadvisor.implementation.models.IngestionProgressResetOptions;
+import com.azure.ai.metricsadvisor.implementation.models.IngestionStatusQueryOptions;
+import com.azure.ai.metricsadvisor.implementation.models.NeedRollupEnum;
+import com.azure.ai.metricsadvisor.implementation.models.RollUpMethod;
+import com.azure.ai.metricsadvisor.implementation.models.ViewMode;
+import com.azure.ai.metricsadvisor.implementation.util.AlertConfigurationTransforms;
+import com.azure.ai.metricsadvisor.implementation.util.DataFeedTransforms;
+import com.azure.ai.metricsadvisor.implementation.util.DataSourceCredentialEntityTransforms;
+import com.azure.ai.metricsadvisor.implementation.util.DetectionConfigurationTransforms;
+import com.azure.ai.metricsadvisor.implementation.util.HookTransforms;
+import com.azure.ai.metricsadvisor.implementation.util.Utility;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -67,8 +67,8 @@ import java.util.Objects;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-import static com.azure.ai.metricsadvisor.implementation.util.Utility.parseOperationId;
 import static com.azure.ai.metricsadvisor.administration.models.DataFeedGranularityType.CUSTOM;
+import static com.azure.ai.metricsadvisor.implementation.util.Utility.parseOperationId;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.FluxUtil.withContext;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
@@ -76,7 +76,11 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 /**
  * This class provides an asynchronous client that contains all the operations that apply to Azure Metrics Advisor.
  * <p><strong>Instantiating a asynchronous Metrics Advisor Administration Client</strong></p>
- * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.instantiation}
+ * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.instantiation -->
+ * <pre>
+ *
+ * </pre>
+ * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.instantiation -->
  *
  * @see MetricsAdvisorAdministrationClientBuilder
  */
@@ -103,7 +107,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Create a new data feed.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDataFeed#DataFeed}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDataFeed#DataFeed -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDataFeed#DataFeed -->
      *
      * @param dataFeed The data feed to be created.
      * @return A {@link Mono} containing the created data feed.
@@ -119,7 +127,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Create a new data feed with REST response.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDataFeedWithResponse#DataFeed}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDataFeedWithResponse#DataFeed -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDataFeedWithResponse#DataFeed -->
      *
      *
      * @param dataFeed The data feed to be created.
@@ -227,7 +239,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Get a data feed by its id.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDataFeed#String}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDataFeed#String -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDataFeed#String -->
      *
      * @param dataFeedId The data feed unique id.
      *
@@ -244,7 +260,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Get a data feed by its id with REST response.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDataFeedWithResponse#String}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDataFeedWithResponse#String -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDataFeedWithResponse#String -->
      *
      * @param dataFeedId The data feed unique id.
      *
@@ -272,7 +292,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Update an existing data feed.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDataFeed#DataFeed}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDataFeed#DataFeed -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDataFeed#DataFeed -->
      *
      * @param dataFeed the data feed that needs to be updated.
      *
@@ -287,7 +311,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Update an existing data feed with REST response.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDataFeedWithResponse#DataFeed}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDataFeedWithResponse#DataFeed -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDataFeedWithResponse#DataFeed -->
      *
      * @param dataFeed the data feed that needs to be updated.
      *
@@ -367,7 +395,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Delete a data feed.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDataFeed#String}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDataFeed#String -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDataFeed#String -->
      *
      * @param dataFeedId The data feed unique id.
      *
@@ -384,7 +416,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Delete a data feed with REST response.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDataFeedWithResponse#String}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDataFeedWithResponse#String -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDataFeedWithResponse#String -->
      *
      * @param dataFeedId The data feed unique id.
      *
@@ -411,7 +447,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * List information of all data feeds on the metrics advisor account.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDataFeeds}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDataFeeds -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDataFeeds -->
      *
      * @return A {@link PagedFlux} containing information of all the {@link DataFeed data feeds} in the account.
      */
@@ -424,18 +464,22 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * List information of all data feeds on the metrics advisor account.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDataFeeds#ListDataFeedOptions}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDataFeeds#ListDataFeedOptions -->
+     * <pre>
      *
-     * @param options The configurable {@link ListDataFeedOptions options} to pass for filtering the output result.
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDataFeeds#ListDataFeedOptions -->
+     *
+     * @param listDataFeedOptions The configurable {@link ListDataFeedOptions options} to pass for filtering the output result.
      *
      * @return A {@link PagedFlux} containing information of all the {@link DataFeed data feeds} in the account.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DataFeed> listDataFeeds(ListDataFeedOptions options) {
+    public PagedFlux<DataFeed> listDataFeeds(ListDataFeedOptions listDataFeedOptions) {
         try {
             return new PagedFlux<>(() ->
                 withContext(context ->
-                    listDataFeedsSinglePageAsync(options, context)),
+                    listDataFeedsSinglePageAsync(listDataFeedOptions, context)),
                 continuationToken ->
                     withContext(context -> listDataFeedsNextPageAsync(continuationToken, context)));
         } catch (RuntimeException ex) {
@@ -501,10 +545,14 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Fetch the ingestion status of a data feed.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDataFeedIngestionStatus#String-ListDataFeedIngestionOptions}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDataFeedIngestionStatus#String-ListDataFeedIngestionOptions -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDataFeedIngestionStatus#String-ListDataFeedIngestionOptions -->
      *
      * @param dataFeedId The data feed id.
-     * @param options The additional parameters.
+     * @param listDataFeedIngestionOptions The additional parameters.
      *
      * @return The ingestion statuses.
      * @throws IllegalArgumentException If {@code dataFeedId} does not conform to the UUID format specification.
@@ -514,14 +562,14 @@ public final class MetricsAdvisorAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<DataFeedIngestionStatus> listDataFeedIngestionStatus(
         String dataFeedId,
-        ListDataFeedIngestionOptions options) {
+        ListDataFeedIngestionOptions listDataFeedIngestionOptions) {
         try {
             return new PagedFlux<>(() ->
                 withContext(context ->
-                    listDataFeedIngestionStatusSinglePageAsync(dataFeedId, options, context)),
+                    listDataFeedIngestionStatusSinglePageAsync(dataFeedId, listDataFeedIngestionOptions, context)),
                 continuationToken ->
                     withContext(context -> listDataFeedIngestionStatusNextPageAsync(continuationToken,
-                        options,
+                        listDataFeedIngestionOptions,
                         context)));
         } catch (RuntimeException ex) {
             return new PagedFlux<>(() -> FluxUtil.monoError(logger, ex));
@@ -592,7 +640,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * </p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.refreshDataFeedIngestion#String-OffsetDateTime-OffsetDateTime}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.refreshDataFeedIngestion#String-OffsetDateTime-OffsetDateTime -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.refreshDataFeedIngestion#String-OffsetDateTime-OffsetDateTime -->
      *
      * @param dataFeedId The data feed id.
      * @param startTime The start point of the period.
@@ -620,7 +672,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * </p>
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.refreshDataFeedIngestionWithResponse#String-OffsetDateTime-OffsetDateTime}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.refreshDataFeedIngestionWithResponse#String-OffsetDateTime-OffsetDateTime -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.refreshDataFeedIngestionWithResponse#String-OffsetDateTime-OffsetDateTime -->
      *
      * @param dataFeedId The data feed id.
      * @param startTime The start point of the period.
@@ -666,7 +722,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Retrieve the ingestion progress of a data feed.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDataFeedIngestionProgress#String}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDataFeedIngestionProgress#String -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDataFeedIngestionProgress#String -->
      *
      * @param dataFeedId The data feed id.
      *
@@ -684,7 +744,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Retrieve the ingestion progress of a data feed.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDataFeedIngestionProgressWithResponse#String}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDataFeedIngestionProgressWithResponse#String -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDataFeedIngestionProgressWithResponse#String -->
      *
      * @param dataFeedId The data feed id.
      *
@@ -715,7 +779,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Create a configuration to detect anomalies in the time series of a metric.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDetectionConfig#String-AnomalyDetectionConfiguration}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDetectionConfig#String-AnomalyDetectionConfiguration -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDetectionConfig#String-AnomalyDetectionConfiguration -->
      *
      * @param metricId The metric id to associate the configuration with.
      * @param detectionConfiguration The anomaly detection configuration.
@@ -742,8 +810,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Create a configuration to detect anomalies in the time series of a metric.
      *
      * <p><strong>Code sample</strong></p>
-     *      *
-     *      {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDetectionConfigWithResponse#String-AnomalyDetectionConfiguration}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDetectionConfigWithResponse#String-AnomalyDetectionConfiguration -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDetectionConfigWithResponse#String-AnomalyDetectionConfiguration -->
      *
      * @param metricId The metric id to associate the configuration with.
      * @param detectionConfiguration The anomaly detection configuration.
@@ -804,7 +875,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Get the anomaly detection configuration by its id.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDetectionConfig#String}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDetectionConfig#String -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDetectionConfig#String -->
      *
      * @param detectionConfigurationId The anomaly detection configuration id.
      * @return A {@link Mono} containing the {@link AnomalyDetectionConfiguration} for the provided id.
@@ -823,7 +898,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Get the anomaly detection configuration by its id.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDetectionConfigWithResponse#String}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDetectionConfigWithResponse#String -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDetectionConfigWithResponse#String -->
      *
      * @param detectionConfigurationId The anomaly detection configuration id.
      * @return A {@link Response} of a {@link Mono} containing the {@link AnomalyDetectionConfiguration}
@@ -869,7 +948,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Update a configuration to detect anomalies in the time series of a metric.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDetectionConfig#AnomalyDetectionConfiguration}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDetectionConfig#AnomalyDetectionConfiguration -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDetectionConfig#AnomalyDetectionConfiguration -->
      *
      * @param detectionConfiguration The anomaly detection configuration.
      * @return A {@link Mono} containing the updated {@link AnomalyDetectionConfiguration}.
@@ -887,7 +970,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Update a configuration to detect anomalies in the time series of a metric.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDetectionConfigWithResponse#AnomalyDetectionConfiguration}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDetectionConfigWithResponse#AnomalyDetectionConfiguration -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDetectionConfigWithResponse#AnomalyDetectionConfiguration -->
      *
      * @param detectionConfiguration The anomaly detection configuration.
      * @return A {@link Response} of a {@link Mono} containing the updated {@link AnomalyDetectionConfiguration}.
@@ -937,7 +1024,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * @param detectionConfigurationId The metric anomaly detection configuration unique id.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDetectionConfig#String}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDetectionConfig#String -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDetectionConfig#String -->
      *
      * @return An empty Mono.
      * @throws NullPointerException thrown if the {@code detectionConfigurationId} is null.
@@ -953,7 +1044,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Delete a metric anomaly detection configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDetectionConfigWithResponse#String}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDetectionConfigWithResponse#String -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDetectionConfigWithResponse#String -->
      *
      * @param detectionConfigurationId The metric anomaly detection configuration unique id.
      *
@@ -988,7 +1083,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Given a metric id, retrieve all anomaly detection configurations applied to it.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDetectionConfigs#String}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDetectionConfigs#String -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDetectionConfigs#String -->
      *
      * @param metricId The metric id.
      * @return The anomaly detection configurations.
@@ -1005,10 +1104,14 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Given a metric id, retrieve all anomaly detection configurations applied to it.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDetectionConfigs#String-ListDetectionConfigsOptions}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDetectionConfigs#String-ListDetectionConfigsOptions -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDetectionConfigs#String-ListDetectionConfigsOptions -->
      *
      * @param metricId The metric id.
-     * @param options th e additional configurable options to specify when querying the result.
+     * @param listDetectionConfigsOptions the additional configurable options to specify when querying the result.
      * @return The anomaly detection configurations.
      * @throws NullPointerException thrown if the {@code metricId} is null.
      * @throws IllegalArgumentException If {@code metricId} does not conform to the UUID format specification.
@@ -1016,11 +1119,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AnomalyDetectionConfiguration> listDetectionConfigs(
         String metricId,
-        ListDetectionConfigsOptions options) {
+        ListDetectionConfigsOptions listDetectionConfigsOptions) {
         try {
             return new PagedFlux<>(() ->
                 withContext(context ->
-                    listAnomalyDetectionConfigsSinglePageAsync(metricId, options, context)),
+                    listAnomalyDetectionConfigsSinglePageAsync(metricId, listDetectionConfigsOptions, context)),
                 continuationToken ->
                     withContext(context -> listAnomalyDetectionConfigsNextPageAsync(continuationToken,
                         context)));
@@ -1076,7 +1179,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Creates a notificationHook that receives anomaly incident alerts.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createHook#NotificationHook}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createHook#NotificationHook -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createHook#NotificationHook -->
      *
      * @param notificationHook The notificationHook.
      *
@@ -1095,7 +1202,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Creates a notificationHook that receives anomaly incident alerts.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createHookWithResponse#NotificationHook}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createHookWithResponse#NotificationHook -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createHookWithResponse#NotificationHook -->
      *
      * @param notificationHook The notificationHook.
      *
@@ -1136,7 +1247,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Get a hook by its id.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getHook#String}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getHook#String -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getHook#String -->
      *
      * @param hookId The hook unique id.
      *
@@ -1153,7 +1268,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Get a hook by its id.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getHookWithResponse#String}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getHookWithResponse#String -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getHookWithResponse#String -->
      *
      * @param hookId The hook unique id.
      *
@@ -1188,7 +1307,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Update an existing notificationHook.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateHook#NotificationHook}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateHook#NotificationHook -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateHook#NotificationHook -->
      *
      * @param notificationHook The notificationHook to update.
      *
@@ -1201,10 +1324,14 @@ public final class MetricsAdvisorAdministrationAsyncClient {
     }
 
     /**
-     * Update an existing notificationHook.
+     * Update an existing notification hook.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateHookWithResponse#NotificationHook}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateHookWithResponse#NotificationHook -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateHookWithResponse#NotificationHook -->
      *
      * @param notificationHook The notificationHook to update.
      *
@@ -1243,7 +1370,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Delete a hook.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteHook#String}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteHook#String -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteHook#String -->
      *
      * @param hookId The hook unique id.
      *
@@ -1260,7 +1391,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Delete a hook.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteHookWithResponse#String}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteHookWithResponse#String -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteHookWithResponse#String -->
      *
      * @param hookId The hook unique id.
      *
@@ -1289,7 +1424,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * List information of hooks on the metrics advisor account.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listHooks}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listHooks -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listHooks -->
      *
      * @return A {@link PagedFlux} containing information of all the {@link NotificationHook} in the account.
      */
@@ -1302,18 +1441,22 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * List information of hooks.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listHooks#ListHookOptions}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listHooks#ListHookOptions -->
+     * <pre>
      *
-     * @param options The additional parameters
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listHooks#ListHookOptions -->
+     *
+     * @param listHookOptions the additional configurable options to specify when listing hooks.
      *
      * @return A {@link PagedFlux} containing information of the {@link NotificationHook} resources.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<NotificationHook> listHooks(ListHookOptions options) {
+    public PagedFlux<NotificationHook> listHooks(ListHookOptions listHookOptions) {
         try {
             return new PagedFlux<>(() ->
                 withContext(context ->
-                    listHooksSinglePageAsync(options, context)),
+                    listHooksSinglePageAsync(listHookOptions, context)),
                 continuationToken ->
                     withContext(context -> listHooksNextPageAsync(continuationToken,
                         context)));
@@ -1360,7 +1503,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Create a configuration to trigger alert when anomalies are detected.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createAlertConfig#AnomalyAlertConfiguration}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createAlertConfig#AnomalyAlertConfiguration -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createAlertConfig#AnomalyAlertConfiguration -->
      *
      * @param alertConfiguration The anomaly alerting configuration.
      *
@@ -1375,10 +1522,13 @@ public final class MetricsAdvisorAdministrationAsyncClient {
     }
 
     /**
-     * Create a configuration to trigger alert when anomalies are detected.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createAlertConfigWithResponse#AnomalyAlertConfiguration}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createAlertConfigWithResponse#AnomalyAlertConfiguration -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createAlertConfigWithResponse#AnomalyAlertConfiguration -->
      *
      * @param alertConfiguration The anomaly alerting configuration.
      *
@@ -1433,7 +1583,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Get the anomaly alert configuration identified by {@code alertConfigurationId}.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getAlertConfig#String}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getAlertConfig#String -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getAlertConfig#String -->
      *
      * @param alertConfigurationId The anomaly alert configuration id.
      *
@@ -1452,7 +1606,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Get the anomaly alert configuration identified by {@code alertConfigurationId}.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getAlertConfigWithResponse#String}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getAlertConfigWithResponse#String -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getAlertConfigWithResponse#String -->
      *
      * @param alertConfigurationId The anomaly alert configuration id.
      *
@@ -1493,7 +1651,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Update anomaly alert configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateAlertConfig#AnomalyAlertConfiguration}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateAlertConfig#AnomalyAlertConfiguration -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateAlertConfig#AnomalyAlertConfiguration -->
      *
      * @param alertConfiguration The anomaly alert configuration to update.
      *
@@ -1511,7 +1673,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Update anomaly alert configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateAlertConfigWithResponse#AnomalyAlertConfiguration}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateAlertConfigWithResponse#AnomalyAlertConfiguration -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateAlertConfigWithResponse#AnomalyAlertConfiguration -->
      *
      * @param alertConfiguration The anomaly alert configuration to update.
      *
@@ -1561,7 +1727,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Deletes the anomaly alert configuration identified by {@code alertConfigurationId}.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteAlertConfig#String}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteAlertConfig#String -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteAlertConfig#String -->
      *
      * @param alertConfigurationId The anomaly alert configuration id.
      *
@@ -1579,7 +1749,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Deletes the anomaly alert configuration identified by {@code alertConfigurationId}.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteAlertConfigWithResponse#String}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteAlertConfigWithResponse#String -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteAlertConfigWithResponse#String -->
      *
      * @param alertConfigurationId The anomaly alert configuration id.
      *
@@ -1613,10 +1787,14 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Fetch the anomaly alert configurations associated with a detection configuration.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listAlertConfigs#String-ListAnomalyAlertConfigsOptions}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listAlertConfigs#String-ListAnomalyAlertConfigsOptions -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listAlertConfigs#String-ListAnomalyAlertConfigsOptions -->
      *
      * @param detectionConfigurationId The id of the detection configuration.
-     * @param options th e additional configurable options to specify when querying the result.
+     * @param listAnomalyAlertConfigsOptions th e additional configurable options to specify when querying the result.
      *
      * @return A {@link PagedFlux} containing information of all the
      * {@link AnomalyAlertConfiguration anomaly alert configurations} for the specified detection configuration.
@@ -1626,12 +1804,12 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<AnomalyAlertConfiguration> listAlertConfigs(
-        String detectionConfigurationId, ListAnomalyAlertConfigsOptions options) {
+        String detectionConfigurationId, ListAnomalyAlertConfigsOptions listAnomalyAlertConfigsOptions) {
         try {
             return new PagedFlux<>(() ->
                 withContext(context ->
                     listAnomalyAlertConfigsSinglePageAsync(detectionConfigurationId,
-                        options,
+                        listAnomalyAlertConfigsOptions,
                         context)),
                 continuationToken ->
                     withContext(context -> listAnomalyAlertConfigsNextPageAsync(continuationToken,
@@ -1686,7 +1864,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Create a data source credential entity.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDataSourceCredential#DatasourceCredentialEntity}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDataSourceCredential#DatasourceCredentialEntity -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDataSourceCredential#DatasourceCredentialEntity -->
      *
      * @param dataSourceCredential The credential entity.
      * @return A {@link Mono} containing the created {@link DataSourceCredentialEntity}.
@@ -1703,7 +1885,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Create a data source credential entity with REST response.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDataSourceCredentialWithResponse#DatasourceCredentialEntity}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDataSourceCredentialWithResponse#DatasourceCredentialEntity -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.createDataSourceCredentialWithResponse#DatasourceCredentialEntity -->
      *
      * @param dataSourceCredential The credential entity.
      * @return A {@link Mono} containing the created {@link DataSourceCredentialEntity}.
@@ -1749,7 +1935,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Update a data source credential entity.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDataSourceCredential#DatasourceCredentialEntity}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDataSourceCredential#DatasourceCredentialEntity -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDataSourceCredential#DatasourceCredentialEntity -->
      *
      * @param dataSourceCredential The credential entity.
      * @return A {@link Mono} containing the updated {@link DataSourceCredentialEntity}.
@@ -1766,7 +1956,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Update a data source credential entity with REST response.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDataSourceCredentialWithResponse#DatasourceCredentialEntity}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDataSourceCredentialWithResponse#DatasourceCredentialEntity -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.updateDataSourceCredentialWithResponse#DatasourceCredentialEntity -->
      *
      * @param dataSourceCredential The credential entity.
      * @return A {@link Mono} containing the updated {@link DataSourceCredentialEntity}.
@@ -1811,7 +2005,8 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Get a data source credential entity by its id.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDataSourceCredential#String}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDataSourceCredential#String -->
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDataSourceCredential#String -->
      *
      * @param credentialId The data source credential entity unique id.
      *
@@ -1828,7 +2023,8 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      *  Get a data source credential entity by its id with REST response.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDataSourceCredentialWithResponse#String}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDataSourceCredentialWithResponse#String -->
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.getDataSourceCredentialWithResponse#String -->
      *
      * @param credentialId The data source credential entity unique id.
      *
@@ -1859,7 +2055,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Deletes the data source credential entity identified by {@code credentialId}.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDataSourceCredential#String}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDataSourceCredential#String -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDataSourceCredential#String -->
      *
      * @param credentialId The data source credential entity id.
      *
@@ -1877,7 +2077,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * Deletes the data source credential entity identified by {@code credentialId}.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDataSourceCredentialWithResponse#String}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDataSourceCredentialWithResponse#String -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.deleteDataSourceCredentialWithResponse#String -->
      *
      * @param credentialId The data source credential entity id.
      *
@@ -1912,7 +2116,11 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * List information of all data source credential entities on the metrics advisor account.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDataSourceCredentials}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDataSourceCredentials -->
+     * <pre>
+     *
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDataSourceCredentials -->
      *
      * @return A {@link PagedFlux} containing information of all the {@link DataSourceCredentialEntity data feeds}
      * in the account.
@@ -1926,20 +2134,24 @@ public final class MetricsAdvisorAdministrationAsyncClient {
      * List information of all data source credential entities on the metrics advisor account.
      *
      * <p><strong>Code sample</strong></p>
-     * {@codesnippet com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDataSourceCredentials#ListCredentialEntityOptions}
+     * <!-- src_embed com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDataSourceCredentials#ListCredentialEntityOptions -->
+     * <pre>
      *
-     * @param options The configurable {@link ListCredentialEntityOptions options} to pass for filtering
+     * </pre>
+     * <!-- end com.azure.ai.metricsadvisor.administration.MetricsAdvisorAdministrationAsyncClient.listDataSourceCredentials#ListCredentialEntityOptions -->
+     *
+     * @param listCredentialEntityOptions The configurable {@link ListCredentialEntityOptions options} to pass for filtering
      * the output result.
      *
      * @return A {@link PagedFlux} containing information of all the {@link DataSourceCredentialEntity data feeds}
      * in the account.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<DataSourceCredentialEntity> listDataSourceCredentials(ListCredentialEntityOptions options) {
+    public PagedFlux<DataSourceCredentialEntity> listDataSourceCredentials(ListCredentialEntityOptions listCredentialEntityOptions) {
         try {
             return new PagedFlux<>(() ->
                 withContext(context ->
-                    listCredentialEntitiesSinglePageAsync(options, context)),
+                    listCredentialEntitiesSinglePageAsync(listCredentialEntityOptions, context)),
                 continuationToken ->
                     withContext(context -> listCredentialEntitiesSNextPageAsync(continuationToken, context)));
         } catch (RuntimeException ex) {
