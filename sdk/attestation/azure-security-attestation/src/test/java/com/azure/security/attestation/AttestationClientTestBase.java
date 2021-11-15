@@ -387,7 +387,7 @@ public class AttestationClientTestBase extends TestBase {
     }
 
     String getPolicySigningKey0Base64() {
-        String key = Configuration.getGlobalConfiguration().get("policySigningKey0");
+        String key = Configuration.getGlobalConfiguration().get("POLICYSIGNINGKEY0");
         if (key == null) {
             System.out.printf("Returning preconfigured signing key because none was found in the environment.\n");
             Map<String, String> env = System.getenv();
