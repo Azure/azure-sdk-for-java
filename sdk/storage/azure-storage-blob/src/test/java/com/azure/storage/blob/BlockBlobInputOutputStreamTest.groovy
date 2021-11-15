@@ -151,11 +151,15 @@ class BlockBlobInputOutputStreamTest extends APISpec {
         0                | 100 // Small range
         0                | 4 * Constants.MB // block size
         0                | 5 * Constants.MB // Requires multiple chunks
+        0                | (1 * Constants.KB) + 1 // Range not a multiple of 1024
+        0                | (1 * Constants.KB) - 1 // ""
         5                | 100 // small offset
         5                | null // full blob after an offset
         1 * Constants.MB | 2 * Constants.MB // larger offset inside first chunk
         1 * Constants.KB | 4 * Constants.MB // offset with range spanning chunks
-        5 * Constants.MB | (1 * Constants.KB) // Range entirely in second chunk
+        5 * Constants.MB | 1 * Constants.KB // Range entirely in second chunk
+        5 * Constants.MB | (1 * Constants.KB) + 1 // Range not multiple of 1024
+        5 * Constants.MB | (1 * Constants.KB) - 1 // ""
         5 * Constants.MB | null // rest of blob after first chunk
     }
 

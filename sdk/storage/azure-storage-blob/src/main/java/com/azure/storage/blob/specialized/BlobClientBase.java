@@ -59,7 +59,6 @@ import com.azure.storage.common.implementation.FluxInputStream;
 import com.azure.storage.common.implementation.StorageImplUtils;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
-import reactor.util.function.Tuple3;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -313,55 +312,55 @@ public class BlobClientBase {
         BlobRange range = options.getRange() == null ? new BlobRange(0) : options.getRange();
         int chunkSize = options.getBlockSize() == null ? 4 * Constants.MB : options.getBlockSize();
 
-        com.azure.storage.common.ParallelTransferOptions pOptions =
+        com.azure.storage.common.ParallelTransferOptions parallelTransferOptions =
             new com.azure.storage.common.ParallelTransferOptions().setBlockSizeLong((long) chunkSize);
         BiFunction<BlobRange, BlobRequestConditions, Mono<BlobDownloadAsyncResponse>> downloadFunc =
-            (r, conditions) -> client.downloadWithResponse(r, null, conditions, false);
-        Tuple3<Long, BlobRequestConditions, BlobDownloadAsyncResponse> tuple =
-            ChunkedDownloadUtils.downloadFirstChunk(range, pOptions, requestConditions, downloadFunc, true).block();
-        if (tuple == null) {
-            throw logger.logExceptionAsError(new IllegalStateException("Downloading first chunk returned null"));
-        }
+            (chunkRange, conditions) -> client.downloadWithResponse(chunkRange, null, conditions, false);
+        return ChunkedDownloadUtils.downloadFirstChunk(range, parallelTransferOptions, requestConditions, downloadFunc, true)
+            .flatMap(tuple3 -> {
+                BlobDownloadAsyncResponse downloadResponse = tuple3.getT3();
+                return FluxUtil.collectBytesInByteBufferStream(downloadResponse.getValue())
+                    .map(ByteBuffer::wrap)
+                    .zipWith(Mono.just(downloadResponse));
+            })
+            .map(tuple2 -> {
+                ByteBuffer initialBuffer = tuple2.getT1();
+                BlobDownloadAsyncResponse downloadResponse = tuple2.getT2();
 
-        BlobDownloadAsyncResponse downloadResponse = tuple.getT3();
-        ByteBuffer initialBuffer = FluxUtil.collectBytesInByteBufferStream(downloadResponse.getValue())
-            .map(ByteBuffer::wrap).block();
-        if (initialBuffer == null) {
-            throw logger.logExceptionAsError(new IllegalStateException("Collecting first chunk returned null"));
-        }
-        BlobProperties properties = BlobAsyncClientBase.buildBlobPropertiesResponse(downloadResponse).getValue();
+                BlobProperties properties = ModelHelper.buildBlobPropertiesResponse(downloadResponse).getValue();
 
-        String eTag = properties.getETag();
-        String versionId = properties.getVersionId();
-        BlobAsyncClientBase client = this.client;
+                String eTag = properties.getETag();
+                String versionId = properties.getVersionId();
+                BlobAsyncClientBase client = this.client;
 
-        switch (consistentReadControl) {
-            case NONE:
-                break;
-            case ETAG:
-                // Target the user specified eTag by default. If not provided, target the latest eTag.
-                if (requestConditions.getIfMatch() == null) {
-                    requestConditions.setIfMatch(eTag);
+                switch (consistentReadControl) {
+                    case NONE:
+                        break;
+                    case ETAG:
+                        // Target the user specified eTag by default. If not provided, target the latest eTag.
+                        if (requestConditions.getIfMatch() == null) {
+                            requestConditions.setIfMatch(eTag);
+                        }
+                        break;
+                    case VERSION_ID:
+                        if (versionId == null) {
+                            throw logger.logExceptionAsError(
+                                new UnsupportedOperationException("Versioning is not supported on this account."));
+                        } else {
+                            // Target the user specified version by default. If not provided, target the latest version.
+                            if (this.client.getVersionId() == null) {
+                                client = this.client.getVersionClient(versionId);
+                            }
+                        }
+                        break;
+                    default:
+                        throw logger.logExceptionAsError(new IllegalArgumentException("Concurrency control type not "
+                            + "supported."));
                 }
-                break;
-            case VERSION_ID:
-                if (versionId == null) {
-                    throw logger.logExceptionAsError(
-                        new UnsupportedOperationException("Versioning is not supported on this account."));
-                } else {
-                    // Target the user specified version by default. If not provided, target the latest version.
-                    if (this.client.getVersionId() == null) {
-                        client = this.client.getVersionClient(versionId);
-                    }
-                }
-                break;
-            default:
-                throw logger.logExceptionAsError(new IllegalArgumentException("Concurrency control type not "
-                    + "supported."));
-        }
 
-        return new BlobInputStream(client, range.getOffset(), range.getCount(), chunkSize, initialBuffer,
-            requestConditions, properties);
+                return new BlobInputStream(client, range.getOffset(), range.getCount(), chunkSize, initialBuffer,
+                    requestConditions, properties);
+            }).block();
     }
 
     /**
