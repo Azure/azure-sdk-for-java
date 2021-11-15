@@ -10,22 +10,22 @@ import com.azure.spring.eventhubs.core.properties.merger.ProducerPropertiesParen
 import com.azure.spring.eventhubs.properties.BatchableProducerProperties;
 import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.service.eventhubs.factory.EventHubClientBuilderFactory;
+import java.util.concurrent.CopyOnWriteArrayList;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.lang.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * {@link EventHubProducerAsyncClient} produced by this factory will share the same namespace level configuration, but
- * if a configuration entry is provided at both producer and namespace level, the producer level configuration will
- * take advantage.
+ * if a configuration entry is provided at both producer and namespace level, the producer level configuration will take
+ * advantage.
  */
 public final class DefaultEventHubNamespaceProducerFactory implements EventHubProducerFactory, DisposableBean {
 
-    private final List<Listener> listeners = new ArrayList<>();
+    private final List<Listener> listeners = new CopyOnWriteArrayList<>();
     private final NamespaceProperties namespaceProperties;
     private final PropertiesSupplier<String, ? extends ProducerProperties> propertiesSupplier;
     private final Map<String, EventHubProducer> clients = new ConcurrentHashMap<>();
@@ -36,7 +36,7 @@ public final class DefaultEventHubNamespaceProducerFactory implements EventHubPr
     }
 
     public DefaultEventHubNamespaceProducerFactory(NamespaceProperties namespaceProperties,
-                                                   PropertiesSupplier<String, ? extends ProducerProperties> supplier) {
+        PropertiesSupplier<String, ? extends ProducerProperties> supplier) {
         this.namespaceProperties = namespaceProperties;
         this.propertiesSupplier = supplier;
     }
@@ -47,30 +47,29 @@ public final class DefaultEventHubNamespaceProducerFactory implements EventHubPr
     }
 
     private EventHubProducer doCreateProducer(String eventHub, @Nullable ProducerProperties properties) {
-        if (this.clients.containsKey(eventHub)) {
-            return this.clients.get(eventHub);
-        }
 
-        ProducerProperties producerProperties = parentMerger.mergeParent(properties, this.namespaceProperties);
-        producerProperties.setEventHubName(eventHub);
-        EventHubProducerAsyncClient producerClient = new EventHubClientBuilderFactory(producerProperties)
-            .build().buildAsyncProducerClient();
+        return clients.computeIfAbsent(eventHub, eventhubName -> {
+            ProducerProperties producerProperties = parentMerger.mergeParent(properties, namespaceProperties);
+            producerProperties.setEventHubName(eventhubName);
+            EventHubProducerAsyncClient producerClient = new EventHubClientBuilderFactory(producerProperties)
+                .build().buildAsyncProducerClient();
 
-        EventHubProducer producer;
+            EventHubProducer producer;
 
-        if (properties instanceof BatchableProducerProperties) {
-            producer = new BatchableProducerAsyncClient(producerClient,
-                ((BatchableProducerProperties) properties).getMaxBatchInBytes(), ((BatchableProducerProperties) properties).getMaxWaitTime());
+            if (properties instanceof BatchableProducerProperties) {
+                producer = new BatchableProducerAsyncClient(producerClient,
+                    ((BatchableProducerProperties) properties).getMaxBatchInBytes(),
+                    ((BatchableProducerProperties) properties).getMaxWaitTime());
 
-        } else {
-            producer = new ProducerAsyncClient(producerClient);
-        }
+            } else {
+                producer = new ProducerAsyncClient(producerClient);
+            }
+
+            listeners.forEach(l -> l.producerAdded(eventhubName, producer));
+            return producer;
+        });
 
 
-        this.listeners.forEach(l -> l.producerAdded(eventHub));
-
-        this.clients.put(eventHub, producer);
-        return producer;
     }
 
     @Override
@@ -85,7 +84,12 @@ public final class DefaultEventHubNamespaceProducerFactory implements EventHubPr
 
     @Override
     public void destroy() {
-        this.clients.values().forEach(EventHubProducer::close);
+        clients.forEach((name,producer)->{
+            listeners.forEach(l -> l.producerRemoved(name, producer));
+            producer.close();
+        });
+
         this.clients.clear();
+        this.listeners.clear();
     }
 }

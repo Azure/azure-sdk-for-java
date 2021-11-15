@@ -25,11 +25,11 @@ public interface EventHubProducerFactory {
      */
     interface Listener {
 
-        default void producerAdded(String name) {
+        default void producerAdded(String name, EventHubProducer producer) {
 
         }
 
-        default void producerRemoved(String name) {
+        default void producerRemoved(String name, EventHubProducer producer) {
         }
 
     }

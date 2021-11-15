@@ -75,8 +75,7 @@ public class DefaultMessageHandler extends AbstractMessageProducingHandler {
     protected void handleMessageInternal(Message<?> message) {
         PartitionSupplier partitionSupplier = toPartitionSupplier(message);
         String destination = toDestination(message);
-        final Mono<Void> mono;
-        mono = this.sendOperation.sendAsync(destination, message, partitionSupplier);
+        final Mono<Void> mono = this.sendOperation.sendAsync(destination, message, partitionSupplier);
 
         if (this.sync) {
             waitingSendResponse(mono, message);
