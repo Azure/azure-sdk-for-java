@@ -274,6 +274,15 @@ public interface VirtualMachineScaleSet
      */
     VirtualMachineScaleSetNetworkInterface getNetworkInterfaceByInstanceId(String instanceId, String name);
 
+    /**
+     * Gets a network interface associated with a virtual machine scale set instance.
+     *
+     * @param instanceId the virtual machine scale set vm instance ID
+     * @param name the network interface name
+     * @return the network interface
+     */
+    Mono<VirtualMachineScaleSetNetworkInterface> getNetworkInterfaceByInstanceIdAsync(String instanceId, String name);
+
     /** @return the network interfaces associated with all virtual machine instances in a scale set */
     PagedIterable<VirtualMachineScaleSetNetworkInterface> listNetworkInterfaces();
 
