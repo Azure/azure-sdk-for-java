@@ -51,7 +51,11 @@ import java.util.Objects;
  *
  * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.instantiation -->
  * <pre>
- *
+ * MetricsAdvisorAsyncClient metricsAdvisorAsyncClient =
+ *     new MetricsAdvisorClientBuilder&#40;&#41;
+ *         .credential&#40;new MetricsAdvisorKeyCredential&#40;&quot;&#123;subscription_key&#125;&quot;, &quot;&#123;api_key&#125;&quot;&#41;&#41;
+ *         .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *         .buildAsyncClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.instantiation -->
  *
@@ -59,7 +63,11 @@ import java.util.Objects;
  *
  * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.instantiation -->
  * <pre>
- *
+ * MetricsAdvisorClient metricsAdvisorClient =
+ *     new MetricsAdvisorClientBuilder&#40;&#41;
+ *         .credential&#40;new MetricsAdvisorKeyCredential&#40;&quot;&#123;subscription_key&#125;&quot;, &quot;&#123;api_key&#125;&quot;&#41;&#41;
+ *         .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *         .buildClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.instantiation -->
  *
@@ -73,7 +81,16 @@ import java.util.Objects;
  *
  * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.pipeline.instantiation -->
  * <pre>
+ * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
+ *     .policies&#40;&#47;* add policies *&#47;&#41;
+ *     .build&#40;&#41;;
  *
+ * MetricsAdvisorClient metricsAdvisorClient =
+ *     new MetricsAdvisorClientBuilder&#40;&#41;
+ *         .credential&#40;new MetricsAdvisorKeyCredential&#40;&quot;&#123;subscription_key&#125;&quot;, &quot;&#123;api_key&#125;&quot;&#41;&#41;
+ *         .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *         .pipeline&#40;pipeline&#41;
+ *         .buildClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.pipeline.instantiation -->
  *

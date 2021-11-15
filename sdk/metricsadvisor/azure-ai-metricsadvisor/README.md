@@ -240,24 +240,24 @@ This example demonstrates how a user can configure an anomaly detection configur
 String metricId = "3d48er30-6e6e-4391-b78f-b00dfee1e6f5";
 
 ChangeThresholdCondition changeThresholdCondition = new ChangeThresholdCondition(
-        20, 
-        10, 
-        true, 
-        AnomalyDetectorDirection.BOTH, 
-        new SuppressCondition(1, 2));
+    20,
+    10,
+    true,
+    AnomalyDetectorDirection.BOTH,
+    new SuppressCondition(1, 2));
 
 HardThresholdCondition hardThresholdCondition = new HardThresholdCondition(
-        AnomalyDetectorDirection.DOWN, 
-        new SuppressCondition(1, 1))
+    AnomalyDetectorDirection.DOWN,
+    new SuppressCondition(1, 1))
     .setLowerBound(5.0);
 
 SmartDetectionCondition smartDetectionCondition = new SmartDetectionCondition(
-        10.0, 
-        AnomalyDetectorDirection.UP,
-        new SuppressCondition(1, 2));
+    10.0,
+    AnomalyDetectorDirection.UP,
+    new SuppressCondition(1, 2));
 
 final AnomalyDetectionConfiguration anomalyDetectionConfiguration =
-    metricsAdvisorAdminClient.createMetricAnomalyDetectionConfig(
+    metricsAdvisorAdminClient.createDetectionConfig(
         metricId,
         new AnomalyDetectionConfiguration("My dataPoint anomaly detection configuration")
             .setDescription("anomaly detection config description")
@@ -309,16 +309,37 @@ final AnomalyAlertConfiguration anomalyAlertConfiguration
                     new MetricAlertConfiguration(detectionConfigurationId2,
                         MetricAnomalyAlertScope.forWholeSeries())
                         .setAlertConditions(new MetricAnomalyAlertConditions()
-                            .setSeverityRangeCondition(new SeverityCondition()
-                                .setMaxAlertSeverity(AnomalySeverity.HIGH)))
+                            .setSeverityRangeCondition(new SeverityCondition(AnomalySeverity.HIGH,
+                                AnomalySeverity.HIGH)))
                 ))
-            .setCrossMetricsOperator(MetricAnomalyAlertConfigurationsOperator.AND)
-            .setIdOfHooksToAlert(Arrays.asList(hookId1, hookId2)));
+            .setCrossMetricsOperator(MetricAlertConfigurationsOperator.AND)
+            .setHookIdsToAlert(Arrays.asList(hookId1, hookId2)));
 ```
 #### Query anomaly detection results
 This example demonstrates how a user can query alerts triggered for an anomaly detection configuration and get anomalies for that anomalyAlert.
 <!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L256-L276 -->
-```java readme-sample-listAnomalies
+```java readme-sample-listAnomaliesForAlert
+String alertConfigurationId = "9ol48er30-6e6e-4391-b78f-b00dfee1e6f5";
+final OffsetDateTime startTime = OffsetDateTime.parse("2020-01-01T00:00:00Z");
+final OffsetDateTime endTime = OffsetDateTime.parse("2020-09-09T00:00:00Z");
+metricsAdvisorClient.listAlerts(
+    alertConfigurationId,
+        startTime, endTime)
+    .forEach(alert -> {
+        System.out.printf("AnomalyAlert Id: %s%n", alert.getId());
+        System.out.printf("AnomalyAlert created on: %s%n", alert.getCreatedTime());
+
+        // List anomalies for returned alerts
+        metricsAdvisorClient.listAnomaliesForAlert(
+            alertConfigurationId,
+            alert.getId())
+            .forEach(anomaly -> {
+                System.out.printf("DataPoint Anomaly was created on: %s%n", anomaly.getCreatedTime());
+                System.out.printf("DataPoint Anomaly severity: %s%n", anomaly.getSeverity().toString());
+                System.out.printf("DataPoint Anomaly status: %s%n", anomaly.getStatus());
+                System.out.printf("DataPoint Anomaly related series key: %s%n", anomaly.getSeriesKey().asMap());
+            });
+    });
 ```
 
 ## Troubleshooting

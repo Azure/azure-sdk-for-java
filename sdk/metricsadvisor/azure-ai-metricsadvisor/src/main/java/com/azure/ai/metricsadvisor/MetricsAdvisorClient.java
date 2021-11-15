@@ -41,7 +41,11 @@ import java.util.List;
  * <p><strong>Instantiating an synchronous DataFeedMetric Advisor Client</strong></p>
  * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.instantiation -->
  * <pre>
- *
+ * MetricsAdvisorClient metricsAdvisorClient =
+ *     new MetricsAdvisorClientBuilder&#40;&#41;
+ *         .credential&#40;new MetricsAdvisorKeyCredential&#40;&quot;&#123;subscription_key&#125;&quot;, &quot;&#123;api_key&#125;&quot;&#41;&#41;
+ *         .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *         .buildClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.instantiation -->
  *
@@ -70,7 +74,15 @@ public final class MetricsAdvisorClient {
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricSeriesDefinitions#String-OffsetDateTime -->
      * <pre>
-     *
+     * final OffsetDateTime activeSince = OffsetDateTime.parse&#40;&quot;2020-07-10T00:00:00Z&quot;&#41;;
+     * metricsAdvisorClient.listMetricSeriesDefinitions&#40;
+     *     &quot;metricId&quot;,
+     *     activeSince&#41;
+     *     .forEach&#40;metricSeriesDefinition -&gt; &#123;
+     *         System.out.printf&#40;&quot;Data Feed Metric id for the retrieved series definition : %s%n&quot;,
+     *             metricSeriesDefinition.getMetricId&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Data Feed Metric dimension: %s%n&quot;, metricSeriesDefinition.getSeriesKey&#40;&#41;.asMap&#40;&#41;&#41;;
+     *     &#125;&#41;;
      * </pre>
      * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricSeriesDefinitions#String-OffsetDateTime -->
      *
@@ -94,7 +106,22 @@ public final class MetricsAdvisorClient {
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricSeriesDefinitions#String-OffsetDateTime-ListMetricSeriesDefinitionOptions-Context -->
      * <pre>
+     * String metricId = &quot;b460abfc-7a58-47d7-9d99-21ee21fdfc6e&quot;;
+     * final OffsetDateTime activeSince = OffsetDateTime.parse&#40;&quot;2020-07-10T00:00:00Z&quot;&#41;;
+     * final ListMetricSeriesDefinitionOptions options
+     *     = new ListMetricSeriesDefinitionOptions&#40;&#41;
+     *     .setMaxPageSize&#40;10&#41;
+     *     .setDimensionCombinationToFilter&#40;new HashMap&lt;String, List&lt;String&gt;&gt;&#40;&#41; &#123;&#123;
+     *             put&#40;&quot;Dim2&quot;, Collections.singletonList&#40;&quot;Angelfish&quot;&#41;&#41;;
+     *         &#125;&#125;&#41;;
      *
+     * metricsAdvisorClient.listMetricSeriesDefinitions&#40;metricId, activeSince, options, Context.NONE&#41;
+     *     .forEach&#40;metricSeriesDefinition -&gt; &#123;
+     *         System.out.printf&#40;&quot;Data Feed Metric id for the retrieved series definition : %s%n&quot;,
+     *             metricSeriesDefinition.getMetricId&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Series Key:&quot;&#41;;
+     *         System.out.println&#40;metricSeriesDefinition.getSeriesKey&#40;&#41;.asMap&#40;&#41;&#41;;
+     *     &#125;&#41;;
      * </pre>
      * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricSeriesDefinitions#String-OffsetDateTime-ListMetricSeriesDefinitionOptions-Context -->
      *
@@ -122,7 +149,21 @@ public final class MetricsAdvisorClient {
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricSeriesData#String-List-OffsetDateTime-OffsetDateTime -->
      * <pre>
+     * final OffsetDateTime startTime = OffsetDateTime.parse&#40;&quot;2020-09-09T00:00:00Z&quot;&#41;;
+     * final OffsetDateTime endTime = OffsetDateTime.parse&#40;&quot;2020-09-09T12:00:00Z&quot;&#41;;
      *
+     * metricsAdvisorClient.listMetricSeriesData&#40;&quot;metricId&quot;,
+     *     Arrays.asList&#40;new DimensionKey&#40;new HashMap&lt;String, String&gt;&#40;&#41; &#123;&#123;
+     *             put&#40;&quot;Dim1&quot;, &quot;value1&quot;&#41;;
+     *         &#125;&#125;&#41;&#41;, startTime, endTime&#41;
+     *     .forEach&#40;metricSeriesData -&gt; &#123;
+     *         System.out.println&#40;&quot;List of data points for this series:&quot;&#41;;
+     *         System.out.println&#40;metricSeriesData.getMetricValues&#40;&#41;&#41;;
+     *         System.out.println&#40;&quot;Timestamps of the data related to this time series:&quot;&#41;;
+     *         System.out.println&#40;metricSeriesData.getTimestamps&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Series Key:&quot;&#41;;
+     *         System.out.println&#40;metricSeriesData.getSeriesKey&#40;&#41;.asMap&#40;&#41;&#41;;
+     *     &#125;&#41;;
      * </pre>
      * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricSeriesData#String-List-OffsetDateTime-OffsetDateTime -->
      *
@@ -152,7 +193,18 @@ public final class MetricsAdvisorClient {
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricSeriesData#String-List-OffsetDateTime-OffsetDateTime-Context -->
      * <pre>
-     *
+     * final OffsetDateTime startTime = OffsetDateTime.parse&#40;&quot;2020-09-09T00:00:00Z&quot;&#41;;
+     * final OffsetDateTime endTime = OffsetDateTime.parse&#40;&quot;2020-09-09T12:00:00Z&quot;&#41;;
+     * metricsAdvisorClient.listMetricSeriesData&#40;&quot;metricId&quot;,
+     *     Arrays.asList&#40;new DimensionKey&#40;new HashMap&lt;String, String&gt;&#40;&#41; &#123;&#123;
+     *             put&#40;&quot;Dim1&quot;, &quot;value1&quot;&#41;;
+     *         &#125;&#125;&#41;&#41;, startTime, endTime&#41;
+     *     .forEach&#40;metricSeriesData -&gt; &#123;
+     *         System.out.printf&#40;&quot;Data feed Id: %s%n&quot;, metricSeriesData.getMetricId&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Data feed description: %s%n&quot;, metricSeriesData.getSeriesKey&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Data feed source type: %.2f%n&quot;, metricSeriesData.getTimestamps&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Data feed creator: %.2f%n&quot;, metricSeriesData.getMetricValues&#40;&#41;&#41;;
+     *     &#125;&#41;;
      * </pre>
      * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricSeriesData#String-List-OffsetDateTime-OffsetDateTime-Context -->
      *
@@ -184,7 +236,17 @@ public final class MetricsAdvisorClient {
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricEnrichmentStatus#String-OffsetDateTime-OffsetDateTime -->
      * <pre>
+     * final OffsetDateTime startTime = OffsetDateTime.parse&#40;&quot;2020-01-01T00:00:00Z&quot;&#41;;
+     * final OffsetDateTime endTime = OffsetDateTime.parse&#40;&quot;2020-09-09T00:00:00Z&quot;&#41;;
+     * final String metricId = &quot;d3gh4i4-b804-4ab9-a70f-0da0c89cft3l&quot;;
      *
+     * metricsAdvisorClient.listMetricEnrichmentStatus&#40;metricId, startTime, endTime&#41;
+     *     .forEach&#40;enrichmentStatus -&gt; &#123;
+     *         System.out.printf&#40;&quot;Data Feed Metric enrichment status : %s%n&quot;, enrichmentStatus.getStatus&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Data Feed Metric enrichment status message: %s%n&quot;, enrichmentStatus.getMessage&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Data Feed Metric enrichment status data slice timestamp : %s%n&quot;,
+     *             enrichmentStatus.getTimestamp&#40;&#41;&#41;;
+     *     &#125;&#41;;
      * </pre>
      * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricEnrichmentStatus#String-OffsetDateTime-OffsetDateTime -->
      *
@@ -209,7 +271,18 @@ public final class MetricsAdvisorClient {
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricEnrichmentStatus#String-OffsetDateTime-OffsetDateTime-ListMetricEnrichmentStatusOptions-Context -->
      * <pre>
+     * final OffsetDateTime startTime = OffsetDateTime.parse&#40;&quot;2020-01-01T00:00:00Z&quot;&#41;;
+     * final OffsetDateTime endTime = OffsetDateTime.parse&#40;&quot;2020-09-09T00:00:00Z&quot;&#41;;
+     * final String metricId = &quot;d3gh4i4-b804-4ab9-a70f-0da0c89cft3l&quot;;
+     * final ListMetricEnrichmentStatusOptions options = new ListMetricEnrichmentStatusOptions&#40;&#41;.setMaxPageSize&#40;10&#41;;
      *
+     * metricsAdvisorClient.listMetricEnrichmentStatus&#40;metricId, startTime, endTime, options, Context.NONE&#41;
+     *     .forEach&#40;enrichmentStatus -&gt; &#123;
+     *         System.out.printf&#40;&quot;Data Feed Metric enrichment status : %s%n&quot;, enrichmentStatus.getStatus&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Data Feed Metric enrichment status message: %s%n&quot;, enrichmentStatus.getMessage&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Data Feed Metric enrichment status data slice timestamp : %s%n&quot;,
+     *             enrichmentStatus.getTimestamp&#40;&#41;&#41;;
+     *     &#125;&#41;;
      * </pre>
      * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricEnrichmentStatus#String-OffsetDateTime-OffsetDateTime-ListMetricEnrichmentStatusOptions-Context -->
      *
@@ -240,7 +313,32 @@ public final class MetricsAdvisorClient {
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricEnrichedSeriesData#String-List-OffsetDateTime-OffsetDateTime -->
      * <pre>
+     * final String detectionConfigurationId = &quot;e87d899d-a5a0-4259-b752-11aea34d5e34&quot;;
+     * final DimensionKey seriesKey = new DimensionKey&#40;&#41;
+     *     .put&#40;&quot;Dim1&quot;, &quot;Common Lime&quot;&#41;
+     *     .put&#40;&quot;Dim2&quot;, &quot;Antelope&quot;&#41;;
+     * final OffsetDateTime startTime = OffsetDateTime.parse&#40;&quot;2020-08-12T00:00:00Z&quot;&#41;;
+     * final OffsetDateTime endTime = OffsetDateTime.parse&#40;&quot;2020-09-12T00:00:00Z&quot;&#41;;
      *
+     * PagedIterable&lt;MetricEnrichedSeriesData&gt; enrichedDataIterable
+     *     = metricsAdvisorClient.listMetricEnrichedSeriesData&#40;detectionConfigurationId,
+     *     Arrays.asList&#40;seriesKey&#41;,
+     *     startTime,
+     *     endTime&#41;;
+     *
+     * for &#40;MetricEnrichedSeriesData enrichedData : enrichedDataIterable&#41; &#123;
+     *     System.out.printf&#40;&quot;Series Key %s%n:&quot;, enrichedData.getSeriesKey&#40;&#41;.asMap&#40;&#41;&#41;;
+     *     System.out.println&#40;&quot;List of data points for this series&quot;&#41;;
+     *     System.out.println&#40;enrichedData.getMetricValues&#40;&#41;&#41;;
+     *     System.out.println&#40;&quot;Timestamps of the data related to this time series:&quot;&#41;;
+     *     System.out.println&#40;enrichedData.getTimestamps&#40;&#41;&#41;;
+     *     System.out.println&#40;&quot;The expected values of the data points calculated by the smart detector:&quot;&#41;;
+     *     System.out.println&#40;enrichedData.getExpectedMetricValues&#40;&#41;&#41;;
+     *     System.out.println&#40;&quot;The lower boundary values of the data points calculated by smart detector:&quot;&#41;;
+     *     System.out.println&#40;enrichedData.getLowerBoundaryValues&#40;&#41;&#41;;
+     *     System.out.println&#40;&quot;the periods calculated for the data points in the time series:&quot;&#41;;
+     *     System.out.println&#40;enrichedData.getPeriods&#40;&#41;&#41;;
+     * &#125;
      * </pre>
      * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricEnrichedSeriesData#String-List-OffsetDateTime-OffsetDateTime -->
      *
@@ -274,7 +372,39 @@ public final class MetricsAdvisorClient {
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricEnrichedSeriesData#String-List-OffsetDateTime-OffsetDateTime-Context -->
      * <pre>
+     * final String detectionConfigurationId = &quot;e87d899d-a5a0-4259-b752-11aea34d5e34&quot;;
+     * final DimensionKey seriesKey = new DimensionKey&#40;&#41;
+     *     .put&#40;&quot;Dim1&quot;, &quot;Common Lime&quot;&#41;
+     *     .put&#40;&quot;Dim2&quot;, &quot;Antelope&quot;&#41;;
+     * final OffsetDateTime startTime = OffsetDateTime.parse&#40;&quot;2020-08-12T00:00:00Z&quot;&#41;;
+     * final OffsetDateTime endTime = OffsetDateTime.parse&#40;&quot;2020-09-12T00:00:00Z&quot;&#41;;
      *
+     * PagedIterable&lt;MetricEnrichedSeriesData&gt; enrichedDataIterable
+     *     = metricsAdvisorClient.listMetricEnrichedSeriesData&#40;detectionConfigurationId,
+     *     Arrays.asList&#40;seriesKey&#41;,
+     *     startTime,
+     *     endTime&#41;;
+     *
+     * Stream&lt;PagedResponse&lt;MetricEnrichedSeriesData&gt;&gt; enrichedDataPageStream
+     *     = enrichedDataIterable.streamByPage&#40;&#41;;
+     * int[] pageCount = new int[1];
+     * enrichedDataPageStream.forEach&#40;enrichedDataPage -&gt; &#123;
+     *     System.out.printf&#40;&quot;Page: %d%n&quot;, pageCount[0]++&#41;;
+     *     IterableStream&lt;MetricEnrichedSeriesData&gt; pageElements = enrichedDataPage.getElements&#40;&#41;;
+     *     for &#40;MetricEnrichedSeriesData enrichedData : pageElements&#41; &#123;
+     *         System.out.printf&#40;&quot;Series Key %s%n:&quot;, enrichedData.getSeriesKey&#40;&#41;.asMap&#40;&#41;&#41;;
+     *         System.out.println&#40;&quot;List of data points for this series&quot;&#41;;
+     *         System.out.println&#40;enrichedData.getMetricValues&#40;&#41;&#41;;
+     *         System.out.println&#40;&quot;Timestamps of the data related to this time series:&quot;&#41;;
+     *         System.out.println&#40;enrichedData.getTimestamps&#40;&#41;&#41;;
+     *         System.out.println&#40;&quot;The expected values of the data points calculated by the smart detector:&quot;&#41;;
+     *         System.out.println&#40;enrichedData.getExpectedMetricValues&#40;&#41;&#41;;
+     *         System.out.println&#40;&quot;The lower boundary values of the data points calculated by smart detector:&quot;&#41;;
+     *         System.out.println&#40;enrichedData.getLowerBoundaryValues&#40;&#41;&#41;;
+     *         System.out.println&#40;&quot;the periods calculated for the data points in the time series:&quot;&#41;;
+     *         System.out.println&#40;enrichedData.getPeriods&#40;&#41;&#41;;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricEnrichedSeriesData#String-List-OffsetDateTime-OffsetDateTime-Context -->
      *
@@ -310,7 +440,27 @@ public final class MetricsAdvisorClient {
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAnomaliesForDetectionConfig#String-OffsetDateTime-OffsetDateTime -->
      * <pre>
+     * final String detectionConfigurationId = &quot;c0f2539f-b804-4ab9-a70f-0da0c89c76d8&quot;;
+     * final OffsetDateTime startTime = OffsetDateTime.parse&#40;&quot;2020-09-09T00:00:00Z&quot;&#41;;
+     * final OffsetDateTime endTime = OffsetDateTime.parse&#40;&quot;2020-09-09T12:00:00Z&quot;&#41;;
+     * final ListAnomaliesDetectedFilter filter = new ListAnomaliesDetectedFilter&#40;&#41;
+     *     .setSeverityRange&#40;AnomalySeverity.LOW, AnomalySeverity.MEDIUM&#41;;
+     * final ListAnomaliesDetectedOptions options = new ListAnomaliesDetectedOptions&#40;&#41;
+     *     .setMaxPageSize&#40;10&#41;
+     *     .setFilter&#40;filter&#41;;
+     * PagedIterable&lt;DataPointAnomaly&gt; anomaliesIterable
+     *     = metricsAdvisorClient.listAnomaliesForDetectionConfig&#40;detectionConfigurationId, startTime, endTime,
+     *     options, Context.NONE&#41;;
      *
+     * for &#40;DataPointAnomaly dataPointAnomaly : anomaliesIterable&#41; &#123;
+     *     System.out.printf&#40;&quot;DataPointAnomaly AnomalySeverity: %s%n&quot;, dataPointAnomaly.getSeverity&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Series Key:&quot;&#41;;
+     *     DimensionKey seriesKey = dataPointAnomaly.getSeriesKey&#40;&#41;;
+     *     for &#40;Map.Entry&lt;String, String&gt; dimension : seriesKey.asMap&#40;&#41;.entrySet&#40;&#41;&#41; &#123;
+     *         System.out.printf&#40;&quot;DimensionName: %s DimensionValue:%s%n&quot;,
+     *             dimension.getKey&#40;&#41;, dimension.getValue&#40;&#41;&#41;;
+     *     &#125;
+     * &#125;
      * </pre>
      * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAnomaliesForDetectionConfig#String-OffsetDateTime-OffsetDateTime -->
      *
@@ -336,7 +486,34 @@ public final class MetricsAdvisorClient {
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAnomaliesForDetectionConfig#String-OffsetDateTime-OffsetDateTime-ListAnomaliesDetectedOptions-Context -->
      * <pre>
+     * final String detectionConfigurationId = &quot;c0f2539f-b804-4ab9-a70f-0da0c89c76d8&quot;;
+     * final OffsetDateTime startTime = OffsetDateTime.parse&#40;&quot;2020-09-09T00:00:00Z&quot;&#41;;
+     * final OffsetDateTime endTime = OffsetDateTime.parse&#40;&quot;2020-09-09T12:00:00Z&quot;&#41;;
+     * final ListAnomaliesDetectedFilter filter = new ListAnomaliesDetectedFilter&#40;&#41;
+     *     .setSeverityRange&#40;AnomalySeverity.LOW, AnomalySeverity.MEDIUM&#41;;
+     * final ListAnomaliesDetectedOptions options = new ListAnomaliesDetectedOptions&#40;&#41;
+     *     .setMaxPageSize&#40;10&#41;
+     *     .setFilter&#40;filter&#41;;
+     * PagedIterable&lt;DataPointAnomaly&gt; anomaliesIterable
+     *     = metricsAdvisorClient.listAnomaliesForDetectionConfig&#40;detectionConfigurationId,
+     *         startTime, endTime, options,
+     *     Context.NONE&#41;;
      *
+     * Stream&lt;PagedResponse&lt;DataPointAnomaly&gt;&gt; anomaliesPageStream = anomaliesIterable.streamByPage&#40;&#41;;
+     * int[] pageCount = new int[1];
+     * anomaliesPageStream.forEach&#40;anomaliesPage -&gt; &#123;
+     *     System.out.printf&#40;&quot;Page: %d%n&quot;, pageCount[0]++&#41;;
+     *     IterableStream&lt;DataPointAnomaly&gt; anomaliesPageItems = anomaliesPage.getElements&#40;&#41;;
+     *     for &#40;DataPointAnomaly dataPointAnomaly : anomaliesPageItems&#41; &#123;
+     *         System.out.printf&#40;&quot;DataPoint Anomaly AnomalySeverity: %s%n&quot;, dataPointAnomaly.getSeverity&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Series Key:&quot;&#41;;
+     *         DimensionKey seriesKey = dataPointAnomaly.getSeriesKey&#40;&#41;;
+     *         for &#40;Map.Entry&lt;String, String&gt; dimension : seriesKey.asMap&#40;&#41;.entrySet&#40;&#41;&#41; &#123;
+     *             System.out.printf&#40;&quot;DimensionName: %s DimensionValue:%s%n&quot;,
+     *                 dimension.getKey&#40;&#41;, dimension.getValue&#40;&#41;&#41;;
+     *         &#125;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAnomaliesForDetectionConfig#String-OffsetDateTime-OffsetDateTime-ListAnomaliesDetectedOptions-Context -->
      *
@@ -369,7 +546,22 @@ public final class MetricsAdvisorClient {
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentsForDetectionConfig#String-OffsetDateTime-OffsetDateTime -->
      * <pre>
+     * final String detectionConfigurationId = &quot;c0f2539f-b804-4ab9-a70f-0da0c89c76d8&quot;;
+     * final OffsetDateTime startTime = OffsetDateTime.parse&#40;&quot;2020-09-09T00:00:00Z&quot;&#41;;
+     * final OffsetDateTime endTime = OffsetDateTime.parse&#40;&quot;2020-09-09T12:00:00Z&quot;&#41;;
      *
+     * PagedIterable&lt;AnomalyIncident&gt; incidentsIterable
+     *     = metricsAdvisorClient.listIncidentsForDetectionConfig&#40;detectionConfigurationId, startTime, endTime&#41;;
+     *
+     * for &#40;AnomalyIncident anomalyIncident : incidentsIterable&#41; &#123;
+     *     System.out.printf&#40;&quot;Data Feed Metric Id: %s%n&quot;, anomalyIncident.getMetricId&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Detection Configuration Id: %s%n&quot;, anomalyIncident.getDetectionConfigurationId&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Anomaly Incident Id: %s%n&quot;, anomalyIncident.getId&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Anomaly Incident Start Time: %s%n&quot;, anomalyIncident.getStartTime&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Anomaly Incident AnomalySeverity: %s%n&quot;, anomalyIncident.getSeverity&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Anomaly Incident Status: %s%n&quot;, anomalyIncident.getStatus&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Root DataFeedDimension Key: %s%n&quot;, anomalyIncident.getRootDimensionKey&#40;&#41;.asMap&#40;&#41;&#41;;
+     * &#125;
      * </pre>
      * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentsForDetectionConfig#String-OffsetDateTime-OffsetDateTime -->
      *
@@ -394,7 +586,34 @@ public final class MetricsAdvisorClient {
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentsForDetectionConfig#String-OffsetDateTime-OffsetDateTime-ListIncidentsDetectedOptions-Context -->
      * <pre>
+     * final String detectionConfigurationId = &quot;c0f2539f-b804-4ab9-a70f-0da0c89c76d8&quot;;
+     * final OffsetDateTime startTime = OffsetDateTime.parse&#40;&quot;2020-09-09T00:00:00Z&quot;&#41;;
+     * final OffsetDateTime endTime = OffsetDateTime.parse&#40;&quot;2020-09-09T12:00:00Z&quot;&#41;;
+     * final ListIncidentsDetectedOptions options = new ListIncidentsDetectedOptions&#40;&#41;
+     *     .setMaxPageSize&#40;1000&#41;;
      *
+     * PagedIterable&lt;AnomalyIncident&gt; incidentsIterable
+     *     = metricsAdvisorClient.listIncidentsForDetectionConfig&#40;detectionConfigurationId,
+     *         startTime, endTime, options,
+     *     Context.NONE&#41;;
+     *
+     * Stream&lt;PagedResponse&lt;AnomalyIncident&gt;&gt; incidentsPageStream = incidentsIterable.streamByPage&#40;&#41;;
+     *
+     * int[] pageCount = new int[1];
+     * incidentsPageStream.forEach&#40;incidentsPage -&gt; &#123;
+     *     System.out.printf&#40;&quot;Page: %d%n&quot;, pageCount[0]++&#41;;
+     *     IterableStream&lt;AnomalyIncident&gt; pageElements = incidentsPage.getElements&#40;&#41;;
+     *     for &#40;AnomalyIncident anomalyIncident : pageElements&#41; &#123;
+     *         System.out.printf&#40;&quot;Data Feed Metric Id: %s%n&quot;, anomalyIncident.getMetricId&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Detection Configuration Id: %s%n&quot;, anomalyIncident.getDetectionConfigurationId&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Anomaly Incident Id: %s%n&quot;, anomalyIncident.getId&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Anomaly Incident Start Time: %s%n&quot;, anomalyIncident.getStartTime&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Anomaly Incident AnomalySeverity: %s%n&quot;, anomalyIncident.getSeverity&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Anomaly Incident Status: %s%n&quot;, anomalyIncident.getStatus&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Root DataFeedDimension Key:&quot;&#41;;
+     *         System.out.printf&#40;&quot;Root DataFeedDimension Key: %s%n&quot;, anomalyIncident.getRootDimensionKey&#40;&#41;.asMap&#40;&#41;&#41;;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentsForDetectionConfig#String-OffsetDateTime-OffsetDateTime-ListIncidentsDetectedOptions-Context -->
      *
@@ -424,6 +643,17 @@ public final class MetricsAdvisorClient {
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentRootCauses#String-String -->
      * <pre>
+     * final String detectionConfigurationId = &quot;c0dddf2539f-b804-4ab9-a70f-0da0c89c76d8&quot;;
+     * final String incidentId = &quot;c5thh0f2539f-b804-4ab9-a70f-0da0c89c456d&quot;;
+     *
+     * metricsAdvisorClient.listIncidentRootCauses&#40;detectionConfigurationId, incidentId&#41;
+     *     .forEach&#40;incidentRootCause -&gt; &#123;
+     *         System.out.printf&#40;&quot;Description: %s%n&quot;, incidentRootCause.getDescription&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Series Key:&quot;&#41;;
+     *         System.out.println&#40;incidentRootCause.getSeriesKey&#40;&#41;.asMap&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Confidence for the detected incident root cause %.2f%n&quot;,
+     *             incidentRootCause.getContributionScore&#40;&#41;&#41;;
+     *     &#125;&#41;;
      *
      * </pre>
      * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentRootCauses#String-String -->
@@ -449,6 +679,23 @@ public final class MetricsAdvisorClient {
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentRootCauses#String-String-Context -->
      * <pre>
+     * final String detectionConfigurationId = &quot;c0dddf2539f-b804-4ab9-a70f-0da0c89c76d8&quot;;
+     * final String incidentId = &quot;c5thh0f2539f-b804-4ab9-a70f-0da0c89c456d&quot;;
+     *
+     * PagedIterable&lt;IncidentRootCause&gt; rootCauseIterable
+     *     = metricsAdvisorClient.listIncidentRootCauses&#40;detectionConfigurationId, incidentId, Context.NONE&#41;;
+     * Stream&lt;PagedResponse&lt;IncidentRootCause&gt;&gt; rootCausePageIterable = rootCauseIterable.streamByPage&#40;&#41;;
+     * rootCausePageIterable.forEach&#40;response -&gt; &#123;
+     *     System.out.printf&#40;&quot;Response StatusCode: %s%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     *     IterableStream&lt;IncidentRootCause&gt; pageElements = response.getElements&#40;&#41;;
+     *     for &#40;IncidentRootCause incidentRootCause : pageElements&#41; &#123;
+     *         System.out.printf&#40;&quot;Description: %s%n&quot;, incidentRootCause.getDescription&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Series Key:&quot;&#41;;
+     *         System.out.println&#40;incidentRootCause.getSeriesKey&#40;&#41;.asMap&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Confidence for the detected incident root cause %.2f%n&quot;,
+     *             incidentRootCause.getContributionScore&#40;&#41;&#41;;
+     *     &#125;
+     * &#125;&#41;;
      *
      * </pre>
      * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentRootCauses#String-String-Context -->
@@ -475,7 +722,21 @@ public final class MetricsAdvisorClient {
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentRootCauses#AnomalyIncident -->
      * <pre>
+     * final String detectionConfigurationId = &quot;c0f2539f-b804-4ab9-a70f-0da0c89c76d8&quot;;
+     * final OffsetDateTime startTime = OffsetDateTime.parse&#40;&quot;2020-01-01T00:00:00Z&quot;&#41;;
+     * final OffsetDateTime endTime = OffsetDateTime.parse&#40;&quot;2020-09-09T00:00:00Z&quot;&#41;;
      *
+     * metricsAdvisorClient.listIncidentsForDetectionConfig&#40;detectionConfigurationId, startTime, endTime&#41;
+     *     .forEach&#40;incident -&gt; &#123;
+     *         metricsAdvisorClient.listIncidentRootCauses&#40;incident&#41;
+     *             .forEach&#40;incidentRootCause -&gt; &#123;
+     *                 System.out.printf&#40;&quot;Description: %s%n&quot;, incidentRootCause.getDescription&#40;&#41;&#41;;
+     *                 System.out.printf&#40;&quot;Series Key:&quot;&#41;;
+     *                 System.out.println&#40;incidentRootCause.getSeriesKey&#40;&#41;.asMap&#40;&#41;&#41;;
+     *                 System.out.printf&#40;&quot;Confidence for the detected incident root cause %.2f%n&quot;,
+     *                     incidentRootCause.getContributionScore&#40;&#41;&#41;;
+     *             &#125;&#41;;
+     *     &#125;&#41;;
      * </pre>
      * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentRootCauses#AnomalyIncident -->
      *
@@ -497,7 +758,19 @@ public final class MetricsAdvisorClient {
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAnomalyDimensionValues#String-String-OffsetDateTime-OffsetDateTime -->
      * <pre>
+     * final String detectionConfigurationId = &quot;c0f2539f-b804-4ab9-a70f-0da0c89c76d8&quot;;
+     * final String dimensionName = &quot;Dim1&quot;;
+     * final OffsetDateTime startTime = OffsetDateTime.parse&#40;&quot;2020-01-01T00:00:00Z&quot;&#41;;
+     * final OffsetDateTime endTime = OffsetDateTime.parse&#40;&quot;2020-09-09T00:00:00Z&quot;&#41;;
      *
+     * PagedIterable&lt;String&gt; dimensionValueIterable
+     *     = metricsAdvisorClient.listAnomalyDimensionValues&#40;detectionConfigurationId,
+     *     dimensionName,
+     *     startTime, endTime&#41;;
+     *
+     * for &#40;String dimensionValue : dimensionValueIterable&#41; &#123;
+     *     System.out.printf&#40;&quot;DataFeedDimension Value: %s%n&quot;, dimensionValue&#41;;
+     * &#125;
      * </pre>
      * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAnomalyDimensionValues#String-String-OffsetDateTime-OffsetDateTime -->
      *
@@ -525,7 +798,29 @@ public final class MetricsAdvisorClient {
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAnomalyDimensionValues#String-String-OffsetDateTime-OffsetDateTime-ListAnomalyDimensionValuesOptions-Context -->
      * <pre>
+     * final String detectionConfigurationId = &quot;c0f2539f-b804-4ab9-a70f-0da0c89c76d8&quot;;
+     * final String dimensionName = &quot;Dim1&quot;;
+     * final OffsetDateTime startTime = OffsetDateTime.parse&#40;&quot;2020-01-01T00:00:00Z&quot;&#41;;
+     * final OffsetDateTime endTime = OffsetDateTime.parse&#40;&quot;2020-09-09T00:00:00Z&quot;&#41;;
+     * final ListAnomalyDimensionValuesOptions options
+     *     = new ListAnomalyDimensionValuesOptions&#40;&#41;
+     *     .setMaxPageSize&#40;10&#41;;
      *
+     * PagedIterable&lt;String&gt; dimensionValueIterable
+     *     = metricsAdvisorClient.listAnomalyDimensionValues&#40;detectionConfigurationId,
+     *     dimensionName,
+     *     startTime, endTime, options,
+     *     Context.NONE&#41;;
+     *
+     * Stream&lt;PagedResponse&lt;String&gt;&gt; dimensionValuePageStream = dimensionValueIterable.streamByPage&#40;&#41;;
+     * int[] pageCount = new int[1];
+     * dimensionValuePageStream.forEach&#40;dimensionValuePage -&gt; &#123;
+     *     System.out.printf&#40;&quot;Page: %d%n&quot;, pageCount[0]++&#41;;
+     *     IterableStream&lt;String&gt; dimensionValuePageItems = dimensionValuePage.getElements&#40;&#41;;
+     *     for &#40;String dimensionValue : dimensionValuePageItems&#41; &#123;
+     *         System.out.printf&#40;&quot;DataFeedDimension Value: %s%n&quot;, dimensionValue&#41;;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAnomalyDimensionValues#String-String-OffsetDateTime-OffsetDateTime-ListAnomalyDimensionValuesOptions-Context -->
      *
@@ -558,7 +853,18 @@ public final class MetricsAdvisorClient {
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAlerts#String-OffsetDateTime-OffsetDateTime -->
      * <pre>
+     * final String alertConfigurationId = &quot;ff3014a0-bbbb-41ec-a637-677e77b81299&quot;;
+     * final OffsetDateTime startTime = OffsetDateTime.parse&#40;&quot;2020-01-01T00:00:00Z&quot;&#41;;
+     * final OffsetDateTime endTime = OffsetDateTime.parse&#40;&quot;2020-09-09T00:00:00Z&quot;&#41;;
      *
+     * PagedIterable&lt;AnomalyAlert&gt; alertsIterable
+     *     = metricsAdvisorClient.listAlerts&#40;alertConfigurationId, startTime, endTime&#41;;
+     *
+     * for &#40;AnomalyAlert anomalyAlert : alertsIterable&#41; &#123;
+     *     System.out.printf&#40;&quot;Anomaly Alert Id: %s%n&quot;, anomalyAlert.getId&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Created Time: %s%n&quot;, anomalyAlert.getCreatedTime&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Modified Time: %s%n&quot;, anomalyAlert.getModifiedTime&#40;&#41;&#41;;
+     * &#125;
      * </pre>
      * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAlerts#String-OffsetDateTime-OffsetDateTime -->
      *
@@ -583,7 +889,28 @@ public final class MetricsAdvisorClient {
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAlerts#String-OffsetDateTime-OffsetDateTime-ListAlertOptions-Context -->
      * <pre>
+     * final String alertConfigurationId = &quot;ff3014a0-bbbb-41ec-a637-677e77b81299&quot;;
+     * final OffsetDateTime startTime = OffsetDateTime.parse&#40;&quot;2020-01-01T00:00:00Z&quot;&#41;;
+     * final OffsetDateTime endTime = OffsetDateTime.parse&#40;&quot;2020-09-09T00:00:00Z&quot;&#41;;
+     * final AlertQueryTimeMode timeMode = AlertQueryTimeMode.ANOMALY_TIME;
+     * final ListAlertOptions options = new ListAlertOptions&#40;&#41;
+     *     .setAlertQueryTimeMode&#40;timeMode&#41;
+     *     .setMaxPageSize&#40;10&#41;;
      *
+     * PagedIterable&lt;AnomalyAlert&gt; alertsIterable
+     *     = metricsAdvisorClient.listAlerts&#40;alertConfigurationId, startTime, endTime, options, Context.NONE&#41;;
+     *
+     * Stream&lt;PagedResponse&lt;AnomalyAlert&gt;&gt; alertsPageStream = alertsIterable.streamByPage&#40;&#41;;
+     * int[] pageCount = new int[1];
+     * alertsPageStream.forEach&#40;alertsPage -&gt; &#123;
+     *     System.out.printf&#40;&quot;Page: %d%n&quot;, pageCount[0]++&#41;;
+     *     IterableStream&lt;AnomalyAlert&gt; alertsPageItems = alertsPage.getElements&#40;&#41;;
+     *     for &#40;AnomalyAlert anomalyAlert : alertsPageItems&#41; &#123;
+     *         System.out.printf&#40;&quot;AnomalyAlert Id: %s%n&quot;, anomalyAlert.getId&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Created Time: %s%n&quot;, anomalyAlert.getCreatedTime&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Modified Time: %s%n&quot;, anomalyAlert.getModifiedTime&#40;&#41;&#41;;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAlerts#String-OffsetDateTime-OffsetDateTime-ListAlertOptions-Context -->
      *
@@ -613,7 +940,23 @@ public final class MetricsAdvisorClient {
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAnomaliesForAlert#String-String -->
      * <pre>
+     * final String alertConfigurationId = &quot;ff3014a0-bbbb-41ec-a637-677e77b81299&quot;;
+     * final String alertId = &quot;1746b031c00&quot;;
+     * PagedIterable&lt;DataPointAnomaly&gt; anomaliesIterable = metricsAdvisorClient.listAnomaliesForAlert&#40;
+     *     alertConfigurationId,
+     *     alertId
+     * &#41;;
      *
+     * for &#40;DataPointAnomaly dataPointAnomaly : anomaliesIterable&#41; &#123;
+     *     System.out.printf&#40;&quot;Data Feed Metric Id: %s%n&quot;, dataPointAnomaly.getMetricId&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Detection Configuration Id: %s%n&quot;, dataPointAnomaly.getDetectionConfigurationId&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;DataPoint Anomaly Created Time: %s%n&quot;, dataPointAnomaly.getCreatedTime&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;DataPoint Anomaly Modified Time: %s%n&quot;, dataPointAnomaly.getModifiedTime&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;DataPoint Anomaly AnomalySeverity: %s%n&quot;, dataPointAnomaly.getSeverity&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;DataPoint Anomaly Status: %s%n&quot;, dataPointAnomaly.getStatus&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Series Key:&quot;&#41;;
+     *     System.out.println&#40;dataPointAnomaly.getSeriesKey&#40;&#41;.asMap&#40;&#41;&#41;;
+     * &#125;
      * </pre>
      * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAnomaliesForAlert#String-String -->
      *
@@ -637,7 +980,32 @@ public final class MetricsAdvisorClient {
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAnomaliesForAlert#String-String-ListAnomaliesAlertedOptions-Context -->
      * <pre>
+     * final String alertConfigurationId = &quot;ff3014a0-bbbb-41ec-a637-677e77b81299&quot;;
+     * final String alertId = &quot;1746b031c00&quot;;
+     * final ListAnomaliesAlertedOptions options = new ListAnomaliesAlertedOptions&#40;&#41;
+     *     .setMaxPageSize&#40;10&#41;;
+     * PagedIterable&lt;DataPointAnomaly&gt; anomaliesIterable = metricsAdvisorClient.listAnomaliesForAlert&#40;
+     *     alertConfigurationId,
+     *     alertId,
+     *     options,
+     *     Context.NONE&#41;;
      *
+     * Stream&lt;PagedResponse&lt;DataPointAnomaly&gt;&gt; anomaliesPageStream = anomaliesIterable.streamByPage&#40;&#41;;
+     * int[] pageCount = new int[1];
+     * anomaliesPageStream.forEach&#40;anomaliesPage -&gt; &#123;
+     *     System.out.printf&#40;&quot;Page: %d%n&quot;, pageCount[0]++&#41;;
+     *     IterableStream&lt;DataPointAnomaly&gt; anomaliesPageItems = anomaliesPage.getElements&#40;&#41;;
+     *     for &#40;DataPointAnomaly dataPointAnomaly : anomaliesPageItems&#41; &#123;
+     *         System.out.printf&#40;&quot;Data Feed Metric Id: %s%n&quot;, dataPointAnomaly.getMetricId&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Detection Configuration Id: %s%n&quot;, dataPointAnomaly.getDetectionConfigurationId&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;DataPoint Anomaly Created Time: %s%n&quot;, dataPointAnomaly.getCreatedTime&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;DataPoint Anomaly Modified Time: %s%n&quot;, dataPointAnomaly.getModifiedTime&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;DataPoint Anomaly AnomalySeverity: %s%n&quot;, dataPointAnomaly.getSeverity&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;DataPoint Anomaly Status: %s%n&quot;, dataPointAnomaly.getStatus&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Series Key:&quot;&#41;;
+     *         System.out.println&#40;dataPointAnomaly.getSeriesKey&#40;&#41;.asMap&#40;&#41;&#41;;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listAnomaliesForAlert#String-String-ListAnomaliesAlertedOptions-Context -->
      *
@@ -668,7 +1036,33 @@ public final class MetricsAdvisorClient {
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentsForAlert#String-String -->
      * <pre>
+     * final String alertConfigurationId = &quot;ff3014a0-bbbb-41ec-a637-677e77b81299&quot;;
+     * final String alertId = &quot;1746b031c00&quot;;
      *
+     * PagedIterable&lt;AnomalyIncident&gt; incidentsIterable = metricsAdvisorClient.listIncidentsForAlert&#40;
+     *     alertConfigurationId,
+     *     alertId&#41;;
+     *
+     * Stream&lt;PagedResponse&lt;AnomalyIncident&gt;&gt; incidentsPageStream = incidentsIterable.streamByPage&#40;&#41;;
+     * int[] pageCount = new int[1];
+     * incidentsPageStream.forEach&#40;incidentsPage -&gt; &#123;
+     *     System.out.printf&#40;&quot;Page: %d%n&quot;, pageCount[0]++&#41;;
+     *     IterableStream&lt;AnomalyIncident&gt; incidentsPageItems = incidentsPage.getElements&#40;&#41;;
+     *     for &#40;AnomalyIncident anomalyIncident : incidentsPageItems&#41; &#123;
+     *         System.out.printf&#40;&quot;Data Feed Metric Id: %s%n&quot;, anomalyIncident.getMetricId&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Detection Configuration Id: %s%n&quot;, anomalyIncident.getDetectionConfigurationId&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Anomaly Incident Id: %s%n&quot;, anomalyIncident.getId&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Anomaly Incident Start Time: %s%n&quot;, anomalyIncident.getStartTime&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Anomaly Incident AnomalySeverity: %s%n&quot;, anomalyIncident.getSeverity&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Anomaly Incident Status: %s%n&quot;, anomalyIncident.getStatus&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Root DataFeedDimension Key:&quot;&#41;;
+     *         DimensionKey rootDimension = anomalyIncident.getRootDimensionKey&#40;&#41;;
+     *         for &#40;Map.Entry&lt;String, String&gt; dimension : rootDimension.asMap&#40;&#41;.entrySet&#40;&#41;&#41; &#123;
+     *             System.out.printf&#40;&quot;DimensionKey: %s DimensionValue:%s%n&quot;,
+     *                 dimension.getKey&#40;&#41;, dimension.getValue&#40;&#41;&#41;;
+     *         &#125;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentsForAlert#String-String -->
      *
@@ -696,7 +1090,37 @@ public final class MetricsAdvisorClient {
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentsForAlert#String-String-ListIncidentsAlertedOptions-Context -->
      * <pre>
+     * final String alertConfigurationId = &quot;ff3014a0-bbbb-41ec-a637-677e77b81299&quot;;
+     * final String alertId = &quot;1746b031c00&quot;;
+     * final ListIncidentsAlertedOptions options = new ListIncidentsAlertedOptions&#40;&#41;
+     *     .setMaxPageSize&#40;10&#41;;
      *
+     * PagedIterable&lt;AnomalyIncident&gt; incidentsIterable = metricsAdvisorClient.listIncidentsForAlert&#40;
+     *     alertConfigurationId,
+     *     alertId,
+     *     options,
+     *     Context.NONE&#41;;
+     *
+     * Stream&lt;PagedResponse&lt;AnomalyIncident&gt;&gt; incidentsPageStream = incidentsIterable.streamByPage&#40;&#41;;
+     * int[] pageCount = new int[1];
+     * incidentsPageStream.forEach&#40;incidentsPage -&gt; &#123;
+     *     System.out.printf&#40;&quot;Page: %d%n&quot;, pageCount[0]++&#41;;
+     *     IterableStream&lt;AnomalyIncident&gt; incidentsPageItems = incidentsPage.getElements&#40;&#41;;
+     *     for &#40;AnomalyIncident anomalyIncident : incidentsPageItems&#41; &#123;
+     *         System.out.printf&#40;&quot;Data Feed Metric Id: %s%n&quot;, anomalyIncident.getMetricId&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Detection Configuration Id: %s%n&quot;, anomalyIncident.getDetectionConfigurationId&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Anomaly Incident Id: %s%n&quot;, anomalyIncident.getId&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Anomaly Incident Start Time: %s%n&quot;, anomalyIncident.getStartTime&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Anomaly Incident AnomalySeverity: %s%n&quot;, anomalyIncident.getSeverity&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Anomaly Incident Status: %s%n&quot;, anomalyIncident.getStatus&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Root DataFeedDimension Key:&quot;&#41;;
+     *         DimensionKey rootDimension = anomalyIncident.getRootDimensionKey&#40;&#41;;
+     *         for &#40;Map.Entry&lt;String, String&gt; dimension : rootDimension.asMap&#40;&#41;.entrySet&#40;&#41;&#41; &#123;
+     *             System.out.printf&#40;&quot;DimensionKey: %s DimensionValue:%s%n&quot;,
+     *                 dimension.getKey&#40;&#41;, dimension.getValue&#40;&#41;&#41;;
+     *         &#125;
+     *     &#125;
+     * &#125;&#41;;
      * </pre>
      * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listIncidentsForAlert#String-String-ListIncidentsAlertedOptions-Context -->
      *
@@ -727,7 +1151,23 @@ public final class MetricsAdvisorClient {
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.addFeedback#String-MetricFeedback -->
      * <pre>
+     * final String metricId = &quot;d3gh4i4-b804-4ab9-a70f-0da0c89cft3l&quot;;
+     * final OffsetDateTime startTime = OffsetDateTime.parse&#40;&quot;2020-01-01T00:00:00Z&quot;&#41;;
+     * final OffsetDateTime endTime = OffsetDateTime.parse&#40;&quot;2020-09-09T00:00:00Z&quot;&#41;;
+     * final MetricChangePointFeedback metricChangePointFeedback
+     *     = new MetricChangePointFeedback&#40;startTime, endTime, ChangePointValue.AUTO_DETECT&#41;;
      *
+     * final MetricFeedback metricFeedback
+     *     = metricsAdvisorClient.addFeedback&#40;metricId, metricChangePointFeedback&#41;;
+     *
+     * MetricChangePointFeedback createdMetricChangePointFeedback = &#40;MetricChangePointFeedback&#41; metricFeedback;
+     * System.out.printf&#40;&quot;Data Feed Metric feedback Id: %s%n&quot;, createdMetricChangePointFeedback.getId&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Data Feed Metric feedback change point value: %s%n&quot;,
+     *     createdMetricChangePointFeedback.getChangePointValue&#40;&#41;.toString&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Data Feed Metric feedback start time: %s%n&quot;,
+     *     createdMetricChangePointFeedback.getStartTime&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Data Feed Metric feedback end time: %s%n&quot;,
+     *     createdMetricChangePointFeedback.getEndTime&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.addFeedback#String-MetricFeedback -->
      *
@@ -748,7 +1188,28 @@ public final class MetricsAdvisorClient {
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.addFeedbackWithResponse#String-MetricFeedback-Context -->
      * <pre>
+     * final String metricId = &quot;d3gh4i4-b804-4ab9-a70f-0da0c89cft3l&quot;;
+     * final OffsetDateTime startTime = OffsetDateTime.parse&#40;&quot;2020-01-01T00:00:00Z&quot;&#41;;
+     * final OffsetDateTime endTime = OffsetDateTime.parse&#40;&quot;2020-09-09T00:00:00Z&quot;&#41;;
+     * final MetricChangePointFeedback metricChangePointFeedback
+     *     = new MetricChangePointFeedback&#40;startTime, endTime, ChangePointValue.AUTO_DETECT&#41;;
      *
+     * final Response&lt;MetricFeedback&gt; metricFeedbackResponse
+     *     = metricsAdvisorClient.addFeedbackWithResponse&#40;metricId, metricChangePointFeedback, Context.NONE&#41;;
+     *
+     * System.out.printf&#40;&quot;Data Feed Metric feedback creation operation status %s%n&quot;,
+     *     metricFeedbackResponse.getStatusCode&#40;&#41;&#41;;
+     * MetricChangePointFeedback createdMetricChangePointFeedback
+     *     = &#40;MetricChangePointFeedback&#41; metricFeedbackResponse.getValue&#40;&#41;;
+     * System.out.printf&#40;&quot;Data Feed Metric feedback Id: %s%n&quot;, createdMetricChangePointFeedback.getId&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Data Feed Metric feedback change point value: %s%n&quot;,
+     *     createdMetricChangePointFeedback.getChangePointValue&#40;&#41;.toString&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Data Feed Metric feedback start time: %s%n&quot;,
+     *     createdMetricChangePointFeedback.getStartTime&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Data Feed Metric feedback end time: %s%n&quot;,
+     *     createdMetricChangePointFeedback.getEndTime&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Data Feed Metric feedback associated dimension filter: %s%n&quot;,
+     *     createdMetricChangePointFeedback.getDimensionFilter&#40;&#41;.asMap&#40;&#41;&#41;;
      * </pre>
      * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.addFeedbackWithResponse#String-MetricFeedback-Context -->
      *
@@ -772,6 +1233,20 @@ public final class MetricsAdvisorClient {
      * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.getFeedback#String -->
      * <pre>
      *
+     * final String feedbackId = &quot;8i3h4i4-b804-4ab9-a70f-0da0c89cft3l&quot;;
+     * final MetricFeedback metricFeedback = metricsAdvisorClient.getFeedback&#40;feedbackId&#41;;
+     * System.out.printf&#40;&quot;Data Feed Metric feedback Id: %s%n&quot;, metricFeedback.getId&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Data Feed Metric feedback associated dimension filter: %s%n&quot;,
+     *     metricFeedback.getDimensionFilter&#40;&#41;.asMap&#40;&#41;&#41;;
+     *
+     * if &#40;PERIOD.equals&#40;metricFeedback.getFeedbackType&#40;&#41;&#41;&#41; &#123;
+     *     MetricPeriodFeedback createMetricPeriodFeedback
+     *         = &#40;MetricPeriodFeedback&#41; metricFeedback;
+     *     System.out.printf&#40;&quot;Data Feed Metric feedback type: %s%n&quot;,
+     *         createMetricPeriodFeedback.getPeriodType&#40;&#41;.toString&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Data Feed Metric feedback period value: %d%n&quot;,
+     *         createMetricPeriodFeedback.getPeriodValue&#40;&#41;&#41;;
+     * &#125;
      * </pre>
      * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.getFeedback#String -->
      *
@@ -793,6 +1268,22 @@ public final class MetricsAdvisorClient {
      * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.getFeedbackWithResponse#String-Context -->
      * <pre>
      *
+     * final String feedbackId = &quot;8i3h4i4-b804-4ab9-a70f-0da0c89cft3l&quot;;
+     * final Response&lt;MetricFeedback&gt; metricFeedbackResponse
+     *     = metricsAdvisorClient.getFeedbackWithResponse&#40;feedbackId, Context.NONE&#41;;
+     * final MetricFeedback metricFeedback = metricFeedbackResponse.getValue&#40;&#41;;
+     * System.out.printf&#40;&quot;Data Feed Metric feedback Id: %s%n&quot;, metricFeedback.getId&#40;&#41;&#41;;
+     * System.out.printf&#40;&quot;Data Feed Metric feedback associated dimension filter: %s%n&quot;,
+     *     metricFeedback.getDimensionFilter&#40;&#41;.asMap&#40;&#41;&#41;;
+     *
+     * if &#40;PERIOD.equals&#40;metricFeedback.getFeedbackType&#40;&#41;&#41;&#41; &#123;
+     *     MetricPeriodFeedback createMetricPeriodFeedback
+     *         = &#40;MetricPeriodFeedback&#41; metricFeedback;
+     *     System.out.printf&#40;&quot;Data Feed Metric feedback type: %s%n&quot;,
+     *         createMetricPeriodFeedback.getPeriodType&#40;&#41;.toString&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Data Feed Metric feedback period value: %d%n&quot;,
+     *         createMetricPeriodFeedback.getPeriodValue&#40;&#41;&#41;;
+     * &#125;
      * </pre>
      * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.getFeedbackWithResponse#String-Context -->
      *
@@ -814,7 +1305,34 @@ public final class MetricsAdvisorClient {
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listFeedback#String -->
      * <pre>
+     * final String metricId = &quot;d3gh4i4-b804-4ab9-a70f-0da0c89cft3l&quot;;
+     * metricsAdvisorClient.listFeedback&#40;metricId&#41;
+     *     .forEach&#40;metricFeedback -&gt; &#123;
+     *         System.out.printf&#40;&quot;Data Feed Metric feedback Id: %s%n&quot;, metricFeedback.getId&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Data Feed Metric feedback associated dimension filter: %s%n&quot;,
+     *             metricFeedback.getDimensionFilter&#40;&#41;.asMap&#40;&#41;&#41;;
      *
+     *         if &#40;PERIOD.equals&#40;metricFeedback.getFeedbackType&#40;&#41;&#41;&#41; &#123;
+     *             MetricPeriodFeedback periodFeedback
+     *                 = &#40;MetricPeriodFeedback&#41; metricFeedback;
+     *             System.out.printf&#40;&quot;Data Feed Metric feedback type: %s%n&quot;,
+     *                 periodFeedback.getPeriodType&#40;&#41;.toString&#40;&#41;&#41;;
+     *             System.out.printf&#40;&quot;Data Feed Metric feedback period value: %d%n&quot;,
+     *                 periodFeedback.getPeriodValue&#40;&#41;&#41;;
+     *         &#125; else if &#40;ANOMALY.equals&#40;metricFeedback.getFeedbackType&#40;&#41;&#41;&#41; &#123;
+     *             MetricAnomalyFeedback metricAnomalyFeedback
+     *                 = &#40;MetricAnomalyFeedback&#41; metricFeedback;
+     *             System.out.printf&#40;&quot;Data Feed Metric feedback anomaly value: %s%n&quot;,
+     *                 metricAnomalyFeedback.getAnomalyValue&#40;&#41;.toString&#40;&#41;&#41;;
+     *             System.out.printf&#40;&quot;Data Feed Metric feedback associated detection configuration: %s%n&quot;,
+     *                 metricAnomalyFeedback.getDetectionConfigurationId&#40;&#41;&#41;;
+     *         &#125; else if &#40;COMMENT.equals&#40;metricFeedback.getFeedbackType&#40;&#41;&#41;&#41; &#123;
+     *             MetricCommentFeedback metricCommentFeedback
+     *                 = &#40;MetricCommentFeedback&#41; metricFeedback;
+     *             System.out.printf&#40;&quot;Data Feed Metric feedback comment value: %s%n&quot;,
+     *                 metricCommentFeedback.getComment&#40;&#41;&#41;;
+     *         &#125;
+     *     &#125;&#41;;
      * </pre>
      * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listFeedback#String -->
      *
@@ -838,7 +1356,43 @@ public final class MetricsAdvisorClient {
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listFeedback#String-ListMetricFeedbackOptions-Context -->
      * <pre>
+     * final String metricId = &quot;d3gh4i4-b804-4ab9-a70f-0da0c89cft3l&quot;;
+     * final OffsetDateTime startTime = OffsetDateTime.parse&#40;&quot;2020-01-01T00:00:00Z&quot;&#41;;
+     * final OffsetDateTime endTime = OffsetDateTime.parse&#40;&quot;2020-09-09T00:00:00Z&quot;&#41;;
      *
+     * metricsAdvisorClient.listFeedback&#40;metricId,
+     *     new ListMetricFeedbackOptions&#40;&#41;
+     *         .setFilter&#40;new ListMetricFeedbackFilter&#40;&#41;
+     *             .setStartTime&#40;startTime&#41;
+     *             .setTimeMode&#40;FeedbackQueryTimeMode.FEEDBACK_CREATED_TIME&#41;
+     *             .setEndTime&#40;endTime&#41;&#41;, Context.NONE&#41;
+     *     .forEach&#40;metricFeedback -&gt; &#123;
+     *         System.out.printf&#40;&quot;Data Feed Metric feedback Id: %s%n&quot;, metricFeedback.getId&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Data Feed Metric feedback associated dimension filter: %s%n&quot;,
+     *             metricFeedback.getDimensionFilter&#40;&#41;.asMap&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Data Feed Metric feedback created time %s%n&quot;, metricFeedback.getCreatedTime&#40;&#41;&#41;;
+     *
+     *         if &#40;PERIOD.equals&#40;metricFeedback.getFeedbackType&#40;&#41;&#41;&#41; &#123;
+     *             MetricPeriodFeedback periodFeedback
+     *                 = &#40;MetricPeriodFeedback&#41; metricFeedback;
+     *             System.out.printf&#40;&quot;Data Feed Metric feedback type: %s%n&quot;,
+     *                 periodFeedback.getPeriodType&#40;&#41;.toString&#40;&#41;&#41;;
+     *             System.out.printf&#40;&quot;Data Feed Metric feedback period value: %d%n&quot;,
+     *                 periodFeedback.getPeriodValue&#40;&#41;&#41;;
+     *         &#125; else if &#40;ANOMALY.equals&#40;metricFeedback.getFeedbackType&#40;&#41;&#41;&#41; &#123;
+     *             MetricAnomalyFeedback metricAnomalyFeedback
+     *                 = &#40;MetricAnomalyFeedback&#41; metricFeedback;
+     *             System.out.printf&#40;&quot;Data Feed Metric feedback anomaly value: %s%n&quot;,
+     *                 metricAnomalyFeedback.getAnomalyValue&#40;&#41;.toString&#40;&#41;&#41;;
+     *             System.out.printf&#40;&quot;Data Feed Metric feedback associated detection configuration: %s%n&quot;,
+     *                 metricAnomalyFeedback.getDetectionConfigurationId&#40;&#41;&#41;;
+     *         &#125; else if &#40;COMMENT.equals&#40;metricFeedback.getFeedbackType&#40;&#41;&#41;&#41; &#123;
+     *             MetricCommentFeedback metricCommentFeedback
+     *                 = &#40;MetricCommentFeedback&#41; metricFeedback;
+     *             System.out.printf&#40;&quot;Data Feed Metric feedback comment value: %s%n&quot;,
+     *                 metricCommentFeedback.getComment&#40;&#41;&#41;;
+     *         &#125;
+     *     &#125;&#41;;
      * </pre>
      * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listFeedback#String-ListMetricFeedbackOptions-Context -->
      *
@@ -867,7 +1421,9 @@ public final class MetricsAdvisorClient {
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricDimensionValues#String-String -->
      * <pre>
-     *
+     * final String metricId = &quot;gh3014a0-41ec-a637-677e77b81455&quot;;
+     * metricsAdvisorClient.listMetricDimensionValues&#40;metricId, &quot;category&quot;&#41;
+     *     .forEach&#40;System.out::println&#41;;
      * </pre>
      * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricDimensionValues#String-String -->
      *
@@ -892,7 +1448,11 @@ public final class MetricsAdvisorClient {
      * <p><strong>Code sample</strong></p>
      * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricDimensionValues#String-String-ListMetricDimensionValuesOptions-Context -->
      * <pre>
-     *
+     * final String metricId = &quot;gh3014a0-41ec-a637-677e77b81455&quot;;
+     * metricsAdvisorClient.listMetricDimensionValues&#40;metricId, &quot;category&quot;,
+     *     new ListMetricDimensionValuesOptions&#40;&#41;.setDimensionValueToFilter&#40;&quot;Electronics&quot;&#41;
+     *         .setMaxPageSize&#40;3&#41;, Context.NONE&#41;
+     *     .forEach&#40;System.out::println&#41;;
      * </pre>
      * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.listMetricDimensionValues#String-String-ListMetricDimensionValuesOptions-Context -->
      *
