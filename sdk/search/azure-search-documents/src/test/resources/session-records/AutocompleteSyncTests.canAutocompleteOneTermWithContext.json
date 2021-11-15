@@ -1,27 +1,27 @@
 {
   "networkCallRecords" : [ {
     "Method" : "POST",
-    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-autocomplete-shared-instance')/docs/search.post.autocomplete?api-version=2021-04-30-Preview",
+    "Uri" : "https://REDACTED.search.windows.net/indexes('azsearch-autocomplete-shared-instance')/docs/search.post.autocomplete?api-version=2020-06-30",
     "Headers" : {
-      "User-Agent" : "azsdk-java-azure-search-documents/11.5.0-beta.1 (11.0.6; Windows 10; 10.0)",
-      "x-ms-client-request-id" : "d56ca531-a48f-4c7c-8fd3-5688a1014616",
+      "User-Agent" : "azsdk-java-azure-search-documents/11.4.0-beta.3 (11.0.9.1; Windows 10; 10.0)",
+      "x-ms-client-request-id" : "8430fa01-b9a0-4e6d-9bc9-811aa6bbe936",
       "Content-Type" : "application/json"
     },
     "Response" : {
       "content-length" : "208",
       "Pragma" : "no-cache",
       "retry-after" : "0",
-      "request-id" : "d56ca531-a48f-4c7c-8fd3-5688a1014616",
+      "request-id" : "8430fa01-b9a0-4e6d-9bc9-811aa6bbe936",
       "StatusCode" : "200",
-      "Date" : "Tue, 13 Jul 2021 19:14:36 GMT",
+      "Date" : "Thu, 27 May 2021 21:06:58 GMT",
       "Strict-Transport-Security" : "max-age=15724800; includeSubDomains",
       "Cache-Control" : "no-cache",
-      "client-request-id" : "d56ca531-a48f-4c7c-8fd3-5688a1014616",
-      "elapsed-time" : "5",
+      "client-request-id" : "8430fa01-b9a0-4e6d-9bc9-811aa6bbe936",
+      "elapsed-time" : "6",
       "OData-Version" : "4.0",
       "Expires" : "-1",
       "Body" : "{\"value\":[{\"text\":\"very police\",\"queryPlusText\":\"looking for very police\"},{\"text\":\"very polite\",\"queryPlusText\":\"looking for very polite\"},{\"text\":\"very popular\",\"queryPlusText\":\"looking for very popular\"}]}",
-      "x-ms-client-request-id" : "d56ca531-a48f-4c7c-8fd3-5688a1014616",
+      "x-ms-client-request-id" : "8430fa01-b9a0-4e6d-9bc9-811aa6bbe936",
       "Preference-Applied" : "odata.include-annotations=\"*\"",
       "Content-Type" : "application/json; odata.metadata=none"
     },
