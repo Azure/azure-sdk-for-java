@@ -4,12 +4,14 @@
 
 package com.azure.communication.mediacomposition.implementation;
 
+import com.azure.communication.mediacomposition.implementation.models.CommunicationErrorResponseException;
 import com.azure.communication.mediacomposition.implementation.models.CompositionStreamState;
 import com.azure.communication.mediacomposition.implementation.models.MediaCompositionBody;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
+import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
 import com.azure.core.annotation.Patch;
@@ -20,7 +22,6 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.util.Context;
@@ -41,7 +42,9 @@ public final class MediaCompositionsImpl {
      * @param client the instance of the service client containing this operation class.
      */
     MediaCompositionsImpl(AzureCommunicationMediaCompositionServiceImpl client) {
-        this.service = RestProxy.create(MediaCompositionsService.class, client.getHttpPipeline());
+        this.service =
+                RestProxy.create(
+                        MediaCompositionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -53,85 +56,93 @@ public final class MediaCompositionsImpl {
     @ServiceInterface(name = "AzureCommunicationMe")
     private interface MediaCompositionsService {
         @Get("/mediaCompositions/{mediaCompositionId}")
-        @ExpectedResponses({200, 400})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<MediaCompositionBody>> get(
                 @HostParam("$host") String host,
                 @PathParam("mediaCompositionId") String mediaCompositionId,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Put("/mediaCompositions/{mediaCompositionId}")
-        @ExpectedResponses({200, 400})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<MediaCompositionBody>> create(
                 @HostParam("$host") String host,
                 @PathParam("mediaCompositionId") String mediaCompositionId,
                 @BodyParam("application/json") MediaCompositionBody body,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Patch("/mediaCompositions/{mediaCompositionId}")
-        @ExpectedResponses({200, 400})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<MediaCompositionBody>> update(
                 @HostParam("$host") String host,
                 @PathParam("mediaCompositionId") String mediaCompositionId,
                 @BodyParam("application/json") MediaCompositionBody body,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Delete("/mediaCompositions/{mediaCompositionId}")
         @ExpectedResponses({204})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<Void>> delete(
                 @HostParam("$host") String host,
                 @PathParam("mediaCompositionId") String mediaCompositionId,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/mediaCompositions/{mediaCompositionId}/start")
-        @ExpectedResponses({200, 400})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<CompositionStreamState>> start(
                 @HostParam("$host") String host,
                 @PathParam("mediaCompositionId") String mediaCompositionId,
+                @HeaderParam("Accept") String accept,
                 Context context);
 
         @Post("/mediaCompositions/{mediaCompositionId}/stop")
-        @ExpectedResponses({200, 400})
-        @UnexpectedResponseExceptionType(HttpResponseException.class)
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
         Mono<Response<CompositionStreamState>> stop(
                 @HostParam("$host") String host,
                 @PathParam("mediaCompositionId") String mediaCompositionId,
+                @HeaderParam("Accept") String accept,
                 Context context);
     }
 
     /**
      * @param mediaCompositionId The mediaCompositionId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MediaCompositionBody>> getWithResponseAsync(String mediaCompositionId) {
-        return FluxUtil.withContext(context -> service.get(this.client.getHost(), mediaCompositionId, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.get(this.client.getHost(), mediaCompositionId, accept, context));
     }
 
     /**
      * @param mediaCompositionId The mediaCompositionId parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MediaCompositionBody>> getWithResponseAsync(String mediaCompositionId, Context context) {
-        return service.get(this.client.getHost(), mediaCompositionId, context);
+        final String accept = "application/json";
+        return service.get(this.client.getHost(), mediaCompositionId, accept, context);
     }
 
     /**
      * @param mediaCompositionId The mediaCompositionId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -152,7 +163,7 @@ public final class MediaCompositionsImpl {
      * @param mediaCompositionId The mediaCompositionId parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -172,7 +183,7 @@ public final class MediaCompositionsImpl {
     /**
      * @param mediaCompositionId The mediaCompositionId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -185,28 +196,29 @@ public final class MediaCompositionsImpl {
      * @param mediaCompositionId The mediaCompositionId parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MediaCompositionBody get(String mediaCompositionId, Context context) {
-        return getAsync(mediaCompositionId, context).block();
+    public Response<MediaCompositionBody> getWithResponse(String mediaCompositionId, Context context) {
+        return getWithResponseAsync(mediaCompositionId, context).block();
     }
 
     /**
      * @param mediaCompositionId The mediaCompositionId parameter.
      * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MediaCompositionBody>> createWithResponseAsync(
             String mediaCompositionId, MediaCompositionBody body) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.create(this.client.getHost(), mediaCompositionId, body, context));
+                context -> service.create(this.client.getHost(), mediaCompositionId, body, accept, context));
     }
 
     /**
@@ -214,21 +226,22 @@ public final class MediaCompositionsImpl {
      * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MediaCompositionBody>> createWithResponseAsync(
             String mediaCompositionId, MediaCompositionBody body, Context context) {
-        return service.create(this.client.getHost(), mediaCompositionId, body, context);
+        final String accept = "application/json";
+        return service.create(this.client.getHost(), mediaCompositionId, body, accept, context);
     }
 
     /**
      * @param mediaCompositionId The mediaCompositionId parameter.
      * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -250,7 +263,7 @@ public final class MediaCompositionsImpl {
      * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -272,7 +285,7 @@ public final class MediaCompositionsImpl {
      * @param mediaCompositionId The mediaCompositionId parameter.
      * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -286,28 +299,30 @@ public final class MediaCompositionsImpl {
      * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MediaCompositionBody create(String mediaCompositionId, MediaCompositionBody body, Context context) {
-        return createAsync(mediaCompositionId, body, context).block();
+    public Response<MediaCompositionBody> createWithResponse(
+            String mediaCompositionId, MediaCompositionBody body, Context context) {
+        return createWithResponseAsync(mediaCompositionId, body, context).block();
     }
 
     /**
      * @param mediaCompositionId The mediaCompositionId parameter.
      * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MediaCompositionBody>> updateWithResponseAsync(
             String mediaCompositionId, MediaCompositionBody body) {
+        final String accept = "application/json";
         return FluxUtil.withContext(
-                context -> service.update(this.client.getHost(), mediaCompositionId, body, context));
+                context -> service.update(this.client.getHost(), mediaCompositionId, body, accept, context));
     }
 
     /**
@@ -315,21 +330,22 @@ public final class MediaCompositionsImpl {
      * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<MediaCompositionBody>> updateWithResponseAsync(
             String mediaCompositionId, MediaCompositionBody body, Context context) {
-        return service.update(this.client.getHost(), mediaCompositionId, body, context);
+        final String accept = "application/json";
+        return service.update(this.client.getHost(), mediaCompositionId, body, accept, context);
     }
 
     /**
      * @param mediaCompositionId The mediaCompositionId parameter.
      * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -351,7 +367,7 @@ public final class MediaCompositionsImpl {
      * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -373,7 +389,7 @@ public final class MediaCompositionsImpl {
      * @param mediaCompositionId The mediaCompositionId parameter.
      * @param body The body parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -387,44 +403,48 @@ public final class MediaCompositionsImpl {
      * @param body The body parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MediaCompositionBody update(String mediaCompositionId, MediaCompositionBody body, Context context) {
-        return updateAsync(mediaCompositionId, body, context).block();
+    public Response<MediaCompositionBody> updateWithResponse(
+            String mediaCompositionId, MediaCompositionBody body, Context context) {
+        return updateWithResponseAsync(mediaCompositionId, body, context).block();
     }
 
     /**
      * @param mediaCompositionId The mediaCompositionId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String mediaCompositionId) {
-        return FluxUtil.withContext(context -> service.delete(this.client.getHost(), mediaCompositionId, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context -> service.delete(this.client.getHost(), mediaCompositionId, accept, context));
     }
 
     /**
      * @param mediaCompositionId The mediaCompositionId parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponseAsync(String mediaCompositionId, Context context) {
-        return service.delete(this.client.getHost(), mediaCompositionId, context);
+        final String accept = "application/json";
+        return service.delete(this.client.getHost(), mediaCompositionId, accept, context);
     }
 
     /**
      * @param mediaCompositionId The mediaCompositionId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -437,7 +457,7 @@ public final class MediaCompositionsImpl {
      * @param mediaCompositionId The mediaCompositionId parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
@@ -449,7 +469,7 @@ public final class MediaCompositionsImpl {
     /**
      * @param mediaCompositionId The mediaCompositionId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -461,43 +481,47 @@ public final class MediaCompositionsImpl {
      * @param mediaCompositionId The mediaCompositionId parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(String mediaCompositionId, Context context) {
-        deleteAsync(mediaCompositionId, context).block();
+    public Response<Void> deleteWithResponse(String mediaCompositionId, Context context) {
+        return deleteWithResponseAsync(mediaCompositionId, context).block();
     }
 
     /**
      * @param mediaCompositionId The mediaCompositionId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CompositionStreamState>> startWithResponseAsync(String mediaCompositionId) {
-        return FluxUtil.withContext(context -> service.start(this.client.getHost(), mediaCompositionId, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context -> service.start(this.client.getHost(), mediaCompositionId, accept, context));
     }
 
     /**
      * @param mediaCompositionId The mediaCompositionId parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CompositionStreamState>> startWithResponseAsync(String mediaCompositionId, Context context) {
-        return service.start(this.client.getHost(), mediaCompositionId, context);
+        final String accept = "application/json";
+        return service.start(this.client.getHost(), mediaCompositionId, accept, context);
     }
 
     /**
      * @param mediaCompositionId The mediaCompositionId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -518,7 +542,7 @@ public final class MediaCompositionsImpl {
      * @param mediaCompositionId The mediaCompositionId parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -538,7 +562,7 @@ public final class MediaCompositionsImpl {
     /**
      * @param mediaCompositionId The mediaCompositionId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -551,44 +575,47 @@ public final class MediaCompositionsImpl {
      * @param mediaCompositionId The mediaCompositionId parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CompositionStreamState start(String mediaCompositionId, Context context) {
-        return startAsync(mediaCompositionId, context).block();
+    public Response<CompositionStreamState> startWithResponse(String mediaCompositionId, Context context) {
+        return startWithResponseAsync(mediaCompositionId, context).block();
     }
 
     /**
      * @param mediaCompositionId The mediaCompositionId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CompositionStreamState>> stopWithResponseAsync(String mediaCompositionId) {
-        return FluxUtil.withContext(context -> service.stop(this.client.getHost(), mediaCompositionId, context));
+        final String accept = "application/json";
+        return FluxUtil.withContext(
+                context -> service.stop(this.client.getHost(), mediaCompositionId, accept, context));
     }
 
     /**
      * @param mediaCompositionId The mediaCompositionId parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CompositionStreamState>> stopWithResponseAsync(String mediaCompositionId, Context context) {
-        return service.stop(this.client.getHost(), mediaCompositionId, context);
+        final String accept = "application/json";
+        return service.stop(this.client.getHost(), mediaCompositionId, accept, context);
     }
 
     /**
      * @param mediaCompositionId The mediaCompositionId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -609,7 +636,7 @@ public final class MediaCompositionsImpl {
      * @param mediaCompositionId The mediaCompositionId parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -629,7 +656,7 @@ public final class MediaCompositionsImpl {
     /**
      * @param mediaCompositionId The mediaCompositionId parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
@@ -642,12 +669,12 @@ public final class MediaCompositionsImpl {
      * @param mediaCompositionId The mediaCompositionId parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CompositionStreamState stop(String mediaCompositionId, Context context) {
-        return stopAsync(mediaCompositionId, context).block();
+    public Response<CompositionStreamState> stopWithResponse(String mediaCompositionId, Context context) {
+        return stopWithResponseAsync(mediaCompositionId, context).block();
     }
 }

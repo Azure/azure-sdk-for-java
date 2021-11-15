@@ -9,6 +9,8 @@ import com.azure.core.http.HttpPipelineBuilder;
 import com.azure.core.http.policy.CookiePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.http.policy.UserAgentPolicy;
+import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerAdapter;
 
 /** Initializes a new instance of the AzureCommunicationMediaCompositionService type. */
 public final class AzureCommunicationMediaCompositionServiceImpl {
@@ -36,6 +38,18 @@ public final class AzureCommunicationMediaCompositionServiceImpl {
         return this.httpPipeline;
     }
 
+    /** The serializer to serialize an object into a string. */
+    private final SerializerAdapter serializerAdapter;
+
+    /**
+     * Gets The serializer to serialize an object into a string.
+     *
+     * @return the serializerAdapter value.
+     */
+    public SerializerAdapter getSerializerAdapter() {
+        return this.serializerAdapter;
+    }
+
     /** The MediaCompositionsImpl object to access its operations. */
     private final MediaCompositionsImpl mediaCompositions;
 
@@ -48,12 +62,17 @@ public final class AzureCommunicationMediaCompositionServiceImpl {
         return this.mediaCompositions;
     }
 
-    /** Initializes an instance of AzureCommunicationMediaCompositionService client. */
+    /**
+     * Initializes an instance of AzureCommunicationMediaCompositionService client.
+     *
+     * @param host server parameter.
+     */
     AzureCommunicationMediaCompositionServiceImpl(String host) {
         this(
                 new HttpPipelineBuilder()
                         .policies(new UserAgentPolicy(), new RetryPolicy(), new CookiePolicy())
                         .build(),
+                JacksonAdapter.createDefaultSerializerAdapter(),
                 host);
     }
 
@@ -61,9 +80,23 @@ public final class AzureCommunicationMediaCompositionServiceImpl {
      * Initializes an instance of AzureCommunicationMediaCompositionService client.
      *
      * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param host server parameter.
      */
     AzureCommunicationMediaCompositionServiceImpl(HttpPipeline httpPipeline, String host) {
+        this(httpPipeline, JacksonAdapter.createDefaultSerializerAdapter(), host);
+    }
+
+    /**
+     * Initializes an instance of AzureCommunicationMediaCompositionService client.
+     *
+     * @param httpPipeline The HTTP pipeline to send requests through.
+     * @param serializerAdapter The serializer to serialize an object into a string.
+     * @param host server parameter.
+     */
+    AzureCommunicationMediaCompositionServiceImpl(
+            HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, String host) {
         this.httpPipeline = httpPipeline;
+        this.serializerAdapter = serializerAdapter;
         this.host = host;
         this.mediaCompositions = new MediaCompositionsImpl(this);
     }
