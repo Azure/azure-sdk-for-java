@@ -52,6 +52,15 @@ class ChangeFeedOffsetSpec extends UnitSpec {
   }
 
   //scalastyle:off multiple.string.literals
+  it should " have expected Offset identifier even after shading" in {
+    // Using the replace hack here to make sure shading wouldn't also
+    // mess around with the expected identifier
+    val expectedIdentifier = "something:spark.cosmos.changeFeed.offset.v1"
+      .replace("something:", "")
+    ChangeFeedOffset.V1Identifier shouldEqual
+  }
+
+  //scalastyle:off multiple.string.literals
   it should " pass serialization/deserialization test" in {
     val changeFeedState = UUID.randomUUID().toString
     val offsetJson = getOffsetJson(changeFeedState)
