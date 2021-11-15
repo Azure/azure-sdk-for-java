@@ -6,7 +6,7 @@ It will provide TURN credentials to a user.
 
 [Source code](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication) | [API reference documentation](https://github.com/Azure/azure-sdk-for-java/blob/master/sdk/communication)
 
-# Getting started
+## Getting started
 
 ### Prerequisites
 

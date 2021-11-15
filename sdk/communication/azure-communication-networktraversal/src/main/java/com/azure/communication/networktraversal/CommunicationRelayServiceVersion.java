@@ -9,6 +9,9 @@ import com.azure.core.util.ServiceVersion;
  * The versions of Communication Relay Service supported by this client library.
  */
 public enum CommunicationRelayServiceVersion implements ServiceVersion {
+    /**
+     * Service version {@code 2021_08_23}.
+     */
     V2021_08_23("2021_08_23");
 
     private final String version;

@@ -1,4 +1,4 @@
-## Azure Communications SMS Service client library for Java
+# Azure Communications SMS Service client library for Java
 
 Azure Communication SMS is used to send simple text messages.
 
