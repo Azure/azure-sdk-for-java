@@ -546,11 +546,11 @@ public class AttestationTokenImpl implements AttestationToken {
      */
     public static AttestationToken createSecuredToken(String stringBody, AttestationSigningKey signingKey) {
         ClientLogger logger = new ClientLogger(AttestationTokenImpl.class);
-//        try {
-//            signingKey.verify();
-//        } catch (Exception e) {
-//            throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
-//        }
+        try {
+            signingKey.verify();
+        } catch (Exception e) {
+            throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
+        }
 
         JWSObject securedObject;
         Payload payload = new Payload(stringBody);

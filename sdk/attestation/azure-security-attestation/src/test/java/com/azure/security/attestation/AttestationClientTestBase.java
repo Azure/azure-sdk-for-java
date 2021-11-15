@@ -64,7 +64,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  */
 public class AttestationClientTestBase extends TestBase {
 
-    final ClientLogger logger = new ClientLogger(AttestationClientTestBase.class);
+    protected final ClientLogger logger = new ClientLogger(AttestationClientTestBase.class);
 
     enum ClientTypes {
         SHARED,
@@ -302,7 +302,7 @@ public class AttestationClientTestBase extends TestBase {
         return signingCertificate;
     }
 
-    X509Certificate getIsolatedSigningCertificate() {
+    protected X509Certificate getIsolatedSigningCertificate() {
         return X509CertUtils.parse(Base64.getDecoder().decode(getIsolatedSigningCertificateBase64()));
     }
 
@@ -355,7 +355,7 @@ public class AttestationClientTestBase extends TestBase {
         return privateKey;
     }
 
-    PrivateKey getIsolatedSigningKey() {
+    protected PrivateKey getIsolatedSigningKey() {
         return privateKeyFromBase64(getIsolatedSigningKeyBase64());
     }
 

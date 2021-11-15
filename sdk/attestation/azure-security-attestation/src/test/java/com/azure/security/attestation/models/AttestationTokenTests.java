@@ -8,13 +8,17 @@ import com.azure.security.attestation.implementation.models.AttestationResult;
 import com.azure.security.attestation.implementation.models.AttestationTokenImpl;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.junit.jupiter.api.Test;
+
 import java.security.KeyPair;
 
+import java.security.PrivateKey;
+import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.util.Base64;
 import java.util.LinkedHashMap;
 
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
@@ -258,6 +262,37 @@ public class AttestationTokenTests extends AttestationClientTestBase {
         assertEquals(2, jsonMap.size());
         assertEquals("foo", jsonMap.get("foo"));
         assertEquals(10, jsonMap.get("bar"));
+    }
+
+    @Test
+    void testCreateSecuredAttestationTokenWithPredefinedPayload() {
+        PrivateKey key = getIsolatedSigningKey();
+        X509Certificate cert = getIsolatedSigningCertificate();
+
+        AttestationSigningKey signingKey = new AttestationSigningKey()
+            .setPrivateKey(key)
+            .setCertificate(cert);
+
+
+        logger.info("Key: {}", Base64.getEncoder().encode(key.getEncoded()).toString());
+        byte[] encodedKey = key.getEncoded();
+        String base64Key = Base64.getEncoder().encodeToString(encodedKey);
+        System.out.printf("Key: %s\n", base64Key);
+        assertDoesNotThrow(() -> logger.info("Certificate: {}", Base64.getEncoder().encode(cert.getEncoded())));
+        assertDoesNotThrow(() -> System.out.printf("Certificate: %s\n", Base64.getEncoder().encodeToString(cert.getEncoded())));
+
+        assertDoesNotThrow(() -> signingKey.verify());
+
+        String sourceObject = "{\"foo\": \"foo\", \"bar\": 10 }";
+
+        AttestationToken newToken = AttestationTokenImpl.createSecuredToken(sourceObject, signingKey);
+
+        // Verify that this is a secured attestation token.
+        assertNotEquals("none", newToken.getAlgorithm());
+        assertNull(newToken.getKeyId());
+        assertNotNull(newToken.getCertificateChain());
+        assertArrayEquals(assertDoesNotThrow(() -> cert.getEncoded()), assertDoesNotThrow(() -> newToken.getCertificateChain().getCertificates().get(0).getEncoded()));
+
     }
 
     @Test
