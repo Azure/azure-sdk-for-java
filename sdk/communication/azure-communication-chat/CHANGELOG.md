@@ -14,7 +14,6 @@
 #### Dependency Updates
 
 - Upgraded `azure-communication-common` to 1.0.6
-- Upgraded `azure-communication-identity` to 1.1.4
 - Upgraded `azure-core` to 1.22.0
 
 ## 1.1.1 (2021-10-14)
