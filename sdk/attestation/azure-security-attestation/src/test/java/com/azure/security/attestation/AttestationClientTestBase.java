@@ -48,6 +48,7 @@ import java.time.ZoneId;
 import java.time.temporal.ChronoUnit;
 import java.util.Base64;
 import java.util.Date;
+import java.util.Map;
 import java.util.Random;
 import java.util.stream.Stream;
 
@@ -389,6 +390,11 @@ public class AttestationClientTestBase extends TestBase {
         String key = Configuration.getGlobalConfiguration().get("policySigningKey0");
         if (key == null) {
             System.out.printf("Returning preconfigured signing key because none was found in the environment.\n");
+            Map<String, String> env = System.getenv();
+            for (String kv : env.keySet()) {
+                System.out.printf(" Env: %s: %s\n", kv, env.get(kv));
+            }
+
             key = "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDKkpCvOEAMZAb4FgLKiq1TCAZf7L9TEVl7/EvJRzIcusQ"
                 + "nFZ2LX8ZasFajmJTyauo/JOJtVSyISamU0gLYyJLF/BpYteTBjCM+qotUGYEKRMRLlkEdFiQu8u8/K2wdcuS7yrfMGscg9d5+XciTNm"
                 + "nBMjWNKMU9NfWgRvauz4u+CTenNfGCL3huEHAj7Pb9pa7l3c1yvCjHDchTXeSpGzF2AhyYBSVAouOWXK+vpTUw+rx8CRqFn7vHOcGrg"
