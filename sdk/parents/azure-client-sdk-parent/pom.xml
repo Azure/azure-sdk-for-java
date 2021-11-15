@@ -556,7 +556,7 @@
             <fork>true</fork>
             <failOnError>true</failOnError>
             <!-- Set this to true when src/samples and src/test are spotbugs clean in all Track 2 SDKs -->
-            <includeTests>false</includeTests>
+            <includeTests>true</includeTests>
 
             <!-- Enable this plugin when issues documented are fixed -->
             <!--          <plugins>-->
