@@ -8,7 +8,8 @@ import com.azure.messaging.eventhubs.models.EventBatchContext;
 import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.messaging.eventhubs.models.PartitionContext;
 import com.azure.spring.eventhubs.checkpoint.BatchCheckpointManager;
-import com.azure.spring.eventhubs.checkpoint.CheckpointManager;
+import com.azure.spring.eventhubs.checkpoint.EventCheckpointManager;
+import com.azure.spring.eventhubs.checkpoint.CheckpointManagers;
 import com.azure.spring.eventhubs.core.EventHubProcessorContainer;
 import com.azure.spring.eventhubs.support.converter.EventHubBatchMessageConverter;
 import com.azure.spring.eventhubs.support.converter.EventHubMessageConverter;
@@ -49,7 +50,7 @@ public class EventHubInboundChannelAdapter extends MessageProducerSupport {
         new IntegrationBatchEventProcessingListener();
     private final CheckpointConfig checkpointConfig;
     private EventProcessingListener listener;
-    private CheckpointManager checkpointManager;
+    private EventCheckpointManager checkpointManager;
 
     public EventHubInboundChannelAdapter(EventHubProcessorContainer processorContainer,
                                          String eventHubName, String consumerGroup,
@@ -75,12 +76,11 @@ public class EventHubInboundChannelAdapter extends MessageProducerSupport {
     protected void onInit() {
         if (ListenerMode.RECORD.equals(this.listenerMode)) {
             this.listener = recordEventProcessor;
-            this.checkpointManager = CheckpointManager.of(checkpointConfig);
         } else {
             this.listener = batchEventProcessor;
-            this.checkpointManager = BatchCheckpointManager.of(checkpointConfig);
         }
 
+        this.checkpointManager = CheckpointManagers.of(checkpointConfig, this.listenerMode);
         this.processorContainer.subscribe(this.eventHubName, this.consumerGroup, this.listener);
 
     }
@@ -134,11 +134,8 @@ public class EventHubInboundChannelAdapter extends MessageProducerSupport {
 
             sendMessage(message);
 
-            checkpointManager.onMessage(eventContext, eventContext.getEventData());
+            checkpointManager.checkpoint(eventContext);
 
-            if (CheckpointMode.BATCH.equals(checkpointConfig.getMode())) {
-                checkpointManager.completeBatch(eventContext);
-            }
         }
 
 
@@ -215,7 +212,7 @@ public class EventHubInboundChannelAdapter extends MessageProducerSupport {
 
             sendMessage(message);
             if (checkpointConfig.getMode().equals(CheckpointMode.BATCH)) {
-                ((BatchCheckpointManager) checkpointManager).onMessage(eventBatchContext);
+                ((BatchCheckpointManager) checkpointManager).checkpoint(eventBatchContext);
             }
         }
     }
