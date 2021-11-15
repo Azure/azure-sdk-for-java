@@ -139,6 +139,7 @@ public class AttestationTokenTests extends AttestationClientTestBase {
 
     }
 
+
     /* Commented out until issue https://github.com/Azure/azure-sdk-for-java/issues/21776 is fixed
     @Test
     void testCreateSigningKeyECDS() {
@@ -291,6 +292,28 @@ public class AttestationTokenTests extends AttestationClientTestBase {
         assertNull(newToken.getKeyId());
         assertNotNull(newToken.getCertificateChain());
         assertArrayEquals(assertDoesNotThrow(() -> cert.getEncoded()), assertDoesNotThrow(() -> newToken.getCertificateChain().getCertificates().get(0).getEncoded()));
+
+    }
+
+
+    @Test
+    void testCreateSecuredAttestationTokenWithPredefinedPayload2() {
+        PrivateKey key = getIsolatedSigningKey();
+        X509Certificate cert = getPolicySigningCertificate0();
+
+        AttestationSigningKey signingKey = new AttestationSigningKey()
+            .setPrivateKey(key)
+            .setCertificate(cert);
+
+
+        logger.info("Key: {}", Base64.getEncoder().encode(key.getEncoded()).toString());
+        byte[] encodedKey = key.getEncoded();
+        String base64Key = Base64.getEncoder().encodeToString(encodedKey);
+        System.out.printf("Key: %s\n", base64Key);
+        assertDoesNotThrow(() -> logger.info("Certificate: {}", Base64.getEncoder().encode(cert.getEncoded())));
+        assertDoesNotThrow(() -> System.out.printf("Certificate: %s\n", Base64.getEncoder().encodeToString(cert.getEncoded())));
+
+        assertThrows(RuntimeException.class, () -> signingKey.verify());
 
     }
 

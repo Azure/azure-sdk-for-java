@@ -403,11 +403,11 @@ public class AttestationClientTestBase extends TestBase {
         return key;
     }
 
-    X509Certificate getPolicySigningCertificate0() {
+    protected X509Certificate getPolicySigningCertificate0() {
         return X509CertUtils.parse(Base64.getDecoder().decode(getPolicySigningCertificate0Base64()));
     }
 
-    PrivateKey getPolicySigningKey0() {
+    protected PrivateKey getPolicySigningKey0() {
         return privateKeyFromBase64(getPolicySigningKey0Base64());
     }
 

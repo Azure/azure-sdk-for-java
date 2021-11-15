@@ -251,6 +251,8 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
                 .setPrivateKey(key)
                 .setCertificate(certificate);
 
+            assertDoesNotThrow(() -> signingKey.verify());
+
             String policyToSet = "version =1.0; authorizationrules{=> permit();}; issuancerules{};";
             assertDoesNotThrow(() -> {
                 Response<PolicyResult> result = client.setAttestationPolicyWithResponse(attestationType, new AttestationPolicySetOptions()
@@ -274,6 +276,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
 //                .setCertificate(cert)
 //                .setAllowWeakKey(true);
 
+            assertDoesNotThrow(() -> signingKey.verify());
 
             String policyToSet = "version=1.0; authorizationrules{=> permit();}; issuancerules{ };";
             assertDoesNotThrow(() -> {
