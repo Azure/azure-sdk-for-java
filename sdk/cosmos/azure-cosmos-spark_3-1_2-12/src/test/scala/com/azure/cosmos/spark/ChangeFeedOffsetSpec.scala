@@ -57,7 +57,7 @@ class ChangeFeedOffsetSpec extends UnitSpec {
     // mess around with the expected identifier
     val expectedIdentifier = "something:spark.cosmos.changeFeed.offset.v1"
       .replace("something:", "")
-    ChangeFeedOffset.V1Identifier shouldEqual
+    ChangeFeedOffset.V1Identifier shouldEqual expectedIdentifier
   }
 
   //scalastyle:off multiple.string.literals
