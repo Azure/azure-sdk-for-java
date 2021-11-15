@@ -420,7 +420,7 @@ public class AttestationClientTestBase extends TestBase {
             keyGen = KeyPairGenerator.getInstance(algorithm);
         }
         if (algorithm.equals("RSA")) {
-            keyGen.initialize(1024); // Generate a reasonably strong key.
+            keyGen.initialize(2048); // Generate a reasonably strong key.
         }
         return keyGen.generateKeyPair();
     }

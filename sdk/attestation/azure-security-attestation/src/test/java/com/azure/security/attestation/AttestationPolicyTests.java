@@ -169,18 +169,19 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
         }
 
         if (clientType == ClientTypes.AAD) {
-//            X509Certificate certificate = getPolicySigningCertificate0();
-//            PrivateKey key = getPolicySigningKey0();
-//
-//            AttestationSigningKey signingKey = new AttestationSigningKey()
-//                .setPrivateKey(key)
-//                .setCertificate(certificate);
-            KeyPair rsaKey = assertDoesNotThrow(() -> createKeyPair("RSA"));
-            X509Certificate cert = assertDoesNotThrow(() -> createSelfSignedCertificate("Test Certificate Secured 2", rsaKey));
+            X509Certificate certificate = getPolicySigningCertificate0();
+            PrivateKey key = getPolicySigningKey0();
+
             AttestationSigningKey signingKey = new AttestationSigningKey()
-                .setPrivateKey(rsaKey.getPrivate())
-                .setCertificate(cert)
-                .setAllowWeakKey(true);
+                .setPrivateKey(key)
+                .setCertificate(certificate);
+
+//            KeyPair rsaKey = assertDoesNotThrow(() -> createKeyPair("RSA"));
+//            X509Certificate cert = assertDoesNotThrow(() -> createSelfSignedCertificate("Test Certificate Secured 2", rsaKey));
+//            AttestationSigningKey signingKey = new AttestationSigningKey()
+//                .setPrivateKey(rsaKey.getPrivate())
+//                .setCertificate(cert)
+//                .setAllowWeakKey(true);
 
             String policyToSet = "version=1.0; authorizationrules{=> permit();}; issuancerules{ };";
             assertDoesNotThrow(() -> {
@@ -260,18 +261,18 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
         }
 
         if (clientType == ClientTypes.AAD) {
-//            X509Certificate certificate = getPolicySigningCertificate0();
-//            PrivateKey key = getPolicySigningKey0();
-//            AttestationSigningKey signingKey = new AttestationSigningKey()
-//                .setPrivateKey(key)
-//                .setCertificate(certificate);
-
-            KeyPair rsaKey = assertDoesNotThrow(() -> createKeyPair("RSA"));
-            X509Certificate cert = assertDoesNotThrow(() -> createSelfSignedCertificate("Test Certificate Secured 2", rsaKey));
+            X509Certificate certificate = getPolicySigningCertificate0();
+            PrivateKey key = getPolicySigningKey0();
             AttestationSigningKey signingKey = new AttestationSigningKey()
-                .setPrivateKey(rsaKey.getPrivate())
-                .setCertificate(cert)
-                .setAllowWeakKey(true);
+                .setPrivateKey(key)
+                .setCertificate(certificate);
+
+//            KeyPair rsaKey = assertDoesNotThrow(() -> createKeyPair("RSA"));
+//            X509Certificate cert = assertDoesNotThrow(() -> createSelfSignedCertificate("Test Certificate Secured 2", rsaKey));
+//            AttestationSigningKey signingKey = new AttestationSigningKey()
+//                .setPrivateKey(rsaKey.getPrivate())
+//                .setCertificate(cert)
+//                .setAllowWeakKey(true);
 
 
             String policyToSet = "version=1.0; authorizationrules{=> permit();}; issuancerules{ };";
