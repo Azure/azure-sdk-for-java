@@ -274,11 +274,7 @@ public class AttestationTokenTests extends AttestationClientTestBase {
             .setCertificate(cert);
 
 
-        logger.info("Key: {}", Base64.getEncoder().encode(key.getEncoded()).toString());
-        byte[] encodedKey = key.getEncoded();
-        String base64Key = Base64.getEncoder().encodeToString(encodedKey);
-        System.out.printf("Key: %s\n", base64Key);
-        assertDoesNotThrow(() -> logger.info("Certificate: {}", Base64.getEncoder().encode(cert.getEncoded())));
+        System.out.printf("Key: %s\n", Base64.getEncoder().encodeToString(key.getEncoded()));
         assertDoesNotThrow(() -> System.out.printf("Certificate: %s\n", Base64.getEncoder().encodeToString(cert.getEncoded())));
 
         assertDoesNotThrow(() -> signingKey.verify());

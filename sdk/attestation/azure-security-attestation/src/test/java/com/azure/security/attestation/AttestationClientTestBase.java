@@ -286,6 +286,7 @@ public class AttestationClientTestBase extends TestBase {
         String signingCertificate = Configuration.getGlobalConfiguration().get("isolatedSigningCertificate");
         if (signingCertificate == null) {
             // Use a pre-canned signing certificate captured at provisioning time.
+            System.out.printf("Returning preconfigured isolated signing certificate because none was found in the environment.\n");
 
             signingCertificate = "MIIC+DCCAeCgAwIBAgIICw0n21Fl8+EwDQYJKoZIhvcNAQELBQAwMzExMC8GA1UEAxMoQXR0Z"
                 + "XN0YXRpb25Jc29sYXRlZE1hbmFnZW1lbnRDZXJ0aWZpY2F0ZTAeFw0yMTA4MDUyMzQ5MDJaFw0yMjA4MDUyMzQ5MDJaMDMxM"
@@ -314,6 +315,8 @@ public class AttestationClientTestBase extends TestBase {
         String signingKey = Configuration.getGlobalConfiguration().get("isolatedSigningKey");
         if (signingKey == null) {
             // Use a pre-canned signing key captured at provisioning time.
+            System.out.printf("Returning preconfigured isolated signing key because none was found in the environment.\n");
+
             signingKey = "MIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQDdX2I5myWt7PT/uq5J1mIK3yJb24rJI"
                 + "YNhjiWAgPGzjr3+n3ZG/tnzzZ4t9eIn6ZN+WruzbH/iil7aiS+2peCiv0xFPiap1wtCFZMOTFzpZzFJlF1tpXuT2v4PZiJa5"
                 + "KPa2PUB1BlvoXtXrNz6mCj+dqK6ldE21qLIH+JkZiPZ1cfi+GeV5ANucPjKD749umarhsQGbHXK2yK2iLPeulEMekUPyv+O/"
@@ -366,6 +369,7 @@ public class AttestationClientTestBase extends TestBase {
     String getPolicySigningCertificate0Base64() {
         String certificate = Configuration.getGlobalConfiguration().get("policySigningCertificate0");
         if (certificate == null) {
+            System.out.printf("Returning preconfigured signing certificate because none was found in the environment.\n");
             certificate = "MIIC1jCCAb6gAwIBAgIINiKXaYxzhQkwDQYJKoZIhvcNAQELBQAwIjEgMB4GA1UEAxMXQXR0ZXN0YXRpb25DZXJ"
                 + "0aWZpY2F0ZTAwHhcNMjEwODA1MjM0OTAyWhcNMjIwODA1MjM0OTAyWjAiMSAwHgYDVQQDExdBdHRlc3RhdGlvbkNlcnRpZmljYXRlMD"
                 + "CCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMqSkK84QAxkBvgWAsqKrVMIBl/sv1MRWXv8S8lHMhy6xCcVnYtfxlqwVqOYl"
@@ -383,6 +387,7 @@ public class AttestationClientTestBase extends TestBase {
     String getPolicySigningKey0Base64() {
         String key = Configuration.getGlobalConfiguration().get("policySigningKey0");
         if (key == null) {
+            System.out.printf("Returning preconfigured signing key because none was found in the environment.\n");
             key = "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDKkpCvOEAMZAb4FgLKiq1TCAZf7L9TEVl7/EvJRzIcusQ"
                 + "nFZ2LX8ZasFajmJTyauo/JOJtVSyISamU0gLYyJLF/BpYteTBjCM+qotUGYEKRMRLlkEdFiQu8u8/K2wdcuS7yrfMGscg9d5+XciTNm"
                 + "nBMjWNKMU9NfWgRvauz4u+CTenNfGCL3huEHAj7Pb9pa7l3c1yvCjHDchTXeSpGzF2AhyYBSVAouOWXK+vpTUw+rx8CRqFn7vHOcGrg"

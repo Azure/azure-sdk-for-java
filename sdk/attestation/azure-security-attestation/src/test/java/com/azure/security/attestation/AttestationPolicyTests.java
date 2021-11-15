@@ -24,6 +24,7 @@ import reactor.test.StepVerifier;
 import java.security.KeyPair;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
+import java.util.Base64;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -237,19 +238,14 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
         AttestationAdministrationClientBuilder attestationAdministrationClientBuilder = getAdministrationBuilder(httpClient, clientUri);
         AttestationAdministrationClient client = attestationAdministrationClientBuilder.buildClient();
 
-        String signingCertificateBase64 = getIsolatedSigningCertificateBase64();
-        String signingKeyBase64 = getIsolatedSigningKeyBase64();
-
-        JWSSigner signer = getJwsSigner(signingKeyBase64);
-
         // AAD or isolated: We want to try setting policy with the Isolated signing certificate.
         if (clientType == ClientTypes.AAD || clientType == ClientTypes.ISOLATED) {
-            X509Certificate certificate = getIsolatedSigningCertificate();
             PrivateKey key = getIsolatedSigningKey();
+            X509Certificate cert = getIsolatedSigningCertificate();
 
             AttestationSigningKey signingKey = new AttestationSigningKey()
                 .setPrivateKey(key)
-                .setCertificate(certificate);
+                .setCertificate(cert);
 
             assertDoesNotThrow(() -> signingKey.verify());
 
@@ -275,6 +271,9 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
 //                .setPrivateKey(rsaKey.getPrivate())
 //                .setCertificate(cert)
 //                .setAllowWeakKey(true);
+
+            System.out.printf("Key: %s\n", Base64.getEncoder().encodeToString(key.getEncoded()));
+            assertDoesNotThrow(() -> System.out.printf("Certificate: %s\n", Base64.getEncoder().encodeToString(certificate.getEncoded())));
 
             assertDoesNotThrow(() -> signingKey.verify());
 
