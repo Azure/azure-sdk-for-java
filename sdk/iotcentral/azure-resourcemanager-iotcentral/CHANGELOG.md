@@ -1,5 +1,15 @@
 # Release History
 
+## 1.1.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 1.0.0 (2021-11-15)
 
 - Azure Resource Manager IotCentral client library for Java. This package contains Microsoft Azure SDK for IotCentral Management SDK. Use this API to manage IoT Central Applications in your Azure subscription. Package tag package-2021-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
