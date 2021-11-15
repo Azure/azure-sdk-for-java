@@ -3,6 +3,7 @@
 ## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
+- Added the ability to customize the refresh time before the token expires.
 
 ### Breaking Changes
 

@@ -79,7 +79,7 @@ public class CommunicationTokenCredentialTests {
             if (this.onCallReturn != null) {
                 this.onCallReturn.run();
             }
-            return Mono.just(tokenMocker.generateRawToken("Mock", "user", 5 * 60 + 1));
+            return Mono.just(tokenMocker.generateRawToken("Mock", "user", 10 * 60 + 1));
         }
     }
 
@@ -104,7 +104,7 @@ public class CommunicationTokenCredentialTests {
 
     @Test
     public void fresherShouldBeCalledAfterExpiringTime() throws InterruptedException, ExecutionException, IOException {
-        String tokenStr = tokenMocker.generateRawToken("resourceId", "userIdentity", 301);
+        String tokenStr = tokenMocker.generateRawToken("resourceId", "userIdentity", 601);
         immediateFresher.resetCallCount();
         CountDownLatch countDownLatch = new CountDownLatch(1);
         immediateFresher.setOnCallReturn(countDownLatch::countDown);
@@ -126,8 +126,8 @@ public class CommunicationTokenCredentialTests {
         immediateFresher.resetCallCount();
         CountDownLatch countDownLatch = new CountDownLatch(1);
         immediateFresher.setOnCallReturn(countDownLatch::countDown);
-        Duration proactiveRefreshInterval = Duration.ofMinutes(3);
-        CommunicationTokenRefreshOptions tokenRefreshOptions = new CommunicationTokenRefreshOptions(immediateFresher, true, tokenStr, proactiveRefreshInterval);
+        Duration refreshTimeBeforeTokenExpiry = Duration.ofMinutes(3);
+        CommunicationTokenRefreshOptions tokenRefreshOptions = new CommunicationTokenRefreshOptions(immediateFresher, true, tokenStr, refreshTimeBeforeTokenExpiry);
         CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(tokenRefreshOptions);
         countDownLatch.await();
         assertEquals(1, immediateFresher.numCalls());
@@ -161,7 +161,7 @@ public class CommunicationTokenCredentialTests {
     @Test
     public void refresherShouldBeCalledAgainAfterFirstRefreshCall()
             throws InterruptedException, ExecutionException, IOException {
-        String tokenStr = tokenMocker.generateRawToken("resourceId", "userIdentity", 301);
+        String tokenStr = tokenMocker.generateRawToken("resourceId", "userIdentity", 601);
         immediateFresher.resetCallCount();
         CountDownLatch firstCountDownLatch = new CountDownLatch(1);
         immediateFresher.setOnCallReturn(firstCountDownLatch::countDown);
@@ -289,7 +289,7 @@ public class CommunicationTokenCredentialTests {
 
     @Test
     public void shouldNotModifyTokenWhenRefresherThrows() throws InterruptedException, ExecutionException, IOException {
-        String tokenStr = tokenMocker.generateRawToken("resourceId", "userIdentity", 301);
+        String tokenStr = tokenMocker.generateRawToken("resourceId", "userIdentity", 601);
         CommunicationTokenRefreshOptions tokenRefreshOptions = new CommunicationTokenRefreshOptions(exceptionRefresher, true, tokenStr);
         CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(tokenRefreshOptions);
         CountDownLatch countDownLatch = new CountDownLatch(1);

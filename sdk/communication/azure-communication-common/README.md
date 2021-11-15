@@ -79,7 +79,40 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 
 ## Examples
 
-In progress.
+### Create a credential with a static token
+For a short-lived clients, refreshing the token upon expiry is not necessary and `CommunicationTokenCredential` may be instantiated with a static token.
+
+```java Snippet:CommunicationTokenCredential_CreateWithStaticToken
+String token = System.getenv("COMMUNICATION_SERVICES_USER_TOKEN");
+CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(token);
+```
+
+### Create a credential with proactive refreshing with a callback
+
+Alternatively, you can create a `CommunicationTokenCredential` with callback to renew tokens if expired.
+Here we assume that we have a function `fetchTokenFromMyServerForUser` that makes a network request to retrieve a token string for a user. 
+
+Optionally, you can enable proactive token refreshing where a fresh token will be acquired as soon as the
+previous token approaches expiry. Using this method, your requests are less likely to be blocked to acquire a fresh token:
+
+```java 
+String token = System.getenv("COMMUNICATION_SERVICES_USER_TOKEN");
+CommunicationTokenRefreshOptions tokenRefreshOptions = new CommunicationTokenRefreshOptions(fetchTokenFromMyServerForUser, true, token);
+CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(tokenRefreshOptions);     
+```
+
+### Create a credential with proactive refreshing and refresh time span before token expiry
+
+Optionally, you can provide a time span before token expiry that `tokenRefresher` will be called if `refreshProactively` is true.
+For example, setting it to 5min means that 5min before the cached token expires, the proactive refresh will request a new token.
+By default, the value of `refreshTimeBeforeTokenExpiry` is equal to 10 minutes.
+
+```java 
+String token = System.getenv("COMMUNICATION_SERVICES_USER_TOKEN");
+Duration refreshTimeBeforeTokenExpiry = Duration.ofMinutes(5);
+CommunicationTokenRefreshOptions tokenRefreshOptions = new CommunicationTokenRefreshOptions(fetchTokenFromMyServerForUser, true, token, refreshTimeBeforeTokenExpiry);
+CommunicationTokenCredential tokenCredential = new CommunicationTokenCredential(tokenRefreshOptions);              
+```
 
 ## Troubleshooting
 
