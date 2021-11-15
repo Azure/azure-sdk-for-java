@@ -4,7 +4,6 @@
 package com.azure.spring.cloud.autoconfigure.resourcemanager;
 
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.management.AzureEnvironment;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
@@ -44,9 +43,7 @@ public class AzureResourceManagerAutoConfiguration {
     public AzureProfile azureProfile() {
         return new AzureProfile(this.globalProperties.getProfile().getTenantId(),
                                 this.globalProperties.getProfile().getSubscriptionId(),
-                                new AzureEnvironment(this.globalProperties.getProfile()
-                                                                          .getEnvironment()
-                                                                          .exportEndpointsMap()));
+                                this.globalProperties.getProfile().getEnvironment().toManagementAzureEnvironment());
     }
 
 }

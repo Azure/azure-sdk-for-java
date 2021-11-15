@@ -151,7 +151,7 @@ public final class DataFlowsImpl implements DataFlows {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'dataflows'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, factoryName, dataFlowName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, factoryName, dataFlowName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {

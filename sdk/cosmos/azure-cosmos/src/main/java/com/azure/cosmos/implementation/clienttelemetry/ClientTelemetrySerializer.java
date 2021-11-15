@@ -47,6 +47,12 @@ public class ClientTelemetrySerializer extends StdSerializer<ClientTelemetryInfo
                 telemetry.getAcceleratedNetworking().toString());
         }
 
+        if (telemetry.getPreferredRegions() != null && telemetry.getPreferredRegions().size() > 0) {
+            generator.writeObjectField("preferredRegions",
+                telemetry.getPreferredRegions());
+        }
+
+        generator.writeNumberField("aggregationIntervalInSec", telemetry.getAggregationIntervalInSec());
         generator.writeObjectField("systemInfo", telemetry.getSystemInfoMap().keySet());
         generator.writeObjectField("cacheRefreshInfo", telemetry.getCacheRefreshInfoMap().keySet());
         generator.writeObjectField("operationInfo", telemetry.getOperationInfoMap().keySet());

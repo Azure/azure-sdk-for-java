@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.resourcemanager;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
-import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.servicebus.properties.AzureServiceBusProperties;
 import com.azure.spring.cloud.resourcemanager.connectionstring.ServiceBusArmConnectionStringProvider;
 import com.azure.spring.servicebus.provisioning.ServiceBusQueueProvisioner;
@@ -16,6 +16,7 @@ import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 class AzureServiceBusResourceManagerAutoConfigurationTest {
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
@@ -54,9 +55,9 @@ class AzureServiceBusResourceManagerAutoConfigurationTest {
     @Test
     void testAzureServiceBusResourceManagerAutoConfigurationBeans() {
         this.contextRunner
-            .withUserConfiguration(AzureGlobalPropertiesAutoConfiguration.class,
-                AzureResourceManagerAutoConfiguration.class)
-            .withBean(AzureResourceManager.class, TestAzureResourceManager::getAzureResourceManager)
+            .withUserConfiguration(AzureResourceManagerAutoConfiguration.class)
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean(AzureResourceManager.class, () -> mock(AzureResourceManager.class))
             .withBean(AzureServiceBusProperties.class, AzureServiceBusProperties::new)
             .run(context -> {
                 assertThat(context).hasSingleBean(ServiceBusTopicProvisioner.class);

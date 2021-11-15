@@ -42,7 +42,8 @@ Event Hub provides a similar concept of physical partition as Kafka. But unlike 
 from most heavy-loaded consumers to achieve the workload balancing.
 
 #### Batch Consumer Support
-Azure Event Hubs Spring Cloud Stream Binder supports [Spring Cloud Stream Batch Consumer feature][spring-cloud-stream-batch-consumer].
+Azure Event Hubs Spring Cloud Stream Binder supports 
+[Spring Cloud Stream Batch Consumer feature](https://docs.spring.io/spring-cloud-stream/docs/3.1.2/reference/html/spring-cloud-stream.html#_batch_consumers).
 
 When enabled, an **org.springframework.messaging.Message** of which the payload is a list of batched events will be received and passed to the consumer function. Each message header is also converted as a list, of which the content is the associated header value parsed from each event. For the communal headers of **com.azure.spring.integration.core.AzureHeaders#RAW_PARTITION_ID** and **com.azure.spring.integration.core.AzureHeaders.CHECKPOINTER**, they are presented as a single value for the entire batch of events share the same one. Note, the checkpoint header only exists when **MANUAL** checkpoint mode is used.
 
@@ -50,8 +51,8 @@ Checkpointing of batch consumer supports two modes: BATCH and MANUAL. BATCH mode
 **com.azure.spring.integration.core.api.reactor.Checkpointer** will be passes into the message header, and users could use it to do checkpointing.
 
 The batch size can be specified by properties of `max-size` and `max-wait-time` with prefix as `spring.cloud.stream.
-eventhub.bindings.<binding-name>.consumer.batch.`. See the below section for more information about the [configuration]
-(#batch-consumer) and [examples](#batch-consumer-sample).
+eventhub.bindings.<binding-name>.consumer.batch.`. See the below section for more information about the 
+[configuration](#Batch Consumer) and [examples](#Batch Consumer Sample).
 ## Examples 
 
 Please use this [sample][sample] as a reference for how to use this binder. 

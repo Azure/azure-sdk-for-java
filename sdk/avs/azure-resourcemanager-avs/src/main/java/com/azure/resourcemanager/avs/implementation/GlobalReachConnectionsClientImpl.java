@@ -644,7 +644,7 @@ public final class GlobalReachConnectionsClientImpl implements GlobalReachConnec
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a global reach connection resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<GlobalReachConnectionInner>, GlobalReachConnectionInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String privateCloudName,
@@ -676,7 +676,7 @@ public final class GlobalReachConnectionsClientImpl implements GlobalReachConnec
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a global reach connection resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<GlobalReachConnectionInner>, GlobalReachConnectionInner> beginCreateOrUpdateAsync(
         String resourceGroupName,
         String privateCloudName,
@@ -709,7 +709,7 @@ public final class GlobalReachConnectionsClientImpl implements GlobalReachConnec
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a global reach connection resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GlobalReachConnectionInner>, GlobalReachConnectionInner> beginCreateOrUpdate(
         String resourceGroupName,
         String privateCloudName,
@@ -733,7 +733,7 @@ public final class GlobalReachConnectionsClientImpl implements GlobalReachConnec
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a global reach connection resource.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<GlobalReachConnectionInner>, GlobalReachConnectionInner> beginCreateOrUpdate(
         String resourceGroupName,
         String privateCloudName,
@@ -966,7 +966,7 @@ public final class GlobalReachConnectionsClientImpl implements GlobalReachConnec
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String privateCloudName, String globalReachConnectionName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -988,7 +988,7 @@ public final class GlobalReachConnectionsClientImpl implements GlobalReachConnec
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String privateCloudName, String globalReachConnectionName, Context context) {
         context = this.client.mergeContext(context);
@@ -1010,7 +1010,7 @@ public final class GlobalReachConnectionsClientImpl implements GlobalReachConnec
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String privateCloudName, String globalReachConnectionName) {
         return beginDeleteAsync(resourceGroupName, privateCloudName, globalReachConnectionName).getSyncPoller();
@@ -1028,7 +1028,7 @@ public final class GlobalReachConnectionsClientImpl implements GlobalReachConnec
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String privateCloudName, String globalReachConnectionName, Context context) {
         return beginDeleteAsync(resourceGroupName, privateCloudName, globalReachConnectionName, context)

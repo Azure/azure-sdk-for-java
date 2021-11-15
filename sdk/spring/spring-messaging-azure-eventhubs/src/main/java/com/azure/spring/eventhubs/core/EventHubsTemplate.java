@@ -30,7 +30,7 @@ public class EventHubsTemplate implements SendOperation, BatchSendOperation {
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsTemplate.class);
 
     private final EventHubProducerFactory producerFactory;
-    private final EventHubMessageConverter messageConverter = new EventHubMessageConverter();
+    private EventHubMessageConverter messageConverter = new EventHubMessageConverter();
 
     public EventHubsTemplate(EventHubProducerFactory producerFactory) {
         this.producerFactory = producerFactory;
@@ -40,8 +40,8 @@ public class EventHubsTemplate implements SendOperation, BatchSendOperation {
     public <T> Mono<Void> sendAsync(String destination, Collection<Message<T>> messages,
                                     PartitionSupplier partitionSupplier) {
         List<EventData> eventData = messages.stream()
-                                            .map(m -> messageConverter.fromMessage(m, EventData.class))
-                                            .collect(Collectors.toList());
+            .map(m -> messageConverter.fromMessage(m, EventData.class))
+            .collect(Collectors.toList());
         return doSend(destination, eventData, partitionSupplier);
     }
 
@@ -72,4 +72,7 @@ public class EventHubsTemplate implements SendOperation, BatchSendOperation {
             .setPartitionKey(partitionSupplier != null ? partitionSupplier.getPartitionKey() : null);
     }
 
+    public void setMessageConverter(EventHubMessageConverter messageConverter) {
+        this.messageConverter = messageConverter;
+    }
 }

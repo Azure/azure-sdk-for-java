@@ -54,6 +54,7 @@ public class CreateTopicOptionsTest {
             .setEnableBatchedOperations(false)
             .setEnablePartitioning(true)
             .setMaxSizeInMegabytes(2048L)
+            .setMaxMessageSizeInKilobytes(1024L)
             .setRequiresDuplicateDetection(true)
             .setUserMetadata("Test-queue-Metadata")
             .setStatus(EntityStatus.DELETING);
@@ -73,5 +74,6 @@ public class CreateTopicOptionsTest {
         assertEquals(expected.isDuplicateDetectionRequired(), actual.isDuplicateDetectionRequired());
         assertEquals(expected.getUserMetadata(), actual.getUserMetadata());
         assertEquals(expected.getStatus(), actual.getStatus());
+        assertEquals(expected.getMaxMessageSizeInKilobytes(), actual.getMaxMessageSizeInKilobytes());
     }
 }

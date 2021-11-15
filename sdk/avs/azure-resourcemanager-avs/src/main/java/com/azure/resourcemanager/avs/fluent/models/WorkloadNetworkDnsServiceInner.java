@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.models.DnsServiceLogLevelEnum;
@@ -16,58 +15,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /** NSX DNS Service. */
-@JsonFlatten
 @Fluent
-public class WorkloadNetworkDnsServiceInner extends ProxyResource {
+public final class WorkloadNetworkDnsServiceInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkloadNetworkDnsServiceInner.class);
 
     /*
-     * Display name of the DNS Service.
+     * DNS Service properties
      */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
+    @JsonProperty(value = "properties")
+    private WorkloadNetworkDnsServiceProperties innerProperties;
 
-    /*
-     * DNS service IP of the DNS Service.
+    /**
+     * Get the innerProperties property: DNS Service properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.dnsServiceIp")
-    private String dnsServiceIp;
-
-    /*
-     * Default DNS zone of the DNS Service.
-     */
-    @JsonProperty(value = "properties.defaultDnsZone")
-    private String defaultDnsZone;
-
-    /*
-     * FQDN zones of the DNS Service.
-     */
-    @JsonProperty(value = "properties.fqdnZones")
-    private List<String> fqdnZones;
-
-    /*
-     * DNS Service log level.
-     */
-    @JsonProperty(value = "properties.logLevel")
-    private DnsServiceLogLevelEnum logLevel;
-
-    /*
-     * DNS Service status.
-     */
-    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
-    private DnsServiceStatusEnum status;
-
-    /*
-     * The provisioning state
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private WorkloadNetworkDnsServiceProvisioningState provisioningState;
-
-    /*
-     * NSX revision number.
-     */
-    @JsonProperty(value = "properties.revision")
-    private Long revision;
+    private WorkloadNetworkDnsServiceProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the displayName property: Display name of the DNS Service.
@@ -75,7 +40,7 @@ public class WorkloadNetworkDnsServiceInner extends ProxyResource {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -85,7 +50,10 @@ public class WorkloadNetworkDnsServiceInner extends ProxyResource {
      * @return the WorkloadNetworkDnsServiceInner object itself.
      */
     public WorkloadNetworkDnsServiceInner withDisplayName(String displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkloadNetworkDnsServiceProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -95,7 +63,7 @@ public class WorkloadNetworkDnsServiceInner extends ProxyResource {
      * @return the dnsServiceIp value.
      */
     public String dnsServiceIp() {
-        return this.dnsServiceIp;
+        return this.innerProperties() == null ? null : this.innerProperties().dnsServiceIp();
     }
 
     /**
@@ -105,7 +73,10 @@ public class WorkloadNetworkDnsServiceInner extends ProxyResource {
      * @return the WorkloadNetworkDnsServiceInner object itself.
      */
     public WorkloadNetworkDnsServiceInner withDnsServiceIp(String dnsServiceIp) {
-        this.dnsServiceIp = dnsServiceIp;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkloadNetworkDnsServiceProperties();
+        }
+        this.innerProperties().withDnsServiceIp(dnsServiceIp);
         return this;
     }
 
@@ -115,7 +86,7 @@ public class WorkloadNetworkDnsServiceInner extends ProxyResource {
      * @return the defaultDnsZone value.
      */
     public String defaultDnsZone() {
-        return this.defaultDnsZone;
+        return this.innerProperties() == null ? null : this.innerProperties().defaultDnsZone();
     }
 
     /**
@@ -125,7 +96,10 @@ public class WorkloadNetworkDnsServiceInner extends ProxyResource {
      * @return the WorkloadNetworkDnsServiceInner object itself.
      */
     public WorkloadNetworkDnsServiceInner withDefaultDnsZone(String defaultDnsZone) {
-        this.defaultDnsZone = defaultDnsZone;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkloadNetworkDnsServiceProperties();
+        }
+        this.innerProperties().withDefaultDnsZone(defaultDnsZone);
         return this;
     }
 
@@ -135,7 +109,7 @@ public class WorkloadNetworkDnsServiceInner extends ProxyResource {
      * @return the fqdnZones value.
      */
     public List<String> fqdnZones() {
-        return this.fqdnZones;
+        return this.innerProperties() == null ? null : this.innerProperties().fqdnZones();
     }
 
     /**
@@ -145,7 +119,10 @@ public class WorkloadNetworkDnsServiceInner extends ProxyResource {
      * @return the WorkloadNetworkDnsServiceInner object itself.
      */
     public WorkloadNetworkDnsServiceInner withFqdnZones(List<String> fqdnZones) {
-        this.fqdnZones = fqdnZones;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkloadNetworkDnsServiceProperties();
+        }
+        this.innerProperties().withFqdnZones(fqdnZones);
         return this;
     }
 
@@ -155,7 +132,7 @@ public class WorkloadNetworkDnsServiceInner extends ProxyResource {
      * @return the logLevel value.
      */
     public DnsServiceLogLevelEnum logLevel() {
-        return this.logLevel;
+        return this.innerProperties() == null ? null : this.innerProperties().logLevel();
     }
 
     /**
@@ -165,7 +142,10 @@ public class WorkloadNetworkDnsServiceInner extends ProxyResource {
      * @return the WorkloadNetworkDnsServiceInner object itself.
      */
     public WorkloadNetworkDnsServiceInner withLogLevel(DnsServiceLogLevelEnum logLevel) {
-        this.logLevel = logLevel;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkloadNetworkDnsServiceProperties();
+        }
+        this.innerProperties().withLogLevel(logLevel);
         return this;
     }
 
@@ -175,7 +155,7 @@ public class WorkloadNetworkDnsServiceInner extends ProxyResource {
      * @return the status value.
      */
     public DnsServiceStatusEnum status() {
-        return this.status;
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -184,7 +164,7 @@ public class WorkloadNetworkDnsServiceInner extends ProxyResource {
      * @return the provisioningState value.
      */
     public WorkloadNetworkDnsServiceProvisioningState provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
     }
 
     /**
@@ -193,7 +173,7 @@ public class WorkloadNetworkDnsServiceInner extends ProxyResource {
      * @return the revision value.
      */
     public Long revision() {
-        return this.revision;
+        return this.innerProperties() == null ? null : this.innerProperties().revision();
     }
 
     /**
@@ -203,7 +183,10 @@ public class WorkloadNetworkDnsServiceInner extends ProxyResource {
      * @return the WorkloadNetworkDnsServiceInner object itself.
      */
     public WorkloadNetworkDnsServiceInner withRevision(Long revision) {
-        this.revision = revision;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkloadNetworkDnsServiceProperties();
+        }
+        this.innerProperties().withRevision(revision);
         return this;
     }
 
@@ -213,5 +196,8 @@ public class WorkloadNetworkDnsServiceInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

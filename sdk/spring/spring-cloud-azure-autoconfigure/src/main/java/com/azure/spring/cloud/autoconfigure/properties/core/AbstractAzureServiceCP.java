@@ -14,6 +14,9 @@ import org.springframework.boot.context.properties.NestedConfigurationProperty;
  */
 public abstract class AbstractAzureServiceCP implements AzureProperties {
 
+    /**
+     * Whether an Azure Service is enabled.
+     */
     protected boolean enabled = true;
 
     @NestedConfigurationProperty

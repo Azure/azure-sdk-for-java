@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.eventhubs.properties;
 
-import com.azure.spring.cloud.autoconfigure.storage.blob.AzureStorageBlobProperties;
+import com.azure.spring.cloud.autoconfigure.storage.blob.properties.AzureStorageBlobProperties;
 import com.azure.spring.core.properties.AzurePropertiesUtils;
 import com.azure.spring.service.eventhubs.properties.EventHubConsumerDescriptor;
 import com.azure.spring.service.eventhubs.properties.EventHubNamespaceDescriptor;
@@ -137,8 +137,17 @@ public class AzureEventHubProperties extends AzureEventHubCommonProperties imple
      * Properties of an Event Hub consumer.
      */
     public static class Consumer extends AzureEventHubCommonProperties implements EventHubConsumerDescriptor {
+
+        /**
+         * Name of the consumer group this consumer is associated with.
+         */
         protected String consumerGroup;
 
+        /**
+         * The number of events the Event Hub consumer will actively receive and queue locally without regard to
+         * whether a receiving operation is currently active.
+         *
+         */
         protected Integer prefetchCount;
 
         public String getConsumerGroup() {

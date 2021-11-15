@@ -19,10 +19,10 @@ import java.util.concurrent.ConcurrentHashMap;
  */
 public class BatchCheckpointManager extends EventCheckpointManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(BatchCheckpointManager.class);
-    private static final String CHECKPOINT_FAIL_MSG = "Consumer group '%s' failed to checkpoint %s messages "
-        + "on partition %s";
+    private static final String CHECKPOINT_FAIL_MSG = "Consumer group '%s' failed to checkpoint offset %s of message "
+        + "on partition %s in batch mode";
     private static final String CHECKPOINT_SUCCESS_MSG =
-        "Consumer group '%s' succeed to checkpoint %s messages %s on partition %s in batch mode";
+        "Consumer group '%s' succeed to checkpoint offset %s of message %s on partition %s in batch mode";
 
     private final ConcurrentHashMap<String, EventData> lastEventByPartition = new ConcurrentHashMap<>();
 
@@ -37,17 +37,17 @@ public class BatchCheckpointManager extends EventCheckpointManager {
         return LOGGER;
     }
 
-    void logCheckpointFail(EventBatchContext context, Throwable t) {
+    void logCheckpointFail(EventBatchContext context, Long offset, Throwable t) {
         getLogger().warn(String
-            .format(CHECKPOINT_FAIL_MSG, context.getPartitionContext().getConsumerGroup(), context.getEvents().size(),
+            .format(CHECKPOINT_FAIL_MSG, context.getPartitionContext().getConsumerGroup(), offset,
                 context.getPartitionContext().getPartitionId()), t);
     }
 
-    void logCheckpointSuccess(EventBatchContext context) {
+    void logCheckpointSuccess(EventBatchContext context, Long offset) {
         if (getLogger().isDebugEnabled()) {
             getLogger().debug(String
                 .format(CHECKPOINT_SUCCESS_MSG, context.getPartitionContext().getConsumerGroup(),
-                    context.getEvents().size(), context.getPartitionContext().getPartitionId()));
+                    offset, context.getPartitionContext().getPartitionId()));
         }
     }
 
@@ -60,11 +60,12 @@ public class BatchCheckpointManager extends EventCheckpointManager {
     @Override
     public void checkpoint(EventBatchContext context) {
         EventData lastEvent = getLastEnqueuedEvent(context);
+        Long offset = lastEvent.getOffset();
         context.updateCheckpointAsync()
-            .doOnError(t -> logCheckpointFail(context, t))
+            .doOnError(t -> logCheckpointFail(context, offset, t))
             .doOnSuccess(v -> {
                 this.lastEventByPartition.put(context.getPartitionContext().getPartitionId(), lastEvent);
-                logCheckpointSuccess(context);
+                logCheckpointSuccess(context, offset);
             })
             .subscribe();
     }

@@ -244,9 +244,13 @@ private class CosmosRowConverter(
           convertToJsonNodeConditionally(rowData.asInstanceOf[java.math.BigDecimal])
         case DateType if rowData.isInstanceOf[java.lang.Long] =>
           convertToJsonNodeConditionally(rowData.asInstanceOf[Long])
+        case DateType if rowData.isInstanceOf[java.lang.Integer] =>
+          convertToJsonNodeConditionally(rowData.asInstanceOf[Integer])
         case DateType => convertToJsonNodeConditionally(rowData.asInstanceOf[Date].getTime)
         case TimestampType if rowData.isInstanceOf[java.lang.Long] =>
           convertToJsonNodeConditionally(rowData.asInstanceOf[Long])
+        case TimestampType if rowData.isInstanceOf[java.lang.Integer] =>
+          convertToJsonNodeConditionally(rowData.asInstanceOf[Integer])
         case TimestampType => convertToJsonNodeConditionally(rowData.asInstanceOf[Timestamp].getTime)
         case arrayType: ArrayType if rowData.isInstanceOf[ArrayData] =>
           val arrayDataValue = rowData.asInstanceOf[ArrayData]
@@ -310,8 +314,10 @@ private class CosmosRowConverter(
             case DecimalType() if rowData.isInstanceOf[Long] => objectMapper.convertValue(new java.math.BigDecimal(rowData.asInstanceOf[java.lang.Long]), classOf[JsonNode])
             case DecimalType() => objectMapper.convertValue(rowData.asInstanceOf[java.math.BigDecimal], classOf[JsonNode])
             case DateType if rowData.isInstanceOf[java.lang.Long] => objectMapper.convertValue(rowData.asInstanceOf[java.lang.Long], classOf[JsonNode])
+            case DateType if rowData.isInstanceOf[java.lang.Integer] => objectMapper.convertValue(rowData.asInstanceOf[java.lang.Integer], classOf[JsonNode])
             case DateType => objectMapper.convertValue(rowData.asInstanceOf[Date].getTime, classOf[JsonNode])
             case TimestampType if rowData.isInstanceOf[java.lang.Long] => objectMapper.convertValue(rowData.asInstanceOf[java.lang.Long], classOf[JsonNode])
+            case TimestampType if rowData.isInstanceOf[java.lang.Integer] => objectMapper.convertValue(rowData.asInstanceOf[java.lang.Integer], classOf[JsonNode])
             case TimestampType => objectMapper.convertValue(rowData.asInstanceOf[Timestamp].getTime, classOf[JsonNode])
             case arrayType: ArrayType if rowData.isInstanceOf[ArrayData] => convertSparkArrayToArrayNode(arrayType.elementType, arrayType.containsNull, rowData.asInstanceOf[ArrayData])
             case arrayType: ArrayType => convertSparkArrayToArrayNode(arrayType.elementType, arrayType.containsNull, rowData.asInstanceOf[Seq[_]])

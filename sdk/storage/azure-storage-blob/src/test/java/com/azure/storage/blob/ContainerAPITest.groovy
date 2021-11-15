@@ -1067,6 +1067,19 @@ class ContainerAPITest extends APISpec {
         RehydratePriority.HIGH     || _
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_02_12")
+    def "List blobs flat invalid xml"() {
+        setup:
+        def blobName = "dir1/dir2/file\uFFFE.blob";
+        cc.getBlobClient(blobName).getAppendBlobClient().create()
+
+        when:
+        def blobItem = cc.listBlobs().iterator().next()
+
+        then:
+        blobItem.getName() == blobName
+    }
+
     def "List blobs flat error"() {
         setup:
         cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
@@ -1120,6 +1133,7 @@ class ContainerAPITest extends APISpec {
     This test requires two accounts that are configured in a very specific way. It is not feasible to setup that
     relationship programmatically, so we have recorded a successful interaction and only test recordings.
     */
+
     @PlaybackOnly
     def "List blobs flat ORS"() {
         setup:
@@ -1436,6 +1450,7 @@ class ContainerAPITest extends APISpec {
     This test requires two accounts that are configured in a very specific way. It is not feasible to setup that
     relationship programmatically, so we have recorded a successful interaction and only test recordings.
     */
+
     @PlaybackOnly
     def "List blobs hier ORS"() {
         setup:
@@ -1546,6 +1561,30 @@ class ContainerAPITest extends APISpec {
         blob.getProperties().isSealed()
     }
 
+    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "V2021_02_12")
+    def "List blobs hier invalid xml"() {
+        setup:
+        def blobName = 'dir1/dir2/file\uFFFE.blob';
+        cc.getBlobClient(blobName).getAppendBlobClient().create()
+
+        when:
+        def blobItem
+        if (!delimiter) {
+            blobItem = cc.listBlobsByHierarchy("", null, null).iterator().next()
+        } else {
+            blobItem = cc.listBlobsByHierarchy(".b", null, null).iterator().next()
+        }
+
+        then:
+        blobItem.getName() == (delimiter ? "dir1/dir2/file\uFFFE.b" : blobName)
+        blobItem.isPrefix() == (delimiter ? true : null)
+
+        where:
+        delimiter | _
+        false     | _
+        true      | _
+    }
+
     def "List blobs hier error"() {
         setup:
         cc = primaryBlobServiceClient.getBlobContainerClient(generateContainerName())
@@ -1583,7 +1622,7 @@ class ContainerAPITest extends APISpec {
 
         where:
         name                  | _
-        "中文"                | _
+        "中文"                  | _
         "az[]"                | _
         "hello world"         | _
         "hello/world"         | _
