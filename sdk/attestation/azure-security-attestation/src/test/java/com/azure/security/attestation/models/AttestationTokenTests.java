@@ -265,7 +265,7 @@ public class AttestationTokenTests extends AttestationClientTestBase {
     }
 
     @Test
-    void testCreateSecuredAttestationTokenWithPredefinedPayload() {
+    void testVerifySignerWithPredefinedPayload() {
         PrivateKey key = getIsolatedSigningKey();
         X509Certificate cert = getIsolatedSigningCertificate();
 
@@ -273,9 +273,6 @@ public class AttestationTokenTests extends AttestationClientTestBase {
             .setPrivateKey(key)
             .setCertificate(cert);
 
-
-        System.out.printf("Key: %s\n", Base64.getEncoder().encodeToString(key.getEncoded()));
-        assertDoesNotThrow(() -> System.out.printf("Certificate: %s\n", Base64.getEncoder().encodeToString(cert.getEncoded())));
 
         assertDoesNotThrow(() -> signingKey.verify());
 
@@ -293,21 +290,13 @@ public class AttestationTokenTests extends AttestationClientTestBase {
 
 
     @Test
-    void testCreateSecuredAttestationTokenWithPredefinedPayload2() {
+    void testVerifySignerWithPredefinedPayloadFail() {
         PrivateKey key = getIsolatedSigningKey();
         X509Certificate cert = getPolicySigningCertificate0();
 
         AttestationSigningKey signingKey = new AttestationSigningKey()
             .setPrivateKey(key)
             .setCertificate(cert);
-
-
-        logger.info("Key: {}", Base64.getEncoder().encode(key.getEncoded()).toString());
-        byte[] encodedKey = key.getEncoded();
-        String base64Key = Base64.getEncoder().encodeToString(encodedKey);
-        System.out.printf("Key: %s\n", base64Key);
-        assertDoesNotThrow(() -> logger.info("Certificate: {}", Base64.getEncoder().encode(cert.getEncoded())));
-        assertDoesNotThrow(() -> System.out.printf("Certificate: %s\n", Base64.getEncoder().encodeToString(cert.getEncoded())));
 
         assertThrows(RuntimeException.class, () -> signingKey.verify());
 

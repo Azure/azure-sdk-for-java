@@ -177,13 +177,6 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
                 .setPrivateKey(key)
                 .setCertificate(certificate);
 
-//            KeyPair rsaKey = assertDoesNotThrow(() -> createKeyPair("RSA"));
-//            X509Certificate cert = assertDoesNotThrow(() -> createSelfSignedCertificate("Test Certificate Secured 2", rsaKey));
-//            AttestationSigningKey signingKey = new AttestationSigningKey()
-//                .setPrivateKey(rsaKey.getPrivate())
-//                .setCertificate(cert)
-//                .setAllowWeakKey(true);
-
             String policyToSet = "version=1.0; authorizationrules{=> permit();}; issuancerules{ };";
             assertDoesNotThrow(() -> {
                 PolicyResult result = client.setAttestationPolicy(attestationType, new AttestationPolicySetOptions()
@@ -264,16 +257,6 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
             AttestationSigningKey signingKey = new AttestationSigningKey()
                 .setPrivateKey(key)
                 .setCertificate(certificate);
-
-//            KeyPair rsaKey = assertDoesNotThrow(() -> createKeyPair("RSA"));
-//            X509Certificate cert = assertDoesNotThrow(() -> createSelfSignedCertificate("Test Certificate Secured 2", rsaKey));
-//            AttestationSigningKey signingKey = new AttestationSigningKey()
-//                .setPrivateKey(rsaKey.getPrivate())
-//                .setCertificate(cert)
-//                .setAllowWeakKey(true);
-
-            System.out.printf("275 Key: %s\n", Base64.getEncoder().encodeToString(key.getEncoded()));
-            assertDoesNotThrow(() -> System.out.printf("276 Certificate: %s\n", Base64.getEncoder().encodeToString(certificate.getEncoded())));
 
             assertDoesNotThrow(() -> signingKey.verify());
 
@@ -365,13 +348,6 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
         // Try setting attestation policy with an arbitrary signing key - this should be allowed
         // in AAD mode.
         if (clientType == ClientTypes.AAD) {
-
-//            X509Certificate certificate = getPolicySigningCertificate0();
-//                        PrivateKey key = getPolicySigningKey0();
-//
-//            AttestationSigningKey signingKey = new AttestationSigningKey()
-//                .setPrivateKey(key)
-//                .setCertificate(certificate);
             KeyPair rsaKey = assertDoesNotThrow(() -> createKeyPair("RSA"));
             X509Certificate cert = assertDoesNotThrow(() -> createSelfSignedCertificate("Test Certificate Secured 2", rsaKey));
             AttestationSigningKey signingKey = new AttestationSigningKey()
@@ -482,13 +458,6 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
 
         // AAD or isolated: We want to try setting policy with the Isolated signing certificate.
         if (clientType == ClientTypes.AAD || clientType == ClientTypes.ISOLATED) {
-//            KeyPair rsaKey = assertDoesNotThrow(() -> createKeyPair("RSA"));
-//            X509Certificate certificate = assertDoesNotThrow(() -> createSelfSignedCertificate("Test Certificate Secured 2", rsaKey));
-//            AttestationSigningKey signingKey = new AttestationSigningKey()
-//                .setPrivateKey(rsaKey.getPrivate())
-//                .setCertificate(certificate)
-//                .setAllowWeakKey(true);
-
             X509Certificate certificate = getIsolatedSigningCertificate();
             PrivateKey key = getIsolatedSigningKey();
 
