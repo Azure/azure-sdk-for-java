@@ -186,6 +186,11 @@
         "justification": "Azure Monitor Exporter is allowed to use OpenTelemetry types in public APIs as it implements interfaces defined by OpenTelemetry"
       },
       {
+        "code": "java.class.externalClassExposedInAPI",
+        "new": "interface com.google.gson.ToNumberStrategy",
+        "justification": "This occurs because we check transitive dependencies, so it checks gson jars."
+      },
+      {
         "code": "java.annotation.added",
         "new": "class com.azure.storage.blob.models.PageList",
         "justification": "Annotation required to resolve deserialization bug."
