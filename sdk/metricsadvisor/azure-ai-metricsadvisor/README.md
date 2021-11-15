@@ -32,7 +32,7 @@ In order to interact with the Metrics Advisor service, you will need to create a
 Both the asynchronous and synchronous clients can be created by using `MetricsAdvisorClientBuilder`. Invoking `buildClient()`
 will create the synchronous client, while invoking `buildAsyncClient` will create its asynchronous counterpart.
 
-##### Looking up the endpoint
+#### Looking up the endpoint
 You can find the **endpoint** for your Metric Advisor resource in the [Azure Portal][azure_portal],
 or [Azure CLI][azure_cli_endpoint].
 ```bash
@@ -172,7 +172,7 @@ A notification hook is the entry point that allows the users to subscribe to rea
 * [Configure an anomaly alert configuration](#configure-an-anomaly-alert-configuration "Configure an anomaly alert configuration")
 * [Query anomaly detection results](#query-anomaly-detection-results "Query anomaly detection results")
 
-#### Add a data feed from a sample or data source
+### Add a data feed from a sample or data source
 This example ingests the user specified `SQLServerDataFeedSource` data feed source data to the service.
 <!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L111-L148 -->
 ```java readme-sample-createDataFeed
@@ -215,7 +215,7 @@ if (SQL_SERVER_DB == createdSqlDataFeed.getSourceType()) {
         ((SqlServerDataFeedSource) createdSqlDataFeed.getSource()).getQuery());
 }
 ```
-#### Check ingestion status
+### Check ingestion status
 This example checks the ingestion status of a previously provided data feed source.
 <!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L155-L166 -->
 ```java readme-sample-checkIngestionStatus
@@ -233,7 +233,7 @@ metricsAdvisorAdminClient.listDataFeedIngestionStatus(
 });
 ```
 
-#### Configure anomaly detection configuration
+### Configure anomaly detection configuration
 This example demonstrates how a user can configure an anomaly detection configuration for their data.
 <!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L173-L203 -->
 ```java readme-sample-createAnomalyDetectionConfiguration
@@ -289,7 +289,7 @@ System.out.printf("Email Hook emails to alert: %s%n",
     String.join(",", createdEmailHook.getEmailsToAlert()));
 ```
 
-#### Configure an anomaly alert configuration
+### Configure an anomaly alert configuration
 This example demonstrates how a user can configure an alerting configuration for detected anomalies in their data.
 <!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L229-L249 -->
 ```java readme-sample-createAnomalyAlertConfiguration
@@ -315,7 +315,7 @@ final AnomalyAlertConfiguration anomalyAlertConfiguration
             .setCrossMetricsOperator(MetricAlertConfigurationsOperator.AND)
             .setHookIdsToAlert(Arrays.asList(hookId1, hookId2)));
 ```
-#### Query anomaly detection results
+### Query anomaly detection results
 This example demonstrates how a user can query alerts triggered for an anomaly detection configuration and get anomalies for that anomalyAlert.
 <!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L256-L276 -->
 ```java readme-sample-listAnomaliesForAlert
@@ -370,7 +370,7 @@ the client library to use the Netty HTTP client. Configuring or changing the HTT
 ## Next steps
 For more details see the [samples README][samples_readme].
 
-#### Async APIs
+### Async APIs
 All the examples shown so far have been using synchronous APIs, but we provide full support for async APIs as well.
 You'll need to use `MetricsAdvisorAsyncClient`
 <!-- embedme ./src/samples/java/com/azure/ai/metricsadvisor/ReadmeSamples.java#L294-L298 -->
