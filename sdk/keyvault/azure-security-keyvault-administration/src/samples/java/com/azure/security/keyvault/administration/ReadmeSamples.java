@@ -28,9 +28,17 @@ import java.time.Duration;
  * Class containing code snippets that will be injected to README.md.
  */
 public class ReadmeSamples {
-    private final KeyVaultAccessControlClient keyVaultAccessControlClient = new KeyVaultAccessControlClient(null);
+    private final KeyVaultAccessControlClient keyVaultAccessControlClient =
+        new KeyVaultAccessControlClientBuilder()
+            .vaultUrl("<your-access-control-key-vault-url>")
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildClient();
     private final KeyVaultAccessControlAsyncClient keyVaultAccessControlAsyncClient = null;
-    private final KeyVaultBackupClient keyVaultBackupClient = new KeyVaultBackupClient(null);
+    private final KeyVaultBackupClient keyVaultBackupClient =
+        new KeyVaultBackupClientBuilder()
+            .vaultUrl("<your-backup-key-vault-url>")
+            .credential(new DefaultAzureCredentialBuilder().build())
+            .buildClient();
     private final KeyVaultBackupAsyncClient keyVaultBackupAsyncClient = null;
 
     /**
