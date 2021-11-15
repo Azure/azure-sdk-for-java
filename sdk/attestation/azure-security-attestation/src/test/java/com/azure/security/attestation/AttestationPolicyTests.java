@@ -272,8 +272,8 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
 //                .setCertificate(cert)
 //                .setAllowWeakKey(true);
 
-            System.out.printf("Key: %s\n", Base64.getEncoder().encodeToString(key.getEncoded()));
-            assertDoesNotThrow(() -> System.out.printf("Certificate: %s\n", Base64.getEncoder().encodeToString(certificate.getEncoded())));
+            System.out.printf("275 Key: %s\n", Base64.getEncoder().encodeToString(key.getEncoded()));
+            assertDoesNotThrow(() -> System.out.printf("276 Certificate: %s\n", Base64.getEncoder().encodeToString(certificate.getEncoded())));
 
             assertDoesNotThrow(() -> signingKey.verify());
 

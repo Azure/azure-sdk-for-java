@@ -313,6 +313,7 @@ public class AttestationClientTestBase extends TestBase {
      */
     String getIsolatedSigningKeyBase64() {
         String signingKey = Configuration.getGlobalConfiguration().get("isolatedSigningKey");
+
         if (signingKey == null) {
             // Use a pre-canned signing key captured at provisioning time.
             System.out.printf("Returning preconfigured isolated signing key because none was found in the environment.\n");
