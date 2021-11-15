@@ -18,8 +18,16 @@ public interface RetryAware {
      */
     interface Retry {
 
+        /**
+         * The maximum number of attempts.
+         * @return the max attempts.
+         */
         Integer getMaxAttempts();
 
+        /**
+         * Amount of time to wait until a timeout.
+         * @return the timeout.
+         */
         Duration getTimeout();
 
         Backoff getBackoff();

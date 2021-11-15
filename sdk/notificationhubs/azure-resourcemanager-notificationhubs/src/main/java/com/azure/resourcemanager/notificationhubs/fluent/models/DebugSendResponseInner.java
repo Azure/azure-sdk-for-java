@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.notificationhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.notificationhubs.models.Sku;
@@ -14,28 +13,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
 /** Description of a NotificationHub Resource. */
-@JsonFlatten
 @Fluent
-public class DebugSendResponseInner extends Resource {
+public final class DebugSendResponseInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(DebugSendResponseInner.class);
 
     /*
-     * successful send
+     * Properties of the NotificationHub.
      */
-    @JsonProperty(value = "properties.success")
-    private Float success;
-
-    /*
-     * send failure
-     */
-    @JsonProperty(value = "properties.failure")
-    private Float failure;
-
-    /*
-     * actual failure description
-     */
-    @JsonProperty(value = "properties.results")
-    private Object results;
+    @JsonProperty(value = "properties")
+    private DebugSendResult innerProperties;
 
     /*
      * The sku of the created namespace
@@ -44,63 +30,12 @@ public class DebugSendResponseInner extends Resource {
     private Sku sku;
 
     /**
-     * Get the success property: successful send.
+     * Get the innerProperties property: Properties of the NotificationHub.
      *
-     * @return the success value.
+     * @return the innerProperties value.
      */
-    public Float success() {
-        return this.success;
-    }
-
-    /**
-     * Set the success property: successful send.
-     *
-     * @param success the success value to set.
-     * @return the DebugSendResponseInner object itself.
-     */
-    public DebugSendResponseInner withSuccess(Float success) {
-        this.success = success;
-        return this;
-    }
-
-    /**
-     * Get the failure property: send failure.
-     *
-     * @return the failure value.
-     */
-    public Float failure() {
-        return this.failure;
-    }
-
-    /**
-     * Set the failure property: send failure.
-     *
-     * @param failure the failure value to set.
-     * @return the DebugSendResponseInner object itself.
-     */
-    public DebugSendResponseInner withFailure(Float failure) {
-        this.failure = failure;
-        return this;
-    }
-
-    /**
-     * Get the results property: actual failure description.
-     *
-     * @return the results value.
-     */
-    public Object results() {
-        return this.results;
-    }
-
-    /**
-     * Set the results property: actual failure description.
-     *
-     * @param results the results value to set.
-     * @return the DebugSendResponseInner object itself.
-     */
-    public DebugSendResponseInner withResults(Object results) {
-        this.results = results;
-        return this;
+    private DebugSendResult innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -138,11 +73,83 @@ public class DebugSendResponseInner extends Resource {
     }
 
     /**
+     * Get the success property: successful send.
+     *
+     * @return the success value.
+     */
+    public Float success() {
+        return this.innerProperties() == null ? null : this.innerProperties().success();
+    }
+
+    /**
+     * Set the success property: successful send.
+     *
+     * @param success the success value to set.
+     * @return the DebugSendResponseInner object itself.
+     */
+    public DebugSendResponseInner withSuccess(Float success) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DebugSendResult();
+        }
+        this.innerProperties().withSuccess(success);
+        return this;
+    }
+
+    /**
+     * Get the failure property: send failure.
+     *
+     * @return the failure value.
+     */
+    public Float failure() {
+        return this.innerProperties() == null ? null : this.innerProperties().failure();
+    }
+
+    /**
+     * Set the failure property: send failure.
+     *
+     * @param failure the failure value to set.
+     * @return the DebugSendResponseInner object itself.
+     */
+    public DebugSendResponseInner withFailure(Float failure) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DebugSendResult();
+        }
+        this.innerProperties().withFailure(failure);
+        return this;
+    }
+
+    /**
+     * Get the results property: actual failure description.
+     *
+     * @return the results value.
+     */
+    public Object results() {
+        return this.innerProperties() == null ? null : this.innerProperties().results();
+    }
+
+    /**
+     * Set the results property: actual failure description.
+     *
+     * @param results the results value to set.
+     * @return the DebugSendResponseInner object itself.
+     */
+    public DebugSendResponseInner withResults(Object results) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new DebugSendResult();
+        }
+        this.innerProperties().withResults(results);
+        return this;
+    }
+
+    /**
      * Validates the instance.
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
         if (sku() != null) {
             sku().validate();
         }

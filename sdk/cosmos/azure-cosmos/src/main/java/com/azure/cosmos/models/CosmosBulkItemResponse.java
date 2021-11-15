@@ -8,7 +8,6 @@ import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.batch.BatchExecUtils;
-import com.azure.cosmos.util.Beta;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import reactor.core.publisher.Flux;
 
@@ -22,7 +21,6 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNo
  * {@link CosmosAsyncContainer#executeBulkOperations(Flux, CosmosBulkExecutionOptions)}.
  *
  */
-@Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
 public final class CosmosBulkItemResponse {
 
     private final String eTag;
@@ -63,7 +61,6 @@ public final class CosmosBulkItemResponse {
      *
      * @return the activity ID that identifies the server request made to execute this operation.
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getActivityId() {
         return BatchExecUtils.getActivityId(this.responseHeaders);
     }
@@ -75,7 +72,6 @@ public final class CosmosBulkItemResponse {
      *
      * @return Entity tag associated with the current item.
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getETag() {
         return this.eTag;
     }
@@ -88,7 +84,6 @@ public final class CosmosBulkItemResponse {
      *
      * @return the request charge.
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public double getRequestCharge() {
         return this.requestCharge;
     }
@@ -102,7 +97,6 @@ public final class CosmosBulkItemResponse {
      *
      * @return item associated with the current result.
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public <T> T getItem(final Class<T> type) {
         T item = null;
 
@@ -118,7 +112,6 @@ public final class CosmosBulkItemResponse {
      *
      * @return the retry after
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Duration getRetryAfterDuration() {
         return this.retryAfter;
     }
@@ -128,7 +121,6 @@ public final class CosmosBulkItemResponse {
      *
      * @return the sub status code
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public int getSubStatusCode() {
         return this.subStatusCode;
     }
@@ -138,7 +130,6 @@ public final class CosmosBulkItemResponse {
      *
      * @return {@code true} if the current operation completed successfully; {@code false} otherwise.
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public boolean isSuccessStatusCode() {
         return this.statusCode >= 200 && this.statusCode <= 299;
     }
@@ -148,7 +139,6 @@ public final class CosmosBulkItemResponse {
      *
      * @return the status code.
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public int getStatusCode() {
         return this.statusCode;
     }
@@ -158,7 +148,6 @@ public final class CosmosBulkItemResponse {
      *
      * @return the CosmosDiagnostics{@link CosmosDiagnostics}
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public CosmosDiagnostics getCosmosDiagnostics() {
         return cosmosDiagnostics;
     }
@@ -168,7 +157,6 @@ public final class CosmosBulkItemResponse {
      *
      * @return the session token.
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public String getSessionToken() {
         return BatchExecUtils.getSessionToken(this.responseHeaders);
     }
@@ -178,7 +166,6 @@ public final class CosmosBulkItemResponse {
      *
      * @return the response headers.
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Map<String, String> getResponseHeaders() {
         return this.responseHeaders;
     }
@@ -188,7 +175,6 @@ public final class CosmosBulkItemResponse {
      *
      * @return end-to-end request latency for the current request to Azure Cosmos DB service.
      */
-    @Beta(value = Beta.SinceVersion.V4_19_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
     public Duration getDuration() {
         if (cosmosDiagnostics == null) {
             return Duration.ZERO;

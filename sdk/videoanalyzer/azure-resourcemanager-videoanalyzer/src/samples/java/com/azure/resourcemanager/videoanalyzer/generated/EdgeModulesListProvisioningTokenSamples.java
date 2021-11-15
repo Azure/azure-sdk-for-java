@@ -27,7 +27,7 @@ public final class EdgeModulesListProvisioningTokenSamples {
                 "testaccount2",
                 "edgeModule1",
                 new ListProvisioningTokenInput()
-                    .withExpirationDate(OffsetDateTime.parse("3021-01-23T11:04:49.0526841-08:00")),
+                    .withExpirationDate(OffsetDateTime.parse("2023-01-23T11:04:49.0526841-08:00")),
                 Context.NONE);
     }
 }

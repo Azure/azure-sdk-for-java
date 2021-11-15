@@ -25,6 +25,7 @@ import com.azure.resourcemanager.eventgrid.fluent.DomainTopicsClient;
 import com.azure.resourcemanager.eventgrid.fluent.DomainsClient;
 import com.azure.resourcemanager.eventgrid.fluent.EventGridManagementClient;
 import com.azure.resourcemanager.eventgrid.fluent.EventSubscriptionsClient;
+import com.azure.resourcemanager.eventgrid.fluent.ExtensionTopicsClient;
 import com.azure.resourcemanager.eventgrid.fluent.OperationsClient;
 import com.azure.resourcemanager.eventgrid.fluent.PrivateEndpointConnectionsClient;
 import com.azure.resourcemanager.eventgrid.fluent.PrivateLinkResourcesClient;
@@ -231,6 +232,18 @@ public final class EventGridManagementClientImpl implements EventGridManagementC
         return this.systemTopics;
     }
 
+    /** The ExtensionTopicsClient object to access its operations. */
+    private final ExtensionTopicsClient extensionTopics;
+
+    /**
+     * Gets the ExtensionTopicsClient object to access its operations.
+     *
+     * @return the ExtensionTopicsClient object.
+     */
+    public ExtensionTopicsClient getExtensionTopics() {
+        return this.extensionTopics;
+    }
+
     /** The TopicTypesClient object to access its operations. */
     private final TopicTypesClient topicTypes;
 
@@ -276,6 +289,7 @@ public final class EventGridManagementClientImpl implements EventGridManagementC
         this.privateEndpointConnections = new PrivateEndpointConnectionsClientImpl(this);
         this.privateLinkResources = new PrivateLinkResourcesClientImpl(this);
         this.systemTopics = new SystemTopicsClientImpl(this);
+        this.extensionTopics = new ExtensionTopicsClientImpl(this);
         this.topicTypes = new TopicTypesClientImpl(this);
     }
 

@@ -20,7 +20,7 @@ public final class LinkedServiceReference {
      * Linked service reference type.
      */
     @JsonProperty(value = "type", required = true)
-    private String type;
+    private String type = "LinkedServiceReference";
 
     /*
      * Reference LinkedService name.

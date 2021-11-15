@@ -274,21 +274,45 @@ public final class SqlPoolPatchInfo {
     }
 
     /**
-     * Get the createMode property: What is this?.
+     * Get the createMode property: Specifies the mode of sql pool creation.
+     *
+     * <p>Default: regular sql pool creation.
+     *
+     * <p>PointInTimeRestore: Creates a sql pool by restoring a point in time backup of an existing sql pool.
+     * sourceDatabaseId must be specified as the resource ID of the existing sql pool, and restorePointInTime must be
+     * specified.
+     *
+     * <p>Recovery: Creates a sql pool by a geo-replicated backup. sourceDatabaseId must be specified as the
+     * recoverableDatabaseId to restore.
+     *
+     * <p>Restore: Creates a sql pool by restoring a backup of a deleted sql pool. SourceDatabaseId should be the sql
+     * pool's original resource ID. SourceDatabaseId and sourceDatabaseDeletionDate must be specified.
      *
      * @return the createMode value.
      */
-    public String createMode() {
+    public CreateMode createMode() {
         return this.innerProperties() == null ? null : this.innerProperties().createMode();
     }
 
     /**
-     * Set the createMode property: What is this?.
+     * Set the createMode property: Specifies the mode of sql pool creation.
+     *
+     * <p>Default: regular sql pool creation.
+     *
+     * <p>PointInTimeRestore: Creates a sql pool by restoring a point in time backup of an existing sql pool.
+     * sourceDatabaseId must be specified as the resource ID of the existing sql pool, and restorePointInTime must be
+     * specified.
+     *
+     * <p>Recovery: Creates a sql pool by a geo-replicated backup. sourceDatabaseId must be specified as the
+     * recoverableDatabaseId to restore.
+     *
+     * <p>Restore: Creates a sql pool by restoring a backup of a deleted sql pool. SourceDatabaseId should be the sql
+     * pool's original resource ID. SourceDatabaseId and sourceDatabaseDeletionDate must be specified.
      *
      * @param createMode the createMode value to set.
      * @return the SqlPoolPatchInfo object itself.
      */
-    public SqlPoolPatchInfo withCreateMode(String createMode) {
+    public SqlPoolPatchInfo withCreateMode(CreateMode createMode) {
         if (this.innerProperties() == null) {
             this.innerProperties = new SqlPoolResourceProperties();
         }

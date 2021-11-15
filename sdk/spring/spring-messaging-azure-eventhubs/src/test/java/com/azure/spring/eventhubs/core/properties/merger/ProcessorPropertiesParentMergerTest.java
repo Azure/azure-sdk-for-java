@@ -3,7 +3,6 @@
 
 package com.azure.spring.eventhubs.core.properties.merger;
 
-import com.azure.spring.core.properties.proxy.ProxyProperties;
 import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
 import com.azure.spring.eventhubs.core.properties.ProcessorProperties;
 import org.junit.jupiter.api.Assertions;
@@ -20,9 +19,7 @@ class ProcessorPropertiesParentMergerTest {
         NamespaceProperties parent = new NamespaceProperties();
         parent.setEventHubName("parent");
         parent.setConnectionString("parent-connection-str");
-        ProxyProperties proxy = new ProxyProperties();
-        proxy.setHostname("parent-hostname");
-        parent.setProxy(proxy);
+        parent.getProxy().setHostname("parent-hostname");
 
         ProcessorProperties result = merger.mergeParent(child, parent);
 
@@ -36,9 +33,7 @@ class ProcessorPropertiesParentMergerTest {
         ProcessorProperties child = new ProcessorProperties();
         child.setEventHubName("child");
         child.setConnectionString("child-connection-str");
-        ProxyProperties proxy = new ProxyProperties();
-        proxy.setHostname("child-hostname");
-        child.setProxy(proxy);
+        child.getProxy().setHostname("child-hostname");
         child.setTrackLastEnqueuedEventProperties(true);
         child.setPrefetchCount(3);
         child.setConsumerGroup("default");
@@ -46,9 +41,7 @@ class ProcessorPropertiesParentMergerTest {
         NamespaceProperties parent = new NamespaceProperties();
         parent.setEventHubName("parent");
         parent.setConnectionString("parent-connection-str");
-        ProxyProperties anotherProxy = new ProxyProperties();
-        anotherProxy.setHostname("parent-hostname");
-        parent.setProxy(anotherProxy);
+        parent.getProxy().setHostname("parent-hostname");
 
         ProcessorProperties result = merger.mergeParent(child, parent);
 

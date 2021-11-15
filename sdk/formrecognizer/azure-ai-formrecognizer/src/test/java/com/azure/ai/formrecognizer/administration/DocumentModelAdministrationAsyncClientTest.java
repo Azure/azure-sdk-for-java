@@ -8,12 +8,12 @@ import com.azure.ai.formrecognizer.DocumentAnalysisServiceVersion;
 import com.azure.ai.formrecognizer.administration.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.administration.models.CreateComposedModelOptions;
 import com.azure.ai.formrecognizer.administration.models.DocumentModel;
-import com.azure.ai.formrecognizer.administration.models.FormRecognizerError;
 import com.azure.ai.formrecognizer.implementation.util.Utility;
 import com.azure.ai.formrecognizer.models.AnalyzeResult;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.models.ResponseError;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
@@ -119,9 +119,8 @@ public class DocumentModelAdministrationAsyncClientTest extends DocumentModelAdm
             StepVerifier.create(client.getModelWithResponse(createdModel.getModelId()))
                 .verifyErrorSatisfies(throwable -> {
                     assertEquals(HttpResponseException.class, throwable.getClass());
-                    final FormRecognizerError errorInformation = (FormRecognizerError)
-                        ((HttpResponseException) throwable).getValue();
-                    assertEquals("ModelNotFound", errorInformation.getInnerError().getCode());
+                    final ResponseError responseError = (ResponseError) ((HttpResponseException) throwable).getValue();
+                    assertEquals("NotFound", responseError.getCode());
                 });
         });
     }

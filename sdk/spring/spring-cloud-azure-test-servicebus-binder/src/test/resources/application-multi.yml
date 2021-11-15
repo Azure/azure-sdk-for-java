@@ -38,7 +38,7 @@ spring:
         bindings:
           topicSupply-out-0:
             producer:
-              type: topic
+              entity-type: topic
           queueSupply-out-0:
             producer:
-              type: queue
+              enttiy-type: queue

@@ -3,7 +3,6 @@
 
 package com.azure.spring.servicebus.core.properties.merger;
 
-import com.azure.spring.core.properties.proxy.ProxyProperties;
 import com.azure.spring.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.servicebus.core.properties.ProcessorProperties;
 import org.junit.jupiter.api.Assertions;
@@ -18,9 +17,7 @@ public class ProcessorPropertiesParentMergerTest {
 
         NamespaceProperties parent = new NamespaceProperties();
         parent.setConnectionString("parent-connection-str");
-        ProxyProperties proxy = new ProxyProperties();
-        proxy.setHostname("parent-hostname");
-        parent.setProxy(proxy);
+        parent.getProxy().setHostname("parent-hostname");
 
         ProcessorProperties result = merger.mergeParent(child, parent);
 
@@ -32,17 +29,13 @@ public class ProcessorPropertiesParentMergerTest {
     void childProvidedShouldUseChild() {
         ProcessorProperties child = new ProcessorProperties();
         child.setConnectionString("child-connection-str");
-        ProxyProperties proxy = new ProxyProperties();
-        proxy.setHostname("child-hostname");
-        child.setProxy(proxy);
+        child.getProxy().setHostname("child-hostname");
         child.setPrefetchCount(3);
         child.setMaxConcurrentCalls(2);
 
         NamespaceProperties parent = new NamespaceProperties();
         parent.setConnectionString("parent-connection-str");
-        ProxyProperties anotherProxy = new ProxyProperties();
-        anotherProxy.setHostname("parent-hostname");
-        parent.setProxy(anotherProxy);
+        parent.getProxy().setHostname("parent-hostname");
 
         ProcessorProperties result = merger.mergeParent(child, parent);
 

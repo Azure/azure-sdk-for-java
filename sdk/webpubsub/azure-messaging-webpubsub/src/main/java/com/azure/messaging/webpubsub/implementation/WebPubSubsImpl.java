@@ -349,15 +349,13 @@ public final class WebPubSubsImpl {
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response object containing the token for the client.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> generateClientTokenWithResponse(
-            String hub, RequestOptions requestOptions, Context context) {
-        return generateClientTokenWithResponseAsync(hub, requestOptions, context).block();
+    public Response<BinaryData> generateClientTokenWithResponse(String hub, RequestOptions requestOptions) {
+        return generateClientTokenWithResponseAsync(hub, requestOptions).block();
     }
 
     /**
@@ -442,14 +440,13 @@ public final class WebPubSubsImpl {
      * @param hub Target hub name, which should start with alphabetic characters and only contain alpha-numeric
      *     characters or underscore.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> closeAllConnectionsWithResponse(String hub, RequestOptions requestOptions, Context context) {
-        return closeAllConnectionsWithResponseAsync(hub, requestOptions, context).block();
+    public Response<Void> closeAllConnectionsWithResponse(String hub, RequestOptions requestOptions) {
+        return closeAllConnectionsWithResponseAsync(hub, requestOptions).block();
     }
 
     /**
@@ -592,15 +589,13 @@ public final class WebPubSubsImpl {
      *     characters or underscore.
      * @param message The payload body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> sendToAllWithResponse(
-            String hub, BinaryData message, RequestOptions requestOptions, Context context) {
-        return sendToAllWithResponseAsync(hub, message, requestOptions, context).block();
+    public Response<Void> sendToAllWithResponse(String hub, BinaryData message, RequestOptions requestOptions) {
+        return sendToAllWithResponseAsync(hub, message, requestOptions).block();
     }
 
     /**
@@ -713,15 +708,14 @@ public final class WebPubSubsImpl {
      *     characters or underscore.
      * @param connectionId The connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> connectionExistsWithResponse(
-            String hub, String connectionId, RequestOptions requestOptions, Context context) {
-        return connectionExistsWithResponseAsync(hub, connectionId, requestOptions, context).block();
+            String hub, String connectionId, RequestOptions requestOptions) {
+        return connectionExistsWithResponseAsync(hub, connectionId, requestOptions).block();
     }
 
     /**
@@ -819,15 +813,13 @@ public final class WebPubSubsImpl {
      *     characters or underscore.
      * @param connectionId Target connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> closeConnectionWithResponse(
-            String hub, String connectionId, RequestOptions requestOptions, Context context) {
-        return closeConnectionWithResponseAsync(hub, connectionId, requestOptions, context).block();
+    public Response<Void> closeConnectionWithResponse(String hub, String connectionId, RequestOptions requestOptions) {
+        return closeConnectionWithResponseAsync(hub, connectionId, requestOptions).block();
     }
 
     /**
@@ -978,15 +970,14 @@ public final class WebPubSubsImpl {
      * @param connectionId The connection Id.
      * @param message The payload body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendToConnectionWithResponse(
-            String hub, String connectionId, BinaryData message, RequestOptions requestOptions, Context context) {
-        return sendToConnectionWithResponseAsync(hub, connectionId, message, requestOptions, context).block();
+            String hub, String connectionId, BinaryData message, RequestOptions requestOptions) {
+        return sendToConnectionWithResponseAsync(hub, connectionId, message, requestOptions).block();
     }
 
     /**
@@ -1099,15 +1090,13 @@ public final class WebPubSubsImpl {
      *     characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Boolean> groupExistsWithResponse(
-            String hub, String group, RequestOptions requestOptions, Context context) {
-        return groupExistsWithResponseAsync(hub, group, requestOptions, context).block();
+    public Response<Boolean> groupExistsWithResponse(String hub, String group, RequestOptions requestOptions) {
+        return groupExistsWithResponseAsync(hub, group, requestOptions).block();
     }
 
     /**
@@ -1208,15 +1197,13 @@ public final class WebPubSubsImpl {
      *     characters or underscore.
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> closeGroupConnectionsWithResponse(
-            String hub, String group, RequestOptions requestOptions, Context context) {
-        return closeGroupConnectionsWithResponseAsync(hub, group, requestOptions, context).block();
+    public Response<Void> closeGroupConnectionsWithResponse(String hub, String group, RequestOptions requestOptions) {
+        return closeGroupConnectionsWithResponseAsync(hub, group, requestOptions).block();
     }
 
     /**
@@ -1370,15 +1357,14 @@ public final class WebPubSubsImpl {
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param message The payload body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendToGroupWithResponse(
-            String hub, String group, BinaryData message, RequestOptions requestOptions, Context context) {
-        return sendToGroupWithResponseAsync(hub, group, message, requestOptions, context).block();
+            String hub, String group, BinaryData message, RequestOptions requestOptions) {
+        return sendToGroupWithResponseAsync(hub, group, message, requestOptions).block();
     }
 
     /**
@@ -1484,15 +1470,14 @@ public final class WebPubSubsImpl {
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param connectionId Target connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> addConnectionToGroupWithResponse(
-            String hub, String group, String connectionId, RequestOptions requestOptions, Context context) {
-        return addConnectionToGroupWithResponseAsync(hub, group, connectionId, requestOptions, context).block();
+            String hub, String group, String connectionId, RequestOptions requestOptions) {
+        return addConnectionToGroupWithResponseAsync(hub, group, connectionId, requestOptions).block();
     }
 
     /**
@@ -1598,15 +1583,14 @@ public final class WebPubSubsImpl {
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param connectionId Target connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> removeConnectionFromGroupWithResponse(
-            String hub, String group, String connectionId, RequestOptions requestOptions, Context context) {
-        return removeConnectionFromGroupWithResponseAsync(hub, group, connectionId, requestOptions, context).block();
+            String hub, String group, String connectionId, RequestOptions requestOptions) {
+        return removeConnectionFromGroupWithResponseAsync(hub, group, connectionId, requestOptions).block();
     }
 
     /**
@@ -1719,15 +1703,13 @@ public final class WebPubSubsImpl {
      *     characters or underscore.
      * @param userId Target user Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Boolean> userExistsWithResponse(
-            String hub, String userId, RequestOptions requestOptions, Context context) {
-        return userExistsWithResponseAsync(hub, userId, requestOptions, context).block();
+    public Response<Boolean> userExistsWithResponse(String hub, String userId, RequestOptions requestOptions) {
+        return userExistsWithResponseAsync(hub, userId, requestOptions).block();
     }
 
     /**
@@ -1828,15 +1810,13 @@ public final class WebPubSubsImpl {
      *     characters or underscore.
      * @param userId The user Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> closeUserConnectionsWithResponse(
-            String hub, String userId, RequestOptions requestOptions, Context context) {
-        return closeUserConnectionsWithResponseAsync(hub, userId, requestOptions, context).block();
+    public Response<Void> closeUserConnectionsWithResponse(String hub, String userId, RequestOptions requestOptions) {
+        return closeUserConnectionsWithResponseAsync(hub, userId, requestOptions).block();
     }
 
     /**
@@ -1987,15 +1967,14 @@ public final class WebPubSubsImpl {
      * @param userId The user Id.
      * @param message The payload body.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> sendToUserWithResponse(
-            String hub, String userId, BinaryData message, RequestOptions requestOptions, Context context) {
-        return sendToUserWithResponseAsync(hub, userId, message, requestOptions, context).block();
+            String hub, String userId, BinaryData message, RequestOptions requestOptions) {
+        return sendToUserWithResponseAsync(hub, userId, message, requestOptions).block();
     }
 
     /**
@@ -2101,15 +2080,14 @@ public final class WebPubSubsImpl {
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param userId Target user Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> addUserToGroupWithResponse(
-            String hub, String group, String userId, RequestOptions requestOptions, Context context) {
-        return addUserToGroupWithResponseAsync(hub, group, userId, requestOptions, context).block();
+            String hub, String group, String userId, RequestOptions requestOptions) {
+        return addUserToGroupWithResponseAsync(hub, group, userId, requestOptions).block();
     }
 
     /**
@@ -2215,15 +2193,14 @@ public final class WebPubSubsImpl {
      * @param group Target group name, which length should be greater than 0 and less than 1025.
      * @param userId Target user Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> removeUserFromGroupWithResponse(
-            String hub, String group, String userId, RequestOptions requestOptions, Context context) {
-        return removeUserFromGroupWithResponseAsync(hub, group, userId, requestOptions, context).block();
+            String hub, String group, String userId, RequestOptions requestOptions) {
+        return removeUserFromGroupWithResponseAsync(hub, group, userId, requestOptions).block();
     }
 
     /**
@@ -2318,15 +2295,14 @@ public final class WebPubSubsImpl {
      *     characters or underscore.
      * @param userId Target user Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> removeUserFromAllGroupsWithResponse(
-            String hub, String userId, RequestOptions requestOptions, Context context) {
-        return removeUserFromAllGroupsWithResponseAsync(hub, userId, requestOptions, context).block();
+            String hub, String userId, RequestOptions requestOptions) {
+        return removeUserFromAllGroupsWithResponseAsync(hub, userId, requestOptions).block();
     }
 
     /**
@@ -2435,15 +2411,14 @@ public final class WebPubSubsImpl {
      * @param permission The permission: current supported actions are joinLeaveGroup and sendToGroup.
      * @param connectionId Target connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> grantPermissionWithResponse(
-            String hub, String permission, String connectionId, RequestOptions requestOptions, Context context) {
-        return grantPermissionWithResponseAsync(hub, permission, connectionId, requestOptions, context).block();
+            String hub, String permission, String connectionId, RequestOptions requestOptions) {
+        return grantPermissionWithResponseAsync(hub, permission, connectionId, requestOptions).block();
     }
 
     /**
@@ -2552,15 +2527,14 @@ public final class WebPubSubsImpl {
      * @param permission The permission: current supported actions are joinLeaveGroup and sendToGroup.
      * @param connectionId Target connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> revokePermissionWithResponse(
-            String hub, String permission, String connectionId, RequestOptions requestOptions, Context context) {
-        return revokePermissionWithResponseAsync(hub, permission, connectionId, requestOptions, context).block();
+            String hub, String permission, String connectionId, RequestOptions requestOptions) {
+        return revokePermissionWithResponseAsync(hub, permission, connectionId, requestOptions).block();
     }
 
     /**
@@ -2687,14 +2661,13 @@ public final class WebPubSubsImpl {
      * @param permission The permission: current supported actions are joinLeaveGroup and sendToGroup.
      * @param connectionId Target connection Id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Boolean> checkPermissionWithResponse(
-            String hub, String permission, String connectionId, RequestOptions requestOptions, Context context) {
-        return checkPermissionWithResponseAsync(hub, permission, connectionId, requestOptions, context).block();
+            String hub, String permission, String connectionId, RequestOptions requestOptions) {
+        return checkPermissionWithResponseAsync(hub, permission, connectionId, requestOptions).block();
     }
 }

@@ -269,7 +269,7 @@ public final class TriggersImpl implements Triggers {
                     new IllegalArgumentException(
                         String.format("The resource ID '%s' is not valid. Missing path segment 'triggers'.", id)));
         }
-        this.deleteWithResponse(resourceGroupName, factoryName, triggerName, Context.NONE).getValue();
+        this.deleteWithResponse(resourceGroupName, factoryName, triggerName, Context.NONE);
     }
 
     public Response<Void> deleteByIdWithResponse(String id, Context context) {

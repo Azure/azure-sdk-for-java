@@ -54,10 +54,11 @@ public class DefaultServiceBusNamespaceProcessorFactory implements ServiceBusPro
         this.propertiesSupplier = supplier == null ? key -> null : supplier;
     }
 
-    private <K, V> void close(Map<K, V> map, Consumer<V> close) {
-        map.values().forEach(it -> {
+    private <K, V> void close(Map<Tuple2<String, String>, V> map, Consumer<V> close) {
+        map.forEach((t, p) -> {
             try {
-                close.accept(it);
+                listeners.forEach(l -> l.processorRemoved(t.getT1(), t.getT2()));
+                close.accept(p);
             } catch (Exception ex) {
                 LOGGER.warn("Failed to clean service bus queue client factory", ex);
             }
@@ -67,6 +68,8 @@ public class DefaultServiceBusNamespaceProcessorFactory implements ServiceBusPro
     @Override
     public void destroy() {
         close(processorMap, ServiceBusProcessorClient::close);
+        this.processorMap.clear();
+        this.listeners.clear();
     }
 
     @Override
@@ -87,33 +90,31 @@ public class DefaultServiceBusNamespaceProcessorFactory implements ServiceBusPro
                                                         MessageProcessingListener listener,
                                                         @Nullable ProcessorProperties properties) {
         Tuple2<String, String> key = Tuples.of(name, subscription);
-        if (this.processorMap.containsKey(key)) {
-            return this.processorMap.get(key);
-        }
 
-        ProcessorProperties processorProperties = propertiesMerger.mergeParent(properties, this.namespaceProperties);
-        processorProperties.setEntityName(name);
-        if (INVALID_SUBSCRIPTION.equals(subscription)) {
-            processorProperties.setEntityType(ServiceBusEntityType.QUEUE);
-        } else {
-            processorProperties.setEntityType(ServiceBusEntityType.TOPIC);
-            processorProperties.setSubscriptionName(subscription);
-        }
+        return processorMap.computeIfAbsent(key, k -> {
+            ProcessorProperties processorProperties = propertiesMerger.mergeParent(properties, this.namespaceProperties);
+            processorProperties.setEntityName(name);
+            if (INVALID_SUBSCRIPTION.equals(subscription)) {
+                processorProperties.setEntityType(ServiceBusEntityType.QUEUE);
+            } else {
+                processorProperties.setEntityType(ServiceBusEntityType.TOPIC);
+                processorProperties.setSubscriptionName(subscription);
+            }
 
-        ServiceBusProcessorClient client;
-        //TODO(yiliu6): whether to use shared ServiceBusClientBuilder
-        if (Boolean.TRUE.equals(processorProperties.getSessionAware())) {
-            client = new ServiceBusSessionProcessorClientBuilderFactory(processorProperties, listener).build()
-                                                                                            .buildProcessorClient();
-        } else {
-            client = new ServiceBusProcessorClientBuilderFactory(processorProperties, listener).build()
-                                                                                               .buildProcessorClient();
-        }
+            ServiceBusProcessorClient client;
+            //TODO(yiliu6): whether to use shared ServiceBusClientBuilder
+            if (Boolean.TRUE.equals(processorProperties.getSessionAware())) {
+                client = new ServiceBusSessionProcessorClientBuilderFactory(processorProperties, listener).build()
+                                                                                                          .buildProcessorClient();
+            } else {
+                client = new ServiceBusProcessorClientBuilderFactory(processorProperties, listener).build()
+                                                                                                   .buildProcessorClient();
+            }
 
-        this.listeners.forEach(l -> l.processorAdded(name, INVALID_SUBSCRIPTION.equals(subscription) ? null
-            : subscription));
-        this.processorMap.put(key, client);
-        return client;
+            this.listeners.forEach(l -> l.processorAdded(name, INVALID_SUBSCRIPTION.equals(subscription) ? null
+                : subscription));
+            return client;
+        });
     }
 
     @Override

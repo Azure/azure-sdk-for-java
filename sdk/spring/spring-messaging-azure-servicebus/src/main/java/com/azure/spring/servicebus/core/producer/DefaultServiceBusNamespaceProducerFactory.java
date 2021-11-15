@@ -56,25 +56,25 @@ public class DefaultServiceBusNamespaceProducerFactory implements ServiceBusProd
 
     @Override
     public void destroy() {
-        this.clients.values().forEach(ServiceBusSenderAsyncClient::close);
+        clients.forEach((name, producer) -> {
+            listeners.forEach(l -> l.producerRemoved(name));
+            producer.close();
+        });
         this.clients.clear();
+        this.listeners.clear();
     }
 
     private ServiceBusSenderAsyncClient doCreateProducer(String name, @Nullable ProducerProperties properties) {
-        if (this.clients.containsKey(name)) {
-            return this.clients.get(name);
-        }
-        ProducerProperties producerProperties = parentMerger.mergeParent(properties, this.namespaceProperties);
+        return clients.computeIfAbsent(name, entityName -> {
+            ProducerProperties producerProperties = parentMerger.mergeParent(properties, this.namespaceProperties);
 
-        producerProperties.setEntityName(name);
-        //TODO(yiliu6): whether to make the producer client share the same service bus client builder
-        ServiceBusSenderAsyncClient producerClient = new ServiceBusSenderClientBuilderFactory(producerProperties)
-            .build().buildAsyncClient();
+            producerProperties.setEntityName(entityName);
+            //TODO(yiliu6): whether to make the producer client share the same service bus client builder
+            ServiceBusSenderAsyncClient producerClient = new ServiceBusSenderClientBuilderFactory(producerProperties)
+                .build().buildAsyncClient();
 
-        this.listeners.forEach(l -> l.producerAdded(name));
-
-        this.clients.put(name, producerClient);
-        return producerClient;
+            this.listeners.forEach(l -> l.producerAdded(entityName));
+            return producerClient;
+        });
     }
-
 }
