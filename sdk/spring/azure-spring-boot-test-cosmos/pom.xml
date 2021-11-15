@@ -19,7 +19,7 @@
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>spring-cloud-azure-starter-cosmos</artifactId>
+      <artifactId>spring-cloud-azure-starter-data-cosmos</artifactId>
       <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-cosmos;current} -->
     </dependency>
     <dependency>
