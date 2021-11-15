@@ -71,54 +71,60 @@ Group ids are the same for morden and legacy Spring Cloud Azure libraries, they 
 
 In the process of developing Spring Cloud Azure 4.0, we renamed some artifacts to make them follow the new naming convention, deleted some artifcats for its functionality could be put in a more appropriate artifact, and added some new artifacts to better serve some scenarios. 
 
-| Legacy Artifact ID                                | Morden Artifact ID                                   | Description                                                  |
-| :------------------------------------------------ | ---------------------------------------------------- | ------------------------------------------------------------ |
-| azure-spring-boot-starter                         | spring-cloud-azure-starter                           | This artifact has been deleted with all functionality be merged into the new `spring-cloud-azure-starter` artifact. |
-| azure-spring-boot-starter-active-directory        | // TODO                                              |                                                              |
-| azure-spring-boot-starter-active-directory-b2c    | // TODO                                              |                                                              |
-| azure-spring-boot-starter-cosmos                  | spring-cloud-azure-starter-cosmos                    |                                                              |
-| azure-spring-boot-starter-keyvault-certificates   | // TODO                                              |                                                              |
-| azure-spring-boot-starter-keyvault-secrets        | spring-cloud-azure-starter-keyvault-secrets          |                                                              |
-| azure-spring-boot-starter-servicebus-jms          | spring-cloud-azure-starter-servicebus-jms            |                                                              |
-| azure-spring-boot-starter-storage                 | spring-cloud-azure-starter-storage-blob <br/>spring-cloud-azure-starter-storage-file-share                          | spring-cloud-azure-starter-storage-blob <br/>spring-cloud-azure-starter-storage-file-share |
-| azure-spring-boot                                 | N/A                                                  | This artifact has been deleted with all functionality be merged into the new `spring-cloud-azure-autoconfigure` artifact. |
-| azure-spring-cloud-autoconfigure                  | N/A                                                  | This artifact has been deleted with all functionality be merged into the new `spring-cloud-azure-autoconfigure` artifact. |
-| azure-spring-cloud-context                        | N/A                                                  | This artifact has been deleted with all functionality be merged into the new `spring-cloud-azure-autoconfigure`  and `spring-cloud-azure-resourcemanager` artifacts. |
-| azure-spring-cloud-messaging                      | // TODO                                              |                                                              |
-| azure-spring-cloud-starter-cache                  | // TODO                                              |                                                              |
-| azure-spring-cloud-starter-eventhubs-kafka        | // TODO                                              |                                                              |
-| azure-spring-cloud-starter-eventhubs              | spring-cloud-azure-starter-integration-eventhubs     |                                                              |
-| azure-spring-cloud-starter-servicebus             | spring-cloud-azure-starter-integration-servicebus    |                                                              |
-| azure-spring-cloud-starter-storage-queue          | spring-cloud-azure-starter-integration-storage-queue |                                                              |
-| azure-spring-cloud-storage                        | N/A                                                  | This artifact has been deleted with all functionality be merged into the new `spring-cloud-azure-autoconfigure` artifact. |
-| azure-spring-cloud-stream-binder-eventhubs        | spring-cloud-azure-stream-binder-eventhubs           |                                                              |
-| azure-spring-cloud-stream-binder-servicebus-core  | spring-cloud-azure-stream-binder-servicebus-core     |                                                              |
-| azure-spring-cloud-stream-binder-servicebus-queue | // TODO                                              |                                                              |
-| azure-spring-cloud-stream-binder-servicebus-topic | // TODO                                              |                                                              |
-| azure-spring-inetgration-core                     | spring-integration-azure-core                        |                                                              |
-| azure-spring-inetgration-eventhubs                | spring-integration-azure-eventhubs                   |                                                              |
-| azure-spring-inetgration-servicebus               | spring-integration-azure-servicebus                  |                                                              |
-| azure-spring-inetgration-storage-queue            | spring-integration-azure-storage-queue               |                                                              |
-| N/A                                               | spring-cloud-azure-actuator                          | Spring Cloud Azure Actuator.                                 |
-| N/A                                               | spring-cloud-azure-actuator-autoconfigure            | Spring Cloud Azure Actuator AutoConfigure.                   |
-| N/A                                               | spring-cloud-azure-autoconfigure                     | Spring Cloud Azure AutoConfigure.                            |
-| N/A                                               | spring-cloud-azure-core                              |                                                              |
-| N/A                                               | spring-cloud-azure-resourcemanager                   | The Core library using Azure Resource Manager to read metadata and create resources. |
-| N/A                                               | spring-cloud-azure-service                           |                                                              |
-| N/A                                               | spring-cloud-azure-starter                           | The Core Spring Cloud Azure starter, including auto-configuration support. |
-| N/A                                               | spring-cloud-azure-starter-appconfiguration          | Starter for using Azure App Configuration.                   |
-| N/A                                               | spring-cloud-azure-starter-eventhubs                 | Starter for using Azure Event Hubs.                          |
-| N/A                                               | spring-cloud-azure-starter-servicebus                | Starter for using Azure Service Bus.                         |
-| N/A                                               | spring-cloud-azure-starter-storage-blob              | Starter for using Azure Storage Blob.                        |
-| N/A                                               | spring-cloud-azure-starter-storage-file-share        | Starter for using Azure Storage File Share.                  |
-| N/A                                               | spring-cloud-azure-starter-storage-queue             | Starter for using Azure Storage Queue.                       |
-| N/A                                               | spring-cloud-azure-starter-stream-eventhubs          |                                                              |
-| N/A                                               | spring-cloud-azure-starter-stream-servicebus         |                                                              |
+| Legacy Artifact ID                                | Morden Artifact ID                                           | Description                                                  |
+| :------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| azure-spring-boot-starter                         | spring-cloud-azure-starter                                   | This artifact has been deleted with all functionality be merged into the new `spring-cloud-azure-starter` artifact. |
+| azure-spring-boot-starter-active-directory        | // TODO                                                      |                                                              |
+| azure-spring-boot-starter-active-directory-b2c    | // TODO                                                      |                                                              |
+| azure-spring-boot-starter-cosmos                  | spring-cloud-azure-starter-cosmos                            |                                                              |
+| azure-spring-boot-starter-keyvault-certificates   | // TODO                                                      |                                                              |
+| azure-spring-boot-starter-keyvault-secrets        | spring-cloud-azure-starter-keyvault-secrets                  |                                                              |
+| azure-spring-boot-starter-servicebus-jms          | spring-cloud-azure-starter-servicebus-jms                    |                                                              |
+| azure-spring-boot-starter-storage                 | spring-cloud-azure-starter-storage-blob <br/>spring-cloud-azure-starter-storage-file-share | The legacy artifact contains the functionality of both Storage Blob and File Share, it's been splited into two separate artifacts in 4.0, spring-cloud-azure-starter-storage-blob and spring-cloud-azure-starter-storage-file-share. |
+| azure-spring-boot                                 | N/A                                                          | This artifact has been deleted with all functionality be merged into the new `spring-cloud-azure-autoconfigure` artifact. |
+| azure-spring-cloud-autoconfigure                  | N/A                                                          | This artifact has been deleted with all functionality be merged into the new `spring-cloud-azure-autoconfigure` artifact. |
+| azure-spring-cloud-context                        | N/A                                                          | This artifact has been deleted with all functionality be merged into the new `spring-cloud-azure-autoconfigure`  and `spring-cloud-azure-resourcemanager` artifacts. |
+| azure-spring-cloud-messaging                      | // TODO                                                      |                                                              |
+| azure-spring-cloud-starter-cache                  | // TODO                                                      |                                                              |
+| azure-spring-cloud-starter-eventhubs-kafka        | // TODO                                                      |                                                              |
+| azure-spring-cloud-starter-eventhubs              | spring-cloud-azure-starter-integration-eventhubs             |                                                              |
+| azure-spring-cloud-starter-servicebus             | spring-cloud-azure-starter-integration-servicebus            |                                                              |
+| azure-spring-cloud-starter-storage-queue          | spring-cloud-azure-starter-integration-storage-queue         |                                                              |
+| azure-spring-cloud-storage                        | N/A                                                          | This artifact has been deleted with all functionality be merged into the new `spring-cloud-azure-autoconfigure` artifact. |
+| azure-spring-cloud-stream-binder-eventhubs        | spring-cloud-azure-stream-binder-eventhubs                   |                                                              |
+| azure-spring-cloud-stream-binder-servicebus-core  | spring-cloud-azure-stream-binder-servicebus-core             |                                                              |
+| azure-spring-cloud-stream-binder-servicebus-queue | // TODO                                                      |                                                              |
+| azure-spring-cloud-stream-binder-servicebus-topic | // TODO                                                      |                                                              |
+| azure-spring-inetgration-core                     | spring-integration-azure-core                                |                                                              |
+| azure-spring-inetgration-eventhubs                | spring-integration-azure-eventhubs                           |                                                              |
+| azure-spring-inetgration-servicebus               | spring-integration-azure-servicebus                          |                                                              |
+| azure-spring-inetgration-storage-queue            | spring-integration-azure-storage-queue                       |                                                              |
+| N/A                                               | spring-cloud-azure-actuator                                  | Spring Cloud Azure Actuator.                                 |
+| N/A                                               | spring-cloud-azure-actuator-autoconfigure                    | Spring Cloud Azure Actuator AutoConfigure.                   |
+| N/A                                               | spring-cloud-azure-autoconfigure                             | Spring Cloud Azure AutoConfigure.                            |
+| N/A                                               | spring-cloud-azure-core                                      |                                                              |
+| N/A                                               | spring-cloud-azure-resourcemanager                           | The Core library using Azure Resource Manager to read metadata and create resources. |
+| N/A                                               | spring-cloud-azure-service                                   |                                                              |
+| N/A                                               | spring-cloud-azure-starter                                   | The Core Spring Cloud Azure starter, including auto-configuration support. |
+| N/A                                               | spring-cloud-azure-starter-appconfiguration                  | Starter for using Azure App Configuration.                   |
+| N/A                                               | spring-cloud-azure-starter-eventhubs                         | Starter for using Azure Event Hubs.                          |
+| N/A                                               | spring-cloud-azure-starter-servicebus                        | Starter for using Azure Service Bus.                         |
+| N/A                                               | spring-cloud-azure-starter-storage-blob                      | Starter for using Azure Storage Blob.                        |
+| N/A                                               | spring-cloud-azure-starter-storage-file-share                | Starter for using Azure Storage File Share.                  |
+| N/A                                               | spring-cloud-azure-starter-storage-queue                     | Starter for using Azure Storage Queue.                       |
+| N/A                                               | spring-cloud-azure-starter-stream-eventhubs                  |                                                              |
+| N/A                                               | spring-cloud-azure-starter-stream-servicebus                 |                                                              |
 
 ## Dependencies changes
-Some unnecesary dependecies were included in the legacy artifacts, which we have removed in the morden Spring Cloud Azure 4.0 libaries. Below are some ...
+Some unnecesary dependecies were included in the legacy artifacts, which we have removed in the morden Spring Cloud Azure 4.0 libaries. Please make sure add the removed dependencies munally to your project to prevent unintentionally crash.
 
-/// starter
+### spring-cloud-azure-starter
+
+| Removed dependencies                                    | Descritpion                                                  |
+| ------------------------------------------------------- | ------------------------------------------------------------ |
+| org.springframework.boot:spring-boot-starter-validation | Please include the validation starter if you want to use the Hibernate Validator. |
+
+
 
 
 ## Configuration properties
@@ -137,49 +143,13 @@ The morden `spring-cloud-azure-starter` allows developers to define properties t
 
 For a full list of common configurations, check this list **[placeholder]**.
 
-| Name                                                         | Description                                                  | Default Value |
-| ------------------------------------------------------------ | ------------------------------------------------------------ | ------------- |
-| spring.cloud.azure.client.application-id                     | Represents current application and is used for telemetry/monitoring purposes. |               |
-| spring.cloud.azure.client.amqp.transport-type                | Transport type for AMQP-based client.                        |               |
-| spring.cloud.azure.client.headers                            | Comma-delimited list of headers applied to each request sent with client. |               |
-| spring.cloud.azure.client.http.connect-timeout               | Amount of time the request attempts to connect to the remote host and the connection is resolved. |               |
-| spring.cloud.azure.client.http.connection-idle-timeout       | Amount of time before an idle connection.                    |               |
-| spring.cloud.azure.client.http.logging.allowed-header-names  | Comma-delimited list of whitelisted headers that should be logged. |               |
-| spring.cloud.azure.client.http.logging.allowed-query-param-names | Comma-delimited list of whitelisted query parameters.    |               |
-| spring.cloud.azure.client.http.logging.level                 |  The level of detail to log on HTTP messages.                |               |
-| spring.cloud.azure.client.http.logging.prettyPrintBody       |  Whether to pretty print the message bodies.                 |               |
-| spring.cloud.azure.client.http.maximum-connection-pool-size  |  Maximum connection pool size used by the underlying HTTP client. |               |
-| spring.cloud.azure.client.http.read-timeout                  |  Amount of time used when reading the server response.       |               |
-| spring.cloud.azure.client.http.write-timeout                 |  Amount of time each request being sent over the w           |               |
-| spring.cloud.azure.credential.client-certificate-password    |  Password of the certificate file.                                               |               |
-| spring.cloud.azure.credential.client-certificate-path        |  Path of a PEM certificate file to use when performing service principal authentication with Azure.                                                            |               |
-| spring.cloud.azure.credential.client-id                      |  Client id to use when performing service principal authentication with Azure. |               |
-| spring.cloud.azure.credential.client-secret                  |  Client secret to use when performing service principal authentication with Azure. |               |
-| spring.cloud.azure.credential.managed-identity-client-id     |  Client id to use when using managed identity to authenticate with Azure. |               |
-| spring.cloud.azure.credential.username                       |  Username to use when performing username/password authentication with Azure. |               |
-| spring.cloud.azure.credential.password                       |  Password to use when performing username/password authentication with Azure. |               |
-| spring.cloud.azure.profile.cloud                             |  Name of the Azure cloud to connect to.                      |               |
-| spring.cloud.azure.profile.environment.active-directory-endpoint |                                                              |               |
-| spring.cloud.azure.profile.subscription                      |  Subscription id to use when connecting to Azure resources.  |               |
-| spring.cloud.azure.profile.tenant-id                         |  Tenant id for Azure resources.                              |               |
-| spring.cloud.azure.proxy.authentication-type                 |  Authentication type used against the proxy.                 |               |
-| spring.cloud.azure.proxy.hostname                            |  The host of the proxy.                                      |               |
-| spring.cloud.azure.proxy.password                            |  Password used to authenticate with the proxy.               |               |
-| spring.cloud.azure.proxy.port                                |  The port of the proxy.                                      |               |
-| spring.cloud.azure.proxy.type                                |  Type of the proxy.                                          |               |
-| spring.cloud.azure.proxy.username                            |  Username used to authenticate with the proxy.               |               |
-| spring.cloud.azure.proxy.http.non-proxy-hosts                |  A list of hosts or CIDR to not use proxy HTTP/HTTPS connections through.  |               |
-| spring.cloud.azure.retry.backoff.delay                       |  Amount of time to wait between retry attempts.              |               |
-| spring.cloud.azure.retry.backoff.max-delay                   |  Maximum permissible amount of time between retry attempts.  |               |
-| spring.cloud.azure.retry.backoff.multiplier                  |  Multiplier used to calculate the next backoff delay. If positive, then used as a multiplier for generating the next delay for backoff. |               |
-| spring.cloud.azure.retry.http.retry-after-header             |  HTTP header, such as Retry-After or x-ms-retry-after-ms, to lookup for the retry delay. |               |
-| spring.cloud.azure.retry.http.retry-after-time-unit          |  Time unit to use when applying the retry delay.             |               |
-| spring.cloud.azure.retry.max-attempts                        |  The maximum number of attempts.                             |               |
-| spring.cloud.azure.retry.timeout                             |  Amount of time to wait until a timeout.                     |               |
+
 
 ### Each SDK configurations
 
 
+
+## API breaking changes
 
 
 
