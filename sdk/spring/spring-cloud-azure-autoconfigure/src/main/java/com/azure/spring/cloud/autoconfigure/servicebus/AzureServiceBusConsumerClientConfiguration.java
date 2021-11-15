@@ -8,6 +8,7 @@ import com.azure.messaging.servicebus.ServiceBusReceiverAsyncClient;
 import com.azure.messaging.servicebus.ServiceBusReceiverClient;
 import com.azure.messaging.servicebus.ServiceBusSessionReceiverAsyncClient;
 import com.azure.messaging.servicebus.ServiceBusSessionReceiverClient;
+import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.servicebus.properties.AzureServiceBusProperties;
 import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.service.servicebus.factory.ServiceBusReceiverClientBuilderFactory;
@@ -25,7 +26,7 @@ import org.springframework.util.StringUtils;
  * {@link ServiceBusSessionReceiverAsyncClient} and a {@link ServiceBusSessionReceiverClient}.
  */
 @Configuration(proxyBeanMethods = false)
-@ConditionalOnProperty(prefix = "spring.cloud.azure.servicebus.consumer", name = { "name", "type" })
+@ConditionalOnAnyProperty(prefix = "spring.cloud.azure.servicebus", name = { "entity-name", "consumer.entity-name" })
 @Import({
     AzureServiceBusConsumerClientConfiguration.SessionConsumerClientConfiguration.class,
     AzureServiceBusConsumerClientConfiguration.NoneSessionConsumerClientConfiguration.class
@@ -35,6 +36,7 @@ class AzureServiceBusConsumerClientConfiguration {
     @Configuration(proxyBeanMethods = false)
     @ConditionalOnProperty(value = "spring.cloud.azure.servicebus.consumer.session-aware", havingValue = "false",
         matchIfMissing = true)
+    @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.servicebus", name = { "entity-type", "consumer.entity-type" })
     static class NoneSessionConsumerClientConfiguration {
 
         @Bean
@@ -79,6 +81,7 @@ class AzureServiceBusConsumerClientConfiguration {
 
     @Configuration(proxyBeanMethods = false)
     @ConditionalOnProperty(value = "spring.cloud.azure.servicebus.consumer.session-aware", havingValue = "true")
+    @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.servicebus", name = { "entity-type", "consumer.entity-type" })
     static class SessionConsumerClientConfiguration {
 
         @Bean

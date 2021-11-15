@@ -5,6 +5,7 @@ package com.azure.spring.cloud.autoconfigure.servicebus;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusSenderClient;
+import com.azure.spring.service.servicebus.factory.ServiceBusSenderClientBuilderFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -22,7 +23,8 @@ class AzureServiceBusProducerClientConfigurationTest {
     void noEntityNameProvidedShouldNotConfigure() {
         contextRunner
             .withPropertyValues(
-                "spring.cloud.azure.servicebus.producer.type=queue"
+                "spring.cloud.azure.servicebus.entity-type=queue",
+                "spring.cloud.azure.servicebus.producer.entity-type=queue"
             )
             .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusProducerClientConfiguration.class));
     }
@@ -31,9 +33,13 @@ class AzureServiceBusProducerClientConfigurationTest {
     void noEntityTypeProvidedShouldNotConfigure() {
         contextRunner
             .withPropertyValues(
-                "spring.cloud.azure.servicebus.producer.name=queue"
+                "spring.cloud.azure.servicebus.entity-name=queue",
+                "spring.cloud.azure.servicebus.producer.entity-name=queue"
             )
-            .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusProducerClientConfiguration.class));
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureServiceBusProducerClientConfiguration.class);
+                assertThat(context).doesNotHaveBean(ServiceBusSenderClientBuilderFactory.class);
+            });
     }
 
     @Test
@@ -43,8 +49,8 @@ class AzureServiceBusProducerClientConfigurationTest {
 
         contextRunner
             .withPropertyValues(
-                "spring.cloud.azure.servicebus.producer.name=test-queue",
-                "spring.cloud.azure.servicebus.producer.type=queue"
+                "spring.cloud.azure.servicebus.entity-name=test-queue",
+                "spring.cloud.azure.servicebus.entity-type=queue"
             )
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .withBean(ServiceBusClientBuilder.class, () -> serviceBusClientBuilder)
@@ -59,8 +65,8 @@ class AzureServiceBusProducerClientConfigurationTest {
     void dedicatedConnectionInfoProvidedShouldConfigureDedicated() {
         contextRunner
             .withPropertyValues(
-                "spring.cloud.azure.servicebus.producer.name=test-queue",
-                "spring.cloud.azure.servicebus.producer.type=topic",
+                "spring.cloud.azure.servicebus.producer.entity-name=test-queue",
+                "spring.cloud.azure.servicebus.producer.entity-type=topic",
                 "spring.cloud.azure.servicebus.producer.connection-string=" + String.format(CONNECTION_STRING, "test-namespace")
             )
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)

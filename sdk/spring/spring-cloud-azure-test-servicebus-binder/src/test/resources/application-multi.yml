@@ -41,4 +41,4 @@ spring:
               entity-type: topic
           queueSupply-out-0:
             producer:
-              enttiy-type: queue
+              entity-type: queue

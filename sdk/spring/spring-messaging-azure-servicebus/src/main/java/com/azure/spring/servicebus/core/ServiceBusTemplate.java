@@ -35,8 +35,7 @@ public class ServiceBusTemplate implements SendOperation {
                                     Message<U> message,
                                     PartitionSupplier partitionSupplier) {
         Assert.hasText(destination, "destination can't be null or empty");
-        ServiceBusSenderAsyncClient senderAsyncClient;
-            senderAsyncClient = this.producerFactory.createProducer(destination);
+        ServiceBusSenderAsyncClient senderAsyncClient = this.producerFactory.createProducer(destination);
         ServiceBusMessage serviceBusMessage = messageConverter.fromMessage(message, ServiceBusMessage.class);
 
         if (Objects.nonNull(serviceBusMessage) && !StringUtils.hasText(serviceBusMessage.getPartitionKey())) {

@@ -25,13 +25,14 @@ class AzureServiceBusConsumerClientConfigurationTest {
     }
 
     @Test
-    void entityNameProvidedShouldConfigure() {
+    void entityNameProvidedShouldNotConfigure() {
         ServiceBusClientBuilder serviceBusClientBuilder = new ServiceBusClientBuilder();
         serviceBusClientBuilder.connectionString(String.format(CONNECTION_STRING, "test-namespace"));
 
         contextRunner
             .withPropertyValues(
-                "spring.cloud.azure.servicebus.consumer.type=queue"
+                "spring.cloud.azure.servicebus.entity-type=queue",
+                "spring.cloud.azure.servicebus.consumer.entity-type=queue"
             )
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .withBean(ServiceBusClientBuilder.class, () -> serviceBusClientBuilder)
@@ -41,13 +42,14 @@ class AzureServiceBusConsumerClientConfigurationTest {
     }
 
     @Test
-    void entityTypeProvidedShouldConfigure() {
+    void entityTypeProvidedShouldNotConfigure() {
         ServiceBusClientBuilder serviceBusClientBuilder = new ServiceBusClientBuilder();
         serviceBusClientBuilder.connectionString(String.format(CONNECTION_STRING, "test-namespace"));
 
         contextRunner
             .withPropertyValues(
-                "spring.cloud.azure.servicebus.consumer.name=test-queue"
+                "spring.cloud.azure.servicebus.entity-name=test-queue",
+                "spring.cloud.azure.servicebus.consumer.entity-name=test-queue"
             )
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .withBean(ServiceBusClientBuilder.class, () -> serviceBusClientBuilder)
@@ -63,28 +65,8 @@ class AzureServiceBusConsumerClientConfigurationTest {
 
         contextRunner
             .withPropertyValues(
-                "spring.cloud.azure.servicebus.consumer.name=test-queue",
-                "spring.cloud.azure.servicebus.consumer.type=queue"
-            )
-            .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
-            .withBean(ServiceBusClientBuilder.class, () -> serviceBusClientBuilder)
-            .run(context -> {
-                assertThat(context).hasSingleBean(AzureServiceBusConsumerClientConfiguration.class);
-                assertThat(context).hasSingleBean(AzureServiceBusConsumerClientConfiguration.NoneSessionConsumerClientConfiguration.class);
-                assertThat(context).doesNotHaveBean(AzureServiceBusConsumerClientConfiguration.SessionConsumerClientConfiguration.class);
-            });
-    }
-
-    @Test
-    void topicNameProvidedShouldConfigure() {
-        ServiceBusClientBuilder serviceBusClientBuilder = new ServiceBusClientBuilder();
-        serviceBusClientBuilder.connectionString(String.format(CONNECTION_STRING, "test-namespace"));
-
-        contextRunner
-            .withPropertyValues(
-                "spring.cloud.azure.servicebus.consumer.name=test-topic",
-                "spring.cloud.azure.servicebus.consumer.subscription-name=test-sub",
-                "spring.cloud.azure.servicebus.consumer.type=topic"
+                "spring.cloud.azure.servicebus.entity-name=test-queue",
+                "spring.cloud.azure.servicebus.entity-type=queue"
             )
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .withBean(ServiceBusClientBuilder.class, () -> serviceBusClientBuilder)
@@ -102,8 +84,28 @@ class AzureServiceBusConsumerClientConfigurationTest {
 
         contextRunner
             .withPropertyValues(
-                "spring.cloud.azure.servicebus.consumer.name=test-topic",
-                "spring.cloud.azure.servicebus.consumer.type=topic"
+                "spring.cloud.azure.servicebus.consumer.entity-name=test-topic",
+                "spring.cloud.azure.servicebus.consumer.subscription-name=test-sub",
+                "spring.cloud.azure.servicebus.consumer.entity-type=topic"
+            )
+            .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
+            .withBean(ServiceBusClientBuilder.class, () -> serviceBusClientBuilder)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureServiceBusConsumerClientConfiguration.class);
+                assertThat(context).hasSingleBean(AzureServiceBusConsumerClientConfiguration.NoneSessionConsumerClientConfiguration.class);
+                assertThat(context).doesNotHaveBean(AzureServiceBusConsumerClientConfiguration.SessionConsumerClientConfiguration.class);
+            });
+    }
+
+    @Test
+    void subscriptionNameProvidedShouldNotConfigure() {
+        ServiceBusClientBuilder serviceBusClientBuilder = new ServiceBusClientBuilder();
+        serviceBusClientBuilder.connectionString(String.format(CONNECTION_STRING, "test-namespace"));
+
+        contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.servicebus.consumer.entity-name=test-topic",
+                "spring.cloud.azure.servicebus.consumer.entity-type=topic"
             )
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .withBean(ServiceBusClientBuilder.class, () -> serviceBusClientBuilder)
@@ -114,8 +116,8 @@ class AzureServiceBusConsumerClientConfigurationTest {
     void dedicatedConnectionInfoProvidedShouldConfigureDedicated() {
         contextRunner
             .withPropertyValues(
-                "spring.cloud.azure.servicebus.consumer.name=test-queue",
-                "spring.cloud.azure.servicebus.consumer.type=queue",
+                "spring.cloud.azure.servicebus.consumer.entity-name=test-queue",
+                "spring.cloud.azure.servicebus.consumer.entity-type=queue",
                 "spring.cloud.azure.servicebus.consumer.connection-string=" + String.format(CONNECTION_STRING, "test-namespace")
             )
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
@@ -134,8 +136,8 @@ class AzureServiceBusConsumerClientConfigurationTest {
 
         contextRunner
             .withPropertyValues(
-                "spring.cloud.azure.servicebus.consumer.name=test-queue",
-                "spring.cloud.azure.servicebus.consumer.type=queue",
+                "spring.cloud.azure.servicebus.entity-name=test-queue",
+                "spring.cloud.azure.servicebus.entity-type=queue",
                 "spring.cloud.azure.servicebus.consumer.session-aware=true"
             )
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
@@ -153,8 +155,8 @@ class AzureServiceBusConsumerClientConfigurationTest {
     void sessionAwareEnabledWithDedicatedConnectionShouldConfigureSession() {
         contextRunner
             .withPropertyValues(
-                "spring.cloud.azure.servicebus.consumer.name=test-queue",
-                "spring.cloud.azure.servicebus.consumer.type=queue",
+                "spring.cloud.azure.servicebus.consumer.entity-name=test-queue",
+                "spring.cloud.azure.servicebus.consumer.entity-type=queue",
                 "spring.cloud.azure.servicebus.consumer.connection-string=" + String.format(CONNECTION_STRING, "test-namespace"),
                 "spring.cloud.azure.servicebus.consumer.session-aware=true"
             )

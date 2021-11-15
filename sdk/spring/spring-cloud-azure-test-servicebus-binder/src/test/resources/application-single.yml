@@ -25,6 +25,7 @@ spring:
                 azure:
                   servicebus:
                     connection-string: ${SERVICEBUS1_BINDER_TEST_CONNECTION_STRING}
+                    entity-type: topic
         servicebus-2:
           type: servicebus
           default-candidate: false
@@ -34,11 +35,4 @@ spring:
                 azure:
                   servicebus:
                     connection-string: ${SERVICEBUS1_BINDER_TEST_CONNECTION_STRING}
-      servicebus:
-        bindings:
-          topicSupply-out-0:
-            producer:
-              type: topic
-          queueSupply-out-0:
-            producer:
-              type: queue
+                    entity-type: queue

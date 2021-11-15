@@ -5,6 +5,7 @@ package com.azure.spring.cloud.autoconfigure.servicebus;
 
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
+import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.servicebus.properties.AzureServiceBusProperties;
 import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.service.servicebus.factory.ServiceBusProcessorClientBuilderFactory;
@@ -24,7 +25,7 @@ import org.springframework.util.StringUtils;
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnBean(MessageProcessingListener.class)
-@ConditionalOnProperty(prefix = "spring.cloud.azure.servicebus.processor", name = { "name", "type" })
+@ConditionalOnAnyProperty(prefix = "spring.cloud.azure.servicebus", name = { "entity-name", "processor.entity-name" })
 @Import({
     AzureServiceBusProcessorClientConfiguration.SessionProcessorClientConfiguration.class,
     AzureServiceBusProcessorClientConfiguration.NoneSessionProcessorClientConfiguration.class
@@ -34,6 +35,7 @@ class AzureServiceBusProcessorClientConfiguration {
     @Configuration(proxyBeanMethods = false)
     @ConditionalOnProperty(value = "spring.cloud.azure.servicebus.processor.session-aware", havingValue = "false",
         matchIfMissing = true)
+    @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.servicebus", name = { "entity-type", "processor.entity-type" })
     static class NoneSessionProcessorClientConfiguration {
 
         @Bean
@@ -72,6 +74,7 @@ class AzureServiceBusProcessorClientConfiguration {
 
     @Configuration(proxyBeanMethods = false)
     @ConditionalOnProperty(value = "spring.cloud.azure.servicebus.processor.session-aware", havingValue = "true")
+    @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.servicebus", name = { "entity-type", "processor.entity-type" })
     static class SessionProcessorClientConfiguration {
 
         @Bean

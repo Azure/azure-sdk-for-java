@@ -28,9 +28,14 @@ class AzureServiceBusProcessorClientConfigurationTest {
         contextRunner
             .withBean(MessageProcessingListener.class, TestMessageProcessingListener::new)
             .withPropertyValues(
-                "spring.cloud.azure.servicebus.processor.name=test-queue"
+                "spring.cloud.azure.servicebus.entity-name=test-queue",
+                "spring.cloud.azure.servicebus.processor.entity-name=test-queue"
             )
-            .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusProcessorClientConfiguration.class));
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureServiceBusProcessorClientConfiguration.class);
+                assertThat(context).doesNotHaveBean(AzureServiceBusProcessorClientConfiguration.NoneSessionProcessorClientConfiguration.class);
+                assertThat(context).doesNotHaveBean(AzureServiceBusProcessorClientConfiguration.SessionProcessorClientConfiguration.class);
+            });
     }
 
     @Test
@@ -38,7 +43,18 @@ class AzureServiceBusProcessorClientConfigurationTest {
         contextRunner
             .withBean(MessageProcessingListener.class, TestMessageProcessingListener::new)
             .withPropertyValues(
-                "spring.cloud.azure.servicebus.processor.type=queue"
+                "spring.cloud.azure.servicebus.entity-type=queue",
+                "spring.cloud.azure.servicebus.processor.entity-type=queue"
+            )
+            .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusProcessorClientConfiguration.class));
+    }
+
+    @Test
+    void noMessageProcessorShouldNotConfigure() {
+        contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.servicebus.entity-name=test-queue",
+                "spring.cloud.azure.servicebus.entity-type=queue"
             )
             .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusProcessorClientConfiguration.class));
     }
@@ -48,20 +64,10 @@ class AzureServiceBusProcessorClientConfigurationTest {
         contextRunner
             .withBean(MessageProcessingListener.class, TestMessageProcessingListener::new)
             .withPropertyValues(
-                "spring.cloud.azure.servicebus.processor.name=test-topic",
-                "spring.cloud.azure.servicebus.processor.type=topic"
+                "spring.cloud.azure.servicebus.processor.entity-name=test-topic",
+                "spring.cloud.azure.servicebus.processor.entity-type=topic"
             )
             .run(context -> assertThrows(IllegalStateException.class, () -> context.getBean(AzureServiceBusProcessorClientConfiguration.class)));
-    }
-
-    @Test
-    void noMessageProcessorShouldNotConfigure() {
-        contextRunner
-            .withPropertyValues(
-                "spring.cloud.azure.servicebus.processor.name=test-queue",
-                "spring.cloud.azure.servicebus.processor.type=queue"
-            )
-            .run(context -> assertThat(context).doesNotHaveBean(AzureServiceBusProcessorClientConfiguration.class));
     }
 
     @Test
@@ -71,8 +77,8 @@ class AzureServiceBusProcessorClientConfigurationTest {
 
         contextRunner
             .withPropertyValues(
-                "spring.cloud.azure.servicebus.processor.name=test-queue",
-                "spring.cloud.azure.servicebus.processor.type=queue"
+                "spring.cloud.azure.servicebus.entity-name=test-queue",
+                "spring.cloud.azure.servicebus.entity-type=queue"
             )
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .withBean(MessageProcessingListener.class, TestMessageProcessingListener::new)
@@ -91,9 +97,9 @@ class AzureServiceBusProcessorClientConfigurationTest {
 
         contextRunner
             .withPropertyValues(
-                "spring.cloud.azure.servicebus.processor.name=test-topic",
+                "spring.cloud.azure.servicebus.entity-name=test-topic",
                 "spring.cloud.azure.servicebus.processor.subscription-name=test-sub",
-                "spring.cloud.azure.servicebus.processor.type=topic"
+                "spring.cloud.azure.servicebus.entity-type=topic"
             )
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .withBean(MessageProcessingListener.class, TestMessageProcessingListener::new)
@@ -109,8 +115,8 @@ class AzureServiceBusProcessorClientConfigurationTest {
     void dedicatedConnectionInfoProvidedShouldConfigureDedicated() {
         contextRunner
             .withPropertyValues(
-                "spring.cloud.azure.servicebus.processor.name=test-queue",
-                "spring.cloud.azure.servicebus.processor.type=queue",
+                "spring.cloud.azure.servicebus.processor.entity-name=test-queue",
+                "spring.cloud.azure.servicebus.processor.entity-type=queue",
                 "spring.cloud.azure.servicebus.processor.connection-string=" + String.format(CONNECTION_STRING, "test-namespace")
             )
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
@@ -133,9 +139,9 @@ class AzureServiceBusProcessorClientConfigurationTest {
 
         contextRunner
             .withPropertyValues(
-                "spring.cloud.azure.servicebus.processor.name=test-topic",
+                "spring.cloud.azure.servicebus.processor.entity-name=test-topic",
                 "spring.cloud.azure.servicebus.processor.subscription-name=test-sub",
-                "spring.cloud.azure.servicebus.processor.type=topic",
+                "spring.cloud.azure.servicebus.processor.entity-type=topic",
                 "spring.cloud.azure.servicebus.processor.session-aware=true"
             )
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
@@ -157,8 +163,8 @@ class AzureServiceBusProcessorClientConfigurationTest {
     void sessionAwareEnabledWithDedicatedConnectionShouldConfigureSession() {
         contextRunner
             .withPropertyValues(
-                "spring.cloud.azure.servicebus.processor.name=test-queue",
-                "spring.cloud.azure.servicebus.processor.type=queue",
+                "spring.cloud.azure.servicebus.processor.entity-name=test-queue",
+                "spring.cloud.azure.servicebus.processor.entity-type=queue",
                 "spring.cloud.azure.servicebus.processor.connection-string=" + String.format(CONNECTION_STRING, "test-namespace"),
                 "spring.cloud.azure.servicebus.processor.session-aware=true"
             )
