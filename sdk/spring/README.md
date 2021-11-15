@@ -1,91 +1,86 @@
-# Azure Spring Boot client library for Java
+# Spring Cloud Azure
 
-## Getting started
-### Introduction
+Spring Cloud Azure offers a convenient way to interact with **Azure** provided services using well-known Spring idioms and APIs for Spring developers. 
 
-This repo is for Spring Boot Starters of Azure services. It helps Spring Boot developers to adopt Azure services.
+## Build from Source
 
-### Support
-* This repository supports Spring Boot 2.2.x, 2.3.x and 2.4.x. Please read [Spring Boot Dependency Mapping][spring-boot-dependency-mapping] for dependency mapping.
+To check out the project and build it from source, do the following:
 
-### Prerequisites
-- JDK 1.8 and above
-- [Maven][maven] 3.0 and above
+```shell
+git clone git@github.com:Azure/azure-sdk-for-java.git
+cd azure-sdk-for-java
+mvn clean package -f sdk/spring/pom.xml -P dev
+```
 
-## Key concepts
-### 1.spring-cloud-azure-starter
+And if you want to install jars into your local repository:
 
-This repository is for Spring Boot Starters of Azure services. It helps Spring Boot developers to adopt Azure services. It supports Spring Boot 2.1.x, 2.2.x and 2.3.x. Please read [Spring Boot Dependency Mapping](https://github.com/Azure/azure-sdk-for-java/wiki/Spring-Boot-Dependency-Mapping) for dependency mapping.
-
-### 2.spring-cloud-azure-starter-cosmos
-
-[Azure Cosmos DB](https://azure.microsoft.com/services/cosmos-db/) is a globally-distributed database service that allows developers to work with data using a variety of standard APIs, such as SQL, MongoDB, Graph, and Azure Table storage.
-
-### 3.spring-cloud-azure-starter-eventhubs
-
-The Spring Cloud Event Hubs starter helps developers to finish the auto-configuration of Event Hubs and provides Spring Integration on Event Hubs.
-
-For Spring Integration on Event Hubs, please refer to the [source code][source_code_eventhubs].
+```shell
+mvn clean install -f sdk/spring/pom.xml -P dev
+```
 
 
-### 4.spring-cloud-azure-starter-integration-eventhubs
 
-Azure Key Vault Certificates Spring Boot Starter is Spring starter for [Azure Key Vault Certificates](https://docs.microsoft.com/azure/key-vault/certificates/about-certificates), it allows you to securely manage and tightly control your certificates.
+## Modules
 
-### 5.spring-cloud-azure-starter-integration-servicebus
+There're several modules in Spring Cloud Azure. Here is a quick review:
 
-The Spring Integration for Azure Service Bus extension project provides inbound and outbound channel adapters for Azure Service Bus.
-Microsoft Azure Service Bus is a fully managed enterprise integration message broker. Service Bus can decouple applications and services.
-Service Bus offers a reliable and secure platform for asynchronous transfer of data and state.
+### spring-cloud-azure-autoconfigure
 
-### 6.spring-cloud-azure-starter-integration-storage-queue
+Auto-configuration attempts to deduce which beans a user might need. For example, if `Cosmos DB` is on the classpath, and the user has not configured any Cosmos DB clients, then they probably want an Cosmos DB client to be defined. Auto-configuration will always back away as the user starts to define their own beans. 
 
-The *Spring Integration for Storage Queue* extension project provides inbound and outbound channel adapters and gateways for Azure Storage Queue.
+This module contains the auto-configuration code for Azure services. 
 
-### 7.spring-cloud-azure-starter-keyvault-certificates
+### spring-cloud-azure-starters
 
-Azure Key Vault Certificates Spring Boot Starter is Spring starter for [Azure Key Vault Certificates](https://docs.microsoft.com/azure/key-vault/certificates/about-certificates), it allows you to securely manage and tightly control your certificates.
+Spring Cloud Azure Starters are a set of convenient dependency descriptors to include in your application. It boosts your Spring Boot application developement with Azure services. For example, if you want to get started using Spring and Azure Cosmos DB for data persistence, include the `spring-cloud-azure-starter-cosmos` dependency in your project. Please refer to [Spring Cloud Azure Starter](./Spring-Cloud-Azure-Starter-README.md) for more details.
 
-### 8.spring-cloud-azure-starter-keyvault-secrets
+### spring-cloud-azure-actuator
 
-Azure Key Vault Secrets Spring Boot Starter for Azure Key Vault adds Azure Key Vault as one of the
-Spring PropertySource, so secrets stored in Azure Key Vault could be easily used and conveniently
-accessed like other externalized configuration property, e.g. properties in files.
+Actuator endpoints let you monitor and interact with your application. `Spring Boot Actuator` provides the infrastructure required for actuator endpoints. 
 
-### 9.spring-cloud-azure-starter-servicebus
+This module extends the `Spring Boot Actuator` module and provides the actuating support for Azure servcies.
 
-The Spring Cloud Service Bus starter helps developers to finish the auto-configuration of Service Bus and provides Spring Integration with Service Bus.
+### spring-cloud-azure-actuator-autoconfigure
 
-### 10.spring-cloud-azure-starter-servicebus-jms
+This provides auto-configuration for actuator endpoints based on the content of the classpath and a set of properties. 
 
-With this starter you could easily use Spring JMS Queue and Topic with Azure Service Bus.
+### spring-integration-azure
 
-### 11.spring-cloud-azure-starter-storage-queue
+Spring Integration Extension for Azure provides Spring Integration adapters for the various services provided by the [Azure SDK for Java](https://github.com/Azure/azure-sdk-for-java/). Below is a list of supported adapters:
 
-The Spring Cloud Storage Queue starter helps developers to finish the auto-configuration of Storage Queue and provides Spring Integration with Storage Queue.
+- spring-integration-azure-eventhbus
+- spring-integration-azure-servicebus
+- spring-integration-azure-storage-queue
 
-### 12.spring-cloud-azure-stream-binder-eventhubs
+### spring-cloud-azure-stream-binder
 
-The project provides **Spring Cloud Stream Binder for Azure Event Hub** which allows you to build message-driven
-microservice using **Spring Cloud Stream** based on [Azure Event Hub][azure_event_hub] service.
+Spring Cloud Stream is a framework for building highly scalable event-driven microservices connected with shared messaging systems.
 
-### 13.spring-cloud-azure-stream-binder-servicebus-queue
+The framework provides a flexible programming model built on already established and familiar Spring idioms and best practices, including support for persistent pub/sub semantics, consumer groups, and stateful partitions.
 
-The project provides **Spring Cloud Stream Binder for Azure Service Bus Queue** which allows you to build message-driven
-microservice using **Spring Cloud Stream** based on [Azure Service Bus Queue][azure_service_bus].
+Current binder implementations include:
 
-### 14.spring-cloud-azure-stream-binder-servicebus-topic
+- spring-cloud-azure-stream-binder-eventhubs
+- spring-cloud-azure-stream-binder-servicebus-queue
+- spring-cloud-azure-stream-binder-servicebus-topic
 
-The project provides **Spring Cloud Stream Binder for Azure Service Bus Topic** which allows you to build message-driven
-microservice using **Spring Cloud Stream** based on [Azure Service Bus Topic][azure_service_bus].
+## Spring Cloud Azure Bill of Materials (BOM)
 
+If you’re a Maven user, add our BOM to your pom.xml `<dependencyManagement>` section. This will allow you to not specify versions for any of the Maven dependencies and instead delegate versioning to the BOM.
 
-## Examples
-You could check [Spring Integration Guides][spring-integration-guides] articles to learn more on usage of specific starters.
-
-## Troubleshooting
-
-## Next steps
+```xml
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>com.azure.spring</groupId>
+            <artifactId>spring-cloud-azure-dependencies</artifactId>
+            <version>4.0.0</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+```
 
 ## Contributing
 This project welcomes contributions and suggestions.  Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
@@ -112,20 +107,16 @@ This project has adopted the [Microsoft Open Source Code of Conduct][codeofcondu
 
 This project collects usage data and sends it to Microsoft to help improve our products and services. Read our [privacy][privacy-statement] statement to learn more.
 
-<!--link-->
-[maven]: https://maven.apache.org/
-[spring-boot-dependency-mapping]: https://github.com/Azure/azure-sdk-for-java/wiki/Spring-Versions-Mapping
 
-[spring-integration-guides]: https://docs.microsoft.com/java/azure/spring-framework
+
 [spring-contributing]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/spring/CONTRIBUTING.md
 [azure-sdk-for-java-issues]: https://github.com/Azure/azure-sdk-for-java/issues
 [gitter-spring-on-azure-img]: https://badges.gitter.im/Microsoft/spring-on-azure.svg
 [gitter-spring-on-azure]: https://gitter.im/Microsoft/spring-on-azure
 [azure-sdk-for-java-compare]: https://github.com/Azure/azure-sdk-for-java/compare
-
 [codeofconduct]: https://opensource.microsoft.com/codeofconduct/faq/
 [codeofconduct-faq]: https://opensource.microsoft.com/codeofconduct/faq/
 [privacy-statement]: https://privacy.microsoft.com/privacystatement
-[azure_event_hub]: https://azure.microsoft.com/services/event-hubs/
-[source_code_eventhubs]: https://github.com/Azure/azure-sdk-for-java/tree/feature/azure-spring-cloud-4.0/sdk/spring/spring-integration-azure-eventhubs
-[azure_service_bus]: https://azure.microsoft.com/services/service-bus/
+
+
+
