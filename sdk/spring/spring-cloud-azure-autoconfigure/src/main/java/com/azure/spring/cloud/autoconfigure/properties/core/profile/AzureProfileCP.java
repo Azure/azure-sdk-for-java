@@ -6,6 +6,7 @@ package com.azure.spring.cloud.autoconfigure.properties.core.profile;
 import com.azure.spring.core.aware.AzureProfileAware;
 import com.azure.spring.core.properties.profile.AzureEnvironment;
 import com.azure.spring.core.properties.profile.AzureProfileAdapter;
+import com.azure.spring.core.properties.profile.KnownAzureEnvironment;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 /**
@@ -27,7 +28,7 @@ public class AzureProfileCP extends AzureProfileAdapter {
     private AzureProfileAware.CloudType cloud = AzureProfileAware.CloudType.AZURE;
 
     @NestedConfigurationProperty
-    private final AzureEnvironment environment = new AzureEnvironment();
+    private final AzureEnvironment environment = new KnownAzureEnvironment(AzureProfileAware.CloudType.AZURE);
 
     public String getTenantId() {
         return tenantId;
@@ -48,6 +49,9 @@ public class AzureProfileCP extends AzureProfileAdapter {
 
     public void setCloud(AzureProfileAware.CloudType cloud) {
         this.cloud = cloud;
+
+        // Explicitly call this method to merge default cloud endpoints to the environment object.
+        changeEnvironmentAccordingToCloud();
     }
 
     public void setSubscriptionId(String subscriptionId) {

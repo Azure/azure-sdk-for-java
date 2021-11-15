@@ -23,7 +23,6 @@ public class AzureStorageBlobProperties extends AzureStorageProperties implement
     private String containerName;
     private String blobName;
 
-    // TODO (xiada): should we calculate the endpoint from the account name
     public String getEndpoint() {
         return endpoint == null ? buildEndpointFromAccountName() : endpoint;
     }

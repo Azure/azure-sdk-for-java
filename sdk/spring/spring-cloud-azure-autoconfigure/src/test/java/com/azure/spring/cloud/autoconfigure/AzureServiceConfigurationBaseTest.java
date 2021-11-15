@@ -103,9 +103,9 @@ class AzureServiceConfigurationBaseTest {
     @Test
     void configureEnvGlobalAndCosmosShouldApplyCosmos() {
         AzureGlobalProperties azureProperties = new AzureGlobalProperties();
+        azureProperties.getProfile().setCloud(AZURE_CHINA);
         azureProperties.getProfile().getEnvironment().setActiveDirectoryEndpoint("abc");
         azureProperties.getProfile().getEnvironment().setActiveDirectoryGraphApiVersion("v2");
-        azureProperties.getProfile().setCloud(AZURE_CHINA);
 
         this.contextRunner
             .withBean(AzureGlobalProperties.class, () -> azureProperties)

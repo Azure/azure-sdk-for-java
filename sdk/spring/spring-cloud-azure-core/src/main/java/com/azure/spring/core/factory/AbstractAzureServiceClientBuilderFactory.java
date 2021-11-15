@@ -6,7 +6,6 @@ package com.azure.spring.core.factory;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.spring.core.aware.AzureProfileAware;
 import com.azure.spring.core.aware.ClientAware;
 import com.azure.spring.core.aware.authentication.ConnectionStringAware;
 import com.azure.spring.core.connectionstring.ConnectionStringProvider;
@@ -103,11 +102,10 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
     }
 
     protected void configureAzureEnvironment(T builder) {
-        AzureProfileAware.Profile profile = getAzureProperties().getProfile();
-        profile.afterPropertiesSet();
 
         Configuration configuration = new Configuration();
-        configuration.put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST, profile.getEnvironment().getActiveDirectoryEndpoint());
+        configuration.put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST,
+            getAzureProperties().getProfile().getEnvironment().getActiveDirectoryEndpoint());
 
         consumeConfiguration().accept(builder, configuration);
     }

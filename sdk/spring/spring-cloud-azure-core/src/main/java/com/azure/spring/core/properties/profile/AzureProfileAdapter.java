@@ -9,17 +9,16 @@ import static com.azure.spring.core.aware.AzureProfileAware.CloudType.AZURE;
 import static com.azure.spring.core.aware.AzureProfileAware.CloudType.AZURE_CHINA;
 import static com.azure.spring.core.aware.AzureProfileAware.CloudType.AZURE_GERMANY;
 import static com.azure.spring.core.aware.AzureProfileAware.CloudType.AZURE_US_GOVERNMENT;
-import static com.azure.spring.core.properties.AzurePropertiesUtils.copyPropertiesWhenTargetIsNull;
+import static com.azure.spring.core.properties.AzurePropertiesUtils.copyPropertiesIgnoreNull;
 
 /**
  * Skeleton implementation of a {@link AzureProfileAware.Profile}.
  */
 public abstract class AzureProfileAdapter implements AzureProfileAware.Profile {
 
-    @Override
-    public void afterPropertiesSet() {
+    protected void changeEnvironmentAccordingToCloud() {
         AzureEnvironment defaultEnvironment = decideAzureEnvironment(this.getCloud());
-        copyPropertiesWhenTargetIsNull(defaultEnvironment, this.getEnvironment());
+        copyPropertiesIgnoreNull(defaultEnvironment, this.getEnvironment());
     }
 
     public abstract AzureEnvironment getEnvironment();

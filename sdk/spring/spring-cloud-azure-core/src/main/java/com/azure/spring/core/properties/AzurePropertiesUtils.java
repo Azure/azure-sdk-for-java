@@ -78,7 +78,7 @@ public class AzurePropertiesUtils {
         BeanUtils.copyProperties(source, target, findNonNullPropertyNames(target));
     }
 
-    private static void copyPropertiesIgnoreNull(Object source, Object target) {
+    public static void copyPropertiesIgnoreNull(Object source, Object target) {
         BeanUtils.copyProperties(source, target, findNullPropertyNames(source));
     }
 

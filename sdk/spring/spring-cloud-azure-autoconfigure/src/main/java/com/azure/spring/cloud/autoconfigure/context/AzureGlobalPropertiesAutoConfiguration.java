@@ -4,14 +4,9 @@
 package com.azure.spring.cloud.autoconfigure.context;
 
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
-import com.azure.spring.core.aware.AzureProfileAware;
-import com.azure.spring.core.properties.AzureProperties;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.boot.context.properties.bind.Binder;
 import org.springframework.context.EnvironmentAware;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Import;
 import org.springframework.context.annotation.ImportBeanDefinitionRegistrar;
 import org.springframework.core.env.Environment;
@@ -46,24 +41,6 @@ public class AzureGlobalPropertiesAutoConfiguration {
                                                                                                 AzureGlobalProperties.class))
                                                     .getBeanDefinition());
             }
-        }
-
-    }
-
-    @Bean
-    public AzurePropertiesBeanPostProcessor azurePropertiesBeanPostProcessor() {
-        return new AzurePropertiesBeanPostProcessor();
-    }
-
-    static class AzurePropertiesBeanPostProcessor implements BeanPostProcessor {
-
-        @Override
-        public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-            if (bean instanceof AzureProperties) {
-                AzureProfileAware.Profile profile = ((AzureProperties) bean).getProfile();
-                profile.afterPropertiesSet();
-            }
-            return bean;
         }
 
     }

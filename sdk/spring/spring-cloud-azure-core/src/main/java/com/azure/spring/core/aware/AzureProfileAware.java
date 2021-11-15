@@ -3,8 +3,6 @@
 
 package com.azure.spring.core.aware;
 
-import org.springframework.beans.factory.InitializingBean;
-
 /**
  * Interface to be implemented by classes that wish to be aware of the Azure profile.
  */
@@ -15,7 +13,7 @@ public interface AzureProfileAware {
     /**
      * Interface to be implemented by classes that wish to describe an Azure cloud profile.
      */
-    interface Profile extends InitializingBean {
+    interface Profile {
 
         String getTenantId();
 
@@ -25,8 +23,6 @@ public interface AzureProfileAware {
 
         Environment getEnvironment();
 
-        @Override
-        void afterPropertiesSet();
     }
 
     /**

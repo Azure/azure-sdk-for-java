@@ -15,7 +15,7 @@ public class AzureProfile extends AzureProfileAdapter {
     private String tenantId;
     private String subscriptionId;
     private AzureProfileAware.CloudType cloud = AZURE;
-    private final AzureEnvironment environment = new AzureEnvironment();
+    private final AzureEnvironment environment = new KnownAzureEnvironment(AZURE);
 
     public String getTenantId() {
         return tenantId;
@@ -40,6 +40,9 @@ public class AzureProfile extends AzureProfileAdapter {
 
     public void setCloud(AzureProfileAware.CloudType cloud) {
         this.cloud = cloud;
+
+        // Explicitly call this method to merge default cloud endpoints to the environment object.
+        changeEnvironmentAccordingToCloud();
     }
 
     @Override
