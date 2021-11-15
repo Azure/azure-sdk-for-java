@@ -8,10 +8,14 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** The resource quota limit value. */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "limitObjectType")
+@JsonTypeName("LimitValue")
 @Fluent
-public class LimitObject {
+public final class LimitObject extends LimitJsonObject {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(LimitObject.class);
 
     /*
@@ -19,12 +23,6 @@ public class LimitObject {
      */
     @JsonProperty(value = "value", required = true)
     private int value;
-
-    /*
-     * The limit object type.
-     */
-    @JsonProperty(value = "limitObjectType")
-    private LimitType limitObjectType;
 
     /*
      * The quota or usages limit types.
@@ -53,26 +51,6 @@ public class LimitObject {
     }
 
     /**
-     * Get the limitObjectType property: The limit object type.
-     *
-     * @return the limitObjectType value.
-     */
-    public LimitType limitObjectType() {
-        return this.limitObjectType;
-    }
-
-    /**
-     * Set the limitObjectType property: The limit object type.
-     *
-     * @param limitObjectType the limitObjectType value to set.
-     * @return the LimitObject object itself.
-     */
-    public LimitObject withLimitObjectType(LimitType limitObjectType) {
-        this.limitObjectType = limitObjectType;
-        return this;
-    }
-
-    /**
      * Get the limitType property: The quota or usages limit types.
      *
      * @return the limitType value.
@@ -97,6 +75,8 @@ public class LimitObject {
      *
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
+    @Override
     public void validate() {
+        super.validate();
     }
 }

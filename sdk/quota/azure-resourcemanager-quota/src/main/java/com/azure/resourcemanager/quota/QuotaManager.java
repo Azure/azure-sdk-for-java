@@ -8,6 +8,7 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
+import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -22,11 +23,11 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.quota.fluent.AzureQuotaExtensionApi;
 import com.azure.resourcemanager.quota.implementation.AzureQuotaExtensionApiBuilder;
-import com.azure.resourcemanager.quota.implementation.OperationsImpl;
+import com.azure.resourcemanager.quota.implementation.QuotaOperationsImpl;
 import com.azure.resourcemanager.quota.implementation.QuotaRequestStatusImpl;
 import com.azure.resourcemanager.quota.implementation.QuotasImpl;
 import com.azure.resourcemanager.quota.implementation.UsagesImpl;
-import com.azure.resourcemanager.quota.models.Operations;
+import com.azure.resourcemanager.quota.models.QuotaOperations;
 import com.azure.resourcemanager.quota.models.QuotaRequestStatus;
 import com.azure.resourcemanager.quota.models.Quotas;
 import com.azure.resourcemanager.quota.models.Usages;
@@ -35,6 +36,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /** Entry point to QuotaManager. Microsoft Azure Quota Resource Provider. */
 public final class QuotaManager {
@@ -44,7 +46,7 @@ public final class QuotaManager {
 
     private QuotaRequestStatus quotaRequestStatus;
 
-    private Operations operations;
+    private QuotaOperations quotaOperations;
 
     private final AzureQuotaExtensionApi clientObject;
 
@@ -181,7 +183,7 @@ public final class QuotaManager {
                 .append("-")
                 .append("com.azure.resourcemanager.quota")
                 .append("/")
-                .append("1.0.0-beta.1");
+                .append("1.0.0-beta.2");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
                 userAgentBuilder
                     .append(" (")
@@ -204,11 +206,24 @@ public final class QuotaManager {
             List<HttpPipelinePolicy> policies = new ArrayList<>();
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new RequestIdPolicy());
+            policies
+                .addAll(
+                    this
+                        .policies
+                        .stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                        .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies.addAll(this.policies);
+            policies
+                .addAll(
+                    this
+                        .policies
+                        .stream()
+                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
+                        .collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
             HttpPipeline httpPipeline =
@@ -244,12 +259,12 @@ public final class QuotaManager {
         return quotaRequestStatus;
     }
 
-    /** @return Resource collection API of Operations. */
-    public Operations operations() {
-        if (this.operations == null) {
-            this.operations = new OperationsImpl(clientObject.getOperations(), this);
+    /** @return Resource collection API of QuotaOperations. */
+    public QuotaOperations quotaOperations() {
+        if (this.quotaOperations == null) {
+            this.quotaOperations = new QuotaOperationsImpl(clientObject.getQuotaOperations(), this);
         }
-        return operations;
+        return quotaOperations;
     }
 
     /**
