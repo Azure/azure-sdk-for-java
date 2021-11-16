@@ -49,7 +49,7 @@ public class AzureEventHubsResourceManagerAutoConfiguration extends AzureService
 
     @Bean
     @ConditionalOnMissingBean
-    public EventHubsProvisioner eventHubProvisioner() {
+    public EventHubsProvisioner eventHubsProvisioner() {
         return new DefaultEventHubsProvisioner(this.azureResourceManager, this.eventHubsProperties.getResource());
     }
 

@@ -46,10 +46,10 @@ public class EventHubsBinderConfiguration {
     @ConditionalOnMissingBean
     @ConditionalOnBean({ EventHubsProvisioner.class, AzureEventHubsProperties.class })
     public EventHubsChannelProvisioner eventHubChannelArmProvisioner(
-        AzureEventHubsProperties eventHubsProperties, EventHubsProvisioner eventHubProvisioner) {
+        AzureEventHubsProperties eventHubsProperties, EventHubsProvisioner eventHubsProvisioner) {
 
         return new EventHubsChannelResourceManagerProvisioner(eventHubsProperties.getNamespace(),
-                                                             eventHubProvisioner);
+                                                             eventHubsProvisioner);
     }
 
     @Bean

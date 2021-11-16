@@ -13,22 +13,22 @@ import org.springframework.util.Assert;
 public class EventHubsChannelResourceManagerProvisioner extends EventHubsChannelProvisioner {
 
     private final String namespace;
-    private final EventHubsProvisioner eventHubProvisioner;
+    private final EventHubsProvisioner eventHubsProvisioner;
 
     public EventHubsChannelResourceManagerProvisioner(@NonNull String namespace,
-                                                      @NonNull EventHubsProvisioner eventHubProvisioner) {
+                                                      @NonNull EventHubsProvisioner eventHubsProvisioner) {
         Assert.hasText(namespace, "The namespace can't be null or empty");
         this.namespace = namespace;
-        this.eventHubProvisioner = eventHubProvisioner;
+        this.eventHubsProvisioner = eventHubsProvisioner;
     }
 
     @Override
     protected void validateOrCreateForConsumer(String name, String group) {
-        eventHubProvisioner.provisionConsumerGroup(this.namespace, name, group);
+        eventHubsProvisioner.provisionConsumerGroup(this.namespace, name, group);
     }
 
     @Override
     protected void validateOrCreateForProducer(String name) {
-        eventHubProvisioner.provisionEventHub(this.namespace, name);
+        eventHubsProvisioner.provisionEventHub(this.namespace, name);
     }
 }

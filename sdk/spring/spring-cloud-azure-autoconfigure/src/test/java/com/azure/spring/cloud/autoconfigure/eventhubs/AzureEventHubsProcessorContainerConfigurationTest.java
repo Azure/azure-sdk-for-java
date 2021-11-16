@@ -30,7 +30,7 @@ class AzureEventHubsProcessorContainerConfigurationTest {
     }
 
     @Test
-    void withoutEventHubProcessorContainerShouldNotConfigure() {
+    void withoutEventHubsProcessorContainerShouldNotConfigure() {
         this.contextRunner
             .withClassLoader(new FilteredClassLoader(EventHubsProcessorContainer.class))
             .withPropertyValues(
