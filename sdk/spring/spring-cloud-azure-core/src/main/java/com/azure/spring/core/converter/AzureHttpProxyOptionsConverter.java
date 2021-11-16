@@ -5,7 +5,6 @@ package com.azure.spring.core.converter;
 
 import com.azure.core.http.ProxyOptions;
 import com.azure.spring.core.aware.ProxyAware;
-import com.azure.spring.core.properties.proxy.HttpProxyProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
@@ -14,7 +13,7 @@ import org.springframework.util.StringUtils;
 import java.net.InetSocketAddress;
 
 /**
- * Converts a {@link HttpProxyProperties} to a {@link ProxyOptions}.
+ * Converts a {@link ProxyAware.Proxy} to a {@link ProxyOptions}.
  */
 public final class AzureHttpProxyOptionsConverter implements Converter<ProxyAware.Proxy, ProxyOptions> {
 
@@ -42,8 +41,8 @@ public final class AzureHttpProxyOptionsConverter implements Converter<ProxyAwar
             proxyOptions.setCredentials(proxy.getUsername(), proxy.getPassword());
         }
 
-        if (proxy instanceof HttpProxyProperties) {
-            HttpProxyProperties httpProxyProperties = (HttpProxyProperties) proxy;
+        if (proxy instanceof ProxyAware.HttpProxy) {
+            ProxyAware.HttpProxy httpProxyProperties = (ProxyAware.HttpProxy) proxy;
             if (StringUtils.hasText(httpProxyProperties.getNonProxyHosts())) {
                 proxyOptions.setNonProxyHosts(httpProxyProperties.getNonProxyHosts());
             }

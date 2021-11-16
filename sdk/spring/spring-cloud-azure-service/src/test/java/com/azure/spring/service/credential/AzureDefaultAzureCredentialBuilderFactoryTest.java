@@ -3,8 +3,12 @@
 
 package com.azure.spring.service.credential;
 
-import com.azure.core.http.ProxyOptions;
+import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpClientProvider;
+import com.azure.core.util.HttpClientOptions;
 import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.spring.core.factory.credential.DefaultAzureCredentialBuilderFactory;
+import com.azure.spring.core.http.DefaultHttpProvider;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.core.properties.proxy.ProxyProperties;
 import com.azure.spring.core.properties.retry.RetryProperties;
@@ -16,15 +20,17 @@ import org.junit.jupiter.api.Test;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.time.Duration;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.ThreadPoolExecutor;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class AzureDefaultAzureCredentialBuilderFactoryTest extends AzureServiceClientBuilderFactoryTestBase<DefaultAzureCredentialBuilder,
-    AzureProperties, AzureDefaultAzureCredentialBuilderFactory> {
+    AzureProperties, DefaultAzureCredentialBuilderFactory> {
 
     @Override
     protected TestAzureGlobalProperties createMinimalServiceProperties() {
@@ -34,11 +40,11 @@ public class AzureDefaultAzureCredentialBuilderFactoryTest extends AzureServiceC
     @Test
     void testAuthorityHostAndExecutorServiceConfigured() {
         AzureProperties properties = createMinimalServiceProperties();
-        final DefaultAzureCredentialBuilder builder = mock(DefaultAzureCredentialBuilder.class);
         ThreadPoolExecutor executor = getThreadPoolExecutor();
-        AzureDefaultAzureCredentialBuilderFactory factory = new AzureDefaultAzureCredentialBuilderFactory(
-            properties, builder, executor);
+        DefaultAzureCredentialBuilderFactoryExt factory = new DefaultAzureCredentialBuilderFactoryExt(
+            properties, executor);
         DefaultAzureCredentialBuilder credentialBuilder = factory.build();
+        DefaultAzureCredentialBuilder builder = factory.getBuilder();
         verify(builder, times(1)).executorService(executor);
 
         String aadEndpoint = properties.getProfile().getEnvironment().getActiveDirectoryEndpoint();
@@ -48,13 +54,12 @@ public class AzureDefaultAzureCredentialBuilderFactoryTest extends AzureServiceC
     @Test
     void testHttpClientConfigured() {
         AzureProperties properties = createMinimalServiceProperties();
-        final DefaultAzureCredentialBuilder builder = mock(DefaultAzureCredentialBuilder.class);
         ThreadPoolExecutor executor = getThreadPoolExecutor();
-        AzureDefaultAzureCredentialBuilderFactory factory = new AzureDefaultAzureCredentialBuilderFactory(
-            properties, builder, executor);
+        DefaultAzureCredentialBuilderFactoryExt factory = new DefaultAzureCredentialBuilderFactoryExt(
+            properties, executor);
         factory.setHttpClientProvider(new TestHttpClientProvider());
         DefaultAzureCredentialBuilder credentialBuilder = factory.build();
-        verify(builder, times(1)).httpClient(any(TestHttpClient.class));
+        verify(factory.getBuilder(), times(1)).httpClient(any(TestHttpClient.class));
     }
 
     @Test
@@ -64,12 +69,11 @@ public class AzureDefaultAzureCredentialBuilderFactoryTest extends AzureServiceC
         retryProperties.setMaxAttempts(3);
         Duration duration = Duration.ofMillis(3);
         retryProperties.setTimeout(duration);
-        final DefaultAzureCredentialBuilder builder = mock(DefaultAzureCredentialBuilder.class);
         ThreadPoolExecutor executor = getThreadPoolExecutor();
-        AzureDefaultAzureCredentialBuilderFactory factory = new AzureDefaultAzureCredentialBuilderFactory(
-            properties, builder, executor);
+        DefaultAzureCredentialBuilderFactoryExt factory = new DefaultAzureCredentialBuilderFactoryExt(
+            properties, executor);
         DefaultAzureCredentialBuilder credentialBuilder = factory.build();
-        verify(builder, times(1)).maxRetry(3);
+        verify(factory.getBuilder(), times(1)).maxRetry(3);
     }
 
     @Test
@@ -78,17 +82,60 @@ public class AzureDefaultAzureCredentialBuilderFactoryTest extends AzureServiceC
         ProxyProperties proxyProperties = properties.getProxy();
         proxyProperties.setHostname("localhost");
         proxyProperties.setPort(8080);
-        final DefaultAzureCredentialBuilder builder = mock(DefaultAzureCredentialBuilder.class);
         ThreadPoolExecutor executor = getThreadPoolExecutor();
-        AzureDefaultAzureCredentialBuilderFactory factory = new AzureDefaultAzureCredentialBuilderFactory(
-            properties, builder, executor);
+        DefaultAzureCredentialBuilderFactoryProxyExt factory = new DefaultAzureCredentialBuilderFactoryProxyExt(
+            properties, executor);
+
+        DefaultAzureCredentialBuilder builder = factory.getBuilder();
+        HttpClientProvider defaultHttpClientProvider = factory.getDefaultHttpClientProvider();
         DefaultAzureCredentialBuilder credentialBuilder = factory.build();
-        verify(builder, times(1)).proxyOptions(any(ProxyOptions.class));
+        verify(builder, times(1)).httpClient(any(HttpClient.class));
+        verify(defaultHttpClientProvider, times(1)).createInstance(any(HttpClientOptions.class));
     }
 
     private ThreadPoolExecutor getThreadPoolExecutor() {
         ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
         taskExecutor.initialize();
         return taskExecutor.getThreadPoolExecutor();
+    }
+
+    static class DefaultAzureCredentialBuilderFactoryExt extends DefaultAzureCredentialBuilderFactory {
+
+        private final DefaultAzureCredentialBuilder builder = mock(DefaultAzureCredentialBuilder.class);
+
+        DefaultAzureCredentialBuilderFactoryExt(AzureProperties properties,
+                                                       ExecutorService executorService) {
+            super(properties, executorService);
+        }
+
+        @Override
+        public DefaultAzureCredentialBuilder createBuilderInstance() {
+            return builder;
+        }
+
+        DefaultAzureCredentialBuilder getBuilder() {
+            return builder;
+        }
+    }
+
+    static class DefaultAzureCredentialBuilderFactoryProxyExt extends DefaultAzureCredentialBuilderFactoryExt {
+
+        private HttpClientProvider httpClientProvider = mock(DefaultHttpProvider.class);
+
+        DefaultAzureCredentialBuilderFactoryProxyExt(AzureProperties properties, ExecutorService executorService) {
+            super(properties, executorService);
+
+            HttpClient httpClient = mock(HttpClient.class);
+            when(this.httpClientProvider.createInstance(any(HttpClientOptions.class))).thenReturn(httpClient);
+        }
+
+        @Override
+        protected HttpClientProvider getHttpClientProvider() {
+            return httpClientProvider;
+        }
+
+        HttpClientProvider getDefaultHttpClientProvider() {
+            return getHttpClientProvider();
+        }
     }
 }

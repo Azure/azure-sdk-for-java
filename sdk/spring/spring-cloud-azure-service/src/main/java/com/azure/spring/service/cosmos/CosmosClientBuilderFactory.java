@@ -12,7 +12,7 @@ import com.azure.spring.core.credential.descriptor.KeyAuthenticationDescriptor;
 import com.azure.spring.core.credential.descriptor.TokenAuthenticationDescriptor;
 import com.azure.spring.core.factory.AbstractAzureServiceClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
-import com.azure.spring.service.core.PropertyMapper;
+import com.azure.spring.core.properties.util.PropertyMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -7,8 +7,8 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.core.factory.AbstractAzureServiceClientBuilderFactory;
-import com.azure.spring.core.factory.AzureCredentialBuilderFactory;
-import com.azure.spring.service.credential.AzureDefaultAzureCredentialBuilderFactory;
+import com.azure.spring.core.factory.credential.AbstractAzureCredentialBuilderFactory;
+import com.azure.spring.core.factory.credential.DefaultAzureCredentialBuilderFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
@@ -39,16 +39,15 @@ public class AzureDefaultTokenCredentialAutoConfiguration {
     @Bean(name = DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME)
     @ConditionalOnMissingBean(name = DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME)
     @Order
-    public TokenCredential azureTokenCredential(AzureCredentialBuilderFactory<DefaultAzureCredentialBuilder> factory) {
+    public TokenCredential azureTokenCredential(AbstractAzureCredentialBuilderFactory<DefaultAzureCredentialBuilder> factory) {
         return factory.build().build();
     }
 
     @Bean
-    public AzureCredentialBuilderFactory<DefaultAzureCredentialBuilder> defaultAzureCredentialBuilderFactory(
+    public AbstractAzureCredentialBuilderFactory<DefaultAzureCredentialBuilder> defaultAzureCredentialBuilderFactory(
         @Autowired(required = false) ThreadPoolTaskExecutor taskExecutor) {
         ThreadPoolExecutor threadPoolExecutor = taskExecutor == null ? null : taskExecutor.getThreadPoolExecutor();
-        return new AzureDefaultAzureCredentialBuilderFactory(azureGlobalProperties,
-            new DefaultAzureCredentialBuilder(), threadPoolExecutor);
+        return new DefaultAzureCredentialBuilderFactory(azureGlobalProperties, threadPoolExecutor);
     }
 
     @Bean
@@ -63,7 +62,7 @@ public class AzureDefaultTokenCredentialAutoConfiguration {
         @SuppressWarnings("rawtypes")
         @Override
         public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-            if (bean instanceof AzureCredentialBuilderFactory) {
+            if (bean instanceof AbstractAzureCredentialBuilderFactory) {
                 return bean;
             }
             if (bean instanceof AbstractAzureServiceClientBuilderFactory

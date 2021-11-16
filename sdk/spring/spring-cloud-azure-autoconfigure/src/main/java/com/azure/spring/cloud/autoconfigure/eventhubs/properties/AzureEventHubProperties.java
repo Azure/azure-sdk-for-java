@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.eventhubs.properties;
 
 import com.azure.spring.cloud.autoconfigure.storage.blob.AzureStorageBlobProperties;
-import com.azure.spring.core.properties.AzurePropertiesUtils;
+import com.azure.spring.core.properties.util.AzurePropertiesUtils;
 import com.azure.spring.service.eventhubs.properties.EventHubConsumerDescriptor;
 import com.azure.spring.service.eventhubs.properties.EventHubNamespaceDescriptor;
 import com.azure.spring.service.eventhubs.properties.EventHubProcessorDescriptor;

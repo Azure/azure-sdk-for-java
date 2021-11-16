@@ -4,12 +4,12 @@
 package com.azure.spring.cloud.core.properties;
 
 import com.azure.spring.core.properties.AzureProperties;
-import com.azure.spring.core.properties.AzurePropertiesUtils;
 import com.azure.spring.core.properties.authentication.TokenCredentialProperties;
 import com.azure.spring.core.properties.client.ClientProperties;
 import com.azure.spring.core.properties.profile.AzureProfile;
 import com.azure.spring.core.properties.proxy.ProxyProperties;
 import com.azure.spring.core.properties.retry.RetryProperties;
+import com.azure.spring.core.properties.util.AzurePropertiesUtils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

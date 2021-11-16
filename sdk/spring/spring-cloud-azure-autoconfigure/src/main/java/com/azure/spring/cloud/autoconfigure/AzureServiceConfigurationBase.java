@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure;
 
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.core.properties.AzureProperties;
-import com.azure.spring.core.properties.AzurePropertiesUtils;
+import com.azure.spring.core.properties.util.AzurePropertiesUtils;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
