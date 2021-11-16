@@ -32,10 +32,10 @@ public class AADOAuth2AuthorizationCodeGrantRequestEntityConverterTest {
         return WebApplicationContextRunnerUtils
             .webApplicationContextRunner()
             .withPropertyValues(
-                "azure.activedirectory.base-uri = fake-uri",
-                "azure.activedirectory.authorization-clients.graph.scopes = Graph.Scope",
-                "azure.activedirectory.authorization-clients.arm.scopes = Arm.Scope",
-                "azure.activedirectory.authorization-clients.arm.on-demand = true");
+                "spring.cloud.azure.active-directory.base-uri = fake-uri",
+                "spring.cloud.azure.active-directory.authorization-clients.graph.scopes = Graph.Scope",
+                "spring.cloud.azure.active-directory.authorization-clients.arm.scopes = Arm.Scope",
+                "spring.cloud.azure.active-directory.authorization-clients.arm.on-demand = true");
     }
 
     @Test

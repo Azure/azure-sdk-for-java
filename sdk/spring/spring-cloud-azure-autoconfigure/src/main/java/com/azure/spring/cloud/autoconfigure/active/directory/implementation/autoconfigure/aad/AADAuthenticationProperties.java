@@ -37,7 +37,7 @@ import static com.azure.spring.cloud.autoconfigure.active.directory.implementati
  * Configuration properties for Azure Active Directory Authentication.
  */
 @Validated
-@ConfigurationProperties("azure.activedirectory")
+@ConfigurationProperties("spring.cloud.azure.active-directory")
 public class AADAuthenticationProperties implements InitializingBean {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(AADAuthenticationProperties.class);
@@ -144,7 +144,7 @@ public class AADAuthenticationProperties implements InitializingBean {
 
     @DeprecatedConfigurationProperty(
         reason = "Configuration moved to UserGroup class to keep UserGroup properties together",
-        replacement = "azure.activedirectory.user-group.allowed-group-names")
+        replacement = "spring.cloud.azure.active-directory.user-group.allowed-group-names")
     public List<String> getActiveDirectoryGroups() {
         return userGroup.getAllowedGroups();
     }
@@ -201,8 +201,8 @@ public class AADAuthenticationProperties implements InitializingBean {
 
         @Deprecated
         public void setEnableFullList(Boolean enableFullList) {
-            logger.warn(" 'azure.activedirectory.user-group.enable-full-list' property detected! "
-                + "Use 'azure.activedirectory.user-group.allowed-group-ids: all' instead!");
+            logger.warn(" 'spring.cloud.azure.active-directory.user-group.enable-full-list' property detected! "
+                + "Use 'spring.cloud.azure.active-directory.user-group.allowed-group-ids: all' instead!");
             this.enableFullList = enableFullList;
         }
 
@@ -210,14 +210,14 @@ public class AADAuthenticationProperties implements InitializingBean {
         @DeprecatedConfigurationProperty(
             reason = "In order to distinguish between allowed-group-ids and allowed-group-names, set allowed-groups "
                 + "deprecated.",
-            replacement = "azure.activedirectory.user-group.allowed-group-names")
+            replacement = "spring.cloud.azure.active-directory.user-group.allowed-group-names")
         public List<String> getAllowedGroups() {
             return allowedGroupNames;
         }
 
         @Deprecated
         public void setAllowedGroups(List<String> allowedGroups) {
-            logger.warn(" 'azure.activedirectory.user-group.allowed-groups' property detected! " + " Use 'azure"
+            logger.warn(" 'spring.cloud.azure.active-directory.user-group.allowed-groups' property detected! " + " Use 'azure"
                 + ".activedirectory.user-group.allowed-group-names' instead!");
             this.allowedGroupNames = allowedGroups;
         }
@@ -441,17 +441,17 @@ public class AADAuthenticationProperties implements InitializingBean {
         }
 
         if (!graphMembershipUri.startsWith(graphBaseUri)) {
-            throw new IllegalStateException("azure.activedirectory.graph-base-uri should be "
-                + "the prefix of azure.activedirectory.graph-membership-uri. "
-                + "azure.activedirectory.graph-base-uri = " + graphBaseUri + ", "
-                + "azure.activedirectory.graph-membership-uri = " + graphMembershipUri + ".");
+            throw new IllegalStateException("spring.cloud.azure.active-directory.graph-base-uri should be "
+                + "the prefix of spring.cloud.azure.active-directory.graph-membership-uri. "
+                + "spring.cloud.azure.active-directory.graph-base-uri = " + graphBaseUri + ", "
+                + "spring.cloud.azure.active-directory.graph-membership-uri = " + graphMembershipUri + ".");
         }
 
         Set<String> allowedGroupIds = userGroup.getAllowedGroupIds();
         if (allowedGroupIds.size() > 1 && allowedGroupIds.contains("all")) {
-            throw new IllegalStateException("When azure.activedirectory.user-group.allowed-group-ids contains 'all', "
+            throw new IllegalStateException("When spring.cloud.azure.active-directory.user-group.allowed-group-ids contains 'all', "
                 + "no other group ids can be configured. "
-                + "But actually azure.activedirectory.user-group.allowed-group-ids="
+                + "But actually spring.cloud.azure.active-directory.user-group.allowed-group-ids="
                 + allowedGroupIds);
         }
 
@@ -470,32 +470,32 @@ public class AADAuthenticationProperties implements InitializingBean {
         }
 
         if (isMultiTenantsApplication(tenantId) && !userGroup.getAllowedGroups().isEmpty()) {
-            throw new IllegalStateException("When azure.activedirectory.tenant-id is 'common/organizations/consumers', "
-                + "azure.activedirectory.user-group.allowed-groups/allowed-group-names should be empty. "
-                + "But actually azure.activedirectory.tenant-id=" + tenantId
-                + ", and azure.activedirectory.user-group.allowed-groups/allowed-group-names="
+            throw new IllegalStateException("When spring.cloud.azure.active-directory.tenant-id is 'common/organizations/consumers', "
+                + "spring.cloud.azure.active-directory.user-group.allowed-groups/allowed-group-names should be empty. "
+                + "But actually spring.cloud.azure.active-directory.tenant-id=" + tenantId
+                + ", and spring.cloud.azure.active-directory.user-group.allowed-groups/allowed-group-names="
                 + userGroup.getAllowedGroups());
         }
 
         if (isMultiTenantsApplication(tenantId) && !userGroup.getAllowedGroupIds().isEmpty()) {
-            throw new IllegalStateException("When azure.activedirectory.tenant-id is 'common/organizations/consumers', "
-                + "azure.activedirectory.user-group.allowed-group-ids should be empty. "
-                + "But actually azure.activedirectory.tenant-id=" + tenantId
-                + ", and azure.activedirectory.user-group.allowed-group-ids=" + userGroup.getAllowedGroupIds());
+            throw new IllegalStateException("When spring.cloud.azure.active-directory.tenant-id is 'common/organizations/consumers', "
+                + "spring.cloud.azure.active-directory.user-group.allowed-group-ids should be empty. "
+                + "But actually spring.cloud.azure.active-directory.tenant-id=" + tenantId
+                + ", and spring.cloud.azure.active-directory.user-group.allowed-group-ids=" + userGroup.getAllowedGroupIds());
         }
     }
 
     /**
      * Validate configured application type or set default value.
      *
-     * @throws IllegalStateException Invalid property 'azure.activedirectory.application-type'
+     * @throws IllegalStateException Invalid property 'spring.cloud.azure.active-directory.application-type'
      */
     private void validateApplicationType() {
         AADApplicationType inferred = inferApplicationTypeByDependencies();
         if (applicationType != null) {
             if (!isValidApplicationType(applicationType, inferred)) {
                 throw new IllegalStateException(
-                    "Invalid property 'azure.activedirectory.application-type', the configured value is '"
+                    "Invalid property 'spring.cloud.azure.active-directory.application-type', the configured value is '"
                         + applicationType.getValue() + "', " + "but the inferred value is '"
                         + inferred.getValue() + "'.");
             }
@@ -533,7 +533,7 @@ public class AADAuthenticationProperties implements InitializingBean {
                         + "'on_behalf_of'.", registrationId);
                     break;
                 case WEB_APPLICATION_AND_RESOURCE_SERVER:
-                    throw new IllegalStateException("azure.activedirectory.authorization-clients." + registrationId
+                    throw new IllegalStateException("spring.cloud.azure.active-directory.authorization-clients." + registrationId
                         + ".authorization-grant-grantType must be configured. ");
                 default:
                     throw new IllegalStateException("Unsupported authorization grantType " + applicationType.getValue());
@@ -543,48 +543,48 @@ public class AADAuthenticationProperties implements InitializingBean {
             switch (applicationType) {
                 case WEB_APPLICATION:
                     if (ON_BEHALF_OF.getValue().equals(grantType)) {
-                        throw new IllegalStateException("When 'azure.activedirectory.application-type=web_application',"
-                            + " 'azure.activedirectory.authorization-clients." + registrationId
+                        throw new IllegalStateException("When 'spring.cloud.azure.active-directory.application-type=web_application',"
+                            + " 'spring.cloud.azure.active-directory.authorization-clients." + registrationId
                             + ".authorization-grant-type' can not be 'on_behalf_of'.");
                     }
                     break;
                 case RESOURCE_SERVER:
                     if (AUTHORIZATION_CODE.getValue().equals(grantType)) {
-                        throw new IllegalStateException("When 'azure.activedirectory.application-type=resource_server',"
-                            + " 'azure.activedirectory.authorization-clients." + registrationId
+                        throw new IllegalStateException("When 'spring.cloud.azure.active-directory.application-type=resource_server',"
+                            + " 'spring.cloud.azure.active-directory.authorization-clients." + registrationId
                             + ".authorization-grant-type' can not be 'authorization_code'.");
                     }
                     if (ON_BEHALF_OF.getValue().equals(grantType)) {
-                        throw new IllegalStateException("When 'azure.activedirectory.application-type=resource_server',"
-                            + " 'azure.activedirectory.authorization-clients." + registrationId
+                        throw new IllegalStateException("When 'spring.cloud.azure.active-directory.application-type=resource_server',"
+                            + " 'spring.cloud.azure.active-directory.authorization-clients." + registrationId
                             + ".authorization-grant-type' can not be 'on_behalf_of'.");
                     }
                     break;
                 case RESOURCE_SERVER_WITH_OBO:
                     if (AUTHORIZATION_CODE.getValue().equals(grantType)) {
-                        throw new IllegalStateException("When 'azure.activedirectory"
+                        throw new IllegalStateException("When 'spring.cloud.azure.active-directory"
                             + ".application-type=resource_server_with_obo',"
-                            + " 'azure.activedirectory.authorization-clients." + registrationId
+                            + " 'spring.cloud.azure.active-directory.authorization-clients." + registrationId
                             + ".authorization-grant-type' can not be 'authorization_code'.");
                     }
                     break;
                 case WEB_APPLICATION_AND_RESOURCE_SERVER:
                 default:
-                    LOGGER.debug("'azure.activedirectory.authorization-clients." + registrationId
+                    LOGGER.debug("'spring.cloud.azure.active-directory.authorization-clients." + registrationId
                         + ".authorization-grant-type' is valid.");
             }
 
             if (properties.isOnDemand()
                 && !AUTHORIZATION_CODE.getValue().equals(grantType)) {
                 throw new IllegalStateException("onDemand only support authorization_code grant grantType. Please set "
-                    + "'azure.activedirectory.authorization-clients." + registrationId
+                    + "'spring.cloud.azure.active-directory.authorization-clients." + registrationId
                     + ".authorization-grant-grantType=authorization_code'"
-                    + " or 'azure.activedirectory.authorization-clients." + registrationId + ".on-demand=false'.");
+                    + " or 'spring.cloud.azure.active-directory.authorization-clients." + registrationId + ".on-demand=false'.");
             }
 
             if (AZURE_CLIENT_REGISTRATION_ID.equals(registrationId)
                 && !AUTHORIZATION_CODE.equals(properties.getAuthorizationGrantType())) {
-                throw new IllegalStateException("azure.activedirectory.authorization-clients."
+                throw new IllegalStateException("spring.cloud.azure.active-directory.authorization-clients."
                     + AZURE_CLIENT_REGISTRATION_ID
                     + ".authorization-grant-grantType must be configured to 'authorization_code'.");
             }
@@ -594,7 +594,7 @@ public class AADAuthenticationProperties implements InitializingBean {
         List<String> scopes = properties.getScopes();
         if (scopes == null || scopes.isEmpty()) {
             throw new IllegalStateException(
-                "'azure.activedirectory.authorization-clients." + registrationId + ".scopes' must be configured");
+                "'spring.cloud.azure.active-directory.authorization-clients." + registrationId + ".scopes' must be configured");
         }
         // Add necessary scopes for authorization_code clients.
         // https://docs.microsoft.com/en-us/graph/permissions-reference#remarks-17

@@ -117,7 +117,7 @@ public final class AADB2CConditions {
      */
     private static AADB2CProperties getAADB2CProperties(ConditionContext context) {
         return Binder.get(context.getEnvironment())
-                     .bind("azure.activedirectory.b2c", AADB2CProperties.class)
+                     .bind("spring.cloud.azure.active-directory.b2c", AADB2CProperties.class)
                      .orElse(null);
     }
 

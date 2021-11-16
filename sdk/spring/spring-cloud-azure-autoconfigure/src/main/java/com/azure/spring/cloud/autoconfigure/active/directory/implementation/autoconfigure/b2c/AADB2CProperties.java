@@ -29,7 +29,7 @@ public class AADB2CProperties implements InitializingBean {
 
     public static final String DEFAULT_LOGOUT_SUCCESS_URL = "http://localhost:8080/login";
 
-    public static final String PREFIX = "azure.activedirectory.b2c";
+    public static final String PREFIX = "spring.cloud.azure.active-directory.b2c";
 
     private static final String TENANT_NAME_PART_REGEX = "([A-Za-z0-9]+\\.)";
 
@@ -188,7 +188,7 @@ public class AADB2CProperties implements InitializingBean {
      */
     @DeprecatedConfigurationProperty(
         reason = "Configuration updated to baseUri",
-        replacement = "azure.activedirectory.b2c.base-uri")
+        replacement = "spring.cloud.azure.active-directory.b2c.base-uri")
     public String getTenant() {
         if (StringUtils.hasText(baseUri)) {
             Matcher matcher = Pattern.compile(TENANT_NAME_PART_REGEX).matcher(baseUri);

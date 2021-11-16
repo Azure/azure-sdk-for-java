@@ -19,8 +19,8 @@ public class ResourceRetrieverTest {
         .withConfiguration(AutoConfigurations.of(AADAuthenticationFilterAutoConfiguration.class))
         .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
         .withPropertyValues(
-            "azure.activedirectory.client-id=fake-client-id",
-            "azure.activedirectory.client-secret=fake-client-secret");
+            "spring.cloud.azure.active-directory.client-id=fake-client-id",
+            "spring.cloud.azure.active-directory.client-secret=fake-client-secret");
 
     @Test
     public void resourceRetrieverDefaultConfig() {
@@ -40,9 +40,9 @@ public class ResourceRetrieverTest {
     public void resourceRetriverIsConfigurable() {
         this.contextRunner
             .withPropertyValues(
-                "azure.activedirectory.jwt-connect-timeout=1234",
-                "azure.activedirectory.jwt-read-timeout=1234",
-                "azure.activedirectory.jwt-size-limit=123400")
+                "spring.cloud.azure.active-directory.jwt-connect-timeout=1234",
+                "spring.cloud.azure.active-directory.jwt-read-timeout=1234",
+                "spring.cloud.azure.active-directory.jwt-size-limit=123400")
             .run(context -> {
                 assertThat(context).hasSingleBean(ResourceRetriever.class);
                 final ResourceRetriever retriever = context.getBean(ResourceRetriever.class);

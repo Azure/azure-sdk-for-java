@@ -26,7 +26,7 @@ public final class ResourceServerCondition extends SpringBootCondition {
         ConditionMessage.Builder message = ConditionMessage.forCondition("AAD Resource Server Condition");
         AADAuthenticationProperties properties =
             Binder.get(context.getEnvironment())
-                  .bind("azure.activedirectory", AADAuthenticationProperties.class)
+                  .bind("spring.cloud.azure.active-directory", AADAuthenticationProperties.class)
                   .orElse(null);
         if (properties == null) {
             return ConditionOutcome.noMatch(message.notAvailable("aad authorization properties"));
@@ -37,9 +37,9 @@ public final class ResourceServerCondition extends SpringBootCondition {
                                                      .orElseGet(AADApplicationType::inferApplicationTypeByDependencies);
         if (applicationType == null || applicationType == WEB_APPLICATION) {
             return ConditionOutcome.noMatch(
-                message.because("azure.activedirectory.application-type=" + applicationType));
+                message.because("spring.cloud.azure.active-directory.application-type=" + applicationType));
         }
         return ConditionOutcome.match(
-            message.foundExactly("azure.activedirectory.application-type=" + applicationType));
+            message.foundExactly("spring.cloud.azure.active-directory.application-type=" + applicationType));
     }
 }

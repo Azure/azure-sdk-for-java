@@ -24,7 +24,7 @@ import static org.springframework.test.context.support.TestPropertySourceUtils.a
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class AADAuthenticationFilterPropertiesTest {
 
-    private static final String AAD_PROPERTY_PREFIX = "azure.activedirectory.";
+    private static final String AAD_PROPERTY_PREFIX = "spring.cloud.azure.active-directory.";
 
     @Test
     public void canSetProperties() {
@@ -57,8 +57,8 @@ public class AADAuthenticationFilterPropertiesTest {
     @Test
     //TODO (wepa) clientId and clientSecret can also be configured in oauth2 config, test to be refactored
     public void emptySettingsNotAllowed() {
-        System.setProperty("azure.activedirectory.client-id", "");
-        System.setProperty("azure.activedirectory.client-secret", "");
+        System.setProperty("spring.cloud.azure.active-directory.client-id", "");
+        System.setProperty("spring.cloud.azure.active-directory.client-secret", "");
 
         try (AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext()) {
             Exception exception = null;
@@ -80,10 +80,10 @@ public class AADAuthenticationFilterPropertiesTest {
             final List<String> errorStrings = errors.stream().map(ObjectError::toString).collect(Collectors.toList());
 
             final List<String> errorStringsExpected = Arrays.asList(
-                "Field error in object 'azure.activedirectory' on field 'activeDirectoryGroups': "
+                "Field error in object 'spring.cloud.azure.active-directory' on field 'activeDirectoryGroups': "
                     + "rejected value [null];",
-                "Field error in object 'azure.activedirectory' on field 'clientId': rejected value [];",
-                "Field error in object 'azure.activedirectory' on field 'clientSecret': rejected value [];"
+                "Field error in object 'spring.cloud.azure.active-directory' on field 'clientId': rejected value [];",
+                "Field error in object 'spring.cloud.azure.active-directory' on field 'clientSecret': rejected value [];"
             );
 
             Collections.sort(errorStrings);

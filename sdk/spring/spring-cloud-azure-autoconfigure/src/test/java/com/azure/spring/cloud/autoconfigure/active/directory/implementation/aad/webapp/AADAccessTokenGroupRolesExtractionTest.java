@@ -185,7 +185,7 @@ public class AADAccessTokenGroupRolesExtractionTest {
         WebApplicationContextRunnerUtils
             .webApplicationContextRunner()
             .withPropertyValues(
-                "azure.activedirectory.user-group.allowed-group-ids = all," + GROUP_ID_1
+                "spring.cloud.azure.active-directory.user-group.allowed-group-ids = all," + GROUP_ID_1
             )
             .run(context ->
                 assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class)));
