@@ -41,7 +41,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
     @MethodSource("getPolicyClients")
     void testGetAttestationPolicy(HttpClient client, String clientUri, AttestationType attestationType) {
 
-        AttestationAdministrationClientBuilder attestationBuilder = getAdministrationBuilder(client, clientUri);
+        AttestationAdministrationClientBuilder attestationBuilder = getAuthenticatedAdministrationBuilder(client, clientUri);
 
         AttestationAdministrationClient adminClient = attestationBuilder.buildClient();
 
@@ -76,7 +76,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getPolicyClients")
     void testGetAttestationPolicyAsync(HttpClient client, String clientUri, AttestationType attestationType) {
-        AttestationAdministrationClientBuilder attestationBuilder = getAdministrationBuilder(client, clientUri);
+        AttestationAdministrationClientBuilder attestationBuilder = getAuthenticatedAdministrationBuilder(client, clientUri);
 
         AttestationAdministrationAsyncClient adminClient = attestationBuilder.buildAsyncClient();
 
@@ -142,7 +142,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
         // We can't set attestation policy on the shared client, so just exit early.
         assumeTrue(clientType != ClientTypes.SHARED, "This test does not work on shared instances.");
 
-        AttestationAdministrationClientBuilder attestationAdministrationClientBuilder = getAdministrationBuilder(httpClient, clientUri);
+        AttestationAdministrationClientBuilder attestationAdministrationClientBuilder = getAuthenticatedAdministrationBuilder(httpClient, clientUri);
         AttestationAdministrationClient client = attestationAdministrationClientBuilder.buildClient();
 
         String signingCertificateBase64 = getIsolatedSigningCertificateBase64();
@@ -227,7 +227,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
         // We can't set attestation policy on the shared client, so just exit early.
         assumeTrue(clientType != ClientTypes.SHARED, "This test does not work on shared instances.");
 
-        AttestationAdministrationClientBuilder attestationAdministrationClientBuilder = getAdministrationBuilder(httpClient, clientUri);
+        AttestationAdministrationClientBuilder attestationAdministrationClientBuilder = getAuthenticatedAdministrationBuilder(httpClient, clientUri);
         AttestationAdministrationClient client = attestationAdministrationClientBuilder.buildClient();
 
         // AAD or isolated: We want to try setting policy with the Isolated signing certificate.
@@ -297,7 +297,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
         // We can't set attestation policy on the shared client, so just exit early.
         assumeTrue(clientType != ClientTypes.SHARED, "This test does not work on shared instances.");
 
-        AttestationAdministrationClientBuilder attestationBuilder = getAdministrationBuilder(httpClient, clientUri);
+        AttestationAdministrationClientBuilder attestationBuilder = getAuthenticatedAdministrationBuilder(httpClient, clientUri);
         AttestationAdministrationAsyncClient client = attestationBuilder.buildAsyncClient();
 
         // AAD or isolated: We want to try setting policy with the Isolated signing certificate.
@@ -426,7 +426,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
         assumeTrue(clientType != ClientTypes.SHARED, "This test does not work on shared instances.");
         assumeTrue(clientType != ClientTypes.ISOLATED, "This test does not work on isolated instances.");
 
-        AttestationAdministrationClientBuilder attestationBuilder = getAdministrationBuilder(httpClient, clientUri);
+        AttestationAdministrationClientBuilder attestationBuilder = getAuthenticatedAdministrationBuilder(httpClient, clientUri);
         AttestationAdministrationAsyncClient client = attestationBuilder.buildAsyncClient();
 
         String policyToSet = "version=1.0; authorizationrules{=> permit();}; issuancerules{};";
@@ -452,7 +452,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
         // We can't set attestation policy on the shared client, so just exit early.
         assumeTrue(clientType != ClientTypes.SHARED, "This test does not work on shared instances.");
 
-        AttestationAdministrationClientBuilder attestationBuilder = getAdministrationBuilder(httpClient, clientUri);
+        AttestationAdministrationClientBuilder attestationBuilder = getAuthenticatedAdministrationBuilder(httpClient, clientUri);
         AttestationAdministrationAsyncClient client = attestationBuilder.buildAsyncClient();
 
         // AAD or isolated: We want to try setting policy with the Isolated signing certificate.

@@ -114,7 +114,7 @@ public class AttestationClientTestBase extends TestBase {
      * @param clientUri - Client base URI to access the service.
      * @return Returns an attestation client builder corresponding to the httpClient and clientUri.
      */
-    AttestationAdministrationClientBuilder getAdministrationBuilder(HttpClient httpClient, String clientUri) {
+    AttestationAdministrationClientBuilder getAuthenticatedAdministrationBuilder(HttpClient httpClient, String clientUri) {
         AttestationAdministrationClientBuilder builder = getAttestationAdministrationBuilder(httpClient, clientUri);
         if (!interceptorManager.isPlaybackMode()) {
             builder.credential(new EnvironmentCredentialBuilder().httpClient(httpClient).build());
@@ -166,7 +166,7 @@ public class AttestationClientTestBase extends TestBase {
      * @param clientUri - Client base URI to access the service.
      * @return Returns an attestation client builder corresponding to the httpClient and clientUri.
      */
-    AttestationAdministrationClientBuilder getAttestationAdministrationBuilder(HttpClient httpClient, String clientUri) {
+    private AttestationAdministrationClientBuilder getAttestationAdministrationBuilder(HttpClient httpClient, String clientUri) {
         AttestationAdministrationClientBuilder builder = new AttestationAdministrationClientBuilder()
             .endpoint(clientUri)
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
@@ -180,6 +180,9 @@ public class AttestationClientTestBase extends TestBase {
                 .setValidateExpiresOn(false)
                 .setValidateNotBefore(false)
             );
+        }
+        if (!interceptorManager.isPlaybackMode()) {
+            builder.credential(new EnvironmentCredentialBuilder().httpClient(httpClient).build());
         }
         return builder;
     }

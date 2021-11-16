@@ -19,8 +19,12 @@ import com.azure.security.attestation.implementation.AttestationClientImpl;
 import com.azure.security.attestation.implementation.PoliciesImpl;
 import com.azure.security.attestation.implementation.PolicyCertificatesImpl;
 import com.azure.security.attestation.implementation.SigningCertificatesImpl;
+import com.azure.security.attestation.implementation.models.AttestationCertificateManagementBody;
 import com.azure.security.attestation.implementation.models.AttestationSignerImpl;
 import com.azure.security.attestation.implementation.models.AttestationTokenImpl;
+import com.azure.security.attestation.implementation.models.JsonWebKey;
+import com.azure.security.attestation.implementation.models.JsonWebKeySet;
+import com.azure.security.attestation.implementation.models.PolicyCertificatesModificationResultImpl;
 import com.azure.security.attestation.implementation.models.PolicyResultImpl;
 import com.azure.security.attestation.implementation.models.StoredAttestationPolicy;
 import com.azure.security.attestation.models.AttestationPolicySetOptions;
@@ -30,6 +34,7 @@ import com.azure.security.attestation.models.AttestationSigningKey;
 import com.azure.security.attestation.models.AttestationToken;
 import com.azure.security.attestation.models.AttestationTokenValidationOptions;
 import com.azure.security.attestation.models.AttestationType;
+import com.azure.security.attestation.models.PolicyCertificatesModificationResult;
 import com.azure.security.attestation.models.PolicyResult;
 import reactor.core.publisher.Mono;
 
@@ -38,7 +43,12 @@ import java.nio.charset.StandardCharsets;
 import java.security.InvalidParameterException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateEncodingException;
+import java.security.cert.X509Certificate;
+import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.core.util.FluxUtil.withContext;
@@ -94,7 +104,7 @@ public final class AttestationAdministrationAsyncClient {
         this.logger = new ClientLogger(AttestationAdministrationAsyncClient.class);
         this.cachedSigners = new AtomicReference<>(null);
     }
-//region Get Attestation Policy.
+    //region Get Attestation Policy.
     /**
      * Retrieves the current policy for an attestation type.
      * <p>
@@ -188,8 +198,8 @@ public final class AttestationAdministrationAsyncClient {
             });
     }
 
-//endregion
-//region Set Attestation Policy
+    //endregion
+    //region Set Attestation Policy
 
     /**
      * Sets the current policy for an attestation type with an unsecured attestation policy.
@@ -353,9 +363,7 @@ public final class AttestationAdministrationAsyncClient {
         return setToken;
     }
 
-
 //endregion
-
     //region Reset Attestation Policy
 
     /**
@@ -475,6 +483,261 @@ public final class AttestationAdministrationAsyncClient {
 
 
     //endregion
+
+    /**
+     * Retrieves the current set of attestation policy signing certificates for this instance.
+     *
+     * <p>
+     * On an Isolated attestation instance, each {@link AttestationAdministrationAsyncClient#setAttestationPolicy(AttestationType, AttestationPolicySetOptions)}
+     * or {@link AttestationAdministrationAsyncClient#resetAttestationPolicy(AttestationType, AttestationPolicySetOptions)} API call
+     * must be signed with the private key corresponding to one of the certificates in the list returned
+     * by this API.
+     *</p>
+     * <p>
+     *     This establishes that the sender is in possession of the private key associated with the
+     *     configured attestation policy management certificates, and thus the sender is authorized
+     *     to perform the API operation.
+     * </p>
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the attestation policy expressed as a string.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<List<AttestationSigner>>> listPolicyManagementCertificatesWithResponse() {
+        return withContext(context -> listPolicyManagementCertificatesWithResponse(context));
+    }
+
+    /**
+     * Retrieves the current set of attestation policy signing certificates for this instance.
+     *
+     * <p>
+     * On an Isolated attestation instance, each {@link AttestationAdministrationAsyncClient#setAttestationPolicy(AttestationType, AttestationPolicySetOptions)}
+     * or {@link AttestationAdministrationAsyncClient#resetAttestationPolicy(AttestationType, AttestationPolicySetOptions)} API call
+     * must be signed with the private key corresponding to one of the certificates in the list returned
+     * by this API.
+     *</p>
+     * <p>
+     *     This establishes that the sender is in possession of the private key associated with the
+     *     configured attestation policy management certificates, and thus the sender is authorized
+     *     to perform the API operation.
+     * </p>
+     *
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to an attestation policy operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<List<AttestationSigner>> listPolicyManagementCertificates() {
+        return listPolicyManagementCertificatesWithResponse()
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Retrieves the current set of attestation policy signing certificates for this instance.
+     *
+     * <p>
+     * On an Isolated attestation instance, each {@link AttestationAdministrationAsyncClient#setAttestationPolicy(AttestationType, AttestationPolicySetOptions)}
+     * or {@link AttestationAdministrationAsyncClient#resetAttestationPolicy(AttestationType, AttestationPolicySetOptions)} API call
+     * must be signed with the private key corresponding to one of the certificates in the list returned
+     * by this API.
+     *</p>
+     * <p>
+     *     This establishes that the sender is in possession of the private key associated with the
+     *     configured attestation policy management certificates, and thus the sender is authorized
+     *     to perform the API operation.
+     * </p>
+     * @param context Context for the remote call.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the attestation policy expressed as a string.
+     */
+    Mono<Response<List<AttestationSigner>>> listPolicyManagementCertificatesWithResponse(Context context) {
+        return this.certificatesImpl.getWithResponseAsync(context)
+            .flatMap(response -> {
+                Response<AttestationTokenImpl> responseWithToken = Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken()));
+                return getCachedAttestationSigners()
+                    .map(signers -> {
+                        responseWithToken.getValue().validate(signers, this.tokenValidationOptions);
+                        JsonWebKeySet policyJwks = responseWithToken.getValue().getBody(com.azure.security.attestation.implementation.models.PolicyCertificatesResult.class).getPolicyCertificates();
+                        List<AttestationSigner> policySigners = AttestationSignerImpl.attestationSignersFromJwks(policyJwks);
+                        return Utilities.generateAttestationResponseFromModelType(responseWithToken, responseWithToken.getValue(), policySigners);
+                    });
+            });
+    }
+
+    //region Add Policy Management Certificate
+    /**
+     * Sets the current policy for an attestation type.
+     *
+     * @param certificateToAdd Specifies the X.509 certificate to add to the set of policy signing certificates.
+     * @param signingKey Signing Key used to sign the request to the service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to an attestation policy operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<PolicyCertificatesModificationResult>> addPolicyManagementCertificateWithResponse(X509Certificate certificateToAdd, AttestationSigningKey signingKey) {
+        return withContext(context -> addPolicyManagementCertificateWithResponse(certificateToAdd, signingKey, context));
+    }
+
+    /**
+     * Adds a new attestation policy certificate to the set of policy management certificates.
+     *
+     * @param certificateToAdd Specifies the X.509 certificate to add to the set of policy signing certificates.
+     * @param signingKey Signing Key used to sign the request to the service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to an attestation policy operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PolicyCertificatesModificationResult> addPolicyManagementCertificate(X509Certificate certificateToAdd, AttestationSigningKey signingKey) {
+        return addPolicyManagementCertificateWithResponse(certificateToAdd, signingKey)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Adds a new attestation policy certificate to the set of policy management certificates.
+     *
+     * @param certificateToAdd Specifies the X.509 certificate to add to the set of policy signing certificates.
+     * @param signingKey Signing Key used to sign the request to the service.
+     * @param context Context for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to an attestation policy operation.
+     */
+    Mono<Response<PolicyCertificatesModificationResult>> addPolicyManagementCertificateWithResponse(X509Certificate certificateToAdd, AttestationSigningKey signingKey, Context context) {
+        Objects.requireNonNull(certificateToAdd);
+        Objects.requireNonNull(signingKey);
+
+        final AttestationTokenValidationOptions finalOptions = this.tokenValidationOptions;
+
+        // Generate an attestation token for that stored attestation policy. We use the common function in
+        // PolicyResult which is used in creating the SetPolicy hash.
+        String base64Certificate = null;
+
+        try {
+            base64Certificate = Base64.getEncoder().encodeToString(certificateToAdd.getEncoded());
+        } catch (CertificateEncodingException e) {
+            logger.logExceptionAsError(new RuntimeException(e.getMessage()));
+        };
+        JsonWebKey jwk = new JsonWebKey(certificateToAdd.getType())
+            .setX5C(new ArrayList<String>());
+        jwk.getX5C().add(base64Certificate);
+
+        AttestationCertificateManagementBody certificateBody = new AttestationCertificateManagementBody()
+            .setPolicyCertificate(jwk);
+
+        AttestationToken addToken = null;
+        try {
+            addToken = AttestationTokenImpl.createSecuredToken(SERIALIZER_ADAPTER.serialize(certificateBody, SerializerEncoding.JSON), signingKey);
+        } catch (IOException e) {
+            logger.logExceptionAsError(new RuntimeException(e.getMessage()));
+        }
+
+        return this.certificatesImpl.addWithResponseAsync(addToken.serialize(), context)
+            .flatMap(response -> {
+                Response<AttestationTokenImpl> token = Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken()));
+                return getCachedAttestationSigners()
+                    .map(signers -> {
+                        token.getValue().validate(signers, finalOptions);
+                        PolicyCertificatesModificationResult addResult = PolicyCertificatesModificationResultImpl.fromGenerated(token.getValue().getBody(com.azure.security.attestation.implementation.models.PolicyCertificatesModificationResult.class));
+                        return Utilities.generateAttestationResponseFromModelType(response, token.getValue(), addResult);
+                    });
+            });
+    }
+    //endregion
+
+    /**
+     * Adds a new attestation policy certificate to the set of policy management certificates.
+     *
+     * @param certificateToRemove Specifies the X.509 certificate to remove from the set of policy signing certificates.
+     * @param signingKey Signing Key used to sign the request to the service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to an attestation policy operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<PolicyCertificatesModificationResult>> removePolicyManagementCertificateWithResponse(X509Certificate certificateToRemove, AttestationSigningKey signingKey) {
+        return withContext(context -> removePolicyManagementCertificateWithResponse(certificateToRemove, signingKey, context));
+    }
+
+    /**
+     * Adds a new attestation policy certificate to the set of policy management certificates.
+     *
+     * @param certificateToRemove Specifies the X.509 certificate to remove from the set of policy signing certificates.
+     * @param signingKey Signing Key used to sign the request to the service.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to an attestation policy operation.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<PolicyCertificatesModificationResult> removePolicyManagementCertificate(X509Certificate certificateToRemove, AttestationSigningKey signingKey) {
+        return removePolicyManagementCertificateWithResponse(certificateToRemove, signingKey)
+            .flatMap(FluxUtil::toMono);
+    }
+
+    /**
+     * Adds a new attestation policy certificate to the set of policy management certificates.
+     *
+     * @param certificateToRemove Specifies the X.509 certificate to remove from the set of policy signing certificates.
+     * @param signingKey Signing Key used to sign the request to the service.
+     * @param context Context for the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the response to an attestation policy operation.
+     */
+    Mono<Response<PolicyCertificatesModificationResult>> removePolicyManagementCertificateWithResponse(X509Certificate certificateToRemove, AttestationSigningKey signingKey, Context context) {
+        Objects.requireNonNull(certificateToRemove);
+        Objects.requireNonNull(signingKey);
+
+        final AttestationTokenValidationOptions finalOptions = this.tokenValidationOptions;
+
+        // Generate an attestation token for that stored attestation policy. We use the common function in
+        // PolicyResult which is used in creating the SetPolicy hash.
+        String base64Certificate = null;
+
+        try {
+            base64Certificate = Base64.getEncoder().encodeToString(certificateToRemove.getEncoded());
+        } catch (CertificateEncodingException e) {
+            logger.logExceptionAsError(new RuntimeException(e.getMessage()));
+        };
+        JsonWebKey jwk = new JsonWebKey(certificateToRemove.getType())
+            .setX5C(new ArrayList<String>());
+        jwk.getX5C().add(base64Certificate);
+
+        AttestationCertificateManagementBody certificateBody = new AttestationCertificateManagementBody()
+            .setPolicyCertificate(jwk);
+
+        AttestationToken addToken = null;
+        try {
+            addToken = AttestationTokenImpl.createSecuredToken(SERIALIZER_ADAPTER.serialize(certificateBody, SerializerEncoding.JSON), signingKey);
+        } catch (IOException e) {
+            logger.logExceptionAsError(new RuntimeException(e.getMessage()));
+        }
+
+        return this.certificatesImpl.removeWithResponseAsync(addToken.serialize(), context)
+            .flatMap(response -> {
+                Response<AttestationTokenImpl> token = Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken()));
+                return getCachedAttestationSigners()
+                    .map(signers -> {
+                        token.getValue().validate(signers, finalOptions);
+                        PolicyCertificatesModificationResult addResult = PolicyCertificatesModificationResultImpl.fromGenerated(token.getValue().getBody(com.azure.security.attestation.implementation.models.PolicyCertificatesModificationResult.class));
+                        return Utilities.generateAttestationResponseFromModelType(response, token.getValue(), addResult);
+                    });
+            });
+    }
+
+
 
     /**
      * Return cached attestation signers, fetching from the internet if needed.

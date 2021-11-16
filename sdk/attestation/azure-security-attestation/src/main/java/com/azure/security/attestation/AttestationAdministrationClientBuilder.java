@@ -27,8 +27,6 @@ import java.util.Objects;
         serviceClients = {
             AttestationAdministrationClient.class,
             AttestationAdministrationAsyncClient.class,
-            PolicyCertificatesClient.class,
-            PolicyCertificatesAsyncClient.class,
         })
 public final class AttestationAdministrationClientBuilder {
     private static final String SDK_NAME = "name";
@@ -239,23 +237,4 @@ public final class AttestationAdministrationClientBuilder {
         }
         return clientImplBuilder.buildClient();
     }
-
-    /**
-     * Builds an instance of PolicyCertificatesAsyncClient async client.
-     *
-     * @return an instance of PolicyCertificatesAsyncClient.
-     */
-    public PolicyCertificatesAsyncClient buildPolicyCertificatesAsyncClient() {
-        return new PolicyCertificatesAsyncClient(buildInnerClient().getPolicyCertificates());
-    }
-
-    /**
-     * Builds an instance of PolicyCertificatesClient sync client.
-     *
-     * @return an instance of PolicyCertificatesClient.
-     */
-    public PolicyCertificatesClient buildPolicyCertificatesClient() {
-        return new PolicyCertificatesClient(buildInnerClient().getPolicyCertificates());
-    }
-
 }
