@@ -73,8 +73,8 @@ class AzureEventHubsConsumerClientConfiguration {
 
         private final AzureEventHubsProperties.Consumer consumerProperties;
 
-        DedicatedConsumerConnectionConfiguration(AzureEventHubsProperties eventHubProperties) {
-            this.consumerProperties = eventHubProperties.buildConsumerProperties();
+        DedicatedConsumerConnectionConfiguration(AzureEventHubsProperties eventHubsProperties) {
+            this.consumerProperties = eventHubsProperties.buildConsumerProperties();
         }
 
         @Bean(EVENT_HUB_CONSUMER_CLIENT_BUILDER_FACTORY_BEAN_NAME)

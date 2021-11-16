@@ -58,7 +58,7 @@ class AzureEventHubsAutoConfigurationTest {
     }
 
     @Test
-    void configureAzureEventHubProperties() {
+    void configureAzureEventHubsProperties() {
         AzureGlobalProperties azureProperties = new AzureGlobalProperties();
         azureProperties.getCredential().setClientId("azure-client-id");
         azureProperties.getCredential().setClientSecret("azure-client-secret");

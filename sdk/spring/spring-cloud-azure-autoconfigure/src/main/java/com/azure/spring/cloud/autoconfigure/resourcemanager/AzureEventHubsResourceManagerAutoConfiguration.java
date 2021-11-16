@@ -30,9 +30,9 @@ public class AzureEventHubsResourceManagerAutoConfiguration extends AzureService
     private final AzureEventHubsProperties eventHubsProperties;
 
     public AzureEventHubsResourceManagerAutoConfiguration(AzureResourceManager azureResourceManager,
-                                                          AzureEventHubsProperties eventHubProperties) {
+                                                          AzureEventHubsProperties eventHubsProperties) {
         super(azureResourceManager);
-        this.eventHubsProperties = eventHubProperties;
+        this.eventHubsProperties = eventHubsProperties;
     }
 
     @Bean

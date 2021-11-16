@@ -45,10 +45,10 @@ public class EventHubsBinderConfiguration {
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnBean({ EventHubsProvisioner.class, AzureEventHubsProperties.class })
-    public EventHubsChannelProvisioner eventHubChannelArmProvisioner(AzureEventHubsProperties eventHubProperties,
-                                                                     EventHubsProvisioner eventHubProvisioner) {
+    public EventHubsChannelProvisioner eventHubChannelArmProvisioner(
+        AzureEventHubsProperties eventHubsProperties, EventHubsProvisioner eventHubProvisioner) {
 
-        return new EventHubsChannelResourceManagerProvisioner(eventHubProperties.getNamespace(),
+        return new EventHubsChannelResourceManagerProvisioner(eventHubsProperties.getNamespace(),
                                                              eventHubProvisioner);
     }
 
@@ -60,11 +60,11 @@ public class EventHubsBinderConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public EventHubsMessageChannelBinder eventHubBinder(EventHubsChannelProvisioner eventHubsChannelProvisioner,
+    public EventHubsMessageChannelBinder eventHubBinder(EventHubsChannelProvisioner channelProvisioner,
                                                         EventHubsExtendedBindingProperties bindingProperties,
                                                         ObjectProvider<NamespaceProperties> namespaceProperties,
                                                         CheckpointStore checkpointStore) {
-        EventHubsMessageChannelBinder binder = new EventHubsMessageChannelBinder(null, eventHubsChannelProvisioner);
+        EventHubsMessageChannelBinder binder = new EventHubsMessageChannelBinder(null, channelProvisioner);
         binder.setBindingProperties(bindingProperties);
         binder.setNamespaceProperties(namespaceProperties.getIfAvailable());
         binder.setCheckpointStore(checkpointStore);

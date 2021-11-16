@@ -39,12 +39,12 @@ public class AzureBlobCheckpointStoreConfiguration {
     public BlobCheckpointStore blobCheckpointStore(
         @Qualifier(EVENT_HUB_PROCESSOR_CHECKPOINT_STORE_STORAGE_CLIENT_BUILDER_FACTORY_BEAN_NAME)
             BlobServiceClientBuilderFactory factory,
-        AzureEventHubsProperties eventHubProperties,
+        AzureEventHubsProperties eventHubsProperties,
         ObjectProvider<BlobCheckpointStoreContainerInitializer> initializers) {
         final BlobContainerAsyncClient blobContainerAsyncClient = factory
             .build()
             .buildAsyncClient()
-            .getBlobContainerAsyncClient(eventHubProperties.getProcessor().getCheckpointStore().getContainerName());
+            .getBlobContainerAsyncClient(eventHubsProperties.getProcessor().getCheckpointStore().getContainerName());
 
         initializers.ifAvailable(initializer -> initializer.init(blobContainerAsyncClient));
 
@@ -65,8 +65,9 @@ public class AzureBlobCheckpointStoreConfiguration {
 
     @Bean(EVENT_HUB_PROCESSOR_CHECKPOINT_STORE_STORAGE_CLIENT_BUILDER_FACTORY_BEAN_NAME)
     @ConditionalOnMissingBean(name = EVENT_HUB_PROCESSOR_CHECKPOINT_STORE_STORAGE_CLIENT_BUILDER_FACTORY_BEAN_NAME)
-    public BlobServiceClientBuilderFactory eventHubProcessorBlobServiceClientBuilderFactory(AzureEventHubsProperties eventHubProperties) {
-        return new BlobServiceClientBuilderFactory(getCheckpointStoreProperties(eventHubProperties));
+    public BlobServiceClientBuilderFactory eventHubProcessorBlobServiceClientBuilderFactory(
+        AzureEventHubsProperties eventHubsProperties) {
+        return new BlobServiceClientBuilderFactory(getCheckpointStoreProperties(eventHubsProperties));
     }
 
     private AzureEventHubsProperties.Processor.BlobCheckpointStore getCheckpointStoreProperties(

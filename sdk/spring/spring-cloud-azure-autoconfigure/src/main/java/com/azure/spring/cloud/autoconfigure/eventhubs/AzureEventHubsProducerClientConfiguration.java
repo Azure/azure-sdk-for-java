@@ -55,8 +55,8 @@ class AzureEventHubsProducerClientConfiguration {
 
         private final AzureEventHubsProperties.Producer producerProperties;
 
-        DedicatedProducerConnectionConfiguration(AzureEventHubsProperties eventHubProperties) {
-            this.producerProperties = eventHubProperties.buildProducerProperties();
+        DedicatedProducerConnectionConfiguration(AzureEventHubsProperties eventHubsProperties) {
+            this.producerProperties = eventHubsProperties.buildProducerProperties();
         }
 
         @Bean(EVENT_HUB_PRODUCER_CLIENT_BUILDER_FACTORY_BEAN_NAME)

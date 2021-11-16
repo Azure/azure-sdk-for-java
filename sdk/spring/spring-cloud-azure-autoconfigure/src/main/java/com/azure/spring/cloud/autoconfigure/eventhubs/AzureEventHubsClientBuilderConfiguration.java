@@ -46,9 +46,9 @@ class AzureEventHubsClientBuilderConfiguration {
     @Bean
     @ConditionalOnProperty("spring.cloud.azure.eventhubs.connection-string")
     public StaticConnectionStringProvider<AzureServiceType.EventHubs> eventHubsStaticConnectionStringProvider(
-        AzureEventHubsProperties eventHubProperties) {
+        AzureEventHubsProperties eventHubsProperties) {
         return new StaticConnectionStringProvider<>(AzureServiceType.EVENT_HUBS,
-                                                    eventHubProperties.getConnectionString());
+                                                    eventHubsProperties.getConnectionString());
     }
 
 }

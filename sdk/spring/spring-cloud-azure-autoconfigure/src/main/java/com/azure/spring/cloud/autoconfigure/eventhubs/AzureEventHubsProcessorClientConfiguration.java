@@ -38,8 +38,8 @@ class AzureEventHubsProcessorClientConfiguration {
 
     private final AzureEventHubsProperties.Processor processorProperties;
 
-    AzureEventHubsProcessorClientConfiguration(AzureEventHubsProperties eventHubProperties) {
-        this.processorProperties = eventHubProperties.buildProcessorProperties();
+    AzureEventHubsProcessorClientConfiguration(AzureEventHubsProperties eventHubsProperties) {
+        this.processorProperties = eventHubsProperties.buildProcessorProperties();
     }
 
     @Bean

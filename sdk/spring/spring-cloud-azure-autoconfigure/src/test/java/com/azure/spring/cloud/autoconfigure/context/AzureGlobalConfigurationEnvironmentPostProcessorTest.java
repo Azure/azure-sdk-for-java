@@ -149,10 +149,10 @@ class AzureGlobalConfigurationEnvironmentPostProcessorTest {
         PropertiesPropertySource propertiesPropertySource = new PropertiesPropertySource("test-properties", properties);
 
         ConfigurableEnvironment environment = getEnvironment(propertiesPropertySource);
-        AzureEventHubsProperties eventHubProperties = Binder.get(environment).bind(AzureEventHubsProperties.PREFIX, AzureEventHubsProperties.class).get();
+        AzureEventHubsProperties eventHubsProperties = Binder.get(environment).bind(AzureEventHubsProperties.PREFIX, AzureEventHubsProperties.class).get();
         AzureKeyVaultSecretProperties keyVaultSecretProperties = Binder.get(environment).bind(AzureKeyVaultSecretProperties.PREFIX, AzureKeyVaultSecretProperties.class).get();
 
-        assertEquals("test-connection-str", eventHubProperties.getConnectionString());
+        assertEquals("test-connection-str", eventHubsProperties.getConnectionString());
         assertEquals("test-endpoint", keyVaultSecretProperties.getEndpoint());
     }
 

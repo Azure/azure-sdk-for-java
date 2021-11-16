@@ -38,7 +38,7 @@ public class AzureEventHubsKafkaAutoConfiguration {
     @Bean
     // TODO (xiada): refactor this logic
     public KafkaProperties kafkaProperties(
-        AzureEventHubsProperties eventHubProperties,
+        AzureEventHubsProperties eventHubsProperties,
         ObjectProvider<ConnectionStringProvider<AzureServiceType.EventHubs>> connectionStringProviders) {
         KafkaProperties kafkaProperties = new KafkaProperties();
 /*
