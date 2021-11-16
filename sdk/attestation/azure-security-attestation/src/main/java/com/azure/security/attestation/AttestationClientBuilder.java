@@ -188,7 +188,13 @@ public final class AttestationClientBuilder {
      *
      * Instantiating a synchronous Attestation client:
      * <br>
-     * {@codesnippet com.azure.security.attestation.AttestationClientBuilder.buildClient}
+     * <!-- src_embed com.azure.security.attestation.AttestationClientBuilder.buildClient -->
+     * <pre>
+     * AttestationClient client = new AttestationClientBuilder&#40;&#41;
+     *     .endpoint&#40;endpoint&#41;
+     *     .buildClient&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationClientBuilder.buildClient -->
      * @return an instance of {@link AttestationClient}.
      */
     public AttestationClient buildClient() {
@@ -200,7 +206,13 @@ public final class AttestationClientBuilder {
      *
      * Instantiating a synchronous Attestation client:
      * <br>
-     * {@codesnippet com.azure.security.attestation.AttestationClientBuilder.buildAsyncClient}
+     * <!-- src_embed com.azure.security.attestation.AttestationClientBuilder.buildAsyncClient -->
+     * <pre>
+     * AttestationAsyncClient asyncClient = new AttestationClientBuilder&#40;&#41;
+     *     .endpoint&#40;endpoint&#41;
+     *     .buildAsyncClient&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationClientBuilder.buildAsyncClient -->
      * @return an instance of {@link AttestationClient}.
      */
     public AttestationAsyncClient buildAsyncClient() {
