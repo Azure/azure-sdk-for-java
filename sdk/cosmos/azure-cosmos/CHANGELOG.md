@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.22.0-snapshot.1 (Unreleased)
+### 4.22.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,10 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 4.21.1 (2021-11-13)
+#### Key Bug Fixes
+* Fixed an issue in `ChangeFeedProcessor` where processing stops in some rare cases because of a race condition can occur which prevents work to be promptly assigned to other instances.
 
 ### 4.21.0 (2021-11-12)
 #### Features Added

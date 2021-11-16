@@ -44,11 +44,14 @@ public class ConversationClientReadmeSamples {
      * @return recordingId to use with other recording operations.
      */
     public String startRecording(CallingServerClient callingServerClient) {
+        // BEGIN: readme-sample-startRecording
         String serverCallId = "<serverCallId received from starting call>";
         String recordingStateCallbackUri = "<webhook endpoint to which calling service can report status>";
         ServerCall serverCall = callingServerClient.initializeServerCall(serverCallId);
         StartCallRecordingResult result = serverCall.startRecording(recordingStateCallbackUri);
         String recordingId = result.getRecordingId();
+        // END: readme-sample-startRecording
+
         return recordingId;
     }
 
@@ -62,7 +65,10 @@ public class ConversationClientReadmeSamples {
     public void pauseRecording(CallingServerClient callingServerClient,
                                String serverCallId, String recordingId) {
         ServerCall serverCall = callingServerClient.initializeServerCall(serverCallId);
+
+        // BEGIN: readme-sample-pauseRecording
         serverCall.pauseRecording(recordingId);
+        // END: readme-sample-pauseRecording
     }
 
     /**
@@ -75,7 +81,10 @@ public class ConversationClientReadmeSamples {
     public void resumeRecording(CallingServerClient callingServerClient,
                                 String serverCallId, String recordingId) {
         ServerCall serverCall = callingServerClient.initializeServerCall(serverCallId);
+
+        // BEGIN: readme-sample-resumeRecording
         serverCall.resumeRecording(recordingId);
+        // END: readme-sample-resumeRecording
     }
 
     /**
@@ -88,7 +97,10 @@ public class ConversationClientReadmeSamples {
     public void stopRecording(CallingServerClient callingServerClient,
                               String serverCallId, String recordingId) {
         ServerCall serverCall = callingServerClient.initializeServerCall(serverCallId);
+
+        // BEGIN: readme-sample-stopRecording
         serverCall.stopRecording(recordingId);
+        // END: readme-sample-stopRecording
     }
 
     /**
@@ -107,7 +119,9 @@ public class ConversationClientReadmeSamples {
         // CallRecordingState: Active, Inactive
         // If the call has ended, CommunicationErrorException will be thrown. Inactive is
         // only returned when the recording is paused.
+        // BEGIN: readme-sample-getRecordingState
         CallRecordingState callRecordingState = callRecordingStateResult.getRecordingState();
+        // END: readme-sample-getRecordingState
         return callRecordingState;
     }
 
@@ -119,12 +133,15 @@ public class ConversationClientReadmeSamples {
      * @return information about the play audio request, {@link PlayAudioResult}.
      */
     public PlayAudioResult playAudio(CallingServerClient callingServerClient, String serverCallId) {
+        // BEGIN: readme-sample-playAudio
         String audioFileUri = "<uri of the file to play>";
         String audioFileId = "<a name to use for caching the audio file>";
         String callbackUri = "<webhook endpoint to which calling service can report status>";
         String context = "<Identifier for correlating responses>";
         ServerCall serverCall = callingServerClient.initializeServerCall(serverCallId);
         PlayAudioResult playAudioResult = serverCall.playAudio(audioFileUri, audioFileId, callbackUri, context);
+        // END: readme-sample-playAudio
+
         return playAudioResult;
     }
 }

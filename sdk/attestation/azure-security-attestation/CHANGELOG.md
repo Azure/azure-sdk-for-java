@@ -43,6 +43,8 @@ will instantiate them directly (`AttestationToken` will be instantiated via the 
 be introduced later.)
  * Renamed `buildAttestationClient` to `buildClient` and `buildAsyncAttestationClient` to `buildAsyncClient` to match API
 design guidelines.
+ * Removed `buildPolicyClient`, `buildPolicyAsyncClient`, `buildPolicyCertificatesClient` and `buildPolicyCertificatesAsyncClient` methods 
+on the `AttestationClientBuilder` class and implemented a new `AttestationAdministrationClient` class which contains the administrative APIs.
 
 ### Bugs Fixed
 * Attestation tests now all pass when run in Live mode.

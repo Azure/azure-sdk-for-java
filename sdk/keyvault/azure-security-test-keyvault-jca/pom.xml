@@ -17,6 +17,12 @@
   <name>JCA Provider for Azure Key Vault Test</name>
   <description>The Java Crypto Architecture (JCA) Provider for Azure Key Vault Test</description>
 
+  <properties>
+    <codesnippet.skip>false</codesnippet.skip>
+    <javadocDoclet></javadocDoclet>
+    <javadocDocletOptions></javadocDocletOptions>
+  </properties>
+
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>

@@ -75,7 +75,14 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  * soft-delete enabled Azure Key Vault.
  *
  * <p><strong>Samples to construct the async client</strong></p>
- * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.instantiation}
+ * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.instantiation -->
+ * <pre>
+ * KeyAsyncClient keyAsyncClient = new KeyClientBuilder&#40;&#41;
+ *     .vaultUrl&#40;&quot;https:&#47;&#47;myvault.azure.net&#47;&quot;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.instantiation -->
  *
  * @see KeyClientBuilder
  * @see PagedFlux
@@ -228,7 +235,15 @@ public final class KeyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Creates a new {@link KeyVaultKey EC key}. Subscribes to the call asynchronously and prints out the newly
      * {@link KeyVaultKey created key} details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.createKey#String-KeyType}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.createKey#String-KeyType -->
+     * <pre>
+     * keyAsyncClient.createKey&#40;&quot;keyName&quot;, KeyType.EC&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;key -&gt;
+     *         System.out.printf&#40;&quot;Created key with name: %s and id: %s %n&quot;, key.getName&#40;&#41;,
+     *             key.getId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.createKey#String-KeyType -->
      *
      * @param name The name of the {@link KeyVaultKey key} being created.
      * @param keyType The type of {@link KeyVaultKey key} to create. For valid values, see {@link KeyType KeyType}.
@@ -262,7 +277,19 @@ public final class KeyAsyncClient {
      * <p>Creates a new {@link KeyVaultKey EC key}. Subscribes to the call asynchronously and prints out the newly
      * {@link KeyVaultKey created key} details when a response has been received.</p>
      *
-     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.createKeyWithResponse#CreateKeyOptions}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.createKeyWithResponse#CreateKeyOptions -->
+     * <pre>
+     * CreateKeyOptions createKeyOptions = new CreateKeyOptions&#40;&quot;keyName&quot;, KeyType.RSA&#41;
+     *     .setNotBefore&#40;OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;&#41;
+     *     .setExpiresOn&#40;OffsetDateTime.now&#40;&#41;.plusYears&#40;1&#41;&#41;;
+     *
+     * keyAsyncClient.createKeyWithResponse&#40;createKeyOptions&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;createKeyResponse -&gt;
+     *         System.out.printf&#40;&quot;Created key with name: %s and: id %s%n&quot;, createKeyResponse.getValue&#40;&#41;.getName&#40;&#41;,
+     *             createKeyResponse.getValue&#40;&#41;.getId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.createKeyWithResponse#CreateKeyOptions -->
      *
      * @param createKeyOptions The {@link CreateKeyOptions options object} containing information about the
      * {@link KeyVaultKey key} being created.
@@ -312,7 +339,19 @@ public final class KeyAsyncClient {
      * <p>Creates a new {@link KeyVaultKey RSA key} which activates in one day and expires in one year. Subscribes to
      * the call asynchronously and prints out the newly {@link KeyVaultKey created key} details when a response has been
      * received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.createKey#CreateKeyOptions}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.createKey#CreateKeyOptions -->
+     * <pre>
+     * CreateKeyOptions createKeyOptions = new CreateKeyOptions&#40;&quot;keyName&quot;, KeyType.RSA&#41;
+     *     .setNotBefore&#40;OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;&#41;
+     *     .setExpiresOn&#40;OffsetDateTime.now&#40;&#41;.plusYears&#40;1&#41;&#41;;
+     *
+     * keyAsyncClient.createKey&#40;createKeyOptions&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;key -&gt;
+     *         System.out.printf&#40;&quot;Created key with name: %s and id: %s %n&quot;, key.getName&#40;&#41;,
+     *             key.getId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.createKey#CreateKeyOptions -->
      *
      * @param createKeyOptions The {@link CreateKeyOptions options object} containing information about the
      * {@link KeyVaultKey key} being created.
@@ -370,7 +409,20 @@ public final class KeyAsyncClient {
      * <p>Creates a new {@link KeyVaultKey RSA key} with size 2048 which activates in one day and expires in one year.
      * Subscribes to the call asynchronously and prints out the newly {@link KeyVaultKey created key} details when a
      * response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.createRsaKey#CreateRsaKeyOptions}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.createRsaKey#CreateRsaKeyOptions -->
+     * <pre>
+     * CreateRsaKeyOptions createRsaKeyOptions = new CreateRsaKeyOptions&#40;&quot;keyName&quot;&#41;
+     *     .setKeySize&#40;2048&#41;
+     *     .setNotBefore&#40;OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;&#41;
+     *     .setExpiresOn&#40;OffsetDateTime.now&#40;&#41;.plusYears&#40;1&#41;&#41;;
+     *
+     * keyAsyncClient.createRsaKey&#40;createRsaKeyOptions&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;rsaKey -&gt;
+     *         System.out.printf&#40;&quot;Created key with name: %s and id: %s %n&quot;, rsaKey.getName&#40;&#41;,
+     *             rsaKey.getId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.createRsaKey#CreateRsaKeyOptions -->
      *
      * @param createRsaKeyOptions The {@link CreateRsaKeyOptions options object} containing information about the
      * {@link KeyVaultKey RSA key} being created.
@@ -409,7 +461,20 @@ public final class KeyAsyncClient {
      * <p>Creates a new {@link KeyVaultKey RSA key} with size 2048 which activates in one day and expires in one year.
      * Subscribes to the call asynchronously and prints out the newly {@link KeyVaultKey created key} details when a
      * response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.createRsaKeyWithResponse#CreateRsaKeyOptions}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.createRsaKeyWithResponse#CreateRsaKeyOptions -->
+     * <pre>
+     * CreateRsaKeyOptions createRsaKeyOptions = new CreateRsaKeyOptions&#40;&quot;keyName&quot;&#41;
+     *     .setKeySize&#40;2048&#41;
+     *     .setNotBefore&#40;OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;&#41;
+     *     .setExpiresOn&#40;OffsetDateTime.now&#40;&#41;.plusYears&#40;1&#41;&#41;;
+     *
+     * keyAsyncClient.createRsaKeyWithResponse&#40;createRsaKeyOptions&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;createRsaKeyResponse -&gt;
+     *         System.out.printf&#40;&quot;Created key with name: %s and: id %s%n&quot;, createRsaKeyResponse.getValue&#40;&#41;.getName&#40;&#41;,
+     *             createRsaKeyResponse.getValue&#40;&#41;.getId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.createRsaKeyWithResponse#CreateRsaKeyOptions -->
      *
      * @param createRsaKeyOptions The {@link CreateRsaKeyOptions options object} containing information about the
      * {@link KeyVaultKey RSA key} being created.
@@ -470,7 +535,20 @@ public final class KeyAsyncClient {
      * <p>Creates a new {@link KeyVaultKey EC key} with a {@link KeyCurveName#P_384 P-384} web key curve. The key
      * activates in one day and expires in one year. Subscribes to the call asynchronously and prints out the newly
      * {@link KeyVaultKey created key} details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.createEcKey#CreateEcKeyOptions}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.createEcKey#CreateEcKeyOptions -->
+     * <pre>
+     * CreateEcKeyOptions createEcKeyOptions = new CreateEcKeyOptions&#40;&quot;keyName&quot;&#41;
+     *     .setCurveName&#40;KeyCurveName.P_384&#41;
+     *     .setNotBefore&#40;OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;&#41;
+     *     .setExpiresOn&#40;OffsetDateTime.now&#40;&#41;.plusYears&#40;1&#41;&#41;;
+     *
+     * keyAsyncClient.createEcKey&#40;createEcKeyOptions&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;ecKey -&gt;
+     *         System.out.printf&#40;&quot;Created key with name: %s and id: %s %n&quot;, ecKey.getName&#40;&#41;,
+     *             ecKey.getId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.createEcKey#CreateEcKeyOptions -->
      *
      * @param createEcKeyOptions The {@link CreateEcKeyOptions options object} containing information about the
      * {@link KeyVaultKey EC key} being created.
@@ -511,7 +589,20 @@ public final class KeyAsyncClient {
      * <p>Creates a new {@link KeyVaultKey EC key} with a {@link KeyCurveName#P_384 P-384} web key curve. The key
      * activates in one day and expires in one year. Subscribes to the call asynchronously and prints out the newly
      * {@link KeyVaultKey created key} details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.createEcKeyWithResponse#CreateEcKeyOptions}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.createEcKeyWithResponse#CreateEcKeyOptions -->
+     * <pre>
+     * CreateEcKeyOptions createEcKeyOptions = new CreateEcKeyOptions&#40;&quot;keyName&quot;&#41;
+     *     .setCurveName&#40;KeyCurveName.P_384&#41;
+     *     .setNotBefore&#40;OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;&#41;
+     *     .setExpiresOn&#40;OffsetDateTime.now&#40;&#41;.plusYears&#40;1&#41;&#41;;
+     *
+     * keyAsyncClient.createEcKeyWithResponse&#40;createEcKeyOptions&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;createEcKeyResponse -&gt;
+     *         System.out.printf&#40;&quot;Created key with name: %s and: id %s%n&quot;, createEcKeyResponse.getValue&#40;&#41;.getName&#40;&#41;,
+     *             createEcKeyResponse.getValue&#40;&#41;.getId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.createEcKeyWithResponse#CreateEcKeyOptions -->
      *
      * @param createEcKeyOptions The {@link CreateEcKeyOptions options object} containing information about the
      * {@link KeyVaultKey EC key} being created.
@@ -568,7 +659,19 @@ public final class KeyAsyncClient {
      * <p>Creates a new {@link KeyVaultKey symmetric key}. The {@link KeyVaultKey key} activates in one day and expires
      * in one year. Subscribes to the call asynchronously and prints out the details of the newly
      * {@link KeyVaultKey created key} when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.createOctKey#CreateOctKeyOptions}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.createOctKey#CreateOctKeyOptions -->
+     * <pre>
+     * CreateOctKeyOptions createOctKeyOptions = new CreateOctKeyOptions&#40;&quot;keyName&quot;&#41;
+     *     .setNotBefore&#40;OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;&#41;
+     *     .setExpiresOn&#40;OffsetDateTime.now&#40;&#41;.plusYears&#40;1&#41;&#41;;
+     *
+     * keyAsyncClient.createOctKey&#40;createOctKeyOptions&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;octKey -&gt;
+     *         System.out.printf&#40;&quot;Created key with name: %s and id: %s %n&quot;, octKey.getName&#40;&#41;,
+     *             octKey.getId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.createOctKey#CreateOctKeyOptions -->
      *
      * @param createOctKeyOptions The {@link CreateOctKeyOptions options object} containing information about the
      * {@link KeyVaultKey symmetric key} being created.
@@ -605,7 +708,19 @@ public final class KeyAsyncClient {
      * <p>Creates a new {@link KeyVaultKey symmetric key}. The {@link KeyVaultKey key} activates in one day and expires
      * in one year. Subscribes to the call asynchronously and prints out the details of the newly
      * {@link KeyVaultKey created key} when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.createOctKeyWithResponse#CreateOctKeyOptions}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.createOctKeyWithResponse#CreateOctKeyOptions -->
+     * <pre>
+     * CreateOctKeyOptions createOctKeyOptions = new CreateOctKeyOptions&#40;&quot;keyName&quot;&#41;
+     *     .setNotBefore&#40;OffsetDateTime.now&#40;&#41;.plusDays&#40;1&#41;&#41;
+     *     .setExpiresOn&#40;OffsetDateTime.now&#40;&#41;.plusYears&#40;1&#41;&#41;;
+     *
+     * keyAsyncClient.createOctKeyWithResponse&#40;createOctKeyOptions&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;createOctKeyResponse -&gt;
+     *         System.out.printf&#40;&quot;Created key with name: %s and: id %s%n&quot;, createOctKeyResponse.getValue&#40;&#41;.getName&#40;&#41;,
+     *             createOctKeyResponse.getValue&#40;&#41;.getId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.createOctKeyWithResponse#CreateOctKeyOptions -->
      *
      * @param createOctKeyOptions The {@link CreateOctKeyOptions options object} containing information about the
      * {@link KeyVaultKey symmetric key} being created.
@@ -657,7 +772,14 @@ public final class KeyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Imports a new {@link KeyVaultKey key} into key vault. Subscribes to the call asynchronously and prints out the
      * newly {@link KeyVaultKey imported key} details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.importKey#String-JsonWebKey}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.importKey#String-JsonWebKey -->
+     * <pre>
+     * keyAsyncClient.importKey&#40;&quot;keyName&quot;, jsonWebKeyToImport&#41;
+     *     .subscribe&#40;keyVaultKey -&gt;
+     *         System.out.printf&#40;&quot;Imported key with name: %s and id: %s%n&quot;, keyVaultKey.getName&#40;&#41;,
+     *             keyVaultKey.getId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.importKey#String-JsonWebKey -->
      *
      * @param name The name for the imported key.
      * @param keyMaterial The Json web key being imported.
@@ -702,7 +824,15 @@ public final class KeyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Imports a new {@link KeyVaultKey key} into key vault. Subscribes to the call asynchronously and prints out the
      * newly {@link KeyVaultKey imported key} details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.importKey#ImportKeyOptions}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.importKey#ImportKeyOptions -->
+     * <pre>
+     * ImportKeyOptions options = new ImportKeyOptions&#40;&quot;keyName&quot;, jsonWebKeyToImport&#41;
+     *     .setHardwareProtected&#40;false&#41;;
+     *
+     * keyAsyncClient.importKey&#40;options&#41;.subscribe&#40;keyVaultKey -&gt;
+     *     System.out.printf&#40;&quot;Imported key with name: %s and id: %s%n&quot;, keyVaultKey.getName&#40;&#41;, keyVaultKey.getId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.importKey#ImportKeyOptions -->
      *
      * @param importKeyOptions The {@link ImportKeyOptions options object} containing information about the
      * {@link JsonWebKey} being imported.
@@ -738,7 +868,16 @@ public final class KeyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Imports a new {@link KeyVaultKey key} into key vault. Subscribes to the call asynchronously and prints out the
      * newly {@link KeyVaultKey imported key} details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.importKeyWithResponse#ImportKeyOptions}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.importKeyWithResponse#ImportKeyOptions -->
+     * <pre>
+     * ImportKeyOptions importKeyOptions = new ImportKeyOptions&#40;&quot;keyName&quot;, jsonWebKeyToImport&#41;
+     *     .setHardwareProtected&#40;false&#41;;
+     *
+     * keyAsyncClient.importKeyWithResponse&#40;importKeyOptions&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Imported key with name: %s and id: %s%n&quot;, response.getValue&#40;&#41;.getName&#40;&#41;,
+     *         response.getValue&#40;&#41;.getId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.importKeyWithResponse#ImportKeyOptions -->
      *
      * @param importKeyOptions The {@link ImportKeyOptions options object} containing information about the
      * {@link JsonWebKey} being imported.
@@ -783,7 +922,17 @@ public final class KeyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Gets a specific version of the {@link KeyVaultKey key} in the key vault. Subscribes to the call asynchronously
      * and prints out the {@link KeyVaultKey retrieved key} details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.getKey#String-String}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.getKey#String-String -->
+     * <pre>
+     * String keyVersion = &quot;6A385B124DEF4096AF1361A85B16C204&quot;;
+     *
+     * keyAsyncClient.getKey&#40;&quot;keyName&quot;, keyVersion&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;key -&gt;
+     *         System.out.printf&#40;&quot;Created key with name: %s and: id %s%n&quot;, key.getName&#40;&#41;,
+     *             key.getId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.getKey#String-String -->
      *
      * @param name The name of the {@link KeyVaultKey key}, cannot be {@code null}.
      * @param version The version of the key to retrieve. If this is an empty String or null, this call is
@@ -812,7 +961,17 @@ public final class KeyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Gets a specific version of the {@link KeyVaultKey key} in the key vault. Subscribes to the call asynchronously
      * and prints out the {@link KeyVaultKey retrieved key} details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.getKeyWithResponse#String-String}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.getKeyWithResponse#String-String -->
+     * <pre>
+     * String keyVersion = &quot;6A385B124DEF4096AF1361A85B16C204&quot;;
+     *
+     * keyAsyncClient.getKeyWithResponse&#40;&quot;keyName&quot;, keyVersion&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;getKeyResponse -&gt;
+     *         System.out.printf&#40;&quot;Created key with name: %s and: id %s%n&quot;,
+     *             getKeyResponse.getValue&#40;&#41;.getName&#40;&#41;, getKeyResponse.getValue&#40;&#41;.getId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.getKeyWithResponse#String-String -->
      *
      * @param name The name of the {@link KeyVaultKey key}, cannot be {@code null}.
      * @param version The version of the key to retrieve. If this is an empty String or null, this call is
@@ -851,7 +1010,15 @@ public final class KeyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Gets a specific version of the {@link KeyVaultKey key} in the key vault. Subscribes to the call asynchronously
      * and prints out the {@link KeyVaultKey retrieved key} details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.getKey#String}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.getKey#String -->
+     * <pre>
+     * keyAsyncClient.getKey&#40;&quot;keyName&quot;&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;key -&gt;
+     *         System.out.printf&#40;&quot;Created key with name: %s and: id %s%n&quot;, key.getName&#40;&#41;,
+     *             key.getId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.getKey#String -->
      *
      * @param name The name of the {@link KeyVaultKey key}, cannot be {@code null}.
      *
@@ -884,7 +1051,21 @@ public final class KeyAsyncClient {
      * <p>Gets latest version of the {@link KeyVaultKey key}, changes its notBefore time and then updates it in the
      * Azure Key Vault. Subscribes to the call asynchronously and prints out the {@link KeyVaultKey returned key}
      * details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.updateKeyPropertiesWithResponse#KeyProperties-KeyOperation}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.updateKeyPropertiesWithResponse#KeyProperties-KeyOperation -->
+     * <pre>
+     * keyAsyncClient.getKey&#40;&quot;keyName&quot;&#41;
+     *     .subscribe&#40;getKeyResponse -&gt; &#123;
+     *         &#47;&#47;Update the not before time of the key.
+     *         getKeyResponse.getProperties&#40;&#41;.setNotBefore&#40;OffsetDateTime.now&#40;&#41;.plusDays&#40;50&#41;&#41;;
+     *         keyAsyncClient.updateKeyPropertiesWithResponse&#40;getKeyResponse.getProperties&#40;&#41;, KeyOperation.ENCRYPT,
+     *                 KeyOperation.DECRYPT&#41;
+     *             .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *             .subscribe&#40;updateKeyResponse -&gt;
+     *                 System.out.printf&#40;&quot;Updated key's &#92;&quot;not before time&#92;&quot;: %s%n&quot;,
+     *                     updateKeyResponse.getValue&#40;&#41;.getProperties&#40;&#41;.getNotBefore&#40;&#41;.toString&#40;&#41;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.updateKeyPropertiesWithResponse#KeyProperties-KeyOperation -->
      *
      * @param keyProperties The {@link KeyProperties key properties} object with updated properties.
      * @param keyOperations The updated {@link KeyOperation key operations} to associate with the key.
@@ -920,7 +1101,21 @@ public final class KeyAsyncClient {
      * <p>Gets latest version of the {@link KeyVaultKey key}, changes its notBefore time and then updates it in the
      * Azure Key Vault. Subscribes to the call asynchronously and prints out the {@link KeyVaultKey returned key}
      * details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.updateKeyProperties#KeyProperties-KeyOperation}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.updateKeyProperties#KeyProperties-KeyOperation -->
+     * <pre>
+     * keyAsyncClient.getKey&#40;&quot;keyName&quot;&#41;
+     *     .subscribe&#40;key -&gt; &#123;
+     *         &#47;&#47;Update the not before time of the key.
+     *         key.getProperties&#40;&#41;.setNotBefore&#40;OffsetDateTime.now&#40;&#41;.plusDays&#40;50&#41;&#41;;
+     *         keyAsyncClient.updateKeyProperties&#40;key.getProperties&#40;&#41;, KeyOperation.ENCRYPT,
+     *                 KeyOperation.DECRYPT&#41;
+     *             .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *             .subscribe&#40;updatedKey -&gt;
+     *                 System.out.printf&#40;&quot;Updated key's &#92;&quot;not before time&#92;&quot;: %s%n&quot;,
+     *                     updatedKey.getProperties&#40;&#41;.getNotBefore&#40;&#41;.toString&#40;&#41;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.updateKeyProperties#KeyProperties-KeyOperation -->
      *
      * @param keyProperties The {@link KeyProperties key properties} object with updated properties.
      * @param keyOperations The updated {@link KeyOperation key operations} to associate with the key.
@@ -976,7 +1171,16 @@ public final class KeyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Deletes the {@link KeyVaultKey key} in the Azure Key Vault. Subscribes to the call asynchronously and prints
      * out the {@link KeyVaultKey deleted key} details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.deleteKey#String}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.deleteKey#String -->
+     * <pre>
+     * keyAsyncClient.beginDeleteKey&#40;&quot;keyName&quot;&#41;
+     *     .subscribe&#40;pollResponse -&gt; &#123;
+     *         System.out.printf&#40;&quot;Deletion status: %s%n&quot;, pollResponse.getStatus&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Key name: %s%n&quot;, pollResponse.getValue&#40;&#41;.getName&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Key delete date: %s%n&quot;, pollResponse.getValue&#40;&#41;.getDeletedOn&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.deleteKey#String -->
      *
      * @param name The name of the {@link KeyVaultKey key} to be deleted.
      *
@@ -1038,7 +1242,14 @@ public final class KeyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p> Gets the {@link KeyVaultKey deleted key} from the key vault enabled for soft-delete. Subscribes to the call
      * asynchronously and prints out the {@link KeyVaultKey deleted key} details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.getDeletedKey#String}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.getDeletedKey#String -->
+     * <pre>
+     * keyAsyncClient.getDeletedKey&#40;&quot;keyName&quot;&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;deletedKey -&gt;
+     *         System.out.printf&#40;&quot;Deleted key's recovery id:%s%n&quot;, deletedKey.getRecoveryId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.getDeletedKey#String -->
      *
      * @param name The name of the deleted {@link KeyVaultKey key}.
      *
@@ -1063,7 +1274,14 @@ public final class KeyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p> Gets the {@link KeyVaultKey deleted key} from the key vault enabled for soft-delete. Subscribes to the call
      * asynchronously and prints out the {@link KeyVaultKey deleted key} details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.getDeletedKeyWithResponse#String}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.getDeletedKeyWithResponse#String -->
+     * <pre>
+     * keyAsyncClient.getDeletedKeyWithResponse&#40;&quot;keyName&quot;&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;getDeletedKeyResponse -&gt;
+     *         System.out.printf&#40;&quot;Deleted key's recovery id: %s%n&quot;, getDeletedKeyResponse.getValue&#40;&#41;.getRecoveryId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.getDeletedKeyWithResponse#String -->
      *
      * @param name The name of the deleted {@link KeyVaultKey key}.
      *
@@ -1099,7 +1317,13 @@ public final class KeyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Purges the {@link KeyVaultKey deleted key} from the key vault enabled for soft-delete. Subscribes to the call
      * asynchronously and prints out the status code from the server response when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.purgeDeletedKey#String}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.purgeDeletedKey#String -->
+     * <pre>
+     * keyAsyncClient.purgeDeletedKey&#40;&quot;deletedKeyName&quot;&#41;
+     *     .subscribe&#40;ignored -&gt;
+     *         System.out.println&#40;&quot;Successfully purged deleted key&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.purgeDeletedKey#String -->
      *
      * @param name The name of the {@link KeyVaultKey deleted key}.
      *
@@ -1125,7 +1349,14 @@ public final class KeyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Purges the {@link KeyVaultKey deleted key} from the key vault enabled for soft-delete. Subscribes to the call
      * asynchronously and prints out the status code from the server response when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.purgeDeletedKeyWithResponse#String}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.purgeDeletedKeyWithResponse#String -->
+     * <pre>
+     * keyAsyncClient.purgeDeletedKeyWithResponse&#40;&quot;deletedKeyName&quot;&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;purgeDeletedKeyResponse -&gt;
+     *         System.out.printf&#40;&quot;Purge response status code: %d%n&quot;, purgeDeletedKeyResponse.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.purgeDeletedKeyWithResponse#String -->
      *
      * @param name The name of the {@link KeyVaultKey deleted key}.
      *
@@ -1161,7 +1392,16 @@ public final class KeyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Recovers the {@link KeyVaultKey deleted key} from the key vault enabled for soft-delete. Subscribes to the
      * call asynchronously and prints out the recovered key details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.recoverDeletedKey#String}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.recoverDeletedKey#String -->
+     * <pre>
+     * keyAsyncClient.beginRecoverDeletedKey&#40;&quot;deletedKeyName&quot;&#41;
+     *     .subscribe&#40;pollResponse -&gt; &#123;
+     *         System.out.printf&#40;&quot;Recovery status: %s%n&quot;, pollResponse.getStatus&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Key name: %s%n&quot;, pollResponse.getValue&#40;&#41;.getName&#40;&#41;&#41;;
+     *         System.out.printf&#40;&quot;Key type: %s%n&quot;, pollResponse.getValue&#40;&#41;.getKeyType&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.recoverDeletedKey#String -->
      *
      * @param name The name of the {@link KeyVaultKey deleted key} to be recovered.
      *
@@ -1230,7 +1470,14 @@ public final class KeyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Backs up the {@link KeyVaultKey key} from the key vault. Subscribes to the call asynchronously and prints out
      * the length of the key's backup byte array returned in the response.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.backupKey#String}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.backupKey#String -->
+     * <pre>
+     * keyAsyncClient.backupKey&#40;&quot;keyName&quot;&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;bytes -&gt;
+     *         System.out.printf&#40;&quot;Key backup byte array length: %s%n&quot;, bytes.length&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.backupKey#String -->
      *
      * @param name The name of the {@link KeyVaultKey key}.
      *
@@ -1264,7 +1511,14 @@ public final class KeyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Backs up the {@link KeyVaultKey key} from the key vault. Subscribes to the call asynchronously and prints out
      * the length of the key's backup byte array returned in the response.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.backupKeyWithResponse#String}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.backupKeyWithResponse#String -->
+     * <pre>
+     * keyAsyncClient.backupKeyWithResponse&#40;&quot;keyName&quot;&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;backupKeyResponse -&gt;
+     *         System.out.printf&#40;&quot;Key backup byte array length: %s%n&quot;, backupKeyResponse.getValue&#40;&#41;.length&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.backupKeyWithResponse#String -->
      *
      * @param name The name of the {@link KeyVaultKey key}.
      *
@@ -1312,7 +1566,15 @@ public final class KeyAsyncClient {
      * <p>Restores the {@link KeyVaultKey key} in the key vault from its backup. Subscribes to the call asynchronously
      * and prints out the restored key details when a response has been received.</p>
      * //Pass the Key Backup Byte array to the restore operation.
-     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.restoreKeyBackup#byte}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.restoreKeyBackup#byte -->
+     * <pre>
+     * keyAsyncClient.restoreKeyBackup&#40;keyBackupByteArray&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;restoreKeyResponse -&gt;
+     *         System.out.printf&#40;&quot;Restored key with name: %s and: id %s%n&quot;, restoreKeyResponse.getName&#40;&#41;,
+     *             restoreKeyResponse.getId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.restoreKeyBackup#byte -->
      *
      * @param backup The backup blob associated with the {@link KeyVaultKey key}.
      *
@@ -1346,7 +1608,15 @@ public final class KeyAsyncClient {
      * <p>Restores the {@link KeyVaultKey key} in the key vault from its backup. Subscribes to the call asynchronously
      * and prints out the restored key details when a response has been received.</p>
      * //Pass the Key Backup Byte array to the restore operation.
-     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.restoreKeyBackupWithResponse#byte}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.restoreKeyBackupWithResponse#byte -->
+     * <pre>
+     * keyAsyncClient.restoreKeyBackupWithResponse&#40;keyBackupByteArray&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;restoreKeyBackupResponse -&gt;
+     *         System.out.printf&#40;&quot;Restored key with name: %s and: id %s%n&quot;,
+     *             restoreKeyBackupResponse.getValue&#40;&#41;.getName&#40;&#41;, restoreKeyBackupResponse.getValue&#40;&#41;.getId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.restoreKeyBackupWithResponse#byte -->
      *
      * @param backup The backup blob associated with the {@link KeyVaultKey key}.
      *
@@ -1386,7 +1656,16 @@ public final class KeyAsyncClient {
      * {@link Flux} containing {@link KeyProperties key properties} to {@link Flux} containing
      * {@link KeyVaultKey key} using {@link KeyAsyncClient#getKey(String, String)} within
      * {@link Flux#flatMap(Function)}.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.listPropertiesOfKeys}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.listPropertiesOfKeys -->
+     * <pre>
+     * keyAsyncClient.listPropertiesOfKeys&#40;&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .flatMap&#40;keyProperties -&gt; keyAsyncClient.getKey&#40;keyProperties.getName&#40;&#41;, keyProperties.getVersion&#40;&#41;&#41;&#41;
+     *     .subscribe&#40;key -&gt; System.out.printf&#40;&quot;Retrieved key with name: %s and type: %s%n&quot;,
+     *         key.getName&#40;&#41;,
+     *         key.getKeyType&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.listPropertiesOfKeys -->
      *
      * @return A {@link PagedFlux} containing {@link KeyProperties key} of all the keys in the vault.
      */
@@ -1456,7 +1735,14 @@ public final class KeyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Lists the {@link DeletedKey deleted keys} in the key vault. Subscribes to the call asynchronously and prints
      * out the recovery id of each {@link DeletedKey deleted key} when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.listDeletedKeys}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.listDeletedKeys -->
+     * <pre>
+     * keyAsyncClient.listDeletedKeys&#40;&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .subscribe&#40;deletedKey -&gt;
+     *         System.out.printf&#40;&quot;Deleted key's recovery id:%s%n&quot;, deletedKey.getRecoveryId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.listDeletedKeys -->
      *
      * @return A {@link PagedFlux} containing all of the {@link DeletedKey deleted keys} in the vault.
      */
@@ -1527,7 +1813,16 @@ public final class KeyAsyncClient {
      * {@link Flux} containing {@link KeyProperties key properties} to {@link Flux} containing
      * {@link KeyVaultKey key } using {@link KeyAsyncClient#getKey(String, String)} within
      * {@link Flux#flatMap(Function)}.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.listKeyVersions}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.listKeyVersions -->
+     * <pre>
+     * keyAsyncClient.listPropertiesOfKeyVersions&#40;&quot;keyName&quot;&#41;
+     *     .contextWrite&#40;Context.of&#40;&quot;key1&quot;, &quot;value1&quot;, &quot;key2&quot;, &quot;value2&quot;&#41;&#41;
+     *     .flatMap&#40;keyProperties -&gt; keyAsyncClient.getKey&#40;keyProperties.getName&#40;&#41;, keyProperties.getVersion&#40;&#41;&#41;&#41;
+     *     .subscribe&#40;key -&gt;
+     *         System.out.printf&#40;&quot;Retrieved key version: %s with name: %s and type: %s%n&quot;,
+     *             key.getProperties&#40;&#41;.getVersion&#40;&#41;, key.getName&#40;&#41;, key.getKeyType&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.listKeyVersions -->
      *
      * @param name The name of the {@link KeyVaultKey key}.
      *
@@ -1596,7 +1891,14 @@ public final class KeyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Gets a number of bytes containing random values from a Managed HSM. Prints out the retrieved bytes in
      * base64Url format.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.getRandomBytes#int}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.getRandomBytes#int -->
+     * <pre>
+     * int amount = 16;
+     * keyAsyncClient.getRandomBytes&#40;amount&#41;
+     *     .subscribe&#40;randomBytes -&gt;
+     *         System.out.printf&#40;&quot;Retrieved %d random bytes: %s%n&quot;, amount, Arrays.toString&#40;randomBytes.getBytes&#40;&#41;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.getRandomBytes#int -->
      *
      * @param count The requested number of random bytes.
      *
@@ -1618,7 +1920,14 @@ public final class KeyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Gets a number of bytes containing random values from a Managed HSM. Prints out the
      * {@link Response HTTP Response} details and the retrieved bytes in base64Url format.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.getRandomBytesWithResponse#int}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.getRandomBytesWithResponse#int -->
+     * <pre>
+     * int amountOfBytes = 16;
+     * keyAsyncClient.getRandomBytesWithResponse&#40;amountOfBytes&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Response received successfully with status code: %d. Retrieved %d random bytes: %s%n&quot;,
+     *         response.getStatusCode&#40;&#41;, amountOfBytes, Arrays.toString&#40;response.getValue&#40;&#41;.getBytes&#40;&#41;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.getRandomBytesWithResponse#int -->
      *
      * @param count The requested number of random bytes.
      *
@@ -1657,7 +1966,14 @@ public final class KeyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Releases a {@link KeyVaultKey key}. Subscribes to the call asynchronously and prints out the signed object
      * that contains the {@link KeyVaultKey released key} when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyClient.releaseKey#String-String}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.releaseKey#String-String -->
+     * <pre>
+     * String target = &quot;someAttestationToken&quot;;
+     * ReleaseKeyResult releaseKeyResult = keyClient.releaseKey&#40;&quot;keyName&quot;, target&#41;;
+     *
+     * System.out.printf&#40;&quot;Signed object containing released key: %s%n&quot;, releaseKeyResult&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyClient.releaseKey#String-String -->
      *
      * @param name The name of the {@link KeyVaultKey key} to release.
      * @param target The attestation assertion for the target of the {@link KeyVaultKey key} release.
@@ -1685,7 +2001,16 @@ public final class KeyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Releases a {@link KeyVaultKey key}. Subscribes to the call asynchronously and prints out the signed object
      * that contains the {@link KeyVaultKey released key} when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.releaseKey#String-String-String}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.releaseKey#String-String-String -->
+     * <pre>
+     * String myKeyVersion = &quot;6A385B124DEF4096AF1361A85B16C204&quot;;
+     * String myTarget = &quot;someAttestationToken&quot;;
+     *
+     * keyAsyncClient.releaseKey&#40;&quot;keyName&quot;, myKeyVersion, myTarget&#41;
+     *     .subscribe&#40;releaseKeyResult -&gt;
+     *         System.out.printf&#40;&quot;Signed object containing released key: %s%n&quot;, releaseKeyResult.getValue&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.releaseKey#String-String-String -->
      *
      * @param name The name of the {@link KeyVaultKey key} to release.
      * @param version The version of the key to retrieve. If this is empty or {@code null}, this call is equivalent to
@@ -1716,7 +2041,21 @@ public final class KeyAsyncClient {
      * <p>Releases a {@link KeyVaultKey key}. Subscribes to the call asynchronously and prints out the
      * {@link Response HTTP Response} details and the signed object that contains the {@link KeyVaultKey released key}
      * when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.releaseKeyWithResponse#String-String-String-ReleaseKeyOptions}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.releaseKeyWithResponse#String-String-String-ReleaseKeyOptions -->
+     * <pre>
+     * String releaseKeyVersion = &quot;6A385B124DEF4096AF1361A85B16C204&quot;;
+     * String releaseTarget = &quot;someAttestationToken&quot;;
+     * ReleaseKeyOptions releaseKeyOptions = new ReleaseKeyOptions&#40;&#41;
+     *     .setAlgorithm&#40;KeyExportEncryptionAlgorithm.RSA_AES_KEY_WRAP_256&#41;
+     *     .setNonce&#40;&quot;someNonce&quot;&#41;;
+     *
+     * keyAsyncClient.releaseKeyWithResponse&#40;&quot;keyName&quot;, releaseKeyVersion, releaseTarget, releaseKeyOptions&#41;
+     *     .subscribe&#40;releaseKeyResponse -&gt;
+     *         System.out.printf&#40;&quot;Response received successfully with status code: %d. Signed object containing&quot;
+     *                 + &quot;released key: %s%n&quot;, releaseKeyResponse.getStatusCode&#40;&#41;,
+     *             releaseKeyResponse.getValue&#40;&#41;.getValue&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.releaseKeyWithResponse#String-String-String-ReleaseKeyOptions -->
      *
      * @param name The name of the key to release.
      * @param version The version of the key to retrieve. If this is empty or {@code null}, this call is equivalent to
@@ -1774,7 +2113,14 @@ public final class KeyAsyncClient {
      *
      * <p><strong>Code Samples</strong></p>
      * <p>Rotates a {@link KeyVaultKey key}. Prints out {@link KeyVaultKey rotated key} details.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.rotateKey#String}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.rotateKey#String -->
+     * <pre>
+     * keyAsyncClient.rotateKey&#40;&quot;keyName&quot;&#41;
+     *     .subscribe&#40;key -&gt;
+     *         System.out.printf&#40;&quot;Rotated key with name: %s and version:%s%n&quot;, key.getName&#40;&#41;,
+     *             key.getProperties&#40;&#41;.getVersion&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.rotateKey#String -->
      *
      * @param name The name of {@link KeyVaultKey key} to be rotated. The system will generate a new version in the
      * specified {@link KeyVaultKey key}.
@@ -1800,7 +2146,15 @@ public final class KeyAsyncClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Rotates a {@link KeyVaultKey key}. Subscribes to the call asynchronously and prints out the
      * {@link Response HTTP Response} and {@link KeyVaultKey rotated key} details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.rotateKeyWithResponse#String}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.rotateKeyWithResponse#String -->
+     * <pre>
+     * keyAsyncClient.rotateKeyWithResponse&#40;&quot;keyName&quot;&#41;
+     *     .subscribe&#40;rotateKeyResponse -&gt;
+     *         System.out.printf&#40;&quot;Response received successfully with status code: %d. Rotated key with name: %s and&quot;
+     *                 + &quot;version: %s%n&quot;, rotateKeyResponse.getStatusCode&#40;&#41;, rotateKeyResponse.getValue&#40;&#41;.getName&#40;&#41;,
+     *             rotateKeyResponse.getValue&#40;&#41;.getProperties&#40;&#41;.getVersion&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.rotateKeyWithResponse#String -->
      *
      * @param name The name of {@link KeyVaultKey key} to be rotated. The system will generate a new version in the
      * specified {@link KeyVaultKey key}.
@@ -1844,7 +2198,13 @@ public final class KeyAsyncClient {
      * <p>Retrieves the {@link KeyRotationPolicy rotation policy} of a given {@link KeyVaultKey key}. Subscribes to the
      * call asynchronously and prints out the {@link KeyRotationPolicy rotation policy key} details when a response
      * has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.getKeyRotationPolicy#String}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.getKeyRotationPolicy#String -->
+     * <pre>
+     * keyAsyncClient.getKeyRotationPolicy&#40;&quot;keyName&quot;&#41;
+     *     .subscribe&#40;keyRotationPolicy -&gt;
+     *         System.out.printf&#40;&quot;Retrieved key rotation policy with id: %s%n&quot;, keyRotationPolicy.getId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.getKeyRotationPolicy#String -->
      *
      * @param name The name of the {@link KeyVaultKey key}.
      *
@@ -1870,7 +2230,15 @@ public final class KeyAsyncClient {
      * <p>Retrieves the {@link KeyRotationPolicy rotation policy} of a given {@link KeyVaultKey key}. Subscribes to the
      * call asynchronously and prints out the {@link Response HTTP Response} and
      * {@link KeyRotationPolicy rotation policy key} details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.getKeyRotationPolicyWithResponse#String}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.getKeyRotationPolicyWithResponse#String -->
+     * <pre>
+     * keyAsyncClient.getKeyRotationPolicyWithResponse&#40;&quot;keyName&quot;&#41;
+     *     .subscribe&#40;getKeyRotationPolicyResponse -&gt;
+     *         System.out.printf&#40;&quot;Response received successfully with status code: %d. Retrieved key rotation policy&quot;
+     *             + &quot;with id: %s%n&quot;, getKeyRotationPolicyResponse.getStatusCode&#40;&#41;,
+     *             getKeyRotationPolicyResponse.getValue&#40;&#41;.getId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.getKeyRotationPolicyWithResponse#String -->
      *
      * @param name The name of the {@link KeyVaultKey key}.
      *
@@ -1914,7 +2282,26 @@ public final class KeyAsyncClient {
      * <p>Updates the {@link KeyRotationPolicy rotation policy} of a given {@link KeyVaultKey key}. Subscribes to the
      * call asynchronously and prints out the {@link KeyRotationPolicy rotation policy key} details when a response
      * has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.updateKeyRotationPolicy#String-KeyRotationPolicyProperties}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.updateKeyRotationPolicy#String-KeyRotationPolicyProperties -->
+     * <pre>
+     * List&lt;KeyRotationLifetimeAction&gt; lifetimeActions = new ArrayList&lt;&gt;&#40;&#41;;
+     * KeyRotationLifetimeAction rotateLifetimeAction = new KeyRotationLifetimeAction&#40;KeyRotationPolicyAction.ROTATE&#41;
+     *     .setTimeAfterCreate&#40;&quot;P90D&quot;&#41;;
+     * KeyRotationLifetimeAction notifyLifetimeAction = new KeyRotationLifetimeAction&#40;KeyRotationPolicyAction.NOTIFY&#41;
+     *     .setTimeBeforeExpiry&#40;&quot;P45D&quot;&#41;;
+     *
+     * lifetimeActions.add&#40;rotateLifetimeAction&#41;;
+     * lifetimeActions.add&#40;notifyLifetimeAction&#41;;
+     *
+     * KeyRotationPolicyProperties policyProperties = new KeyRotationPolicyProperties&#40;&#41;
+     *     .setLifetimeActions&#40;lifetimeActions&#41;
+     *     .setExpiryTime&#40;&quot;P6M&quot;&#41;;
+     *
+     * keyAsyncClient.updateKeyRotationPolicy&#40;&quot;keyName&quot;, policyProperties&#41;
+     *     .subscribe&#40;keyRotationPolicy -&gt;
+     *         System.out.printf&#40;&quot;Updated key rotation policy with id: %s%n&quot;, keyRotationPolicy.getId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.updateKeyRotationPolicy#String-KeyRotationPolicyProperties -->
      *
      * @param name The name of the {@link KeyVaultKey key}.
      * @param keyRotationPolicyProperties The {@link KeyRotationPolicyProperties} for the key.
@@ -1942,7 +2329,28 @@ public final class KeyAsyncClient {
      * <p>Updates the {@link KeyRotationPolicy rotation policy} of a given {@link KeyVaultKey key}. Subscribes to the
      * call asynchronously and prints out the {@link Response HTTP Response} and
      * {@link KeyRotationPolicy rotation policy key} details when a response has been received.</p>
-     * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.updateKeyRotationPolicyWithResponse#String-KeyRotationPolicyProperties}
+     * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.updateKeyRotationPolicyWithResponse#String-KeyRotationPolicyProperties -->
+     * <pre>
+     * List&lt;KeyRotationLifetimeAction&gt; myLifetimeActions = new ArrayList&lt;&gt;&#40;&#41;;
+     * KeyRotationLifetimeAction myRotateLifetimeAction = new KeyRotationLifetimeAction&#40;KeyRotationPolicyAction.ROTATE&#41;
+     *     .setTimeAfterCreate&#40;&quot;P90D&quot;&#41;;
+     * KeyRotationLifetimeAction myNotifyLifetimeAction = new KeyRotationLifetimeAction&#40;KeyRotationPolicyAction.NOTIFY&#41;
+     *     .setTimeBeforeExpiry&#40;&quot;P45D&quot;&#41;;
+     *
+     * myLifetimeActions.add&#40;myRotateLifetimeAction&#41;;
+     * myLifetimeActions.add&#40;myNotifyLifetimeAction&#41;;
+     *
+     * KeyRotationPolicyProperties myPolicyProperties = new KeyRotationPolicyProperties&#40;&#41;
+     *     .setLifetimeActions&#40;myLifetimeActions&#41;
+     *     .setExpiryTime&#40;&quot;P6M&quot;&#41;;
+     *
+     * keyAsyncClient.updateKeyRotationPolicyWithResponse&#40;&quot;keyName&quot;, myPolicyProperties&#41;
+     *     .subscribe&#40;updateKeyRotationPolicyResponse -&gt;
+     *         System.out.printf&#40;&quot;Response received successfully with status code: %d. Updated key rotation policy&quot;
+     *             + &quot;with id: %s%n&quot;, updateKeyRotationPolicyResponse.getStatusCode&#40;&#41;,
+     *             updateKeyRotationPolicyResponse.getValue&#40;&#41;.getId&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.updateKeyRotationPolicyWithResponse#String-KeyRotationPolicyProperties -->
      *
      * @param name The name of the {@link KeyVaultKey key}.
      * @param keyRotationPolicyProperties The {@link KeyRotationPolicyProperties} for the key.
