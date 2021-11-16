@@ -10,17 +10,17 @@ import org.springframework.boot.actuate.health.HealthIndicator;
 
 import java.time.Duration;
 
+import static com.azure.spring.cloud.actuate.util.Constants.DEFAULT_TIMEOUT_SECONDS;
+
 /**
  * Health indicator for Event Hubs.
  */
 public class EventHubHealthIndicator implements HealthIndicator {
 
-    private static final int DEFAULT_TIMEOUT = 30;
-
     private final EventHubProducerAsyncClient producerAsyncClient;
     private final EventHubConsumerAsyncClient consumerAsyncClient;
 
-    private int timeout = DEFAULT_TIMEOUT;
+    private int timeout = DEFAULT_TIMEOUT_SECONDS;
 
     public EventHubHealthIndicator(EventHubProducerAsyncClient producerAsyncClient,
                                    EventHubConsumerAsyncClient consumerAsyncClient) {

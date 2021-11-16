@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.actuate.autoconfigure.appconfiguration;
 
-import com.azure.data.appconfiguration.ConfigurationClient;
+import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import com.azure.spring.cloud.actuate.appconfiguration.AppConfigurationHealthIndicator;
 import com.azure.spring.cloud.autoconfigure.appconfiguration.AzureAppConfigurationAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
@@ -20,8 +20,8 @@ import org.springframework.context.annotation.Configuration;
  * Configuration class of App Configuration Health
  */
 @Configuration
-@ConditionalOnClass({ ConfigurationClient.class, HealthIndicator.class })
-@ConditionalOnBean(ConfigurationClient.class)
+@ConditionalOnClass({ ConfigurationAsyncClient.class, HealthIndicator.class })
+@ConditionalOnBean(ConfigurationAsyncClient.class)
 @AutoConfigureAfter(AzureAppConfigurationAutoConfiguration.class)
 @ConditionalOnEnabledHealthIndicator("azure-app-configuration")
 @ConditionalOnProperty(value = "spring.cloud.azure.appconfiguration.enabled", havingValue = "true", matchIfMissing = true)
@@ -29,7 +29,7 @@ import org.springframework.context.annotation.Configuration;
 public class AppConfigurationHealthConfiguration {
 
     @Bean
-    AppConfigurationHealthIndicator appConfigurationHealthIndicator(ConfigurationClient configurationClient) {
-        return new AppConfigurationHealthIndicator(configurationClient);
+    AppConfigurationHealthIndicator appConfigurationHealthIndicator(ConfigurationAsyncClient configurationAsyncClient) {
+        return new AppConfigurationHealthIndicator(configurationAsyncClient);
     }
 }

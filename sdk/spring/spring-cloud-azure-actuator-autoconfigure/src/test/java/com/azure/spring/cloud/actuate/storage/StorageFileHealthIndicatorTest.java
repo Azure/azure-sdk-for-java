@@ -26,6 +26,7 @@ class StorageFileHealthIndicatorTest {
     private static final String MOCK_URL = "https://example.org/bigly_fake_url";
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
+        .withPropertyValues("spring.cloud.azure.storage.fileshare.account-name=testaccount")
         .withConfiguration(AutoConfigurations.of(StorageFileHealthConfiguration.class));
 
     @Test
