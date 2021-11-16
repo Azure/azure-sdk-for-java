@@ -9,6 +9,7 @@
 ### Bugs Fixed
 
 ### Other Changes
+- The SDK now uses a 2s polling interval when waiting for a Standard sized rendering VM. For Premium, 10s is still used.
 
 ## 1.1.1 (2021-10-07)
 
