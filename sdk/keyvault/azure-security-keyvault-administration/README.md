@@ -14,7 +14,7 @@ Maven dependency for the Azure Key Vault Administration library. Add it to your 
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-security-keyvault-administration</artifactId>
-    <version>4.0.4</version>
+    <version>4.1.0-beta.3</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -150,7 +150,7 @@ A restore operation represents a long running operation for both a full key and 
 ## Create an Access Control client
 Once you've populated the **AZURE_CLIENT_ID**, **AZURE_CLIENT_SECRET**, and **AZURE_TENANT_ID** environment variables and replaced **your-key-vault-url** with the URI returned above, you can create the `KeyVaultAccessControlClient`:
 
-<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#40-L43 -->
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#L48-L51 -->
 ```java
 KeyVaultAccessControlClient accessControlClient = new KeyVaultAccessControlClientBuilder()
     .vaultUrl("<your-key-vault-url>")
@@ -174,7 +174,7 @@ The following sections provide several code snippets covering some of the most c
 ### List role definitions
 List the role definitions in the key vault by calling `listRoleDefinitions()`.
 
-<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#50-L54 -->
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#L58-L62 -->
 ```java
 PagedIterable<KeyVaultRoleDefinition> roleDefinitions =
     keyVaultAccessControlClient.listRoleDefinitions(KeyVaultRoleScope.GLOBAL);
@@ -186,7 +186,7 @@ roleDefinitions.forEach(roleDefinition ->
 ### Create or update a role definition
 Create or update a role definition in the key vault. The following example shows how to create a role definition with a randomly generated name.
 
-<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#L61-L64 -->
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#L69-L72 -->
 ```java
 KeyVaultRoleDefinition roleDefinition = keyVaultAccessControlClient.setRoleDefinition(KeyVaultRoleScope.GLOBAL);
 
@@ -197,7 +197,7 @@ System.out.printf("Created role definition with randomly generated name '%s' and
 ### Retrieve a role definition
 Get an existing role definition. To do this, the scope and 'name' property from an existing role definition are required.
 
-<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#L71-76 -->
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#L79-L84 -->
 ```java
 String roleDefinitionName = "<role-definition-name>";
 KeyVaultRoleDefinition roleDefinition =
@@ -210,7 +210,7 @@ System.out.printf("Retrieved role definition with name '%s' and role name '%s'.%
 ### Delete a role definition
 Delete a role definition. To do this, the scope and 'name' property property from an existing role definition are required.
 
-<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#83-87 -->
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#L91-L95 -->
 ```java
 String roleDefinitionName = "<role-definition-name>";
 
@@ -222,7 +222,7 @@ System.out.printf("Deleted role definition with name '%s'.%n", roleDefinitionNam
 ### List role assignments
 List the role assignments in the key vault by calling `listRoleAssignments()`.
 
-<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#94-98 -->
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#L102-L106 -->
 ```java
 PagedIterable<KeyVaultRoleAssignment> roleAssignments =
     keyVaultAccessControlClient.listRoleAssignments(KeyVaultRoleScope.GLOBAL);
@@ -242,7 +242,7 @@ See the [Create/Get Credentials section](#createget-credentials) for links and i
 az ad signed-in-user show --query objectId
 ```
 
-<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#105-112 -->
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#L113-L120 -->
 ```java
 String roleDefinitionId = "<role-definition-id>";
 String servicePrincipalId = "<service-principal-id>";
@@ -257,7 +257,7 @@ System.out.printf("Created role assignment with randomly generated name '%s' for
 ### Retrieve a role assignment
 Get an existing role assignment. To do this, the 'name' property from an existing role assignment is required.
 
-<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#119-123 -->
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#L127-L131 -->
 ```java
 String roleAssignmentName = "<role-assignment-name>";
 KeyVaultRoleAssignment roleAssignment =
@@ -268,7 +268,7 @@ System.out.printf("Retrieved role assignment with name '%s'.%n", roleAssignment.
 ### Delete a role assignment
 To remove a role assignment from a service principal, the role assignment must be deleted. To do this, the 'name' property from an existing role assignment is required.
 
-<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#130-134 -->
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#L138-L142 -->
 ```java
 String roleAssignmentName = "<role-assignment-name>";
 
@@ -293,7 +293,7 @@ The following sections provide several code snippets covering some of the most c
 ### List role definitions asynchronously
 List the role definitions in the key vault by calling `listRoleDefinitions()`.
 
-<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#141-143 -->
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#L149-L151 -->
 ```java
 keyVaultAccessControlAsyncClient.listRoleDefinitions(KeyVaultRoleScope.GLOBAL)
     .subscribe(roleDefinition ->
@@ -303,7 +303,7 @@ keyVaultAccessControlAsyncClient.listRoleDefinitions(KeyVaultRoleScope.GLOBAL)
 ### Create or update a role definition asynchronously
 Create or update a role definition in the key vault. The following example shows how to create a role definition with a randomly generated name.
 
-<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#150-153 -->
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#L158-L161 -->
 ```java
 keyVaultAccessControlAsyncClient.setRoleDefinition(KeyVaultRoleScope.GLOBAL)
     .subscribe(roleDefinition ->
@@ -314,7 +314,7 @@ keyVaultAccessControlAsyncClient.setRoleDefinition(KeyVaultRoleScope.GLOBAL)
 ### Retrieve a role definition asynchronously
 Get an existing role definition. To do this, the 'name' property from an existing role definition is required.
 
-<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#160-165 -->
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#L168-L173 -->
 ```java
 String roleDefinitionName = "<role-definition-name>";
 
@@ -327,7 +327,7 @@ keyVaultAccessControlAsyncClient.getRoleDefinition(KeyVaultRoleScope.GLOBAL, rol
 ### Delete a role definition asynchronously
 Delete a role definition. To do this, the 'name' property from an existing role definition is required.
 
-<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#172-175 -->
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#L180-L183 -->
 ```java
 String roleDefinitionName = "<role-definition-name>";
 
@@ -338,7 +338,7 @@ keyVaultAccessControlAsyncClient.deleteRoleDefinition(KeyVaultRoleScope.GLOBAL, 
 ### List role assignments asynchronously
 List the role assignments in the key vault by calling `listRoleAssignments()`.
 
-<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#182-184 -->
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#L190-L192 -->
 ```java
 keyVaultAccessControlAsyncClient.listRoleAssignments(KeyVaultRoleScope.GLOBAL)
     .subscribe(roleAssignment ->
@@ -356,7 +356,7 @@ See the [Create/Get Credentials section](#createget-credentials) for links and i
 az ad signed-in-user show --query objectId
 ```
 
-<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#191-197 -->
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#L199-L205 -->
 ```java
 String roleDefinitionId = "<role-definition-id>";
 String servicePrincipalId = "<service-principal-id>";
@@ -370,7 +370,7 @@ keyVaultAccessControlAsyncClient.createRoleAssignment(KeyVaultRoleScope.GLOBAL, 
 ### Retrieve a role assignment asynchronously
 Get an existing role assignment. To do this, the 'name' property from an existing role assignment is required.
 
-<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#204-208 -->
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#L212-L216 -->
 ```java
 String roleAssignmentName = "<role-assignment-name>";
 
@@ -382,7 +382,7 @@ keyVaultAccessControlAsyncClient.getRoleAssignment(KeyVaultRoleScope.GLOBAL, rol
 ### Delete a role assignment asynchronously
 To remove a role assignment from a service principal, the role assignment must be deleted. To do this, the 'name' property from an existing role assignment is required.
 
-<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#215-219 -->
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#L223-L227 -->
 ```java
 String roleAssignmentName = "<role-assignment-name>";
 
@@ -394,7 +394,7 @@ keyVaultAccessControlAsyncClient.deleteRoleAssignment(KeyVaultRoleScope.GLOBAL, 
 ### Create a Backup client
 Once you've populated the **AZURE_CLIENT_ID**, **AZURE_CLIENT_SECRET**, and **AZURE_TENANT_ID** environment variables and replaced **your-key-vault-url** with the URI returned above, you can create the `KeyVaultBackupClient`:
 
-<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#226-229 -->
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#L234-L237 -->
 ```java
 KeyVaultBackupClient keyVaultBackupClient = new KeyVaultBackupClientBuilder()
     .vaultUrl("<your-key-vault-url>")
@@ -414,7 +414,7 @@ The following sections provide several code snippets covering some of the most c
 ### Backup a collection of keys
 Back up an entire collection of keys using `beginBackup()`.
 
-<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#236-256 -->
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#L244-L264 -->
 ```java
 String blobStorageUrl = "https://myaccount.blob.core.windows.net/myContainer";
 String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
@@ -442,7 +442,7 @@ if (finalPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COM
 ### Restore a collection of keys
 Restore an entire collection of keys from a backup using `beginRestore()`.
 
-<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#263-281 -->
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#L271-L289 -->
 ```java
 String folderUrl = "https://myaccount.blob.core.windows.net/myContainer/mhsm-myaccount-2020090117323313";
 String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
@@ -468,7 +468,7 @@ if (finalPollResponse.getStatus() == LongRunningOperationStatus.SUCCESSFULLY_COM
 ### Selectively restore a key
 Restore a specific key from a backup using `beginSelectiveRestore()`.
 
-<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#288-307 -->
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#L296-L315 -->
 ```java
 String folderUrl = "https://myaccount.blob.core.windows.net/myContainer/mhsm-myaccount-2020090117323313";
 String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
@@ -503,7 +503,7 @@ The following sections provide several code snippets covering some of the most c
 ### Backup a collection of keys asynchronously
 Back up an entire collection of keys using `beginBackup()`.
 
-<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#314-325 -->
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#L322-L333 -->
 ```java
 String blobStorageUrl = "https://myaccount.blob.core.windows.net/myContainer";
 String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
@@ -522,7 +522,7 @@ keyVaultBackupAsyncClient.beginBackup(blobStorageUrl, sasToken)
 ### Restore a collection of keys asynchronously
 Restore an entire collection of keys from a backup using `beginRestore()`.
 
-<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#332-342 -->
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#L340-L350 -->
 ```java
 String folderUrl = "https://myaccount.blob.core.windows.net/myContainer/mhsm-myaccount-2020090117323313";
 String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";
@@ -540,7 +540,7 @@ keyVaultBackupAsyncClient.beginRestore(folderUrl, sasToken)
 ### Selectively restore a key asynchronously
 Restore an entire collection of keys from a backup using `beginSelectiveRestore()`.
 
-<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#350-361 -->
+<!-- embedme ./src/samples/java/com/azure/security/keyvault/administration/ReadmeSamples.java#L358-L369 -->
 ```java
 String folderUrl = "https://myaccount.blob.core.windows.net/myContainer/mhsm-myaccount-2020090117323313";
 String sasToken = "sv=2020-02-10&ss=b&srt=o&sp=rwdlactfx&se=2021-06-17T07:13:07Z&st=2021-06-16T23:13:07Z&spr=https&sig=n5V6fnlkViEF9b7ij%2FttTHNwO2BdFIHKHppRxGAyJdc%3D";

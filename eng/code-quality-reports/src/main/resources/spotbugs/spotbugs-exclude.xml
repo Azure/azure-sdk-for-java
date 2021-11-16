@@ -1268,7 +1268,7 @@
     <Bug pattern="SE_BAD_FIELD"/>
   </Match>
 
-  <!-- DocumentAnalysisException fields re serializable -->
+  <!-- DocumentModelOperationException fields re serializable -->
   <Match>
     <Class name="com.azure.ai.formrecognizer.models.DocumentModelOperationException"/>
     <Field name="documentModelOperationError"/>

@@ -1,7 +1,171 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.0.0-beta.4 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0-beta.3 (2021-11-10)
+
+- Azure Resource Manager Avs client library for Java. This package contains Microsoft Azure SDK for Avs Management SDK. Azure VMware Solution API. Package tag package-2021-12-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.PrivateCloudProperties` was removed
+
+* `models.PrivateCloudUpdateProperties` was removed
+
+* `models.ClusterProperties` was removed
+
+#### `models.Cluster$Definition` was modified
+
+* `withClusterSize(java.lang.Integer)` was removed
+
+#### `models.Cluster` was modified
+
+* `hosts()` was removed
+* `clusterId()` was removed
+* `clusterSize()` was removed
+* `provisioningState()` was removed
+
+### Features Added
+
+* `models.EncryptionVersionType` was added
+
+* `models.AvailabilityStrategy` was added
+
+* `models.VmHostPlacementPolicyProperties` was added
+
+* `models.AvailabilityProperties` was added
+
+* `models.PlacementPolicy$UpdateStages` was added
+
+* `models.PlacementPolicyState` was added
+
+* `models.EncryptionState` was added
+
+* `models.ResourceIdentityType` was added
+
+* `models.AffinityType` was added
+
+* `models.VmPlacementPolicyProperties` was added
+
+* `models.PlacementPolicyProperties` was added
+
+* `models.VirtualMachine` was added
+
+* `models.DatastoreStatus` was added
+
+* `models.VirtualMachineRestrictMovementState` was added
+
+* `models.VirtualMachinesList` was added
+
+* `models.EncryptionKeyVaultProperties` was added
+
+* `models.PlacementPoliciesList` was added
+
+* `models.PrivateCloudIdentity` was added
+
+* `models.PlacementPolicy` was added
+
+* `models.VirtualMachineRestrictMovement` was added
+
+* `models.PlacementPolicy$Update` was added
+
+* `models.EncryptionKeyStatus` was added
+
+* `models.PlacementPolicy$Definition` was added
+
+* `models.PlacementPolicyType` was added
+
+* `models.PlacementPolicy$DefinitionStages` was added
+
+* `models.PlacementPolicies` was added
+
+* `models.PlacementPolicyUpdate` was added
+
+* `models.VirtualMachines` was added
+
+* `models.PlacementPolicyProvisioningState` was added
+
+* `models.Encryption` was added
+
+#### `models.ManagementCluster` was modified
+
+* `withHosts(java.util.List)` was added
+* `withHosts(java.util.List)` was added
+
+#### `models.PrivateCloudUpdate` was modified
+
+* `identity()` was added
+* `encryption()` was added
+* `withAvailability(models.AvailabilityProperties)` was added
+* `withEncryption(models.Encryption)` was added
+* `availability()` was added
+* `withIdentity(models.PrivateCloudIdentity)` was added
+
+#### `models.PrivateCloud$Definition` was modified
+
+* `withEncryption(models.Encryption)` was added
+* `withIdentity(models.PrivateCloudIdentity)` was added
+* `withAvailability(models.AvailabilityProperties)` was added
+* `withSecondaryCircuit(models.Circuit)` was added
+
+#### `models.GlobalReachConnection` was modified
+
+* `expressRouteId()` was added
+
+#### `models.Cluster$Update` was modified
+
+* `withHosts(java.util.List)` was added
+
+#### `models.ExpressRouteAuthorization` was modified
+
+* `expressRouteId()` was added
+
+#### `models.ClusterUpdate` was modified
+
+* `withHosts(java.util.List)` was added
+* `hosts()` was added
+
+#### `models.GlobalReachConnection$Update` was modified
+
+* `withExpressRouteId(java.lang.String)` was added
+
+#### `models.Datastore` was modified
+
+* `status()` was added
+
+#### `models.PrivateCloud$Update` was modified
+
+* `withAvailability(models.AvailabilityProperties)` was added
+* `withEncryption(models.Encryption)` was added
+* `withIdentity(models.PrivateCloudIdentity)` was added
+
+#### `models.PrivateCloud` was modified
+
+* `availability()` was added
+* `secondaryCircuit()` was added
+* `encryption()` was added
+* `identity()` was added
+
+#### `models.GlobalReachConnection$Definition` was modified
+
+* `withExpressRouteId(java.lang.String)` was added
+
+#### `AvsManager` was modified
+
+* `placementPolicies()` was added
+* `virtualMachines()` was added
+
+#### `models.CommonClusterProperties` was modified
+
+* `withHosts(java.util.List)` was added
 
 ## 1.0.0-beta.2 (2021-07-15)
 

@@ -37,6 +37,7 @@ public class ReadmeSamples {
      * @return the chat client.
      */
     public ChatClient createChatClient() {
+        // BEGIN: readme-sample-createChatClient
         String endpoint = "https://<RESOURCE_NAME>.communcationservices.azure.com";
 
         // Your user access token retrieved from your trusted service
@@ -48,6 +49,7 @@ public class ReadmeSamples {
         builder.endpoint(endpoint)
             .credential(credential);
         ChatClient chatClient = builder.buildClient();
+        // END: readme-sample-createChatClient
 
         return chatClient;
     }
@@ -61,6 +63,7 @@ public class ReadmeSamples {
         CommunicationUserIdentifier user1 = new CommunicationUserIdentifier("Id 1");
         CommunicationUserIdentifier user2 = new CommunicationUserIdentifier("Id 2");
 
+        // BEGIN: readme-sample-createChatThread
         List<ChatParticipant> participants = new ArrayList<ChatParticipant>();
 
         ChatParticipant firstParticipant = new ChatParticipant()
@@ -79,6 +82,7 @@ public class ReadmeSamples {
         CreateChatThreadResult result = chatClient.createChatThread(createChatThreadOptions);
 
         String chatThreadId = result.getChatThread().getId();
+        // END: readme-sample-createChatThread
     }
 
     /**
@@ -87,8 +91,10 @@ public class ReadmeSamples {
     public void getChatThread() {
         ChatClient chatClient = createChatClient();
 
+        // BEGIN: readme-sample-getChatThread
         ChatThreadClient chatThreadClient = chatClient.getChatThreadClient("Id");
         ChatThreadProperties chatThreadProperties = chatThreadClient.getProperties();
+        // END: readme-sample-getChatThread
     }
 
     /**
@@ -97,8 +103,10 @@ public class ReadmeSamples {
     public void deleteChatThread() {
         ChatClient chatClient = createChatClient();
 
+        // BEGIN: readme-sample-deleteChatThread
         String chatThreadId = "Id";
         chatClient.deleteChatThread(chatThreadId);
+        // END: readme-sample-deleteChatThread
     }
 
     /**
@@ -109,8 +117,10 @@ public class ReadmeSamples {
     public ChatThreadClient getChatThreadClient() {
         ChatClient chatClient = createChatClient();
 
+        // BEGIN: readme-sample-getChatThreadClient
         String chatThreadId = "Id";
         ChatThreadClient chatThreadClient = chatClient.getChatThreadClient(chatThreadId);
+        // END: readme-sample-getChatThreadClient
 
         return chatThreadClient;
     }
@@ -121,7 +131,9 @@ public class ReadmeSamples {
     public void updateTopic() {
         ChatThreadClient chatThreadClient = getChatThreadClient();
 
+        // BEGIN: readme-sample-updateTopic
         chatThreadClient.updateTopic("New Topic");
+        // END: readme-sample-updateTopic
     }
 
 
@@ -130,14 +142,15 @@ public class ReadmeSamples {
      * Sample code for sending a chat message using the sync chat thread client.
      */
     public void sendChatMessage() {
-
         ChatThreadClient chatThreadClient = getChatThreadClient();
 
+        // BEGIN: readme-sample-sendChatMessage
         SendChatMessageOptions sendChatMessageOptions = new SendChatMessageOptions()
             .setContent("Message content")
             .setSenderDisplayName("Sender Display Name");
 
         SendChatMessageResult sendResult = chatThreadClient.sendMessage(sendChatMessageOptions);
+        // END: readme-sample-sendChatMessage
     }
 
     /**
@@ -146,8 +159,10 @@ public class ReadmeSamples {
     public void getChatMessage() {
         ChatThreadClient chatThreadClient = getChatThreadClient();
 
+        // BEGIN: readme-sample-getChatMessage
         String chatMessageId = "Id";
         ChatMessage chatMessage = chatThreadClient.getMessage(chatMessageId);
+        // END: readme-sample-getChatMessage
     }
 
     /**
@@ -156,14 +171,15 @@ public class ReadmeSamples {
     public void getChatMessages() {
         ChatThreadClient chatThreadClient = getChatThreadClient();
 
+        // BEGIN: readme-sample-getChatMessages
         PagedIterable<ChatMessage> chatMessagesResponse = chatThreadClient.listMessages();
         chatMessagesResponse.iterableByPage().forEach(resp -> {
             System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.getHeaders(),
                 resp.getRequest().getUrl(), resp.getStatusCode());
-            resp.getItems().forEach(message -> {
-                System.out.printf("Message id is %s.", message.getId());
-            });
+            resp.getElements().forEach(message ->
+                System.out.printf("Message id is %s.", message.getId()));
         });
+        // END: readme-sample-getChatMessages
     }
 
     /**
@@ -172,11 +188,13 @@ public class ReadmeSamples {
     public void updateChatMessage() {
         ChatThreadClient chatThreadClient = getChatThreadClient();
 
+        // BEGIN: readme-sample-updateChatMessage
         String chatMessageId = "Id";
         UpdateChatMessageOptions updateChatMessageOptions = new UpdateChatMessageOptions()
             .setContent("Updated message content");
 
         chatThreadClient.updateMessage(chatMessageId, updateChatMessageOptions);
+        // END: readme-sample-updateChatMessage
     }
 
     /**
@@ -185,8 +203,10 @@ public class ReadmeSamples {
     public void deleteChatMessage() {
         ChatThreadClient chatThreadClient = getChatThreadClient();
 
+        // BEGIN: readme-sample-deleteChatMessage
         String chatMessageId = "Id";
         chatThreadClient.deleteMessage(chatMessageId);
+        // END: readme-sample-deleteChatMessage
     }
 
     /**
@@ -195,26 +215,27 @@ public class ReadmeSamples {
     public void listChatParticipants() {
         ChatThreadClient chatThreadClient = getChatThreadClient();
 
+        // BEGIN: readme-sample-listChatParticipants
         PagedIterable<ChatParticipant> chatParticipantsResponse = chatThreadClient.listParticipants();
         chatParticipantsResponse.iterableByPage().forEach(resp -> {
             System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.getHeaders(),
                 resp.getRequest().getUrl(), resp.getStatusCode());
-            resp.getItems().forEach(chatParticipant -> {
-                System.out.printf("Participant id is %s.", ((CommunicationUserIdentifier) chatParticipant.getCommunicationIdentifier()).getId());
-            });
+            resp.getElements().forEach(chatParticipant ->
+                System.out.printf("Participant id is %s.", ((CommunicationUserIdentifier) chatParticipant.getCommunicationIdentifier()).getId()));
         });
+        // END: readme-sample-listChatParticipants
     }
 
     /**
      * Sample code adding chat participants using the sync chat thread client.
      */
     public void addChatParticipants() {
-
         ChatThreadClient chatThreadClient = getChatThreadClient();
 
         CommunicationUserIdentifier user1 = new CommunicationUserIdentifier("Id 1");
         CommunicationUserIdentifier user2 = new CommunicationUserIdentifier("Id 2");
 
+        // BEGIN: readme-sample-addChatParticipants
         List<ChatParticipant> participants = new ArrayList<ChatParticipant>();
 
         ChatParticipant firstParticipant = new ChatParticipant()
@@ -229,6 +250,7 @@ public class ReadmeSamples {
         participants.add(secondParticipant);
 
         chatThreadClient.addParticipants(participants);
+        // END: readme-sample-addChatParticipants
     }
 
     /**
@@ -239,7 +261,9 @@ public class ReadmeSamples {
 
         CommunicationUserIdentifier user = new CommunicationUserIdentifier("Id");
 
+        // BEGIN: readme-sample-removeChatParticipant
         chatThreadClient.removeParticipant(user);
+        // END: readme-sample-removeChatParticipant
     }
 
     /**
@@ -248,8 +272,10 @@ public class ReadmeSamples {
     public void sendReadReceipt() {
         ChatThreadClient chatThreadClient = getChatThreadClient();
 
+        // BEGIN: readme-sample-sendReadReceipt
         String chatMessageId = "Id";
         chatThreadClient.sendReadReceipt(chatMessageId);
+        // END: readme-sample-sendReadReceipt
     }
 
     /**
@@ -258,14 +284,15 @@ public class ReadmeSamples {
     public void listReadReceipts() {
         ChatThreadClient chatThreadClient = getChatThreadClient();
 
+        // BEGIN: readme-sample-listReadReceipts
         PagedIterable<ChatMessageReadReceipt> readReceiptsResponse = chatThreadClient.listReadReceipts();
         readReceiptsResponse.iterableByPage().forEach(resp -> {
             System.out.printf("Response headers are %s. Url %s  and status code %d %n", resp.getHeaders(),
                 resp.getRequest().getUrl(), resp.getStatusCode());
-            resp.getItems().forEach(readReceipt -> {
-                System.out.printf("Read message id is %s.", readReceipt.getChatMessageId());
-            });
+            resp.getElements().forEach(readReceipt ->
+                System.out.printf("Read message id is %s.", readReceipt.getChatMessageId()));
         });
+        // END: readme-sample-listReadReceipts
     }
 
     /**
@@ -274,8 +301,10 @@ public class ReadmeSamples {
     public void sendTypingNotification() {
         ChatThreadClient chatThreadClient = getChatThreadClient();
 
+        // BEGIN: readme-sample-sendTypingNotification
         TypingNotificationOptions options = new TypingNotificationOptions();
         options.setSenderDisplayName("Sender Display Name");
         chatThreadClient.sendTypingNotificationWithResponse(options, Context.NONE);
+        // END: readme-sample-sendTypingNotification
     }
 }

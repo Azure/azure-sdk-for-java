@@ -110,6 +110,13 @@ public final class SearchIndex {
     private SimilarityAlgorithm similarity;
 
     /*
+     * Defines parameters for a search index that influence semantic
+     * capabilities.
+     */
+    @JsonProperty(value = "semantic")
+    private SemanticSettings semanticSettings;
+
+    /*
      * The ETag of the index.
      */
     @JsonProperty(value = "@odata.etag")
@@ -515,6 +522,26 @@ public final class SearchIndex {
      */
     public SearchIndex setSimilarity(SimilarityAlgorithm similarity) {
         this.similarity = similarity;
+        return this;
+    }
+
+    /**
+     * Get the semanticSettings property: Defines parameters for a search index that influence semantic capabilities.
+     *
+     * @return the semanticSettings value.
+     */
+    public SemanticSettings getSemanticSettings() {
+        return this.semanticSettings;
+    }
+
+    /**
+     * Set the semanticSettings property: Defines parameters for a search index that influence semantic capabilities.
+     *
+     * @param semanticSettings the semanticSettings value to set.
+     * @return the SearchIndex object itself.
+     */
+    public SearchIndex setSemanticSettings(SemanticSettings semanticSettings) {
+        this.semanticSettings = semanticSettings;
         return this;
     }
 

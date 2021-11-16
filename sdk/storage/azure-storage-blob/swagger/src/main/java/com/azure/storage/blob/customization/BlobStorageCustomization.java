@@ -111,6 +111,9 @@ public class BlobStorageCustomization extends Customization {
         objectReplicationMetadata.removeAnnotation("@JsonProperty(value = \"ObjectReplicationMetadata\")")
             .addAnnotation("@JsonProperty(value = \"OrMetadata\")");
 
+        ClassCustomization blobPrefix = implementationModels.getClass("BlobPrefix");
+        blobPrefix.rename("BlobPrefixInternal");
+
         PackageCustomization models = customization.getPackage("com.azure.storage.blob.models");
         models.getClass("PageList").addAnnotation("@JsonDeserialize(using = PageListDeserializer.class)");
 
@@ -179,6 +182,11 @@ public class BlobStorageCustomization extends Customization {
 
         customization.getRawEditor().removeFile(fileName);
         customization.getRawEditor().addFile(fileName, updatedCode);
+
+        ClassCustomization listBlobsIncludeItem = models.getClass("ListBlobsIncludeItem");
+        listBlobsIncludeItem.renameEnumMember("IMMUTABILITYPOLICY", "IMMUTABILITY_POLICY")
+            .renameEnumMember("LEGALHOLD", "LEGAL_HOLD")
+            .renameEnumMember("DELETEDWITHVERSIONS", "DELETED_WITH_VERSIONS");
     }
 
     private void modifyUnexpectedResponseExceptionType(MethodCustomization method) {

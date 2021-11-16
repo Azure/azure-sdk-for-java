@@ -6,9 +6,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
+import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.compute.ComputeManager;
 import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetInner;
-import com.azure.resourcemanager.authorization.models.BuiltInRole;
 import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.network.models.ApplicationSecurityGroup;
 import com.azure.resourcemanager.network.models.LoadBalancer;
@@ -274,6 +274,15 @@ public interface VirtualMachineScaleSet
      */
     VirtualMachineScaleSetNetworkInterface getNetworkInterfaceByInstanceId(String instanceId, String name);
 
+    /**
+     * Gets a network interface associated with a virtual machine scale set instance.
+     *
+     * @param instanceId the virtual machine scale set vm instance ID
+     * @param name the network interface name
+     * @return the network interface
+     */
+    Mono<VirtualMachineScaleSetNetworkInterface> getNetworkInterfaceByInstanceIdAsync(String instanceId, String name);
+
     /** @return the network interfaces associated with all virtual machine instances in a scale set */
     PagedIterable<VirtualMachineScaleSetNetworkInterface> listNetworkInterfaces();
 
@@ -381,6 +390,11 @@ public interface VirtualMachineScaleSet
      * @return the additionalCapabilities value
      */
     AdditionalCapabilities additionalCapabilities();
+
+    /**
+     * @return the purchase plan information about marketplace image
+     */
+    Plan plan();
 
     /**
      * The virtual machine scale set stages shared between managed and unmanaged based virtual machine scale set
@@ -1704,6 +1718,19 @@ public interface VirtualMachineScaleSet
         }
 
         /**
+         * The stage of the virtual machine scale set definition allowing to configure a purchase plan.
+         */
+        interface WithPlan {
+            /**
+             * Specifies the purchase plan for the virtual machine scale set.
+             *
+             * @param plan a purchase plan
+             * @return the next stage of the definition
+             */
+            WithCreate withPlan(PurchasePlan plan);
+        }
+
+        /**
          * The stage of a virtual machine scale set definition containing all the required inputs for the resource to be
          * created, but also allowing for any other optional settings to be specified.
          */
@@ -1730,6 +1757,7 @@ public interface VirtualMachineScaleSet
                 DefinitionStages.WithApplicationGateway,
                 DefinitionStages.WithApplicationSecurityGroup,
                 DefinitionStages.WithSecrets,
+                DefinitionStages.WithPlan,
                 Resource.DefinitionWithTags<VirtualMachineScaleSet.DefinitionStages.WithCreate> {
         }
     }

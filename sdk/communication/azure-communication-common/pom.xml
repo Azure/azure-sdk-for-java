@@ -40,18 +40,21 @@
     <test.dir>src/test</test.dir>
     <jacoco.min.linecoverage>0.70</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.70</jacoco.min.branchcoverage>
+    <codesnippet.skip>false</codesnippet.skip>
+    <javadocDoclet></javadocDoclet>
+    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.21.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.22.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.11.1</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.11.2</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
       <scope>compile</scope>
     </dependency>
     <dependency>
