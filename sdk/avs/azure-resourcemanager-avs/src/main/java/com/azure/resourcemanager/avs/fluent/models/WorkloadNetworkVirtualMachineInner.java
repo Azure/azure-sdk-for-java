@@ -5,7 +5,6 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.avs.models.VMTypeEnum;
@@ -13,22 +12,24 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** NSX Virtual Machine. */
-@JsonFlatten
 @Fluent
-public class WorkloadNetworkVirtualMachineInner extends ProxyResource {
+public final class WorkloadNetworkVirtualMachineInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(WorkloadNetworkVirtualMachineInner.class);
 
     /*
-     * Display name of the VM.
+     * Virtual machine properties.
      */
-    @JsonProperty(value = "properties.displayName")
-    private String displayName;
+    @JsonProperty(value = "properties")
+    private WorkloadNetworkVirtualMachineProperties innerProperties;
 
-    /*
-     * Virtual machine type.
+    /**
+     * Get the innerProperties property: Virtual machine properties.
+     *
+     * @return the innerProperties value.
      */
-    @JsonProperty(value = "properties.vmType", access = JsonProperty.Access.WRITE_ONLY)
-    private VMTypeEnum vmType;
+    private WorkloadNetworkVirtualMachineProperties innerProperties() {
+        return this.innerProperties;
+    }
 
     /**
      * Get the displayName property: Display name of the VM.
@@ -36,7 +37,7 @@ public class WorkloadNetworkVirtualMachineInner extends ProxyResource {
      * @return the displayName value.
      */
     public String displayName() {
-        return this.displayName;
+        return this.innerProperties() == null ? null : this.innerProperties().displayName();
     }
 
     /**
@@ -46,7 +47,10 @@ public class WorkloadNetworkVirtualMachineInner extends ProxyResource {
      * @return the WorkloadNetworkVirtualMachineInner object itself.
      */
     public WorkloadNetworkVirtualMachineInner withDisplayName(String displayName) {
-        this.displayName = displayName;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new WorkloadNetworkVirtualMachineProperties();
+        }
+        this.innerProperties().withDisplayName(displayName);
         return this;
     }
 
@@ -56,7 +60,7 @@ public class WorkloadNetworkVirtualMachineInner extends ProxyResource {
      * @return the vmType value.
      */
     public VMTypeEnum vmType() {
-        return this.vmType;
+        return this.innerProperties() == null ? null : this.innerProperties().vmType();
     }
 
     /**
@@ -65,5 +69,8 @@ public class WorkloadNetworkVirtualMachineInner extends ProxyResource {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (innerProperties() != null) {
+            innerProperties().validate();
+        }
     }
 }

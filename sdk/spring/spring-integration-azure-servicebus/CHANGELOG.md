@@ -9,6 +9,9 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.10.0 (2021-11-02)
+### Other Changes
 - Deprecate CompletableFuture support APIs, which will be replaced by Reactor Core from version 4.0.0.
 
 ## 2.9.0 (2021-09-27)

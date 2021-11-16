@@ -28,6 +28,12 @@ public final class PowerQueryTypeProperties {
     @JsonProperty(value = "script")
     private String script;
 
+    /*
+     * Locale of the Power query mashup document.
+     */
+    @JsonProperty(value = "documentLocale")
+    private String documentLocale;
+
     /**
      * Get the sources property: List of sources in Power Query.
      *
@@ -65,6 +71,26 @@ public final class PowerQueryTypeProperties {
      */
     public PowerQueryTypeProperties withScript(String script) {
         this.script = script;
+        return this;
+    }
+
+    /**
+     * Get the documentLocale property: Locale of the Power query mashup document.
+     *
+     * @return the documentLocale value.
+     */
+    public String documentLocale() {
+        return this.documentLocale;
+    }
+
+    /**
+     * Set the documentLocale property: Locale of the Power query mashup document.
+     *
+     * @param documentLocale the documentLocale value to set.
+     * @return the PowerQueryTypeProperties object itself.
+     */
+    public PowerQueryTypeProperties withDocumentLocale(String documentLocale) {
+        this.documentLocale = documentLocale;
         return this;
     }
 

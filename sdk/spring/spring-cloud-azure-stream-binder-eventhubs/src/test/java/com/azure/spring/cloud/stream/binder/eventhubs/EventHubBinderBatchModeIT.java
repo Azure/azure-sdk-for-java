@@ -75,7 +75,7 @@ public class EventHubBinderBatchModeIT {
         EventHubBinderBatchModeIT.LATCH.await(15, TimeUnit.SECONDS);
         LOGGER.info("Send a message:" + MESSAGE + ".");
         many.emitNext(new GenericMessage<>(MESSAGE), Sinks.EmitFailureHandler.FAIL_FAST);
-        assertThat(EventHubBinderBatchModeIT.LATCH.await(30, TimeUnit.SECONDS)).isTrue();
+        assertThat(EventHubBinderBatchModeIT.LATCH.await(600, TimeUnit.SECONDS)).isTrue();
         LOGGER.info("EventHubBinderBatchModeIT end.");
     }
 }

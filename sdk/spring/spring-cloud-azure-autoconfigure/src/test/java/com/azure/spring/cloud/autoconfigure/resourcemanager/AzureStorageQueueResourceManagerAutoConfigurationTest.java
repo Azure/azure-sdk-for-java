@@ -4,14 +4,15 @@
 package com.azure.spring.cloud.autoconfigure.resourcemanager;
 
 import com.azure.resourcemanager.AzureResourceManager;
-import com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.storage.queue.AzureStorageQueueProperties;
+import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
+import com.azure.spring.cloud.autoconfigure.storage.queue.properties.AzureStorageQueueProperties;
 import com.azure.spring.cloud.resourcemanager.connectionstring.StorageQueueArmConnectionStringProvider;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 public class AzureStorageQueueResourceManagerAutoConfigurationTest {
 
@@ -28,10 +29,10 @@ public class AzureStorageQueueResourceManagerAutoConfigurationTest {
     @Test
     void testAzureServiceBusResourceManagerAutoConfigurationBeans() {
         this.contextRunner
-            .withUserConfiguration(AzureGlobalPropertiesAutoConfiguration.class,
-                AzureResourceManagerAutoConfiguration.class)
-            .withBean(AzureResourceManager.class, TestAzureResourceManager::getAzureResourceManager)
+            .withUserConfiguration(AzureResourceManagerAutoConfiguration.class)
+            .withBean(AzureResourceManager.class, () -> mock(AzureResourceManager.class))
             .withBean(AzureStorageQueueProperties.class, AzureStorageQueueProperties::new)
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withPropertyValues(AzureStorageQueueProperties.PREFIX + ".account-name=test-account")
             .run(context -> assertThat(context).hasSingleBean(StorageQueueArmConnectionStringProvider.class));
     }

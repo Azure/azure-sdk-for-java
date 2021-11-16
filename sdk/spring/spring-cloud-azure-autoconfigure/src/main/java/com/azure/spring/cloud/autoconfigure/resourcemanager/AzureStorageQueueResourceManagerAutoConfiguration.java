@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.resourcemanager;
 
 import com.azure.resourcemanager.AzureResourceManager;
-import com.azure.spring.cloud.autoconfigure.storage.queue.AzureStorageQueueProperties;
+import com.azure.spring.cloud.autoconfigure.storage.queue.properties.AzureStorageQueueProperties;
 import com.azure.spring.cloud.resourcemanager.connectionstring.StorageQueueArmConnectionStringProvider;
 import com.azure.storage.queue.QueueServiceClientBuilder;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;

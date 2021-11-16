@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.jms;
 
+import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer;
@@ -148,7 +149,6 @@ abstract class AbstractServiceBusJmsAutoConfigurationTest {
         assertThat(container.isSubscriptionDurable()).isTrue();
         assertThat(container.isSubscriptionShared()).isFalse();
         assertThat(container.getPhase()).isEqualTo(2147483647);
-        assertThat(container.getClientId()).isEqualTo("cid");
     }
 
 }

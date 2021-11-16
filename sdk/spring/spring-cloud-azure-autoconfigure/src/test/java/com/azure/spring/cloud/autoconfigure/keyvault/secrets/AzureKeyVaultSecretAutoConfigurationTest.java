@@ -6,6 +6,7 @@ package com.azure.spring.cloud.autoconfigure.keyvault.secrets;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
+import com.azure.spring.cloud.autoconfigure.keyvault.secrets.properties.AzureKeyVaultSecretProperties;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.service.keyvault.secrets.SecretClientBuilderFactory;
 import org.junit.jupiter.api.Test;

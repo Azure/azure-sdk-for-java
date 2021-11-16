@@ -123,7 +123,10 @@ public interface VideoEntity {
          * to be created, but also allows for any other optional properties to be specified.
          */
         interface WithCreate
-            extends DefinitionStages.WithTitle, DefinitionStages.WithDescription, DefinitionStages.WithArchival {
+            extends DefinitionStages.WithTitle,
+                DefinitionStages.WithDescription,
+                DefinitionStages.WithMediaInfo,
+                DefinitionStages.WithArchival {
             /**
              * Executes the create request.
              *
@@ -162,6 +165,16 @@ public interface VideoEntity {
              */
             WithCreate withDescription(String description);
         }
+        /** The stage of the VideoEntity definition allowing to specify mediaInfo. */
+        interface WithMediaInfo {
+            /**
+             * Specifies the mediaInfo property: Contains information about the video and audio content..
+             *
+             * @param mediaInfo Contains information about the video and audio content.
+             * @return the next definition stage.
+             */
+            WithCreate withMediaInfo(VideoMediaInfo mediaInfo);
+        }
         /** The stage of the VideoEntity definition allowing to specify archival. */
         interface WithArchival {
             /**
@@ -181,7 +194,11 @@ public interface VideoEntity {
     VideoEntity.Update update();
 
     /** The template for VideoEntity update. */
-    interface Update extends UpdateStages.WithTitle, UpdateStages.WithDescription, UpdateStages.WithArchival {
+    interface Update
+        extends UpdateStages.WithTitle,
+            UpdateStages.WithDescription,
+            UpdateStages.WithMediaInfo,
+            UpdateStages.WithArchival {
         /**
          * Executes the update request.
          *
@@ -221,6 +238,16 @@ public interface VideoEntity {
              * @return the next definition stage.
              */
             Update withDescription(String description);
+        }
+        /** The stage of the VideoEntity update allowing to specify mediaInfo. */
+        interface WithMediaInfo {
+            /**
+             * Specifies the mediaInfo property: Contains information about the video and audio content..
+             *
+             * @param mediaInfo Contains information about the video and audio content.
+             * @return the next definition stage.
+             */
+            Update withMediaInfo(VideoMediaInfo mediaInfo);
         }
         /** The stage of the VideoEntity update allowing to specify archival. */
         interface WithArchival {

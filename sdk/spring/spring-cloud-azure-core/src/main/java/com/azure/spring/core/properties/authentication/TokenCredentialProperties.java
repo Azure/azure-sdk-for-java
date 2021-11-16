@@ -37,10 +37,6 @@ public class TokenCredentialProperties implements TokenCredentialAware.TokenCred
 
     private String managedIdentityClientId;
 
-    public TokenCredentialProperties() {
-
-    }
-
     public String getClientId() {
         return clientId;
     }

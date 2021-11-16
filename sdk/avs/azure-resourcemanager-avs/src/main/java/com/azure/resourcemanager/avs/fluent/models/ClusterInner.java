@@ -5,19 +5,15 @@
 package com.azure.resourcemanager.avs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.ProxyResource;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.avs.models.ClusterProvisioningState;
 import com.azure.resourcemanager.avs.models.Sku;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
 /** A cluster resource. */
-@JsonFlatten
 @Fluent
-public class ClusterInner extends ProxyResource {
+public final class ClusterInner extends ProxyResource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterInner.class);
 
     /*
@@ -27,28 +23,10 @@ public class ClusterInner extends ProxyResource {
     private Sku sku;
 
     /*
-     * The cluster size
+     * The properties of a cluster resource
      */
-    @JsonProperty(value = "properties.clusterSize")
-    private Integer clusterSize;
-
-    /*
-     * The state of the cluster provisioning
-     */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private ClusterProvisioningState provisioningState;
-
-    /*
-     * The identity
-     */
-    @JsonProperty(value = "properties.clusterId", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer clusterId;
-
-    /*
-     * The hosts
-     */
-    @JsonProperty(value = "properties.hosts", access = JsonProperty.Access.WRITE_ONLY)
-    private List<String> hosts;
+    @JsonProperty(value = "properties")
+    private ClusterProperties innerProperties;
 
     /**
      * Get the sku property: The cluster SKU.
@@ -71,50 +49,12 @@ public class ClusterInner extends ProxyResource {
     }
 
     /**
-     * Get the clusterSize property: The cluster size.
+     * Get the innerProperties property: The properties of a cluster resource.
      *
-     * @return the clusterSize value.
+     * @return the innerProperties value.
      */
-    public Integer clusterSize() {
-        return this.clusterSize;
-    }
-
-    /**
-     * Set the clusterSize property: The cluster size.
-     *
-     * @param clusterSize the clusterSize value to set.
-     * @return the ClusterInner object itself.
-     */
-    public ClusterInner withClusterSize(Integer clusterSize) {
-        this.clusterSize = clusterSize;
-        return this;
-    }
-
-    /**
-     * Get the provisioningState property: The state of the cluster provisioning.
-     *
-     * @return the provisioningState value.
-     */
-    public ClusterProvisioningState provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Get the clusterId property: The identity.
-     *
-     * @return the clusterId value.
-     */
-    public Integer clusterId() {
-        return this.clusterId;
-    }
-
-    /**
-     * Get the hosts property: The hosts.
-     *
-     * @return the hosts value.
-     */
-    public List<String> hosts() {
-        return this.hosts;
+    private ClusterProperties innerProperties() {
+        return this.innerProperties;
     }
 
     /**
@@ -129,6 +69,9 @@ public class ClusterInner extends ProxyResource {
                     new IllegalArgumentException("Missing required property sku in model ClusterInner"));
         } else {
             sku().validate();
+        }
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

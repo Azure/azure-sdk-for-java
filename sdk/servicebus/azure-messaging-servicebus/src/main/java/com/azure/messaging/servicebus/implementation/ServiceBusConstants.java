@@ -17,6 +17,9 @@ public class ServiceBusConstants {
     public static final String AZ_TRACING_NAMESPACE_VALUE = "Microsoft.ServiceBus";
     public static final String AZ_TRACING_SERVICE_NAME = "ServiceBus.";
 
+    public static final String SERVICE_BUS_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME = "ServiceBusSupplementaryAuthorization";
+    public static final String SERVICE_BUS_DLQ_SUPPLEMENTARY_AUTHORIZATION_HEADER_NAME = "ServiceBusDlqSupplementaryAuthorization";
+
     /**
      * Represents the maximum ttl for a message or entity.
      */

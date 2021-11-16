@@ -3,7 +3,6 @@
 
 package com.azure.spring.eventhubs.core.properties.merger;
 
-import com.azure.spring.core.properties.proxy.ProxyProperties;
 import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
 import com.azure.spring.eventhubs.core.properties.ProducerProperties;
 import org.junit.jupiter.api.Assertions;
@@ -20,9 +19,7 @@ class ProducerPropertiesParentMergerTest {
         NamespaceProperties parent = new NamespaceProperties();
         parent.setEventHubName("parent");
         parent.setConnectionString("parent-connection-str");
-        ProxyProperties proxy = new ProxyProperties();
-        proxy.setHostname("parent-hostname");
-        parent.setProxy(proxy);
+        parent.getProxy().setHostname("parent-hostname");
 
         ProducerProperties result = merger.mergeParent(child, parent);
 
@@ -36,16 +33,12 @@ class ProducerPropertiesParentMergerTest {
         ProducerProperties child = new ProducerProperties();
         child.setEventHubName("child");
         child.setConnectionString("child-connection-str");
-        ProxyProperties proxy = new ProxyProperties();
-        proxy.setHostname("child-hostname");
-        child.setProxy(proxy);
+        child.getProxy().setHostname("child-hostname");
 
         NamespaceProperties parent = new NamespaceProperties();
         parent.setEventHubName("parent");
         parent.setConnectionString("parent-connection-str");
-        ProxyProperties anotherProxy = new ProxyProperties();
-        anotherProxy.setHostname("parent-hostname");
-        parent.setProxy(anotherProxy);
+        parent.getProxy().setHostname("parent-hostname");
 
         ProducerProperties result = merger.mergeParent(child, parent);
 
