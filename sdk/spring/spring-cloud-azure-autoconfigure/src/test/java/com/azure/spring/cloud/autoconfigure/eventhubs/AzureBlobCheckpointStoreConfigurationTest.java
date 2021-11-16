@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.eventhubs;
 
 import com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore;
 import com.azure.spring.cloud.autoconfigure.context.AzureContextUtils;
-import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubProperties;
+import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.storage.blob.AzureStorageBlobAutoConfiguration;
 import com.azure.spring.service.storage.blob.BlobServiceClientBuilderFactory;
@@ -45,15 +45,15 @@ class AzureBlobCheckpointStoreConfigurationTest {
 
     @Test
     void configureWithStorageInfo() {
-        AzureEventHubProperties azureEventHubProperties = new AzureEventHubProperties();
-        azureEventHubProperties.getProcessor().getCheckpointStore().setAccountName("sa");
-        azureEventHubProperties.getProcessor().getCheckpointStore().setContainerName("abc");
+        AzureEventHubsProperties azureEventHubsProperties = new AzureEventHubsProperties();
+        azureEventHubsProperties.getProcessor().getCheckpointStore().setAccountName("sa");
+        azureEventHubsProperties.getProcessor().getCheckpointStore().setContainerName("abc");
         this.contextRunner
             .withPropertyValues(
                 "spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name=abc",
                 "spring.cloud.azure.eventhubs.processor.checkpoint-store.account-name=sa"
             )
-            .withBean(AzureEventHubProperties.class, () -> azureEventHubProperties)
+            .withBean(AzureEventHubsProperties.class, () -> azureEventHubsProperties)
             .withBean(BlobCheckpointStore.class, () -> mock(BlobCheckpointStore.class))
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureBlobCheckpointStoreConfiguration.class);
@@ -64,9 +64,9 @@ class AzureBlobCheckpointStoreConfigurationTest {
 
     @Test
     void shouldWorkWithStorageClientConfiguration() {
-        AzureEventHubProperties azureEventHubProperties = new AzureEventHubProperties();
-        azureEventHubProperties.getProcessor().getCheckpointStore().setAccountName("sa");
-        azureEventHubProperties.getProcessor().getCheckpointStore().setContainerName("abc");
+        AzureEventHubsProperties azureEventHubsProperties = new AzureEventHubsProperties();
+        azureEventHubsProperties.getProcessor().getCheckpointStore().setAccountName("sa");
+        azureEventHubsProperties.getProcessor().getCheckpointStore().setContainerName("abc");
 
         this.contextRunner
             .withUserConfiguration(AzureStorageBlobAutoConfiguration.class)
@@ -76,7 +76,7 @@ class AzureBlobCheckpointStoreConfigurationTest {
                 "spring.cloud.azure.storage.blob.account-name=sa",
                 "spring.cloud.azure.storage.blob.container-name=abc"
             )
-            .withBean(AzureEventHubProperties.class, () -> azureEventHubProperties)
+            .withBean(AzureEventHubsProperties.class, () -> azureEventHubsProperties)
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withBean(BlobCheckpointStore.class, () -> mock(BlobCheckpointStore.class))
             .run(context -> {
