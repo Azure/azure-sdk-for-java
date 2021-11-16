@@ -171,7 +171,11 @@ public final class AttestationAsyncClient {
      * Retrieves metadata about the attestation signing keys in use by the attestation service.
      *
      * <p><strong>Retrieve the OpenID metadata for this async client.</strong></p>
-     * {@codesnippet com.azure.security.attestation.AttestationAsyncClient.getOpenIdMetadataWithResponse}
+     * <!-- src_embed com.azure.security.attestation.AttestationAsyncClient.getOpenIdMetadataWithResponse -->
+     * <pre>
+     * Mono&lt;Response&lt;AttestationOpenIdMetadata&gt;&gt; response = client.getOpenIdMetadataWithResponse&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationAsyncClient.getOpenIdMetadataWithResponse -->
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -191,7 +195,11 @@ public final class AttestationAsyncClient {
      * Retrieves metadata about the attestation signing keys in use by the attestation service.
 
      * <p><strong>Retrieve the OpenID metadata for this async client.</strong></p>
-     * {@codesnippet com.azure.security.attestation.AttestationAsyncClient.getOpenIdMetadata}
+     * <!-- src_embed com.azure.security.attestation.AttestationAsyncClient.getOpenIdMetadata -->
+     * <pre>
+     * Mono&lt;AttestationOpenIdMetadata&gt; openIdMetadata = client.getOpenIdMetadata&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationAsyncClient.getOpenIdMetadata -->
      *
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -211,7 +219,23 @@ public final class AttestationAsyncClient {
      *  to validate an attestation token returned by the service.
      * </p>
      * <p><strong>Retrieve Attestation Signers for this async client.</strong></p>
-     * {@codesnippet com.azure.security.attestation.AttestationAsyncClient.getAttestationSigners}
+     * <!-- src_embed com.azure.security.attestation.AttestationAsyncClient.getAttestationSigners -->
+     * <pre>
+     * Mono&lt;List&lt;AttestationSigner&gt;&gt; signers = client.listAttestationSigners&#40;&#41;;
+     * signers.block&#40;&#41;.forEach&#40;cert -&gt; &#123;
+     *     System.out.println&#40;&quot;Found certificate.&quot;&#41;;
+     *     if &#40;cert.getKeyId&#40;&#41; != null&#41; &#123;
+     *         System.out.println&#40;&quot;    Certificate Key ID: &quot; + cert.getKeyId&#40;&#41;&#41;;
+     *     &#125; else &#123;
+     *         System.out.println&#40;&quot;    Signer does not have a Key ID&quot;&#41;;
+     *     &#125;
+     *     cert.getCertificates&#40;&#41;.forEach&#40;chainElement -&gt; &#123;
+     *         System.out.println&#40;&quot;        Cert Subject: &quot; + chainElement.getSubjectDN&#40;&#41;.getName&#40;&#41;&#41;;
+     *         System.out.println&#40;&quot;        Cert Issuer: &quot; + chainElement.getIssuerDN&#40;&#41;.getName&#40;&#41;&#41;;
+     *     &#125;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationAsyncClient.getAttestationSigners -->
      *
      * @return Returns an array of {@link AttestationSigner} objects.
      */
@@ -228,7 +252,11 @@ public final class AttestationAsyncClient {
      * to validate an attestation token returned by the service.
      * </p>
      * <p><strong>Retrieve Attestation Signers for this async client.</strong></p>
-     * {@codesnippet com.azure.security.attestation.AttestationAsyncClient.getAttestationSignersWithResponse}
+     * <!-- src_embed com.azure.security.attestation.AttestationAsyncClient.getAttestationSignersWithResponse -->
+     * <pre>
+     * Mono&lt;Response&lt;List&lt;AttestationSigner&gt;&gt;&gt; responseOfSigners = client.listAttestationSignersWithResponse&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationAsyncClient.getAttestationSignersWithResponse -->
      *
      * @return Returns an array of {@link AttestationSigner} objects.
      */

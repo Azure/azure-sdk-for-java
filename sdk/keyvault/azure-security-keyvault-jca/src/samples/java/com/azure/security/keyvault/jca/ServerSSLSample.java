@@ -15,6 +15,7 @@ import java.security.Security;
 public class ServerSSLSample {
 
     public static void main(String[] args) throws Exception {
+        // BEGIN: readme-sample-serverSSL
         KeyVaultJcaProvider provider = new KeyVaultJcaProvider();
         Security.addProvider(provider);
 
@@ -28,6 +29,7 @@ public class ServerSSLSample {
 
         SSLServerSocketFactory socketFactory = context.getServerSocketFactory();
         SSLServerSocket serverSocket = (SSLServerSocket) socketFactory.createServerSocket(8765);
+        // END: readme-sample-serverSSL
     }
 
 }
