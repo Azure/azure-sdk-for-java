@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.cache;
 
+import com.azure.spring.cloud.autoconfigure.redis.AzureRedisAutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
