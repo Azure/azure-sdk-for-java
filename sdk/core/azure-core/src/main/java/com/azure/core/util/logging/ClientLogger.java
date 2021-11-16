@@ -592,4 +592,22 @@ public class ClientLogger {
     private Object[] removeThrowable(Object... args) {
         return Arrays.copyOf(args, args.length - 1);
     }
+<<<<<<< HEAD
+=======
+
+    /*
+     * Removes CRLF pattern in the {@code logMessage}.
+     *
+     * @param logMessage The log message to sanitize.
+     * @return The updated logMessage.
+     */
+    private static String sanitizeLogMessageInput(String logMessage) {
+        if (CoreUtils.isNullOrEmpty(logMessage)) {
+            return logMessage;
+        }
+
+        // TODO (lmolkova) investigate perf improvement here by nit using regex
+        return NEW_LINE_PATTERN.matcher(logMessage).replaceAll("");
+    }
+>>>>>>> eaf130023ff (move message into json structure)
 }

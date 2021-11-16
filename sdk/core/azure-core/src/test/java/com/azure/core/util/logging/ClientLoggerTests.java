@@ -346,7 +346,7 @@ public class ClientLoggerTests {
             .log(message);
 
         assertMessage(
-            "Param 1: test1, Param 2: test2, Param 3: test3, az.sdk.context={\"connectionId\":\"foo\",\"linkName\":1}",
+            "{\"az.sdk.message\":\"Param 1: test1, Param 2: test2, Param 3: test3\",\"connectionId\":\"foo\",\"linkName\":1}",
             byteArraySteamToString(logCaptureStream),
             logLevelToConfigure,
             LogLevel.WARNING);
@@ -370,7 +370,7 @@ public class ClientLoggerTests {
             .log(() -> message);
 
         assertMessage(
-            "Param 1: test1, Param 2: test2, Param 3: test3, az.sdk.context={\"connectionId\":\"foo\",\"linkName\":\"bar\"}",
+            "{\"az.sdk.message\":\"Param 1: test1, Param 2: test2, Param 3: test3\",\"connectionId\":\"foo\",\"linkName\":\"bar\"}",
             byteArraySteamToString(logCaptureStream),
             logLevelToConfigure,
             LogLevel.INFORMATIONAL);
@@ -384,15 +384,33 @@ public class ClientLoggerTests {
         setupLogLevel(LogLevel.VERBOSE.getLogLevel());
         ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
 
-        String message = null;
-
         logger.atVerbose()
             .addKeyValue("connectionId", "foo")
             .addKeyValue("linkName", true)
-            .log(message);
+            .log((String)null);
 
         assertMessage(
-            "az.sdk.context={\"connectionId\":\"foo\",\"linkName\":true}",
+            "{\"az.sdk.message\":\"\",\"connectionId\":\"foo\",\"linkName\":true}",
+            byteArraySteamToString(logCaptureStream),
+            LogLevel.VERBOSE,
+            LogLevel.INFORMATIONAL);
+    }
+
+    /**
+     * Tests that newline is removed from the message, keys and values.
+     */
+    @Test
+    public void logWithContextNewLineIsReplaced() {
+        setupLogLevel(LogLevel.VERBOSE.getLogLevel());
+        ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
+
+        logger.atVerbose()
+            .addKeyValue("connectionId" + System.lineSeparator(), "foo")
+            .addKeyValue("linkName", "test" + System.lineSeparator() + "me")
+            .log("multiline " + System.lineSeparator() + "message");
+
+        assertMessage(
+            "{\"az.sdk.message\":\"multiline message\",\"connectionId\":\"foo\",\"linkName\":\"testme\"}",
             byteArraySteamToString(logCaptureStream),
             LogLevel.VERBOSE,
             LogLevel.INFORMATIONAL);
@@ -414,7 +432,7 @@ public class ClientLoggerTests {
             .log(message);
 
         assertMessage(
-            "az.sdk.context={\"connectionId\":\"foo\",\"linkName\":null}",
+            "{\"az.sdk.message\":\"\",\"connectionId\":\"foo\",\"linkName\":null}",
             byteArraySteamToString(logCaptureStream),
             LogLevel.INFORMATIONAL,
             LogLevel.ERROR);
@@ -435,7 +453,7 @@ public class ClientLoggerTests {
             .log("test");
 
         assertMessage(
-            "test, az.sdk.context={\"connectionId\":null,\"linkName\":\"complex value 123\"}",
+            "{\"az.sdk.message\":\"test\",\"connectionId\":null,\"linkName\":\"complex value 123\"}",
             byteArraySteamToString(logCaptureStream),
             LogLevel.INFORMATIONAL,
             LogLevel.WARNING);
@@ -456,7 +474,7 @@ public class ClientLoggerTests {
             .log("Param 1: {}, Param 2: {}, Param 3: {}", "test1", "test2", "test3");
 
         assertMessage(
-            "Param 1: test1, Param 2: test2, Param 3: test3, az.sdk.context={\"connectionId\":null,\"linkName\":\"bar\"}",
+            "{\"az.sdk.message\":\"Param 1: test1, Param 2: test2, Param 3: test3\",\"connectionId\":null,\"linkName\":\"bar\"}",
             byteArraySteamToString(logCaptureStream),
             logLevelToConfigure,
             LogLevel.WARNING);
@@ -479,7 +497,7 @@ public class ClientLoggerTests {
             .addKeyValue("linkName", "bar")
             .log("hello {}", "world", runtimeException);
 
-        String message = "hello world, az.sdk.context={\"connectionId\":\"foo\",\"linkName\":\"bar\"}" + System.lineSeparator() + exceptionMessage;
+        String message = "{\"az.sdk.message\":\"hello world\",\"connectionId\":\"foo\",\"linkName\":\"bar\"}" + System.lineSeparator() + exceptionMessage;
         if (logLevelToConfigure.equals(LogLevel.VERBOSE)) {
             message += System.lineSeparator() + runtimeException.toString() + System.lineSeparator() + "\tat " + runtimeException.getStackTrace()[0].toString();
         }
@@ -508,7 +526,7 @@ public class ClientLoggerTests {
             .addKeyValue("linkName", "bar")
             .log(runtimeException));
 
-        String message = exceptionMessage + ", az.sdk.context={\"connectionId\":\"foo\",\"linkName\":\"bar\"}";
+        String message = "{\"az.sdk.message\":\"" + exceptionMessage + "\",\"connectionId\":\"foo\",\"linkName\":\"bar\"}";
 
         if (logLevelToConfigure.equals(LogLevel.VERBOSE)) {
             message +=  System.lineSeparator() + runtimeException.toString() + System.lineSeparator() + "\tat " + runtimeException.getStackTrace()[0].toString();

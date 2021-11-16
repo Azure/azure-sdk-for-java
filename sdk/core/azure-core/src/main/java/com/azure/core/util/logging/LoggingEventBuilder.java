@@ -4,8 +4,6 @@
 package com.azure.core.util.logging;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -20,6 +18,8 @@ import java.util.function.Supplier;
 @Fluent
 public final class LoggingEventBuilder {
     private static final LoggingEventBuilder NOOP = new LoggingEventBuilder(null, null, false);
+    private static final String AZURE_SDK_LOG_MESSAGE_KEY = "az.sdk.message";
+
     private final ClientLogger logger;
     private final LogLevel level;
     private List<ContextKeyValuePair> context;
@@ -161,33 +161,34 @@ public final class LoggingEventBuilder {
     }
 
     private String getMessageWithContext(String message) {
-        if (this.context == null || this.context.isEmpty()) {
-            return message;
+        if (message == null) {
+            message = "";
         }
 
-        StringBuilder sb;
+        int contextSize = context == null ? 0 : context.size();
 
-        if (CoreUtils.isNullOrEmpty(message)) {
-            sb = new StringBuilder(20 + context.size() * 20);
-        } else {
-            sb = new StringBuilder(message.length() + 20 + context.size() * 20)
-                .append(message)
-                .append(", ");
+        StringBuilder sb = new StringBuilder(20 + contextSize * 20 + message.length());
+        sb.append("{\"")
+            // message must be first for log paring tooling, key also  serves as a
+            // marker for Azure SDK logs so we'll write it even if there is no message
+            .append(AZURE_SDK_LOG_MESSAGE_KEY)
+            .append("\":\"")
+            .append(message)
+            .append("\",");
+
+        if (contextSize > 0) {
+            for (int i = 0; i < context.size() - 1; i++) {
+                context.get(i)
+                    .writeKeyAndValue(sb)
+                    .append(",");
+            }
+
+            // json does not allow trailing commas
+            context.get(context.size() - 1)
+                .writeKeyAndValue(sb);
         }
 
-        sb.append("az.sdk.context={");
-
-        for (int i = 0; i < context.size() - 1; i++) {
-            context.get(i)
-                .writeKeyAndValue(sb)
-                .append(",");
-        }
-
-        // json does not allow trailing commas
-        context.get(context.size() - 1)
-            .writeKeyAndValue(sb)
-            .append("}");
-
+        sb.append("}");
         return sb.toString();
     }
 
