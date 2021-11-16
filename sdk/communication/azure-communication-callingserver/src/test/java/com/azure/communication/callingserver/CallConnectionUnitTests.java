@@ -221,14 +221,16 @@ public class CallConnectionUnitTests {
         CallConnection callConnection = getCallConnection(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(generateCreateCallResult(CALL_CONNECTION_ID), 201),
-                new SimpleEntry<String, Integer>("", 202)
+                new SimpleEntry<String, Integer>(generateTransferCallResult(), 202)
             )));
 
-        callConnection.transferCall(
+        TransferCallResult transferCallResult = callConnection.transferCall(
             new CommunicationUserIdentifier(NEW_PARTICIPANT_ID),
             CALL_CONNECTION_ID,
             ""
         );
+
+        assertEquals(CallingOperationStatus.COMPLETED, transferCallResult.getStatus());
     }
 
     @Test
@@ -236,16 +238,19 @@ public class CallConnectionUnitTests {
         CallConnection callConnection = getCallConnection(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(generateCreateCallResult(CALL_CONNECTION_ID), 201),
-                new SimpleEntry<String, Integer>("", 202)
+                new SimpleEntry<String, Integer>(generateTransferCallResult(), 202)
             )));
 
-        Response<Void> transferCallResponse = callConnection.transferCallWithResponse(
+        Response<TransferCallResult> transferCallResponse = callConnection.transferCallWithResponse(
             new CommunicationUserIdentifier(NEW_PARTICIPANT_ID),
             CALL_CONNECTION_ID,
             "",
             Context.NONE
         );
+
         assertEquals(202, transferCallResponse.getStatusCode());
+        TransferCallResult transferCallResult = transferCallResponse.getValue();
+        assertEquals(CallingOperationStatus.COMPLETED, transferCallResult.getStatus());
     }
 
     @Test

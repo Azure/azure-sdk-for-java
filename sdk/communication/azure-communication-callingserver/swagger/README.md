@@ -33,7 +33,7 @@ To update generated files for calling service, run the following command
 ``` yaml
 tag: package-2021-11-15-preview
 require:
-    - https://raw.githubusercontent.com/navali-msft/azure-rest-api-specs/c16d5c3b668207b9ec101294a9f05a20e7281083/specification/communication/data-plane/CallingServer/readme.md
+    - https://raw.githubusercontent.com/navali-msft/azure-rest-api-specs/f63c517df5083d1f3d044277bac15c6b1ed2b060/specification/communication/data-plane/CallingServer/readme.md
 java: true
 output-folder: ..\
 license-header: MICROSOFT_MIT_SMALL
@@ -52,7 +52,10 @@ directive:
     to: CallRecordingStateChangeEventInternal    
 - rename-model:
     from: AddParticipantResultEvent
-    to: AddParticipantResultEventInternal    
+    to: AddParticipantResultEventInternal
+- rename-model:
+    from: TransferCallResultEvent
+    to: TransferCallResultEventInternal
 - rename-model:
     from: PlayAudioResultEvent
     to: PlayAudioResultEventInternal   
@@ -88,7 +91,10 @@ directive:
     to: CreateCallResultInternal
 - rename-model:
     from: AddParticipantResult
-    to: AddParticipantResultInternal    
+    to: AddParticipantResultInternal
+- rename-model:
+    from: TransferCallResult
+    to: TransferCallResultInternal
 - rename-model:
     from: CallingOperationResultDetails
     to: CallingOperationResultDetailsInternal

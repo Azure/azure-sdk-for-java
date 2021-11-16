@@ -23,7 +23,7 @@ public final class CancelParticipantMediaOperationWithCallLocatorRequest {
     private CommunicationIdentifierModel identifier;
 
     /*
-     * The operationId of the media operation to cancel
+     * The operationId of the media operation to cancel.
      */
     @JsonProperty(value = "mediaOperationId", required = true)
     private String mediaOperationId;

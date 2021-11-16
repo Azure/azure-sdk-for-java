@@ -138,6 +138,16 @@ public class CallingServerResponseMocker {
         return serializeObject(result);
     }
 
+    public static String generateTransferCallResult() {
+        TransferCallResultInternal result = new TransferCallResultInternal()
+            .setOperationContext(OPERATION_CONTEXT)
+            .setOperationId(OPERATION_ID)
+            .setStatus(CallingOperationStatus.COMPLETED)
+            .setResultInfo(new CallingOperationResultDetailsInternal().setCode(202).setSubcode(0).setMessage("message"));
+
+        return serializeObject(result);
+    }
+
     public static String generateCreateAudioRoutingGroupResult() {
         CreateAudioRoutingGroupResultInternal result = new CreateAudioRoutingGroupResultInternal()
             .setAudioRoutingGroupId(AUDIOROUTING_GROUPID);

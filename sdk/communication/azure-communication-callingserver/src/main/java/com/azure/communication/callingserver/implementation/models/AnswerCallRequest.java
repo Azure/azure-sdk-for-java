@@ -16,13 +16,13 @@ public final class AnswerCallRequest {
     /*
      * The context associated with the call.
      */
-    @JsonProperty(value = "incomingCallContext")
+    @JsonProperty(value = "incomingCallContext", required = true)
     private String incomingCallContext;
 
     /*
      * The callback uri.
      */
-    @JsonProperty(value = "callbackUri", required = true)
+    @JsonProperty(value = "callbackUri")
     private String callbackUri;
 
     /*

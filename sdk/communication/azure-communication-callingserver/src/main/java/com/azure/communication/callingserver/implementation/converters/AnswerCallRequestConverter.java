@@ -23,10 +23,8 @@ public final class AnswerCallRequestConverter {
 
         AnswerCallRequest answerCallRequest = new AnswerCallRequest()
             .setIncomingCallContext(incomingCallContext);
-        if (answerCallOptions != null)
-        {
-            if (answerCallOptions.getCallbackUri() != null)
-            {
+        if (answerCallOptions != null) {
+            if (answerCallOptions.getCallbackUri() != null) {
                 answerCallRequest.setCallbackUri(answerCallOptions.getCallbackUri().toString());
             }
             answerCallRequest.setRequestedMediaTypes(new ArrayList<>(answerCallOptions.getRequestedMediaTypes()));

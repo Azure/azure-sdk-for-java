@@ -12,6 +12,7 @@ import com.azure.communication.callingserver.models.events.CallRecordingStateCha
 import com.azure.communication.callingserver.models.events.ParticipantsUpdatedEvent;
 import com.azure.communication.callingserver.models.events.PlayAudioResultEvent;
 import com.azure.communication.callingserver.models.events.ToneReceivedEvent;
+import com.azure.communication.callingserver.models.events.TransferCallResultEvent;
 import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.util.BinaryData;
 import com.fasterxml.jackson.core.JsonGenerator;
@@ -72,6 +73,29 @@ public class EventTests {
         BinaryData binaryData = getBinaryData(internalEvent);
         AddParticipantResultEvent event =
             assertDoesNotThrow(() -> AddParticipantResultEvent.deserialize(binaryData));
+
+        assertNotNull(event);
+        assertEquals(event.getOperationContext(), operationContext);
+        assertEquals(event.getStatus(), CallingOperationStatus.COMPLETED);
+        assertNotNull(event.getResultInfo());
+        assertEquals(event.getResultInfo().getCode(), 100);
+        assertEquals(event.getResultInfo().getSubcode(), 200);
+        assertEquals(event.getResultInfo().getMessage(), message);
+    }
+
+    @Test
+    public void transferCallResultEventTest() throws JsonProcessingException {
+        String operationContext = UUID.randomUUID().toString();
+        String message = "Call transferred.";
+        TransferCallResultEventInternal internalEvent =
+            new TransferCallResultEventInternal()
+                .setOperationContext(operationContext)
+                .setStatus(CallingOperationStatus.COMPLETED)
+                .setResultInfo(new CallingOperationResultDetailsInternal().setCode(100).setSubcode(200).setMessage(message));
+
+        BinaryData binaryData = getBinaryData(internalEvent);
+        TransferCallResultEvent event =
+            assertDoesNotThrow(() -> TransferCallResultEvent.deserialize(binaryData));
 
         assertNotNull(event);
         assertEquals(event.getOperationContext(), operationContext);

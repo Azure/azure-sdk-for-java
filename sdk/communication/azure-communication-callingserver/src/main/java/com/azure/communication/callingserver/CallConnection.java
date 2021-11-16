@@ -9,11 +9,12 @@ import java.util.List;
 import com.azure.communication.callingserver.models.AddParticipantResult;
 import com.azure.communication.callingserver.models.AudioRoutingMode;
 import com.azure.communication.callingserver.models.CallConnectionProperties;
-import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.models.CallParticipant;
+import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.models.CreateAudioRoutingGroupResult;
 import com.azure.communication.callingserver.models.PlayAudioOptions;
 import com.azure.communication.callingserver.models.PlayAudioResult;
+import com.azure.communication.callingserver.models.TransferCallResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -208,10 +209,11 @@ public final class CallConnection {
      * @param userToUserInformation The user to user information.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful transfer to participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void transferCall(CommunicationIdentifier targetParticipant, String targetCallConnectionId, String userToUserInformation) {
-        callConnectionAsync.transferCall(targetParticipant, targetCallConnectionId, userToUserInformation).block();
+    public TransferCallResult transferCall(CommunicationIdentifier targetParticipant, String targetCallConnectionId, String userToUserInformation) {
+        return callConnectionAsync.transferCall(targetParticipant, targetCallConnectionId, userToUserInformation).block();
     }
 
     /**
@@ -226,7 +228,7 @@ public final class CallConnection {
      * @return Response for a successful transfer to participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> transferCallWithResponse(CommunicationIdentifier targetParticipant, String targetCallConnectionId, String userToUserInformation, Context context) {
+    public Response<TransferCallResult> transferCallWithResponse(CommunicationIdentifier targetParticipant, String targetCallConnectionId, String userToUserInformation, Context context) {
         return callConnectionAsync.transferCallWithResponse(targetParticipant, targetCallConnectionId, userToUserInformation, context).block();
     }
 

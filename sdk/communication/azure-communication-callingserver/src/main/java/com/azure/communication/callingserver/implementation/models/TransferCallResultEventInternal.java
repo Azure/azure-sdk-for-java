@@ -8,9 +8,9 @@ import com.azure.communication.callingserver.models.CallingOperationStatus;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The add participant result event. */
+/** The transfer call result event. */
 @Fluent
-public final class AddParticipantResultEventInternal {
+public final class TransferCallResultEventInternal {
     /*
      * The result details.
      */
@@ -42,9 +42,9 @@ public final class AddParticipantResultEventInternal {
      * Set the resultInfo property: The result details.
      *
      * @param resultInfo the resultInfo value to set.
-     * @return the AddParticipantResultEventInternal object itself.
+     * @return the TransferCallResultEventInternal object itself.
      */
-    public AddParticipantResultEventInternal setResultInfo(CallingOperationResultDetailsInternal resultInfo) {
+    public TransferCallResultEventInternal setResultInfo(CallingOperationResultDetailsInternal resultInfo) {
         this.resultInfo = resultInfo;
         return this;
     }
@@ -62,9 +62,9 @@ public final class AddParticipantResultEventInternal {
      * Set the operationContext property: The operation context.
      *
      * @param operationContext the operationContext value to set.
-     * @return the AddParticipantResultEventInternal object itself.
+     * @return the TransferCallResultEventInternal object itself.
      */
-    public AddParticipantResultEventInternal setOperationContext(String operationContext) {
+    public TransferCallResultEventInternal setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
     }
@@ -82,9 +82,9 @@ public final class AddParticipantResultEventInternal {
      * Set the status property: The status of the operation.
      *
      * @param status the status value to set.
-     * @return the AddParticipantResultEventInternal object itself.
+     * @return the TransferCallResultEventInternal object itself.
      */
-    public AddParticipantResultEventInternal setStatus(CallingOperationStatus status) {
+    public TransferCallResultEventInternal setStatus(CallingOperationStatus status) {
         this.status = status;
         return this;
     }

@@ -222,14 +222,16 @@ public class CallConnectionAsyncUnitTests {
         CallConnectionAsync callConnectionAsync = getCallConnectionAsync(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(generateCreateCallResult(CALL_CONNECTION_ID), 201),
-                new SimpleEntry<String, Integer>("", 202)
+                new SimpleEntry<String, Integer>(generateTransferCallResult(), 202)
             )));
 
-        callConnectionAsync.transferCall(
+        TransferCallResult transferCallResult = callConnectionAsync.transferCall(
             new CommunicationUserIdentifier(NEW_PARTICIPANT_ID),
             CALL_CONNECTION_ID,
             ""
         ).block();
+
+        assertEquals(CallingOperationStatus.COMPLETED, transferCallResult.getStatus());
     }
 
     @Test
@@ -237,16 +239,19 @@ public class CallConnectionAsyncUnitTests {
         CallConnectionAsync callConnectionAsync = getCallConnectionAsync(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(generateCreateCallResult(CALL_CONNECTION_ID), 201),
-                new SimpleEntry<String, Integer>("", 202)
+                new SimpleEntry<String, Integer>(generateTransferCallResult(), 202)
             )));
 
-        Response<Void> transferCallResponse = callConnectionAsync.transferCallWithResponse(
+        Response<TransferCallResult> transferCallResponse = callConnectionAsync.transferCallWithResponse(
             new CommunicationUserIdentifier(NEW_PARTICIPANT_ID),
             CALL_CONNECTION_ID,
             "",
             Context.NONE
         ).block();
+
         assertEquals(202, transferCallResponse.getStatusCode());
+        TransferCallResult transferCallResult = transferCallResponse.getValue();
+        assertEquals(CallingOperationStatus.COMPLETED, transferCallResult.getStatus());
     }
 
     @Test

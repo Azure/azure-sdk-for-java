@@ -20,6 +20,7 @@ import com.azure.communication.callingserver.implementation.converters.PhoneNumb
 import com.azure.communication.callingserver.implementation.converters.PlayAudioResultConverter;
 import com.azure.communication.callingserver.implementation.converters.RemoveParticipantRequestConverter;
 import com.azure.communication.callingserver.implementation.converters.TransferCallRequestConverter;
+import com.azure.communication.callingserver.implementation.converters.TransferCallResultConverter;
 import com.azure.communication.callingserver.implementation.models.AddParticipantRequest;
 import com.azure.communication.callingserver.implementation.models.AudioRoutingGroupRequest;
 import com.azure.communication.callingserver.implementation.models.CancelParticipantMediaOperationRequest;
@@ -36,11 +37,12 @@ import com.azure.communication.callingserver.implementation.models.TransferCallR
 import com.azure.communication.callingserver.models.AddParticipantResult;
 import com.azure.communication.callingserver.models.AudioRoutingMode;
 import com.azure.communication.callingserver.models.CallConnectionProperties;
-import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.models.CallParticipant;
+import com.azure.communication.callingserver.models.CallingServerErrorException;
 import com.azure.communication.callingserver.models.CreateAudioRoutingGroupResult;
 import com.azure.communication.callingserver.models.PlayAudioOptions;
 import com.azure.communication.callingserver.models.PlayAudioResult;
+import com.azure.communication.callingserver.models.TransferCallResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
@@ -403,15 +405,15 @@ public final class CallConnectionAsync {
      * @param userToUserInformation The user to user information.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful transfer to participant request.
+     * @return Response payload for a successful transfer to participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> transferCall(CommunicationIdentifier targetParticipant, String targetCallConnectionId, String userToUserInformation) {
+    public Mono<TransferCallResult> transferCall(CommunicationIdentifier targetParticipant, String targetCallConnectionId, String userToUserInformation) {
         try {
             TransferCallRequest request = TransferCallRequestConverter.convert(targetParticipant, targetCallConnectionId, userToUserInformation);
             return callConnectionInternal.transferAsync(callConnectionId, request)
                 .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
-                .flatMap(result -> Mono.empty());
+                .flatMap(result -> Mono.just(TransferCallResultConverter.convert(result)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -425,21 +427,23 @@ public final class CallConnectionAsync {
      * @param userToUserInformation The user to user information.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful transfer to participant request.
+     * @return Response payload for a successful transfer to participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> transferToParticipantWithResponse(CommunicationIdentifier participant, String targetCallConnectionId, String userToUserInformation) {
+    public Mono<Response<TransferCallResult>> transferToParticipantWithResponse(CommunicationIdentifier participant, String targetCallConnectionId, String userToUserInformation) {
         return transferCallWithResponse(participant, userToUserInformation, targetCallConnectionId, Context.NONE);
     }
 
-    Mono<Response<Void>> transferCallWithResponse(CommunicationIdentifier targetParticipant, String targetCallConnectionId, String userToUserInformation, Context context) {
+    Mono<Response<TransferCallResult>> transferCallWithResponse(CommunicationIdentifier targetParticipant, String targetCallConnectionId, String userToUserInformation, Context context) {
         try {
             TransferCallRequest request = TransferCallRequestConverter.convert(targetParticipant, targetCallConnectionId, userToUserInformation);
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return callConnectionInternal
                     .transferWithResponseAsync(callConnectionId, request, contextValue)
-                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
+                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                    .map(response ->
+                        new SimpleResponse<>(response, TransferCallResultConverter.convert(response.getValue())));
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -451,7 +455,7 @@ public final class CallConnectionAsync {
      *
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful get call connection request.
+     * @return Response payload for a successful get call connection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CallConnectionProperties> getCall() {
@@ -470,7 +474,7 @@ public final class CallConnectionAsync {
      *
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful get call connection request.
+     * @return Response payload for a successful get call connection request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CallConnectionProperties>> getCallWithResponse() {
