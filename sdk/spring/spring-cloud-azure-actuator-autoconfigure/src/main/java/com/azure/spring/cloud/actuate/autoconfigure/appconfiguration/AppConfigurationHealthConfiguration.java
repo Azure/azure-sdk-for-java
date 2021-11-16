@@ -23,13 +23,13 @@ import org.springframework.context.annotation.Configuration;
 @ConditionalOnClass({ ConfigurationAsyncClient.class, HealthIndicator.class })
 @ConditionalOnBean(ConfigurationAsyncClient.class)
 @AutoConfigureAfter(AzureAppConfigurationAutoConfiguration.class)
-@ConditionalOnEnabledHealthIndicator("azure-app-configuration")
+@ConditionalOnEnabledHealthIndicator("azure-appconfiguration")
 @ConditionalOnProperty(value = "spring.cloud.azure.appconfiguration.enabled", havingValue = "true", matchIfMissing = true)
 @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.appconfiguration", name = {"endpoint", "connection-string"})
 public class AppConfigurationHealthConfiguration {
 
     @Bean
-    AppConfigurationHealthIndicator appConfigurationHealthIndicator(ConfigurationAsyncClient configurationAsyncClient) {
+    AppConfigurationHealthIndicator appconfigurationHealthIndicator(ConfigurationAsyncClient configurationAsyncClient) {
         return new AppConfigurationHealthIndicator(configurationAsyncClient);
     }
 }

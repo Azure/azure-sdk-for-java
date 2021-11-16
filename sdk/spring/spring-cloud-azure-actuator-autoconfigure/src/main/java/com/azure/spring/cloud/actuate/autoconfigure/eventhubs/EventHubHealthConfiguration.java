@@ -32,7 +32,7 @@ public class EventHubHealthConfiguration {
 
     @Bean
     @ConditionalOnBean(EventHubClientBuilder.class)
-    public EventHubHealthIndicator eventHubHealthIndicator(
+    public EventHubHealthIndicator eventhubsHealthIndicator(
         ObjectProvider<EventHubProducerAsyncClient> producerAsyncClients,
         ObjectProvider<EventHubConsumerAsyncClient> consumerAsyncClients) {
 
