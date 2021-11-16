@@ -3,7 +3,6 @@
 package com.azure.spring.cloud.autoconfigure.active.directory.implementation.autoconfigure.b2c;
 
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
-import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
@@ -12,6 +11,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotBlank;
+import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -86,7 +86,6 @@ public class AADB2CProperties implements InitializingBean {
      */
     private String clientSecret;
 
-    @URL(message = "logout success should be valid URL")
     private String logoutSuccessUrl = DEFAULT_LOGOUT_SUCCESS_URL;
 
     private Map<String, Object> authenticateAdditionalParameters;
@@ -106,7 +105,6 @@ public class AADB2CProperties implements InitializingBean {
     /**
      * AAD B2C endpoint base uri.
      */
-    @URL(message = "baseUri should be valid URL")
     private String baseUri;
 
     /**
@@ -123,6 +121,7 @@ public class AADB2CProperties implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() {
+        validateURLProperties();
         validateWebappProperties();
         validateCommonProperties();
     }
@@ -131,14 +130,11 @@ public class AADB2CProperties implements InitializingBean {
      * Validate web app scenario properties configuration when using user flows.
      */
     private void validateWebappProperties() {
-        if (!CollectionUtils.isEmpty(userFlows)) {
-            if (!StringUtils.hasText(tenant) && !StringUtils.hasText(baseUri)) {
-                throw new AADB2CConfigurationException("'tenant' and 'baseUri' at least configure one item.");
-            }
-            if (!userFlows.keySet().contains(loginFlow)) {
-                throw new AADB2CConfigurationException("Sign in user flow key '"
-                    + loginFlow + "' is not in 'user-flows' map.");
-            }
+        if (!isValidURL(logoutSuccessUrl)) {
+            throw new AADB2CConfigurationException("logout success should be valid URL.");
+        }
+        if (!isValidURL(baseUri)) {
+            throw new AADB2CConfigurationException("baseUri should be valid URL.");
         }
     }
 
@@ -155,6 +151,33 @@ public class AADB2CProperties implements InitializingBean {
             throw new AADB2CConfigurationException("'tenant-id' must be configured "
                 + "when using client credential flow.");
         }
+    }
+
+    /**
+     * Validate URL properties configuration.
+     */
+    private void validateURLProperties() {
+        if (!CollectionUtils.isEmpty(userFlows)) {
+            if (!StringUtils.hasText(tenant) && !StringUtils.hasText(baseUri)) {
+                throw new AADB2CConfigurationException("'tenant' and 'baseUri' at least configure one item.");
+            }
+            if (!userFlows.keySet().contains(loginFlow)) {
+                throw new AADB2CConfigurationException("Sign in user flow key '"
+                    + loginFlow + "' is not in 'user-flows' map.");
+            }
+        }
+    }
+
+    private boolean isValidURL(String uri) {
+        if (!StringUtils.hasLength(uri)) {
+            return false;
+        }
+        try {
+            new java.net.URL(uri);
+        } catch (MalformedURLException var5) {
+            return false;
+        }
+        return true;
     }
 
     protected String getPasswordReset() {
