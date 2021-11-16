@@ -646,6 +646,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
 
         URI serviceEndpoint = new URI(TestConfigurations.HOST);
         IAuthorizationTokenProvider authorizationTokenProvider = (RxDocumentClientImpl) client;
+        String apiType = ApiType.TABLE.toString();
 
         int refreshPeriodInSeconds = 10;
 
@@ -705,6 +706,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 RxDocumentServiceRequest.create(mockDiagnosticsClientContext(), OperationType.Create, ResourceType.Database,
                         "/dbs",
                         new Database(), new HashMap<>());
+        req.getHeaders().put(HttpConstants.HttpHeaders.API_TYPE, apiType);
 
         PartitionKeyRangeIdentity partitionKeyRangeIdentity = new PartitionKeyRangeIdentity("M");
 
@@ -715,6 +717,7 @@ public class GatewayAddressCacheTest extends TestSuiteBase {
                 .block().v;
 
         assertThat(clientWrapper.capturedRequests).asList().hasSize(1);
+        assertThat(clientWrapper.capturedRequests.get(0).headers().toMap().get(HttpConstants.HttpHeaders.API_TYPE)).isEqualTo(apiType);
         clientWrapper.capturedRequests.clear();
 
         Mono<Utils.ValueHolder<AddressInformation[]>> addressesObs = spyCache.tryGetAddresses(req,

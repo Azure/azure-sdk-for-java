@@ -308,6 +308,11 @@ public class GatewayAddressCache implements IAddressCache {
             headers.put(HttpConstants.HttpHeaders.FORCE_REFRESH, "true");
         }
 
+        if(request.getHeaders().containsKey(HttpConstants.HttpHeaders.API_TYPE))
+        {
+            headers.put(HttpConstants.HttpHeaders.API_TYPE, request.getHeaders().get(HttpConstants.HttpHeaders.API_TYPE));
+        }
+
         if (request.forceCollectionRoutingMapRefresh) {
             headers.put(HttpConstants.HttpHeaders.FORCE_COLLECTION_ROUTING_MAP_REFRESH, "true");
         }
@@ -668,12 +673,10 @@ public class GatewayAddressCache implements IAddressCache {
 
             headers.put(HttpConstants.HttpHeaders.AUTHORIZATION, HttpUtils.urlEncode(token));
         }
-
         if(request.getHeaders().containsKey(HttpConstants.HttpHeaders.API_TYPE))
         {
             headers.put(HttpConstants.HttpHeaders.API_TYPE, request.getHeaders().get(HttpConstants.HttpHeaders.API_TYPE));
         }
-
         URI targetEndpoint = Utils.setQuery(this.addressEndpoint.toString(), Utils.createQuery(queryParameters));
         String identifier = logAddressResolutionStart(
             request, targetEndpoint, true, true);
@@ -805,6 +808,12 @@ public class GatewayAddressCache implements IAddressCache {
                 ResourceType.DocumentCollection,
                 //       AuthorizationTokenType.PrimaryMasterKey
                 Collections.emptyMap());
+
+        if(request.getHeaders().containsKey(HttpConstants.HttpHeaders.API_TYPE))
+        {
+            defaultRequestHeaders.put(HttpConstants.HttpHeaders.API_TYPE, request.getHeaders().get(HttpConstants.HttpHeaders.API_TYPE));
+        }
+
         for (int i = 0; i < partitionKeyRangeIdentities.size(); i += batchSize) {
 
             int endIndex = i + batchSize;
