@@ -42,9 +42,25 @@ import static com.azure.data.tables.BuilderHelper.validateCredentials;
  * {@link TableClientBuilder#credential(AzureNamedKeyCredential)} or {@link TableClientBuilder#sasToken(String)}</p>
  *
  * <p><strong>Samples to construct a sync client</strong></p>
- * {@codesnippet com.azure.data.tables.tableClient.instantiation}
+ * <!-- src_embed com.azure.data.tables.tableClient.instantiation -->
+ * <pre>
+ * TableClient tableClient = new TableClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;https:&#47;&#47;myaccount.core.windows.net&#47;&quot;&#41;
+ *     .credential&#40;new AzureNamedKeyCredential&#40;&quot;name&quot;, &quot;key&quot;&#41;&#41;
+ *     .tableName&#40;&quot;myTable&quot;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.tables.tableClient.instantiation -->
  * <p><strong>Samples to construct an async client</strong></p>
- * {@codesnippet com.azure.data.tables.tableAsyncClient.instantiation}
+ * <!-- src_embed com.azure.data.tables.tableAsyncClient.instantiation -->
+ * <pre>
+ * TableAsyncClient tableAsyncClient = new TableClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;https:&#47;&#47;myaccount.core.windows.net&#47;&quot;&#41;
+ *     .credential&#40;new AzureNamedKeyCredential&#40;&quot;name&quot;, &quot;key&quot;&#41;&#41;
+ *     .tableName&#40;&quot;myTable&quot;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.tables.tableAsyncClient.instantiation -->
  *
  * @see TableAsyncClient
  * @see TableClient
