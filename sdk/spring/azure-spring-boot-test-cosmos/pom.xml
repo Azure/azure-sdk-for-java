@@ -40,6 +40,11 @@
       <groupId>io.projectreactor.netty</groupId>
       <artifactId>reactor-netty</artifactId>
     </dependency>
+    <dependency>
+      <groupId>org.hibernate.validator</groupId>
+      <artifactId>hibernate-validator</artifactId>
+      <version>6.2.0.Final</version> <!-- {x-version-update;org.hibernate.validator:hibernate-validator;external_dependency} -->
+    </dependency>
     <!-- TEST-->
     <dependency>
       <groupId>org.springframework.boot</groupId>
