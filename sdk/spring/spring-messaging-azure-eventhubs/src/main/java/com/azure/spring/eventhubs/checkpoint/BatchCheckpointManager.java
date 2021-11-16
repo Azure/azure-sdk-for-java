@@ -12,7 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
 import java.util.List;
-import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Do checkpoint after each batch. Effective when {@link CheckpointMode#BATCH}
@@ -23,8 +22,6 @@ public class BatchCheckpointManager extends EventCheckpointManager {
         + "on partition %s in batch mode";
     private static final String CHECKPOINT_SUCCESS_MSG =
         "Consumer group '%s' succeed to checkpoint offset %s of message on partition %s in batch mode";
-
-    private final ConcurrentHashMap<String, EventData> lastEventByPartition = new ConcurrentHashMap<>();
 
     BatchCheckpointManager(CheckpointConfig checkpointConfig) {
         super(checkpointConfig);
@@ -37,36 +34,37 @@ public class BatchCheckpointManager extends EventCheckpointManager {
         return LOGGER;
     }
 
-    void logCheckpointFail(EventBatchContext context, Long offset, Throwable t) {
+    void logCheckpointFail(String consumerGroup, String partitionId, Long offset, Throwable t) {
         getLogger().warn(String
-            .format(CHECKPOINT_FAIL_MSG, context.getPartitionContext().getConsumerGroup(), offset,
-                context.getPartitionContext().getPartitionId()), t);
+            .format(CHECKPOINT_FAIL_MSG, consumerGroup, offset, partitionId), t);
     }
 
-    void logCheckpointSuccess(EventBatchContext context, Long offset) {
+    void logCheckpointSuccess(String consumerGroup, String partitionId, Long offset) {
         if (getLogger().isDebugEnabled()) {
             getLogger().debug(String
-                .format(CHECKPOINT_SUCCESS_MSG, context.getPartitionContext().getConsumerGroup(),
-                    offset, context.getPartitionContext().getPartitionId()));
+                .format(CHECKPOINT_SUCCESS_MSG, consumerGroup, offset, partitionId));
         }
-    }
-
-    EventData getLastEnqueuedEvent(EventBatchContext context) {
-        List<EventData> events = context.getEvents();
-        return events.get(events.size() - 1);
-
     }
 
     @Override
     public void checkpoint(EventBatchContext context) {
-        EventData lastEvent = getLastEnqueuedEvent(context);
+        EventData lastEvent = getLastEventFromBatch(context);
         Long offset = lastEvent.getOffset();
+        String partitionId = context.getPartitionContext().getPartitionId();
+        String consumerGroup = context.getPartitionContext().getConsumerGroup();
         context.updateCheckpointAsync()
-            .doOnError(t -> logCheckpointFail(context, offset, t))
+            .doOnError(t -> {
+                logCheckpointFail(consumerGroup, partitionId, offset, t);
+            })
             .doOnSuccess(v -> {
-                this.lastEventByPartition.put(context.getPartitionContext().getPartitionId(), lastEvent);
-                logCheckpointSuccess(context, offset);
+                logCheckpointSuccess(consumerGroup, partitionId, offset);
             })
             .subscribe();
+    }
+
+    private EventData getLastEventFromBatch(EventBatchContext context) {
+        List<EventData> events = context.getEvents();
+        EventData lastEvent = events.get(events.size() - 1);
+        return lastEvent;
     }
 }
