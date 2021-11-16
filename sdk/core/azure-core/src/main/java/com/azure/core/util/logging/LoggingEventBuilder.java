@@ -13,7 +13,19 @@ import java.util.function.Supplier;
  * This class provides fluent API to write logs using {@link ClientLogger} and
  * enrich them with additional context.
  *
- * TODO code snippets
+ * <p><strong>Code samples</strong></p>
+ *
+ * <p>Logging event with context.</p>
+ *
+ * <!-- src_embed com.azure.core.util.logging.loggingeventbuilder -->
+ * <pre>
+ * logger.atInfo&#40;&#41;
+ *     .addKeyValue&#40;&quot;key1&quot;, &quot;value1&quot;&#41;
+ *     .addKeyValue&#40;&quot;key2&quot;, true&#41;
+ *     .addKeyValue&#40;&quot;key3&quot;, &#40;&#41; -&gt; getName&#40;&#41;&#41;
+ *     .log&#40;&quot;A formattable message. Hello, &#123;&#125;&quot;, name&#41;;
+ * </pre>
+ * <!-- end com.azure.core.util.logging.loggingeventbuilder -->
  */
 @Fluent
 public final class LoggingEventBuilder {
@@ -49,6 +61,18 @@ public final class LoggingEventBuilder {
     /**
      * Adds key with String value pair to the context of current log being created.
      *
+     * <p><strong>Code samples</strong></p>
+     *
+     * <p>Adding string value to logging event context.</p>
+     *
+     * <!-- src_embed com.azure.core.util.logging.clientlogger.atInfo -->
+     * <pre>
+     * logger.atInfo&#40;&#41;
+     *     .addKeyValue&#40;&quot;key&quot;, &quot;value&quot;&#41;
+     *     .log&#40;&quot;A formattable message. Hello, &#123;&#125;&quot;, name&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.logging.clientlogger.atInfo -->
+     *
      * @param key String key.
      * @param value String value.
      * @return The updated {@code LoggingEventBuilder} object.
@@ -77,6 +101,18 @@ public final class LoggingEventBuilder {
 
     /**
      * Adds key with long value to the context of current log event being created.
+     *
+     * <p><strong>Code samples</strong></p>
+     *
+     * <p>Adding an integer value to logging event context.</p>
+     *
+     * <!-- src_embed com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
+     * <pre>
+     * logger.atVerbose&#40;&#41;
+     *     .addKeyValue&#40;&quot;key&quot;, 1L&#41;
+     *     .log&#40;&#40;&#41; -&gt; String.format&#40;&quot;Param 1: %s, Param 2: %s, Param 3: %s&quot;, &quot;param1&quot;, &quot;param2&quot;, &quot;param3&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
      *
      * @param key String key.
      * @param value long value.

@@ -531,6 +531,17 @@ public class ClientLogger {
     /**
      * Creates {@link LoggingEventBuilder} for {@code error} log level that can be
      * used to enrich log with additional context.
+     * <p><strong>Code samples</strong></p>
+     *
+     * <p>Logging with context at error level.</p>
+     *
+     * <!-- src_embed com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
+     * <pre>
+     * logger.atVerbose&#40;&#41;
+     *     .addKeyValue&#40;&quot;key&quot;, 1L&#41;
+     *     .log&#40;&#40;&#41; -&gt; String.format&#40;&quot;Param 1: %s, Param 2: %s, Param 3: %s&quot;, &quot;param1&quot;, &quot;param2&quot;, &quot;param3&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
      *
      * @return instance of {@link LoggingEventBuilder}  or no-op if verbose logging is disabled.
      */
@@ -552,6 +563,18 @@ public class ClientLogger {
      * Creates {@link LoggingEventBuilder} for {@code info} log level that can be
      * used to enrich log with additional context.
      *
+     * <p><strong>Code samples</strong></p>
+     *
+     * <p>Logging with context at info level.</p>
+     *
+     * <!-- src_embed com.azure.core.util.logging.clientlogger.atInfo -->
+     * <pre>
+     * logger.atInfo&#40;&#41;
+     *     .addKeyValue&#40;&quot;key&quot;, &quot;value&quot;&#41;
+     *     .log&#40;&quot;A formattable message. Hello, &#123;&#125;&quot;, name&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.logging.clientlogger.atInfo -->
+     *
      * @return instance of {@link LoggingEventBuilder} or no-op if verbose logging is disabled.
      */
     public LoggingEventBuilder atInfo() {
@@ -561,6 +584,17 @@ public class ClientLogger {
     /**
      * Creates {@link LoggingEventBuilder} for {@code verbose} log level that can be
      * used to enrich log with additional context.
+     * <p><strong>Code samples</strong></p>
+     *
+     * <p>Logging with context at verbose level.</p>
+     *
+     * <!-- src_embed com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
+     * <pre>
+     * logger.atVerbose&#40;&#41;
+     *     .addKeyValue&#40;&quot;key&quot;, 1L&#41;
+     *     .log&#40;&#40;&#41; -&gt; String.format&#40;&quot;Param 1: %s, Param 2: %s, Param 3: %s&quot;, &quot;param1&quot;, &quot;param2&quot;, &quot;param3&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.logging.clientlogger.atverbose.addKeyValue#primitive -->
      *
      * @return instance of {@link LoggingEventBuilder} or no-op if verbose logging is disabled.
      */
@@ -606,7 +640,6 @@ public class ClientLogger {
             return logMessage;
         }
 
-        // TODO (lmolkova) investigate perf improvement here by nit using regex
         return NEW_LINE_PATTERN.matcher(logMessage).replaceAll("");
     }
 >>>>>>> eaf130023ff (move message into json structure)

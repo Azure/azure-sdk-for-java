@@ -387,7 +387,7 @@ public class ClientLoggerTests {
         logger.atVerbose()
             .addKeyValue("connectionId", "foo")
             .addKeyValue("linkName", true)
-            .log((String)null);
+            .log((String) null);
 
         assertMessage(
             "{\"az.sdk.message\":\"\",\"connectionId\":\"foo\",\"linkName\":true}",
