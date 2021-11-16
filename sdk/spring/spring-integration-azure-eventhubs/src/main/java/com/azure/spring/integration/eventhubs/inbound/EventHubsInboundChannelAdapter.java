@@ -7,7 +7,6 @@ import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.models.EventBatchContext;
 import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.messaging.eventhubs.models.PartitionContext;
-import com.azure.spring.eventhubs.checkpoint.BatchCheckpointManager;
 import com.azure.spring.eventhubs.checkpoint.CheckpointManagers;
 import com.azure.spring.eventhubs.checkpoint.EventCheckpointManager;
 import com.azure.spring.eventhubs.core.EventHubsProcessorContainer;

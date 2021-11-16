@@ -50,7 +50,7 @@ Checkpointing of batch consumer supports two modes: BATCH and MANUAL. BATCH mode
 **com.azure.spring.integration.core.api.reactor.Checkpointer** will be passes into the message header, and users could use it to do checkpointing.
 
 The batch size can be specified by properties of `max-size` and `max-wait-time` with prefix as `spring.cloud.stream.
-eventhubs.bindings.<binding-name>.consumer.batch.`. See the below section for more information about the 
+eventhub.bindings.<binding-name>.consumer.batch.`. See the below section for more information about the 
 [configuration](#batch-consumer) and [examples](#batch-consumer-sample).
 ## Examples 
 
@@ -73,11 +73,11 @@ spring.cloud.azure.msi-enabled | If enable MSI as credential configuration | Yes
 spring.cloud.azure.resource-group | Name of Azure resource group | Yes if service principal or MSI is used as credential configuration. |
 spring.cloud.azure.subscription-id | Subscription id of an MSI | Yes if MSI is used as credential configuration. |
 spring.cloud.azure.tenant-id | Tenant id of a service principal | Yes if service principal is used as credential configuration. |
-spring.cloud.azure.eventhubs.connection-string | Event Hubs Namespace connection string | Yes if connection string is used as Event Hubs credential configuration |
-spring.cloud.azure.eventhubs.checkpoint-storage-account | StorageAccount name for message checkpoint | Yes
-spring.cloud.azure.eventhubs.checkpoint-access-key | StorageAccount access key for message checkpoint | Yes if StorageAccount access key is used as StorageAccount credential configuration
-spring.cloud.azure.eventhubs.checkpoint-container | StorageAccount container name for message checkpoint | Yes
-spring.cloud.azure.eventhubs.namespace | Event Hub Namespace. Auto creating if missing | Yes if service principal or MSI is used as credential configuration. |
+spring.cloud.azure.eventhub.connection-string | Event Hubs Namespace connection string | Yes if connection string is used as Event Hubs credential configuration |
+spring.cloud.azure.eventhub.checkpoint-storage-account | StorageAccount name for message checkpoint | Yes
+spring.cloud.azure.eventhub.checkpoint-access-key | StorageAccount access key for message checkpoint | Yes if StorageAccount access key is used as StorageAccount credential configuration
+spring.cloud.azure.eventhub.checkpoint-container | StorageAccount container name for message checkpoint | Yes
+spring.cloud.azure.eventhub.namespace | Event Hub Namespace. Auto creating if missing | Yes if service principal or MSI is used as credential configuration. |
 
 #### Common Producer Properties ####
 
@@ -117,8 +117,7 @@ For more information about setting partition for the producer properties, please
 
 #### Event Hub Producer Properties ####
 
-It supports the following configurations with the format of `spring.cloud.stream.eventhubs.bindings.<channelName>.
-producer`.
+It supports the following configurations with the format of `spring.cloud.stream.eventhubs.bindings.<channelName>.producer`.
  
 **_sync_**
 
@@ -153,8 +152,7 @@ Default: `False`
 
 #### Event Hub Consumer Properties ####
 
-It supports the following configurations with the format of `spring.cloud.stream.eventhubs.bindings.<channelName>.
-consumer`.
+It supports the following configurations with the format of `spring.cloud.stream.eventhubs.bindings.<channelName>.consumer`.
 
 **_start-position_**
 
