@@ -4,6 +4,7 @@
 
 package com.azure.communication.mediacomposition;
 
+import com.azure.communication.mediacomposition.implementation.AzureCommunicationMediaCompositionServiceImpl;
 import com.azure.communication.mediacomposition.implementation.MediaCompositionsImpl;
 import com.azure.communication.mediacomposition.implementation.models.CompositionStreamState;
 import com.azure.communication.mediacomposition.implementation.models.MediaCompositionBody;
@@ -21,10 +22,10 @@ import java.util.Objects;
 @ServiceClient(builder = MediaCompositionClientBuilder.class, isAsync = false)
 public final class MediaCompositionClient {
 
-    private final MediaCompositionsImpl svcImpl;
+    private final MediaCompositionsImpl mediaCompositionClient;
 
-    MediaCompositionClient(MediaCompositionsImpl svcImpl) {
-        this.svcImpl = svcImpl;
+    MediaCompositionClient(AzureCommunicationMediaCompositionServiceImpl svcImpl) {
+        mediaCompositionClient = svcImpl.getMediaCompositions();
     }
 
     /**
@@ -35,7 +36,7 @@ public final class MediaCompositionClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public MediaCompositionBody getMediaComposition(String mediaCompositionId) {
         Objects.requireNonNull(mediaCompositionId, "'mediaCompositionId' cannot be null.");
-        return svcImpl.get(mediaCompositionId);
+        return mediaCompositionClient.get(mediaCompositionId);
     }
 
     /**
@@ -48,7 +49,7 @@ public final class MediaCompositionClient {
     public Response<MediaCompositionBody> getMediaCompositionWithResponse(String mediaCompositionId, Context context) {
         Objects.requireNonNull(mediaCompositionId, "'mediaCompositionId' cannot be null.");
         context = context == null ? Context.NONE : context;
-        return svcImpl.getWithResponseAsync(mediaCompositionId, context).block();
+        return mediaCompositionClient.getWithResponseAsync(mediaCompositionId, context).block();
     }
 
     /**
@@ -60,7 +61,7 @@ public final class MediaCompositionClient {
     public MediaCompositionBody createMediaComposition(MediaCompositionBody mediaCompositionBody) {
         Objects.requireNonNull(mediaCompositionBody, "'mediaCompositionBody' cannot be null");
         Objects.requireNonNull(mediaCompositionBody.getId(), "'mediaCompositionBody' must contain a valid Id");
-        return svcImpl.create(mediaCompositionBody.getId(), mediaCompositionBody);
+        return mediaCompositionClient.create(mediaCompositionBody.getId(), mediaCompositionBody);
     }
 
     /**
@@ -75,7 +76,7 @@ public final class MediaCompositionClient {
         Objects.requireNonNull(mediaCompositionBody.getId(), "'mediaCompositionBody' must contain a valid Id");
         context = context == null ? Context.NONE : context;
 
-        return svcImpl.createWithResponseAsync(mediaCompositionBody.getId(), mediaCompositionBody, context).block();
+        return mediaCompositionClient.createWithResponseAsync(mediaCompositionBody.getId(), mediaCompositionBody, context).block();
     }
 
     /**
@@ -88,7 +89,7 @@ public final class MediaCompositionClient {
     public MediaCompositionBody update(String mediaCompositionId, MediaCompositionBody mediaCompositionBody) {
         Objects.requireNonNull(mediaCompositionId, "'mediaCompositionId' cannot be null.");
         Objects.requireNonNull(mediaCompositionBody, "'mediaCompositionBody' cannot be null");
-        return svcImpl.update(mediaCompositionId, mediaCompositionBody);
+        return mediaCompositionClient.update(mediaCompositionId, mediaCompositionBody);
     }
 
     /**
@@ -104,7 +105,7 @@ public final class MediaCompositionClient {
         Objects.requireNonNull(mediaCompositionBody, "'mediaCompositionBody' cannot be null");
         context = context == null ? Context.NONE : context;
 
-        return svcImpl.updateWithResponseAsync(mediaCompositionId, mediaCompositionBody, context).block();
+        return mediaCompositionClient.updateWithResponseAsync(mediaCompositionId, mediaCompositionBody, context).block();
     }
 
     /**
@@ -115,7 +116,7 @@ public final class MediaCompositionClient {
     public void delete(String mediaCompositionId) {
         Objects.requireNonNull(mediaCompositionId, "'mediaCompositionId' cannot be null.");
 
-        svcImpl.deleteAsync(mediaCompositionId);
+        mediaCompositionClient.delete(mediaCompositionId);
     }
 
     /**
@@ -128,7 +129,7 @@ public final class MediaCompositionClient {
     public Response<Void> deleteWithResponse(String mediaCompositionId, Context context) {
         Objects.requireNonNull(mediaCompositionId, "'mediaCompositionId' cannot be null.");
 
-        return svcImpl.deleteWithResponseAsync(mediaCompositionId, context).block();
+        return mediaCompositionClient.deleteWithResponseAsync(mediaCompositionId, context).block();
     }
 
     /**
@@ -139,7 +140,7 @@ public final class MediaCompositionClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CompositionStreamState start(String mediaCompositionId) {
         Objects.requireNonNull(mediaCompositionId, "'mediaCompositionId' cannot be null.");
-        return svcImpl.start(mediaCompositionId);
+        return mediaCompositionClient.start(mediaCompositionId);
     }
 
     /**
@@ -153,7 +154,7 @@ public final class MediaCompositionClient {
         Objects.requireNonNull(mediaCompositionId, "'mediaCompositionId' cannot be null.");
         context = context == null ? Context.NONE : context;
 
-        return svcImpl.startWithResponseAsync(mediaCompositionId, context).block();
+        return mediaCompositionClient.startWithResponseAsync(mediaCompositionId, context).block();
     }
 
     /**
@@ -164,7 +165,7 @@ public final class MediaCompositionClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CompositionStreamState stop(String mediaCompositionId) {
         Objects.requireNonNull(mediaCompositionId, "'mediaCompositionId' cannot be null.");
-        return svcImpl.stop(mediaCompositionId);
+        return mediaCompositionClient.stop(mediaCompositionId);
     }
 
     /**
@@ -178,6 +179,6 @@ public final class MediaCompositionClient {
         Objects.requireNonNull(mediaCompositionId, "'mediaCompositionId' cannot be null.");
         context = context == null ? Context.NONE : context;
 
-        return svcImpl.stopWithResponseAsync(mediaCompositionId, context).block();
+        return mediaCompositionClient.stopWithResponseAsync(mediaCompositionId, context).block();
     }
 }

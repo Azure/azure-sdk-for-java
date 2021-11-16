@@ -184,8 +184,7 @@ public final class MediaCompositionClientBuilder {
     public MediaCompositionClient buildClient() {
         this.validateRequiredFields();
 
-        AzureCommunicationMediaCompositionServiceImpl implClient = this.createMediaCompositionClientImpl();
-        return new MediaCompositionClient(implClient.getMediaCompositions());
+        return new MediaCompositionClient(createMediaCompositionClientImpl());
     }
 
     private AzureCommunicationMediaCompositionServiceImpl createMediaCompositionClientImpl() {
