@@ -395,15 +395,13 @@ public final class LineagesImpl {
      *
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return lineage info of the entity specified by GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getLineageGraphWithResponse(
-            String guid, RequestOptions requestOptions, Context context) {
-        return getLineageGraphWithResponseAsync(guid, requestOptions, context).block();
+    public Response<BinaryData> getLineageGraphWithResponse(String guid, RequestOptions requestOptions) {
+        return getLineageGraphWithResponseAsync(guid, requestOptions).block();
     }
 
     /**
@@ -746,14 +744,12 @@ public final class LineagesImpl {
      *
      * @param guid The globally unique identifier of the entity.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return atlasLineageInfo.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> nextPageLineageWithResponse(
-            String guid, RequestOptions requestOptions, Context context) {
-        return nextPageLineageWithResponseAsync(guid, requestOptions, context).block();
+    public Response<BinaryData> nextPageLineageWithResponse(String guid, RequestOptions requestOptions) {
+        return nextPageLineageWithResponseAsync(guid, requestOptions).block();
     }
 }
