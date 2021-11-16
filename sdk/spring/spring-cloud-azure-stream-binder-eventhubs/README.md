@@ -52,7 +52,7 @@ Checkpointing of batch consumer supports two modes: BATCH and MANUAL. BATCH mode
 
 The batch size can be specified by properties of `max-size` and `max-wait-time` with prefix as `spring.cloud.stream.
 eventhub.bindings.<binding-name>.consumer.batch.`. See the below section for more information about the 
-[configuration](#Batch Consumer) and [examples](#Batch Consumer Sample).
+[configuration](#batch-consumer) and [examples](#batch-consumer-sample).
 ## Examples 
 
 Please use this [sample][sample] as a reference for how to use this binder. 
