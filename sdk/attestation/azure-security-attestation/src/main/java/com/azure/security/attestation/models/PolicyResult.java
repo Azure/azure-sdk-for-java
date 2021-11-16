@@ -3,11 +3,13 @@
 
 package com.azure.security.attestation.models;
 
+import com.azure.core.annotation.Immutable;
 import com.azure.core.util.BinaryData;
 
 /**
  * Represents the result of a policy modification operation (setAttestationPolicy/resetAttestationPolicy).
  */
+@Immutable
 public interface PolicyResult {
     /**
      * Get the policyResolution property: The result of the operation.
