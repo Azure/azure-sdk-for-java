@@ -130,11 +130,14 @@ public class AADB2CProperties implements InitializingBean {
      * Validate web app scenario properties configuration when using user flows.
      */
     private void validateWebappProperties() {
-        if (!isValidURL(logoutSuccessUrl)) {
-            throw new AADB2CConfigurationException("logout success should be valid URL.");
-        }
-        if (!isValidURL(baseUri)) {
-            throw new AADB2CConfigurationException("baseUri should be valid URL.");
+        if (!CollectionUtils.isEmpty(userFlows)) {
+            if (!StringUtils.hasText(tenant) && !StringUtils.hasText(baseUri)) {
+                throw new AADB2CConfigurationException("'tenant' and 'baseUri' at least configure one item.");
+            }
+            if (!userFlows.keySet().contains(loginFlow)) {
+                throw new AADB2CConfigurationException("Sign in user flow key '"
+                    + loginFlow + "' is not in 'user-flows' map.");
+            }
         }
     }
 
@@ -157,20 +160,22 @@ public class AADB2CProperties implements InitializingBean {
      * Validate URL properties configuration.
      */
     private void validateURLProperties() {
-        if (!CollectionUtils.isEmpty(userFlows)) {
-            if (!StringUtils.hasText(tenant) && !StringUtils.hasText(baseUri)) {
-                throw new AADB2CConfigurationException("'tenant' and 'baseUri' at least configure one item.");
-            }
-            if (!userFlows.keySet().contains(loginFlow)) {
-                throw new AADB2CConfigurationException("Sign in user flow key '"
-                    + loginFlow + "' is not in 'user-flows' map.");
-            }
+        if (!isValidURL(logoutSuccessUrl)) {
+            throw new AADB2CConfigurationException("logout success should be valid URL.");
+        }
+        if (!isValidURL(baseUri)) {
+            throw new AADB2CConfigurationException("baseUri should be valid URL.");
         }
     }
 
+    /**
+     * Used to validate uri, the uri is allowed to be empty.
+     * @param uri
+     * @return whether is uri is valid or not.
+     */
     private boolean isValidURL(String uri) {
         if (!StringUtils.hasLength(uri)) {
-            return false;
+            return true;
         }
         try {
             new java.net.URL(uri);
