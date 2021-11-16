@@ -25,11 +25,8 @@ import java.util.Objects;
 /** A builder for creating a new instance of the AttestationClient type. */
 @ServiceClientBuilder(
         serviceClients = {
-            PolicyClient.class,
-            PolicyCertificatesClient.class,
             AttestationClient.class,
-            PolicyAsyncClient.class,
-            PolicyCertificatesAsyncClient.class,
+            AttestationAsyncClient.class,
         })
 public final class AttestationClientBuilder {
     private static final String SDK_NAME = "name";
@@ -228,41 +225,4 @@ public final class AttestationClientBuilder {
         }
         return clientImplBuilder.buildClient();
     }
-
-    /**
-     * Builds an instance of PolicyAsyncClient async client.
-     *
-     * @return an instance of PolicyAsyncClient.
-     */
-    public PolicyAsyncClient buildPolicyAsyncClient() {
-        return new PolicyAsyncClient(buildInnerClient().getPolicies());
-    }
-
-    /**
-     * Builds an instance of PolicyCertificatesAsyncClient async client.
-     *
-     * @return an instance of PolicyCertificatesAsyncClient.
-     */
-    public PolicyCertificatesAsyncClient buildPolicyCertificatesAsyncClient() {
-        return new PolicyCertificatesAsyncClient(buildInnerClient().getPolicyCertificates());
-    }
-
-    /**
-     * Builds an instance of PolicyClient sync client.
-     *
-     * @return an instance of PolicyClient.
-     */
-    public PolicyClient buildPolicyClient() {
-        return new PolicyClient(buildInnerClient().getPolicies());
-    }
-
-    /**
-     * Builds an instance of PolicyCertificatesClient sync client.
-     *
-     * @return an instance of PolicyCertificatesClient.
-     */
-    public PolicyCertificatesClient buildPolicyCertificatesClient() {
-        return new PolicyCertificatesClient(buildInnerClient().getPolicyCertificates());
-    }
-
 }

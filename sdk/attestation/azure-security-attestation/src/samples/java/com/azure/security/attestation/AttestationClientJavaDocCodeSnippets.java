@@ -11,6 +11,8 @@ import com.azure.security.attestation.models.AttestationDataInterpretation;
 import com.azure.security.attestation.models.AttestationOpenIdMetadata;
 import com.azure.security.attestation.models.AttestationOptions;
 import com.azure.security.attestation.models.AttestationSigner;
+import com.azure.security.attestation.models.AttestationType;
+import com.azure.security.attestation.models.PolicyResult;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
@@ -32,6 +34,24 @@ public class AttestationClientJavaDocCodeSnippets {
 
         return client;
     }
+
+    public static AttestationAdministrationClient createAdminSyncClient() {
+        String endpoint = null;
+        // BEGIN: com.azure.security.attestation.AttestationAdministrationClientBuilder.buildClient
+        AttestationAdministrationClient client = new AttestationAdministrationClientBuilder()
+            .endpoint(endpoint)
+            .buildClient();
+        // END: com.azure.security.attestation.AttestationAdministrationClientBuilder.buildClient
+
+        // BEGIN: com.azure.security.attestation.AttestationAdministrationClientBuilder.buildAsyncClient
+        AttestationAdministrationAsyncClient asyncClient = new AttestationAdministrationClientBuilder()
+            .endpoint(endpoint)
+            .buildAsyncClient();
+        // END: com.azure.security.attestation.AttestationAdministrationClientBuilder.buildAsyncClient
+
+        return client;
+    }
+
 
     public static void attestationOptionsSnippets() {
 
@@ -137,6 +157,25 @@ public class AttestationClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.attestation.AttestationAsyncClient.getAttestationSignersWithResponse
         Mono<Response<List<AttestationSigner>>> responseOfSigners = client.listAttestationSignersWithResponse();
         // END: com.azure.security.attestation.AttestationAsyncClient.getAttestationSignersWithResponse
+    }
+
+    public static void setPolicyCheckHash() {
+        AttestationAdministrationAsyncClient client = null;
+
+        // BEGIN: com.azure.security.attestation.AttestationAdministrationAsyncClient.getPolicy
+        String policyToSet = "version=1.0; authorizationrules{=> permit();}; issuancerules{};";
+        Mono<PolicyResult> resultMono = client.setAttestationPolicy(AttestationType.OPEN_ENCLAVE, policyToSet);
+        PolicyResult result = resultMono.block();
+        // END: com.azure.security.attestation.AttestationAdministrationAsyncClient.getPolicy
+
+        // BEGIN: com.azure.security.attestation.AttestationAdministrationAsyncClient.checkPolicyTokenHash
+        BinaryData expectedHash = client.calculatePolicyTokenHash(policyToSet, null);
+        BinaryData actualHash = result.getPolicyTokenHash();
+        if (!expectedHash.equals(actualHash)) {
+            throw new RuntimeException("Policy was set but not received!!!");
+        }
+        // END: com.azure.security.attestation.AttestationAdministrationAsyncClient.checkPolicyTokenHash
+
     }
 
 }
