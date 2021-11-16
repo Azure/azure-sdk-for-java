@@ -194,7 +194,6 @@ to guarantee that the data is available to be read.
 try (OutputStream os = Files.newOutputStream(filePath)) {
     os.write(0);
 }
-```
 
 ### Copy a file
 
