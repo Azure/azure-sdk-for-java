@@ -10,6 +10,15 @@
 
 ### Other Changes
 
+## 1.4.1 (2021-11-09)
+
+### Other Changes
+#### Dependency Updates
+- Upgraded `azure-core` dependency to 1.22.0
+
+#### Behavioral Changes
+- The `ManagedIdentityCredential` reads value of AZURE_POD_IDENTITY_TOKEN_URL environment variable from AZURE_POD_IDENTITY_AUTHORITY_HOST now.
+
 ## 1.4.0 (2021-10-14)
 
 ### Features Added

@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosBridgeInternal;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.ConnectionPolicy;
@@ -179,6 +180,10 @@ public class ReflectionUtils {
 
     public static UserAgentContainer getUserAgentContainer(RxDocumentClientImpl rxDocumentClient) {
         return get(UserAgentContainer.class, rxDocumentClient, "userAgentContainer");
+    }
+
+    public static ApiType getApiType(RxDocumentClientImpl rxDocumentClient) {
+        return get(ApiType.class, rxDocumentClient, "apiType");
     }
 
     public static Future<?> getFuture() {

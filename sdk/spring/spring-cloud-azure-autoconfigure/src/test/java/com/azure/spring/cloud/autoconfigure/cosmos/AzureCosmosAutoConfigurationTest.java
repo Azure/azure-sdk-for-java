@@ -6,6 +6,7 @@ package com.azure.spring.cloud.autoconfigure.cosmos;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.spring.cloud.autoconfigure.cosmos.properties.AzureCosmosProperties;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.service.cosmos.CosmosClientBuilderFactory;
 import org.junit.jupiter.api.Test;
@@ -72,6 +73,7 @@ class AzureCosmosAutoConfigurationTest {
         azureProperties.getCredential().setClientId("azure-client-id");
         azureProperties.getCredential().setClientSecret("azure-client-secret");
         azureProperties.getProxy().setHostname("localhost");
+        azureProperties.getProxy().getHttp().setNonProxyHosts("localhost");
 
         this.contextRunner
             .withBean(AzureGlobalProperties.class, () -> azureProperties)

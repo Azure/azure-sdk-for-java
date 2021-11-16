@@ -633,7 +633,7 @@ public final class AuthorizationsClientImpl implements AuthorizationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return expressRoute Circuit Authorization.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ExpressRouteAuthorizationInner>, ExpressRouteAuthorizationInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -665,7 +665,7 @@ public final class AuthorizationsClientImpl implements AuthorizationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return expressRoute Circuit Authorization.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<ExpressRouteAuthorizationInner>, ExpressRouteAuthorizationInner>
         beginCreateOrUpdateAsync(
             String resourceGroupName,
@@ -699,7 +699,7 @@ public final class AuthorizationsClientImpl implements AuthorizationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return expressRoute Circuit Authorization.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExpressRouteAuthorizationInner>, ExpressRouteAuthorizationInner> beginCreateOrUpdate(
         String resourceGroupName,
         String privateCloudName,
@@ -722,7 +722,7 @@ public final class AuthorizationsClientImpl implements AuthorizationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return expressRoute Circuit Authorization.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<ExpressRouteAuthorizationInner>, ExpressRouteAuthorizationInner> beginCreateOrUpdate(
         String resourceGroupName,
         String privateCloudName,
@@ -945,7 +945,7 @@ public final class AuthorizationsClientImpl implements AuthorizationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String privateCloudName, String authorizationName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -967,7 +967,7 @@ public final class AuthorizationsClientImpl implements AuthorizationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
         String resourceGroupName, String privateCloudName, String authorizationName, Context context) {
         context = this.client.mergeContext(context);
@@ -989,7 +989,7 @@ public final class AuthorizationsClientImpl implements AuthorizationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String privateCloudName, String authorizationName) {
         return beginDeleteAsync(resourceGroupName, privateCloudName, authorizationName).getSyncPoller();
@@ -1007,7 +1007,7 @@ public final class AuthorizationsClientImpl implements AuthorizationsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(
         String resourceGroupName, String privateCloudName, String authorizationName, Context context) {
         return beginDeleteAsync(resourceGroupName, privateCloudName, authorizationName, context).getSyncPoller();

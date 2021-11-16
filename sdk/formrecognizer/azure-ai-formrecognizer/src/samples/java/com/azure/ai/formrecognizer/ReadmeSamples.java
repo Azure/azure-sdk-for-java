@@ -49,31 +49,37 @@ public class ReadmeSamples {
      * Code snippet for getting sync client using the AzureKeyCredential authentication.
      */
     public void useAzureKeyCredentialSyncClient() {
+        // BEGIN: readme-sample-createDocumentAnalysisClient
         DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildClient();
+        // END: readme-sample-createDocumentAnalysisClient
     }
 
     /**
      * Code snippet for getting sync DocumentModelAdministration client using the AzureKeyCredential authentication.
      */
     public void useAzureKeyCredentialDocumentModelAdministrationClient() {
+        // BEGIN: readme-sample-createDocumentModelAdministrationClient
         DocumentModelAdministrationClient documentModelAdminClient = new DocumentModelAdministrationClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildClient();
+        // END: readme-sample-createDocumentModelAdministrationClient
     }
 
     /**
      * Code snippet for getting async client using AAD authentication.
      */
     public void useAadAsyncClient() {
+        // BEGIN: readme-sample-createDocumentAnalysisClientWithAAD
         TokenCredential credential = new DefaultAzureCredentialBuilder().build();
         DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilder()
             .endpoint("{endpoint}")
             .credential(credential)
             .buildClient();
+        // END: readme-sample-createDocumentAnalysisClientWithAAD
     }
 
     /**
@@ -81,7 +87,8 @@ public class ReadmeSamples {
      *
      * @throws IOException Exception thrown when there is an error in reading all the bytes from the File.
      */
-    public void analyzeLayout() throws IOException {
+    public void extractLayout() throws IOException {
+        // BEGIN: readme-sample-extractLayout
         // analyze document layout using file input stream
         File layoutDocument = new File("local/file_path/filename.png");
         byte[] fileContent = Files.readAllBytes(layoutDocument.toPath());
@@ -101,13 +108,13 @@ public class ReadmeSamples {
 
             // lines
             documentPage.getLines().forEach(documentLine ->
-                System.out.printf("Line %s is within a bounding box %s.%n",
+                System.out.printf("Line '%s' is within a bounding box %s.%n",
                     documentLine.getContent(),
                     documentLine.getBoundingBox().toString()));
 
             // selection marks
             documentPage.getSelectionMarks().forEach(documentSelectionMark ->
-                System.out.printf("Selection mark is %s and is within a bounding box %s with confidence %.2f.%n",
+                System.out.printf("Selection mark is '%s' and is within a bounding box %s with confidence %.2f.%n",
                     documentSelectionMark.getState().toString(),
                     documentSelectionMark.getBoundingBox().toString(),
                     documentSelectionMark.getConfidence()));
@@ -125,12 +132,14 @@ public class ReadmeSamples {
             });
             System.out.println();
         }
+        // END: readme-sample-extractLayout
     }
 
     /**
      * Code snippet for analyzing receipt data using prebuilt receipt models.
      */
     public void analyzeReceiptFromUrl() {
+        // BEGIN: readme-sample-analyzeReceiptFromUrl
         String receiptUrl = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/main/sdk/formrecognizer"
             + "/azure-ai-formrecognizer/src/samples/resources/sample-documents/receipts/contoso-allinone.jpg";
 
@@ -197,12 +206,14 @@ public class ReadmeSamples {
                 }
             }
         }
+        // END: readme-sample-analyzeReceiptFromUrl
     }
 
     /**
      * Code snippet for building custom document analysis models using training data.
      */
     public void buildModel() {
+        // BEGIN: readme-sample-buildModel
         // Build custom document analysis model
         String trainingFilesUrl = "{SAS_URL_of_your_container_in_blob_storage}";
         // The shared access signature (SAS) Url of your Azure Blob Storage container with your forms.
@@ -226,12 +237,14 @@ public class ReadmeSamples {
                 System.out.printf("Document field confidence: %.2f%n", docTypeInfo.getFieldConfidence().get(name));
             });
         });
+        // END: readme-sample-buildModel
     }
 
     /**
      * Code snippet for analyzing custom documents using custom-built models.
      */
     public void analyzeCustomDocument() {
+        // BEGIN: readme-sample-analyzeCustomDocument
         String documentUrl = "{document-url}";
         String modelId = "{custom-built-model-ID}";
         SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeDocumentPoller =
@@ -261,13 +274,13 @@ public class ReadmeSamples {
 
             // lines
             documentPage.getLines().forEach(documentLine ->
-                System.out.printf("Line %s is within a bounding box %s.%n",
+                System.out.printf("Line '%s' is within a bounding box %s.%n",
                     documentLine.getContent(),
                     documentLine.getBoundingBox().toString()));
 
             // words
             documentPage.getWords().forEach(documentWord ->
-                System.out.printf("Word %s has a confidence score of %.2f%n.",
+                System.out.printf("Word '%s' has a confidence score of %.2f.%n",
                     documentWord.getContent(),
                     documentWord.getConfidence()));
         });
@@ -285,12 +298,14 @@ public class ReadmeSamples {
             });
             System.out.println();
         }
+        // END: readme-sample-analyzeCustomDocument
     }
 
     /**
      * Code snippet for analyzing general documents using "prebuilt-document" models.
      */
     public void analyzePrebuiltDocument() {
+        // BEGIN: readme-sample-analyzePrebuiltDocument
         String documentUrl = "{document-url}";
         String modelId = "prebuilt-document";
         SyncPoller<DocumentOperationResult, AnalyzeResult> analyzeDocumentPoller =
@@ -313,13 +328,13 @@ public class ReadmeSamples {
 
             // lines
             documentPage.getLines().forEach(documentLine ->
-                System.out.printf("Line %s is within a bounding box %s.%n",
+                System.out.printf("Line '%s' is within a bounding box %s.%n",
                     documentLine.getContent(),
                     documentLine.getBoundingBox().toString()));
 
             // words
             documentPage.getWords().forEach(documentWord ->
-                System.out.printf("Word %s has a confidence score of %.2f%n.",
+                System.out.printf("Word '%s' has a confidence score of %.2f.%n",
                     documentWord.getContent(),
                     documentWord.getConfidence()));
         });
@@ -355,12 +370,14 @@ public class ReadmeSamples {
             System.out.printf("Value content: %s%n", documentKeyValuePair.getValue().getContent());
             System.out.printf("Value content bounding region: %s%n", documentKeyValuePair.getValue().getBoundingRegions().toString());
         });
+        // END: readme-sample-analyzePrebuiltDocument
     }
 
     /**
      * Code snippet for managing models in form recognizer account.
      */
     public void manageModels() {
+        // BEGIN: readme-sample-manageModels
         AtomicReference<String> modelId = new AtomicReference<>();
 
         // First, we see how many models we have, and what our limit is
@@ -391,26 +408,31 @@ public class ReadmeSamples {
 
         // Delete Model
         documentModelAdminClient.deleteModel(modelId.get());
+        // END: readme-sample-manageModels
     }
 
     /**
      * Code snippet for handling exception
      */
     public void handlingException() {
+        // BEGIN: readme-sample-handlingException
         try {
             documentAnalysisClient.beginAnalyzeDocumentFromUrl("prebuilt-receipt", "invalidSourceUrl");
         } catch (HttpResponseException e) {
             System.out.println(e.getMessage());
         }
+        // END: readme-sample-handlingException
     }
 
     /**
      * Code snippet for getting async client using the AzureKeyCredential authentication.
      */
     public void useAzureKeyCredentialAsyncClient() {
+        // BEGIN: readme-sample-asyncClient
         DocumentAnalysisAsyncClient documentAnalysisAsyncClient = new DocumentAnalysisClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildAsyncClient();
+        // END: readme-sample-asyncClient
     }
 }

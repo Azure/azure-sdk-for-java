@@ -40,11 +40,25 @@ import java.util.Objects;
  *
  * <p><strong>Instantiating an asynchronous Document Analysis Client</strong></p>
  *
- * {@codesnippet com.azure.ai.formrecognizer.DocumentAnalysisAsyncClient.instantiation}
+ * <!-- src_embed com.azure.ai.formrecognizer.DocumentAnalysisAsyncClient.instantiation -->
+ * <pre>
+ * DocumentAnalysisAsyncClient documentAnalysisAsyncClient = new DocumentAnalysisClientBuilder&#40;&#41;
+ *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.ai.formrecognizer.DocumentAnalysisAsyncClient.instantiation -->
  *
  * <p><strong>Instantiating a synchronous Document Analysis Client</strong></p>
  *
- * {@codesnippet com.azure.ai.formrecognizer.DocumentAnalysisClient.instantiation}
+ * <!-- src_embed com.azure.ai.formrecognizer.DocumentAnalysisClient.instantiation -->
+ * <pre>
+ * DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilder&#40;&#41;
+ *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.ai.formrecognizer.DocumentAnalysisClient.instantiation -->
  *
  * <p>
  * Another way to construct the client is using a {@link HttpPipeline}. The pipeline gives the client an
@@ -54,7 +68,19 @@ import java.util.Objects;
  * {@link DocumentAnalysisAsyncClient} is built.
  * </p>
  *
- * {@codesnippet com.azure.ai.formrecognizer.DocumentAnalysisClient.pipeline.instantiation}
+ * <!-- src_embed com.azure.ai.formrecognizer.DocumentAnalysisClient.pipeline.instantiation -->
+ * <pre>
+ * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
+ *     .policies&#40;&#47;* add policies *&#47;&#41;
+ *     .build&#40;&#41;;
+ *
+ * DocumentAnalysisClient documentAnalysisClient = new DocumentAnalysisClientBuilder&#40;&#41;
+ *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .pipeline&#40;pipeline&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.ai.formrecognizer.DocumentAnalysisClient.pipeline.instantiation -->
  *
  * @see DocumentAnalysisAsyncClient
  * @see DocumentAnalysisClient

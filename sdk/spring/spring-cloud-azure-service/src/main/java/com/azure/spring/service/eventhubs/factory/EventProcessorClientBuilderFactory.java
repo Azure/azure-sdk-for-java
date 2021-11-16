@@ -24,6 +24,7 @@ import com.azure.spring.service.eventhubs.processor.BatchEventProcessingListener
 import com.azure.spring.service.eventhubs.processor.EventProcessingListener;
 import com.azure.spring.service.eventhubs.processor.RecordEventProcessingListener;
 import com.azure.spring.service.eventhubs.properties.EventHubProcessorDescriptor;
+import org.springframework.util.CollectionUtils;
 
 import java.util.Arrays;
 import java.util.List;
@@ -92,13 +93,14 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
         map.from(processorProperties.getLoadBalancing().getStrategy()).to(builder::loadBalancingStrategy);
         map.from(processorProperties.getLoadBalancing().getUpdateInterval()).to(builder::loadBalancingUpdateInterval);
 
-        map.from(processorProperties.getInitialPartitionEventPosition()).to(p -> {
-            Map<String, EventPosition> positions = p.entrySet()
-                                                    .stream()
-                                                    .collect(Collectors.toMap(Map.Entry::getKey,
-                                                        e -> e.getValue().toEventPosition()));
-            builder.initialPartitionEventPosition(positions);
-        });
+        map.from(processorProperties.getInitialPartitionEventPosition()).when(c -> !CollectionUtils.isEmpty(c)).to(
+            p -> {
+                Map<String, EventPosition> positions = p.entrySet()
+                                                        .stream()
+                                                        .collect(Collectors.toMap(Map.Entry::getKey,
+                                                            e -> e.getValue().toEventPosition()));
+                builder.initialPartitionEventPosition(positions);
+            });
 
         configureCheckpointStore(builder);
         configureProcessorListener(builder);

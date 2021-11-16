@@ -351,6 +351,9 @@ the main ServiceBusClientBuilder. -->
 
   <!-- FIXME temp -->
   <suppress checks="ServiceClient" files="com.azure.messaging.webpubsub.*"/>
+  <!-- Suppress ReverseProxyPolicy being package private. It may get moved into azure-core. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy"
+            files="com.azure.messaging.webpubsub.ReverseProxyPolicy.java"/>
 
   <!-- Suppress the check on code-gen classes -->
   <suppress checks="[a-zA-Z0-9]*" files="com.azure.monitor.opentelemetry.exporter.implementation.*"/>
@@ -474,6 +477,8 @@ the main ServiceBusClientBuilder. -->
 
   <!-- MissingJavadocMethod: Temporarily skip -->
   <suppress checks="MissingJavadocMethod" files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*"/>
+  <!-- JavadocThrowsChecks: Temporarily skip -->
+  <suppress checks="JavadocThrowsChecks" files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*"/>
   <!-- MissingJavadocMethod: internal packages -->
   <suppress checks="MissingJavadocType|JavadocThrowsChecks|EnforceFinalFields" files=".*[/\\]com[/\\]azure[/\\]spring[/\\]integration[/\\]test.*"/>
 

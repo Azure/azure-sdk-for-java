@@ -1,15 +1,31 @@
 # Release History
 
-## 12.12.0-beta.1 (Unreleased)
+## 12.12.0-beta.2 (Unreleased)
 
 ### Features Added
-- Added support for the 2020-12-06 service version.
+- Added support for the 2021-02-12 service version.
+- Added support for new bandwidth limits.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.11.2 (2021-11-10)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.21.0` to version `1.22.0`.
+- Upgraded `azure-core-http-netty` from `1.11.1` to version `1.11.2`.
+- Upgraded `azure-storage-common` from `12.14.0` to version `12.14.1`.
+
+## 12.12.0-beta.1 (2021-11-05)
+
+### Features Added
+- Added support for the 2020-12-06 service version.
 
 ## 12.11.1 (2021-10-12)
 
