@@ -92,7 +92,13 @@ public final class BlobClientBuilder {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClientBuilder.buildClient}
+     * <!-- src_embed com.azure.storage.blob.BlobClientBuilder.buildClient -->
+     * <pre>
+     * BlobClient client = new BlobClientBuilder&#40;&#41;
+     *     .connectionString&#40;connectionString&#41;
+     *     .buildClient&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobClientBuilder.buildClient -->
      *
      * @return a {@link BlobClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint} or {@code blobName} is {@code null}.
@@ -109,7 +115,13 @@ public final class BlobClientBuilder {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobClientBuilder.buildAsyncClient}
+     * <!-- src_embed com.azure.storage.blob.BlobClientBuilder.buildAsyncClient -->
+     * <pre>
+     * BlobAsyncClient client = new BlobClientBuilder&#40;&#41;
+     *     .connectionString&#40;connectionString&#41;
+     *     .buildAsyncClient&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobClientBuilder.buildAsyncClient -->
      *
      * @return a {@link BlobAsyncClient} created from the configurations in this builder.
      * @throws NullPointerException If {@code endpoint} or {@code blobName} is {@code null}.
