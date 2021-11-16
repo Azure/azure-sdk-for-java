@@ -35,7 +35,7 @@ public class LoggingUtilsTests {
 
     @Test
     public void withCL() {
-        assertEquals("\r\thello\rworld", LoggingUtils.sanitizeLogMessageInput("\r\thello\r" + NEW_LINE + "world"));
+        assertEquals("\thelloworld", LoggingUtils.sanitizeLogMessageInput("\r\thello\r" + NEW_LINE + "world"));
     }
 
     private static Stream<String> messagesWithNewLine() {

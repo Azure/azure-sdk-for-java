@@ -6,8 +6,8 @@ package com.azure.core.util.logging;
 import com.azure.core.util.CoreUtils;
 
 class LoggingUtils {
-    private static final String NEW_LINE = System.lineSeparator();
-    private static final int NEW_LINE_LENGTH = NEW_LINE.length();
+    private static final char CL = '\r';
+    private static final char RF = '\n';
 
     /*
      * Removes CRLF pattern in the {@code logMessage}.
@@ -23,21 +23,16 @@ class LoggingUtils {
         StringBuilder sb = null;
         int prevStart = 0;
 
-        for (int i = 0; i <= logMessage.length() - NEW_LINE_LENGTH;) {
-            boolean match = true;
-            for (int j = 0; match && (j < NEW_LINE_LENGTH); j++) {
-                match = logMessage.charAt(i + j) == NEW_LINE.charAt(j);
-            }
-
-            if (match) {
+        for (int i = 0; i < logMessage.length(); i ++) {
+            if (logMessage.charAt(i) == CL || logMessage.charAt(i) == RF) {
                 if (sb == null) {
                     sb = new StringBuilder(logMessage.length());
                 }
-                sb.append(logMessage, prevStart, i);
-                i += NEW_LINE_LENGTH;
-                prevStart = i;
-            } else {
-                i++;
+
+                if (prevStart != i) {
+                    sb.append(logMessage, prevStart, i);
+                }
+                prevStart = i + 1;
             }
         }
 
