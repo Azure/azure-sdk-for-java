@@ -1,4 +1,5 @@
 == Azure Event Hubs Spring cloud starter client library for Java
+include::_attributes.adoc[]
 
 The Spring Cloud Event Hubs starter helps developers to finish the auto-configuration of Event Hubs and provides Spring Integration on Event Hubs.
 

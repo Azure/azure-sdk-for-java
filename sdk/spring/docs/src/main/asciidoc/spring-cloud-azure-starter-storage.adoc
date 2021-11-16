@@ -1,4 +1,5 @@
 == Spring Cloud for Azure Storage client library for Java
+include::_attributes.adoc[]
 
 This package helps developers to finish the auto-configuration of Azure Storage.
 

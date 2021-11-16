@@ -1,4 +1,5 @@
 == Azure Service Bus Spring Cloud starter client library for Java
+include::_attributes.adoc[]
 
 The Spring Cloud Service Bus starter helps developers to finish the auto-configuration of Service Bus and provides Spring Integration with Service Bus.
 

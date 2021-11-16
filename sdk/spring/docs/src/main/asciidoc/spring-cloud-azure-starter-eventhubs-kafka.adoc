@@ -1,4 +1,5 @@
 == Azure Event Hubs Kafka Spring cloud starter client library for Java
+include::_attributes.adoc[]
 
 This starter for Apache Kafka with Azure Event Hubs helps developers to finish the auto-configuration of Event Hubs with Kafka protocol.
 

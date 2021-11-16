@@ -1,4 +1,5 @@
 == Azure Service Bus JMS Spring Boot Starter client library for Java
+include::_attributes.adoc[]
 
 With this starter you could easily use Spring JMS Queue and Topic with Azure Service Bus.
 

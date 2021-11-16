@@ -44,7 +44,7 @@
           </dependency>
         </dependencies>
         <configuration>
-          <sourceDirectory>src/main/asciidoc/subdir</sourceDirectory>
+          <sourceDirectory>src/main/asciidoc</sourceDirectory>
           <outputDirectory>target/generated-docs/${project.version}</outputDirectory>
         </configuration>
         <executions>
@@ -59,6 +59,7 @@
               <attributes>
                 <source-highlighter>coderay</source-highlighter>
                 <imagesdir>src/main/asciidoc/images</imagesdir>
+                <linkcss>true</linkcss>
                 <toc>left</toc>
                 <icons>font</icons>
                 <sectanchors>true</sectanchors>

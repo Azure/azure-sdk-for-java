@@ -10,7 +10,8 @@
 :icons: font
 :hide-uri-scheme:
 :docinfo: shared,private
-
+:stylesdir: css
+:stylesheet: spring.css
 :sc-ext: java
 :project-full-name: Spring Cloud Azure
 :all: {asterisk}{asterisk}

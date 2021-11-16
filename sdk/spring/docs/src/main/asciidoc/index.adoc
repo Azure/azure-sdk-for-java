@@ -7,3 +7,7 @@ include::spring-cloud-azure-starter-cosmos.adoc[]
 
 include::spring-cloud-azure-starter-eventhubs.adoc[]
 
+include::spring-cloud-azure-starter-eventhubs-kafka.adoc[]
+
+
+
