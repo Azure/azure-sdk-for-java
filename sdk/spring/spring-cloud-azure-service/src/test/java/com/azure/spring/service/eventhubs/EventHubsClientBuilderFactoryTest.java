@@ -22,8 +22,7 @@ public class EventHubsClientBuilderFactoryTest extends AzureServiceClientBuilder
 
     @Override
     protected TestAzureEventHubsProperties createMinimalServiceProperties() {
-        TestAzureEventHubsProperties testAzureEventHubProperties = new TestAzureEventHubsProperties();
-        return testAzureEventHubProperties;
+        return new TestAzureEventHubsProperties();
     }
 
     @Test

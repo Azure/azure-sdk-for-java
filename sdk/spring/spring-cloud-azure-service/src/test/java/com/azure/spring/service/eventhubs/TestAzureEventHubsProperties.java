@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Azure Event Hubs related properties.
  */
-public class TestAzureEventHubsProperties extends TestAzureEventHubCommonProperties implements EventHubsNamespaceDescriptor {
+public class TestAzureEventHubsProperties extends TestAzureEventHubsCommonProperties implements EventHubsNamespaceDescriptor {
 
     private Boolean isSharedConnection;
     private final Producer producer = new Producer();
@@ -46,21 +46,21 @@ public class TestAzureEventHubsProperties extends TestAzureEventHubCommonPropert
     /**
      * Properties of an Event Hub producer.
      */
-    public static class Producer extends TestAzureEventHubCommonProperties implements EventHubsProducerDescriptor {
+    public static class Producer extends TestAzureEventHubsCommonProperties implements EventHubsProducerDescriptor {
 
     }
 
     /**
      * Properties of an Event Hub consumer.
      */
-    public static class Consumer extends TestAzureEventHubConsumerProperties implements EventHubsConsumerDescriptor {
+    public static class Consumer extends TestAzureEventHubsConsumerProperties implements EventHubsConsumerDescriptor {
 
     }
 
     /**
      * Properties of an Event Hub processor.
      */
-    public static class Processor extends TestAzureEventHubConsumerProperties implements EventHubsProcessorDescriptor {
+    public static class Processor extends TestAzureEventHubsConsumerProperties implements EventHubsProcessorDescriptor {
 
         private Boolean trackLastEnqueuedEventProperties;
         private Map<String, StartPosition> initialPartitionEventPosition = new HashMap<>();

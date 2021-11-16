@@ -13,7 +13,7 @@ class AzureEventHubsPropertiesTestConfiguration {
 
     @Bean
     @ConfigurationProperties(AzureEventHubsProperties.PREFIX)
-    public AzureEventHubsProperties azureEventHubProperties() {
+    public AzureEventHubsProperties azureEventHubsProperties() {
         return new AzureEventHubsProperties();
     }
 }

@@ -45,15 +45,15 @@ class AzureBlobCheckpointStoreConfigurationTest {
 
     @Test
     void configureWithStorageInfo() {
-        AzureEventHubsProperties azureEventHubProperties = new AzureEventHubsProperties();
-        azureEventHubProperties.getProcessor().getCheckpointStore().setAccountName("sa");
-        azureEventHubProperties.getProcessor().getCheckpointStore().setContainerName("abc");
+        AzureEventHubsProperties azureEventHubsProperties = new AzureEventHubsProperties();
+        azureEventHubsProperties.getProcessor().getCheckpointStore().setAccountName("sa");
+        azureEventHubsProperties.getProcessor().getCheckpointStore().setContainerName("abc");
         this.contextRunner
             .withPropertyValues(
                 "spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name=abc",
                 "spring.cloud.azure.eventhubs.processor.checkpoint-store.account-name=sa"
             )
-            .withBean(AzureEventHubsProperties.class, () -> azureEventHubProperties)
+            .withBean(AzureEventHubsProperties.class, () -> azureEventHubsProperties)
             .withBean(BlobCheckpointStore.class, () -> mock(BlobCheckpointStore.class))
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureBlobCheckpointStoreConfiguration.class);

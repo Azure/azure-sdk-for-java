@@ -54,7 +54,7 @@ class AzureEventHubsResourceManagerAutoConfigurationTest {
     }
 
     @Test
-    void testAzureEventHubResourceManagerAutoConfigurationBeans() {
+    void testAzureEventHubsResourceManagerAutoConfigurationBeans() {
         this.contextRunner
             .withUserConfiguration(AzureResourceManagerAutoConfiguration.class)
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
