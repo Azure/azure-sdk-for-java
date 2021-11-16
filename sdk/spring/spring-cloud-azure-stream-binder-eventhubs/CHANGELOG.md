@@ -6,6 +6,8 @@
 
 ### Breaking Changes
 - Change artifact id from `azure-spring-cloud-stream-binder-eventhubs` to `spring-cloud-azure-stream-binder-eventhubs`.
+- Change the binder type from `eventhub` to `eventhubs`.
+- Change the Spring Cloud Stream Binding extended properties prefix from `spring.cloud.stream.eventhub` to `spring.cloud.stream.eventhubs`. 
 
 ### Bugs Fixed
 

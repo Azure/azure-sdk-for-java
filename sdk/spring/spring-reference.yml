@@ -494,7 +494,7 @@
           groupId: com.azure.spring
           versionGA: 4.0.0
           versionPreview: 2.0.0-beta.1
-          description: Microsoft's Spring Cloud Stream Binder provides Spring Cloud Stream Binder for Azure Event Hub which allows you to build message-driven microservice using Spring Cloud Stream based on Azure Event Hub service.
+          description: Microsoft's Spring Cloud Stream Binder provides Spring Cloud Stream Binder for Azure Event Hubs which allows you to build message-driven microservice using Spring Cloud Stream based on Azure Event Hubs service.
           type: spring
           links:
             repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-stream-binder-eventhubs
@@ -517,7 +517,7 @@
         - artifactId: spring-cloud-azure-starter-stream-eventhubs
           groupId: com.azure.spring
           versionPreview: 4.0.0-beta.1
-          description: Microsoft's Spring Cloud Stream Binder Starter provides Spring Cloud Stream Binder for Azure Event Hub which allows you to build message-driven microservice using Spring Cloud Stream based on Azure Event Hub service.
+          description: Microsoft's Spring Cloud Stream Binder Starter provides Spring Cloud Stream Binder for Azure Event Hubs which allows you to build message-driven microservice using Spring Cloud Stream based on Azure Event Hubs service.
           type: spring
           links:
             repopath: https://search.maven.org/artifact/com.azure.spring/spring-cloud-azure-starter-stream-eventhubs
