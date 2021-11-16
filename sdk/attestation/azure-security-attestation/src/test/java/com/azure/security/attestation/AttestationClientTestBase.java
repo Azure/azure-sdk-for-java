@@ -381,7 +381,7 @@ public class AttestationClientTestBase extends TestBase {
     }
 
     String getPolicySigningKey0Base64() {
-        String key = Configuration.getGlobalConfiguration().get("POLICYSIGNINGKEY0");
+        String key = Configuration.getGlobalConfiguration().get("policySigningKey0");
         if (key == null) {
             key = "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDKkpCvOEAMZAb4FgLKiq1TCAZf7L9TEVl7/EvJRzIcusQ"
                 + "nFZ2LX8ZasFajmJTyauo/JOJtVSyISamU0gLYyJLF/BpYteTBjCM+qotUGYEKRMRLlkEdFiQu8u8/K2wdcuS7yrfMGscg9d5+XciTNm"
