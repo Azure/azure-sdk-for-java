@@ -294,7 +294,15 @@ public final class AttestationAdministrationAsyncClient {
      * which the customer specified.
      *
      * For an example of how to check the policy token hash:
-     * {@codesnippet com.azure.security.attestation.AttestationAdministrationAsyncClient.checkPolicyTokenHash}
+     * <!-- src_embed com.azure.security.attestation.AttestationAdministrationAsyncClient.checkPolicyTokenHash -->
+     * <pre>
+     * BinaryData expectedHash = client.calculatePolicyTokenHash&#40;policyToSet, null&#41;;
+     * BinaryData actualHash = result.getPolicyTokenHash&#40;&#41;;
+     * if &#40;!expectedHash.equals&#40;actualHash&#41;&#41; &#123;
+     *     throw new RuntimeException&#40;&quot;Policy was set but not received!!!&quot;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationAdministrationAsyncClient.checkPolicyTokenHash -->
      *
      * @param policy AttestationPolicy document use in the underlying JWT.
      * @param signer Optional signing key used to sign the underlying JWT.
