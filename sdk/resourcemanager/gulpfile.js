@@ -13,7 +13,7 @@ var gulpif = require('gulp-if');
 var exec = require('child_process').exec;
 
 const mappings = require('./api-specs.json');
-const defaultSpecRoot = "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/master";
+const defaultSpecRoot = "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/main";
 
 async function defaultInfo() {
     console.log("Usage: gulp codegen " +
