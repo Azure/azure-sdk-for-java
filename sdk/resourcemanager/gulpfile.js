@@ -106,6 +106,9 @@ function codegen(project, cb) {
             packagePath);
 
         deleteFolderRecursive(sourcesToDelete);
+
+        generatedSamplesTarget = path.join('azure-resourcemanager/src/samples/java/', packagePath, 'generated');
+        deleteFolderRecursive(generatedSamplesTarget);
     }
 
     // path.join won't work if specRoot is a URL
