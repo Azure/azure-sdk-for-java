@@ -5,6 +5,7 @@
 package com.azure.analytics.purview.administration;
 
 import com.azure.analytics.purview.administration.implementation.ResourceSetRulesImpl;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -18,13 +19,14 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous PurviewAccountClient type. */
 @ServiceClient(builder = PurviewAccountClientBuilder.class, isAsync = true)
 public final class ResourceSetRulesAsyncClient {
-    private final ResourceSetRulesImpl serviceClient;
+    @Generated private final ResourceSetRulesImpl serviceClient;
 
     /**
      * Initializes an instance of ResourceSetRules client.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     ResourceSetRulesAsyncClient(ResourceSetRulesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -146,6 +148,7 @@ public final class ResourceSetRulesAsyncClient {
      *     false.
      * @return a resource set config service model.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getResourceSetRuleWithResponse(RequestOptions requestOptions) {
         return this.serviceClient.getResourceSetRuleWithResponseAsync(requestOptions);
@@ -370,10 +373,11 @@ public final class ResourceSetRulesAsyncClient {
      *     false.
      * @return resourceSetRuleConfig implementation class.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> upsertResourceSetRuleWithResponse(
+    public Mono<Response<BinaryData>> createOrUpdateResourceSetRuleWithResponse(
             BinaryData resourceSetRuleConfig, RequestOptions requestOptions) {
-        return this.serviceClient.upsertResourceSetRuleWithResponseAsync(resourceSetRuleConfig, requestOptions);
+        return this.serviceClient.createOrUpdateResourceSetRuleWithResponseAsync(resourceSetRuleConfig, requestOptions);
     }
 
     /**
@@ -392,6 +396,7 @@ public final class ResourceSetRulesAsyncClient {
      *     false.
      * @return the completion.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteResourceSetRuleWithResponse(RequestOptions requestOptions) {
         return this.serviceClient.deleteResourceSetRuleWithResponseAsync(requestOptions);
@@ -521,6 +526,7 @@ public final class ResourceSetRulesAsyncClient {
      *     false.
      * @return a resource set config service model.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listResourceSetRules(RequestOptions requestOptions) {
         return this.serviceClient.listResourceSetRulesAsync(requestOptions);
