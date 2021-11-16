@@ -6,14 +6,12 @@ package com.azure.spring.cloud.autoconfigure.jms.properties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.jms.support.QosSettings;
 import org.springframework.util.StringUtils;
-import org.springframework.validation.annotation.Validated;
 
 import javax.annotation.PostConstruct;
 
 /**
  * {@link ConfigurationProperties} for configuring Azure Service Bus JMS.
  */
-@Validated
 @ConfigurationProperties(AzureServiceBusJmsProperties.PREFIX)
 // TODO(xiada): does this need to implement AzureProperties?
 public class AzureServiceBusJmsProperties {
