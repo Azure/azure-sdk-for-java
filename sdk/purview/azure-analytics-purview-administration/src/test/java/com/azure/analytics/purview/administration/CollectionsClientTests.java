@@ -24,7 +24,7 @@ public class CollectionsClientTests extends PurviewAccountClientTestBase {
 
     @Test
     public void testCollections() {
-        PagedIterable<BinaryData> response = client.listCollections(null, Context.NONE);
+        PagedIterable<BinaryData> response = client.listCollections(null);
         List<BinaryData> list = response.stream().collect(Collectors.toList());
         System.out.println(list);
     }
