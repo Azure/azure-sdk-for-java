@@ -65,7 +65,31 @@ import java.util.function.Supplier;
  * </ul>
  *
  * <p><strong>Creating an {@link EventProcessorClient}</strong></p>
- * {@codesnippet com.azure.messaging.eventhubs.eventprocessorclientbuilder.instantiation}
+ * <!-- src_embed com.azure.messaging.eventhubs.eventprocessorclientbuilder.instantiation -->
+ * <pre>
+ * public EventProcessorClient createEventProcessor&#40;&#41; &#123;
+ *     String connectionString = &quot;Endpoint=&#123;endpoint&#125;;SharedAccessKeyName=&#123;sharedAccessKeyName&#125;;&quot;
+ *         + &quot;SharedAccessKey=&#123;sharedAccessKey&#125;;EntityPath=&#123;eventHubName&#125;&quot;;
+ *
+ *     EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder&#40;&#41;
+ *         .consumerGroup&#40;&quot;consumer-group&quot;&#41;
+ *         .checkpointStore&#40;new SampleCheckpointStore&#40;&#41;&#41;
+ *         .processEvent&#40;eventContext -&gt; &#123;
+ *             System.out.printf&#40;&quot;Partition id = %s and sequence number of event = %s%n&quot;,
+ *                 eventContext.getPartitionContext&#40;&#41;.getPartitionId&#40;&#41;,
+ *                 eventContext.getEventData&#40;&#41;.getSequenceNumber&#40;&#41;&#41;;
+ *         &#125;&#41;
+ *         .processError&#40;errorContext -&gt; &#123;
+ *             System.out.printf&#40;&quot;Error occurred in partition processor for partition %s, %s%n&quot;,
+ *                 errorContext.getPartitionContext&#40;&#41;.getPartitionId&#40;&#41;,
+ *                 errorContext.getThrowable&#40;&#41;&#41;;
+ *         &#125;&#41;
+ *         .connectionString&#40;connectionString&#41;
+ *         .buildEventProcessorClient&#40;&#41;;
+ *     return eventProcessorClient;
+ * &#125;
+ * </pre>
+ * <!-- end com.azure.messaging.eventhubs.eventprocessorclientbuilder.instantiation -->
  *
  * @see EventProcessorClient
  * @see EventHubConsumerClient
@@ -73,8 +97,14 @@ import java.util.function.Supplier;
  */
 @ServiceClientBuilder(serviceClients = EventProcessorClient.class)
 public class EventProcessorClientBuilder {
-
+    /**
+     * Default load balancing update interval.
+     */
     public static final Duration DEFAULT_LOAD_BALANCING_UPDATE_INTERVAL = Duration.ofSeconds(10);
+
+    /**
+     * Default ownership expiration factor.
+     */
     public static final int DEFAULT_OWNERSHIP_EXPIRATION_FACTOR = 6;
     private final ClientLogger logger = new ClientLogger(EventProcessorClientBuilder.class);
 
@@ -442,7 +472,27 @@ public class EventProcessorClientBuilder {
      * partition context and the event data. If the max wait time is set, the receive will wait for that duration to
      * receive an event and if is no event received, the consumer will be invoked with a null event data.
      *
-     * {@codesnippet com.azure.messaging.eventhubs.eventprocessorclientbuilder.batchreceive}
+     * <!-- src_embed com.azure.messaging.eventhubs.eventprocessorclientbuilder.batchreceive -->
+     * <pre>
+     * EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder&#40;&#41;
+     *     .consumerGroup&#40;&quot;consumer-group&quot;&#41;
+     *     .checkpointStore&#40;new SampleCheckpointStore&#40;&#41;&#41;
+     *     .processEventBatch&#40;eventBatchContext -&gt; &#123;
+     *         eventBatchContext.getEvents&#40;&#41;.forEach&#40;eventData -&gt; &#123;
+     *             System.out.printf&#40;&quot;Partition id = %s and sequence number of event = %s%n&quot;,
+     *                 eventBatchContext.getPartitionContext&#40;&#41;.getPartitionId&#40;&#41;,
+     *                 eventData.getSequenceNumber&#40;&#41;&#41;;
+     *         &#125;&#41;;
+     *     &#125;, 50, Duration.ofSeconds&#40;30&#41;&#41;
+     *     .processError&#40;errorContext -&gt; &#123;
+     *         System.out.printf&#40;&quot;Error occurred in partition processor for partition %s, %s%n&quot;,
+     *             errorContext.getPartitionContext&#40;&#41;.getPartitionId&#40;&#41;,
+     *             errorContext.getThrowable&#40;&#41;&#41;;
+     *     &#125;&#41;
+     *     .connectionString&#40;connectionString&#41;
+     *     .buildEventProcessorClient&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.messaging.eventhubs.eventprocessorclientbuilder.batchreceive -->
      *
      * @param processEventBatch The callback that's called when an event is received  or when the max wait duration has
      * expired.
