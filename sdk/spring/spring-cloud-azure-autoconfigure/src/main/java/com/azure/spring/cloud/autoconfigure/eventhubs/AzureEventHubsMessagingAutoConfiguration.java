@@ -67,15 +67,16 @@ public class AzureEventHubsMessagingAutoConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        public EventHubsProcessorFactory defaultEventProcessorFactory(
+        public EventHubsProcessorFactory defaultEventHubsNamespaceProcessorFactory(
             NamespaceProperties properties, CheckpointStore checkpointStore,
             ObjectProvider<PropertiesSupplier<Tuple2<String, String>, ProcessorProperties>> suppliers) {
-            return new DefaultEventHubsNamespaceProcessorFactory(checkpointStore, properties, suppliers.getIfAvailable());
+            return new DefaultEventHubsNamespaceProcessorFactory(checkpointStore, properties,
+                suppliers.getIfAvailable());
         }
 
         @Bean
         @ConditionalOnMissingBean
-        public EventHubsProcessorContainer eventProcessorContainer(EventHubsProcessorFactory processorFactory) {
+        public EventHubsProcessorContainer eventHubsProcessorContainer(EventHubsProcessorFactory processorFactory) {
             return new EventHubsProcessorContainer(processorFactory);
         }
 
@@ -89,7 +90,7 @@ public class AzureEventHubsMessagingAutoConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        public EventHubsProducerFactory defaultEventHubProducerFactory(
+        public EventHubsProducerFactory defaultEventHubsNamespaceProducerFactory(
             NamespaceProperties properties,
             ObjectProvider<PropertiesSupplier<String, ProducerProperties>> suppliers) {
             return new DefaultEventHubsNamespaceProducerFactory(properties, suppliers.getIfAvailable());

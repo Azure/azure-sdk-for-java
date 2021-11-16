@@ -40,7 +40,7 @@ class AzureEventHubsProcessorClientConfigurationTest {
         contextRunner
             .withBean(EventProcessingListener.class, TestEventProcessorListener::new)
             .withBean(CheckpointStore.class, TestCheckpointStore::new)
-            .withUserConfiguration(AzureEventHubPropertiesTestConfiguration.class)
+            .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
             .withPropertyValues(
                 "spring.cloud.azure.eventhubs.namespace=test-namespace",
                 "spring.cloud.azure.eventhubs.event-hub-name=test-eventhub",

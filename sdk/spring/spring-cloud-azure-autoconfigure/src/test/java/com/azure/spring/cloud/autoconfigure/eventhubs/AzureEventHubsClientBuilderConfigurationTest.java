@@ -33,14 +33,14 @@ class AzureEventHubsClientBuilderConfigurationTest {
                 "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING, "test-namespace"),
                 "spring.cloud.azure.eventhubs.event-hub-name=test-event-hub"
             )
-            .withUserConfiguration(AzureEventHubPropertiesTestConfiguration.class)
+            .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureEventHubsClientBuilderConfiguration.class);
                 assertThat(context).hasSingleBean(EventHubClientBuilderFactory.class);
                 assertThat(context).hasSingleBean(EventHubClientBuilder.class);
                 assertThat(context).hasSingleBean(StaticConnectionStringProvider.class);
                 StaticConnectionStringProvider connectionStringProvider = context.getBean(StaticConnectionStringProvider.class);
-                Assertions.assertEquals(AzureServiceType.EVENT_HUB, connectionStringProvider.getServiceType());
+                Assertions.assertEquals(AzureServiceType.EVENT_HUBS, connectionStringProvider.getServiceType());
 
             });
     }

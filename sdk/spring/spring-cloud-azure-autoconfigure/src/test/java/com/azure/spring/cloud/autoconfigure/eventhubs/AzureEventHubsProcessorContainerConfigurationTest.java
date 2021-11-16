@@ -42,7 +42,7 @@ class AzureEventHubsProcessorContainerConfigurationTest {
     @Test
     void withoutEventHubConnectionShouldNotConfigure() {
         this.contextRunner
-            .withUserConfiguration(AzureEventHubPropertiesTestConfiguration.class)
+            .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
             .withBean(CheckpointStore.class, TestCheckpointStore::new)
             .run(context -> assertThat(context).doesNotHaveBean(AzureEventHubsMessagingAutoConfiguration.ProcessorContainerConfiguration.class));
     }
@@ -53,7 +53,7 @@ class AzureEventHubsProcessorContainerConfigurationTest {
             .withPropertyValues(
                 "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING, "test-namespace")
             )
-            .withUserConfiguration(AzureEventHubPropertiesTestConfiguration.class)
+            .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
             .run(context -> assertThat(context).doesNotHaveBean(AzureEventHubsMessagingAutoConfiguration.ProcessorContainerConfiguration.class));
     }
 
@@ -63,7 +63,7 @@ class AzureEventHubsProcessorContainerConfigurationTest {
             .withPropertyValues(
                 "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING, "test-namespace")
             )
-            .withUserConfiguration(AzureEventHubPropertiesTestConfiguration.class)
+            .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
             .withBean(CheckpointStore.class, TestCheckpointStore::new)
             .run(context -> {
                 assertThat(context).hasSingleBean(EventHubsProcessorContainer.class);

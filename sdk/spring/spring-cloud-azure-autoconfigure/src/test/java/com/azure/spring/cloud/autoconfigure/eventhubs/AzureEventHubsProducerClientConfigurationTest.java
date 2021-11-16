@@ -82,7 +82,7 @@ class AzureEventHubsProducerClientConfigurationTest {
                 "spring.cloud.azure.eventhubs.producer.event-hub-name=test-event-hub",
                 "spring.cloud.azure.eventhubs.namespace=test-namespace"
                 )
-            .withUserConfiguration(AzureEventHubPropertiesTestConfiguration.class)
+            .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
             .withBean(EventHubClientBuilder.class, EventHubClientBuilder::new)
             .run(
                 context -> {

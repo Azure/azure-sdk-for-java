@@ -9,7 +9,7 @@ package com.azure.spring.core.service;
 public final class AzureServiceType {
 
     public static final ServiceBus SERVICE_BUS = new ServiceBus();
-    public static final EventHubs EVENT_HUB = new EventHubs();
+    public static final EventHubs EVENT_HUBS = new EventHubs();
     public static final StorageBlob STORAGE_BLOB = new StorageBlob();
     public static final StorageQueue STORAGE_QUEUE = new StorageQueue();
     public static final AppConfiguration APP_CONFIGURATION = new AppConfiguration();

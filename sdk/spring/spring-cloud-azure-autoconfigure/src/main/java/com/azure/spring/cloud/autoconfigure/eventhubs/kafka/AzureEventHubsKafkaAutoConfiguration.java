@@ -23,7 +23,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(KafkaTemplate.class)
 //@EnableConfigurationProperties(AzureEventHubProperties.class)
-public class AzureEventHubKafkaAutoConfiguration {
+public class AzureEventHubsKafkaAutoConfiguration {
     private static final String SECURITY_PROTOCOL = "security.protocol";
     private static final String SASL_SSL = "SASL_SSL";
     private static final String SASL_JAAS_CONFIG = "sasl.jaas.config";

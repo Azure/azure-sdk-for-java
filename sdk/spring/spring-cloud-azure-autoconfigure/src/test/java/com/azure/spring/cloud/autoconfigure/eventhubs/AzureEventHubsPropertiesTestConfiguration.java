@@ -9,7 +9,7 @@ import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean;
 
 @EnableConfigurationProperties
-class AzureEventHubPropertiesTestConfiguration {
+class AzureEventHubsPropertiesTestConfiguration {
 
     @Bean
     @ConfigurationProperties(AzureEventHubsProperties.PREFIX)

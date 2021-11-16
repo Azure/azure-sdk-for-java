@@ -50,7 +50,7 @@ class AzureEventHubsTemplateConfigurationTest {
             .withPropertyValues(
                 "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING, "test-namespace")
             )
-            .withUserConfiguration(AzureEventHubPropertiesTestConfiguration.class)
+            .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
             .run(context -> {
                 assertThat(context).hasSingleBean(EventHubsTemplate.class);
                 assertThat(context).hasSingleBean(EventHubsProducerFactory.class);

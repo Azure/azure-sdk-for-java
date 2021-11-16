@@ -3,17 +3,17 @@
 
 package com.azure.spring.cloud.autoconfigure.eventhubs;
 
-import com.azure.spring.cloud.autoconfigure.eventhubs.kafka.AzureEventHubKafkaAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.eventhubs.kafka.AzureEventHubsKafkaAutoConfiguration;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
-class AzureEventHubKafkaAutoConfigurationTest {
+class AzureEventHubsKafkaAutoConfigurationTest {
 
     private static final String EVENT_HUB_PROPERTY_PREFIX = "spring.cloud.azure.eventhubs.";
     private static final String AZURE_PROPERTY_PREFIX = "spring.cloud.azure.";
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withConfiguration(AutoConfigurations.of(AzureEventHubKafkaAutoConfiguration.class));
+        .withConfiguration(AutoConfigurations.of(AzureEventHubsKafkaAutoConfiguration.class));
 
     // TODO(xiada): add tests
 /*

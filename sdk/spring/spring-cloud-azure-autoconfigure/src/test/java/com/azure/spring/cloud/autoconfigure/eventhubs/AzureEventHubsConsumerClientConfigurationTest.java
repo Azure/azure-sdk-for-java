@@ -66,7 +66,7 @@ class AzureEventHubsConsumerClientConfigurationTest {
                 "spring.cloud.azure.eventhubs.event-hub-name=" + eventHubName,
                 "spring.cloud.azure.eventhubs.consumer.consumer-group=" + consumerGroupName
             )
-            .withUserConfiguration(AzureEventHubPropertiesTestConfiguration.class)
+            .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
             .withBean(EventHubClientBuilder.class, () -> clientBuilder)
             .run(
                 context -> {
@@ -87,7 +87,7 @@ class AzureEventHubsConsumerClientConfigurationTest {
                 "spring.cloud.azure.eventhubs.consumer.consumer-group=test-consumer-group",
                 "spring.cloud.azure.eventhubs.namespace=test-namespace"
             )
-            .withUserConfiguration(AzureEventHubPropertiesTestConfiguration.class)
+            .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
             .withBean(EventHubClientBuilder.class, EventHubClientBuilder::new)
             .run(
                 context -> {

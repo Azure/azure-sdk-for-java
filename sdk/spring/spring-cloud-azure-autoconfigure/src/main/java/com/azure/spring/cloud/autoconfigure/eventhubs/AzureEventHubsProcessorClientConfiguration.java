@@ -24,6 +24,8 @@ import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 
+import static com.azure.spring.core.service.AzureServiceType.EVENT_HUBS;
+
 /**
  * Configures a {@link EventProcessorClient}.
  */
@@ -48,16 +50,15 @@ class AzureEventHubsProcessorClientConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public EventProcessorClientBuilderFactory factory(CheckpointStore checkpointStore,
-                                                      EventProcessingListener listener,
-                                                      ObjectProvider<AbstractArmConnectionStringProvider<AzureServiceType.EventHubs>> connectionStringProviders) {
-        final EventProcessorClientBuilderFactory factory = new EventProcessorClientBuilderFactory(this.processorProperties,
-                                                                                                  checkpointStore,
-                                                                                                  listener);
+    public EventProcessorClientBuilderFactory eventProcessorClientBuilderFactory(
+        CheckpointStore checkpointStore, EventProcessingListener listener,
+        ObjectProvider<AbstractArmConnectionStringProvider<AzureServiceType.EventHubs>> connectionStringProviders) {
+        final EventProcessorClientBuilderFactory factory =
+            new EventProcessorClientBuilderFactory(this.processorProperties, checkpointStore, listener);
 
         if (StringUtils.hasText(this.processorProperties.getConnectionString())) {
-            factory.setConnectionStringProvider(new StaticConnectionStringProvider<>(AzureServiceType.EVENT_HUB,
-                                                                                     this.processorProperties.getConnectionString()));
+            factory.setConnectionStringProvider(
+                new StaticConnectionStringProvider<>(EVENT_HUBS, this.processorProperties.getConnectionString()));
         } else {
             factory.setConnectionStringProvider(connectionStringProviders.getIfAvailable());
         }
@@ -66,7 +67,7 @@ class AzureEventHubsProcessorClientConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public EventProcessorClientBuilder evenProcessorClientBuilder(EventProcessorClientBuilderFactory factory) {
+    public EventProcessorClientBuilder eventProcessorClientBuilder(EventProcessorClientBuilderFactory factory) {
         return factory.build();
     }
 
