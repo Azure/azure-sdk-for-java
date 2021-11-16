@@ -6,6 +6,9 @@
 - Support batch consumers.
 ### Breaking Changes
 - Change artifact id from `azure-spring-cloud-stream-binder-eventhubs` to `spring-cloud-azure-stream-binder-eventhubs`.
+- Change the binder type from `eventhub` to `eventhubs`.
+- Change the Spring Cloud Stream Binding extended properties prefix from `spring.cloud.stream.eventhub` to `spring.cloud.stream.eventhubs`. 
+
 - When consume batch mode is set to `true`, then checkpoint mode only support `BATCH` OR `MANUAL`; While consume 
   batch mode is set to default 'false', then checkpoint mode support `TIME|RECORD|PARTITION_COUNT|MANUAL`.
 ### Bugs Fixed

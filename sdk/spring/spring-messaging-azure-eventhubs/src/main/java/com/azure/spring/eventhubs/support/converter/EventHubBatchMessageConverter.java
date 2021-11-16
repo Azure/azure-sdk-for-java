@@ -4,7 +4,7 @@ package com.azure.spring.eventhubs.support.converter;
 
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.models.EventBatchContext;
-import com.azure.spring.eventhubs.support.EventHubHeaders;
+import com.azure.spring.eventhubs.support.EventHubsHeaders;
 import com.azure.spring.messaging.converter.AbstractAzureMessageConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,10 +32,10 @@ public class EventHubBatchMessageConverter extends AbstractAzureMessageConverter
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubBatchMessageConverter.class);
 
     private static final Set<String> SYSTEM_HEADERS = Collections.unmodifiableSet(new HashSet<>(Arrays.asList(
-        EventHubHeaders.PARTITION_KEY,
-        EventHubHeaders.ENQUEUED_TIME,
-        EventHubHeaders.OFFSET,
-        EventHubHeaders.SEQUENCE_NUMBER)));
+        EventHubsHeaders.PARTITION_KEY,
+        EventHubsHeaders.ENQUEUED_TIME,
+        EventHubsHeaders.OFFSET,
+        EventHubsHeaders.SEQUENCE_NUMBER)));
 
     @Override
     protected EventData fromString(String payload) {
@@ -117,12 +117,12 @@ public class EventHubBatchMessageConverter extends AbstractAzureMessageConverter
             batchConvertedSystemProperties.add(event.getSystemProperties());
             batchConvertedApplicationProperties.add(event.getProperties());
         }
-        headers.put(EventHubHeaders.ENQUEUED_TIME, enqueueTimeList);
-        headers.put(EventHubHeaders.OFFSET, offSetList);
-        headers.put(EventHubHeaders.SEQUENCE_NUMBER, sequenceNumberList);
-        headers.put(EventHubHeaders.PARTITION_KEY, partitionKeyList);
-        headers.put(EventHubHeaders.BATCH_CONVERTED_SYSTEM_PROPERTIES, batchConvertedSystemProperties);
-        headers.put(EventHubHeaders.BATCH_CONVERTED_APPLICATION_PROPERTIES, batchConvertedApplicationProperties);
+        headers.put(EventHubsHeaders.ENQUEUED_TIME, enqueueTimeList);
+        headers.put(EventHubsHeaders.OFFSET, offSetList);
+        headers.put(EventHubsHeaders.SEQUENCE_NUMBER, sequenceNumberList);
+        headers.put(EventHubsHeaders.PARTITION_KEY, partitionKeyList);
+        headers.put(EventHubsHeaders.BATCH_CONVERTED_SYSTEM_PROPERTIES, batchConvertedSystemProperties);
+        headers.put(EventHubsHeaders.BATCH_CONVERTED_APPLICATION_PROPERTIES, batchConvertedApplicationProperties);
 
         return headers;
     }

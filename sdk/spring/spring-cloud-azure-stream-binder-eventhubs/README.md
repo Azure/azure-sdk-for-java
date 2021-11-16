@@ -1,10 +1,9 @@
 # Azure Event Hubs Spring Cloud Stream Binder client library for Java
 
-The project provides **Spring Cloud Stream Binder for Azure Event Hub** which allows you to build message-driven
-microservice using **Spring Cloud Stream** based on [Azure Event Hub][azure_event_hub] service.
+The project provides **Spring Cloud Stream Binder for Azure Event Hubs** which allows you to build message-driven 
+microservice using **Spring Cloud Stream** based on [Azure Event Hubs][azure_event_hub] service.
 
-[Source code][src] | [Package (Maven)][package] | [API reference documentation][refdocs] | [Product documentation][docs]
-| [Samples][sample]
+[Source code][src] | [Package (Maven)][package] | [API reference documentation][refdocs] | [Product documentation][docs] | [Samples][sample]
 
 ## Getting started
 
@@ -25,7 +24,7 @@ microservice using **Spring Cloud Stream** based on [Azure Event Hub][azure_even
 
 ### EventHub Binder Overview
 
-The Spring Cloud Stream Binder for Azure Event Hub provides the binding implementation for the Spring Cloud Stream.
+The Spring Cloud Stream Binder for Azure Event Hubs provides the binding implementation for the Spring Cloud Stream.
 This implementation uses Spring Integration Event Hub Channel Adapters at its foundation. From design's perspective, 
 Event Hub is similar as Kafka. Also, Event Hub could be accessed via Kafka API. If your project has tight dependency 
 on Kafka API, you can try [Event Hub with Kafka API Sample][kafka_sample]
@@ -34,7 +33,7 @@ on Kafka API, you can try [Event Hub with Kafka API Sample][kafka_sample]
 Event Hub provides similar support of consumer group as Apache Kafka, but with slight different logic. While Kafka 
 stores all committed offsets in the broker, you have to store offsets of event hub messages 
 being processed manually. Event Hub SDK provide the function to store such offsets inside Azure Storage Account. So 
-that's why you have to fill `spring.cloud.stream.eventhub.checkpoint-storage-account`.
+that's why you have to fill `spring.cloud.stream.eventhubs.checkpoint-storage-account`.
 
 #### Partitioning Support
 
@@ -51,7 +50,7 @@ Checkpointing of batch consumer supports two modes: BATCH and MANUAL. BATCH mode
 **com.azure.spring.integration.core.api.reactor.Checkpointer** will be passes into the message header, and users could use it to do checkpointing.
 
 The batch size can be specified by properties of `max-size` and `max-wait-time` with prefix as `spring.cloud.stream.
-eventhub.bindings.<binding-name>.consumer.batch.`. See the below section for more information about the 
+eventhubs.bindings.<binding-name>.consumer.batch.`. See the below section for more information about the 
 [configuration](#batch-consumer) and [examples](#batch-consumer-sample).
 ## Examples 
 
@@ -74,11 +73,11 @@ spring.cloud.azure.msi-enabled | If enable MSI as credential configuration | Yes
 spring.cloud.azure.resource-group | Name of Azure resource group | Yes if service principal or MSI is used as credential configuration. |
 spring.cloud.azure.subscription-id | Subscription id of an MSI | Yes if MSI is used as credential configuration. |
 spring.cloud.azure.tenant-id | Tenant id of a service principal | Yes if service principal is used as credential configuration. |
-spring.cloud.azure.eventhub.connection-string | Event Hubs Namespace connection string | Yes if connection string is used as Event Hubs credential configuration |
-spring.cloud.azure.eventhub.checkpoint-storage-account | StorageAccount name for message checkpoint | Yes
-spring.cloud.azure.eventhub.checkpoint-access-key | StorageAccount access key for message checkpoint | Yes if StorageAccount access key is used as StorageAccount credential configuration
-spring.cloud.azure.eventhub.checkpoint-container | StorageAccount container name for message checkpoint | Yes
-spring.cloud.azure.eventhub.namespace | Event Hub Namespace. Auto creating if missing | Yes if service principal or MSI is used as credential configuration. |
+spring.cloud.azure.eventhubs.connection-string | Event Hubs Namespace connection string | Yes if connection string is used as Event Hubs credential configuration |
+spring.cloud.azure.eventhubs.checkpoint-storage-account | StorageAccount name for message checkpoint | Yes
+spring.cloud.azure.eventhubs.checkpoint-access-key | StorageAccount access key for message checkpoint | Yes if StorageAccount access key is used as StorageAccount credential configuration
+spring.cloud.azure.eventhubs.checkpoint-container | StorageAccount container name for message checkpoint | Yes
+spring.cloud.azure.eventhubs.namespace | Event Hub Namespace. Auto creating if missing | Yes if service principal or MSI is used as credential configuration. |
 
 #### Common Producer Properties ####
 
@@ -118,7 +117,8 @@ For more information about setting partition for the producer properties, please
 
 #### Event Hub Producer Properties ####
 
-It supports the following configurations with the format of `spring.cloud.stream.eventhub.bindings.<channelName>.producer`.
+It supports the following configurations with the format of `spring.cloud.stream.eventhubs.bindings.<channelName>.
+producer`.
  
 **_sync_**
 
@@ -153,7 +153,8 @@ Default: `False`
 
 #### Event Hub Consumer Properties ####
 
-It supports the following configurations with the format of `spring.cloud.stream.eventhub.bindings.<channelName>.consumer`.
+It supports the following configurations with the format of `spring.cloud.stream.eventhubs.bindings.<channelName>.
+consumer`.
 
 **_start-position_**
 
@@ -286,10 +287,10 @@ For checkpointing mode as MANUAL, you can use below code to send messages and co
             for (int i = 0; i < message.getPayload().size(); i++) {
                 LOGGER.info("New message received: '{}', partition key: {}, sequence number: {}, offset: {}, enqueued time: {}",
                     message.getPayload().get(i),
-                    ((List<Object>) message.getHeaders().get(EventHubHeaders.PARTITION_KEY)).get(i),
-                    ((List<Object>) message.getHeaders().get(EventHubHeaders.SEQUENCE_NUMBER)).get(i),
-                    ((List<Object>) message.getHeaders().get(EventHubHeaders.OFFSET)).get(i),
-                    ((List<Object>) message.getHeaders().get(EventHubHeaders.ENQUEUED_TIME)).get(i));
+                    ((List<Object>) message.getHeaders().get(EventHubsHeaders.PARTITION_KEY)).get(i),
+                    ((List<Object>) message.getHeaders().get(EventHubsHeaders.SEQUENCE_NUMBER)).get(i),
+                    ((List<Object>) message.getHeaders().get(EventHubsHeaders.OFFSET)).get(i),
+                    ((List<Object>) message.getHeaders().get(EventHubsHeaders.ENQUEUED_TIME)).get(i));
             }
         
             Checkpointer checkpointer = (Checkpointer) message.getHeaders().get(CHECKPOINTER);

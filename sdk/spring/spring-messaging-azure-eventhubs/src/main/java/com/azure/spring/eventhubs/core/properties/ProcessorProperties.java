@@ -3,7 +3,7 @@
 
 package com.azure.spring.eventhubs.core.properties;
 
-import com.azure.spring.service.eventhubs.properties.EventHubProcessorDescriptor;
+import com.azure.spring.service.eventhubs.properties.EventHubsProcessorDescriptor;
 
 import java.time.Duration;
 import java.util.HashMap;
@@ -12,9 +12,9 @@ import java.util.Map;
 /**
  * An event hub processor related properties.
  */
-public class ProcessorProperties extends ConsumerProperties implements EventHubProcessorDescriptor {
+public class ProcessorProperties extends ConsumerProperties implements EventHubsProcessorDescriptor {
 
-    private final Map<String, EventHubProcessorDescriptor.StartPosition> initialPartitionEventPosition = new HashMap<>();
+    private final Map<String, EventHubsProcessorDescriptor.StartPosition> initialPartitionEventPosition = new HashMap<>();
     private final LoadBalancing loadBalancing = new LoadBalancing();
     private final Batch batch = new Batch();
     private Boolean trackLastEnqueuedEventProperties;
