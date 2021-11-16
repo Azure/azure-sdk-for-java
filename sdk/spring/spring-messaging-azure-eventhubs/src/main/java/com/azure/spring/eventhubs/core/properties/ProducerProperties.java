@@ -3,11 +3,11 @@
 
 package com.azure.spring.eventhubs.core.properties;
 
-import com.azure.spring.service.eventhubs.properties.EventHubProducerDescriptor;
+import com.azure.spring.service.eventhubs.properties.EventHubsProducerDescriptor;
 
 /**
  * An event hub producer related properties.
  */
-public class ProducerProperties extends CommonProperties implements EventHubProducerDescriptor {
+public class ProducerProperties extends CommonProperties implements EventHubsProducerDescriptor {
 
 }

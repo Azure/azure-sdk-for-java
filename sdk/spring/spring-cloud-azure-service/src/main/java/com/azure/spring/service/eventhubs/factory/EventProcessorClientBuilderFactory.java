@@ -23,7 +23,7 @@ import com.azure.spring.service.core.PropertyMapper;
 import com.azure.spring.service.eventhubs.processor.BatchEventProcessingListener;
 import com.azure.spring.service.eventhubs.processor.EventProcessingListener;
 import com.azure.spring.service.eventhubs.processor.RecordEventProcessingListener;
-import com.azure.spring.service.eventhubs.properties.EventHubProcessorDescriptor;
+import com.azure.spring.service.eventhubs.properties.EventHubsProcessorDescriptor;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.Assert;
 
@@ -39,11 +39,11 @@ import java.util.stream.Collectors;
  */
 public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientBuilderFactory<EventProcessorClientBuilder> {
 
-    private final EventHubProcessorDescriptor processorProperties;
+    private final EventHubsProcessorDescriptor processorProperties;
     private final CheckpointStore checkpointStore;
     private final EventProcessingListener processorListener;
 
-    public EventProcessorClientBuilderFactory(EventHubProcessorDescriptor processorProperties,
+    public EventProcessorClientBuilderFactory(EventHubsProcessorDescriptor processorProperties,
                                               CheckpointStore checkpointStore,
                                               EventProcessingListener listener) {
         this.processorProperties = processorProperties;
@@ -97,9 +97,9 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
         map.from(processorProperties.getInitialPartitionEventPosition()).when(c -> !CollectionUtils.isEmpty(c)).to(
             p -> {
                 Map<String, EventPosition> positions = p.entrySet()
-                                                        .stream()
-                                                        .collect(Collectors.toMap(Map.Entry::getKey,
-                                                            e -> e.getValue().toEventPosition()));
+                    .stream()
+                    .collect(Collectors.toMap(Map.Entry::getKey,
+                        e -> e.getValue().toEventPosition()));
                 builder.initialPartitionEventPosition(positions);
             });
 
@@ -117,14 +117,14 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
     protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(EventProcessorClientBuilder builder) {
         return Arrays.asList(
             new NamedKeyAuthenticationDescriptor(provider -> builder.credential(processorProperties.getFQDN(),
-                                                                                processorProperties.getEventHubName(),
-                                                                                provider.getCredential())),
+                processorProperties.getEventHubName(),
+                provider.getCredential())),
             new SasAuthenticationDescriptor(provider -> builder.credential(processorProperties.getFQDN(),
-                                                                           processorProperties.getEventHubName(),
-                                                                           provider.getCredential())),
+                processorProperties.getEventHubName(),
+                provider.getCredential())),
             new TokenAuthenticationDescriptor(provider -> builder.credential(processorProperties.getFQDN(),
-                                                                             processorProperties.getEventHubName(),
-                                                                             provider.getCredential()))
+                processorProperties.getEventHubName(),
+                provider.getCredential()))
         );
     }
 
@@ -136,8 +136,8 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
     @Override
     protected BiConsumer<EventProcessorClientBuilder, TokenCredential> consumeDefaultTokenCredential() {
         return (builder, tokenCredential) -> builder.credential(processorProperties.getFQDN(),
-                                                                processorProperties.getEventHubName(),
-                                                                tokenCredential);
+            processorProperties.getEventHubName(),
+            tokenCredential);
     }
 
     @Override
@@ -150,12 +150,12 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
     }
 
     private void configureProcessorListener(EventProcessorClientBuilder builder) {
-        final EventHubProcessorDescriptor.Batch batch = this.processorProperties.getBatch();
+        final EventHubsProcessorDescriptor.Batch batch = this.processorProperties.getBatch();
 
         if (processorListener instanceof BatchEventProcessingListener) {
             Assert.notNull(batch.getMaxSize(), "Batch max size must be provided");
             builder.processEventBatch(((BatchEventProcessingListener) processorListener)::onEventBatch,
-                    batch.getMaxSize(), batch.getMaxWaitTime());
+                batch.getMaxSize(), batch.getMaxWaitTime());
         } else if (processorListener instanceof RecordEventProcessingListener) {
             builder.processEvent(((RecordEventProcessingListener) processorListener)::onEvent);
         }

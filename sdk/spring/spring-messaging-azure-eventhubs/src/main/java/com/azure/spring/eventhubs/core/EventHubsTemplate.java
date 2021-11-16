@@ -7,8 +7,8 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
-import com.azure.spring.eventhubs.core.producer.EventHubProducerFactory;
-import com.azure.spring.eventhubs.support.converter.EventHubMessageConverter;
+import com.azure.spring.eventhubs.core.producer.EventHubsProducerFactory;
+import com.azure.spring.eventhubs.support.converter.EventHubsMessageConverter;
 import com.azure.spring.messaging.PartitionSupplier;
 import com.azure.spring.messaging.core.BatchSendOperation;
 import com.azure.spring.messaging.core.SendOperation;
@@ -29,10 +29,10 @@ public class EventHubsTemplate implements SendOperation, BatchSendOperation {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EventHubsTemplate.class);
 
-    private final EventHubProducerFactory producerFactory;
-    private EventHubMessageConverter messageConverter = new EventHubMessageConverter();
+    private final EventHubsProducerFactory producerFactory;
+    private EventHubsMessageConverter messageConverter = new EventHubsMessageConverter();
 
-    public EventHubsTemplate(EventHubProducerFactory producerFactory) {
+    public EventHubsTemplate(EventHubsProducerFactory producerFactory) {
         this.producerFactory = producerFactory;
     }
 
@@ -72,7 +72,7 @@ public class EventHubsTemplate implements SendOperation, BatchSendOperation {
             .setPartitionKey(partitionSupplier != null ? partitionSupplier.getPartitionKey() : null);
     }
 
-    public void setMessageConverter(EventHubMessageConverter messageConverter) {
+    public void setMessageConverter(EventHubsMessageConverter messageConverter) {
         this.messageConverter = messageConverter;
     }
 }
