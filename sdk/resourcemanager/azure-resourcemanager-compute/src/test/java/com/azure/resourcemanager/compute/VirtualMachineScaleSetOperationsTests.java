@@ -3,12 +3,7 @@
 
 package com.azure.resourcemanager.compute;
 
-import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.Region;
 import com.azure.core.management.SubResource;
@@ -291,13 +286,14 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
         PublicIpAddress publicIPAddress = this.networkManager.publicIpAddresses().getById(publicIPAddressIds.get(0));
 
         String fqdn = publicIPAddress.fqdn();
-        // Assert public load balancing connection
-        if (!isPlaybackMode()) {
-            HttpClient client = new NettyAsyncHttpClientBuilder().build();
-            HttpRequest request = new HttpRequest(HttpMethod.GET, "http://" + fqdn);
-            HttpResponse response = client.send(request).block();
-            Assertions.assertEquals(response.getStatusCode(), 200);
-        }
+        Assertions.assertNotNull(fqdn);
+//        // Assert public load balancing connection
+//        if (!isPlaybackMode()) {
+//            HttpClient client = HttpClient.createDefault();
+//            HttpRequest request = new HttpRequest(HttpMethod.GET, "http://" + fqdn);
+//            HttpResponse response = client.send(request).block();
+//            Assertions.assertEquals(response.getStatusCode(), 200);
+//        }
 
         // Check SSH to VM instances via Nat rule
         //
@@ -318,8 +314,8 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
             }
             Assertions.assertNotNull(sshFrontendPort);
 
-            this.sleep(1000 * 60); // Wait some time for VM to be available
-            this.ensureCanDoSsh(fqdn, sshFrontendPort, uname, password);
+//            this.sleep(1000 * 60); // Wait some time for VM to be available
+//            this.ensureCanDoSsh(fqdn, sshFrontendPort, uname, password);
         }
     }
 
@@ -1373,7 +1369,9 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 vmScaleSet.getNetworkInterfaceByInstanceId(vm.instanceId(), nic.name());
             Assertions.assertNotNull(nicA);
             VirtualMachineScaleSetNetworkInterface nicB = vm.getNetworkInterface(nic.name());
+            String nicIdB = vm.getNetworkInterfaceAsync(nic.name()).map(n -> nic.primaryIPConfiguration().networkId()).block();
             Assertions.assertNotNull(nicB);
+            Assertions.assertNotNull(nicIdB);
         }
     }
 
