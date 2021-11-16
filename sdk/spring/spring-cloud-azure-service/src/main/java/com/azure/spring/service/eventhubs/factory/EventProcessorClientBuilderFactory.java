@@ -23,7 +23,7 @@ import com.azure.spring.core.properties.util.PropertyMapper;
 import com.azure.spring.service.eventhubs.processor.BatchEventProcessingListener;
 import com.azure.spring.service.eventhubs.processor.EventProcessingListener;
 import com.azure.spring.service.eventhubs.processor.RecordEventProcessingListener;
-import com.azure.spring.service.eventhubs.properties.EventHubProcessorDescriptor;
+import com.azure.spring.service.eventhubs.properties.EventHubsProcessorDescriptor;
 import org.springframework.util.CollectionUtils;
 
 import java.util.Arrays;
@@ -38,11 +38,11 @@ import java.util.stream.Collectors;
  */
 public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientBuilderFactory<EventProcessorClientBuilder> {
 
-    private final EventHubProcessorDescriptor processorProperties;
+    private final EventHubsProcessorDescriptor processorProperties;
     private final CheckpointStore checkpointStore;
     private final EventProcessingListener processorListener;
 
-    public EventProcessorClientBuilderFactory(EventHubProcessorDescriptor processorProperties,
+    public EventProcessorClientBuilderFactory(EventHubsProcessorDescriptor processorProperties,
                                               CheckpointStore checkpointStore,
                                               EventProcessingListener listener) {
         this.processorProperties = processorProperties;
@@ -149,7 +149,7 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
     }
 
     private void configureProcessorListener(EventProcessorClientBuilder builder) {
-        final EventHubProcessorDescriptor.Batch batch = this.processorProperties.getBatch();
+        final EventHubsProcessorDescriptor.Batch batch = this.processorProperties.getBatch();
 
         if (isBatchMode()) {
             if (processorListener instanceof BatchEventProcessingListener) {
@@ -173,7 +173,7 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
     }
 
     private boolean isBatchMode() {
-        final EventHubProcessorDescriptor.Batch batch = this.processorProperties.getBatch();
+        final EventHubsProcessorDescriptor.Batch batch = this.processorProperties.getBatch();
         return batch.getMaxWaitTime() != null || batch.getMaxSize() != null;
     }
 
