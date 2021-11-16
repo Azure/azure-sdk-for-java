@@ -26,7 +26,7 @@ public class LoggingUtils {
         StringBuilder sb = null;
         int prevStart = 0;
 
-        for (int i = 0; i < logMessage.length(); i ++) {
+        for (int i = 0; i < logMessage.length(); i++) {
             if (logMessage.charAt(i) == CL || logMessage.charAt(i) == RF) {
                 if (sb == null) {
                     sb = new StringBuilder(logMessage.length());
