@@ -3,7 +3,7 @@
 
 package com.azure.spring.service.eventhubs;
 
-import com.azure.spring.core.connectionstring.implementation.EventHubConnectionString;
+import com.azure.spring.core.connectionstring.implementation.EventHubsConnectionString;
 import com.azure.spring.service.core.properties.AbstractAmqpProperties;
 
 /**
@@ -22,14 +22,14 @@ public abstract class TestAzureEventHubCommonProperties extends AbstractAmqpProp
         if (this.connectionString == null) {
             return null;
         }
-        return new EventHubConnectionString(this.connectionString).getFullyQualifiedNamespace();
+        return new EventHubsConnectionString(this.connectionString).getFullyQualifiedNamespace();
     }
 
     protected String extractEventHubNameFromConnectionString() {
         if (this.connectionString == null) {
             return null;
         }
-        return new EventHubConnectionString(this.connectionString).getEntityPath();
+        return new EventHubsConnectionString(this.connectionString).getEntityPath();
     }
 
 

@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.eventhubs;
 
-import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubProperties;
+import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubsProperties;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -12,8 +12,8 @@ import org.springframework.context.annotation.Bean;
 class AzureEventHubPropertiesTestConfiguration {
 
     @Bean
-    @ConfigurationProperties(AzureEventHubProperties.PREFIX)
-    public AzureEventHubProperties azureEventHubProperties() {
-        return new AzureEventHubProperties();
+    @ConfigurationProperties(AzureEventHubsProperties.PREFIX)
+    public AzureEventHubsProperties azureEventHubProperties() {
+        return new AzureEventHubsProperties();
     }
 }

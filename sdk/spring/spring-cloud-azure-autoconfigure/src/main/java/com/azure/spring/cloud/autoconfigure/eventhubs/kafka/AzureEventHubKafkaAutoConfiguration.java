@@ -3,7 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.eventhubs.kafka;
 
-import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubProperties;
+import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.core.connectionstring.ConnectionStringProvider;
 import com.azure.spring.core.service.AzureServiceType;
 import org.springframework.beans.factory.ObjectProvider;
@@ -38,8 +38,8 @@ public class AzureEventHubKafkaAutoConfiguration {
     @Bean
     // TODO (xiada): refactor this logic
     public KafkaProperties kafkaProperties(
-        AzureEventHubProperties eventHubProperties,
-        ObjectProvider<ConnectionStringProvider<AzureServiceType.EventHub>> connectionStringProviders) {
+        AzureEventHubsProperties eventHubProperties,
+        ObjectProvider<ConnectionStringProvider<AzureServiceType.EventHubs>> connectionStringProviders) {
         KafkaProperties kafkaProperties = new KafkaProperties();
 /*
         String endpoint = namespace.serviceBusEndpoint();

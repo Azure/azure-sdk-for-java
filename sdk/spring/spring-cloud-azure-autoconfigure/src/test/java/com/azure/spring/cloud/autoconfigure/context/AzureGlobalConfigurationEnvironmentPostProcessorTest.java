@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.context;
 
 import com.azure.core.http.policy.HttpLogDetailLevel;
-import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubProperties;
+import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.cloud.autoconfigure.keyvault.secrets.properties.AzureKeyVaultSecretProperties;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.core.aware.AzureProfileAware;
@@ -149,7 +149,7 @@ class AzureGlobalConfigurationEnvironmentPostProcessorTest {
         PropertiesPropertySource propertiesPropertySource = new PropertiesPropertySource("test-properties", properties);
 
         ConfigurableEnvironment environment = getEnvironment(propertiesPropertySource);
-        AzureEventHubProperties eventHubProperties = Binder.get(environment).bind(AzureEventHubProperties.PREFIX, AzureEventHubProperties.class).get();
+        AzureEventHubsProperties eventHubProperties = Binder.get(environment).bind(AzureEventHubsProperties.PREFIX, AzureEventHubsProperties.class).get();
         AzureKeyVaultSecretProperties keyVaultSecretProperties = Binder.get(environment).bind(AzureKeyVaultSecretProperties.PREFIX, AzureKeyVaultSecretProperties.class).get();
 
         assertEquals("test-connection-str", eventHubProperties.getConnectionString());

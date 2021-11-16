@@ -17,8 +17,8 @@ com.azure.spring.cloud.autoconfigure.cosmos.AzureCosmosAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.data.cosmos.CosmosDataAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.data.cosmos.CosmosRepositoriesAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.data.cosmos.CosmosReactiveRepositoriesAutoConfiguration,\
-com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubAutoConfiguration,\
-com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubMessagingAutoConfiguration,\
+com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsAutoConfiguration,\
+com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsMessagingAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.eventhubs.kafka.AzureEventHubKafkaAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.keyvault.secrets.AzureKeyVaultSecretAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.keyvault.certificates.AzureKeyVaultCertificateAutoConfiguration,\
@@ -32,7 +32,7 @@ com.azure.spring.cloud.autoconfigure.storage.fileshare.AzureStorageFileShareReso
 com.azure.spring.cloud.autoconfigure.storage.queue.AzureStorageQueueAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.storage.AzureStorageQueueOperationAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.resourcemanager.AzureResourceManagerAutoConfiguration,\
-com.azure.spring.cloud.autoconfigure.resourcemanager.AzureEventHubResourceManagerAutoConfiguration,\
+com.azure.spring.cloud.autoconfigure.resourcemanager.AzureEventHubsResourceManagerAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.resourcemanager.AzureServiceBusResourceManagerAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.resourcemanager.AzureStorageQueueResourceManagerAutoConfiguration
 

@@ -6,8 +6,8 @@ package com.azure.spring.cloud.stream.binder.eventhubs;
 import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.spring.eventhubs.core.EventHubsTemplate;
-import com.azure.spring.eventhubs.core.producer.EventHubProducerFactory;
-import com.azure.spring.eventhubs.support.converter.EventHubMessageConverter;
+import com.azure.spring.eventhubs.core.producer.EventHubsProducerFactory;
+import com.azure.spring.eventhubs.support.converter.EventHubsMessageConverter;
 import com.azure.spring.messaging.PartitionSupplier;
 import com.azure.spring.service.eventhubs.processor.RecordEventProcessingListener;
 import org.springframework.lang.NonNull;
@@ -22,10 +22,10 @@ import static org.mockito.Mockito.when;
  */
 public class EventHubsTestTemplate extends EventHubsTemplate {
 
-    private final EventHubMessageConverter messageConverter = new EventHubMessageConverter();
+    private final EventHubsMessageConverter messageConverter = new EventHubsMessageConverter();
     private final RecordEventProcessingListener listener;
 
-    public EventHubsTestTemplate(EventHubProducerFactory producerFactory,
+    public EventHubsTestTemplate(EventHubsProducerFactory producerFactory,
                                  RecordEventProcessingListener listener) {
         super(producerFactory);
         this.listener = listener;
