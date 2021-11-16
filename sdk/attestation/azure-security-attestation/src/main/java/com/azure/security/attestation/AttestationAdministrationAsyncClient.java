@@ -625,8 +625,8 @@ public final class AttestationAdministrationAsyncClient {
         try {
             base64Certificate = Base64.getEncoder().encodeToString(certificateToAdd.getEncoded());
         } catch (CertificateEncodingException e) {
-            logger.logExceptionAsError(new RuntimeException(e.getMessage()));
-        };
+            throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
+        }
         JsonWebKey jwk = new JsonWebKey(certificateToAdd.getType())
             .setX5C(new ArrayList<String>());
         jwk.getX5C().add(base64Certificate);
@@ -638,7 +638,7 @@ public final class AttestationAdministrationAsyncClient {
         try {
             addToken = AttestationTokenImpl.createSecuredToken(SERIALIZER_ADAPTER.serialize(certificateBody, SerializerEncoding.JSON), signingKey);
         } catch (IOException e) {
-            logger.logExceptionAsError(new RuntimeException(e.getMessage()));
+            throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
         }
 
         return this.certificatesImpl.addWithResponseAsync(addToken.serialize(), context)
@@ -709,8 +709,8 @@ public final class AttestationAdministrationAsyncClient {
         try {
             base64Certificate = Base64.getEncoder().encodeToString(certificateToRemove.getEncoded());
         } catch (CertificateEncodingException e) {
-            logger.logExceptionAsError(new RuntimeException(e.getMessage()));
-        };
+            throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
+        }
         JsonWebKey jwk = new JsonWebKey(certificateToRemove.getType())
             .setX5C(new ArrayList<String>());
         jwk.getX5C().add(base64Certificate);
@@ -722,7 +722,7 @@ public final class AttestationAdministrationAsyncClient {
         try {
             addToken = AttestationTokenImpl.createSecuredToken(SERIALIZER_ADAPTER.serialize(certificateBody, SerializerEncoding.JSON), signingKey);
         } catch (IOException e) {
-            logger.logExceptionAsError(new RuntimeException(e.getMessage()));
+            throw logger.logExceptionAsError(new RuntimeException(e.getMessage()));
         }
 
         return this.certificatesImpl.removeWithResponseAsync(addToken.serialize(), context)

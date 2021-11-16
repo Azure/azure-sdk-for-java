@@ -187,7 +187,7 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
             .assertNext(modificationResult -> {
                 assertEquals(CertificateModification.IS_PRESENT, modificationResult.getCertificateResolution());
                 assertEquals(expectedThumbprint, modificationResult.getCertificateThumbprint());
-                })
+            })
             .verifyComplete();
 
         // Now remove the certificate we just added.

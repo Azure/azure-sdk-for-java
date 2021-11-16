@@ -279,7 +279,7 @@ public final class AttestationAdministrationClient {
      * @return the attestation policy expressed as a string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<AttestationSigner>> listPolicyManagementCertificates(Context context) {
+    public Response<List<AttestationSigner>> listPolicyManagementCertificatesWithResponse(Context context) {
         return asyncClient.listPolicyManagementCertificatesWithResponse(context).block();
     }
 
