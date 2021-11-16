@@ -168,15 +168,20 @@ The mode in which checkpoints are updated.
 
 `RECORD`, checkpoints occur after each record is successfully processed by user-defined message handler without any exception. If you use `StorageAccount` as checkpoint store, this might become botterneck. 
 
-`BATCH`, checkpoints occur after each batch of messages successfully processed by user-defined message handler without any exception. `default` mode. You may experience reprocessing at most one batch of messages when message processing fails. Be aware that batch size could be any value.
+`BATCH`, checkpoints occur after each batch of messages successfully processed by user-defined message handler 
+without any exception. `default` mode. You may experience reprocessing at most one batch of messages when message 
+processing fails. Be aware that batch size could be any value and `BATCH.` mode is only supported when consume batch 
+mode is set true.
 
 `MANUAL`, checkpoints occur on demand by the user via the `Checkpointer`. You can do checkpoints after the message has been successfully processed. `Message.getHeaders.get(AzureHeaders.CHECKPOINTER)`callback can get you the `Checkpointer` you need. Please be aware all messages in the corresponding Event Hub partition before this message will be considered as successfully processed.
 
 `PARTITION_COUNT`, checkpoints occur after the count of messages defined by `checkpoint_count` successfully processed for each partition. You may experience reprocessing at most `checkpoint_count` of  when message processing fails.
 
-`Time`, checkpoints occur at fixed time inerval specified by `checkpoint_interval`. You may experience reprocessing of messages during this time interval when message processing fails.
+`Time`, checkpoints occur at fixed time interval specified by `checkpoint_interval`. You may experience reprocessing of messages during this time interval when message processing fails.
 
 Default: `BATCH`
+    
+    Notes: when consume batch mode is false(default value), `BATCH` checkpoint mode is not invalid.
 
 **_checkpoint-count_**
 
@@ -245,7 +250,7 @@ spring:
           group: [consumer-group-name]
           consumer:
             batch-mode: true 
-      eventhub:
+      eventhubs:
         bindings:
           consume-in-0:
             consumer:
