@@ -47,7 +47,7 @@ public class AzureDefaultTokenCredentialAutoConfiguration {
         ObjectProvider<ThreadPoolTaskExecutor> threadPoolTaskExecutors) {
         ThreadPoolExecutor threadPoolExecutor = null;
         if (threadPoolTaskExecutors.getIfAvailable() != null) {
-            threadPoolExecutor = threadPoolTaskExecutors.getIfAvailable().getThreadPoolExecutor();
+            threadPoolExecutor = threadPoolTaskExecutors.getObject().getThreadPoolExecutor();
         }
         return new DefaultAzureCredentialBuilderFactory(azureGlobalProperties, threadPoolExecutor);
     }
