@@ -47,28 +47,105 @@ public class CosmosException extends AzureException {
 
     private static final ObjectMapper mapper = new ObjectMapper();
     private final static String USER_AGENT = Utils.getUserAgent();
+
+    /**
+     * Status code
+     */
     private final int statusCode;
+
+    /**
+     * Response headers
+     */
     private final Map<String, String> responseHeaders;
 
+    /**
+     * Cosmos diagnostics
+     */
     private CosmosDiagnostics cosmosDiagnostics;
+
+    /**
+     * Request timeline
+     */
     private RequestTimeline requestTimeline;
+
+    /**
+     * Channel acquisition timeline
+     */
     private RntbdChannelAcquisitionTimeline channelAcquisitionTimeline;
+
+    /**
+     * Cosmos error
+     */
     private CosmosError cosmosError;
+
+    /**
+     * RNTBD channel task queue size
+     */
     private int rntbdChannelTaskQueueSize;
 
+    /**
+     * RNTBD endpoint statistics
+     */
     private RntbdEndpointStatistics rntbdEndpointStatistics;
 
+    /**
+     * LSN
+     */
     long lsn;
+
+    /**
+     * Partition key range ID
+     */
     String partitionKeyRangeId;
+
+    /**
+     * Request headers
+     */
     Map<String, String> requestHeaders;
+
+    /**
+     * Request URI
+     */
     Uri requestUri;
+
+    /**
+     * Resource address
+     */
     String resourceAddress;
+
+    /**
+     * Request payload length
+     */
     private int requestPayloadLength;
+
+    /**
+     * RNTBD pending request queue size
+     */
     private int rntbdPendingRequestQueueSize;
+
+    /**
+     * RNTBD request length
+     */
     private int rntbdRequestLength;
+
+    /**
+     * RNTBD response length
+     */
     private int rntbdResponseLength;
+
+    /**
+     * Sending request has started
+     */
     private boolean sendingRequestHasStarted;
 
+    /**
+     * Creates a new instance of the CosmosException class.
+     *
+     * @param statusCode the http status code of the response.
+     * @param message the string message.
+     * @param responseHeaders the response headers.
+     * @param cause the inner exception
+     */
     protected CosmosException(int statusCode, String message, Map<String, String> responseHeaders, Throwable cause) {
         super(message, cause);
         this.statusCode = statusCode;
@@ -116,7 +193,6 @@ public class CosmosException extends AzureException {
      * @param cosmosErrorResource the error resource object.
      * @param responseHeaders the response headers.
      */
-
     protected CosmosException(String resourceAddress,
                               int statusCode,
                               CosmosError cosmosErrorResource,
@@ -135,7 +211,6 @@ public class CosmosException extends AzureException {
      * @param responseHeaders the response headers.
      * @param cause the inner exception
      */
-
     protected CosmosException(String resourceAddress,
                               int statusCode,
                               CosmosError cosmosErrorResource,
