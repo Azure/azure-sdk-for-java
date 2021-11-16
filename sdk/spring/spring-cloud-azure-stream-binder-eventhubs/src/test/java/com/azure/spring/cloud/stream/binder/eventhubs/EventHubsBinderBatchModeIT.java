@@ -27,7 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(classes = EventHubsBinderBatchModeIT.TestConfig.class)
 @TestPropertySource(properties =
     {
-    "spring.cloud.stream.eventhubs.bindings.consume-in-0.consumer.checkpoint.mode=BATCH",
+    "spring.cloud.stream.eventhubs.bindings.consume-in-0.consumer.checkpoint.mode=RECORD",
     "spring.cloud.stream.bindings.consume-in-0.destination=test-eventhub-batch",
     "spring.cloud.stream.bindings.supply-out-0.destination=test-eventhub-batch",
     "spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name=test-eventhub-batch"
