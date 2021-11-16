@@ -5,6 +5,7 @@ package com.azure.cosmos;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.DiagnosticsClientContext;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
+import com.azure.cosmos.implementation.GlobalEndpointManager;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.util.Beta;
@@ -34,8 +35,8 @@ public final class CosmosDiagnostics {
     static final String USER_AGENT = Utils.getUserAgent();
     static final String USER_AGENT_KEY = "userAgent";
 
-    CosmosDiagnostics(DiagnosticsClientContext diagnosticsClientContext) {
-        this.clientSideRequestStatistics = new ClientSideRequestStatistics(diagnosticsClientContext);
+    CosmosDiagnostics(DiagnosticsClientContext diagnosticsClientContext, GlobalEndpointManager globalEndpointManager) {
+        this.clientSideRequestStatistics = new ClientSideRequestStatistics(diagnosticsClientContext, globalEndpointManager);
     }
 
     CosmosDiagnostics(FeedResponseDiagnostics feedResponseDiagnostics) {
@@ -84,7 +85,7 @@ public final class CosmosDiagnostics {
      * @return set of regions contacted for this request
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public Set<URI> getRegionsContacted() {
+    public Set<String> getRegionsContacted() {
         if (this.feedResponseDiagnostics != null) {
             return null;
         }

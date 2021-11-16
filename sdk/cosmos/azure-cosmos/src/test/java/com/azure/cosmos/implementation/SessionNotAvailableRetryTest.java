@@ -21,7 +21,6 @@ import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.rx.TestSuiteBase;
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.reflect.FieldUtils;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
@@ -168,6 +167,14 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
                 fail("Request should fail with 404/1002 error");
             } catch (CosmosException ex) {
                 assertThat(ex.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
+                GlobalEndpointManager globalEndpointManager =
+                    ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
+                Iterator<String> regionContactedIterator = ex.getDiagnostics().getRegionsContacted().iterator();
+                assertThat(ex.getDiagnostics().getRegionsContacted().size()).isEqualTo(preferredLocations.size());
+                for (DatabaseAccountLocation databaseAccount :
+                    globalEndpointManager.getLatestDatabaseAccount().getWritableLocations()) {
+                    assertThat(databaseAccount.getName().toLowerCase()).isEqualTo(regionContactedIterator.next());
+                }
             }
 
             HashSet<String> uniqueHost = new HashSet<>();
@@ -234,6 +241,9 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
 
             PartitionKey partitionKey = new PartitionKey("Test");
             List<String> uris = new ArrayList<>();
+            String masterOrHubRegionSuffix =
+                getRegionalSuffix(databaseAccount.getWritableLocations().iterator().next().getEndpoint(),
+                    TestConfigurations.HOST);
             doAnswer((Answer<Mono<StoreResponse>>) invocationOnMock -> {
                 RxDocumentServiceRequest serviceRequest = invocationOnMock.getArgument(1,
                     RxDocumentServiceRequest.class);
@@ -265,6 +275,22 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
                 fail("Request should fail with 404/1002 error");
             } catch (CosmosException ex) {
                 assertThat(ex.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
+                GlobalEndpointManager globalEndpointManager =
+                    ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
+                Iterator<String> regionContactedIterator = ex.getDiagnostics().getRegionsContacted().iterator();
+                if (operationType.isWriteOperation() ||  regionalSuffix.get(0).equals(masterOrHubRegionSuffix)) {
+                    assertThat(ex.getDiagnostics().getRegionsContacted().size()).isEqualTo(1);
+                    for (DatabaseAccountLocation databaseAccount :
+                        globalEndpointManager.getLatestDatabaseAccount().getWritableLocations()) {
+                        assertThat(databaseAccount.getName().toLowerCase()).isEqualTo(regionContactedIterator.next());
+                    }
+                } else {
+                    assertThat(ex.getDiagnostics().getRegionsContacted().size()).isEqualTo(preferredLocations.size());
+                    for (DatabaseAccountLocation databaseAccount :
+                        globalEndpointManager.getLatestDatabaseAccount().getReadableLocations()) {
+                        assertThat(databaseAccount.getName().toLowerCase()).isEqualTo(regionContactedIterator.next());
+                    }
+                }
             }
 
             HashSet<String> uniqueHost = new HashSet<>();
@@ -272,9 +298,6 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
                 uniqueHost.add(uri);
             }
 
-            String masterOrHubRegionSuffix =
-                getRegionalSuffix(databaseAccount.getWritableLocations().iterator().next().getEndpoint(),
-                    TestConfigurations.HOST);
             // First regional retries in originating region, then retrying in master/hub region and 1 retry at the
             // last from
             // RenameCollectionAwareClientRetryPolicy after clearing session token
@@ -380,6 +403,10 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
                 fail("Request should fail with 404/1002 error");
             } catch (CosmosException ex) {
                 assertThat(ex.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
+                assertThat(ex.getDiagnostics().getRegionsContacted().size()).isEqualTo(1);
+                GlobalEndpointManager globalEndpointManager = ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
+                String regionName = globalEndpointManager.getLatestDatabaseAccount().getWritableLocations().iterator().next().getName();
+                assertThat(ex.getDiagnostics().getRegionsContacted().iterator().next()).isEqualTo(regionName.toLowerCase());
             }
 
             HashSet<String> uniqueHost = new HashSet<>();
