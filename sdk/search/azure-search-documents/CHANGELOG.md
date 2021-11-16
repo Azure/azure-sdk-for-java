@@ -10,6 +10,16 @@
 
 ### Other Changes
 
+## 11.4.5 (2021-11-15)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.21.0` to version `1.22.0`.
+- Upgraded `azure-core-http-netty` from `1.11.1` to version `1.11.2`.
+- Upgraded `azure-core-serializer-json-jackson` from `1.2.8` to version `1.2.9`.
+
 ## 11.4.4 (2021-10-13)
 
 ### Other Changes
