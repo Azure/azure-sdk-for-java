@@ -7,30 +7,38 @@ on:
     branches: [ yonghui/move-starter-readme ]
 
 jobs:
-  build:
-    name: "Test with ${{ matrix.version }}"
-    strategy:
-      matrix:
-        version: [ 8.0.275.hs-adpt, 11.0.10.hs-adpt, 15.0.2.hs-adpt ]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Cache local Maven repository
-        uses: actions/cache@v2
-        with:
-          path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
-          restore-keys: ${{ runner.os }}-maven-
-      - name: Download ${{ matrix.version }}
-        uses: sdkman/sdkman-action@master
-        id: sdkman
-        with:
-          candidate: java
-          version: ${{ matrix.version }}
-      - name: Set up ${{ matrix.version }}
-        uses: actions/setup-java@v1
-        with:
-          java-version: 8
-          jdkFile: ${{ steps.sdkman.outputs.file }}
-      - name: Build with Maven
-        run: mvn -f pom.xml -pl ,com.azure.spring:spring-cloud-azure-starter-cosmos,com.azure.spring:spring-cloud-azure-stream-binder-eventhubs -am -DskipTests -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -Dspotbugs.skip=true -Drevapi.skip=true -Djacoco.skip=true -DskipTests -Dparallel-test-playback clean install
+    build:
+        name: "Test with ${{ matrix.version }}"
+        strategy:
+            matrix:
+                version: [ 8.0.275.hs-adpt ]
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v2
+            - name: Cache local Maven repository
+              uses: actions/cache@v2
+              with:
+                  path: ~/.m2/repository
+                  key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+                  restore-keys: ${{ runner.os }}-maven-
+            - name: Download ${{ matrix.version }}
+              uses: sdkman/sdkman-action@master
+              id: sdkman
+              with:
+                  candidate: java
+                  version: ${{ matrix.version }}
+            - name: Set up ${{ matrix.version }}
+              uses: actions/setup-java@v1
+              with:
+                  java-version: 8
+                  jdkFile: ${{ steps.sdkman.outputs.file }}
+            - name: Build docs
+              run: |
+                  cd sdk/spring/docs
+                  mvn clean install
+            - name: Upload docs
+              uses: JamesIves/github-pages-deploy-action@releases/v3
+              with:
+                  github-token: ${{secrets.GITHUB_TOKEN}}
+                  branch: gh-pages
+                  folder: sdk/spring/docs/target/generated-docs
