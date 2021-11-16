@@ -9,6 +9,9 @@ import com.azure.core.util.ServiceVersion;
  * The service API versions of Azure Digital Twins that are supported by this client.
  */
 public enum DigitalTwinsServiceVersion implements ServiceVersion {
+    /**
+     * Service version {@code 2020-10-31}.
+     */
     V2020_10_31("2020-10-31");
 
     private final String version;
