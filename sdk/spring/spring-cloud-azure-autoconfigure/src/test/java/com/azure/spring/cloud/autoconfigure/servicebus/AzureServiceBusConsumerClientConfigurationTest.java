@@ -25,7 +25,7 @@ class AzureServiceBusConsumerClientConfigurationTest {
     }
 
     @Test
-    void entityNameProvidedShouldNotConfigure() {
+    void entityTypeProvidedShouldNotConfigure() {
         ServiceBusClientBuilder serviceBusClientBuilder = new ServiceBusClientBuilder();
         serviceBusClientBuilder.connectionString(String.format(CONNECTION_STRING, "test-namespace"));
 
@@ -42,7 +42,7 @@ class AzureServiceBusConsumerClientConfigurationTest {
     }
 
     @Test
-    void entityTypeProvidedShouldNotConfigure() {
+    void entityNameProvidedShouldNotConfigure() {
         ServiceBusClientBuilder serviceBusClientBuilder = new ServiceBusClientBuilder();
         serviceBusClientBuilder.connectionString(String.format(CONNECTION_STRING, "test-namespace"));
 
@@ -54,7 +54,9 @@ class AzureServiceBusConsumerClientConfigurationTest {
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .withBean(ServiceBusClientBuilder.class, () -> serviceBusClientBuilder)
             .run(context -> {
-                assertThat(context).doesNotHaveBean(AzureServiceBusConsumerClientConfiguration.class);
+                assertThat(context).hasSingleBean(AzureServiceBusConsumerClientConfiguration.class);
+                assertThat(context).doesNotHaveBean(AzureServiceBusConsumerClientConfiguration.NoneSessionConsumerClientConfiguration.class);
+                assertThat(context).doesNotHaveBean(AzureServiceBusConsumerClientConfiguration.SessionConsumerClientConfiguration.class);
             });
     }
 
