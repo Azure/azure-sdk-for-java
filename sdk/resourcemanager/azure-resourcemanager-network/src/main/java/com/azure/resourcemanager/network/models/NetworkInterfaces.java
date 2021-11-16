@@ -18,6 +18,7 @@ import com.azure.resourcemanager.resources.fluentcore.collection.SupportsCreatin
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsDeletingById;
 import com.azure.resourcemanager.resources.fluentcore.collection.SupportsListing;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
+import reactor.core.publisher.Mono;
 
 /** Entry point to network interface management. */
 @Fluent
@@ -43,6 +44,18 @@ public interface NetworkInterfaces
      * @return network interface
      */
     VirtualMachineScaleSetNetworkInterface getByVirtualMachineScaleSetInstanceId(
+        String resourceGroupName, String scaleSetName, String instanceId, String name);
+
+    /**
+     * Gets a network interface associated with a virtual machine scale set instance.
+     *
+     * @param resourceGroupName virtual machine scale set resource group name
+     * @param scaleSetName scale set name
+     * @param instanceId the virtual machine scale set vm instance id
+     * @param name the network interface name
+     * @return network interface
+     */
+    Mono<VirtualMachineScaleSetNetworkInterface> getByVirtualMachineScaleSetInstanceIdAsync(
         String resourceGroupName, String scaleSetName, String instanceId, String name);
 
     /**

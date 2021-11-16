@@ -2,6 +2,10 @@
 
 ## 2.10.0-beta.1 (Unreleased)
 
+### Features Added
+
+- Supported `getByVirtualMachineScaleSetInstanceIdAsync()` in `NetworkInterfaces`.
+
 ### Other Changes
 
 #### Dependency Updates

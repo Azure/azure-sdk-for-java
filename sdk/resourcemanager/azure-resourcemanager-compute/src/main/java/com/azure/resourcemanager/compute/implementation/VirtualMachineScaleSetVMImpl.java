@@ -537,6 +537,11 @@ class VirtualMachineScaleSetVMImpl
     }
 
     @Override
+    public Mono<VirtualMachineScaleSetNetworkInterface> getNetworkInterfaceAsync(String name) {
+        return this.parent().getNetworkInterfaceByInstanceIdAsync(this.instanceId(), name);
+    }
+
+    @Override
     public PagedIterable<VirtualMachineScaleSetNetworkInterface> listNetworkInterfaces() {
         return this.parent().listNetworkInterfacesByInstanceId(this.instanceId());
     }

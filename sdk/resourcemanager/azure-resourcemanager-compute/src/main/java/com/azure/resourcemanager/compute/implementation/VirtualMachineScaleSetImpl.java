@@ -626,6 +626,15 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
+    public Mono<VirtualMachineScaleSetNetworkInterface> getNetworkInterfaceByInstanceIdAsync(String instanceId,
+                                                                                             String name) {
+        return this
+            .networkManager
+            .networkInterfaces()
+            .getByVirtualMachineScaleSetInstanceIdAsync(this.resourceGroupName(), this.name(), instanceId, name);
+    }
+
+    @Override
     public PagedIterable<VirtualMachineScaleSetNetworkInterface> listNetworkInterfaces() {
         return this
             .networkManager
