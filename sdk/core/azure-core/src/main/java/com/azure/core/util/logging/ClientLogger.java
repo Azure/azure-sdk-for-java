@@ -13,7 +13,6 @@ import org.slf4j.helpers.NOPLogger;
 import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Supplier;
-import java.util.regex.Pattern;
 
 import static com.azure.core.util.logging.LoggingUtils.sanitizeLogMessageInput;
 

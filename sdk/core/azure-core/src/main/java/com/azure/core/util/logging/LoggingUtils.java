@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.core.util.logging;
 
 import com.azure.core.util.CoreUtils;
@@ -17,13 +20,10 @@ class LoggingUtils {
             return logMessage;
         }
 
-        int i = 0;
-
         StringBuilder sb = null;
         int prevStart = 0;
 
-        while (i <= logMessage.length() - NEW_LINE_LENGTH) {
-
+        for (int i = 0; i <= logMessage.length() - NEW_LINE_LENGTH;) {
             boolean match = true;
             for (int j = 0; match && (j < NEW_LINE_LENGTH); j++) {
                 match = logMessage.charAt(i + j) == NEW_LINE.charAt(j);
@@ -37,7 +37,7 @@ class LoggingUtils {
                 i += NEW_LINE_LENGTH;
                 prevStart = i;
             } else {
-                i ++;
+                i++;
             }
         }
 
