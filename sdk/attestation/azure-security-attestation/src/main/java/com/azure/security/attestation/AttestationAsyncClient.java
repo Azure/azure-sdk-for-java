@@ -245,6 +245,19 @@ public final class AttestationAsyncClient {
 
     /**
      * Return cached attestation signers, fetching from the internet if needed.
+     *<p>
+     * Validating an attestation JWT requires a set of attestation signers retrieved from the
+     * attestation service using the `signingCertificatesImpl.getAsync()` API. This API can take
+     * more than 100ms to complete, so caching the value locally can significantly reduce the time
+     * needed to validate the attestation JWT.
+     * </p><p>
+     *  Note that there is a possible race condition if two threads on the same client are making
+     *  calls to the attestation service. In that case, two calls to `signingCertificatesImpl.getAsync()`
+     *  may be made. That should not result in any problems - one of the two calls will complete first
+     *  and the `compareAndSet` will update the `cachedSigners`. The second call's result will be discarded
+     *  because the `compareAndSet` API won't capture a reference to the second `signers` object.
+     *
+     * </p>
      * @return cached signers.
      */
     Mono<List<AttestationSigner>> getCachedAttestationSigners() {

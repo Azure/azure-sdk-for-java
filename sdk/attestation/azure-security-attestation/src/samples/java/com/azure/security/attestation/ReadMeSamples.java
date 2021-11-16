@@ -10,7 +10,6 @@ import com.azure.security.attestation.models.AttestationOptions;
 import com.azure.security.attestation.models.AttestationResult;
 import com.azure.security.attestation.models.AttestationSigner;
 import com.azure.security.attestation.models.AttestationType;
-import com.azure.security.attestation.models.PolicyResponse;
 
 import java.util.List;
 
@@ -42,14 +41,14 @@ class ReadmeSamples {
         System.out.println("Attest OpenEnclave completed. Issuer: " + issuer);
     }
 
-    static void attestationPolicyGet(HttpClient httpClient, String clientUri) {
-        AttestationClientBuilder attestationBuilder = new AttestationClientBuilder();
+    static void getAttestationPolicy(HttpClient httpClient, String clientUri) {
+        AttestationAdministrationClientBuilder attestationBuilder = new AttestationAdministrationClientBuilder();
         attestationBuilder.httpClient(httpClient);
         attestationBuilder.endpoint(clientUri);
 
-        PolicyClient client = attestationBuilder.buildPolicyClient();
+        AttestationAdministrationClient client = attestationBuilder.buildClient();
 
-        PolicyResponse policyResponse = client.get(AttestationType.SGX_ENCLAVE);
+        String attestationPolicy = client.getAttestationPolicy(AttestationType.SGX_ENCLAVE);
     }
 
     static void signingCertificatesGet() {
