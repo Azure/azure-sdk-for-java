@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.AuthorizationTokenType;
 import com.azure.cosmos.implementation.Configs;
 import com.azure.cosmos.implementation.Constants;
@@ -101,7 +102,8 @@ public class GatewayAddressCache implements IAddressCache {
         UserAgentContainer userAgent,
         HttpClient httpClient,
         long suboptimalPartitionForceRefreshIntervalInSeconds,
-        boolean tcpConnectionEndpointRediscoveryEnabled) {
+        boolean tcpConnectionEndpointRediscoveryEnabled,
+        ApiType apiType) {
         this.clientContext = clientContext;
         try {
             this.addressEndpoint = new URL(serviceEndpoint.toURL(), Paths.ADDRESS_PATH_SEGMENT).toURI();
@@ -132,6 +134,10 @@ public class GatewayAddressCache implements IAddressCache {
         defaultRequestHeaders = new HashMap<>();
         defaultRequestHeaders.put(HttpConstants.HttpHeaders.USER_AGENT, userAgent.getUserAgent());
 
+        if(apiType != null) {
+            defaultRequestHeaders.put(HttpConstants.HttpHeaders.API_TYPE, apiType.toString());
+        }
+
         // Set requested API version header for version enforcement.
         defaultRequestHeaders.put(HttpConstants.HttpHeaders.VERSION, HttpConstants.Versions.CURRENT_VERSION);
 
@@ -147,7 +153,8 @@ public class GatewayAddressCache implements IAddressCache {
         IAuthorizationTokenProvider tokenProvider,
         UserAgentContainer userAgent,
         HttpClient httpClient,
-        boolean tcpConnectionEndpointRediscoveryEnabled) {
+        boolean tcpConnectionEndpointRediscoveryEnabled,
+        ApiType apiType) {
         this(clientContext,
             serviceEndpoint,
             protocol,
@@ -155,7 +162,8 @@ public class GatewayAddressCache implements IAddressCache {
             userAgent,
             httpClient,
             DefaultSuboptimalPartitionForceRefreshIntervalInSeconds,
-            tcpConnectionEndpointRediscoveryEnabled);
+            tcpConnectionEndpointRediscoveryEnabled,
+            apiType);
     }
 
     @Override

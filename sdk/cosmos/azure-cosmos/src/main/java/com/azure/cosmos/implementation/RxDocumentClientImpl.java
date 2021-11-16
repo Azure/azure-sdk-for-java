@@ -12,6 +12,7 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.ApiType;
 import com.azure.cosmos.implementation.batch.BatchResponseParser;
 import com.azure.cosmos.implementation.batch.PartitionKeyRangeServerBatchRequest;
 import com.azure.cosmos.implementation.batch.ServerBatchRequest;
@@ -481,7 +482,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             // TODO: GATEWAY Configuration Reader
             //     this.gatewayConfigurationReader,
             null,
-            this.connectionPolicy);
+            this.connectionPolicy,
+            this.apiType);
 
         this.storeClientFactory = new StoreClientFactory(
             this.addressResolver,
