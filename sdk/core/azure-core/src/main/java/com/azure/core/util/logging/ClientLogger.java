@@ -14,7 +14,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.function.Supplier;
 
-import static com.azure.core.util.logging.LoggingUtils.sanitizeLogMessageInput;
+import static com.azure.core.implementation.logging.LoggingUtils.sanitizeLogMessageInput;
 
 /**
  * This is a fluent logger helper class that wraps a pluggable {@link Logger}.

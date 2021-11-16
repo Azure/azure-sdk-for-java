@@ -1,11 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.core.util.logging;
+package com.azure.core.implementation.logging;
 
 import com.azure.core.util.CoreUtils;
 
-class LoggingUtils {
+/**
+ * Contains utility methods for logging.
+ */
+public class LoggingUtils {
     private static final char CL = '\r';
     private static final char RF = '\n';
 
@@ -15,7 +18,7 @@ class LoggingUtils {
      * @param logMessage The log message to sanitize.
      * @return The updated logMessage.
      */
-    static String sanitizeLogMessageInput(String logMessage) {
+    public static String sanitizeLogMessageInput(String logMessage) {
         if (CoreUtils.isNullOrEmpty(logMessage)) {
             return logMessage;
         }
