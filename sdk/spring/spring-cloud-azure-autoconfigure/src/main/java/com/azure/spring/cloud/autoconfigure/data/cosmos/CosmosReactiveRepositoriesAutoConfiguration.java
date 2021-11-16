@@ -3,7 +3,6 @@
 
 package com.azure.spring.cloud.autoconfigure.data.cosmos;
 
-import com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration;
 import com.azure.spring.data.cosmos.core.ReactiveCosmosTemplate;
 import com.azure.spring.data.cosmos.repository.ReactiveCosmosRepository;
 import com.azure.spring.data.cosmos.repository.config.ReactiveCosmosRepositoryConfigurationExtension;
