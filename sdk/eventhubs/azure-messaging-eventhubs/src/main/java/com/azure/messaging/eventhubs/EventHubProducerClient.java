@@ -37,16 +37,87 @@ import java.util.Objects;
  * </ol>
  *
  * <p><strong>Create a producer and publish events to any partition</strong></p>
- * {@codesnippet com.azure.messaging.eventhubs.eventhubproducerclient.createBatch}
+ * <!-- src_embed com.azure.messaging.eventhubs.eventhubproducerclient.createBatch -->
+ * <pre>
+ * &#47;&#47; The required parameter is a way to authenticate with Event Hubs using credentials.
+ * &#47;&#47; The connectionString provides a way to authenticate with Event Hub.
+ * EventHubProducerClient producer = new EventHubClientBuilder&#40;&#41;
+ *     .connectionString&#40;
+ *         &quot;Endpoint=&#123;fully-qualified-namespace&#125;;SharedAccessKeyName=&#123;policy-name&#125;;SharedAccessKey=&#123;key&#125;&quot;,
+ *         &quot;event-hub-name&quot;&#41;
+ *     .buildProducerClient&#40;&#41;;
+ * List&lt;EventData&gt; events = Arrays.asList&#40;new EventData&#40;&quot;test-event-1&quot;&#41;, new EventData&#40;&quot;test-event-2&quot;&#41;&#41;;
+ *
+ * &#47;&#47; Creating a batch without options set, will allow for automatic routing of events to any partition.
+ * EventDataBatch batch = producer.createBatch&#40;&#41;;
+ * for &#40;EventData event : events&#41; &#123;
+ *     if &#40;batch.tryAdd&#40;event&#41;&#41; &#123;
+ *         continue;
+ *     &#125;
+ *
+ *     producer.send&#40;batch&#41;;
+ *     batch = producer.createBatch&#40;&#41;;
+ *     if &#40;!batch.tryAdd&#40;event&#41;&#41; &#123;
+ *         throw new IllegalArgumentException&#40;&quot;Event is too large for an empty batch.&quot;&#41;;
+ *     &#125;
+ * &#125;
+ * </pre>
+ * <!-- end com.azure.messaging.eventhubs.eventhubproducerclient.createBatch -->
  *
  * <p><strong>Publish events to partition "foo"</strong></p>
- * {@codesnippet com.azure.messaging.eventhubs.eventhubproducerclient.createBatch#CreateBatchOptions-partitionId}
+ * <!-- src_embed com.azure.messaging.eventhubs.eventhubproducerclient.createBatch#CreateBatchOptions-partitionId -->
+ * <pre>
+ * &#47;&#47; Creating a batch with partitionId set will route all events in that batch to partition `foo`.
+ * CreateBatchOptions options = new CreateBatchOptions&#40;&#41;.setPartitionId&#40;&quot;foo&quot;&#41;;
+ *
+ * EventDataBatch batch = producer.createBatch&#40;options&#41;;
+ * batch.tryAdd&#40;new EventData&#40;&quot;data-to-partition-foo&quot;&#41;&#41;;
+ * producer.send&#40;batch&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.eventhubs.eventhubproducerclient.createBatch#CreateBatchOptions-partitionId -->
  *
  * <p><strong>Publish events to the same partition, grouped together using partition key</strong></p>
- * {@codesnippet com.azure.messaging.eventhubs.eventhubproducerclient.createBatch#CreateBatchOptions-partitionKey}
+ * <!-- src_embed com.azure.messaging.eventhubs.eventhubproducerclient.createBatch#CreateBatchOptions-partitionKey -->
+ * <pre>
+ * List&lt;EventData&gt; events = Arrays.asList&#40;new EventData&#40;&quot;sourdough&quot;&#41;, new EventData&#40;&quot;rye&quot;&#41;,
+ *     new EventData&#40;&quot;wheat&quot;&#41;&#41;;
+ *
+ * &#47;&#47; Creating a batch with partitionKey set will tell the service to hash the partitionKey and decide which
+ * &#47;&#47; partition to send the events to. Events with the same partitionKey are always routed to the same partition.
+ * CreateBatchOptions options = new CreateBatchOptions&#40;&#41;.setPartitionKey&#40;&quot;bread&quot;&#41;;
+ * EventDataBatch batch = producer.createBatch&#40;options&#41;;
+ *
+ * events.forEach&#40;event -&gt; batch.tryAdd&#40;event&#41;&#41;;
+ * producer.send&#40;batch&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.eventhubs.eventhubproducerclient.createBatch#CreateBatchOptions-partitionKey -->
  *
  * <p><strong>Publish events using a size-limited {@link EventDataBatch}</strong></p>
- * {@codesnippet com.azure.messaging.eventhubs.eventhubproducerclient.createBatch#CreateBatchOptions-int}
+ * <!-- src_embed com.azure.messaging.eventhubs.eventhubproducerclient.createBatch#CreateBatchOptions-int -->
+ * <pre>
+ * List&lt;EventData&gt; telemetryEvents = Arrays.asList&#40;firstEvent, secondEvent, thirdEvent&#41;;
+ *
+ * &#47;&#47; Setting `setMaximumSizeInBytes` when creating a batch, limits the size of that batch.
+ * &#47;&#47; In this case, all the batches created with these options are limited to 256 bytes.
+ * CreateBatchOptions options = new CreateBatchOptions&#40;&#41;.setMaximumSizeInBytes&#40;256&#41;;
+ *
+ * EventDataBatch currentBatch = producer.createBatch&#40;options&#41;;
+ *
+ * &#47;&#47; For each telemetry event, we try to add it to the current batch.
+ * &#47;&#47; When the batch is full, send it then create another batch to add more events to.
+ * for &#40;EventData event : telemetryEvents&#41; &#123;
+ *     if &#40;!currentBatch.tryAdd&#40;event&#41;&#41; &#123;
+ *         producer.send&#40;currentBatch&#41;;
+ *         currentBatch = producer.createBatch&#40;options&#41;;
+ *
+ *         &#47;&#47; Add the event we couldn't before.
+ *         if &#40;!currentBatch.tryAdd&#40;event&#41;&#41; &#123;
+ *             throw new IllegalArgumentException&#40;&quot;Event is too large for an empty batch.&quot;&#41;;
+ *         &#125;
+ *     &#125;
+ * &#125;
+ * </pre>
+ * <!-- end com.azure.messaging.eventhubs.eventhubproducerclient.createBatch#CreateBatchOptions-int -->
  *
  * @see EventHubClientBuilder#buildProducerClient()
  * @see EventHubProducerAsyncClient To asynchronously generate events to an Event Hub, see EventHubProducerAsyncClient.
@@ -182,7 +253,13 @@ public class EventHubProducerClient implements Closeable {
      * maximum size of a single batch, an exception will be triggered and the send will fail. By default, the message
      * size is the max amount allowed on the link.
      *
-     * {@codesnippet com.azure.messaging.eventhubs.eventhubproducerclient.send#Iterable}
+     * <!-- src_embed com.azure.messaging.eventhubs.eventhubproducerclient.send#Iterable -->
+     * <pre>
+     * List&lt;EventData&gt; events = Arrays.asList&#40;new EventData&#40;&quot;maple&quot;&#41;, new EventData&#40;&quot;aspen&quot;&#41;,
+     *     new EventData&#40;&quot;oak&quot;&#41;&#41;;
+     * producer.send&#40;events&#41;;
+     * </pre>
+     * <!-- end com.azure.messaging.eventhubs.eventhubproducerclient.send#Iterable -->
      *
      * <p>
      * For more information regarding the maximum event size allowed, see
@@ -203,7 +280,14 @@ public class EventHubProducerClient implements Closeable {
      * maximum size of a single batch, an exception will be triggered and the send will fail. By default, the message
      * size is the max amount allowed on the link.
      *
-     * {@codesnippet com.azure.messaging.eventhubs.eventhubproducerclient.send#Iterable-SendOptions}
+     * <!-- src_embed com.azure.messaging.eventhubs.eventhubproducerclient.send#Iterable-SendOptions -->
+     * <pre>
+     * List&lt;EventData&gt; events = Arrays.asList&#40;new EventData&#40;&quot;Melbourne&quot;&#41;, new EventData&#40;&quot;London&quot;&#41;,
+     *     new EventData&#40;&quot;New York&quot;&#41;&#41;;
+     * SendOptions sendOptions = new SendOptions&#40;&#41;.setPartitionKey&#40;&quot;cities&quot;&#41;;
+     * producer.send&#40;events, sendOptions&#41;;
+     * </pre>
+     * <!-- end com.azure.messaging.eventhubs.eventhubproducerclient.send#Iterable-SendOptions -->
      *
      * <p>
      * For more information regarding the maximum event size allowed, see
