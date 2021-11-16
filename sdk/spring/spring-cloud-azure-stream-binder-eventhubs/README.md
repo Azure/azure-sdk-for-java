@@ -50,7 +50,7 @@ Checkpointing of batch consumer supports two modes: BATCH and MANUAL. BATCH mode
 **com.azure.spring.integration.core.api.reactor.Checkpointer** will be passes into the message header, and users could use it to do checkpointing.
 
 The batch size can be specified by properties of `max-size` and `max-wait-time` with prefix as `spring.cloud.stream.
-eventhub.bindings.<binding-name>.consumer.batch.`. See the below section for more information about the 
+eventhubs.bindings.<binding-name>.consumer.batch.`. See the below section for more information about the 
 [configuration](#batch-consumer) and [examples](#batch-consumer-sample).
 ## Examples 
 
