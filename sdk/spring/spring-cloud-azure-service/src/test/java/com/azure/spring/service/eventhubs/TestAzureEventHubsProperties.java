@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Azure Event Hub related properties.
+ * Azure Event Hubs related properties.
  */
 public class TestAzureEventHubsProperties extends TestAzureEventHubCommonProperties implements EventHubsNamespaceDescriptor {
 

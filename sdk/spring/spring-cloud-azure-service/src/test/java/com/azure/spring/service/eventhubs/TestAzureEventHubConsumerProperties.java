@@ -4,7 +4,7 @@
 package com.azure.spring.service.eventhubs;
 
 /**
- * Azure Event Hub related properties.
+ * Azure Event Hubs related properties.
  */
 public abstract class TestAzureEventHubConsumerProperties extends TestAzureEventHubCommonProperties {
 

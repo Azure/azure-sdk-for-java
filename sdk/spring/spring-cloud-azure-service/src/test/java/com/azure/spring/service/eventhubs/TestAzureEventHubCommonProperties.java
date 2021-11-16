@@ -7,7 +7,7 @@ import com.azure.spring.core.connectionstring.implementation.EventHubsConnection
 import com.azure.spring.service.core.properties.AbstractAmqpProperties;
 
 /**
- * Azure Event Hub related properties.
+ * Azure Event Hubs related properties.
  */
 public abstract class TestAzureEventHubCommonProperties extends AbstractAmqpProperties {
 

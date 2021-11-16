@@ -4,7 +4,7 @@
 package com.azure.spring.service.eventhubs.properties;
 
 /**
- * Azure Event Hub related properties.
+ * Azure Event Hubs related properties.
  */
 public interface EventHubsNamespaceDescriptor extends EventHubsCommonDescriptor {
 

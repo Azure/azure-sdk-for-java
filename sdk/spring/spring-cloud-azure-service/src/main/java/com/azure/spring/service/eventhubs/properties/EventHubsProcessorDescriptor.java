@@ -10,7 +10,7 @@ import java.time.Duration;
 import java.util.Map;
 
 /**
- * Azure Event Hub Processor related properties.
+ * Azure Event Hubs Processor related properties.
  */
 public interface EventHubsProcessorDescriptor extends EventHubsConsumerDescriptor {
 

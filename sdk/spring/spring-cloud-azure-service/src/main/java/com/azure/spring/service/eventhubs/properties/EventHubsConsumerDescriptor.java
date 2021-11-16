@@ -4,7 +4,7 @@
 package com.azure.spring.service.eventhubs.properties;
 
 /**
- * Azure Event Hub Consumer related properties.
+ * Azure Event Hubs Consumer related properties.
  */
 public interface EventHubsConsumerDescriptor extends EventHubsCommonDescriptor {
 

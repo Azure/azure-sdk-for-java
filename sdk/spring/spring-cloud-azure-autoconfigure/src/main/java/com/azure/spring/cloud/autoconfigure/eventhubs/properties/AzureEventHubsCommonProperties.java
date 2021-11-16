@@ -7,7 +7,7 @@ import com.azure.spring.cloud.autoconfigure.properties.AbstractAzureAmqpCP;
 import com.azure.spring.core.connectionstring.implementation.EventHubsConnectionString;
 
 /**
- * Azure Event Hub related properties.
+ * Azure Event Hubs related properties.
  */
 public abstract class AzureEventHubsCommonProperties extends AbstractAzureAmqpCP {
 
