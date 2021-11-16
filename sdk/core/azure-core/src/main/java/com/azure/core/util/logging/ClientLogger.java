@@ -15,6 +15,8 @@ import java.util.Objects;
 import java.util.function.Supplier;
 import java.util.regex.Pattern;
 
+import static com.azure.core.util.logging.LoggingUtils.sanitizeLogMessageInput;
+
 /**
  * This is a fluent logger helper class that wraps a pluggable {@link Logger}.
  *
@@ -37,7 +39,6 @@ import java.util.regex.Pattern;
  * @see Configuration
  */
 public class ClientLogger {
-    private static final Pattern CRLF_PATTERN = Pattern.compile("[\r\n]");
     private final Logger logger;
 
     /**
@@ -419,7 +420,7 @@ public class ClientLogger {
             }
         }
 
-        sanitizeLogMessageInput(format);
+        format = sanitizeLogMessageInput(format);
 
         switch (logLevel) {
             case VERBOSE:
@@ -455,7 +456,7 @@ public class ClientLogger {
     private void performDeferredLogging(LogLevel logLevel, Supplier<String> messageSupplier, Throwable throwable) {
         String throwableMessage = (throwable != null) ? throwable.getMessage() : "";
         String message = messageSupplier.get();
-        sanitizeLogMessageInput(message);
+        message = sanitizeLogMessageInput(message);
         switch (logLevel) {
             case VERBOSE:
                 if (throwable != null) {
@@ -553,18 +554,5 @@ public class ClientLogger {
      */
     private Object[] removeThrowable(Object... args) {
         return Arrays.copyOf(args, args.length - 1);
-    }
-
-    /*
-     * Removes CRLF pattern in the {@code logMessage}.
-     *
-     * @param logMessage The log message to sanitize.
-     * @return The updated logMessage.
-     */
-    private static String sanitizeLogMessageInput(String logMessage) {
-        if (CoreUtils.isNullOrEmpty(logMessage)) {
-            return logMessage;
-        }
-        return CRLF_PATTERN.matcher(logMessage).replaceAll("");
     }
 }

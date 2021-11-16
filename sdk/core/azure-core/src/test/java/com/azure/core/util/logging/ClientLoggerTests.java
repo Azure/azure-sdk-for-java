@@ -269,6 +269,17 @@ public class ClientLoggerTests {
         assertTrue(logValues.contains(supplier.get() + System.lineSeparator()));
     }
 
+    @Test
+    public void logWithNewLine() {
+        setupLogLevel(LogLevel.INFORMATIONAL.getLogLevel());
+        String message = String.format("Param 1: %s%s, Param 2: %s%s, Param 3: %s", "test1", System.lineSeparator(), "test2", System.lineSeparator(), "test3");
+        ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
+        logger.log(LogLevel.INFORMATIONAL, () -> message);
+
+        String logValues = byteArraySteamToString(logCaptureStream);
+        assertTrue(logValues.contains("Param 1: test1, Param 2: test2, Param 3: test3"));
+    }
+
     @ParameterizedTest
     @MethodSource("provideLogLevels")
     public void logWithNullSupplier(LogLevel logLevel) {
