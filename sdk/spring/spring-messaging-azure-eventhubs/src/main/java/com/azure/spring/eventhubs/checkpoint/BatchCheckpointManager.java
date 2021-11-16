@@ -22,7 +22,7 @@ public class BatchCheckpointManager extends EventCheckpointManager {
     private static final String CHECKPOINT_FAIL_MSG = "Consumer group '%s' failed to checkpoint offset %s of message "
         + "on partition %s in batch mode";
     private static final String CHECKPOINT_SUCCESS_MSG =
-        "Consumer group '%s' succeed to checkpoint offset %s of message %s on partition %s in batch mode";
+        "Consumer group '%s' succeed to checkpoint offset %s of message on partition %s in batch mode";
 
     private final ConcurrentHashMap<String, EventData> lastEventByPartition = new ConcurrentHashMap<>();
 
