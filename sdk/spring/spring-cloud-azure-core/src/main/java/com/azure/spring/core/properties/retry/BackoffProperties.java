@@ -16,9 +16,8 @@ public class BackoffProperties implements RetryAware.Backoff {
     private Duration maxDelay;
 
     /**
-     * If positive, then used as a multiplier for generating the next delay for backoff.
-     *
-     * @return a multiplier to use to calculate the next backoff delay
+     * Multiplier used to calculate the next backoff delay. If positive, then used as a multiplier for generating the
+     * next delay for backoff.
      */
     private Double multiplier;
 

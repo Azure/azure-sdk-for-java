@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.cosmos;
+package com.azure.spring.cloud.autoconfigure.cosmos.properties;
 
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
@@ -10,8 +10,8 @@ import com.azure.cosmos.GatewayConnectionConfig;
 import com.azure.cosmos.ThrottlingRetryOptions;
 import com.azure.cosmos.models.CosmosPermissionProperties;
 import com.azure.spring.cloud.autoconfigure.properties.core.AbstractAzureServiceCP;
-import com.azure.spring.core.properties.client.ClientProperties;
-import com.azure.spring.core.properties.proxy.HttpProxyProperties;
+import com.azure.spring.cloud.autoconfigure.properties.core.client.ClientCP;
+import com.azure.spring.cloud.autoconfigure.properties.core.proxy.HttpProxyCP;
 import com.azure.spring.service.cosmos.CosmosProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
 import org.springframework.validation.annotation.Validated;
@@ -29,10 +29,10 @@ public class AzureCosmosProperties extends AbstractAzureServiceCP implements Cos
     public static final String PREFIX = "spring.cloud.azure.cosmos";
 
     @NestedConfigurationProperty
-    private final HttpProxyProperties proxy = new HttpProxyProperties();
+    private final HttpProxyCP proxy = new HttpProxyCP();
 
     @NestedConfigurationProperty
-    private final ClientProperties client = new ClientProperties();
+    private final ClientCP client = new ClientCP();
 
     @NotEmpty
     private String endpoint;
@@ -71,12 +71,12 @@ public class AzureCosmosProperties extends AbstractAzureServiceCP implements Cos
     private boolean populateQueryMetrics;
 
     @Override
-    public HttpProxyProperties getProxy() {
+    public HttpProxyCP getProxy() {
         return proxy;
     }
 
     @Override
-    public ClientProperties getClient() {
+    public ClientCP getClient() {
         return client;
     }
 

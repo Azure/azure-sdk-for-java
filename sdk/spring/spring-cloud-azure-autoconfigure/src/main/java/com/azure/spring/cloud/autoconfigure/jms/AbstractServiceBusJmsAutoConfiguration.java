@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.jms;
 
+import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer;
 import org.springframework.context.annotation.Bean;

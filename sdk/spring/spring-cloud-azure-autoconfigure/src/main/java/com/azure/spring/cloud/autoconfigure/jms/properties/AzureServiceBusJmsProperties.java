@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.jms;
+package com.azure.spring.cloud.autoconfigure.jms.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.jms.support.QosSettings;

@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.keyvault.certificates;
+package com.azure.spring.cloud.autoconfigure.keyvault.certificates.properties;
 
 import com.azure.security.keyvault.certificates.CertificateServiceVersion;
-import com.azure.spring.cloud.autoconfigure.keyvault.AzureKeyVaultProperties;
+import com.azure.spring.cloud.autoconfigure.keyvault.common.AzureKeyVaultProperties;
 import com.azure.spring.service.keyvault.certificates.KeyVaultCertificateProperties;
 
 /**

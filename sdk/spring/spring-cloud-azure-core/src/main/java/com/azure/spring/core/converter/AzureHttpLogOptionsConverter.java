@@ -8,14 +8,14 @@ import com.azure.spring.core.aware.ClientAware;
 import org.springframework.core.convert.converter.Converter;
 
 /**
- * Converts a {@link ClientAware.Logging} to a {@link HttpLogOptions}.
+ * Converts a {@link ClientAware.HttpLogging} to a {@link HttpLogOptions}.
  */
-public final class AzureHttpLogOptionsConverter implements Converter<ClientAware.Logging, HttpLogOptions> {
+public final class AzureHttpLogOptionsConverter implements Converter<ClientAware.HttpLogging, HttpLogOptions> {
 
     public static final AzureHttpLogOptionsConverter HTTP_LOG_OPTIONS_CONVERTER = new AzureHttpLogOptionsConverter();
 
     @Override
-    public HttpLogOptions convert(ClientAware.Logging logging) {
+    public HttpLogOptions convert(ClientAware.HttpLogging logging) {
         HttpLogOptions logOptions = new HttpLogOptions();
 
         logOptions.setLogLevel(logging.getLevel());

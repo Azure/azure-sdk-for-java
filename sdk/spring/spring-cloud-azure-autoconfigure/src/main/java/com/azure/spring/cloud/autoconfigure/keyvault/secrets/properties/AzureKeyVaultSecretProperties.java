@@ -1,10 +1,11 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.autoconfigure.keyvault.secrets;
+package com.azure.spring.cloud.autoconfigure.keyvault.secrets.properties;
 
 import com.azure.security.keyvault.secrets.SecretServiceVersion;
-import com.azure.spring.cloud.autoconfigure.keyvault.AzureKeyVaultProperties;
+import com.azure.spring.cloud.autoconfigure.keyvault.common.AzureKeyVaultProperties;
+import com.azure.spring.cloud.autoconfigure.keyvault.secrets.AzureKeyVaultPropertySourceProperties;
 import com.azure.spring.service.keyvault.secrets.KeyVaultSecretProperties;
 
 import java.util.ArrayList;
