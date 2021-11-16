@@ -2,6 +2,12 @@
 
 ## 1.10.2 (2021-11-16)
 
+### Other Changes
+
+#### Dependency Updates
+
+- Update `azure-messaging-eventhubs` dependency to `5.10.3`.
+
 ## 1.10.1 (2021-10-13)
 
 ### Other Changes
