@@ -10,14 +10,14 @@ import org.springframework.boot.actuate.health.Health;
 
 import java.time.Duration;
 
-import static com.azure.spring.cloud.actuate.util.Constants.DEFAULT_TIMEOUT_SECONDS;
+import static com.azure.spring.cloud.actuate.util.Constants.DEFAULT_HEALTH_CHECK_TIMEOUT;
 
 /**
  * Indicator class of App Configuration
  */
 public class AppConfigurationHealthIndicator extends AbstractHealthIndicator {
 
-    private int timeout = DEFAULT_TIMEOUT_SECONDS;
+    private Duration timeout = DEFAULT_HEALTH_CHECK_TIMEOUT;
     private final ConfigurationAsyncClient configurationAsyncClient;
 
     public AppConfigurationHealthIndicator(ConfigurationAsyncClient configurationAsyncClient) {
@@ -28,7 +28,7 @@ public class AppConfigurationHealthIndicator extends AbstractHealthIndicator {
     protected void doHealthCheck(Health.Builder builder) throws Exception {
         try {
             this.configurationAsyncClient.getConfigurationSetting("azure-spring-none-existing-setting", null)
-                .block(Duration.ofSeconds(timeout));
+                .block(timeout);
             builder.up();
         } catch (Exception e) {
             if (e instanceof ResourceNotFoundException) {
@@ -39,7 +39,7 @@ public class AppConfigurationHealthIndicator extends AbstractHealthIndicator {
         }
     }
 
-    public void setTimeout(int timeout) {
+    public void setTimeout(Duration timeout) {
         this.timeout = timeout;
     }
 }

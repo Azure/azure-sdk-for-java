@@ -5,7 +5,6 @@ package com.azure.spring.cloud.actuate.autoconfigure.cosmos;
 
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.spring.cloud.actuate.cosmos.CosmosHealthIndicator;
-import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.cosmos.AzureCosmosAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.cosmos.properties.AzureCosmosProperties;
 import org.springframework.boot.actuate.autoconfigure.health.ConditionalOnEnabledHealthIndicator;
@@ -13,7 +12,6 @@ import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -25,8 +23,6 @@ import org.springframework.context.annotation.Configuration;
 @ConditionalOnBean(CosmosAsyncClient.class)
 @AutoConfigureAfter(AzureCosmosAutoConfiguration.class)
 @ConditionalOnEnabledHealthIndicator("azure-cosmos")
-@ConditionalOnProperty(value = "spring.cloud.azure.cosmos.enabled", havingValue = "true", matchIfMissing = true)
-@ConditionalOnAnyProperty(prefix = "spring.cloud.azure.cosmos", name = "endpoint")
 public class CosmosHealthConfiguration {
 
     @Bean

@@ -10,7 +10,7 @@ import org.springframework.boot.actuate.health.Health;
 
 import java.time.Duration;
 
-import static com.azure.spring.cloud.actuate.util.Constants.DEFAULT_TIMEOUT_SECONDS;
+import static com.azure.spring.cloud.actuate.util.Constants.DEFAULT_HEALTH_CHECK_TIMEOUT;
 
 /**
  * Indicator class of KeyVaultHealth
@@ -18,7 +18,7 @@ import static com.azure.spring.cloud.actuate.util.Constants.DEFAULT_TIMEOUT_SECO
 public class KeyVaultSecretHealthIndicator extends AbstractHealthIndicator {
 
     private final SecretAsyncClient secretAsyncClient;
-    private int timeout = DEFAULT_TIMEOUT_SECONDS;
+    private Duration timeout = DEFAULT_HEALTH_CHECK_TIMEOUT;
 
     public KeyVaultSecretHealthIndicator(SecretAsyncClient secretAsyncClient) {
         this.secretAsyncClient = secretAsyncClient;
@@ -28,7 +28,7 @@ public class KeyVaultSecretHealthIndicator extends AbstractHealthIndicator {
     protected void doHealthCheck(Health.Builder builder) {
         try {
             this.secretAsyncClient.getSecretWithResponse("azure-spring-none-existing-secret", "")
-                .block(Duration.ofSeconds(timeout));
+                .block(timeout);
             builder.up();
         } catch (Exception e) {
             if (e instanceof ResourceNotFoundException) {
@@ -39,7 +39,7 @@ public class KeyVaultSecretHealthIndicator extends AbstractHealthIndicator {
         }
     }
 
-    public void setTimeout(int timeout) {
+    public void setTimeout(Duration timeout) {
         this.timeout = timeout;
     }
 }

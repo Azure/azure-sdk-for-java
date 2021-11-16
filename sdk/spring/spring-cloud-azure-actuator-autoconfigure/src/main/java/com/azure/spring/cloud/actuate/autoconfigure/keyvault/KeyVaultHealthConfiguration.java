@@ -25,8 +25,6 @@ import org.springframework.context.annotation.Configuration;
 @ConditionalOnBean(SecretAsyncClient.class)
 @AutoConfigureAfter(AzureKeyVaultSecretAutoConfiguration.class)
 @ConditionalOnEnabledHealthIndicator("azure-keyvault")
-@ConditionalOnProperty(value = "spring.cloud.azure.keyvault.secret.enabled", havingValue = "true", matchIfMissing = true)
-@ConditionalOnAnyProperty(prefix = "spring.cloud.azure.keyvault.secret", name = "endpoint")
 public class KeyVaultHealthConfiguration {
 
     @Bean

@@ -12,7 +12,7 @@ import org.springframework.boot.actuate.health.HealthIndicator;
 import java.time.Duration;
 
 import static com.azure.spring.cloud.actuate.storage.StorageHealthConstants.URL_FIELD;
-import static com.azure.spring.cloud.actuate.util.Constants.DEFAULT_TIMEOUT_SECONDS;
+import static com.azure.spring.cloud.actuate.util.Constants.DEFAULT_HEALTH_CHECK_TIMEOUT;
 
 /**
  * Health indicator for file storage.
@@ -20,7 +20,7 @@ import static com.azure.spring.cloud.actuate.util.Constants.DEFAULT_TIMEOUT_SECO
 public class StorageQueueHealthIndicator implements HealthIndicator {
 
     private final QueueServiceAsyncClient internalClient;
-    private int timeout = DEFAULT_TIMEOUT_SECONDS;
+    private Duration timeout = DEFAULT_HEALTH_CHECK_TIMEOUT;
 
     public StorageQueueHealthIndicator(QueueServiceAsyncClient queueServiceClient) {
         internalClient = queueServiceClient;
@@ -33,7 +33,7 @@ public class StorageQueueHealthIndicator implements HealthIndicator {
             healthBuilder.withDetail(URL_FIELD, internalClient.getQueueServiceUrl());
             Response<QueueServiceProperties> infoResponse;
             try {
-                infoResponse = internalClient.getPropertiesWithResponse().block(Duration.ofSeconds(timeout));
+                infoResponse = internalClient.getPropertiesWithResponse().block(timeout);
                 if (infoResponse != null) {
                     healthBuilder.up();
                 }
@@ -46,7 +46,7 @@ public class StorageQueueHealthIndicator implements HealthIndicator {
         return healthBuilder.build();
     }
 
-    public void setTimeout(int timeout) {
+    public void setTimeout(Duration timeout) {
         this.timeout = timeout;
     }
 }

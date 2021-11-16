@@ -7,7 +7,6 @@ import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.EventHubConsumerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.spring.cloud.actuate.eventhubs.EventHubHealthIndicator;
-import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubAutoConfiguration;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.actuate.autoconfigure.health.ConditionalOnEnabledHealthIndicator;
@@ -15,7 +14,6 @@ import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -25,21 +23,15 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConditionalOnClass({ EventHubClientBuilder.class, HealthIndicator.class })
 @AutoConfigureAfter(AzureEventHubAutoConfiguration.class)
+@ConditionalOnBean(EventHubClientBuilder.class)
 @ConditionalOnEnabledHealthIndicator("azure-eventhubs")
-@ConditionalOnProperty(value = "spring.cloud.azure.eventhubs.enabled", havingValue = "true", matchIfMissing = true)
-@ConditionalOnAnyProperty(prefix = "spring.cloud.azure.eventhubs", name = { "connection-string", "namespace" })
 public class EventHubHealthConfiguration {
 
     @Bean
-    @ConditionalOnBean(EventHubClientBuilder.class)
     public EventHubHealthIndicator eventhubsHealthIndicator(
         ObjectProvider<EventHubProducerAsyncClient> producerAsyncClients,
         ObjectProvider<EventHubConsumerAsyncClient> consumerAsyncClients) {
-
         return new EventHubHealthIndicator(producerAsyncClients.getIfAvailable(),
                                            consumerAsyncClients.getIfAvailable());
     }
-
-
-
 }

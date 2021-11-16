@@ -13,7 +13,7 @@ import java.time.Duration;
 
 import static com.azure.spring.cloud.actuate.storage.StorageHealthConstants.NOT_CONFIGURED_STATUS;
 import static com.azure.spring.cloud.actuate.storage.StorageHealthConstants.URL_FIELD;
-import static com.azure.spring.cloud.actuate.util.Constants.DEFAULT_TIMEOUT_SECONDS;
+import static com.azure.spring.cloud.actuate.util.Constants.DEFAULT_HEALTH_CHECK_TIMEOUT;
 
 /**
  * Health indicator for blob storage.
@@ -21,7 +21,7 @@ import static com.azure.spring.cloud.actuate.util.Constants.DEFAULT_TIMEOUT_SECO
 public class StorageBlobHealthIndicator implements HealthIndicator {
 
     private final BlobServiceAsyncClient blobServiceAsyncClient;
-    private int timeout = DEFAULT_TIMEOUT_SECONDS;
+    private Duration timeout = DEFAULT_HEALTH_CHECK_TIMEOUT;
 
     public StorageBlobHealthIndicator(BlobServiceAsyncClient blobServiceAsyncClient) {
         this.blobServiceAsyncClient = blobServiceAsyncClient;
@@ -37,7 +37,7 @@ public class StorageBlobHealthIndicator implements HealthIndicator {
                 healthBuilder.withDetail(URL_FIELD, blobServiceAsyncClient.getAccountUrl());
                 final Response<BlobServiceProperties> info;
                 try {
-                    info = blobServiceAsyncClient.getPropertiesWithResponse().block(Duration.ofSeconds(timeout));
+                    info = blobServiceAsyncClient.getPropertiesWithResponse().block(timeout);
                     if (info != null) {
                         healthBuilder.up();
                     }
@@ -51,7 +51,7 @@ public class StorageBlobHealthIndicator implements HealthIndicator {
         return healthBuilder.build();
     }
 
-    public void setTimeout(int timeout) {
+    public void setTimeout(Duration timeout) {
         this.timeout = timeout;
     }
 }

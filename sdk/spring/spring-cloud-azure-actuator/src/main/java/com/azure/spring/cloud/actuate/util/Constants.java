@@ -3,10 +3,12 @@
 
 package com.azure.spring.cloud.actuate.util;
 
+import java.time.Duration;
+
 /**
  * Util class for Constants
  */
 public class Constants {
 
-    public static final int DEFAULT_TIMEOUT_SECONDS = 3;
+    public static final Duration DEFAULT_HEALTH_CHECK_TIMEOUT = Duration.ofSeconds(3);
 }
