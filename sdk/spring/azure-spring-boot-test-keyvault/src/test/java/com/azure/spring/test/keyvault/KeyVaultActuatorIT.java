@@ -35,7 +35,7 @@ public class KeyVaultActuatorIT {
             app.property("spring.cloud.azure.keyvault.secret.profile.tenant-id", SPRING_TENANT_ID);
             app.property("management.endpoint.health.show-details", "always");
             app.property("management.endpoints.web.exposure.include", "*");
-            app.property("management.health.azure-key-vault.enabled", "true");
+            app.property("management.health.azure-keyvault.enabled", "true");
             app.start();
 
             final String response = REST_TEMPLATE.getForObject(
@@ -60,7 +60,7 @@ public class KeyVaultActuatorIT {
             app.property("spring.cloud.azure.keyvault.secret.profile.tenant-id", SPRING_TENANT_ID);
             app.property("management.endpoint.health.show-details", "always");
             app.property("management.endpoints.web.exposure.include", "*");
-            app.property("management.health.azure-key-vault.enabled", "true");
+            app.property("management.health.azure-keyvault.enabled", "true");
             app.start();
 
             final String response = REST_TEMPLATE.getForObject(
