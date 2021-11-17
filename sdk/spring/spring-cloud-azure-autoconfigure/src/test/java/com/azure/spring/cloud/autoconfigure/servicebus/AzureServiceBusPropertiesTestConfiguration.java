@@ -13,7 +13,7 @@ class AzureServiceBusPropertiesTestConfiguration {
 
     @Bean
     @ConfigurationProperties(AzureServiceBusProperties.PREFIX)
-    public AzureServiceBusProperties azureEventHubProperties() {
+    public AzureServiceBusProperties azureServiceBusProperties() {
         return new AzureServiceBusProperties();
     }
 }

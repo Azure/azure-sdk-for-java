@@ -9,8 +9,8 @@ import com.azure.cosmos.CosmosClientBuilder;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
 import com.azure.spring.cloud.autoconfigure.cosmos.AzureCosmosAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.cosmos.properties.AzureCosmosProperties;
-import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubProperties;
+import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.cloud.autoconfigure.keyvault.secrets.AzureKeyVaultSecretAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.keyvault.secrets.properties.AzureKeyVaultSecretProperties;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
@@ -39,7 +39,7 @@ class AzureServiceConfigurationBaseTest {
         .withConfiguration(AutoConfigurations.of(
             AzureCosmosAutoConfiguration.class,
             AzureKeyVaultSecretAutoConfiguration.class,
-            AzureEventHubAutoConfiguration.class));
+            AzureEventHubsAutoConfiguration.class));
 
     @Test
     void configureGlobalShouldApplyToAzureCosmosProperties() {
@@ -152,8 +152,8 @@ class AzureServiceConfigurationBaseTest {
                 "spring.cloud.azure.eventhubs.namespace=test"
             )
             .run(context -> {
-                assertThat(context).hasSingleBean(AzureEventHubProperties.class);
-                final AzureEventHubProperties properties = context.getBean(AzureEventHubProperties.class);
+                assertThat(context).hasSingleBean(AzureEventHubsProperties.class);
+                final AzureEventHubsProperties properties = context.getBean(AzureEventHubsProperties.class);
                 assertThat(properties).extracting("credential.clientId").isEqualTo("global-client-id");
                 assertThat(properties).extracting("credential.clientSecret").isEqualTo("global-client-secret");
 

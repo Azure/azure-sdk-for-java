@@ -1,7 +1,7 @@
 # Azure Event Hubs Spring Cloud Stream Binder client library for Java
 
-The project provides **Spring Cloud Stream Binder for Azure Event Hub** which allows you to build message-driven 
-microservice using **Spring Cloud Stream** based on [Azure Event Hub][azure_event_hub] service.
+The project provides **Spring Cloud Stream Binder for Azure Event Hubs** which allows you to build message-driven 
+microservice using **Spring Cloud Stream** based on [Azure Event Hubs][azure_event_hub] service.
 
 [Source code][src] | [Package (Maven)][package] | [API reference documentation][refdocs] | [Product documentation][docs] | [Samples][sample]
 
@@ -24,7 +24,7 @@ microservice using **Spring Cloud Stream** based on [Azure Event Hub][azure_even
 
 ### EventHub Binder Overview
 
-The Spring Cloud Stream Binder for Azure Event Hub provides the binding implementation for the Spring Cloud Stream.
+The Spring Cloud Stream Binder for Azure Event Hubs provides the binding implementation for the Spring Cloud Stream.
 This implementation uses Spring Integration Event Hub Channel Adapters at its foundation. From design's perspective, 
 Event Hub is similar as Kafka. Also, Event Hub could be accessed via Kafka API. If your project has tight dependency 
 on Kafka API, you can try [Event Hub with Kafka API Sample][kafka_sample]
@@ -33,7 +33,7 @@ on Kafka API, you can try [Event Hub with Kafka API Sample][kafka_sample]
 Event Hub provides similar support of consumer group as Apache Kafka, but with slight different logic. While Kafka 
 stores all committed offsets in the broker, you have to store offsets of event hub messages 
 being processed manually. Event Hub SDK provide the function to store such offsets inside Azure Storage Account. So 
-that's why you have to fill `spring.cloud.stream.eventhub.checkpoint-storage-account`.
+that's why you have to fill `spring.cloud.stream.eventhubs.checkpoint-storage-account`.
 
 #### Partitioning Support
 
@@ -105,7 +105,7 @@ For more information about setting partition for the producer properties, please
 
 #### Event Hub Producer Properties ####
 
-It supports the following configurations with the format of `spring.cloud.stream.eventhub.bindings.<channelName>.producer`.
+It supports the following configurations with the format of `spring.cloud.stream.eventhubs.bindings.<channelName>.producer`.
  
 **_sync_**
 
@@ -122,7 +122,7 @@ Default: `10000`
 
 #### Event Hub Consumer Properties ####
 
-It supports the following configurations with the format of `spring.cloud.stream.eventhub.bindings.<channelName>.consumer`.
+It supports the following configurations with the format of `spring.cloud.stream.eventhubs.bindings.<channelName>.consumer`.
 
 **_start-position_**
 

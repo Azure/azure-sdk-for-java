@@ -3,12 +3,12 @@
 
 package com.azure.spring.eventhubs.core.properties;
 
-import com.azure.spring.service.eventhubs.properties.EventHubConsumerDescriptor;
+import com.azure.spring.service.eventhubs.properties.EventHubsConsumerDescriptor;
 
 /**
  * An event hub consumer related properties.
  */
-public class ConsumerProperties extends CommonProperties implements EventHubConsumerDescriptor {
+public class ConsumerProperties extends CommonProperties implements EventHubsConsumerDescriptor {
 
     protected String consumerGroup;
     protected Integer prefetchCount;
