@@ -37,7 +37,7 @@ public final class DefaultEventHubsNamespaceProducerFactory implements EventHubs
     public DefaultEventHubsNamespaceProducerFactory(NamespaceProperties namespaceProperties,
                                                     PropertiesSupplier<String, ProducerProperties> supplier) {
         this.namespaceProperties = namespaceProperties;
-        this.propertiesSupplier = supplier;
+        this.propertiesSupplier = supplier == null ? key -> null : supplier;
     }
 
     @Override

@@ -8,6 +8,8 @@ import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
+import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
+import com.azure.spring.core.service.AzureServiceType;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -38,6 +40,14 @@ public class AzureEventHubsAutoConfiguration extends AzureServiceConfigurationBa
     @ConfigurationProperties(AzureEventHubsProperties.PREFIX)
     public AzureEventHubsProperties azureEventHubsProperties() {
         return loadProperties(this.azureGlobalProperties, new AzureEventHubsProperties());
+    }
+
+    @Bean
+    @ConditionalOnProperty("spring.cloud.azure.eventhubs.connection-string")
+    public StaticConnectionStringProvider<AzureServiceType.EventHubs> eventHubsStaticConnectionStringProvider(
+        AzureEventHubsProperties eventHubsProperties) {
+        return new StaticConnectionStringProvider<>(AzureServiceType.EVENT_HUBS,
+            eventHubsProperties.getConnectionString());
     }
 
 }

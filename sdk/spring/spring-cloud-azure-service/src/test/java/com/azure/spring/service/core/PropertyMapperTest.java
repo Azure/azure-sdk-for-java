@@ -3,6 +3,7 @@
 
 package com.azure.spring.service.core;
 
+import com.azure.spring.core.properties.PropertyMapper;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
