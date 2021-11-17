@@ -2,6 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aad.b2c.implementation;
 
+import com.azure.spring.core.util.URLValidator;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
@@ -11,7 +12,6 @@ import org.springframework.util.StringUtils;
 import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotBlank;
-import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -160,30 +160,14 @@ public class AADB2CProperties implements InitializingBean {
      * Validate URL properties configuration.
      */
     private void validateURLProperties() {
-        if (!isValidURL(logoutSuccessUrl)) {
+        if (!URLValidator.isValidURL(logoutSuccessUrl)) {
             throw new AADB2CConfigurationException("logout success should be valid URL.");
         }
-        if (!isValidURL(baseUri)) {
+        if (!URLValidator.isValidURL(baseUri)) {
             throw new AADB2CConfigurationException("baseUri should be valid URL.");
         }
     }
 
-    /**
-     * Used to validate uri, the uri is allowed to be empty.
-     * @param uri
-     * @return whether is uri is valid or not.
-     */
-    private boolean isValidURL(String uri) {
-        if (!StringUtils.hasLength(uri)) {
-            return true;
-        }
-        try {
-            new java.net.URL(uri);
-        } catch (MalformedURLException var5) {
-            return false;
-        }
-        return true;
-    }
 
     protected String getPasswordReset() {
         Optional<String> keyOptional = userFlows.keySet()
