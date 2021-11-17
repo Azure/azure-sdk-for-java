@@ -5,8 +5,8 @@ package com.azure.spring.cloud.autoconfigure.eventhubs;
 
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
-import com.azure.spring.core.properties.util.AzurePropertiesUtils;
 import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubsProperties;
+import com.azure.spring.core.properties.util.AzurePropertiesUtils;
 import com.azure.spring.eventhubs.core.EventHubsProcessorContainer;
 import com.azure.spring.eventhubs.core.EventHubsTemplate;
 import com.azure.spring.eventhubs.core.processor.DefaultEventHubsNamespaceProcessorFactory;
