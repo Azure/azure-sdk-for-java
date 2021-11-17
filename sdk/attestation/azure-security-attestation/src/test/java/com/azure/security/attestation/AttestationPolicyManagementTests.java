@@ -108,17 +108,19 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
         AttestationAdministrationClientBuilder attestationBuilder = getAuthenticatedAttestationBuilder(httpClient, clientUri);
         AttestationAdministrationClient client = attestationBuilder.buildClient();
 
-        PolicyCertificatesModificationResult result = client.addPolicyManagementCertificate(new PolicyManagementCertificateOptions()
-                .setCertificate(getPolicySigningCertificate0())
-            .setAttestationSigner(new AttestationSigningKey()
-                .setCertificate(getIsolatedSigningCertificate())
-                .setPrivateKey(getIsolatedSigningKey())));
+        PolicyCertificatesModificationResult result = client.addPolicyManagementCertificate(
+            new PolicyManagementCertificateOptions(
+                getPolicySigningCertificate0(),
+                new AttestationSigningKey()
+                    .setCertificate(getIsolatedSigningCertificate())
+                    .setPrivateKey(getIsolatedSigningKey())));
 
         assertEquals(CertificateModification.IS_PRESENT, result.getCertificateResolution());
 
-        result = client.removePolicyManagementCertificate(new PolicyManagementCertificateOptions()
-                .setCertificate(getPolicySigningCertificate0())
-                .setAttestationSigner(new AttestationSigningKey()
+        result = client.removePolicyManagementCertificate(
+            new PolicyManagementCertificateOptions(
+                getPolicySigningCertificate0(),
+                new AttestationSigningKey()
                     .setCertificate(getIsolatedSigningCertificate())
                     .setPrivateKey(getIsolatedSigningKey())));
 
@@ -149,17 +151,18 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
         AttestationAdministrationClientBuilder attestationBuilder = getAuthenticatedAttestationBuilder(httpClient, clientUri);
         AttestationAdministrationClient client = attestationBuilder.buildClient();
 
-        Response<PolicyCertificatesModificationResult> response = client.addPolicyManagementCertificateWithResponse(new PolicyManagementCertificateOptions()
-                .setCertificate(getPolicySigningCertificate0())
-            .setAttestationSigner(new AttestationSigningKey()
+        Response<PolicyCertificatesModificationResult> response = client.addPolicyManagementCertificateWithResponse(
+            new PolicyManagementCertificateOptions(getPolicySigningCertificate0(),
+                new AttestationSigningKey()
                 .setCertificate(getIsolatedSigningCertificate())
                 .setPrivateKey(getIsolatedSigningKey())), Context.NONE);
 
         assertEquals(CertificateModification.IS_PRESENT, response.getValue().getCertificateResolution());
 
-        response = client.removePolicyManagementCertificateWithResponse(new PolicyManagementCertificateOptions()
-                .setCertificate(getPolicySigningCertificate0())
-                .setAttestationSigner(new AttestationSigningKey()
+        response = client.removePolicyManagementCertificateWithResponse(
+            new PolicyManagementCertificateOptions(
+                getPolicySigningCertificate0(),
+                new AttestationSigningKey()
                     .setCertificate(getIsolatedSigningCertificate())
                     .setPrivateKey(getIsolatedSigningKey())), Context.NONE);
 
@@ -185,9 +188,9 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
                 MessageDigest.getInstance("SHA-1").digest(
                     certificate.getEncoded())).toUpperCase());
 
-        StepVerifier.create(client.addPolicyManagementCertificate(new PolicyManagementCertificateOptions()
-                    .setCertificate(certificate)
-                .setAttestationSigner(new AttestationSigningKey()
+        StepVerifier.create(client.addPolicyManagementCertificate(new PolicyManagementCertificateOptions(
+            certificate,
+            new AttestationSigningKey()
                         .setPrivateKey(getIsolatedSigningKey())
                         .setCertificate(getIsolatedSigningCertificate()))))
             .assertNext(modificationResult -> {
@@ -197,9 +200,9 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
             .verifyComplete();
 
         // Now remove the certificate we just added.
-        StepVerifier.create(client.removePolicyManagementCertificate(new PolicyManagementCertificateOptions()
-                    .setCertificate(getPolicySigningCertificate0())
-                .setAttestationSigner(new AttestationSigningKey()
+        StepVerifier.create(client.removePolicyManagementCertificate(new PolicyManagementCertificateOptions(
+                getPolicySigningCertificate0(),
+                new AttestationSigningKey()
                         .setPrivateKey(getIsolatedSigningKey())
                         .setCertificate(getIsolatedSigningCertificate()))))
             .assertNext(removeResult -> {

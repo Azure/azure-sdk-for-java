@@ -5,6 +5,7 @@ package com.azure.security.attestation.models;
 import com.azure.core.annotation.Fluent;
 
 import java.security.cert.X509Certificate;
+import java.util.Objects;
 
 /**
  * <p>
@@ -20,9 +21,21 @@ import java.security.cert.X509Certificate;
 public final class PolicyManagementCertificateOptions {
 
     private AttestationTokenValidationOptions validationOptions;
-    private X509Certificate certificate;
-    private AttestationSigningKey signer;
+    private final X509Certificate certificate;
+    private final AttestationSigningKey signer;
 
+    /**
+     * Creates a new {@link PolicyManagementCertificateOptions}.
+     *
+     * @param certificate Specifies the X.509 certificate to add or remove to the set of policy management certificates.
+     * @param signingKey Specifies the signing key which will be used to sign the request for the attestation service.
+     */
+    public PolicyManagementCertificateOptions(X509Certificate certificate, AttestationSigningKey signingKey) {
+        Objects.requireNonNull(certificate);
+        Objects.requireNonNull(signingKey);
+        this.certificate = certificate;
+        this.signer = signingKey;
+    }
     /**
      * Sets the options used to validate attestation tokens returned from the service.
      * @param validationOptions Token Validation options to be used to enhance the validations
@@ -51,31 +64,10 @@ public final class PolicyManagementCertificateOptions {
     }
 
     /**
-     * Sets the attestation policy which will be used to generate an policy set request.
-     * @param certificate Certificate to add or remove from the Policy Management Certificates.
-     * @return This {@link AttestationPolicySetOptions}.
-     */
-    public PolicyManagementCertificateOptions setCertificate(X509Certificate certificate) {
-        this.certificate = certificate;
-        return this;
-    }
-
-    /**
      * Gets the attestation signer which will be used to sign a policy set request.
      * @return Attestation Signer associated with this request.
      */
     public AttestationSigningKey getAttestationSigner() {
         return this.signer;
     }
-
-    /**
-     * Sets the attestation signer which will be used to generate a policy set request.
-     * @param signer Signer for the set Policy request.
-     * @return This {@link AttestationPolicySetOptions}.
-     */
-    public PolicyManagementCertificateOptions setAttestationSigner(AttestationSigningKey signer) {
-        this.signer = signer;
-        return this;
-    }
-
 }
