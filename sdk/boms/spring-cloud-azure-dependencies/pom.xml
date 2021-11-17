@@ -58,7 +58,7 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
-      
+
       <!-- Spring Messaging Azure -->
       <dependency>
         <groupId>com.azure.spring</groupId>
@@ -80,7 +80,7 @@
         <artifactId>spring-messaging-azure-storage-queue</artifactId>
         <version>${project.version}</version>
       </dependency>
-      
+
       <!-- Spring Integration Azure-->
       <dependency>
         <groupId>com.azure.spring</groupId>
@@ -151,6 +151,11 @@
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
+        <artifactId>spring-cloud-azure-starter-data-cosmos</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure.spring</groupId>
         <artifactId>spring-cloud-azure-starter-eventhubs</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -217,6 +222,12 @@
         <version>${project.version}</version>
       </dependency>
 
+      <!-- Tracing -->
+      <dependency>
+        <groupId>com.azure.spring</groupId>
+        <artifactId>spring-cloud-azure-trace-sleuth</artifactId>
+        <version>${project.version}</version>
+      </dependency>
 
       <!-- App Configuration -->
       <dependency>

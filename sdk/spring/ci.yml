@@ -36,6 +36,7 @@ trigger:
       - sdk/spring/spring-cloud-azure-starter-actuator/pom.xml
       - sdk/spring/spring-cloud-azure-starter-appconfiguration/pom.xml
       - sdk/spring/spring-cloud-azure-starter-cosmos/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-data-cosmos/pom.xml
       - sdk/spring/spring-cloud-azure-starter-eventhubs/pom.xml
       - sdk/spring/spring-cloud-azure-starter-keyvault-certificates/pom.xml
       - sdk/spring/spring-cloud-azure-starter-keyvault-secrets/pom.xml
@@ -93,6 +94,7 @@ pr:
       - sdk/spring/spring-cloud-azure-starter-actuator/pom.xml
       - sdk/spring/spring-cloud-azure-starter-appconfiguration/pom.xml
       - sdk/spring/spring-cloud-azure-starter-cosmos/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-data-cosmos/pom.xml
       - sdk/spring/spring-cloud-azure-starter-eventhubs/pom.xml
       - sdk/spring/spring-cloud-azure-starter-keyvault-certificates/pom.xml
       - sdk/spring/spring-cloud-azure-starter-keyvault-secrets/pom.xml
@@ -175,6 +177,12 @@ extends:
       - name: spring-cloud-azure-starter-cosmos
         groupId: com.azure.spring
         safeName: springcloudazurestartercosmos
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-starter-data-cosmos
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterdatacosmos
         skipPublishDocMs: true
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
