@@ -147,7 +147,8 @@ For a full list of common configurations, check this list **[placeholder]**.
 
 ### Each SDK configurations
 
-####  Migration guide of azure-spring-boot-starter-cosmos
+## Migration steps of each SDK   
+### Migration steps of azure-spring-boot-starter-cosmos
 
   Step01: Replace the maven dependency
 
@@ -181,8 +182,7 @@ Step02: Change properties configurations
 
 
 
-
-#### Migration guide of azure-spring-boot-starter-storage
+### Migration steps of azure-spring-boot-starter-storage
 **Overview**
 The artifact `azure-spring-boot-starter-storage` was divided into two artifacts: `spring-cloud-azure-starter-storage-blob`,`spring-cloud-azure-starter-storage-file-share`.
 
@@ -240,7 +240,7 @@ Step02: Change properties configurations
 
 
 
-#### Migration guide of azure-spring-cloud-starter-storage-queue
+### Migration steps of azure-spring-cloud-starter-storage-queue
 Step01: Replace the maven dependency
 
 ```
@@ -278,8 +278,12 @@ To resolve these errors:
 2. Use the **auto import** function provided by IDE to import the missing libaries.
 ![img.png](images/auto-import.png)
 
-#### Migration guide of spring-integration-azure-storage-queue 
-azure-spring-integration-storage-queue
+### Migration steps of spring-integration-azure-storage-queue 
+Step01: Replace the maven dependency
+
+
+
+Step02: Change properties configurations
 
 
 
