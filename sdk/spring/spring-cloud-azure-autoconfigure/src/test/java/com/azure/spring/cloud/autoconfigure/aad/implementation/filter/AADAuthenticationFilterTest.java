@@ -32,7 +32,7 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class AADAuthenticationFilterTest {
+public class AADAuthenticationFilterTest {
     private static final String TOKEN = "dummy-token";
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
             .withConfiguration(AutoConfigurations.of(AADAuthenticationFilterAutoConfiguration.class));
@@ -41,7 +41,7 @@ class AADAuthenticationFilterTest {
     private final HttpServletResponse response;
     private final AADAuthenticationFilter filter;
 
-    AADAuthenticationFilterTest() {
+    public AADAuthenticationFilterTest() {
         userPrincipalManager = mock(UserPrincipalManager.class);
         request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);
@@ -55,10 +55,10 @@ class AADAuthenticationFilterTest {
     //TODO (Zhou Liu): current test case is out of date, a new test case need to cover here, do it later.
     @Test
     @Disabled
-    void doFilterInternal() {
-        this.contextRunner.withPropertyValues("azure.activedirectory.client-id", TestConstants.CLIENT_ID)
-                .withPropertyValues("azure.activedirectory.client-secret", TestConstants.CLIENT_SECRET)
-                .withPropertyValues("azure.activedirectory.client-secret",
+    public void doFilterInternal() {
+        this.contextRunner.withPropertyValues("spring.cloud.azure.active-directory.client-id", TestConstants.CLIENT_ID)
+                .withPropertyValues("spring.cloud.azure.active-directory.client-secret", TestConstants.CLIENT_SECRET)
+                .withPropertyValues("spring.cloud.azure.active-directory.client-secret",
                         TestConstants.TARGETED_GROUPS.toString()
                                                      .replace("[", "").replace("]", ""));
 
@@ -98,7 +98,7 @@ class AADAuthenticationFilterTest {
     }
 
     @Test
-    void testTokenNotIssuedByAAD() throws ServletException, IOException {
+    public void testTokenNotIssuedByAAD() throws ServletException, IOException {
         when(userPrincipalManager.isTokenIssuedByAAD(TOKEN)).thenReturn(false);
 
         final FilterChain filterChain = (request, response) -> {
@@ -112,7 +112,7 @@ class AADAuthenticationFilterTest {
     }
 
     @Test
-    void testAlreadyAuthenticated() throws ServletException, IOException, ParseException, JOSEException,
+    public void testAlreadyAuthenticated() throws ServletException, IOException, ParseException, JOSEException,
         BadJOSEException {
         final Authentication authentication = mock(Authentication.class);
         when(authentication.isAuthenticated()).thenReturn(true);

@@ -57,7 +57,7 @@ class AADClientRegistrationRepositoryTest {
     void azureClientConfiguredTest() {
         webApplicationContextRunner()
             .withPropertyValues(
-                "azure.activedirectory.authorization-clients.azure.scopes = Azure.Scope"
+                "spring.cloud.azure.active-directory.authorization-clients.azure.scopes = Azure.Scope"
             )
             .run(context -> {
                 AADClientRegistrationRepository repository =
@@ -79,7 +79,7 @@ class AADClientRegistrationRepositoryTest {
     void graphClientConfiguredTest() {
         webApplicationContextRunner()
             .withPropertyValues(
-                "azure.activedirectory.authorization-clients.graph.scopes = Graph.Scope"
+                "spring.cloud.azure.active-directory.authorization-clients.graph.scopes = Graph.Scope"
             )
             .run(context -> {
                 AADClientRegistrationRepository repository =
@@ -105,8 +105,8 @@ class AADClientRegistrationRepositoryTest {
     void onDemandGraphClientConfiguredTest() {
         webApplicationContextRunner()
             .withPropertyValues(
-                "azure.activedirectory.authorization-clients.graph.scopes = Graph.Scope",
-                "azure.activedirectory.authorization-clients.graph.on-demand = true"
+                "spring.cloud.azure.active-directory.authorization-clients.graph.scopes = Graph.Scope",
+                "spring.cloud.azure.active-directory.authorization-clients.graph.on-demand = true"
             )
             .run(context -> {
                 AADClientRegistrationRepository repository =
@@ -133,8 +133,8 @@ class AADClientRegistrationRepositoryTest {
     void clientWithClientCredentialsPermissions() {
         webApplicationContextRunner()
             .withPropertyValues(
-                "azure.activedirectory.authorization-clients.graph.scopes = fakeValue:/.default",
-                "azure.activedirectory.authorization-clients.graph.authorizationGrantType = client_credentials"
+                "spring.cloud.azure.active-directory.authorization-clients.graph.scopes = fakeValue:/.default",
+                "spring.cloud.azure.active-directory.authorization-clients.graph.authorizationGrantType = client_credentials"
             )
             .run(context -> {
                 ClientRegistrationRepository repository = context.getBean(ClientRegistrationRepository.class);
@@ -149,8 +149,8 @@ class AADClientRegistrationRepositoryTest {
     void clientWhichIsNotAuthorizationCodeButOnDemandExceptionTest() {
         webApplicationContextRunner()
             .withPropertyValues(
-                "azure.activedirectory.authorization-clients.graph.authorizationGrantType = client_credentials",
-                "azure.activedirectory.authorization-clients.graph.on-demand = true"
+                "spring.cloud.azure.active-directory.authorization-clients.graph.authorizationGrantType = client_credentials",
+                "spring.cloud.azure.active-directory.authorization-clients.graph.on-demand = true"
             )
             .run(context ->
                 assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class))
@@ -181,7 +181,7 @@ class AADClientRegistrationRepositoryTest {
     void customizeUriTest() {
         webApplicationContextRunner()
             .withPropertyValues(
-                "azure.activedirectory.base-uri = http://localhost/"
+                "spring.cloud.azure.active-directory.base-uri = http://localhost/"
             )
             .run(context -> {
                 ClientRegistrationRepository repository = context.getBean(ClientRegistrationRepository.class);
@@ -207,7 +207,7 @@ class AADClientRegistrationRepositoryTest {
     @Test
     void testGroupNameConfigured() {
         webApplicationContextRunner()
-            .withPropertyValues("azure.activedirectory.user-group.allowed-group-names = group1, group2")
+            .withPropertyValues("spring.cloud.azure.active-directory.user-group.allowed-group-names = group1, group2")
             .run(context -> {
                 ClientRegistrationRepository repository = context.getBean(ClientRegistrationRepository.class);
                 ClientRegistration azure = repository.findByRegistrationId(AZURE_CLIENT_REGISTRATION_ID);
@@ -222,7 +222,7 @@ class AADClientRegistrationRepositoryTest {
     void testGroupIdConfigured() {
         webApplicationContextRunner()
             .withPropertyValues(
-                "azure.activedirectory.user-group.allowed-group-ids = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718")
+                "spring.cloud.azure.active-directory.user-group.allowed-group-ids = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718")
             .run(context -> {
                 ClientRegistrationRepository repository = context.getBean(ClientRegistrationRepository.class);
                 ClientRegistration azure = repository.findByRegistrationId(AZURE_CLIENT_REGISTRATION_ID);
@@ -237,8 +237,8 @@ class AADClientRegistrationRepositoryTest {
     void testGroupNameAndGroupIdConfigured() {
         webApplicationContextRunner()
             .withPropertyValues(
-                "azure.activedirectory.user-group.allowed-group-names = group1, group2",
-                "azure.activedirectory.user-group.allowed-group-ids = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718")
+                "spring.cloud.azure.active-directory.user-group.allowed-group-names = group1, group2",
+                "spring.cloud.azure.active-directory.user-group.allowed-group-ids = 7c3a5d22-9093-42d7-b2eb-e72d06bf3718")
             .run(context -> {
                 ClientRegistrationRepository repository = context.getBean(ClientRegistrationRepository.class);
                 ClientRegistration azure = repository.findByRegistrationId(AZURE_CLIENT_REGISTRATION_ID);
@@ -253,9 +253,9 @@ class AADClientRegistrationRepositoryTest {
     void haveResourceServerScopeInAccessTokenWhenThereAreMultiResourceServerScopesInAuthCode() {
         webApplicationContextRunner()
             .withPropertyValues(
-                "azure.activedirectory.authorization-clients.office.scopes = "
+                "spring.cloud.azure.active-directory.authorization-clients.office.scopes = "
                     + "https://manage.office.com/ActivityFeed.Read",
-                "azure.activedirectory.authorization-clients.arm.scopes = "
+                "spring.cloud.azure.active-directory.authorization-clients.arm.scopes = "
                     + "https://management.core.windows.net/user_impersonation"
             )
             .run(context -> {
