@@ -221,7 +221,8 @@ Step01: Replace the maven dependency
 
 Step02: Change properties configurations
 
-[Azure Storage Blob]
+**Azure Storage Blob**
+
 
 | Legacy properties           | Morden properties                            | description |
 |-----------------------------|----------------------------------------------|-------------|
@@ -229,7 +230,8 @@ Step02: Change properties configurations
 | azure.storage.blob-endpoint | spring.cloud.azure.storage.blob.endpoint     |             |
 | azure.storage.account-key   | spring.cloud.azure.storage.blob.account-key  |             |
 
-[Azure Storage File]
+**Azure Storage File**
+
 | Legacy properties           | Morden properties                                 | description |
 |-----------------------------|---------------------------------------------------|-------------|
 | azure.storage.account-name  | spring.cloud.azure.storage.fileshare.account-name |             |
@@ -239,10 +241,45 @@ Step02: Change properties configurations
 
 
 #### Migration guide of azure-spring-cloud-starter-storage-queue
+Step01: Replace the maven dependency
 
-#### Migration guide of azure-spring-integration-storage-queue
+```
+<!--Before-->
+<dependency>
+  <groupId>com.azure.spring</groupId>
+  <artifactId>azure-spring-cloud-starter-storage-queue</artifactId>
+  <version>2.10.0</version> 
+</dependency>
 
-#### Migration guide of azure-spring-cloud-starter-cache
+<!--After--->
+<dependency>
+  <groupId>com.azure.spring</groupId>
+  <artifactId>spring-cloud-azure-starter-integration-storage-queue</artifactId>
+  <version>4.0.0-beta.1</version>
+</dependency>
+
+```
+
+
+Step02: Change properties configurations  
+
+| Legacy properties                         | Morden properties                                        | description |
+|-------------------------------------------|----------------------------------------------------------|-------------|
+| spring.cloud.azure.storage.account        | spring.cloud.azure.storage.queue.account-name            |             |
+| spring.cloud.azure.storage.access-key     | spring.cloud.azure.storage.queue.account-key             |             |
+| spring.cloud.azure.storage.resource-group | spring.cloud.azure.storage.queue.resource.resource-group |             |
+
+
+Step03: Resolve import erros  
+You may see a lot of import errors just like the picture below:  
+![img.png](images/import_errors.png)  
+To resolve these errors:
+1. Delete the import error libaries.
+2. Use the **auto import** function provided by IDE to import the missing libaries.
+![img.png](images/auto-import.png)
+
+#### Migration guide of spring-integration-azure-storage-queue 
+azure-spring-integration-storage-queue
 
 
 
