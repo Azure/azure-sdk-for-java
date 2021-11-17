@@ -22,6 +22,20 @@
 - Upgraded `azure-core` dependency to `1.22.0`
 - Upgraded `azure-core-http-netty` dependency to `1.11.2`
 
+## 4.2.5 (2021-11-12)
+
+### Features Added
+
+- Added support for multi-tenant authentication in clients.
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` dependency to `1.22.0`
+- Upgraded `azure-core-http-netty` dependency to `1.11.2`
+
+
+
 ## 4.3.0-beta.2 (2021-10-07)
 
 ### Bugs Fixed
