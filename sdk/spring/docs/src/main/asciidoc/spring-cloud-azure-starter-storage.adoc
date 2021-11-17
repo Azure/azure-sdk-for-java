@@ -1,3 +1,4 @@
+include::_attributes.adoc[]
 == Spring Cloud for Azure Storage client library for Java
 include::_attributes.adoc[]
 

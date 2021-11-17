@@ -1,3 +1,4 @@
+include::_attributes.adoc[]
 == Azure Service Bus Spring Cloud starter client library for Java
 include::_attributes.adoc[]
 

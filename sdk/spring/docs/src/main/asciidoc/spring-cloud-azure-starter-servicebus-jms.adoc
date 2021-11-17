@@ -1,3 +1,4 @@
+include::_attributes.adoc[]
 == Azure Service Bus JMS Spring Boot Starter client library for Java
 include::_attributes.adoc[]
 

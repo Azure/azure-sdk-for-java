@@ -1,3 +1,4 @@
+include::_attributes.adoc[]
 == Azure Event Hubs Spring cloud starter client library for Java
 include::_attributes.adoc[]
 
