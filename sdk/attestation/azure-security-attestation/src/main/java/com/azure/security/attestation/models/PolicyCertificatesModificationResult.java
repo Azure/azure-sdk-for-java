@@ -5,11 +5,9 @@ package com.azure.security.attestation.models;
 
 import com.azure.core.annotation.Immutable;
 
-import java.security.cert.X509Certificate;
-
 /**
- * Respects the result of a call to {@link com.azure.security.attestation.AttestationAdministrationAsyncClient#addPolicyManagementCertificate(X509Certificate, AttestationSigningKey)} or
- * {@link com.azure.security.attestation.AttestationAdministrationAsyncClient#removePolicyManagementCertificate(X509Certificate, AttestationSigningKey)}.
+ * Respects the result of a call to {@link com.azure.security.attestation.AttestationAdministrationAsyncClient#addPolicyManagementCertificate(PolicyManagementCertificateOptions)} or
+ * {@link com.azure.security.attestation.AttestationAdministrationAsyncClient#removePolicyManagementCertificate(PolicyManagementCertificateOptions)}.
  *
  * It contains the state of the certificate identified by {@link PolicyCertificatesModificationResult#getCertificateThumbprint()} -
  * whether the Certificate Modification API resulted in the certificate being removed or not.

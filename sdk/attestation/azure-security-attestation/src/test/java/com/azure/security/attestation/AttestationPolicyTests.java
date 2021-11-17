@@ -50,7 +50,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
         } else {
             assertTrue(policy.contains("version"));
         }
-        Response<String> policyResponse = adminClient.getAttestationPolicyWithResponse(attestationType, Context.NONE);
+        Response<String> policyResponse = adminClient.getAttestationPolicyWithResponse(attestationType, null, Context.NONE);
         if (policyResponse.getValue() == null) {
             assertEquals(AttestationType.TPM, attestationType);
         } else {
@@ -93,7 +93,7 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
             .verify();
 
         // Now test getAttestationPolicy with a response.
-        StepVerifier.create(adminClient.getAttestationPolicyWithResponse(attestationType))
+        StepVerifier.create(adminClient.getAttestationPolicyWithResponse(attestationType, null))
             .assertNext(response -> assertDoesNotThrow(() -> {
                 // If the policy is null, it must be coming from TPM attestation.
                 if (response.getValue() == null) {

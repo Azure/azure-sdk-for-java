@@ -14,11 +14,12 @@ import com.azure.security.attestation.models.AttestationPolicySetOptions;
 import com.azure.security.attestation.models.AttestationResponse;
 import com.azure.security.attestation.models.AttestationSigner;
 import com.azure.security.attestation.models.AttestationSigningKey;
+import com.azure.security.attestation.models.AttestationTokenValidationOptions;
 import com.azure.security.attestation.models.AttestationType;
 import com.azure.security.attestation.models.PolicyCertificatesModificationResult;
+import com.azure.security.attestation.models.PolicyManagementCertificateOptions;
 import com.azure.security.attestation.models.PolicyResult;
 
-import java.security.cert.X509Certificate;
 import java.util.List;
 
 /**
@@ -63,7 +64,7 @@ public final class AttestationAdministrationClient {
      *
      * <p>
      * <b>NOTE:</b>
-     *     The {@link AttestationAdministrationClient#getAttestationPolicyWithResponse(AttestationType, Context)} API returns the underlying
+     *     The {@link AttestationAdministrationClient#getAttestationPolicyWithResponse(AttestationType, AttestationTokenValidationOptions, Context)} API returns the underlying
      *     attestation policy specified by the user. This is NOT the full attestation policy maintained by
      *     the attestation service. Specifically it does not include the signing certificates used to verify the attestation
      *     policy.
@@ -78,6 +79,7 @@ public final class AttestationAdministrationClient {
      *  </p>
      *
      * @param attestationType Specifies the trusted execution environment whose policy should be retrieved.
+     * @param validationOptions Options used when validating the token returned by the attestation service.
      * @param context Context for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -85,8 +87,8 @@ public final class AttestationAdministrationClient {
      * @return the attestation policy expressed as a string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<String> getAttestationPolicyWithResponse(AttestationType attestationType, Context context) {
-        return asyncClient.getAttestationPolicyWithResponse(attestationType, context).block();
+    public Response<String> getAttestationPolicyWithResponse(AttestationType attestationType, AttestationTokenValidationOptions validationOptions, Context context) {
+        return asyncClient.getAttestationPolicyWithResponse(attestationType, validationOptions, context).block();
     }
 
     /**
@@ -99,7 +101,7 @@ public final class AttestationAdministrationClient {
      *     policy.
      *     </p>
      *     <p>
-     *         To retrieve the signing certificates used to sign the policy, use the {@link AttestationAdministrationClient#getAttestationPolicyWithResponse(AttestationType, Context)} API.
+     *         To retrieve the signing certificates used to sign the policy, use the {@link AttestationAdministrationClient#getAttestationPolicyWithResponse(AttestationType, AttestationTokenValidationOptions, Context)} API.
      *         The {@link Response} object is an instance of an {@link com.azure.security.attestation.models.AttestationResponse} object
      *         and the caller can retrieve the full information maintained by the service by calling the {@link AttestationResponse#getToken()} method.
      *         The returned {@link com.azure.security.attestation.models.AttestationToken} object will be
@@ -268,6 +270,7 @@ public final class AttestationAdministrationClient {
      *     to perform the API operation.
      * </p>
      *
+     * @param tokenValidationOptions Options to be used validating the token returned by the attestation service.
      * @param context Context for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -275,8 +278,8 @@ public final class AttestationAdministrationClient {
      * @return the attestation policy expressed as a string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<AttestationSigner>> listPolicyManagementCertificatesWithResponse(Context context) {
-        return asyncClient.listPolicyManagementCertificatesWithResponse(context).block();
+    public Response<List<AttestationSigner>> listPolicyManagementCertificatesWithResponse(AttestationTokenValidationOptions tokenValidationOptions, Context context) {
+        return asyncClient.listPolicyManagementCertificatesWithResponse(tokenValidationOptions, context).block();
     }
 
     /**
@@ -309,23 +312,23 @@ public final class AttestationAdministrationClient {
     /**
      * Adds a new attestation policy certificate to the set of policy management certificates.
      *
-     * @param certificateToAdd Specifies the X.509 certificate to remove from the set of policy signing certificates.
-     * @param signingKey Signing Key used to sign the request to the service.
+     * @param options Options for this API call, encapsulating both the X.509 certificate to add to the set of policy
+     *               signing certificates and the signing key used to sign the request to the service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an attestation policy operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PolicyCertificatesModificationResult addPolicyManagementCertificate(X509Certificate certificateToAdd, AttestationSigningKey signingKey) {
-        return asyncClient.addPolicyManagementCertificate(certificateToAdd, signingKey).block();
+    public PolicyCertificatesModificationResult addPolicyManagementCertificate(PolicyManagementCertificateOptions options) {
+        return asyncClient.addPolicyManagementCertificate(options).block();
     }
 
     /**
      * Adds a new attestation policy certificate to the set of policy management certificates.
      *
-     * @param certificateToAdd Specifies the X.509 certificate to remove from the set of policy signing certificates.
-     * @param signingKey Signing Key used to sign the request to the service.
+     * @param options Options for this API call, encapsulating both the X.509 certificate to add to the set of policy
+     *               signing certificates and the signing key used to sign the request to the service.
      * @param context Context for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -333,30 +336,30 @@ public final class AttestationAdministrationClient {
      * @return the response to an attestation policy operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PolicyCertificatesModificationResult> addPolicyManagementCertificateWithResponse(X509Certificate certificateToAdd, AttestationSigningKey signingKey, Context context) {
-        return asyncClient.addPolicyManagementCertificateWithResponse(certificateToAdd, signingKey, context).block();
+    public Response<PolicyCertificatesModificationResult> addPolicyManagementCertificateWithResponse(PolicyManagementCertificateOptions options, Context context) {
+        return asyncClient.addPolicyManagementCertificateWithResponse(options, context).block();
     }
 
     /**
      * Adds a new attestation policy certificate to the set of policy management certificates.
      *
-     * @param certificateToRemove Specifies the X.509 certificate to remove from the set of policy signing certificates.
-     * @param signingKey Signing Key used to sign the request to the service.
+     * @param options Options for this API call, encapsulating both the X.509 certificate to remove from the set of policy
+     *               signing certificates and the signing key used to sign the request to the service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response to an attestation policy operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public PolicyCertificatesModificationResult removePolicyManagementCertificate(X509Certificate certificateToRemove, AttestationSigningKey signingKey) {
-        return asyncClient.removePolicyManagementCertificate(certificateToRemove, signingKey).block();
+    public PolicyCertificatesModificationResult removePolicyManagementCertificate(PolicyManagementCertificateOptions options) {
+        return asyncClient.removePolicyManagementCertificate(options).block();
     }
 
     /**
      * Adds a new attestation policy certificate to the set of policy management certificates.
      *
-     * @param certificateToRemove Specifies the X.509 certificate to remove from the set of policy signing certificates.
-     * @param signingKey Signing Key used to sign the request to the service.
+     * @param options Options for this API call, encapsulating both the X.509 certificate to remove from the set of policy
+     *               signing certificates and the signing key used to sign the request to the service.
      * @param context Context for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -364,8 +367,8 @@ public final class AttestationAdministrationClient {
      * @return the response to an attestation policy operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PolicyCertificatesModificationResult> removePolicyManagementCertificateWithResponse(X509Certificate certificateToRemove, AttestationSigningKey signingKey, Context context) {
-        return asyncClient.removePolicyManagementCertificateWithResponse(certificateToRemove, signingKey, context).block();
+    public Response<PolicyCertificatesModificationResult> removePolicyManagementCertificateWithResponse(PolicyManagementCertificateOptions options, Context context) {
+        return asyncClient.removePolicyManagementCertificateWithResponse(options, context).block();
     }
 
 

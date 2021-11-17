@@ -9,6 +9,7 @@ import com.azure.security.attestation.models.AttestationSigner;
 import com.azure.security.attestation.models.AttestationSigningKey;
 import com.azure.security.attestation.models.CertificateModification;
 import com.azure.security.attestation.models.PolicyCertificatesModificationResult;
+import com.azure.security.attestation.models.PolicyManagementCertificateOptions;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -107,17 +108,19 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
         AttestationAdministrationClientBuilder attestationBuilder = getAuthenticatedAttestationBuilder(httpClient, clientUri);
         AttestationAdministrationClient client = attestationBuilder.buildClient();
 
-        PolicyCertificatesModificationResult result = client.addPolicyManagementCertificate(getPolicySigningCertificate0(),
-            new AttestationSigningKey()
+        PolicyCertificatesModificationResult result = client.addPolicyManagementCertificate(new PolicyManagementCertificateOptions()
+                .setCertificate(getPolicySigningCertificate0())
+            .setAttestationSigner(new AttestationSigningKey()
                 .setCertificate(getIsolatedSigningCertificate())
-                .setPrivateKey(getIsolatedSigningKey()));
+                .setPrivateKey(getIsolatedSigningKey())));
 
         assertEquals(CertificateModification.IS_PRESENT, result.getCertificateResolution());
 
-        result = client.removePolicyManagementCertificate(getPolicySigningCertificate0(),
-            new AttestationSigningKey()
-                .setCertificate(getIsolatedSigningCertificate())
-                .setPrivateKey(getIsolatedSigningKey()));
+        result = client.removePolicyManagementCertificate(new PolicyManagementCertificateOptions()
+                .setCertificate(getPolicySigningCertificate0())
+                .setAttestationSigner(new AttestationSigningKey()
+                    .setCertificate(getIsolatedSigningCertificate())
+                    .setPrivateKey(getIsolatedSigningKey())));
 
         assertEquals(CertificateModification.IS_ABSENT, result.getCertificateResolution());
     }
@@ -146,17 +149,19 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
         AttestationAdministrationClientBuilder attestationBuilder = getAuthenticatedAttestationBuilder(httpClient, clientUri);
         AttestationAdministrationClient client = attestationBuilder.buildClient();
 
-        Response<PolicyCertificatesModificationResult> response = client.addPolicyManagementCertificateWithResponse(getPolicySigningCertificate0(),
-            new AttestationSigningKey()
+        Response<PolicyCertificatesModificationResult> response = client.addPolicyManagementCertificateWithResponse(new PolicyManagementCertificateOptions()
+                .setCertificate(getPolicySigningCertificate0())
+            .setAttestationSigner(new AttestationSigningKey()
                 .setCertificate(getIsolatedSigningCertificate())
-                .setPrivateKey(getIsolatedSigningKey()), Context.NONE);
+                .setPrivateKey(getIsolatedSigningKey())), Context.NONE);
 
         assertEquals(CertificateModification.IS_PRESENT, response.getValue().getCertificateResolution());
 
-        response = client.removePolicyManagementCertificateWithResponse(getPolicySigningCertificate0(),
-            new AttestationSigningKey()
-                .setCertificate(getIsolatedSigningCertificate())
-                .setPrivateKey(getIsolatedSigningKey()), Context.NONE);
+        response = client.removePolicyManagementCertificateWithResponse(new PolicyManagementCertificateOptions()
+                .setCertificate(getPolicySigningCertificate0())
+                .setAttestationSigner(new AttestationSigningKey()
+                    .setCertificate(getIsolatedSigningCertificate())
+                    .setPrivateKey(getIsolatedSigningKey())), Context.NONE);
 
         assertEquals(CertificateModification.IS_ABSENT, response.getValue().getCertificateResolution());
     }
@@ -180,10 +185,11 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
                 MessageDigest.getInstance("SHA-1").digest(
                     certificate.getEncoded())).toUpperCase());
 
-        StepVerifier.create(client.addPolicyManagementCertificate(certificate,
-                    new AttestationSigningKey()
+        StepVerifier.create(client.addPolicyManagementCertificate(new PolicyManagementCertificateOptions()
+                    .setCertificate(certificate)
+                .setAttestationSigner(new AttestationSigningKey()
                         .setPrivateKey(getIsolatedSigningKey())
-                        .setCertificate(getIsolatedSigningCertificate())))
+                        .setCertificate(getIsolatedSigningCertificate()))))
             .assertNext(modificationResult -> {
                 assertEquals(CertificateModification.IS_PRESENT, modificationResult.getCertificateResolution());
                 assertEquals(expectedThumbprint, modificationResult.getCertificateThumbprint());
@@ -191,10 +197,11 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
             .verifyComplete();
 
         // Now remove the certificate we just added.
-        StepVerifier.create(client.removePolicyManagementCertificate(getPolicySigningCertificate0(),
-                    new AttestationSigningKey()
+        StepVerifier.create(client.removePolicyManagementCertificate(new PolicyManagementCertificateOptions()
+                    .setCertificate(getPolicySigningCertificate0())
+                .setAttestationSigner(new AttestationSigningKey()
                         .setPrivateKey(getIsolatedSigningKey())
-                        .setCertificate(getIsolatedSigningCertificate())))
+                        .setCertificate(getIsolatedSigningCertificate()))))
             .assertNext(removeResult -> {
                 assertEquals(CertificateModification.IS_ABSENT, removeResult.getCertificateResolution());
                 assertEquals(expectedThumbprint, removeResult.getCertificateThumbprint());

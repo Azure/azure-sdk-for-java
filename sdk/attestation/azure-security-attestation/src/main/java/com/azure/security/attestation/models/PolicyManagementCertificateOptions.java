@@ -3,23 +3,24 @@
 package com.azure.security.attestation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.Context;
+
+import java.security.cert.X509Certificate;
 
 /**
  * <p>
  * AttestationPolicySetOptions represent the parameters sent to the
- * {@link com.azure.security.attestation.AttestationAdministrationClient#getAttestationPolicy(AttestationType)}
- * or {@link com.azure.security.attestation.AttestationAdministrationClient#getAttestationPolicyWithResponse(AttestationType, AttestationTokenValidationOptions, Context)} API.
+ * {@link com.azure.security.attestation.AttestationAdministrationClient#addPolicyManagementCertificate(PolicyManagementCertificateOptions)}
+ * or {@link com.azure.security.attestation.AttestationAdministrationClient#removePolicyManagementCertificate(PolicyManagementCertificateOptions)} API.
  * </p><p>
  * Each {@link AttestationPolicySetOptions} object expresses the options to verify the response
  * from the attestation service.
  * </p>
  */
 @Fluent
-public final class AttestationPolicySetOptions {
+public final class PolicyManagementCertificateOptions {
 
     private AttestationTokenValidationOptions validationOptions;
-    private String policy;
+    private X509Certificate certificate;
     private AttestationSigningKey signer;
 
     /**
@@ -28,7 +29,7 @@ public final class AttestationPolicySetOptions {
      *                          already performed by the SDK.
      * @return this {@link AttestationPolicySetOptions} object.
      */
-    public AttestationPolicySetOptions setValidationOptions(AttestationTokenValidationOptions validationOptions) {
+    public PolicyManagementCertificateOptions setValidationOptions(AttestationTokenValidationOptions validationOptions) {
         this.validationOptions = validationOptions;
         return this;
     }
@@ -45,17 +46,17 @@ public final class AttestationPolicySetOptions {
      * Gets the attestation policy which will be used to generate an policy set request.
      * @return Attestation Policy Token associated with this request.
      */
-    public String getAttestationPolicy() {
-        return this.policy;
+    public X509Certificate getCertificate() {
+        return this.certificate;
     }
 
     /**
      * Sets the attestation policy which will be used to generate an policy set request.
-     * @param policy Attestation Token to be set.
+     * @param certificate Certificate to add or remove from the Policy Management Certificates.
      * @return This {@link AttestationPolicySetOptions}.
      */
-    public AttestationPolicySetOptions setAttestationPolicy(String policy) {
-        this.policy = policy;
+    public PolicyManagementCertificateOptions setCertificate(X509Certificate certificate) {
+        this.certificate = certificate;
         return this;
     }
 
@@ -72,7 +73,7 @@ public final class AttestationPolicySetOptions {
      * @param signer Signer for the set Policy request.
      * @return This {@link AttestationPolicySetOptions}.
      */
-    public AttestationPolicySetOptions setAttestationSigner(AttestationSigningKey signer) {
+    public PolicyManagementCertificateOptions setAttestationSigner(AttestationSigningKey signer) {
         this.signer = signer;
         return this;
     }
