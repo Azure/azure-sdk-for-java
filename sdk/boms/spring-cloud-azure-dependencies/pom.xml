@@ -44,6 +44,7 @@
     <packageOutputDirectory>${project.build.directory}</packageOutputDirectory>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <azure.resourcemanager.version>2.9.0</azure.resourcemanager.version> <!-- {x-version-update;com.azure.resourcemanager:azure-resourcemanager;dependency} -->
+    <azure.sdk.bom.version>1.0.5</azure.sdk.bom.version> <!-- {x-version-update;spring_cloud_azure_com.azure:azure-sdk-bom;dependency} -->
     <appconfigure.version>2.1.1</appconfigure.version>
     <appconfigure.starter.version>2.1.1</appconfigure.starter.version>
     <appconfigure.feature.management.version>2.0.1</appconfigure.feature.management.version>
@@ -54,11 +55,11 @@
       <dependency>
         <groupId>com.azure</groupId>
         <artifactId>azure-sdk-bom</artifactId>
-        <version>1.0.4</version>
+        <version>${azure.sdk.bom.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
-      
+
       <!-- Spring Messaging Azure -->
       <dependency>
         <groupId>com.azure.spring</groupId>
@@ -80,7 +81,7 @@
         <artifactId>spring-messaging-azure-storage-queue</artifactId>
         <version>${project.version}</version>
       </dependency>
-      
+
       <!-- Spring Integration Azure-->
       <dependency>
         <groupId>com.azure.spring</groupId>
