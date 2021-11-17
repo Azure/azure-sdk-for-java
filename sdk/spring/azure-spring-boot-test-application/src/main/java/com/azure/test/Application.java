@@ -3,7 +3,6 @@
 
 package com.azure.test;
 
-import com.alibaba.fastjson.JSON;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,7 +60,7 @@ public class Application implements CommandLineRunner {
     }
 
     @GetMapping("list")
-    public String list() {
+    public String list() throws JsonProcessingException {
         final List list = new ArrayList();
         final MutablePropertySources propertySources = this.environment.getPropertySources();
         final Iterator<PropertySource<?>> iterator = propertySources.iterator();
@@ -69,7 +68,7 @@ public class Application implements CommandLineRunner {
             final PropertySource<?> next = iterator.next();
             list.add(next.getName());
         }
-        return JSON.toJSONString(list);
+        return mapper.writeValueAsString(list);
     }
 
     @GetMapping("getSpecificProperty/{ps}/{key}")
