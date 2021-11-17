@@ -125,7 +125,7 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
     }
     private class IntegrationRecordMessageProcessingListener implements RecordMessageProcessingListener {
 
-        private ServiceBusMessageConverter messageConverter;
+        private ServiceBusMessageConverter messageConverter = new ServiceBusMessageConverter();
         private Class<?> payloadType = byte[].class;
         private InstrumentationManager instrumentationManager;
         private String instrumentationId;

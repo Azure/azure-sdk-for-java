@@ -37,7 +37,7 @@ public class DefaultServiceBusNamespaceProducerFactory implements ServiceBusProd
     public DefaultServiceBusNamespaceProducerFactory(NamespaceProperties namespaceProperties,
                                                      PropertiesSupplier<String, ProducerProperties> supplier) {
         this.namespaceProperties = namespaceProperties;
-        this.propertiesSupplier = supplier;
+        this.propertiesSupplier = supplier == null ? key -> null : supplier;;
     }
 
     public ServiceBusSenderAsyncClient createProducer(String name) {
