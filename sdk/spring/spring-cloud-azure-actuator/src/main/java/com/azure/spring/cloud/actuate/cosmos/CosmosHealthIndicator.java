@@ -12,6 +12,10 @@ import org.springframework.boot.actuate.health.Health.Builder;
 import org.springframework.boot.actuate.health.HealthIndicator;
 import org.springframework.util.Assert;
 
+import java.time.Duration;
+
+import static com.azure.spring.cloud.actuate.util.Constants.DEFAULT_HEALTH_CHECK_TIMEOUT;
+
 /**
  * Simple implementation of a {@link HealthIndicator} returning status information for
  * Cosmos data stores.
@@ -23,6 +27,7 @@ public class CosmosHealthIndicator extends AbstractHealthIndicator {
     private final CosmosAsyncClient cosmosAsyncClient;
     private final String database;
     private final String endpoint;
+    private Duration timeout = DEFAULT_HEALTH_CHECK_TIMEOUT;
 
     public CosmosHealthIndicator(CosmosAsyncClient cosmosAsyncClient, String database, String endpoint) {
         super("Cosmos health check failed");
@@ -34,7 +39,9 @@ public class CosmosHealthIndicator extends AbstractHealthIndicator {
 
     @Override
     protected void doHealthCheck(Builder builder) {
-        CosmosDatabaseResponse response = this.cosmosAsyncClient.getDatabase(database).read().block();
+        CosmosDatabaseResponse response = this.cosmosAsyncClient.getDatabase(database)
+            .read()
+            .block(timeout);
 
         if (response != null) {
             LOGGER.info("The health indicator cost {} RUs, cosmos uri: {}, dbName: {}",
@@ -45,6 +52,9 @@ public class CosmosHealthIndicator extends AbstractHealthIndicator {
         } else {
             builder.up().withDetail("database", response.getProperties().getId());
         }
+    }
 
+    public void setTimeout(Duration timeout) {
+        this.timeout = timeout;
     }
 }

@@ -23,19 +23,16 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ConditionalOnClass({ EventHubClientBuilder.class, HealthIndicator.class })
 @AutoConfigureAfter(AzureEventHubsAutoConfiguration.class)
+@ConditionalOnBean(EventHubClientBuilder.class)
+@ConditionalOnEnabledHealthIndicator("azure-eventhubs")
 public class EventHubsHealthConfiguration {
 
     @Bean
-    @ConditionalOnBean(EventHubClientBuilder.class)
-    @ConditionalOnEnabledHealthIndicator("azure-eventhub")
-    public EventHubsHealthIndicator eventHubsHealthIndicator(
+    public EventHubsHealthIndicator eventhubsHealthIndicator(
         ObjectProvider<EventHubProducerAsyncClient> producerAsyncClients,
         ObjectProvider<EventHubConsumerAsyncClient> consumerAsyncClients) {
 
         return new EventHubsHealthIndicator(producerAsyncClients.getIfAvailable(),
                                            consumerAsyncClients.getIfAvailable());
     }
-
-
-
 }

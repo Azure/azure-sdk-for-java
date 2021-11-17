@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.spring.cloud.actuate.keyvault;
+package com.azure.spring.cloud.actuate.appconfiguration;
 
 import com.azure.core.exception.ResourceNotFoundException;
-import com.azure.security.keyvault.secrets.SecretAsyncClient;
+import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health;
 
@@ -13,21 +13,21 @@ import java.time.Duration;
 import static com.azure.spring.cloud.actuate.util.Constants.DEFAULT_HEALTH_CHECK_TIMEOUT;
 
 /**
- * Indicator class of KeyVaultHealth
+ * Indicator class of App Configuration
  */
-public class KeyVaultSecretHealthIndicator extends AbstractHealthIndicator {
+public class AppConfigurationHealthIndicator extends AbstractHealthIndicator {
 
-    private final SecretAsyncClient secretAsyncClient;
     private Duration timeout = DEFAULT_HEALTH_CHECK_TIMEOUT;
+    private final ConfigurationAsyncClient configurationAsyncClient;
 
-    public KeyVaultSecretHealthIndicator(SecretAsyncClient secretAsyncClient) {
-        this.secretAsyncClient = secretAsyncClient;
+    public AppConfigurationHealthIndicator(ConfigurationAsyncClient configurationAsyncClient) {
+        this.configurationAsyncClient = configurationAsyncClient;
     }
 
     @Override
-    protected void doHealthCheck(Health.Builder builder) {
+    protected void doHealthCheck(Health.Builder builder) throws Exception {
         try {
-            this.secretAsyncClient.getSecretWithResponse("azure-spring-none-existing-secret", "")
+            this.configurationAsyncClient.getConfigurationSetting("azure-spring-none-existing-setting", null)
                 .block(timeout);
             builder.up();
         } catch (Exception e) {

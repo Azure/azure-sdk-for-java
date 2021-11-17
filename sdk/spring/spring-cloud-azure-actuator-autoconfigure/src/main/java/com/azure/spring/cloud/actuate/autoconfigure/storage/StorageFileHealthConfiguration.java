@@ -21,12 +21,11 @@ import org.springframework.context.annotation.Configuration;
 @ConditionalOnClass({ ShareServiceAsyncClient.class, HealthIndicator.class })
 @AutoConfigureAfter(AzureStorageFileShareAutoConfiguration.class)
 @ConditionalOnBean(ShareServiceAsyncClient.class)
+@ConditionalOnEnabledHealthIndicator("azure-storage")
 public class StorageFileHealthConfiguration {
 
     @Bean
-    @ConditionalOnEnabledHealthIndicator("azure-storage")
     public StorageFileHealthIndicator storageFileHealthIndicator(ShareServiceAsyncClient shareServiceAsyncClient) {
         return new StorageFileHealthIndicator(shareServiceAsyncClient);
     }
-
 }
