@@ -41,13 +41,54 @@ import java.util.UUID;
  * {@link EventGridPublisherAsyncClient} or {@link EventGridPublisherClient} to send it the EventGrid service.</p>
  *
  * <p><strong>Create EventGridEvent Samples</strong></p>
- * {@codesnippet com.azure.messaging.eventgrid.EventGridEvent#constructor}
+ * <!-- src_embed com.azure.messaging.eventgrid.EventGridEvent#constructor -->
+ * <pre>
+ * &#47;&#47; Use BinaryData.fromObject&#40;&#41; to create EventGridEvent data
+ * &#47;&#47; From a model class
+ * User user = new User&#40;&quot;Stephen&quot;, &quot;James&quot;&#41;;
+ * EventGridEvent eventGridEventDataObject = new EventGridEvent&#40;&quot;&#47;EventGridEvents&#47;example&#47;source&quot;,
+ *     &quot;Example.EventType&quot;, BinaryData.fromObject&#40;user&#41;, &quot;0.1&quot;&#41;;
+ *
+ * &#47;&#47; From a String
+ * EventGridEvent eventGridEventDataStr = new EventGridEvent&#40;&quot;&#47;EventGridEvents&#47;example&#47;source&quot;,
+ *     &quot;Example.EventType&quot;, BinaryData.fromObject&#40;&quot;Hello World&quot;&#41;, &quot;0.1&quot;&#41;;
+ *
+ * &#47;&#47; From an Integer
+ * EventGridEvent eventGridEventDataInt = new EventGridEvent&#40;&quot;&#47;EventGridEvents&#47;example&#47;source&quot;,
+ *     &quot;Example.EventType&quot;, BinaryData.fromObject&#40;1&#41;, &quot;0.1&quot;&#41;;
+ *
+ * &#47;&#47; From a Boolean
+ * EventGridEvent eventGridEventDataBool = new EventGridEvent&#40;&quot;&#47;EventGridEvents&#47;example&#47;source&quot;,
+ *     &quot;Example.EventType&quot;, BinaryData.fromObject&#40;true&#41;, &quot;0.1&quot;&#41;;
+ *
+ * &#47;&#47; From null
+ * EventGridEvent eventGridEventDataNull = new EventGridEvent&#40;&quot;&#47;EventGridEvents&#47;example&#47;source&quot;,
+ *     &quot;Example.EventType&quot;, BinaryData.fromObject&#40;null&#41;, &quot;0.1&quot;&#41;;
+ *
+ * &#47;&#47; Use BinaryData.fromString&#40;&#41; if you have a Json String for the EventGridEvent data.
+ * String jsonStringForData = &quot;&#92;&quot;Hello World&#92;&quot;&quot;;  &#47;&#47; A json String.
+ * EventGridEvent eventGridEventDataDataJsonStr = new EventGridEvent&#40;&quot;&#47;EventGridEvents&#47;example&#47;source&quot;,
+ *     &quot;Example.EventType&quot;, BinaryData.fromString&#40;jsonStringForData&#41;, &quot;0.1&quot;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.eventgrid.EventGridEvent#constructor -->
  *
  * <p>On the contrary, if you receive events from any event handlers and therefore have the Json string representation
  * of one or more of EventGridEvents, use {@link #fromString(String)} to deserialize them from the Json string.</p>
  *
  * <p><strong>Deserialize EventGridEvent Samples</strong></p>
- * {@codesnippet com.azure.messaging.eventgrid.EventGridEvent.fromString}
+ * <!-- src_embed com.azure.messaging.eventgrid.EventGridEvent.fromString -->
+ * <pre>
+ * List&lt;EventGridEvent&gt; eventGridEventList = EventGridEvent.fromString&#40;eventGridEventJsonString&#41;;
+ * EventGridEvent eventGridEvent = eventGridEventList.get&#40;0&#41;;
+ * BinaryData eventGridEventData = eventGridEvent.getData&#40;&#41;;
+ *
+ * User objectValue = eventGridEventData.toObject&#40;User.class&#41;;  &#47;&#47; If data payload is a User object.
+ * int intValue = eventGridEventData.toObject&#40;Integer.class&#41;;  &#47;&#47; If data payload is an int.
+ * boolean boolValue = eventGridEventData.toObject&#40;Boolean.class&#41;;  &#47;&#47; If data payload is boolean.
+ * String stringValue = eventGridEventData.toObject&#40;String.class&#41;;  &#47;&#47; If data payload is String.
+ * String jsonStringValue = eventGridEventData.toString&#40;&#41;;  &#47;&#47; The data payload represented in Json String.
+ * </pre>
+ * <!-- end com.azure.messaging.eventgrid.EventGridEvent.fromString -->
  *
  * @see EventGridPublisherAsyncClient to send EventGridEvents asynchronously.
  * @see EventGridPublisherClient to send EventGridEvents sychronously.
@@ -84,7 +125,36 @@ public final class EventGridEvent {
      * Create a new instance of the EventGridEvent, with the given required fields.
      *
      * <p><strong>Create EventGridEvent Samples</strong></p>
-     * {@codesnippet com.azure.messaging.eventgrid.EventGridEvent#constructor}
+     * <!-- src_embed com.azure.messaging.eventgrid.EventGridEvent#constructor -->
+     * <pre>
+     * &#47;&#47; Use BinaryData.fromObject&#40;&#41; to create EventGridEvent data
+     * &#47;&#47; From a model class
+     * User user = new User&#40;&quot;Stephen&quot;, &quot;James&quot;&#41;;
+     * EventGridEvent eventGridEventDataObject = new EventGridEvent&#40;&quot;&#47;EventGridEvents&#47;example&#47;source&quot;,
+     *     &quot;Example.EventType&quot;, BinaryData.fromObject&#40;user&#41;, &quot;0.1&quot;&#41;;
+     *
+     * &#47;&#47; From a String
+     * EventGridEvent eventGridEventDataStr = new EventGridEvent&#40;&quot;&#47;EventGridEvents&#47;example&#47;source&quot;,
+     *     &quot;Example.EventType&quot;, BinaryData.fromObject&#40;&quot;Hello World&quot;&#41;, &quot;0.1&quot;&#41;;
+     *
+     * &#47;&#47; From an Integer
+     * EventGridEvent eventGridEventDataInt = new EventGridEvent&#40;&quot;&#47;EventGridEvents&#47;example&#47;source&quot;,
+     *     &quot;Example.EventType&quot;, BinaryData.fromObject&#40;1&#41;, &quot;0.1&quot;&#41;;
+     *
+     * &#47;&#47; From a Boolean
+     * EventGridEvent eventGridEventDataBool = new EventGridEvent&#40;&quot;&#47;EventGridEvents&#47;example&#47;source&quot;,
+     *     &quot;Example.EventType&quot;, BinaryData.fromObject&#40;true&#41;, &quot;0.1&quot;&#41;;
+     *
+     * &#47;&#47; From null
+     * EventGridEvent eventGridEventDataNull = new EventGridEvent&#40;&quot;&#47;EventGridEvents&#47;example&#47;source&quot;,
+     *     &quot;Example.EventType&quot;, BinaryData.fromObject&#40;null&#41;, &quot;0.1&quot;&#41;;
+     *
+     * &#47;&#47; Use BinaryData.fromString&#40;&#41; if you have a Json String for the EventGridEvent data.
+     * String jsonStringForData = &quot;&#92;&quot;Hello World&#92;&quot;&quot;;  &#47;&#47; A json String.
+     * EventGridEvent eventGridEventDataDataJsonStr = new EventGridEvent&#40;&quot;&#47;EventGridEvents&#47;example&#47;source&quot;,
+     *     &quot;Example.EventType&quot;, BinaryData.fromString&#40;jsonStringForData&#41;, &quot;0.1&quot;&#41;;
+     * </pre>
+     * <!-- end com.azure.messaging.eventgrid.EventGridEvent#constructor -->
      *
      * @param subject the subject of the event.
      * @param eventType the type of the event, e.g. "Contoso.Items.ItemReceived".
@@ -120,7 +190,19 @@ public final class EventGridEvent {
      * an array of CloudEvent objects into a list of EventGridEvents.
      *
      * <p><strong>Deserialize EventGridEvent Samples</strong></p>
-     * {@codesnippet com.azure.messaging.eventgrid.EventGridEvent.fromString}
+     * <!-- src_embed com.azure.messaging.eventgrid.EventGridEvent.fromString -->
+     * <pre>
+     * List&lt;EventGridEvent&gt; eventGridEventList = EventGridEvent.fromString&#40;eventGridEventJsonString&#41;;
+     * EventGridEvent eventGridEvent = eventGridEventList.get&#40;0&#41;;
+     * BinaryData eventGridEventData = eventGridEvent.getData&#40;&#41;;
+     *
+     * User objectValue = eventGridEventData.toObject&#40;User.class&#41;;  &#47;&#47; If data payload is a User object.
+     * int intValue = eventGridEventData.toObject&#40;Integer.class&#41;;  &#47;&#47; If data payload is an int.
+     * boolean boolValue = eventGridEventData.toObject&#40;Boolean.class&#41;;  &#47;&#47; If data payload is boolean.
+     * String stringValue = eventGridEventData.toObject&#40;String.class&#41;;  &#47;&#47; If data payload is String.
+     * String jsonStringValue = eventGridEventData.toString&#40;&#41;;  &#47;&#47; The data payload represented in Json String.
+     * </pre>
+     * <!-- end com.azure.messaging.eventgrid.EventGridEvent.fromString -->
      *
      * @param eventGridJsonString the JSON string containing one or more EventGridEvent objects.
      *

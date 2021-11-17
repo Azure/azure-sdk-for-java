@@ -276,7 +276,7 @@ for (int i = 0; i < contentPageResults.size(); i++) {
     });
     // Selection Mark
     formPage.getSelectionMarks().forEach(selectionMark -> System.out.printf(
-        "Page: %s, Selection mark is %s within bounding box %s has a confidence score %.2f.%n",
+        "Page: %s, Selection mark is '%s' within bounding box %s has a confidence score %.2f.%n",
         selectionMark.getPageNumber(), selectionMark.getState(), selectionMark.getBoundingBox().toString(),
         selectionMark.getConfidence()));
 }
@@ -304,13 +304,13 @@ analyzeLayoutResult.getPages().forEach(documentPage -> {
 
     // lines
     documentPage.getLines().forEach(documentLine ->
-        System.out.printf("Line %s is within a bounding box %s.%n",
+        System.out.printf("Line '%s' is within a bounding box %s.%n",
             documentLine.getContent(),
             documentLine.getBoundingBox().toString()));
 
     // selection marks
     documentPage.getSelectionMarks().forEach(documentSelectionMark ->
-        System.out.printf("Selection mark is %s and is within a bounding box %s with confidence %.2f.%n",
+        System.out.printf("Selection mark is '%s' and is within a bounding box %s with confidence %.2f.%n",
             documentSelectionMark.getState().toString(),
             documentSelectionMark.getBoundingBox().toString(),
             documentSelectionMark.getConfidence()));
@@ -385,13 +385,13 @@ analyzeResult.getPages().forEach(documentPage -> {
 
     // lines
     documentPage.getLines().forEach(documentLine ->
-        System.out.printf("Line %s is within a bounding box %s.%n",
+        System.out.printf("Line '%s' is within a bounding box %s.%n",
             documentLine.getContent(),
             documentLine.getBoundingBox().toString()));
 
     // words
     documentPage.getWords().forEach(documentWord ->
-        System.out.printf("Word %s has a confidence score of %.2f%n.",
+        System.out.printf("Word '%s' has a confidence score of %.2f.%n",
             documentWord.getContent(),
             documentWord.getConfidence()));
 });
@@ -437,13 +437,13 @@ analyzeResult.getPages().forEach(documentPage -> {
 
     // lines
     documentPage.getLines().forEach(documentLine ->
-        System.out.printf("Line %s is within a bounding box %s.%n",
+        System.out.printf("Line '%s' is within a bounding box %s.%n",
             documentLine.getContent(),
             documentLine.getBoundingBox().toString()));
 
     // words
     documentPage.getWords().forEach(documentWord ->
-        System.out.printf("Word %s has a confidence score of %.2f%n.",
+        System.out.printf("Word '%s' has a confidence score of %.2f.%n",
             documentWord.getContent(),
             documentWord.getConfidence()));
 });
@@ -524,9 +524,9 @@ customFormModel.getTrainingDocuments().forEach(trainingDocumentInfo -> {
     System.out.printf("Document page count: %d%n", trainingDocumentInfo.getPageCount());
     if (!trainingDocumentInfo.getErrors().isEmpty()) {
         System.out.println("Document Errors:");
-        trainingDocumentInfo.getErrors().forEach(formRecognizerError ->
-            System.out.printf("Error code %s, Error message: %s%n", formRecognizerError.getErrorCode(),
-            formRecognizerError.getMessage()));
+        trainingDocumentInfo.getErrors().forEach(documentModelOperationError ->
+            System.out.printf("Error code %s, Error message: %s%n", documentModelOperationError.getErrorCode(),
+            documentModelOperationError.getMessage()));
     }
 });
 ```

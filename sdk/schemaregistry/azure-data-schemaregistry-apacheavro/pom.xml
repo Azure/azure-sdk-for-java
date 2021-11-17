@@ -16,7 +16,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-data-schemaregistry-apacheavro</artifactId>
-  <version>1.0.0-beta.7</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry-apacheavro;current} -->
+  <version>1.0.0-beta.8</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry-apacheavro;current} -->
 
   <name>Microsoft Azure client library for Schema Registry Apache Avro Serializer</name>
   <description>Apache Avro-specific serializer for Azure Schema Registry client library</description>
@@ -41,18 +41,21 @@
       --add-opens com.azure.data.schemaregistry.apacheavro/com.azure.data.schemaregistry.apacheavro=ALL-UNNAMED
       --add-opens com.azure.data.schemaregistry.apacheavro/com.azure.data.schemaregistry.apacheavro.generatedtestsources=org.apache.avro,ALL-UNNAMED
     </javaModulesSurefireArgLine>
+    <codesnippet.skip>false</codesnippet.skip>
+    <javadocDoclet></javadocDoclet>
+    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-schemaregistry</artifactId>
-      <version>1.0.0-beta.7</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry;current} -->
+      <version>1.1.0-beta.1</version> <!-- {x-version-update;com.azure:azure-data-schemaregistry;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-serializer-avro-apache</artifactId>
-      <version>1.0.0-beta.15</version> <!-- {x-version-update;com.azure:azure-core-serializer-avro-apache;dependency} -->
+      <version>1.0.0-beta.16</version> <!-- {x-version-update;com.azure:azure-core-serializer-avro-apache;dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
@@ -83,7 +86,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.4.0</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.4.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

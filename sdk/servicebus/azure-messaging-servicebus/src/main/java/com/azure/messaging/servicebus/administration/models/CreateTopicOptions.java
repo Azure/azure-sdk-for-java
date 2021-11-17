@@ -34,6 +34,7 @@ public final class CreateTopicOptions {
     private boolean enablePartitioning;
     private Duration lockDuration;
     private int maxDeliveryCount;
+    private long maxMessageSizeInKilobytes;
     private long maxSizeInMegabytes;
     private boolean requiresDuplicateDetection;
     private boolean requiresSession;
@@ -92,6 +93,7 @@ public final class CreateTopicOptions {
         this.enableBatchedOperations = topic.isBatchedOperationsEnabled();
         this.enablePartitioning = topic.isPartitioningEnabled();
         this.maxSizeInMegabytes = topic.getMaxSizeInMegabytes();
+        this.maxMessageSizeInKilobytes = topic.getMaxMessageSizeInKilobytes();
         this.requiresDuplicateDetection = topic.isDuplicateDetectionRequired();
         this.supportOrdering = topic.isOrderingSupported();
         this.status = topic.getStatus();
@@ -401,6 +403,30 @@ public final class CreateTopicOptions {
      */
     public CreateTopicOptions setUserMetadata(String userMetadata) {
         this.userMetadata = userMetadata;
+        return this;
+    }
+
+    /**
+     * Get the maxMessageSizeInKilobytes property: The maximum size of a message in kilobytes.
+     *
+     * @return the maxMessageSizeInKilobytes value.
+     */
+    public long getMaxMessageSizeInKilobytes() {
+        return this.maxMessageSizeInKilobytes;
+    }
+
+    /**
+     * Set the maxMessageSizeInKilobytes property: Represents the default maximum message size (in kilobytes)
+     * Option only available in premium tier. Default maximum in Standard tier is 256 KB, and 1 MB in premium tier.
+     * Larger message sizes are available in preview.
+     * Please see <a href=https://docs.microsoft.com/azure/service-bus-messaging/service-bus-premium-messaging#large-messages-support-preview>more info</a>
+     *
+     * @param maxMessageSizeInKilobytes the maxMessageSizeInKilobytes value to set.
+     *
+     * @return the CreateTopicOptions object itself.
+     */
+    public CreateTopicOptions setMaxMessageSizeInKilobytes(long maxMessageSizeInKilobytes) {
+        this.maxMessageSizeInKilobytes = maxMessageSizeInKilobytes;
         return this;
     }
 }

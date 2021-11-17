@@ -55,7 +55,7 @@ add the direct dependency to your project as follows.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-blob-batch</artifactId>
-  <version>12.11.1</version>
+  <version>12.11.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -94,15 +94,13 @@ The following sections provide several code snippets covering some of the most c
 
 Create a BlobBatchClient from a [BlobServiceClient][blob_service_client].
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/batch/ReadmeSamples.java#L42-L42 -->
-```java
+```java readme-sample-creatingBlobBatchClient
 BlobBatchClient blobBatchClient = new BlobBatchClientBuilder(blobServiceClient).buildClient();
 ```
 
 ### Bulk Deleting Blobs
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/batch/ReadmeSamples.java#L46-L48 -->
-```java
+```java readme-sample-bulkDeletingBlobs
 blobBatchClient.deleteBlobs(blobUrls, DeleteSnapshotsOptionType.INCLUDE).forEach(response ->
     System.out.printf("Deleting blob with URL %s completed with status code %d%n",
         response.getRequest().getUrl(), response.getStatusCode()));
@@ -110,8 +108,7 @@ blobBatchClient.deleteBlobs(blobUrls, DeleteSnapshotsOptionType.INCLUDE).forEach
 
 ### Bulk Setting AccessTier
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/batch/ReadmeSamples.java#L52-L54 -->
-```java
+```java readme-sample-bulkSettingAccessTier
 blobBatchClient.setBlobsAccessTier(blobUrls, AccessTier.HOT).forEach(response ->
     System.out.printf("Setting blob access tier with URL %s completed with status code %d%n",
         response.getRequest().getUrl(), response.getStatusCode()));
@@ -121,8 +118,7 @@ blobBatchClient.setBlobsAccessTier(blobUrls, AccessTier.HOT).forEach(response ->
 
 Deleting blobs in a batch that have different pre-requisites.
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/batch/ReadmeSamples.java#L58-L77 -->
-```java
+```java readme-sample-advancedBatchingDelete
 BlobBatch blobBatch = blobBatchClient.getBlobBatch();
 
 // Delete a blob.
@@ -147,8 +143,7 @@ System.out.printf("Deleting blob with lease completed with status code %d%n",
 
 Setting `AccessTier` on blobs in batch that have different pre-requisites.
 
-<!-- embedme ./src/samples/java/com/azure/storage/blob/batch/ReadmeSamples.java#L81-L97 -->
-```java
+```java readme-sample-advancedBatchingSetTier
 BlobBatch blobBatch = blobBatchClient.getBlobBatch();
 
 // Set AccessTier on a blob.

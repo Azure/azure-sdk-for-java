@@ -5,18 +5,21 @@
 package com.azure.resourcemanager.eventhubs.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.annotation.JsonFlatten;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.eventhubs.models.Encryption;
+import com.azure.resourcemanager.eventhubs.models.Identity;
 import com.azure.resourcemanager.eventhubs.models.Sku;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
+import java.util.List;
+import java.util.Map;
 
 /** Single Namespace item in List or Get Operation. */
-@JsonFlatten
 @Fluent
-public class EHNamespaceInner extends Resource {
+public final class EHNamespaceInner extends Resource {
     @JsonIgnore private final ClientLogger logger = new ClientLogger(EHNamespaceInner.class);
 
     /*
@@ -26,55 +29,22 @@ public class EHNamespaceInner extends Resource {
     private Sku sku;
 
     /*
-     * Provisioning state of the Namespace.
+     * Properties of BYOK Identity description
      */
-    @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    @JsonProperty(value = "identity")
+    private Identity identity;
 
     /*
-     * The time the Namespace was created.
+     * The system meta data relating to this resource.
      */
-    @JsonProperty(value = "properties.createdAt", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime createdAt;
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
 
     /*
-     * The time the Namespace was updated.
+     * Namespace properties supplied for create namespace operation.
      */
-    @JsonProperty(value = "properties.updatedAt", access = JsonProperty.Access.WRITE_ONLY)
-    private OffsetDateTime updatedAt;
-
-    /*
-     * Endpoint you can use to perform Service Bus operations.
-     */
-    @JsonProperty(value = "properties.serviceBusEndpoint", access = JsonProperty.Access.WRITE_ONLY)
-    private String serviceBusEndpoint;
-
-    /*
-     * Identifier for Azure Insights metrics.
-     */
-    @JsonProperty(value = "properties.metricId", access = JsonProperty.Access.WRITE_ONLY)
-    private String metricId;
-
-    /*
-     * Value that indicates whether AutoInflate is enabled for eventhub
-     * namespace.
-     */
-    @JsonProperty(value = "properties.isAutoInflateEnabled")
-    private Boolean isAutoInflateEnabled;
-
-    /*
-     * Upper limit of throughput units when AutoInflate is enabled, value
-     * should be within 0 to 20 throughput units. ( '0' if AutoInflateEnabled =
-     * true)
-     */
-    @JsonProperty(value = "properties.maximumThroughputUnits")
-    private Integer maximumThroughputUnits;
-
-    /*
-     * Value that indicates whether Kafka is enabled for eventhub namespace.
-     */
-    @JsonProperty(value = "properties.kafkaEnabled")
-    private Boolean kafkaEnabled;
+    @JsonProperty(value = "properties")
+    private EHNamespaceProperties innerProperties;
 
     /**
      * Get the sku property: Properties of sku resource.
@@ -97,12 +67,73 @@ public class EHNamespaceInner extends Resource {
     }
 
     /**
+     * Get the identity property: Properties of BYOK Identity description.
+     *
+     * @return the identity value.
+     */
+    public Identity identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Properties of BYOK Identity description.
+     *
+     * @param identity the identity value to set.
+     * @return the EHNamespaceInner object itself.
+     */
+    public EHNamespaceInner withIdentity(Identity identity) {
+        this.identity = identity;
+        return this;
+    }
+
+    /**
+     * Get the systemData property: The system meta data relating to this resource.
+     *
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * Get the innerProperties property: Namespace properties supplied for create namespace operation.
+     *
+     * @return the innerProperties value.
+     */
+    private EHNamespaceProperties innerProperties() {
+        return this.innerProperties;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EHNamespaceInner withLocation(String location) {
+        super.withLocation(location);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public EHNamespaceInner withTags(Map<String, String> tags) {
+        super.withTags(tags);
+        return this;
+    }
+
+    /**
      * Get the provisioningState property: Provisioning state of the Namespace.
      *
      * @return the provisioningState value.
      */
     public String provisioningState() {
-        return this.provisioningState;
+        return this.innerProperties() == null ? null : this.innerProperties().provisioningState();
+    }
+
+    /**
+     * Get the status property: Status of the Namespace.
+     *
+     * @return the status value.
+     */
+    public String status() {
+        return this.innerProperties() == null ? null : this.innerProperties().status();
     }
 
     /**
@@ -111,7 +142,7 @@ public class EHNamespaceInner extends Resource {
      * @return the createdAt value.
      */
     public OffsetDateTime createdAt() {
-        return this.createdAt;
+        return this.innerProperties() == null ? null : this.innerProperties().createdAt();
     }
 
     /**
@@ -120,7 +151,7 @@ public class EHNamespaceInner extends Resource {
      * @return the updatedAt value.
      */
     public OffsetDateTime updatedAt() {
-        return this.updatedAt;
+        return this.innerProperties() == null ? null : this.innerProperties().updatedAt();
     }
 
     /**
@@ -129,7 +160,30 @@ public class EHNamespaceInner extends Resource {
      * @return the serviceBusEndpoint value.
      */
     public String serviceBusEndpoint() {
-        return this.serviceBusEndpoint;
+        return this.innerProperties() == null ? null : this.innerProperties().serviceBusEndpoint();
+    }
+
+    /**
+     * Get the clusterArmId property: Cluster ARM ID of the Namespace.
+     *
+     * @return the clusterArmId value.
+     */
+    public String clusterArmId() {
+        return this.innerProperties() == null ? null : this.innerProperties().clusterArmId();
+    }
+
+    /**
+     * Set the clusterArmId property: Cluster ARM ID of the Namespace.
+     *
+     * @param clusterArmId the clusterArmId value to set.
+     * @return the EHNamespaceInner object itself.
+     */
+    public EHNamespaceInner withClusterArmId(String clusterArmId) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EHNamespaceProperties();
+        }
+        this.innerProperties().withClusterArmId(clusterArmId);
+        return this;
     }
 
     /**
@@ -138,7 +192,7 @@ public class EHNamespaceInner extends Resource {
      * @return the metricId value.
      */
     public String metricId() {
-        return this.metricId;
+        return this.innerProperties() == null ? null : this.innerProperties().metricId();
     }
 
     /**
@@ -148,7 +202,7 @@ public class EHNamespaceInner extends Resource {
      * @return the isAutoInflateEnabled value.
      */
     public Boolean isAutoInflateEnabled() {
-        return this.isAutoInflateEnabled;
+        return this.innerProperties() == null ? null : this.innerProperties().isAutoInflateEnabled();
     }
 
     /**
@@ -159,7 +213,10 @@ public class EHNamespaceInner extends Resource {
      * @return the EHNamespaceInner object itself.
      */
     public EHNamespaceInner withIsAutoInflateEnabled(Boolean isAutoInflateEnabled) {
-        this.isAutoInflateEnabled = isAutoInflateEnabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EHNamespaceProperties();
+        }
+        this.innerProperties().withIsAutoInflateEnabled(isAutoInflateEnabled);
         return this;
     }
 
@@ -170,7 +227,7 @@ public class EHNamespaceInner extends Resource {
      * @return the maximumThroughputUnits value.
      */
     public Integer maximumThroughputUnits() {
-        return this.maximumThroughputUnits;
+        return this.innerProperties() == null ? null : this.innerProperties().maximumThroughputUnits();
     }
 
     /**
@@ -181,7 +238,10 @@ public class EHNamespaceInner extends Resource {
      * @return the EHNamespaceInner object itself.
      */
     public EHNamespaceInner withMaximumThroughputUnits(Integer maximumThroughputUnits) {
-        this.maximumThroughputUnits = maximumThroughputUnits;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EHNamespaceProperties();
+        }
+        this.innerProperties().withMaximumThroughputUnits(maximumThroughputUnits);
         return this;
     }
 
@@ -191,7 +251,7 @@ public class EHNamespaceInner extends Resource {
      * @return the kafkaEnabled value.
      */
     public Boolean kafkaEnabled() {
-        return this.kafkaEnabled;
+        return this.innerProperties() == null ? null : this.innerProperties().kafkaEnabled();
     }
 
     /**
@@ -201,7 +261,128 @@ public class EHNamespaceInner extends Resource {
      * @return the EHNamespaceInner object itself.
      */
     public EHNamespaceInner withKafkaEnabled(Boolean kafkaEnabled) {
-        this.kafkaEnabled = kafkaEnabled;
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EHNamespaceProperties();
+        }
+        this.innerProperties().withKafkaEnabled(kafkaEnabled);
+        return this;
+    }
+
+    /**
+     * Get the zoneRedundant property: Enabling this property creates a Standard Event Hubs Namespace in regions
+     * supported availability zones.
+     *
+     * @return the zoneRedundant value.
+     */
+    public Boolean zoneRedundant() {
+        return this.innerProperties() == null ? null : this.innerProperties().zoneRedundant();
+    }
+
+    /**
+     * Set the zoneRedundant property: Enabling this property creates a Standard Event Hubs Namespace in regions
+     * supported availability zones.
+     *
+     * @param zoneRedundant the zoneRedundant value to set.
+     * @return the EHNamespaceInner object itself.
+     */
+    public EHNamespaceInner withZoneRedundant(Boolean zoneRedundant) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EHNamespaceProperties();
+        }
+        this.innerProperties().withZoneRedundant(zoneRedundant);
+        return this;
+    }
+
+    /**
+     * Get the encryption property: Properties of BYOK Encryption description.
+     *
+     * @return the encryption value.
+     */
+    public Encryption encryption() {
+        return this.innerProperties() == null ? null : this.innerProperties().encryption();
+    }
+
+    /**
+     * Set the encryption property: Properties of BYOK Encryption description.
+     *
+     * @param encryption the encryption value to set.
+     * @return the EHNamespaceInner object itself.
+     */
+    public EHNamespaceInner withEncryption(Encryption encryption) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EHNamespaceProperties();
+        }
+        this.innerProperties().withEncryption(encryption);
+        return this;
+    }
+
+    /**
+     * Get the privateEndpointConnections property: List of private endpoint connections.
+     *
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
+    }
+
+    /**
+     * Set the privateEndpointConnections property: List of private endpoint connections.
+     *
+     * @param privateEndpointConnections the privateEndpointConnections value to set.
+     * @return the EHNamespaceInner object itself.
+     */
+    public EHNamespaceInner withPrivateEndpointConnections(
+        List<PrivateEndpointConnectionInner> privateEndpointConnections) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EHNamespaceProperties();
+        }
+        this.innerProperties().withPrivateEndpointConnections(privateEndpointConnections);
+        return this;
+    }
+
+    /**
+     * Get the disableLocalAuth property: This property disables SAS authentication for the Event Hubs namespace.
+     *
+     * @return the disableLocalAuth value.
+     */
+    public Boolean disableLocalAuth() {
+        return this.innerProperties() == null ? null : this.innerProperties().disableLocalAuth();
+    }
+
+    /**
+     * Set the disableLocalAuth property: This property disables SAS authentication for the Event Hubs namespace.
+     *
+     * @param disableLocalAuth the disableLocalAuth value to set.
+     * @return the EHNamespaceInner object itself.
+     */
+    public EHNamespaceInner withDisableLocalAuth(Boolean disableLocalAuth) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EHNamespaceProperties();
+        }
+        this.innerProperties().withDisableLocalAuth(disableLocalAuth);
+        return this;
+    }
+
+    /**
+     * Get the alternateName property: Alternate name specified when alias and namespace names are same.
+     *
+     * @return the alternateName value.
+     */
+    public String alternateName() {
+        return this.innerProperties() == null ? null : this.innerProperties().alternateName();
+    }
+
+    /**
+     * Set the alternateName property: Alternate name specified when alias and namespace names are same.
+     *
+     * @param alternateName the alternateName value to set.
+     * @return the EHNamespaceInner object itself.
+     */
+    public EHNamespaceInner withAlternateName(String alternateName) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new EHNamespaceProperties();
+        }
+        this.innerProperties().withAlternateName(alternateName);
         return this;
     }
 
@@ -213,6 +394,12 @@ public class EHNamespaceInner extends Resource {
     public void validate() {
         if (sku() != null) {
             sku().validate();
+        }
+        if (identity() != null) {
+            identity().validate();
+        }
+        if (innerProperties() != null) {
+            innerProperties().validate();
         }
     }
 }

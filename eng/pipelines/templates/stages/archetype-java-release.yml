@@ -128,8 +128,8 @@ stages:
             variables:
               - template: ../variables/globals.yml
             pool:
-              name: Azure Pipelines
-              vmImage: vs2017-win2016
+              name: azsdk-pool-mms-win-2019-general
+              vmImage: windows-2019
             strategy:
               runOnce:
                 deploy:
@@ -151,8 +151,8 @@ stages:
               variables:
                 - template: ../variables/globals.yml
               pool:
-                name: Azure Pipelines
-                vmImage: vs2017-win2016
+                name: azsdk-pool-mms-win-2019-general
+                vmImage: windows-2019
               strategy:
                 runOnce:
                   deploy:
@@ -197,47 +197,37 @@ stages:
                           ArtifactPath: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
 
           - ${{if ne(artifact.skipPublishDocMs, 'true')}}:
-            - deployment: PublicDocsMs
-              displayName: "Publish Updates for Docs.MS"
+            - deployment: PublishDocsMs
+              displayName: Docs.MS Release
               condition: and(succeeded(), ne(variables['Skip.PublishDocs'], 'true'))
-              environment: github
+              environment: githubio
               dependsOn: PublishPackage
-              variables:
-                CIConfigs: "{'targets':[{'path_to_config':'package.json','mode':'Preview','monikerid':'1','content_folder':'docs-ref-services/preview'},{'path_to_config':'package.json','mode':'Latest','monikerid':'0','content_folder':'docs-ref-services/latest'}]}"
-                skipComponentGovernanceDetection: true
+
               pool:
-                name: Azure Pipelines
-                vmImage: vs2017-win2016
+                name: azsdk-pool-mms-ubuntu-2004-general
+                vmImage: MMSUbuntu20.04
+
               strategy:
                 runOnce:
                   deploy:
                     steps:
                       - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
                         parameters:
-                          paths:
-                            - .github/CODEOWNERS
-                      - template: /eng/common/pipelines/templates/steps/get-pr-owners.yml
+                          SkipDefaultCheckout: true
+                          Paths:
+                            - sdk/**/*.md
+                      - download: current
+                      - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
                         parameters:
-                          TargetVariable: "OwningGHUser"
-                          ServiceDirectory: ${{parameters.ServiceDirectory}}
-                      - template: /eng/common/pipelines/templates/steps/docs-metadata-release.yml
-                        parameters:
-                          ArtifactLocation: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed/${{artifact.groupId}}/${{artifact.name}}
-                          PackageRepository: Maven
-                          ReleaseSha: $(Build.SourceVersion)
+                          PackageInfoLocations:
+                            - $(Pipeline.Workspace)/${{parameters.ArtifactName}}/PackageInfo/${{artifact.name}}.json
                           WorkingDirectory: $(System.DefaultWorkingDirectory)
                           TargetDocRepoOwner: ${{parameters.TargetDocRepoOwner}}
                           TargetDocRepoName: ${{parameters.TargetDocRepoName}}
-                          PRBranchName: onboarding-${{artifact.name}}-$(Build.BuildId)
-                          ArtifactName: ${{artifact.name}}
                           Language: 'java'
-                          DocRepoDestinationPath: 'docs-ref-services/'
-                          GHReviewersVariable: 'OwningGHUser'
-                          CIConfigs: $(CIConfigs)
-                          CloseAfterOpenForTesting: '${{ parameters.TestPipeline }}'
-                          SkipPackageJson: ${{artifact.skipUpdatePackageJson}}
                           SparseCheckoutPaths:
-                            - docs-ref-services
+                            - docs-ref-services/
+                            - metadata/
 
           - ${{if ne(artifact.skipPublishDocGithubIo, 'true')}}:
             - deployment: PublishDocs
@@ -328,8 +318,8 @@ stages:
             value: https://pkgs.dev.azure.com/azure-sdk/internal/_packaging/azure-sdk-for-java-pr/maven/v1
 
         pool:
-          name: Azure Pipelines
-          vmImage: vs2017-win2016
+          name: azsdk-pool-mms-win-2019-general
+          vmImage: windows-2019
         steps:
         - checkout: azure-sdk-build-tools
           path: azure-sdk-build-tools
@@ -372,3 +362,34 @@ stages:
               parameters:
                 ArtifactName: integration-${{parameters.ArtifactName}}-${{artifact.name}}-javadevfeed-$(System.JobAttempt)
                 ArtifactPath: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed
+      - job: PublishDocsToNightlyBranch
+        dependsOn: PublishPackages
+        condition: or(eq(variables['SetDevVersion'], 'true'), and(eq(variables['Build.Reason'],'Schedule'), eq(variables['System.TeamProject'], 'internal')))
+        pool:
+          name: azsdk-pool-mms-ubuntu-2004-general
+          vmImage: MMSUbuntu20.04
+        steps:
+          - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
+            parameters:
+              SkipDefaultCheckout: true 
+              Paths:
+                - sdk/**/*.md
+          - download: current
+          - pwsh: |
+              Get-ChildItem -Recurse $(Pipeline.Workspace)/${{parameters.ArtifactName}}/
+            displayName: Show visible artifacts
+
+          - template: /eng/common/pipelines/templates/steps/update-docsms-metadata.yml
+            parameters:
+              PackageInfoLocations:
+                - ${{ each artifact in parameters.Artifacts }}:
+                  - ${{if ne(artifact.skipPublishDocMs, 'true')}}:
+                    - $(Pipeline.Workspace)/${{parameters.ArtifactName}}/PackageInfo/${{artifact.name}}.json
+              WorkingDirectory: $(System.DefaultWorkingDirectory)
+              TargetDocRepoOwner: ${{parameters.TargetDocRepoOwner}}
+              TargetDocRepoName: ${{parameters.TargetDocRepoName}}
+              Language: 'java'
+              DailyDocsBuild: true
+              SparseCheckoutPaths:
+                - docs-ref-services/
+                - metadata/

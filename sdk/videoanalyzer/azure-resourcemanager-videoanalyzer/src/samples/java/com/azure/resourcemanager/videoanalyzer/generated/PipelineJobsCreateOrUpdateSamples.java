@@ -30,7 +30,8 @@ public final class PipelineJobsCreateOrUpdateSamples {
                     .asList(
                         new ParameterDefinition()
                             .withName("timesequences")
-                            .withValue("[[2020-10-05T03:30:00Z, 2020-10-05T04:30:00Z]]")))
+                            .withValue("[[\"2020-10-05T03:30:00Z\", \"2020-10-05T04:30:00Z\"]]"),
+                        new ParameterDefinition().withName("videoSourceName").withValue("camera001")))
             .create();
     }
 }

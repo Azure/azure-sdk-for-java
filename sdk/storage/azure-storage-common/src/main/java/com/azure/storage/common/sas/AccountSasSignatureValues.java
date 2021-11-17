@@ -3,6 +3,7 @@
 
 package com.azure.storage.common.sas;
 
+import com.azure.core.util.Configuration;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
@@ -18,7 +19,22 @@ import java.time.OffsetDateTime;
  * @see <a href=https://docs.microsoft.com/rest/api/storageservices/create-account-sas>Create an account SAS</a>
  */
 public final class AccountSasSignatureValues {
-    private static final String VERSION = Constants.SAS_SERVICE_VERSION;
+    private static final String VERSION = Configuration.getGlobalConfiguration()
+        .get(Constants.PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, Constants.SAS_SERVICE_VERSION);
+
+    /**
+     * Pin down to highest version that worked with string to sign defined here.
+     */
+    private static final String VERSION_DEPRECATED_SHARED_KEY_SAS_STRING_TO_SIGN;
+
+    static {
+        String version = Configuration.getGlobalConfiguration()
+            .get(Constants.PROPERTY_AZURE_STORAGE_SAS_SERVICE_VERSION, "2020-10-02");
+        if (version.compareTo("2020-10-02") > 0) {
+            version = "2020-10-02";
+        }
+        VERSION_DEPRECATED_SHARED_KEY_SAS_STRING_TO_SIGN = version;
+    }
 
     private SasProtocol protocol;
 
@@ -33,6 +49,8 @@ public final class AccountSasSignatureValues {
     private String services;
 
     private String resourceTypes;
+
+    private String encryptionScope;
 
     /**
      * Initializes a new {@link AccountSasSignatureValues} object.
@@ -236,6 +254,24 @@ public final class AccountSasSignatureValues {
     }
 
     /**
+     * @return An encryption scope that will be applied to any write operations performed with the sas
+     */
+    public String getEncryptionScope() {
+        return encryptionScope;
+    }
+
+    /**
+     * Sets the encryption scope that will be applied to any write operations performed with the sas
+     *
+     * @param encryptionScope the encryption scope to set
+     * @return the updated AccountSasSignatureValues object.
+     */
+    public AccountSasSignatureValues setEncryptionScope(String encryptionScope) {
+        this.encryptionScope = encryptionScope;
+        return this;
+    }
+
+    /**
      * Generates a {@link AccountSasQueryParameters} object which contains all SAS query parameters for authenticating
      * requests.
      *
@@ -277,7 +313,7 @@ public final class AccountSasSignatureValues {
         // Signature is generated on the un-url-encoded values.
         String signature = storageSharedKeyCredentials.computeHmac256(stringToSign(storageSharedKeyCredentials));
 
-        return new AccountSasQueryParameters(VERSION, this.services, resourceTypes,
+        return new AccountSasQueryParameters(VERSION_DEPRECATED_SHARED_KEY_SAS_STRING_TO_SIGN, this.services, resourceTypes,
             this.protocol, this.startTime, this.expiryTime, this.sasIpRange, this.permissions, signature);
     }
 
@@ -291,7 +327,7 @@ public final class AccountSasSignatureValues {
             Constants.ISO_8601_UTC_DATE_FORMATTER.format(this.expiryTime),
             this.sasIpRange == null ? "" : this.sasIpRange.toString(),
             this.protocol == null ? "" : this.protocol.toString(),
-            VERSION,
+            VERSION_DEPRECATED_SHARED_KEY_SAS_STRING_TO_SIGN,
             "" // Account SAS requires an additional newline character
         );
     }

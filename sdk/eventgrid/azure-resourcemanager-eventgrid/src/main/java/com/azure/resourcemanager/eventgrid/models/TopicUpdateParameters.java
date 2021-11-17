@@ -26,6 +26,12 @@ public final class TopicUpdateParameters {
     private Map<String, String> tags;
 
     /*
+     * Topic resource identity information.
+     */
+    @JsonProperty(value = "identity")
+    private IdentityInfo identity;
+
+    /*
      * Properties of the resource.
      */
     @JsonProperty(value = "properties")
@@ -48,6 +54,26 @@ public final class TopicUpdateParameters {
      */
     public TopicUpdateParameters withTags(Map<String, String> tags) {
         this.tags = tags;
+        return this;
+    }
+
+    /**
+     * Get the identity property: Topic resource identity information.
+     *
+     * @return the identity value.
+     */
+    public IdentityInfo identity() {
+        return this.identity;
+    }
+
+    /**
+     * Set the identity property: Topic resource identity information.
+     *
+     * @param identity the identity value to set.
+     * @return the TopicUpdateParameters object itself.
+     */
+    public TopicUpdateParameters withIdentity(IdentityInfo identity) {
+        this.identity = identity;
         return this;
     }
 
@@ -147,6 +173,9 @@ public final class TopicUpdateParameters {
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
+        if (identity() != null) {
+            identity().validate();
+        }
         if (innerProperties() != null) {
             innerProperties().validate();
         }

@@ -86,7 +86,18 @@ import java.net.URL;
  *
  * <p><strong>Instantiating a asynchronous CallingServer client</strong></p>
  *
- * {@codesnippet com.azure.communication.callingserver.CallingServerAsyncClient.pipeline.instantiation}
+ * <!-- src_embed com.azure.communication.callingserver.CallingServerAsyncClient.pipeline.instantiation -->
+ * <pre>
+ * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
+ *     .policies&#40;&#47;* add policies *&#47;&#41;
+ *     .build&#40;&#41;;
+ *
+ * CallingServerAsyncClient callingServerAsyncClient = new CallingServerClientBuilder&#40;&#41;
+ *     .pipeline&#40;pipeline&#41;
+ *     .connectionString&#40;connectionString&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.communication.callingserver.CallingServerAsyncClient.pipeline.instantiation -->
  *
  * <p>View {@link CallingServerClientBuilder this} for additional ways to construct the client.</p>
  *
@@ -121,7 +132,21 @@ public final class CallingServerAsyncClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful CreateCallConnection request.
      *
-     * {@codesnippet com.azure.communication.callingserver.CallingServerAsyncClient.create.call.connection.async}
+     * <!-- src_embed com.azure.communication.callingserver.CallingServerAsyncClient.create.call.connection.async -->
+     * <pre>
+     * List&lt;CommunicationIdentifier&gt; targets = Arrays.asList&#40;firstCallee, secondCallee&#41;;
+     * List&lt;CallMediaType&gt; requestedMediaTypes = Arrays.asList&#40;CallMediaType.AUDIO, CallMediaType.VIDEO&#41;;
+     * List&lt;CallingEventSubscriptionType&gt; requestedCallEvents = Arrays.asList&#40;
+     *     CallingEventSubscriptionType.TONE_RECEIVED,
+     *     CallingEventSubscriptionType.PARTICIPANTS_UPDATED&#41;;
+     * CreateCallOptions createCallOptions = new CreateCallOptions&#40;
+     *     URI.create&#40;callbackUri&#41;,
+     *     requestedMediaTypes,
+     *     requestedCallEvents&#41;;
+     * CallConnectionAsync callAsyncConnection = callingServerAsyncClient
+     *     .createCallConnection&#40;source, targets, createCallOptions&#41;.block&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.communication.callingserver.CallingServerAsyncClient.create.call.connection.async -->
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CallConnectionAsync> createCallConnection(

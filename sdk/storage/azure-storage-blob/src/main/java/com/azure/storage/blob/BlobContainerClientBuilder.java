@@ -88,7 +88,13 @@ public final class BlobContainerClientBuilder {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobContainerClientBuilder.buildClient}
+     * <!-- src_embed com.azure.storage.blob.BlobContainerClientBuilder.buildClient -->
+     * <pre>
+     * BlobContainerClient client = new BlobContainerClientBuilder&#40;&#41;
+     *     .connectionString&#40;connectionString&#41;
+     *     .buildClient&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobContainerClientBuilder.buildClient -->
      *
      * @return a {@link BlobContainerClient} created from the configurations in this builder.
      * @throws IllegalStateException If multiple credentials have been specified.
@@ -102,7 +108,13 @@ public final class BlobContainerClientBuilder {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.BlobContainerClientBuilder.buildAsyncClient}
+     * <!-- src_embed com.azure.storage.blob.BlobContainerClientBuilder.buildAsyncClient -->
+     * <pre>
+     * BlobContainerAsyncClient client = new BlobContainerClientBuilder&#40;&#41;
+     *     .connectionString&#40;connectionString&#41;
+     *     .buildAsyncClient&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.BlobContainerClientBuilder.buildAsyncClient -->
      *
      * @return a {@link BlobContainerAsyncClient} created from the configurations in this builder.
      * @throws IllegalStateException If multiple credentials have been specified.

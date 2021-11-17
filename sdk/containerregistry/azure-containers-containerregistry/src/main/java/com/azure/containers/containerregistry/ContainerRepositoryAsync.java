@@ -40,7 +40,16 @@ import static com.azure.core.util.FluxUtil.withContext;
  *
  * <p><strong>Instantiating an asynchronous Container Repository Helper class</strong></p>
  *
- * {@codesnippet com.azure.containers.containerregistry.ContainerRepositoryAsync.instantiation}
+ * <!-- src_embed com.azure.containers.containerregistry.ContainerRepositoryAsync.instantiation -->
+ * <pre>
+ * ContainerRepositoryAsync repositoryAsyncClient = new ContainerRegistryClientBuilder&#40;&#41;
+ *     .endpoint&#40;endpoint&#41;
+ *     .credential&#40;credential&#41;
+ *     .audience&#40;ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD&#41;
+ *     .buildAsyncClient&#40;&#41;
+ *     .getRepository&#40;repository&#41;;
+ * </pre>
+ * <!-- end com.azure.containers.containerregistry.ContainerRepositoryAsync.instantiation -->
  *
  */
 public final class ContainerRepositoryAsync {
@@ -114,7 +123,15 @@ public final class ContainerRepositoryAsync {
      *
      * <p>Delete the repository.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.ContainerRepositoryAsync.deleteRepositoryWithResponse}
+     * <!-- src_embed com.azure.containers.containerregistry.ContainerRepositoryAsync.deleteRepositoryWithResponse -->
+     * <pre>
+     * client.deleteWithResponse&#40;&#41;.subscribe&#40;response -&gt; &#123;
+     *     System.out.printf&#40;&quot;Successfully initiated delete of the repository.&quot;&#41;;
+     * &#125;, error -&gt; &#123;
+     *     System.out.println&#40;&quot;Failed to initiate a delete of the repository.&quot;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.ContainerRepositoryAsync.deleteRepositoryWithResponse -->
      *
      * @return A REST response containing the result of the repository delete operation. It returns the count of the tags and
      * artifacts that are deleted as part of the repository delete.
@@ -143,7 +160,15 @@ public final class ContainerRepositoryAsync {
      *
      * <p>Delete the repository.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.ContainerRepositoryAsync.deleteRepository}
+     * <!-- src_embed com.azure.containers.containerregistry.ContainerRepositoryAsync.deleteRepository -->
+     * <pre>
+     * client.delete&#40;&#41;.subscribe&#40;response -&gt; &#123;
+     *     System.out.printf&#40;&quot;Successfully initiated delete of the repository.&quot;&#41;;
+     * &#125;, error -&gt; &#123;
+     *     System.out.println&#40;&quot;Failed to initiate a delete of the repository.&quot;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.ContainerRepositoryAsync.deleteRepository -->
      *
      * @return It returns the count of the tags and artifacts that are deleted as part of the repository delete.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
@@ -178,7 +203,15 @@ public final class ContainerRepositoryAsync {
      *
      * <p>Retrieve all artifacts associated with the given repository.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.ContainerRepositoryAsync.listManifestProperties}.
+     * <!-- src_embed com.azure.containers.containerregistry.ContainerRepositoryAsync.listManifestProperties -->
+     * <pre>
+     * client.listManifestProperties&#40;&#41;.byPage&#40;10&#41;
+     *     .subscribe&#40;ManifestPropertiesPagedResponse -&gt; &#123;
+     *         ManifestPropertiesPagedResponse.getValue&#40;&#41;.stream&#40;&#41;.forEach&#40;
+     *             ManifestProperties -&gt; System.out.println&#40;ManifestProperties.getDigest&#40;&#41;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.ContainerRepositoryAsync.listManifestProperties -->
      *
      * @return {@link PagedFlux} of ManifestProperties for all the artifacts in the given repository.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
@@ -200,7 +233,15 @@ public final class ContainerRepositoryAsync {
      *
      * <p>Retrieve all artifacts associated with the given repository from the most recently updated to the last.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.ContainerRepositoryAsync.listManifestPropertiesWithOptions}.
+     * <!-- src_embed com.azure.containers.containerregistry.ContainerRepositoryAsync.listManifestPropertiesWithOptions -->
+     * <pre>
+     * client.listManifestProperties&#40;ArtifactManifestOrderBy.LAST_UPDATED_ON_DESCENDING&#41;.byPage&#40;10&#41;
+     *     .subscribe&#40;ManifestPropertiesPagedResponse -&gt; &#123;
+     *         ManifestPropertiesPagedResponse.getValue&#40;&#41;.stream&#40;&#41;.forEach&#40;
+     *             ManifestProperties -&gt; System.out.println&#40;ManifestProperties.getDigest&#40;&#41;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.ContainerRepositoryAsync.listManifestPropertiesWithOptions -->
      *
      * @param orderBy The order in which the artifacts are returned by the service.
      * @return {@link PagedFlux} of the artifacts for the given repository in the order specified by the options.
@@ -278,7 +319,14 @@ public final class ContainerRepositoryAsync {
      *
      * <p>Get the properties for the given repository.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.ContainerRepositoryAsync.getPropertiesWithResponse}
+     * <!-- src_embed com.azure.containers.containerregistry.ContainerRepositoryAsync.getPropertiesWithResponse -->
+     * <pre>
+     * client.getPropertiesWithResponse&#40;&#41;.subscribe&#40;response -&gt; &#123;
+     *     final ContainerRepositoryProperties properties = response.getValue&#40;&#41;;
+     *     System.out.printf&#40;&quot;Name:%s,&quot;, properties.getName&#40;&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.ContainerRepositoryAsync.getPropertiesWithResponse -->
      *
      * @return A REST response with the {@link ContainerRepositoryProperties properties} associated with the given {@link #getName() repository}.
      * @throws ClientAuthenticationException thrown if the client have access to the repository.
@@ -306,7 +354,13 @@ public final class ContainerRepositoryAsync {
      *
      * <p>Get the properties for the given repository.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.ContainerRepositoryAsync.getProperties}
+     * <!-- src_embed com.azure.containers.containerregistry.ContainerRepositoryAsync.getProperties -->
+     * <pre>
+     * client.getProperties&#40;&#41;.subscribe&#40;response -&gt; &#123;
+     *     System.out.printf&#40;&quot;Name:%s,&quot;, response.getName&#40;&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.ContainerRepositoryAsync.getProperties -->
      *
      * @return The {@link ContainerRepositoryProperties properties} associated with the given {@link #getName() repository}.
      * @throws ClientAuthenticationException thrown if the client does not have access to the repository.
@@ -326,7 +380,12 @@ public final class ContainerRepositoryAsync {
      *
      * <p>Update the writeable properties for the given repository.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.ContainerRepositoryAsync.updatePropertiesWithResponse}.
+     * <!-- src_embed com.azure.containers.containerregistry.ContainerRepositoryAsync.updatePropertiesWithResponse -->
+     * <pre>
+     * ContainerRepositoryProperties properties = getRepositoryProperties&#40;&#41;;
+     * client.updatePropertiesWithResponse&#40;properties&#41;.subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.ContainerRepositoryAsync.updatePropertiesWithResponse -->
      *
      * @param repositoryProperties {@link ContainerRepositoryProperties repository properties} that need to be updated for the repository.
      * @return The updated {@link ContainerRepositoryProperties repository properties }.
@@ -368,7 +427,12 @@ public final class ContainerRepositoryAsync {
      *
      * <p>Update the writeable properties for the given repository.</p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.ContainerRepositoryAsync.updateProperties}.
+     * <!-- src_embed com.azure.containers.containerregistry.ContainerRepositoryAsync.updateProperties -->
+     * <pre>
+     * ContainerRepositoryProperties properties = getRepositoryProperties&#40;&#41;;
+     * client.updateProperties&#40;properties&#41;.subscribe&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.ContainerRepositoryAsync.updateProperties -->
      *
      * @param repositoryProperties {@link ContainerRepositoryProperties writeable properties} that need to be updated for the repository.
      * @return The completion.

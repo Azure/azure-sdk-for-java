@@ -12,6 +12,7 @@ import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.security.keyvault.keys.cryptography.CryptographyClient;
 import com.azure.security.keyvault.keys.cryptography.models.EncryptionAlgorithm;
+import com.azure.security.keyvault.keys.implementation.KeyVaultCredentialPolicy;
 import com.azure.security.keyvault.keys.models.CreateKeyOptions;
 import com.azure.security.keyvault.keys.models.CreateRsaKeyOptions;
 import com.azure.security.keyvault.keys.models.DeletedKey;
@@ -52,7 +53,11 @@ public class KeyClientTest extends KeyClientTestBase {
     }
 
     protected void createKeyClient(HttpClient httpClient, KeyServiceVersion serviceVersion) {
-        HttpPipeline httpPipeline = getHttpPipeline(httpClient);
+        createKeyClient(httpClient, serviceVersion, null);
+    }
+
+    protected void createKeyClient(HttpClient httpClient, KeyServiceVersion serviceVersion, String testTenantId) {
+        HttpPipeline httpPipeline = getHttpPipeline(httpClient, testTenantId);
         KeyAsyncClient asyncClient = spy(new KeyClientBuilder()
             .vaultUrl(getEndpoint())
             .pipeline(httpPipeline)
@@ -73,6 +78,19 @@ public class KeyClientTest extends KeyClientTestBase {
     @MethodSource("getTestParameters")
     public void setKey(HttpClient httpClient, KeyServiceVersion serviceVersion) {
         createKeyClient(httpClient, serviceVersion);
+        setKeyRunner((expected) -> assertKeyEquals(expected, client.createKey(expected)));
+    }
+
+    /**
+     * Tests that a key can be created in the key vault while using a different tenant ID than the one that will be
+     * provided in the authentication challenge.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getTestParameters")
+    public void setKeyWithMultipleTenants(HttpClient httpClient, KeyServiceVersion serviceVersion) {
+        createKeyClient(httpClient, serviceVersion, testResourceNamer.randomUuid());
+        setKeyRunner((expected) -> assertKeyEquals(expected, client.createKey(expected)));
+        KeyVaultCredentialPolicy.clearCache(); // Ensure we don't have anything cached and try again.
         setKeyRunner((expected) -> assertKeyEquals(expected, client.createKey(expected)));
     }
 
