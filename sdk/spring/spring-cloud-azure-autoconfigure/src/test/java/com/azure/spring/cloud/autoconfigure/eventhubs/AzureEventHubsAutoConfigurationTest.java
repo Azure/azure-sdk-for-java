@@ -6,6 +6,9 @@ package com.azure.spring.cloud.autoconfigure.eventhubs;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
+import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
+import com.azure.spring.core.service.AzureServiceType;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
@@ -13,6 +16,7 @@ import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import java.time.Duration;
 
+import static com.azure.spring.cloud.autoconfigure.eventhubs.EventHubsTestUtils.CONNECTION_STRING_FORMAT;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class AzureEventHubsAutoConfigurationTest {
@@ -80,6 +84,23 @@ class AzureEventHubsAutoConfigurationTest {
                 assertThat(properties).extracting("connectionString").isEqualTo("test-connection-string");
 
                 assertThat(azureProperties.getCredential().getClientId()).isEqualTo("azure-client-id");
+            });
+    }
+
+    @Test
+    @SuppressWarnings("rawtypes")
+    void connectionStringProvidedShouldConfigureConnectionProvider() {
+        contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace"),
+                "spring.cloud.azure.eventhubs.event-hub-name=test-event-hub"
+            )
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureEventHubsAutoConfiguration.class);
+                assertThat(context).hasSingleBean(StaticConnectionStringProvider.class);
+                StaticConnectionStringProvider connectionStringProvider = context.getBean(StaticConnectionStringProvider.class);
+                Assertions.assertEquals(AzureServiceType.EVENT_HUBS, connectionStringProvider.getServiceType());
             });
     }
 

@@ -4,10 +4,10 @@
 package com.azure.spring.eventhubs.core.properties.merger;
 
 import com.azure.spring.core.properties.AzurePropertiesUtils;
+import com.azure.spring.core.properties.PropertyMapper;
 import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
 import com.azure.spring.eventhubs.core.properties.ProcessorProperties;
 import com.azure.spring.service.core.ParentMerger;
-import com.azure.spring.service.core.PropertyMapper;
 
 /**
  * A merger used to merge a {@link ProcessorProperties} with its parent {@link NamespaceProperties}. When a property is
