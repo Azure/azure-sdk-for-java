@@ -254,23 +254,19 @@ public final class AttestationAdministrationClient {
 //  endregion
 
     /**
-     * Retrieves the current policy for an attestation type.
+     * Retrieves the current set of attestation policy signing certificates for this instance.
      *
      * <p>
-     * <b>NOTE:</b>
-     *     The {@link AttestationAdministrationClient#getAttestationPolicyWithResponse(AttestationType, Context)} API returns the underlying
-     *     attestation policy specified by the user. This is NOT the full attestation policy maintained by
-     *     the attestation service. Specifically it does not include the signing certificates used to verify the attestation
-     *     policy.
-     *     </p>
-     *     <p>
-     *         To retrieve the signing certificates used to sign the policy, {@link Response} object returned from this API
-     *         is an instance of an {@link com.azure.security.attestation.models.AttestationResponse} object
-     *         and the caller can retrieve the full policy object maintained by the service by calling the
-     *         {@link AttestationResponse#getToken()} method.
-     *         The returned {@link com.azure.security.attestation.models.AttestationToken} object will be
-     *         the value stored by the attestation service.
-     *  </p>
+     * On an Isolated attestation instance, each {@link AttestationAdministrationAsyncClient#setAttestationPolicy(AttestationType, AttestationPolicySetOptions)}
+     * or {@link AttestationAdministrationAsyncClient#resetAttestationPolicy(AttestationType, AttestationPolicySetOptions)} API call
+     * must be signed with the private key corresponding to one of the certificates in the list returned
+     * by this API.
+     *</p>
+     * <p>
+     *     This establishes that the sender is in possession of the private key associated with the
+     *     configured attestation policy management certificates, and thus the sender is authorized
+     *     to perform the API operation.
+     * </p>
      *
      * @param context Context for the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
