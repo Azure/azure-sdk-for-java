@@ -39,7 +39,7 @@ public class KeyVaultActuatorIT {
             app.start();
 
             final String response = REST_TEMPLATE.getForObject(
-                "http://localhost:" + app.port() + "/actuator/health/keyVault", String.class);
+                "http://localhost:" + app.port() + "/actuator/health/keyvault", String.class);
             assertEquals("{\"status\":\"UP\"}", response);
             LOGGER.info("response = {}", response);
         }
