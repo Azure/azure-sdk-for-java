@@ -597,6 +597,8 @@
               <sourceFileExclude>com/azure/cosmos/*BridgeInternal.java</sourceFileExclude>
               <sourceFileExclude>com/azure/cosmos/models/*BridgeInternal.java</sourceFileExclude>
               <sourceFileExclude>com/azure/cosmos/util/*BridgeInternal.java</sourceFileExclude>
+              <sourceFileExclude>com/azure/cosmos/encryption/*BridgeInternal.java</sourceFileExclude>
+              <sourceFileExclude>com/azure/cosmos/encryption/models/*BridgeInternal.java</sourceFileExclude>
               <sourceFileExclude>module-info.java</sourceFileExclude>
             </sourceFileExcludes>
             <links combine.children="append">

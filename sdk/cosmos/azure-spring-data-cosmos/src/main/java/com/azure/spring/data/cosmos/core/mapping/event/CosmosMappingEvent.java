@@ -15,7 +15,15 @@ import org.springframework.lang.Nullable;
 public class CosmosMappingEvent<T> extends ApplicationEvent {
 
     private static final long serialVersionUID = 1L;
+
+    /**
+     * Document
+     */
     private final @Nullable JsonNode document;
+
+    /**
+     * Container name
+     */
     private final @Nullable String containerName;
 
     /**
