@@ -14,8 +14,7 @@ libraries, please refer to the README.md**[placeholder]** rather than this guide
 
 ## Migration benefits
 
-A natural question to ask when considering whether to adopt a new version or library is its benefits. As 
-Azure has
+A natural question to ask when considering whether to adopt a new version or library is its benefits. As Azure has
 matured and been embraced by a more diverse group of developers, we have been focused on learning the patterns and
 practices to best support developer productivity and to understand the gaps that the Spring Cloud Azure libraries have.
 
@@ -88,8 +87,8 @@ artifact id following the pattern `azure-spring-*`. This provides a quick and ac
 glance, whether you are using modern or legacy starters.
 
 In the process of developing Spring Cloud Azure 4.0, we renamed some artifacts to make them follow the new naming
-conventions, deleted some artifacts for its functionality could be put in a more appropriate artifact, and added 
-some new artifacts to better serve some scenarios.
+conventions, deleted some artifacts for its functionality could be put in a more appropriate artifact, and added some
+new artifacts to better serve some scenarios.
 
 | Legacy Artifact ID                                | Modern Artifact ID                                           | Description                                                  |
 | :------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -138,7 +137,8 @@ some new artifacts to better serve some scenarios.
 ## Dependencies changes
 
 Some unnecessary dependencies were included in the legacy artifacts, which we have removed in the modern Spring Cloud
-Azure 4.0 libraries. Please make sure add the removed dependencies manually to your project to prevent unintentionally crash.
+Azure 4.0 libraries. Please make sure add the removed dependencies manually to your project to prevent unintentionally
+crash.
 
 ### spring-cloud-azure-starter
 
@@ -165,17 +165,124 @@ configurations can be divided into five categories:
 For a full list of common configurations, check this list **[placeholder]**.
 
 ### Each SDK configurations
-####
-#### EventHubs
+
+### Event Hub Integration Migration Guide
+
+As per our samples, we introduce the migration points in three parts:
+Integration, Binder, and Starters.
+
+#### Event Hub Integration Users:
+
+todo...
+
+#### Event Hub Binder Users:
+
+1. change dependency from:
+
+```xml
+
+<dependency>
+    <groupId>com.azure.spring</groupId>
+    <artifactId>azure-spring-cloud-stream-binder-eventhubs</artifactId>
+</dependency>
+```
+
+to:
+
+```xml
+
+<dependency>
+    <groupId>com.azure.spring</groupId>
+    <artifactId>spring-cloud-azure-stream-binder-eventhubs</artifactId>
+</dependency>
+```
+
+2. change bom in `dependencyManagement` from:
+
+```xml
+
+<dependency>
+    <groupId>com.azure.spring</groupId>
+    <artifactId>azure-spring-cloud-dependencies</artifactId>
+    <version>2.10.0</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-dependencies;current} -->
+    <type>pom</type>
+    <scope>import</scope>
+</dependency>
+```
+
+to
+
+```xml
+
+<dependency>
+    <groupId>com.azure.spring</groupId>
+    <artifactId>spring-cloud-azure-dependencies</artifactId>
+    <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:azure-spring-cloud-dependencies;current} -->
+    <type>pom</type>
+    <scope>import</scope>
+</dependency>
+```
+
+3. Changes in external properties
+
+3.1 Eventhub connection and checkpoint
+
+change from:
+```yaml
+spring:
+  cloud:
+    azure:
+      eventhub:
+        connection-string: [eventhub-namespace-connection-string]
+        checkpoint-storage-account: [checkpoint-storage-account]
+        checkpoint-access-key: [checkpoint-access-key]
+        checkpoint-container: [checkpoint-container]
+
+
+```
+to:
+```yaml
+spring:
+  cloud:
+    azure:
+      eventhubs:
+        connection-string: [eventhub-namespace-connection-string]
+        processor:
+          checkpoint-store:
+            container-name: [checkpoint-container]
+            account-name: [checkpoint-storage-account]
+            account-key: [checkpoint-access-key]
+```
+
+
+3.2 Batch Consume 
+
+There are 4 config points. 
+
+prefix:`spring.cloud.stream.bindings.<binding-name>.`
+
+|  Legacy | Modern Spring Cloud Azure 4.0
+ |:---|:---
+|`consumer.batch-mode`|`consumer.batch.mode`
+
+prefix:
+from
+`spring.cloud.stream.eventhub.bindings.<binding-name>.`
+to
+`spring.cloud.stream.eventhubs.bindings.<binding-name>.`
+(Note: change add 's' for eventhub)
+
+|  Legacy | Modern Spring Cloud Azure 4.0
+|:---|:---
+|`consumer.max-batch-size` | `consumer.batch.max-size`
+|`consumer.max-wait-time`|`consumer.batch.max-wait-time`
+|`consumer.checkpoint-mode`|`consumer.checkpoint.mode`
+
+#### Event Hub Starters Users:
+
 todo...
 
 ##### batch consumer support
-| Legacy                                |Modern   Spring Cloud Azure 4.0
---------------------------------------------------------------------------
-`spring.cloud.stream.bindings.<binding-name>.consumer.max-batch-size`|`spring.cloud.stream.bindings.<binding-name>.
-consumer.batch.mode
-`spring.cloud.stream.bindings.<binding-name>.consumer.max-wait-time`
-`spring.cloud.stream.bindings.<binding-name>.consumer.checkpoint-mode`
 
 ## API breaking changes
 
