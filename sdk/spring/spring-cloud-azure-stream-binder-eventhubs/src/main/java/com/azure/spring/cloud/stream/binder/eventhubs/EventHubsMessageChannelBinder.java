@@ -17,6 +17,7 @@ import com.azure.spring.eventhubs.core.properties.ProcessorProperties;
 import com.azure.spring.eventhubs.core.properties.ProducerProperties;
 import com.azure.spring.integration.eventhubs.inbound.EventHubsInboundChannelAdapter;
 import com.azure.spring.integration.handler.DefaultMessageHandler;
+import com.azure.spring.messaging.ListenerMode;
 import com.azure.spring.messaging.PropertiesSupplier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -101,7 +102,7 @@ public class EventHubsMessageChannelBinder extends
 
     @Override
     protected MessageProducer createConsumerEndpoint(ConsumerDestination destination, String group,
-            ExtendedConsumerProperties<EventHubsConsumerProperties> properties) {
+                                                     ExtendedConsumerProperties<EventHubsConsumerProperties> properties) {
         extendedConsumerPropertiesMap.put(Tuples.of(destination.getName(), group), properties);
         Assert.notNull(getProcessorContainer(), "eventProcessorsContainer can't be null when create a consumer");
 
@@ -112,9 +113,14 @@ public class EventHubsMessageChannelBinder extends
             group = "anonymous." + UUID.randomUUID();
         }
 
-        EventHubsInboundChannelAdapter inboundAdapter = new EventHubsInboundChannelAdapter(this.processorContainer,
-            destination.getName(), group, properties.getExtension().getCheckpoint());
-
+        EventHubsInboundChannelAdapter inboundAdapter;
+        if (properties.isBatchMode()) {
+            inboundAdapter = new EventHubsInboundChannelAdapter(this.processorContainer,
+                destination.getName(), group, ListenerMode.BATCH, properties.getExtension().getCheckpoint());
+        } else {
+            inboundAdapter = new EventHubsInboundChannelAdapter(this.processorContainer,
+                destination.getName(), group, properties.getExtension().getCheckpoint());
+        }
         inboundAdapter.setBeanFactory(getBeanFactory());
 
         ErrorInfrastructure errorInfrastructure = registerErrorInfrastructure(destination, group, properties);
@@ -168,7 +174,7 @@ public class EventHubsMessageChannelBinder extends
         return key -> {
             if (this.extendedProducerPropertiesMap.containsKey(key)) {
                 EventHubsProducerProperties producerProperties = this.extendedProducerPropertiesMap.get(key)
-                                                                                                   .getExtension();
+                    .getExtension();
                 producerProperties.setEventHubName(key);
                 return producerProperties;
             } else {
@@ -182,7 +188,7 @@ public class EventHubsMessageChannelBinder extends
         return key -> {
             if (this.extendedConsumerPropertiesMap.containsKey(key)) {
                 EventHubsConsumerProperties consumerProperties = this.extendedConsumerPropertiesMap.get(key)
-                                                                                                   .getExtension();
+                    .getExtension();
                 consumerProperties.setEventHubName(key.getT1());
                 consumerProperties.setConsumerGroup(key.getT2());
                 return consumerProperties;

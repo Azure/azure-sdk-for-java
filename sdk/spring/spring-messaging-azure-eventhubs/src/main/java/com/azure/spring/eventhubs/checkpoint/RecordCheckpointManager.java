@@ -3,7 +3,6 @@
 
 package com.azure.spring.eventhubs.checkpoint;
 
-import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 import com.azure.spring.messaging.checkpoint.CheckpointMode;
@@ -17,7 +16,7 @@ import org.springframework.util.Assert;
  *
  * @author Warren Zhu
  */
-class RecordCheckpointManager extends CheckpointManager {
+class RecordCheckpointManager extends EventCheckpointManager {
     private static final Logger LOG = LoggerFactory.getLogger(RecordCheckpointManager.class);
 
     RecordCheckpointManager(CheckpointConfig checkpointConfig) {
@@ -26,15 +25,17 @@ class RecordCheckpointManager extends CheckpointManager {
             () -> "RecordCheckpointManager should have checkpointMode record");
     }
 
-    public void onMessage(EventContext context, EventData eventData) {
-        context.updateCheckpointAsync()
-            .doOnError(t -> logCheckpointFail(context, eventData, t))
-            .doOnSuccess(v -> logCheckpointSuccess(context, eventData))
-            .subscribe();
-    }
-
     @Override
     protected Logger getLogger() {
         return LOG;
+    }
+
+
+    @Override
+    public void checkpoint(EventContext context) {
+        context.updateCheckpointAsync()
+            .doOnError(t -> logCheckpointFail(context, context.getEventData(), t))
+            .doOnSuccess(v -> logCheckpointSuccess(context, context.getEventData()))
+            .subscribe();
     }
 }

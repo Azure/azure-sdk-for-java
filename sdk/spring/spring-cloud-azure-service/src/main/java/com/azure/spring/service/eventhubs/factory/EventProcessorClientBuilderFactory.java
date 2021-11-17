@@ -25,6 +25,7 @@ import com.azure.spring.service.eventhubs.processor.EventProcessingListener;
 import com.azure.spring.service.eventhubs.processor.RecordEventProcessingListener;
 import com.azure.spring.service.eventhubs.properties.EventHubsProcessorDescriptor;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.Assert;
 
 import java.util.Arrays;
 import java.util.List;
@@ -96,9 +97,9 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
         map.from(processorProperties.getInitialPartitionEventPosition()).when(c -> !CollectionUtils.isEmpty(c)).to(
             p -> {
                 Map<String, EventPosition> positions = p.entrySet()
-                                                        .stream()
-                                                        .collect(Collectors.toMap(Map.Entry::getKey,
-                                                            e -> e.getValue().toEventPosition()));
+                    .stream()
+                    .collect(Collectors.toMap(Map.Entry::getKey,
+                        e -> e.getValue().toEventPosition()));
                 builder.initialPartitionEventPosition(positions);
             });
 
@@ -116,14 +117,14 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
     protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(EventProcessorClientBuilder builder) {
         return Arrays.asList(
             new NamedKeyAuthenticationDescriptor(provider -> builder.credential(processorProperties.getFQDN(),
-                                                                                processorProperties.getEventHubName(),
-                                                                                provider.getCredential())),
+                processorProperties.getEventHubName(),
+                provider.getCredential())),
             new SasAuthenticationDescriptor(provider -> builder.credential(processorProperties.getFQDN(),
-                                                                           processorProperties.getEventHubName(),
-                                                                           provider.getCredential())),
+                processorProperties.getEventHubName(),
+                provider.getCredential())),
             new TokenAuthenticationDescriptor(provider -> builder.credential(processorProperties.getFQDN(),
-                                                                             processorProperties.getEventHubName(),
-                                                                             provider.getCredential()))
+                processorProperties.getEventHubName(),
+                provider.getCredential()))
         );
     }
 
@@ -135,8 +136,8 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
     @Override
     protected BiConsumer<EventProcessorClientBuilder, TokenCredential> consumeDefaultTokenCredential() {
         return (builder, tokenCredential) -> builder.credential(processorProperties.getFQDN(),
-                                                                processorProperties.getEventHubName(),
-                                                                tokenCredential);
+            processorProperties.getEventHubName(),
+            tokenCredential);
     }
 
     @Override
@@ -151,30 +152,16 @@ public class EventProcessorClientBuilderFactory extends AbstractAzureAmqpClientB
     private void configureProcessorListener(EventProcessorClientBuilder builder) {
         final EventHubsProcessorDescriptor.Batch batch = this.processorProperties.getBatch();
 
-        if (isBatchMode()) {
-            if (processorListener instanceof BatchEventProcessingListener) {
-                builder.processEventBatch(((BatchEventProcessingListener) processorListener)::onEventBatch,
-                    batch.getMaxSize(), batch.getMaxWaitTime());
-            } else {
-                throw new IllegalArgumentException("A " + BatchEventProcessingListener.class.getSimpleName()
-                    + " is required when configure batch processor.");
-            }
-        } else {
-            if (processorListener instanceof RecordEventProcessingListener) {
-                builder.processEvent(((RecordEventProcessingListener) processorListener)::onEvent);
-            } else {
-                throw new IllegalArgumentException("A " + RecordEventProcessingListener.class.getSimpleName()
-                    + " is required when configure record processor.");
-            }
+        if (processorListener instanceof BatchEventProcessingListener) {
+            Assert.notNull(batch.getMaxSize(), "Batch max size must be provided");
+            builder.processEventBatch(((BatchEventProcessingListener) processorListener)::onEventBatch,
+                batch.getMaxSize(), batch.getMaxWaitTime());
+        } else if (processorListener instanceof RecordEventProcessingListener) {
+            builder.processEvent(((RecordEventProcessingListener) processorListener)::onEvent);
         }
         builder.processError(processorListener.getErrorContextConsumer());
         builder.processPartitionClose(processorListener.getCloseContextConsumer());
         builder.processPartitionInitialization(processorListener.getInitializationContextConsumer());
-    }
-
-    private boolean isBatchMode() {
-        final EventHubsProcessorDescriptor.Batch batch = this.processorProperties.getBatch();
-        return batch.getMaxWaitTime() != null || batch.getMaxSize() != null;
     }
 
 }

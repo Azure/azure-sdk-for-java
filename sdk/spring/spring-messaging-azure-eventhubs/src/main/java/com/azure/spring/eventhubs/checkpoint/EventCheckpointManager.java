@@ -4,60 +4,23 @@
 package com.azure.spring.eventhubs.checkpoint;
 
 import com.azure.messaging.eventhubs.EventData;
+import com.azure.messaging.eventhubs.models.EventBatchContext;
 import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.spring.eventhubs.support.EventDataHelper;
 import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
- * @author Warren Zhu
- * @author Xiaolu Dai
+ *
  */
-public abstract class CheckpointManager {
-    private static final Logger LOG = LoggerFactory.getLogger(CheckpointManager.class);
+public abstract class EventCheckpointManager implements EventCheckpoint, EventBatchCheckpoint {
     private static final String CHECKPOINT_FAIL_MSG = "Consumer group '%s' failed to checkpoint %s on partition %s";
     private static final String CHECKPOINT_SUCCESS_MSG =
         "Consumer group '%s' checkpointed %s on partition %s in %s " + "mode";
     final CheckpointConfig checkpointConfig;
 
-    CheckpointManager(CheckpointConfig checkpointConfig) {
+    EventCheckpointManager(CheckpointConfig checkpointConfig) {
         this.checkpointConfig = checkpointConfig;
-    }
-
-    /**
-     * Mapping checkpoint mode in config to a {@link CheckpointManager}.
-     * @param checkpointConfig The configured checkpoint config.
-     * @return CheckpointManager.
-     * @throws IllegalArgumentException If no checkpoint manager could be found.
-     */
-    public static CheckpointManager of(CheckpointConfig checkpointConfig) {
-        switch (checkpointConfig.getMode()) {
-            case TIME:
-                return new TimeCheckpointManager(checkpointConfig);
-            case RECORD:
-                return new RecordCheckpointManager(checkpointConfig);
-            case BATCH:
-                return new BatchCheckpointManager(checkpointConfig);
-            case PARTITION_COUNT:
-                return new PartitionCountCheckpointManager(checkpointConfig);
-            case MANUAL:
-                return new ManualCheckpointManager(checkpointConfig);
-            default:
-                LOG.warn("Does not support checkpoint mode: "
-                    + checkpointConfig.getMode().name());
-        }
-
-        throw new IllegalArgumentException("Illegal checkpoint mode when building CheckpointManager");
-    }
-
-    public void onMessage(EventContext context, EventData eventData) {
-        // no-op
-    }
-
-    @Deprecated
-    public void completeBatch(EventContext context) {
-        // no-op
     }
 
     void logCheckpointFail(EventContext context, EventData eventData, Throwable t) {
@@ -77,6 +40,13 @@ public abstract class CheckpointManager {
                     context.getPartitionContext().getPartitionId(),
                     this.checkpointConfig.getMode()));
         }
+    }
+
+    @Override
+    public void checkpoint(EventContext context) {
+    }
+
+    public void checkpoint(EventBatchContext context) {
     }
 
     abstract Logger getLogger();

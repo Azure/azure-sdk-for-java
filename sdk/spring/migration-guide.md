@@ -116,6 +116,7 @@ new artifacts to better serve some scenarios.
 | azure-spring-cloud-stream-binder-servicebus-queue | // TODO                                                      |                                                              |
 | azure-spring-cloud-stream-binder-servicebus-topic | // TODO                                                      |                                                              |
 | azure-spring-integration-core                     | spring-integration-azure-core                                |                                                              |
+| N/A                                               | spring-messaging-azure
 | azure-spring-integration-eventhubs                | spring-integration-azure-eventhubs                           |                                                              |
 | azure-spring-integration-servicebus               | spring-integration-azure-servicebus                          |                                                              |
 | azure-spring-integration-storage-queue            | spring-integration-azure-storage-queue                       |                                                              |
@@ -147,6 +148,20 @@ crash.
 | ------------------------------------------------------- | ------------------------------------------------------------ |
 | org.springframework.boot:spring-boot-starter-validation | Please include the validation starter if you want to use the Hibernate Validator. |
 
+### azure-spring-cloud-starter-eventhubs
+[TODO]
+### azure-spring-integration-eventhubs
+[TODO]
+### azure-spring-cloud-stream-binder-eventhubs
+You should check and update the dependencies. IDE tools is recommended.
+
+| original dependency name                                  | new dependency name                                                  |
+| ------------------------------------------------------- | ------------------------------------------------------------ |
+| com.azure.spring.integration.core.EventHubsHeaders | com.azure.spring.eventhubs.support.EventHubsHeaders |
+| com.azure.spring.integration.core.api.reactor.Checkpointer | com.azure.spring.messaging.checkpoint.Checkpointer |
+| com.azure.spring.integration.core.AzureHeaders.CHECKPOINTER | com.azure.spring.messaging.AzureHeaders.CHECKPOINTER |
+
+ 
 ## Configuration properties
 
 ### Global configurations
@@ -168,7 +183,9 @@ For a full list of common configurations, check this list **[placeholder]**.
 ### Each SDK configurations
 
 #### azure-spring-cloud-starter-eventhubs
+[TODO]
 #### azure-spring-integration-eventhubs
+[TODO]
 #### azure-spring-cloud-stream-binder-eventhubs
 
 - For checkpoint account settings:
