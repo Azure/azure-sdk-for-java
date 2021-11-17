@@ -16,7 +16,6 @@ import com.azure.spring.core.aware.ClientAware;
 import com.azure.spring.core.aware.ProxyAware;
 import com.azure.spring.core.aware.RetryAware;
 import com.azure.spring.core.http.DefaultHttpProvider;
-import com.azure.spring.core.properties.proxy.HttpProxyProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -79,15 +78,11 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
             return;
         }
 
-        if (proxy instanceof HttpProxyProperties) {
-            ProxyOptions proxyOptions = HTTP_PROXY_CONVERTER.convert((HttpProxyProperties) proxy);
-            if (proxyOptions != null) {
-                this.httpClientOptions.setProxyOptions(proxyOptions);
-            } else {
-                LOGGER.debug("No HTTP proxy properties available.");
-            }
+        ProxyOptions proxyOptions = HTTP_PROXY_CONVERTER.convert(proxy);
+        if (proxyOptions != null) {
+            this.httpClientOptions.setProxyOptions(proxyOptions);
         } else {
-            LOGGER.debug("No HTTP proxy configuration will not be applied.");
+            LOGGER.debug("No HTTP proxy properties available.");
         }
     }
 
@@ -103,7 +98,7 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
     protected void configureHttpLogOptions(T builder) {
         ClientAware.Client client = getAzureProperties().getClient();
 
-        if (client instanceof HttpClient) {
+        if (client instanceof ClientAware.HttpClient) {
             HttpLogOptions logOptions =
                 HTTP_LOG_OPTIONS_CONVERTER.convert(((ClientAware.HttpClient) client).getLogging());
             consumeHttpLogOptions().accept(builder, logOptions);

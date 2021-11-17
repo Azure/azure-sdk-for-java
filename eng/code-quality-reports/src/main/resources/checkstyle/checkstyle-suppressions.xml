@@ -44,7 +44,7 @@
 
   <!-- Fields tenantId, clientId and clientSecret are not set in all constructors. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.security.keyvault.jca.implementation.KeyVaultClient"/>
-  
+
   <!-- Fields defaultTrustManager and keyStore might be set more than once. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.security.keyvault.jca.KeyVaultTrustManager"/>
 
@@ -426,7 +426,8 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-spring-cloud-feature-management[/\\]"/>
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-spring-cloud-feature-management-web[/\\]"/>
   <!-- Suppress the long package name in spring security related implementation class. -->
-  <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.active.directory.implementation.*" />
+  <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.aad.b2c.implementation.*" />
+  <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.aad.implementation.*" />
 
   <!-- perf-test files are not public API, so they don't need to fulfill all requirements. -->
   <suppress checks="Javadoc" files=".*[/\\]azure-\w+-perf[/\\].*\.java"/>
@@ -485,6 +486,7 @@ the main ServiceBusClientBuilder. -->
   <!--BlacklistedWordsCheck: URL is the name -->
   <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files="com.azure.spring.core.resource.StorageBlobResource.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files="com.azure.spring.core.resource.StorageFileResource.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.BlacklistedWordsCheck" files="com.azure.spring.core.util.URLValidator.java"/>
 
   <!-- EnforceFinalFieldsCheck: The property will be filled by Spring framework -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.data.cosmos.config.AbstractCosmosConfiguration.java"/>

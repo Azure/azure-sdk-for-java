@@ -19,7 +19,7 @@
   <dependencies>
     <dependency>
       <groupId>com.azure.spring</groupId>
-      <artifactId>spring-cloud-azure-starter-cosmos</artifactId>
+      <artifactId>spring-cloud-azure-starter-data-cosmos</artifactId>
       <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-starter-cosmos;current} -->
     </dependency>
     <dependency>
@@ -39,6 +39,11 @@
     <dependency>
       <groupId>io.projectreactor.netty</groupId>
       <artifactId>reactor-netty</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.hibernate.validator</groupId>
+      <artifactId>hibernate-validator</artifactId>
+      <version>6.2.0.Final</version> <!-- {x-version-update;org.hibernate.validator:hibernate-validator;external_dependency} -->
     </dependency>
     <!-- TEST-->
     <dependency>

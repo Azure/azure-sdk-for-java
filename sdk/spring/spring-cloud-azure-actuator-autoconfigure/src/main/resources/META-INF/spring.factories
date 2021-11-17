@@ -1,4 +1,5 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.azure.spring.cloud.actuate.autoconfigure.appconfiguration.AppConfigurationHealthConfiguration,\
 com.azure.spring.cloud.actuate.autoconfigure.cosmos.CosmosHealthConfiguration,\
 com.azure.spring.cloud.actuate.autoconfigure.eventhubs.EventHubsHealthConfiguration,\
 com.azure.spring.cloud.actuate.autoconfigure.keyvault.KeyVaultHealthConfiguration,\

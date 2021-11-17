@@ -8,7 +8,6 @@ import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.core.connectionstring.ConnectionStringProvider;
-import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.core.service.AzureServiceType;
 import com.azure.spring.service.eventhubs.factory.EventHubClientBuilderFactory;
 import org.springframework.beans.factory.ObjectProvider;
@@ -41,14 +40,6 @@ class AzureEventHubsClientBuilderConfiguration {
         builderFactory.setConnectionStringProvider(connectionStringProviders.getIfAvailable());
         builderFactory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_EVENT_HUB);
         return builderFactory;
-    }
-
-    @Bean
-    @ConditionalOnProperty("spring.cloud.azure.eventhubs.connection-string")
-    public StaticConnectionStringProvider<AzureServiceType.EventHubs> eventHubsStaticConnectionStringProvider(
-        AzureEventHubsProperties eventHubsProperties) {
-        return new StaticConnectionStringProvider<>(AzureServiceType.EVENT_HUBS,
-                                                    eventHubsProperties.getConnectionString());
     }
 
 }

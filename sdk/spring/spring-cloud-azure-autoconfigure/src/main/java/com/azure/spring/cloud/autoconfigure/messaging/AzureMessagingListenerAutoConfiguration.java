@@ -3,8 +3,8 @@
 
 package com.azure.spring.cloud.autoconfigure.messaging;
 
+import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusMessagingAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsMessagingAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusTopicOperationAutoConfiguration;
 import com.azure.spring.messaging.annotation.EnableAzureMessaging;
 import com.azure.spring.messaging.config.AzureListenerAnnotationBeanPostProcessor;
 import com.azure.spring.messaging.container.DefaultAzureListenerContainerFactory;
@@ -25,7 +25,7 @@ import org.springframework.context.annotation.Configuration;
 @ConditionalOnClass(EnableAzureMessaging.class)
 @AutoConfigureAfter({
     AzureEventHubsMessagingAutoConfiguration.class,
-    AzureServiceBusTopicOperationAutoConfiguration.class
+    AzureServiceBusMessagingAutoConfiguration.class
 })
 @ConditionalOnBean(SubscribeByGroupOperation.class)
 public class AzureMessagingListenerAutoConfiguration {
