@@ -26,7 +26,7 @@ import static com.azure.spring.cloud.autoconfigure.aad.implementation.core.AADAu
 
 
 /**
- * Manage all AAD OAuth2 clients configured by property "azure.activedirectory.xxx".
+ * Manage all AAD OAuth2 clients configured by property "spring.cloud.azure.active-directory.xxx".
  * Do extra works:
  * 1. Make "azure" client's scope contains all "azure_delegated" clients' scope.
  *    This scope is used to request authorize code.
