@@ -27,10 +27,11 @@ import static org.assertj.core.api.Assertions.assertThat;
 @SpringBootTest(classes = EventHubsBinderBatchModeIT.TestConfig.class)
 @TestPropertySource(properties =
     {
-    "spring.cloud.stream.eventhubs.bindings.consume-in-0.consumer.checkpoint.mode=RECORD",
-    "spring.cloud.stream.bindings.consume-in-0.destination=test-eventhub-batch",
-    "spring.cloud.stream.bindings.supply-out-0.destination=test-eventhub-batch",
-    "spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name=test-eventhub-batch"
+        "spring.cloud.stream.eventhubs.bindings.consume-in-0.consumer.checkpoint.mode=BATCH",
+        "spring.cloud.stream.bindings.consume-in-0.destination=test-eventhub-batch",
+        "spring.cloud.stream.bindings.supply-out-0.destination=test-eventhub-batch",
+        "spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name=test-eventhub-batch",
+        "spring.cloud.stream.bindings.consume-in-0.consumer.batch-mode=true"
     })
 public class EventHubsBinderBatchModeIT {
 
@@ -54,8 +55,8 @@ public class EventHubsBinderBatchModeIT {
         @Bean
         public Supplier<Flux<Message<String>>> supply(Sinks.Many<Message<String>> many) {
             return () -> many.asFlux()
-                             .doOnNext(m -> LOGGER.info("Manually sending message {}", m.getPayload()))
-                             .doOnError(t -> LOGGER.error("Error encountered", t));
+                .doOnNext(m -> LOGGER.info("Manually sending message {}", m.getPayload()))
+                .doOnError(t -> LOGGER.error("Error encountered", t));
         }
 
         @Bean
