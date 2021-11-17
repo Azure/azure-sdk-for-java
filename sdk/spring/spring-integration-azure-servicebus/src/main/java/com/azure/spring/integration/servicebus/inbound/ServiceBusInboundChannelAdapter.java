@@ -78,7 +78,7 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
                                             String destination, String subscription, ListenerMode listenerMode,
                                             CheckpointConfig checkpointConfig) {
         Assert.hasText(destination, "destination can't be null or empty");
-        if (TOPIC.equals(type)) {
+        if (TOPIC == type) {
             Assert.hasText(subscription, "subscription can't be null or empty");
         }
         this.processorContainer = processorContainer;
@@ -95,7 +95,7 @@ public class ServiceBusInboundChannelAdapter extends MessageProducerSupport {
             this.listener = recordEventProcessor;
         }
 
-        if (TOPIC.equals(this.type)) {
+        if (TOPIC == this.type) {
             this.processorContainer.subscribe(this.destination, this.subscription, this.listener);
         } else {
             this.processorContainer.subscribe(this.destination, this.listener);

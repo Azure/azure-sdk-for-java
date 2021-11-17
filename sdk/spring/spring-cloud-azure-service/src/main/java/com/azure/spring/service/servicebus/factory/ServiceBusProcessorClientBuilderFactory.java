@@ -44,13 +44,13 @@ public class ServiceBusProcessorClientBuilderFactory extends AbstractServiceBusS
         Assert.notNull(processorDescriptor.getEntityName(), "Entity name cannot be null.");
         final PropertyMapper propertyMapper = new PropertyMapper();
 
-        if (TOPIC.equals(processorDescriptor.getEntityType())) {
+        if (TOPIC == processorDescriptor.getEntityType()) {
             Assert.notNull(processorDescriptor.getSubscriptionName(), "Subscription cannot be null.");
         }
 
-        if (ServiceBusEntityType.QUEUE.equals(processorDescriptor.getEntityType())) {
+        if (ServiceBusEntityType.QUEUE == processorDescriptor.getEntityType()) {
             propertyMapper.from(processorDescriptor.getEntityName()).to(builder::queueName);
-        } else if (ServiceBusEntityType.TOPIC.equals(processorDescriptor.getEntityType())) {
+        } else if (ServiceBusEntityType.TOPIC == processorDescriptor.getEntityType()) {
             propertyMapper.from(processorDescriptor.getEntityName()).to(builder::topicName);
             propertyMapper.from(processorDescriptor.getSubscriptionName()).to(builder::subscriptionName);
         }

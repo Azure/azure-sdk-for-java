@@ -3,44 +3,48 @@
 
 package com.azure.spring.core.resource;
 
+import com.azure.core.util.Context;
 import com.azure.storage.file.share.ShareClient;
 import com.azure.storage.file.share.ShareFileClient;
 import com.azure.storage.file.share.ShareServiceClient;
+import com.azure.storage.file.share.models.ShareFileHttpHeaders;
 import com.azure.storage.file.share.models.ShareStorageException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.core.io.Resource;
-import org.springframework.core.io.WritableResource;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.URL;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.WritableResource;
+import org.springframework.util.StringUtils;
 
 /**
- * Implements {@link WritableResource} for reading and writing objects in Azure
- * StorageAccount file. An instance of this class represents a handle to a file.
- *
+ * Implements {@link WritableResource} for reading and writing objects in Azure StorageAccount file. An instance of this
+ * class represents a handle to a file.
  */
 public class StorageFileResource extends AzureStorageResource {
     private static final Logger LOGGER = LoggerFactory.getLogger(StorageFileResource.class);
-    private static final String MSG_FAIL_GET = "Failed to get file or container";
     private static final String MSG_FAIL_OPEN_OUTPUT = "Failed to open output stream of file";
-    private static final String MSG_FAIL_CHECK_EXIST = "Failed to check existence of file or container";
-    private static final String MSG_FAIL_OPEN_INPUT = "Failed to open input stream of file";
     private final ShareServiceClient shareServiceClient;
     private final ShareClient shareClient;
     private final ShareFileClient shareFileClient;
     private final String location;
     private final boolean autoCreateFiles;
+    private final String contentType;
 
     public StorageFileResource(ShareServiceClient shareServiceClient, String location) {
         this(shareServiceClient, location, false);
     }
 
     public StorageFileResource(ShareServiceClient shareServiceClient, String location, boolean autoCreateFiles) {
+        this(shareServiceClient, location, autoCreateFiles, null);
+    }
+
+    public StorageFileResource(ShareServiceClient shareServiceClient, String location, boolean autoCreateFiles,
+                               String contentType) {
         assertIsAzureStorageLocation(location);
         this.autoCreateFiles = autoCreateFiles;
         this.location = location;
@@ -48,6 +52,7 @@ public class StorageFileResource extends AzureStorageResource {
 
         this.shareClient = shareServiceClient.getShareClient(getContainerName(location));
         this.shareFileClient = shareClient.getFileClient(getFilename(location));
+        this.contentType = StringUtils.hasText(contentType) ? contentType : getContentType(location);
     }
 
     @Override
@@ -137,8 +142,13 @@ public class StorageFileResource extends AzureStorageResource {
             this.shareClient.create();
         }
         if (!shareFileClient.exists()) {
+            ShareFileHttpHeaders header = null;
+            if (StringUtils.hasText(contentType)) {
+                header = new ShareFileHttpHeaders();
+                header.setContentType(contentType);
+            }
             //TODO: create method must provide file length, but we don't know actual
-            this.shareFileClient.create(1024);
+            this.shareFileClient.createWithResponse(1024, header, null, null, null, null, Context.NONE).getValue();
         }
     }
 }

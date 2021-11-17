@@ -27,7 +27,7 @@ public class ServiceBusChannelResourceManagerProvisioner extends ServiceBusChann
 
     @Override
     protected void validateOrCreateForConsumer(String name, String group, ServiceBusEntityType type) {
-        if (QUEUE.equals(type)) {
+        if (QUEUE == type) {
             this.serviceBusProvisioner.provisionQueue(namespace, name);
         } else {
             this.serviceBusProvisioner.provisionSubscription(namespace, name, group);
@@ -36,7 +36,7 @@ public class ServiceBusChannelResourceManagerProvisioner extends ServiceBusChann
 
     @Override
     protected void validateOrCreateForProducer(String name, ServiceBusEntityType type) {
-        if (QUEUE.equals(type)) {
+        if (QUEUE == type) {
             this.serviceBusProvisioner.provisionQueue(namespace, name);
         } else {
             this.serviceBusProvisioner.provisionTopic(namespace, name);

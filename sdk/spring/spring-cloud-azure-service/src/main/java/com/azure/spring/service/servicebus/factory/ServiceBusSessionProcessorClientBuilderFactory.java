@@ -43,9 +43,9 @@ public class ServiceBusSessionProcessorClientBuilderFactory extends AbstractServ
         Assert.notNull(processorDescriptor.getEntityName(), "Entity name cannot be null.");
         final PropertyMapper propertyMapper = new PropertyMapper();
 
-        if (ServiceBusEntityType.QUEUE.equals(processorDescriptor.getEntityType())) {
+        if (ServiceBusEntityType.QUEUE == processorDescriptor.getEntityType()) {
             propertyMapper.from(processorDescriptor.getEntityName()).to(builder::queueName);
-        } else if (ServiceBusEntityType.TOPIC.equals(processorDescriptor.getEntityType())) {
+        } else if (ServiceBusEntityType.TOPIC == processorDescriptor.getEntityType()) {
             propertyMapper.from(processorDescriptor.getEntityName()).to(builder::topicName);
         }
 

@@ -39,9 +39,9 @@ public class ServiceBusSenderClientBuilderFactory
         Assert.notNull(producerProperties.getEntityName(), "Entity name cannot be null.");
         final PropertyMapper propertyMapper = new PropertyMapper();
 
-        if (ServiceBusEntityType.QUEUE.equals(producerProperties.getEntityType())) {
+        if (ServiceBusEntityType.QUEUE == producerProperties.getEntityType()) {
             propertyMapper.from(producerProperties.getEntityName()).to(builder::queueName);
-        } else if (ServiceBusEntityType.TOPIC.equals(producerProperties.getEntityType())) {
+        } else if (ServiceBusEntityType.TOPIC == producerProperties.getEntityType()) {
             propertyMapper.from(producerProperties.getEntityName()).to(builder::topicName);
         }
 
