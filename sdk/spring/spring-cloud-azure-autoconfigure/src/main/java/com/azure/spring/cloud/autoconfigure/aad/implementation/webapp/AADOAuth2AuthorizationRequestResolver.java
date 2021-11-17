@@ -51,7 +51,8 @@ public class AADOAuth2AuthorizationRequestResolver implements OAuth2Authorizatio
         }
         // Handle conditional access policy, step 3.
         HttpSession httpSession = httpServletRequest.getSession(false);
-        String conditionalAccessPolicyClaims = (String) httpSession.getAttribute(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS);
+        String conditionalAccessPolicyClaims = (String) httpSession.getAttribute(
+            Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS);
         if (conditionalAccessPolicyClaims != null) {
             httpSession.removeAttribute(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS);
         }
@@ -59,12 +60,12 @@ public class AADOAuth2AuthorizationRequestResolver implements OAuth2Authorizatio
         if (conditionalAccessPolicyClaims != null) {
             additionalParameters.put(Constants.CLAIMS, conditionalAccessPolicyClaims);
         }
-        if(properties!=null){
+        if (properties != null) {
             additionalParameters.putAll(properties.getAuthenticateAdditionalParameters());
         }
         additionalParameters.putAll(oAuth2AuthorizationRequest.getAdditionalParameters());
         return OAuth2AuthorizationRequest.from(oAuth2AuthorizationRequest)
-                                         .additionalParameters(additionalParameters)
-                                         .build();
+            .additionalParameters(additionalParameters)
+            .build();
     }
 }
