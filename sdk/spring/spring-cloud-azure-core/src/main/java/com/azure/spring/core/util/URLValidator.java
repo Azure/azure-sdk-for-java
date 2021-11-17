@@ -14,7 +14,7 @@ public class URLValidator {
 
     /**
      * Used to validate uri, the uri is allowed to be empty.
-     * @param uri
+     * @param uri the uri to be validated.
      * @return whether is uri is valid or not.
      */
     public static boolean isValidURL(String uri) {
