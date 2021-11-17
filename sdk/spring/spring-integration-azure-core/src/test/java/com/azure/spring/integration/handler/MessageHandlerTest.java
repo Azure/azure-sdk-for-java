@@ -16,6 +16,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
@@ -42,7 +43,7 @@ public abstract class MessageHandlerTest<O extends SendOperation> {
         valueMap.put("key2", "value2");
         message = new GenericMessage<>("testPayload", valueMap);
     }
-    public abstract void setUp();
+    public abstract void setUp() throws ExecutionException, InterruptedException;
 
     @Test
     @SuppressWarnings("unchecked")

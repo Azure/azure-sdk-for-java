@@ -9,6 +9,8 @@ import com.azure.spring.messaging.PartitionSupplier;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.concurrent.ExecutionException;
+
 /**
  * Producer async client interface for sending events in batches.
  */

@@ -26,6 +26,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.eq;
@@ -48,7 +49,7 @@ public class EventHubMessageHandlerTest extends MessageHandlerTest<EventHubsTemp
     @BeforeEach
     @Override
     @SuppressWarnings("unchecked")
-    public void setUp() {
+    public void setUp() throws ExecutionException, InterruptedException {
         this.closeable = MockitoAnnotations.openMocks(this);
         this.sendOperation = mock(EventHubsTemplate.class);
         when(this.sendOperation.sendAsync(eq(this.destination), isA(Message.class),

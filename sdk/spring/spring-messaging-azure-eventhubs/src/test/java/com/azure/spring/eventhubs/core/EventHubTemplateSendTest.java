@@ -16,6 +16,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.Collections;
+import java.util.concurrent.ExecutionException;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
@@ -48,14 +49,14 @@ public class EventHubTemplateSendTest extends SendOperationTest<EventHubsTemplat
         this.sendOperation = new EventHubsTemplate(producerFactory);
     }
     @Test
-    public void testSendBatch() {
+    public void testSendBatch() throws ExecutionException, InterruptedException {
         final Mono<Void> mono = this.sendOperation.sendAsync(destination, Collections.nCopies(5, message), null);
 
         assertNull(mono.block());
         verifySendCalled(1);
     }
     @Test
-    public void testSendBatchWithTimeout() {
+    public void testSendBatchWithTimeout() throws ExecutionException, InterruptedException {
         this.batchableProducerAsyncClient = new BatchableProducerAsyncClient(this.mockProducerClient, 0, Duration.ofMinutes(3));
         when(this.producerFactory.createProducer(eq(this.destination))).thenReturn(this.batchableProducerAsyncClient);
 

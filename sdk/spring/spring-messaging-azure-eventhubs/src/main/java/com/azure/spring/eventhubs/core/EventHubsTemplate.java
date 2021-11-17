@@ -4,6 +4,7 @@
 package com.azure.spring.eventhubs.core;
 
 import com.azure.messaging.eventhubs.EventData;
+import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.spring.eventhubs.core.producer.EventHubProducer;
 import com.azure.spring.eventhubs.core.producer.EventHubProducerFactory;
 import com.azure.spring.eventhubs.support.converter.EventHubMessageConverter;
@@ -19,6 +20,7 @@ import reactor.core.publisher.Mono;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.stream.Collectors;
 
 /**
@@ -46,7 +48,8 @@ public class EventHubsTemplate implements SendOperation, BatchSendOperation {
 
     @Override
     public <T> Mono<Void> sendAsync(String destination, Message<T> message, PartitionSupplier partitionSupplier) {
-        return sendAsync(destination, Collections.singleton(message), partitionSupplier);
+        EventHubProducer producer = producerFactory.createProducer(destination);
+        return producer.send(Flux.just(messageConverter.fromMessage(message, EventData.class)), partitionSupplier);
     }
 
     private Mono<Void> doSend(String destination, Iterable<EventData> events, PartitionSupplier partitionSupplier) {

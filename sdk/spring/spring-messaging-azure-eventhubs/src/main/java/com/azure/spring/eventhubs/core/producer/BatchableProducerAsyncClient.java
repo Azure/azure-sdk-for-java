@@ -9,12 +9,16 @@ import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
 import com.azure.messaging.eventhubs.EventHubProperties;
 import com.azure.messaging.eventhubs.models.CreateBatchOptions;
 import com.azure.spring.messaging.PartitionSupplier;
-import reactor.core.Exceptions;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import javax.management.RuntimeErrorException;
 import java.time.Duration;
-import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -23,15 +27,19 @@ import java.util.concurrent.atomic.AtomicReference;
 public class BatchableProducerAsyncClient implements EventHubProducer {
 
     private final EventHubProducerAsyncClient client;
-    private final int maxBatchInBytes;
     private final Duration maxWaitTime;
-    private AtomicReference<EventDataBatch> currentBatch;
-    private final AtomicReference<LocalDateTime> lastSendTime = new AtomicReference<>(LocalDateTime.now());
+    private final CreateBatchOptions batchOptions;
+    private final AtomicReference<Long> lastSendTime = new AtomicReference<>(Long.MIN_VALUE);
+    private final AtomicReference<Long> nextSendTime = new AtomicReference<>(Long.MIN_VALUE);
+    private final ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
+    private final AtomicReference<EventDataBatch> currentBatch = new AtomicReference<>();
+    private volatile ScheduledFuture<?> scheduledTask;
 
     public BatchableProducerAsyncClient(EventHubProducerAsyncClient client, int maxBatchInBytes, Duration maxWaitTime) {
         this.client = client;
-        this.maxBatchInBytes = maxBatchInBytes;
         this.maxWaitTime = maxWaitTime;
+        this.batchOptions = new CreateBatchOptions().setMaximumSizeInBytes(maxBatchInBytes);
+        this.scheduler.initialize();
     }
 
     @Override
@@ -40,50 +48,39 @@ public class BatchableProducerAsyncClient implements EventHubProducer {
     }
 
     @Override
-    public Mono<Void> send(Flux<EventData> events, PartitionSupplier partitionSupplier) {
-        CreateBatchOptions options = buildCreateBatchOptions(partitionSupplier, maxBatchInBytes);
+    public synchronized Mono<Void> send(Flux<EventData> events, PartitionSupplier partitionSupplier) {
+        List<EventData> eventList = events.collectList().block();
+        if (currentBatch.get() == null) {
+            currentBatch.set(client.createBatch(batchOptions).block());
+        }
+        EventDataBatch batch = currentBatch.get();
+        for (EventData event : eventList) {
 
-        if (currentBatch == null) {
-            currentBatch = new AtomicReference<>(client.createBatch(options).block());
+            if (!batch.tryAdd(event)) {
+                if (batch.getCount() == 0) {
+                    throw new IllegalArgumentException("Event is larger than maximum batch allowed size.");
+                }
+                client.send(batch).block();
+                lastSendTime.set(System.currentTimeMillis());
+                scheduleNextSendTask();
+                currentBatch.set(client.createBatch().block());
+                batch = currentBatch.get();
+                batch.tryAdd(event);
+            }
+        }
+        if (System.currentTimeMillis() > nextSendTime.get()) {
+            if (scheduledTask != null && !scheduledTask.isDone()) {
+                try {
+                    scheduledTask.get();
+                } catch (InterruptedException | ExecutionException exception) {
+                    throw new RuntimeErrorException(new Error(exception.getCause()),
+                        "Error while trying to send a batch of events when maxWaitTime is met.");
+                }
+            }
+            scheduleNextSendTask();
         }
 
-        return events.flatMap(event -> {
-            final EventDataBatch batch = currentBatch.get();
-            if (batch.tryAdd(event)) {
-                return Mono.empty();
-            }
-            // The batch is full, so we create a new batch and send the batch. Mono.when completes when
-            // both operations
-            // have completed.
-            lastSendTime.set(LocalDateTime.now());
-            return Mono.when(
-                client.send(batch),
-                client.createBatch(options).map(newBatch -> {
-                    currentBatch.set(newBatch);
-                    // Add that event that we couldn't before.
-                    if (!newBatch.tryAdd(event)) {
-                        throw Exceptions.propagate(new IllegalArgumentException(String.format(
-                            "Event is too large for an empty batch. Max size: %s. Event: %s",
-                            newBatch.getMaxSizeInBytes(), event.getBodyAsString())));
-                    }
-                    return newBatch;
-                }));
-        })
-            .then(Mono.just(""))
-            .flatMap(s -> {
-                final EventDataBatch batch = currentBatch.get();
-                if (batch != null && Duration.between(this.lastSendTime.get(), LocalDateTime.now())
-                    .compareTo(maxWaitTime) > 0) {
-                    lastSendTime.set(LocalDateTime.now());
-                    return Mono.when(
-                        client.send(batch),
-                        client.createBatch(options).map(newBatch -> {
-                            currentBatch.set(newBatch);
-                            return newBatch;
-                        }));
-                }
-                return Mono.empty();
-            });
+        return Mono.empty();
     }
 
     public Mono<Void> send(EventDataBatch batch) {
@@ -95,11 +92,15 @@ public class BatchableProducerAsyncClient implements EventHubProducer {
         this.client.close();
     }
 
-    private CreateBatchOptions buildCreateBatchOptions(PartitionSupplier partitionSupplier, int maxSizeInBytes) {
-        return new CreateBatchOptions()
-            .setPartitionId(partitionSupplier != null ? partitionSupplier.getPartitionId() : null)
-            .setPartitionKey(partitionSupplier != null ? partitionSupplier.getPartitionKey() : null)
-            .setMaximumSizeInBytes(maxSizeInBytes);
+    private void scheduleNextSendTask() {
+        nextSendTime.set(System.currentTimeMillis() + maxWaitTime.toMillis());
+        scheduledTask = this.scheduler.schedule(() -> sendEventBatch(), new Date(nextSendTime.get()));
+    }
+
+    private void sendEventBatch() {
+        client.send(currentBatch.get()).block();
+        lastSendTime.set(System.currentTimeMillis());
+        currentBatch.set(client.createBatch(batchOptions).block());
     }
 
     public Mono<EventHubProperties> getEventHubProperties() {
