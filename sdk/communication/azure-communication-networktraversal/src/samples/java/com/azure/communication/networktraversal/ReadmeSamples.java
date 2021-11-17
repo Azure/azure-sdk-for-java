@@ -8,6 +8,7 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.communication.identity.CommunicationIdentityClient;
 import com.azure.communication.identity.CommunicationIdentityClientBuilder;
 import com.azure.communication.networktraversal.models.CommunicationRelayConfiguration;
+import com.azure.communication.networktraversal.models.RouteType;
 import com.azure.communication.networktraversal.models.CommunicationIceServer;
 import java.util.List;
 
@@ -102,6 +103,8 @@ public class ReadmeSamples {
         CommunicationRelayClient communicationRelayClient = createCommunicationNetworkTraversalClient();
         CommunicationRelayConfiguration config = communicationRelayClient.getRelayConfiguration(user);
 
+<<<<<<< HEAD
+=======
         System.out.println("Expires on:" + config.getExpiresOn());
         List<CommunicationIceServer> iceServers = config.getIceServers();
 
@@ -109,9 +112,57 @@ public class ReadmeSamples {
             System.out.println("URLS: " + iceS.getUrls());
             System.out.println("Username: " + iceS.getUsername());
             System.out.println("Credential: " + iceS.getCredential());
+            System.out.println("RouteType: " + iceS.getRouteType());
+        }
+        return config;
+    }
+
+    /**
+     * Sample code for getting a relay configuration without identity
+     *
+     * @return the created user
+     */
+    public CommunicationRelayConfiguration getRelayConfigurationWithoutIdentity() {
+        CommunicationRelayClient communicationRelayClient = createCommunicationNetworkTraversalClient();
+        CommunicationRelayConfiguration config = communicationRelayClient.getRelayConfiguration();
+
+>>>>>>> Update README and CHANGELOG
+        System.out.println("Expires on:" + config.getExpiresOn());
+        List<CommunicationIceServer> iceServers = config.getIceServers();
+
+        for (CommunicationIceServer iceS : iceServers) {
+            System.out.println("URLS: " + iceS.getUrls());
+            System.out.println("Username: " + iceS.getUsername());
+            System.out.println("Credential: " + iceS.getCredential());
+<<<<<<< HEAD
         }
         // END: readme-sample-getRelayConfiguration
 
+=======
+            System.out.println("RouteType: " + iceS.getRouteType());
+        }
+        return config;
+    }
+
+    /**
+     * Sample code for getting a relay configuration providing RouteType
+     *
+     * @return the created user
+     */
+    public CommunicationRelayConfiguration getRelayConfigurationWithRouteType() {
+        CommunicationRelayClient communicationRelayClient = createCommunicationNetworkTraversalClient();
+        CommunicationRelayConfiguration config = communicationRelayClient.getRelayConfiguration(RouteType.ANY);
+
+        System.out.println("Expires on:" + config.getExpiresOn());
+        List<CommunicationIceServer> iceServers = config.getIceServers();
+
+        for (CommunicationIceServer iceS : iceServers) {
+            System.out.println("URLS: " + iceS.getUrls());
+            System.out.println("Username: " + iceS.getUsername());
+            System.out.println("Credential: " + iceS.getCredential());
+            System.out.println("RouteType: " + iceS.getRouteType());
+        }
+>>>>>>> Update README and CHANGELOG
         return config;
     }
 
