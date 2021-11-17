@@ -19,27 +19,34 @@ class ResourceRetrieverTest {
         .withConfiguration(AutoConfigurations.of(AADAuthenticationFilterAutoConfiguration.class))
         .withClassLoader(new FilteredClassLoader(BearerTokenAuthenticationToken.class))
         .withPropertyValues(
+            "spring.cloud.azure.active-directory.enabled=true",
             "spring.cloud.azure.active-directory.client-id=fake-client-id",
-            "spring.cloud.azure.active-directory.client-secret=fake-client-secret");
+            "spring.cloud.azure.active-directory.client-secret=fake-client-secret"
+        );
 
     @Test
     void resourceRetrieverDefaultConfig() {
-        this.contextRunner.run(context -> {
-            assertThat(context).hasSingleBean(ResourceRetriever.class);
-            final ResourceRetriever retriever = context.getBean(ResourceRetriever.class);
-            assertThat(retriever).isInstanceOf(DefaultResourceRetriever.class);
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.active-directory.enabled=true"
+            )
+            .run(context -> {
+                assertThat(context).hasSingleBean(ResourceRetriever.class);
+                final ResourceRetriever retriever = context.getBean(ResourceRetriever.class);
+                assertThat(retriever).isInstanceOf(DefaultResourceRetriever.class);
 
-            final DefaultResourceRetriever defaultRetriever = (DefaultResourceRetriever) retriever;
-            assertThat(defaultRetriever.getConnectTimeout()).isEqualTo(RemoteJWKSet.DEFAULT_HTTP_CONNECT_TIMEOUT);
-            assertThat(defaultRetriever.getReadTimeout()).isEqualTo(RemoteJWKSet.DEFAULT_HTTP_READ_TIMEOUT);
-            assertThat(defaultRetriever.getSizeLimit()).isEqualTo(RemoteJWKSet.DEFAULT_HTTP_SIZE_LIMIT);
-        });
+                final DefaultResourceRetriever defaultRetriever = (DefaultResourceRetriever) retriever;
+                assertThat(defaultRetriever.getConnectTimeout()).isEqualTo(RemoteJWKSet.DEFAULT_HTTP_CONNECT_TIMEOUT);
+                assertThat(defaultRetriever.getReadTimeout()).isEqualTo(RemoteJWKSet.DEFAULT_HTTP_READ_TIMEOUT);
+                assertThat(defaultRetriever.getSizeLimit()).isEqualTo(RemoteJWKSet.DEFAULT_HTTP_SIZE_LIMIT);
+            });
     }
 
     @Test
     void resourceRetriverIsConfigurable() {
         this.contextRunner
             .withPropertyValues(
+                "spring.cloud.azure.active-directory.enabled=true",
                 "spring.cloud.azure.active-directory.jwt-connect-timeout=1234",
                 "spring.cloud.azure.active-directory.jwt-read-timeout=1234",
                 "spring.cloud.azure.active-directory.jwt-size-limit=123400")
