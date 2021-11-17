@@ -9,7 +9,6 @@ import com.azure.spring.core.properties.AzureProperties;
 /**
  *
  */
-// TODO(xiada): implement the connection string autowire here
 public interface ServiceBusCommonDescriptor extends AzureProperties, ConnectionStringAware {
 
     String getFQDN();
