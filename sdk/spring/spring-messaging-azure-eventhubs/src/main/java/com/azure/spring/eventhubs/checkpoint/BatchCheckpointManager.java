@@ -10,6 +10,7 @@ import com.azure.spring.messaging.checkpoint.CheckpointMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
+import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
@@ -49,6 +50,9 @@ public class BatchCheckpointManager extends EventCheckpointManager {
     @Override
     public void checkpoint(EventBatchContext context) {
         EventData lastEvent = getLastEventFromBatch(context);
+        if (lastEvent == null) {
+            return;
+        }
         Long offset = lastEvent.getOffset();
         String partitionId = context.getPartitionContext().getPartitionId();
         String consumerGroup = context.getPartitionContext().getConsumerGroup();
@@ -64,6 +68,9 @@ public class BatchCheckpointManager extends EventCheckpointManager {
 
     private EventData getLastEventFromBatch(EventBatchContext context) {
         List<EventData> events = context.getEvents();
+        if (CollectionUtils.isEmpty(events)) {
+            return null;
+        }
         EventData lastEvent = events.get(events.size() - 1);
         return lastEvent;
     }

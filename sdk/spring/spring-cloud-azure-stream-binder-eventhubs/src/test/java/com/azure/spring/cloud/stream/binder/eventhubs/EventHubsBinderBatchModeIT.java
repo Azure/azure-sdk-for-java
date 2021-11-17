@@ -16,6 +16,7 @@ import org.springframework.test.context.TestPropertySource;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Sinks;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -28,9 +29,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 @TestPropertySource(properties =
     {
     "spring.cloud.stream.eventhubs.bindings.consume-in-0.consumer.checkpoint.mode=BATCH",
+    "spring.cloud.stream.eventhubs.bindings.consume-in-0.consumer.batch.max-size=10",
+    "spring.cloud.stream.eventhubs.bindings.consume-in-0.consumer.batch.max-wait-time=2s",
     "spring.cloud.stream.bindings.consume-in-0.destination=test-eventhub-batch",
     "spring.cloud.stream.bindings.supply-out-0.destination=test-eventhub-batch",
     "spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name=test-eventhub-batch",
+    "spring.cloud.stream.bindings.consume-in-0.content-type=text/plain",
     "spring.cloud.stream.bindings.consume-in-0.consumer.batch-mode=true"
     })
 public class EventHubsBinderBatchModeIT {
@@ -60,10 +64,11 @@ public class EventHubsBinderBatchModeIT {
         }
 
         @Bean
-        public Consumer<Message<String>> consume() {
+        public Consumer<Message<List<String>>> consume() {
             return message -> {
-                LOGGER.info("EventHubBinderBatchModeIT: New message received: '{}'", message.getPayload());
-                if (message.getPayload().equals(EventHubsBinderBatchModeIT.MESSAGE)) {
+                List<String> payload = message.getPayload();
+                LOGGER.info("EventHubBinderBatchModeIT: New message received: '{}'", payload);
+                if (payload.contains(EventHubsBinderBatchModeIT.MESSAGE)) {
                     LATCH.countDown();
                 }
             };
