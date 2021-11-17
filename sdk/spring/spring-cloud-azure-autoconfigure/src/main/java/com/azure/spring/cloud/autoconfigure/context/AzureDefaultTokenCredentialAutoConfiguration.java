@@ -4,6 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.context;
 
 import com.azure.core.credential.TokenCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.core.factory.AbstractAzureServiceClientBuilderFactory;
 import com.azure.spring.core.factory.credential.AbstractAzureCredentialBuilderFactory;
@@ -38,12 +39,13 @@ public class AzureDefaultTokenCredentialAutoConfiguration {
     @Bean(name = DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME)
     @ConditionalOnMissingBean(name = DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME)
     @Order
-    public TokenCredential springDefaultAzureCredential(DefaultAzureCredentialBuilderFactory factory) {
+    public TokenCredential springDefaultAzureCredential(AbstractAzureCredentialBuilderFactory<DefaultAzureCredentialBuilder> factory) {
         return factory.build().build();
     }
 
     @Bean
-    public DefaultAzureCredentialBuilderFactory defaultAzureCredentialBuilderFactory(
+    @ConditionalOnMissingBean
+    public AbstractAzureCredentialBuilderFactory<DefaultAzureCredentialBuilder> azureCredentialBuilderFactory(
         ObjectProvider<ThreadPoolTaskExecutor> threadPoolTaskExecutors) {
         ThreadPoolExecutor threadPoolExecutor = null;
         if (threadPoolTaskExecutors.getIfAvailable() != null) {
@@ -80,5 +82,4 @@ public class AzureDefaultTokenCredentialAutoConfiguration {
             this.beanFactory = beanFactory;
         }
     }
-
 }
