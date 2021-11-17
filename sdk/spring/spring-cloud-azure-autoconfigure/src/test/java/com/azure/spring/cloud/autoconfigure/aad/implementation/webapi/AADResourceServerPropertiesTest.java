@@ -15,6 +15,9 @@ class AADResourceServerPropertiesTest {
     @Test
     void testNoPropertiesConfigured() {
         resourceServerContextRunner()
+            .withPropertyValues(
+                "spring.cloud.azure.active-directory.enabled=true"
+            )
             .run(context -> {
                 AADResourceServerProperties properties = context.getBean(AADResourceServerProperties.class);
                 assertEquals(AADTokenClaim.SUB, properties.getPrincipalClaimName());
@@ -26,6 +29,7 @@ class AADResourceServerPropertiesTest {
     void testPropertiesConfigured() {
         resourceServerContextRunner()
             .withPropertyValues(
+                "spring.cloud.azure.active-directory.enabled=true",
                 "spring.cloud.azure.active-directory.resource-server.principal-claim-name=fake-claim-name",
                 "spring.cloud.azure.active-directory.resource-server.claim-to-authority-prefix-map.fake-key-1=fake-value-1",
                 "spring.cloud.azure.active-directory.resource-server.claim-to-authority-prefix-map.fake-key-2=fake-value-2")

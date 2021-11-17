@@ -3,7 +3,7 @@
 package com.azure.spring.cloud.autoconfigure.aad.b2c.implementation;
 
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
@@ -18,7 +18,7 @@ import org.springframework.security.oauth2.client.registration.ClientRegistratio
  * and import {@link AADB2COAuth2ClientConfiguration} class for AAD B2C OAuth2 client support.
  */
 @Configuration
-@ConditionalOnResource(resources = "classpath:aadb2c.enable.config")
+@ConditionalOnProperty(value = "spring.cloud.azure.active-directory.b2c.enabled", havingValue = "true")
 @Conditional({ AADB2CConditions.CommonCondition.class, AADB2CConditions.UserFlowCondition.class })
 @EnableConfigurationProperties(AADB2CProperties.class)
 @Import(AADB2COAuth2ClientConfiguration.class)

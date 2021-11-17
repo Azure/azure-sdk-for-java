@@ -13,7 +13,7 @@ import com.nimbusds.jwt.proc.JWTClaimsSetAwareJWSKeySelector;
 import com.nimbusds.jwt.proc.JWTProcessor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnResource;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
@@ -38,7 +38,7 @@ import java.util.List;
  * B2C OAuth2 client support.
  */
 @Configuration
-@ConditionalOnResource(resources = "classpath:aadb2c.enable.config")
+@ConditionalOnProperty(value = "spring.cloud.azure.active-directory.b2c.enabled", havingValue = "true")
 @Conditional(AADB2CConditions.CommonCondition.class)
 @ConditionalOnClass(BearerTokenAuthenticationToken.class)
 @EnableConfigurationProperties(AADB2CProperties.class)
