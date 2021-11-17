@@ -3,6 +3,7 @@
 package com.azure.data.appconfiguration.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.data.appconfiguration.implementation.ConfigurationSettingHelper;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.OffsetDateTime;
@@ -44,6 +45,20 @@ public class ConfigurationSetting {
 
     @JsonProperty(value = "tags")
     private Map<String, String> tags;
+
+    static {
+        ConfigurationSettingHelper.setAccessor(new ConfigurationSettingHelper.ConfigurationSettingAccessor() {
+            @Override
+            public ConfigurationSetting setReadOnly(ConfigurationSetting setting, boolean readOnly) {
+                return setting.setReadOnly(readOnly);
+            }
+
+            @Override
+            public ConfigurationSetting setLastModified(ConfigurationSetting setting, OffsetDateTime lastModified) {
+                return setting.setLastModified(lastModified);
+            }
+        });
+    }
 
     /**
      * Creates an instance of the configuration setting.
@@ -161,6 +176,11 @@ public class ConfigurationSetting {
         return lastModified;
     }
 
+    private ConfigurationSetting setLastModified(OffsetDateTime lastModified) {
+        this.lastModified = lastModified;
+        return this;
+    }
+
     /**
      * Gets whether or not the configuration setting is read-only. If it is, then no modifications can be
      * made to this setting.
@@ -171,6 +191,11 @@ public class ConfigurationSetting {
      */
     public boolean isReadOnly() {
         return readOnly;
+    }
+
+    private ConfigurationSetting setReadOnly(boolean readOnly) {
+        this.readOnly = readOnly;
+        return this;
     }
 
     /**

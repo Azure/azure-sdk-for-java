@@ -1278,7 +1278,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX Segment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginCreateSegmentsAsync(
         String resourceGroupName,
         String privateCloudName,
@@ -1309,7 +1309,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX Segment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginCreateSegmentsAsync(
         String resourceGroupName,
         String privateCloudName,
@@ -1342,7 +1342,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX Segment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginCreateSegments(
         String resourceGroupName,
         String privateCloudName,
@@ -1365,7 +1365,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX Segment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginCreateSegments(
         String resourceGroupName,
         String privateCloudName,
@@ -1612,7 +1612,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX Segment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginUpdateSegmentsAsync(
         String resourceGroupName,
         String privateCloudName,
@@ -1643,7 +1643,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX Segment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginUpdateSegmentsAsync(
         String resourceGroupName,
         String privateCloudName,
@@ -1676,7 +1676,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX Segment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginUpdateSegments(
         String resourceGroupName,
         String privateCloudName,
@@ -1699,7 +1699,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX Segment.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkSegmentInner>, WorkloadNetworkSegmentInner> beginUpdateSegments(
         String resourceGroupName,
         String privateCloudName,
@@ -1920,7 +1920,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteSegmentAsync(
         String resourceGroupName, String privateCloudName, String segmentId) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -1942,7 +1942,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteSegmentAsync(
         String resourceGroupName, String privateCloudName, String segmentId, Context context) {
         context = this.client.mergeContext(context);
@@ -1964,7 +1964,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteSegment(
         String resourceGroupName, String privateCloudName, String segmentId) {
         return beginDeleteSegmentAsync(resourceGroupName, privateCloudName, segmentId).getSyncPoller();
@@ -1982,7 +1982,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteSegment(
         String resourceGroupName, String privateCloudName, String segmentId, Context context) {
         return beginDeleteSegmentAsync(resourceGroupName, privateCloudName, segmentId, context).getSyncPoller();
@@ -2545,7 +2545,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX DHCP.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkDhcpInner>, WorkloadNetworkDhcpInner> beginCreateDhcpAsync(
         String resourceGroupName,
         String privateCloudName,
@@ -2576,7 +2576,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX DHCP.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkDhcpInner>, WorkloadNetworkDhcpInner> beginCreateDhcpAsync(
         String resourceGroupName,
         String privateCloudName,
@@ -2608,7 +2608,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX DHCP.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkDhcpInner>, WorkloadNetworkDhcpInner> beginCreateDhcp(
         String resourceGroupName,
         String privateCloudName,
@@ -2630,7 +2630,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX DHCP.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkDhcpInner>, WorkloadNetworkDhcpInner> beginCreateDhcp(
         String resourceGroupName,
         String privateCloudName,
@@ -2874,7 +2874,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX DHCP.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkDhcpInner>, WorkloadNetworkDhcpInner> beginUpdateDhcpAsync(
         String resourceGroupName,
         String privateCloudName,
@@ -2905,7 +2905,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX DHCP.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkDhcpInner>, WorkloadNetworkDhcpInner> beginUpdateDhcpAsync(
         String resourceGroupName,
         String privateCloudName,
@@ -2937,7 +2937,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX DHCP.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkDhcpInner>, WorkloadNetworkDhcpInner> beginUpdateDhcp(
         String resourceGroupName,
         String privateCloudName,
@@ -2959,7 +2959,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX DHCP.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkDhcpInner>, WorkloadNetworkDhcpInner> beginUpdateDhcp(
         String resourceGroupName,
         String privateCloudName,
@@ -3179,7 +3179,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteDhcpAsync(
         String resourceGroupName, String privateCloudName, String dhcpId) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -3201,7 +3201,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteDhcpAsync(
         String resourceGroupName, String privateCloudName, String dhcpId, Context context) {
         context = this.client.mergeContext(context);
@@ -3223,7 +3223,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteDhcp(
         String resourceGroupName, String privateCloudName, String dhcpId) {
         return beginDeleteDhcpAsync(resourceGroupName, privateCloudName, dhcpId).getSyncPoller();
@@ -3241,7 +3241,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteDhcp(
         String resourceGroupName, String privateCloudName, String dhcpId, Context context) {
         return beginDeleteDhcpAsync(resourceGroupName, privateCloudName, dhcpId, context).getSyncPoller();
@@ -4163,7 +4163,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX Port Mirroring.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkPortMirroringInner>, WorkloadNetworkPortMirroringInner>
         beginCreatePortMirroringAsync(
             String resourceGroupName,
@@ -4196,7 +4196,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX Port Mirroring.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkPortMirroringInner>, WorkloadNetworkPortMirroringInner>
         beginCreatePortMirroringAsync(
             String resourceGroupName,
@@ -4230,7 +4230,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX Port Mirroring.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkPortMirroringInner>, WorkloadNetworkPortMirroringInner>
         beginCreatePortMirroring(
             String resourceGroupName,
@@ -4255,7 +4255,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX Port Mirroring.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkPortMirroringInner>, WorkloadNetworkPortMirroringInner>
         beginCreatePortMirroring(
             String resourceGroupName,
@@ -4513,7 +4513,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX Port Mirroring.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkPortMirroringInner>, WorkloadNetworkPortMirroringInner>
         beginUpdatePortMirroringAsync(
             String resourceGroupName,
@@ -4546,7 +4546,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX Port Mirroring.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkPortMirroringInner>, WorkloadNetworkPortMirroringInner>
         beginUpdatePortMirroringAsync(
             String resourceGroupName,
@@ -4580,7 +4580,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX Port Mirroring.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkPortMirroringInner>, WorkloadNetworkPortMirroringInner>
         beginUpdatePortMirroring(
             String resourceGroupName,
@@ -4605,7 +4605,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX Port Mirroring.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkPortMirroringInner>, WorkloadNetworkPortMirroringInner>
         beginUpdatePortMirroring(
             String resourceGroupName,
@@ -4835,7 +4835,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeletePortMirroringAsync(
         String resourceGroupName, String portMirroringId, String privateCloudName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -4857,7 +4857,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeletePortMirroringAsync(
         String resourceGroupName, String portMirroringId, String privateCloudName, Context context) {
         context = this.client.mergeContext(context);
@@ -4879,7 +4879,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeletePortMirroring(
         String resourceGroupName, String portMirroringId, String privateCloudName) {
         return beginDeletePortMirroringAsync(resourceGroupName, portMirroringId, privateCloudName).getSyncPoller();
@@ -4897,7 +4897,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeletePortMirroring(
         String resourceGroupName, String portMirroringId, String privateCloudName, Context context) {
         return beginDeletePortMirroringAsync(resourceGroupName, portMirroringId, privateCloudName, context)
@@ -5466,7 +5466,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX VM Group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkVMGroupInner>, WorkloadNetworkVMGroupInner> beginCreateVMGroupAsync(
         String resourceGroupName,
         String privateCloudName,
@@ -5497,7 +5497,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX VM Group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkVMGroupInner>, WorkloadNetworkVMGroupInner> beginCreateVMGroupAsync(
         String resourceGroupName,
         String privateCloudName,
@@ -5530,7 +5530,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX VM Group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkVMGroupInner>, WorkloadNetworkVMGroupInner> beginCreateVMGroup(
         String resourceGroupName,
         String privateCloudName,
@@ -5553,7 +5553,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX VM Group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkVMGroupInner>, WorkloadNetworkVMGroupInner> beginCreateVMGroup(
         String resourceGroupName,
         String privateCloudName,
@@ -5800,7 +5800,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX VM Group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkVMGroupInner>, WorkloadNetworkVMGroupInner> beginUpdateVMGroupAsync(
         String resourceGroupName,
         String privateCloudName,
@@ -5831,7 +5831,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX VM Group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkVMGroupInner>, WorkloadNetworkVMGroupInner> beginUpdateVMGroupAsync(
         String resourceGroupName,
         String privateCloudName,
@@ -5864,7 +5864,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX VM Group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkVMGroupInner>, WorkloadNetworkVMGroupInner> beginUpdateVMGroup(
         String resourceGroupName,
         String privateCloudName,
@@ -5887,7 +5887,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX VM Group.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkVMGroupInner>, WorkloadNetworkVMGroupInner> beginUpdateVMGroup(
         String resourceGroupName,
         String privateCloudName,
@@ -6108,7 +6108,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteVMGroupAsync(
         String resourceGroupName, String vmGroupId, String privateCloudName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -6130,7 +6130,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteVMGroupAsync(
         String resourceGroupName, String vmGroupId, String privateCloudName, Context context) {
         context = this.client.mergeContext(context);
@@ -6152,7 +6152,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteVMGroup(
         String resourceGroupName, String vmGroupId, String privateCloudName) {
         return beginDeleteVMGroupAsync(resourceGroupName, vmGroupId, privateCloudName).getSyncPoller();
@@ -6170,7 +6170,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteVMGroup(
         String resourceGroupName, String vmGroupId, String privateCloudName, Context context) {
         return beginDeleteVMGroupAsync(resourceGroupName, vmGroupId, privateCloudName, context).getSyncPoller();
@@ -7093,7 +7093,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX DNS Service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkDnsServiceInner>, WorkloadNetworkDnsServiceInner>
         beginCreateDnsServiceAsync(
             String resourceGroupName,
@@ -7126,7 +7126,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX DNS Service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkDnsServiceInner>, WorkloadNetworkDnsServiceInner>
         beginCreateDnsServiceAsync(
             String resourceGroupName,
@@ -7160,7 +7160,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX DNS Service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkDnsServiceInner>, WorkloadNetworkDnsServiceInner> beginCreateDnsService(
         String resourceGroupName,
         String privateCloudName,
@@ -7183,7 +7183,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX DNS Service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkDnsServiceInner>, WorkloadNetworkDnsServiceInner> beginCreateDnsService(
         String resourceGroupName,
         String privateCloudName,
@@ -7436,7 +7436,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX DNS Service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkDnsServiceInner>, WorkloadNetworkDnsServiceInner>
         beginUpdateDnsServiceAsync(
             String resourceGroupName,
@@ -7469,7 +7469,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX DNS Service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkDnsServiceInner>, WorkloadNetworkDnsServiceInner>
         beginUpdateDnsServiceAsync(
             String resourceGroupName,
@@ -7503,7 +7503,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX DNS Service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkDnsServiceInner>, WorkloadNetworkDnsServiceInner> beginUpdateDnsService(
         String resourceGroupName,
         String privateCloudName,
@@ -7526,7 +7526,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX DNS Service.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkDnsServiceInner>, WorkloadNetworkDnsServiceInner> beginUpdateDnsService(
         String resourceGroupName,
         String privateCloudName,
@@ -7751,7 +7751,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteDnsServiceAsync(
         String resourceGroupName, String dnsServiceId, String privateCloudName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -7773,7 +7773,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteDnsServiceAsync(
         String resourceGroupName, String dnsServiceId, String privateCloudName, Context context) {
         context = this.client.mergeContext(context);
@@ -7795,7 +7795,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteDnsService(
         String resourceGroupName, String dnsServiceId, String privateCloudName) {
         return beginDeleteDnsServiceAsync(resourceGroupName, dnsServiceId, privateCloudName).getSyncPoller();
@@ -7813,7 +7813,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteDnsService(
         String resourceGroupName, String dnsServiceId, String privateCloudName, Context context) {
         return beginDeleteDnsServiceAsync(resourceGroupName, dnsServiceId, privateCloudName, context).getSyncPoller();
@@ -8380,7 +8380,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX DNS Zone.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkDnsZoneInner>, WorkloadNetworkDnsZoneInner> beginCreateDnsZoneAsync(
         String resourceGroupName,
         String privateCloudName,
@@ -8411,7 +8411,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX DNS Zone.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkDnsZoneInner>, WorkloadNetworkDnsZoneInner> beginCreateDnsZoneAsync(
         String resourceGroupName,
         String privateCloudName,
@@ -8444,7 +8444,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX DNS Zone.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkDnsZoneInner>, WorkloadNetworkDnsZoneInner> beginCreateDnsZone(
         String resourceGroupName,
         String privateCloudName,
@@ -8467,7 +8467,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX DNS Zone.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkDnsZoneInner>, WorkloadNetworkDnsZoneInner> beginCreateDnsZone(
         String resourceGroupName,
         String privateCloudName,
@@ -8714,7 +8714,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX DNS Zone.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkDnsZoneInner>, WorkloadNetworkDnsZoneInner> beginUpdateDnsZoneAsync(
         String resourceGroupName,
         String privateCloudName,
@@ -8745,7 +8745,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX DNS Zone.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkDnsZoneInner>, WorkloadNetworkDnsZoneInner> beginUpdateDnsZoneAsync(
         String resourceGroupName,
         String privateCloudName,
@@ -8778,7 +8778,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX DNS Zone.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkDnsZoneInner>, WorkloadNetworkDnsZoneInner> beginUpdateDnsZone(
         String resourceGroupName,
         String privateCloudName,
@@ -8801,7 +8801,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX DNS Zone.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkDnsZoneInner>, WorkloadNetworkDnsZoneInner> beginUpdateDnsZone(
         String resourceGroupName,
         String privateCloudName,
@@ -9022,7 +9022,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteDnsZoneAsync(
         String resourceGroupName, String dnsZoneId, String privateCloudName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -9044,7 +9044,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteDnsZoneAsync(
         String resourceGroupName, String dnsZoneId, String privateCloudName, Context context) {
         context = this.client.mergeContext(context);
@@ -9066,7 +9066,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteDnsZone(
         String resourceGroupName, String dnsZoneId, String privateCloudName) {
         return beginDeleteDnsZoneAsync(resourceGroupName, dnsZoneId, privateCloudName).getSyncPoller();
@@ -9084,7 +9084,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeleteDnsZone(
         String resourceGroupName, String dnsZoneId, String privateCloudName, Context context) {
         return beginDeleteDnsZoneAsync(resourceGroupName, dnsZoneId, privateCloudName, context).getSyncPoller();
@@ -9652,7 +9652,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX Public IP Block.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkPublicIpInner>, WorkloadNetworkPublicIpInner> beginCreatePublicIpAsync(
         String resourceGroupName,
         String privateCloudName,
@@ -9683,7 +9683,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX Public IP Block.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<WorkloadNetworkPublicIpInner>, WorkloadNetworkPublicIpInner> beginCreatePublicIpAsync(
         String resourceGroupName,
         String privateCloudName,
@@ -9716,7 +9716,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX Public IP Block.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkPublicIpInner>, WorkloadNetworkPublicIpInner> beginCreatePublicIp(
         String resourceGroupName,
         String privateCloudName,
@@ -9739,7 +9739,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return nSX Public IP Block.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<WorkloadNetworkPublicIpInner>, WorkloadNetworkPublicIpInner> beginCreatePublicIp(
         String resourceGroupName,
         String privateCloudName,
@@ -9962,7 +9962,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeletePublicIpAsync(
         String resourceGroupName, String publicIpId, String privateCloudName) {
         Mono<Response<Flux<ByteBuffer>>> mono =
@@ -9984,7 +9984,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeletePublicIpAsync(
         String resourceGroupName, String publicIpId, String privateCloudName, Context context) {
         context = this.client.mergeContext(context);
@@ -10006,7 +10006,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeletePublicIp(
         String resourceGroupName, String publicIpId, String privateCloudName) {
         return beginDeletePublicIpAsync(resourceGroupName, publicIpId, privateCloudName).getSyncPoller();
@@ -10024,7 +10024,7 @@ public final class WorkloadNetworksClientImpl implements WorkloadNetworksClient 
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDeletePublicIp(
         String resourceGroupName, String publicIpId, String privateCloudName, Context context) {
         return beginDeletePublicIpAsync(resourceGroupName, publicIpId, privateCloudName, context).getSyncPoller();

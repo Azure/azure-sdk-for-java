@@ -1,6 +1,30 @@
 ## Release History
+### 4.5.0-beta.1 (Unreleased)
 
-### 4.4.0-beta.1 (Unreleased)
+### 4.4.2 (2021-11-15)
+#### Key Bug Fixes
+* Fixed an issue in Spark Streaming jobs processing Cosmos DB's changefeed resulting in error deserializing the offset
+
+### 4.4.1 (2021-11-12)
+#### Key Bug Fixes
+* Fixed an issue that can cause large delays before read or write operations start for large Cosmos DB container 
+
+### 4.4.1 (2021-11-12)
+#### Key Bug Fixes
+* Fixed an issue that can cause large delays before read or write operations start for large Cosmos DB container 
+
+### 4.4.1 (2021-11-12)
+#### Key Bug Fixes
+* Fixed an issue that can cause large delays before read or write operations start for large Cosmos DB container 
+
+### 4.4.0 (2021-11-10)
+#### New Features
+* Added support for writing an RDD to Cosmos with opaque json payload to avoid risk of unwanted modification due to schema-inference/mapping - See [PR 24319](https://github.com/Azure/azure-sdk-for-java/pull/24319).
+* Added an option to control how null/empty-default values are serialized to json documents in Cosmos - See [PR 24797](https://github.com/Azure/azure-sdk-for-java/pull/24797).
+#### Key Bug Fixes
+* Fixed a regression (compared to Cosmos DB connector on Spark 2.4) that resulted in casting error `["java.lang.Integer" cannot be cast to "java.sql.Date"]` when trying to write RDD row with an Integer value if the schema's `FiledType` is Date for this column. See [PR 25156](https://github.com/Azure/azure-sdk-for-java/pull/25156) 
+* Fixed issue that could result in `PoolAcquirePendingLimitException` error especially on Spark clusters which large executors (high number of cores per executor) See [PR 25047](https://github.com/Azure/azure-sdk-for-java/pull/25047)
+* Improved robustness for bulk ingestion jobs to reduce the memory footprint. See [PR 25215](https://github.com/Azure/azure-sdk-for-java/pull/25215)
 
 ### 4.3.1 (2021-09-13)
 #### Key Bug Fixes

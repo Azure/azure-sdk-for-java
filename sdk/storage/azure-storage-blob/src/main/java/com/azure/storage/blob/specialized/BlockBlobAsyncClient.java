@@ -173,7 +173,13 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.upload#Flux-long}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobAsyncClient.upload#Flux-long -->
+     * <pre>
+     * client.upload&#40;data, length&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Uploaded BlockBlob MD5 is %s%n&quot;,
+     *         Base64.getEncoder&#40;&#41;.encodeToString&#40;response.getContentMd5&#40;&#41;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobAsyncClient.upload#Flux-long -->
      *
      * @param data The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
      * (the default). In other words, the Flux must produce the same data each time it is subscribed to.
@@ -202,7 +208,14 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.upload#Flux-long-boolean}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobAsyncClient.upload#Flux-long-boolean -->
+     * <pre>
+     * boolean overwrite = false; &#47;&#47; Default behavior
+     * client.upload&#40;data, length, overwrite&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Uploaded BlockBlob MD5 is %s%n&quot;,
+     *         Base64.getEncoder&#40;&#41;.encodeToString&#40;response.getContentMd5&#40;&#41;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobAsyncClient.upload#Flux-long-boolean -->
      *
      * @param data The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
      * (the default). In other words, the Flux must produce the same data each time it is subscribed to.
@@ -240,7 +253,24 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#Flux-long-BlobHttpHeaders-Map-AccessTier-byte-BlobRequestConditions}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#Flux-long-BlobHttpHeaders-Map-AccessTier-byte-BlobRequestConditions -->
+     * <pre>
+     * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
+     *     .setContentMd5&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     *
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * byte[] md5 = MessageDigest.getInstance&#40;&quot;MD5&quot;&#41;.digest&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;;
+     * BlobRequestConditions requestConditions = new BlobRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     *
+     * client.uploadWithResponse&#40;data, length, headers, metadata, AccessTier.HOT, md5, requestConditions&#41;
+     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Uploaded BlockBlob MD5 is %s%n&quot;,
+     *         Base64.getEncoder&#40;&#41;.encodeToString&#40;response.getValue&#40;&#41;.getContentMd5&#40;&#41;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#Flux-long-BlobHttpHeaders-Map-AccessTier-byte-BlobRequestConditions -->
      *
      * @param data The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
      * (the default). In other words, the Flux must produce the same data each time it is subscribed to.
@@ -279,7 +309,27 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#BlockBlobSimpleUploadOptions}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#BlockBlobSimpleUploadOptions -->
+     * <pre>
+     * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
+     *     .setContentMd5&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     *
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * Map&lt;String, String&gt; tags = Collections.singletonMap&#40;&quot;tag&quot;, &quot;value&quot;&#41;;
+     * byte[] md5 = MessageDigest.getInstance&#40;&quot;MD5&quot;&#41;.digest&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;;
+     * BlobRequestConditions requestConditions = new BlobRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     *
+     * client.uploadWithResponse&#40;new BlockBlobSimpleUploadOptions&#40;data, length&#41;.setHeaders&#40;headers&#41;
+     *     .setMetadata&#40;metadata&#41;.setTags&#40;tags&#41;.setTier&#40;AccessTier.HOT&#41;.setContentMd5&#40;md5&#41;
+     *     .setRequestConditions&#40;requestConditions&#41;&#41;
+     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Uploaded BlockBlob MD5 is %s%n&quot;,
+     *         Base64.getEncoder&#40;&#41;.encodeToString&#40;response.getValue&#40;&#41;.getContentMd5&#40;&#41;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadWithResponse#BlockBlobSimpleUploadOptions -->
      *
      * @param options {@link BlockBlobSimpleUploadOptions}
      * @return A reactive response containing the information of the uploaded block blob.
@@ -332,7 +382,14 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadFromUrl#String}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadFromUrl#String -->
+     * <pre>
+     * client.uploadFromUrl&#40;sourceUrl&#41;
+     *     .subscribe&#40;response -&gt;
+     *         System.out.printf&#40;&quot;Uploaded BlockBlob from URL, MD5 is %s%n&quot;,
+     *             Base64.getEncoder&#40;&#41;.encodeToString&#40;response.getContentMd5&#40;&#41;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadFromUrl#String -->
      *
      * @param sourceUrl The source URL to upload from.
      * @return A reactive response containing the information of the uploaded block blob.
@@ -356,7 +413,14 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadFromUrl#String-boolean}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadFromUrl#String-boolean -->
+     * <pre>
+     * boolean overwrite = false; &#47;&#47; Default behavior
+     * client.uploadFromUrl&#40;sourceUrl, overwrite&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Uploaded BlockBlob from URL, MD5 is %s%n&quot;,
+     *         Base64.getEncoder&#40;&#41;.encodeToString&#40;response.getContentMd5&#40;&#41;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadFromUrl#String-boolean -->
      *
      * @param sourceUrl The source URL to upload from.
      * @param overwrite Whether or not to overwrite, should data exist on the blob.
@@ -389,7 +453,27 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadFromUrlWithResponse#BlobUploadFromUrlOptions}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadFromUrlWithResponse#BlobUploadFromUrlOptions -->
+     * <pre>
+     * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
+     *     .setContentMd5&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     *
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * Map&lt;String, String&gt; tags = Collections.singletonMap&#40;&quot;tag&quot;, &quot;value&quot;&#41;;
+     * byte[] md5 = MessageDigest.getInstance&#40;&quot;MD5&quot;&#41;.digest&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;;
+     * BlobRequestConditions requestConditions = new BlobRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     *
+     * client.uploadFromUrlWithResponse&#40;new BlobUploadFromUrlOptions&#40;sourceUrl&#41;.setHeaders&#40;headers&#41;
+     *     .setTags&#40;tags&#41;.setTier&#40;AccessTier.HOT&#41;.setContentMd5&#40;md5&#41;
+     *     .setDestinationRequestConditions&#40;requestConditions&#41;&#41;
+     *     .subscribe&#40;response -&gt; System.out.printf&#40;&quot;Uploaded BlockBlob from URL, MD5 is %s%n&quot;,
+     *         Base64.getEncoder&#40;&#41;.encodeToString&#40;response.getValue&#40;&#41;.getContentMd5&#40;&#41;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobAsyncClient.uploadFromUrlWithResponse#BlobUploadFromUrlOptions -->
      *
      * @param options {@link BlobUploadFromUrlOptions}
      * @return A reactive response containing the information of the uploaded block blob.
@@ -462,7 +546,14 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlock#String-Flux-long}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlock#String-Flux-long -->
+     * <pre>
+     * client.stageBlock&#40;base64BlockID, data, length&#41;
+     *     .subscribe&#40;
+     *         response -&gt; System.out.println&#40;&quot;Staging block completed&quot;&#41;,
+     *         error -&gt; System.out.printf&#40;&quot;Error when calling stage Block: %s&quot;, error&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlock#String-Flux-long -->
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> stageBlock(String base64BlockId, Flux<ByteBuffer> data, long length) {
@@ -483,7 +574,12 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockWithResponse#String-Flux-long-byte-String}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockWithResponse#String-Flux-long-byte-String -->
+     * <pre>
+     * client.stageBlockWithResponse&#40;base64BlockID, data, length, md5, leaseId&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Staging block completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockWithResponse#String-Flux-long-byte-String -->
      *
      * @param base64BlockId A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
      * ids for a given blob must be the same length.
@@ -526,7 +622,14 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockFromUrl#String-String-BlobRange}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockFromUrl#String-String-BlobRange -->
+     * <pre>
+     * client.stageBlockFromUrl&#40;base64BlockID, sourceUrl, new BlobRange&#40;offset, count&#41;&#41;
+     *     .subscribe&#40;
+     *         response -&gt; System.out.println&#40;&quot;Staging block completed&quot;&#41;,
+     *         error -&gt; System.out.printf&#40;&quot;Error when calling stage Block: %s&quot;, error&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockFromUrl#String-String-BlobRange -->
      *
      * @param base64BlockId A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
      * ids for a given blob must be the same length.
@@ -555,7 +658,16 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockFromUrlWithResponse#String-String-BlobRange-byte-String-BlobRequestConditions}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockFromUrlWithResponse#String-String-BlobRange-byte-String-BlobRequestConditions -->
+     * <pre>
+     * BlobRequestConditions sourceRequestConditions = new BlobRequestConditions&#40;&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     *
+     * client.stageBlockFromUrlWithResponse&#40;base64BlockID, sourceUrl, new BlobRange&#40;offset, count&#41;, null,
+     *     leaseId, sourceRequestConditions&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Staging block from URL completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockFromUrlWithResponse#String-String-BlobRange-byte-String-BlobRequestConditions -->
      *
      * @param base64BlockId A Base64 encoded {@code String} that specifies the ID for this block. Note that all block
      * ids for a given blob must be the same length.
@@ -591,7 +703,17 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockFromUrlWithResponse#BlockBlobStageBlockFromUrlOptions}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockFromUrlWithResponse#BlockBlobStageBlockFromUrlOptions -->
+     * <pre>
+     * BlobRequestConditions sourceRequestConditions = new BlobRequestConditions&#40;&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     *
+     * client.stageBlockFromUrlWithResponse&#40;new BlockBlobStageBlockFromUrlOptions&#40;base64BlockID, sourceUrl&#41;
+     *     .setSourceRange&#40;new BlobRange&#40;offset, count&#41;&#41;.setLeaseId&#40;leaseId&#41;
+     *     .setSourceRequestConditions&#40;sourceRequestConditions&#41;&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Staging block from URL completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobAsyncClient.stageBlockFromUrlWithResponse#BlockBlobStageBlockFromUrlOptions -->
      *
      * @param options parameters for the operation.
      * @return A reactive response signalling completion.
@@ -635,7 +757,17 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.listBlocks#BlockListType}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobAsyncClient.listBlocks#BlockListType -->
+     * <pre>
+     * client.listBlocks&#40;BlockListType.ALL&#41;.subscribe&#40;block -&gt; &#123;
+     *     System.out.println&#40;&quot;Committed Blocks:&quot;&#41;;
+     *     block.getCommittedBlocks&#40;&#41;.forEach&#40;b -&gt; System.out.printf&#40;&quot;Name: %s, Size: %d&quot;, b.getName&#40;&#41;, b.getSizeLong&#40;&#41;&#41;&#41;;
+     *
+     *     System.out.println&#40;&quot;Uncommitted Blocks:&quot;&#41;;
+     *     block.getUncommittedBlocks&#40;&#41;.forEach&#40;b -&gt; System.out.printf&#40;&quot;Name: %s, Size: %d&quot;, b.getName&#40;&#41;, b.getSizeLong&#40;&#41;&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobAsyncClient.listBlocks#BlockListType -->
      *
      * @param listType Specifies which type of blocks to return.
      *
@@ -658,7 +790,18 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.listBlocksWithResponse#BlockListType-String}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobAsyncClient.listBlocksWithResponse#BlockListType-String -->
+     * <pre>
+     * client.listBlocksWithResponse&#40;BlockListType.ALL, leaseId&#41;.subscribe&#40;response -&gt; &#123;
+     *     BlockList block = response.getValue&#40;&#41;;
+     *     System.out.println&#40;&quot;Committed Blocks:&quot;&#41;;
+     *     block.getCommittedBlocks&#40;&#41;.forEach&#40;b -&gt; System.out.printf&#40;&quot;Name: %s, Size: %d&quot;, b.getName&#40;&#41;, b.getSizeLong&#40;&#41;&#41;&#41;;
+     *
+     *     System.out.println&#40;&quot;Uncommitted Blocks:&quot;&#41;;
+     *     block.getUncommittedBlocks&#40;&#41;.forEach&#40;b -&gt; System.out.printf&#40;&quot;Name: %s, Size: %d&quot;, b.getName&#40;&#41;, b.getSizeLong&#40;&#41;&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobAsyncClient.listBlocksWithResponse#BlockListType-String -->
      *
      * @param listType Specifies which type of blocks to return.
      * @param leaseId The lease ID the active lease on the blob must match.
@@ -681,7 +824,22 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.listBlocksWithResponse#BlockBlobListBlocksOptions}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobAsyncClient.listBlocksWithResponse#BlockBlobListBlocksOptions -->
+     * <pre>
+     * client.listBlocksWithResponse&#40;new BlockBlobListBlocksOptions&#40;BlockListType.ALL&#41;
+     *     .setLeaseId&#40;leaseId&#41;
+     *     .setIfTagsMatch&#40;tags&#41;&#41;.subscribe&#40;response -&gt; &#123;
+     *         BlockList block = response.getValue&#40;&#41;;
+     *         System.out.println&#40;&quot;Committed Blocks:&quot;&#41;;
+     *         block.getCommittedBlocks&#40;&#41;.forEach&#40;b -&gt; System.out.printf&#40;&quot;Name: %s, Size: %d&quot;, b.getName&#40;&#41;,
+     *             b.getSizeLong&#40;&#41;&#41;&#41;;
+     *
+     *         System.out.println&#40;&quot;Uncommitted Blocks:&quot;&#41;;
+     *         block.getUncommittedBlocks&#40;&#41;.forEach&#40;b -&gt; System.out.printf&#40;&quot;Name: %s, Size: %d&quot;, b.getName&#40;&#41;,
+     *             b.getSizeLong&#40;&#41;&#41;&#41;;
+     *     &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobAsyncClient.listBlocksWithResponse#BlockBlobListBlocksOptions -->
      *
      * @param options {@link BlockBlobListBlocksOptions}
      * @return A reactive response containing the list of blocks.
@@ -714,7 +872,12 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockList#List}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockList#List -->
+     * <pre>
+     * client.commitBlockList&#40;Collections.singletonList&#40;base64BlockID&#41;&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Committing block list completed. Last modified: %s%n&quot;, response.getLastModified&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockList#List -->
      *
      * @param base64BlockIds A list of base64 encode {@code String}s that specifies the block IDs to be committed.
      * @return A reactive response containing the information of the block blob.
@@ -738,7 +901,13 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockList#List-boolean}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockList#List-boolean -->
+     * <pre>
+     * boolean overwrite = false; &#47;&#47; Default behavior
+     * client.commitBlockList&#40;Collections.singletonList&#40;base64BlockID&#41;, overwrite&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Committing block list completed. Last modified: %s%n&quot;, response.getLastModified&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockList#List-boolean -->
      *
      * @param base64BlockIds A list of base64 encode {@code String}s that specifies the block IDs to be committed.
      * @param overwrite Whether or not to overwrite, should data exist on the blob.
@@ -770,7 +939,22 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockListWithResponse#List-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockListWithResponse#List-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions -->
+     * <pre>
+     * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
+     *     .setContentMd5&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     *
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * BlobRequestConditions requestConditions = new BlobRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     * client.commitBlockListWithResponse&#40;Collections.singletonList&#40;base64BlockID&#41;, headers, metadata,
+     *     AccessTier.HOT, requestConditions&#41;.subscribe&#40;response -&gt;
+     *         System.out.printf&#40;&quot;Committing block list completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockListWithResponse#List-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions -->
      *
      * @param base64BlockIds A list of base64 encode {@code String}s that specifies the block IDs to be committed.
      * @param headers {@link BlobHttpHeaders}
@@ -800,7 +984,25 @@ public final class BlockBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockListWithResponse#BlockBlobCommitBlockListOptions}
+     * <!-- src_embed com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockListWithResponse#BlockBlobCommitBlockListOptions -->
+     * <pre>
+     * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
+     *     .setContentMd5&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;;
+     *
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * Map&lt;String, String&gt; tags = Collections.singletonMap&#40;&quot;tag&quot;, &quot;value&quot;&#41;;
+     * BlobRequestConditions requestConditions = new BlobRequestConditions&#40;&#41;
+     *     .setLeaseId&#40;leaseId&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     * client.commitBlockListWithResponse&#40;new BlockBlobCommitBlockListOptions&#40;Collections.singletonList&#40;base64BlockID&#41;&#41;
+     *     .setHeaders&#40;headers&#41;.setMetadata&#40;metadata&#41;.setTags&#40;tags&#41;.setTier&#40;AccessTier.HOT&#41;
+     *     .setRequestConditions&#40;requestConditions&#41;&#41;
+     *     .subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Committing block list completed with status %d%n&quot;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.BlockBlobAsyncClient.commitBlockListWithResponse#BlockBlobCommitBlockListOptions -->
      *
      * @param options {@link BlockBlobCommitBlockListOptions}
      * @return A reactive response containing the information of the block blob.

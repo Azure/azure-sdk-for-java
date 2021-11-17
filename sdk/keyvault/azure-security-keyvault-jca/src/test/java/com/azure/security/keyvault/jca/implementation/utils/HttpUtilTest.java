@@ -19,7 +19,7 @@ public class HttpUtilTest {
 
     @Test
     public void testCustomizedHttpsClient() {
-        String url = "https://google.com";
+        String url = "https://mvnrepository.com/";
         String result = HttpUtil.get(url, null);
         assertNotNull(result);
         assertFalse(result.isEmpty());

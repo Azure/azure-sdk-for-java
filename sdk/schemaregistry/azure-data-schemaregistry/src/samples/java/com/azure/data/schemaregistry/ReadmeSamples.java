@@ -10,49 +10,48 @@ import com.azure.data.schemaregistry.models.SchemaRegistrySchema;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
 /**
- * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS
- * ARE USED TO EXTRACT APPROPRIATE CODE SEGMENTS FROM THIS FILE. ADD NEW CODE AT THE BOTTOM TO AVOID CHANGING
- * LINE NUMBERS OF EXISTING CODE SAMPLES.
- *
  * Code samples for the README.md
  */
+@SuppressWarnings("unused")
 public class ReadmeSamples {
+    private final SchemaRegistryClient schemaRegistryClient = new SchemaRegistryClientBuilder()
+        .fullyQualifiedNamespace("{schema-registry-endpoint")
+        .credential(new DefaultAzureCredentialBuilder().build())
+        .buildClient();
 
     /**
      * Sample for creating async client.
      */
     public void createAsyncClient() {
+        // BEGIN: readme-sample-createAsyncClient
         TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
         SchemaRegistryAsyncClient schemaRegistryAsyncClient = new SchemaRegistryClientBuilder()
             .fullyQualifiedNamespace("{schema-registry-endpoint")
             .credential(tokenCredential)
             .buildAsyncClient();
+        // END: readme-sample-createAsyncClient
     }
 
     /**
      * Sample for creating sync client.
      */
     public void createSyncClient() {
+        // BEGIN: readme-sample-createSyncClient
         TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
         SchemaRegistryClient schemaRegistryClient = new SchemaRegistryClientBuilder()
             .fullyQualifiedNamespace("{schema-registry-endpoint")
             .credential(tokenCredential)
             .buildClient();
+        // END: readme-sample-createSyncClient
     }
 
     /**
      * Sample for registering a schema.
      */
     public void registerSchema() {
-        TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
-
-        SchemaRegistryClient schemaRegistryClient = new SchemaRegistryClientBuilder()
-            .fullyQualifiedNamespace("{schema-registry-endpoint")
-            .credential(tokenCredential)
-            .buildClient();
-
+        // BEGIN: readme-sample-registerSchema
         String schemaContent = "{\n"
             + "    \"type\" : \"record\",  \n"
             + "    \"namespace\" : \"SampleSchemaNameSpace\", \n"
@@ -70,36 +69,26 @@ public class ReadmeSamples {
             schemaContent, SchemaFormat.AVRO);
 
         System.out.println("Registered schema: " + schemaProperties.getId());
+        // END: readme-sample-registerSchema
     }
 
     /**
      * Sample for getting the schema's properties from a schema.
      */
     public void getSchema() {
-        TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
-
-        SchemaRegistryClient schemaRegistryClient = new SchemaRegistryClientBuilder()
-            .fullyQualifiedNamespace("{schema-registry-endpoint")
-            .credential(tokenCredential)
-            .buildClient();
-
+        // BEGIN: readme-sample-getSchema
         SchemaRegistrySchema schema = schemaRegistryClient.getSchema("{schema-id}");
 
         System.out.printf("Retrieved schema: '%s'. Contents: %s%n", schema.getProperties().getId(),
-            schema.getSchemaDefinition());
+            schema.getDefinition());
+        // END: readme-sample-getSchema
     }
 
     /**
      * Sample for getting the schema id of a registered schema.
      */
     public void getSchemaId() {
-        TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
-
-        SchemaRegistryClient schemaRegistryClient = new SchemaRegistryClientBuilder()
-            .fullyQualifiedNamespace("{schema-registry-endpoint")
-            .credential(tokenCredential)
-            .buildClient();
-
+        // BEGIN: readme-sample-getSchemaId
         String schemaContent = "{\n"
             + "    \"type\" : \"record\",  \n"
             + "    \"namespace\" : \"SampleSchemaNameSpace\", \n"
@@ -117,5 +106,6 @@ public class ReadmeSamples {
             schemaContent, SchemaFormat.AVRO);
 
         System.out.println("Retrieved schema id: " + properties.getId());
+        // END: readme-sample-getSchemaId
     }
 }

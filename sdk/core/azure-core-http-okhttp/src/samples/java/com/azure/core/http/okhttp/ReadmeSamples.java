@@ -20,16 +20,20 @@ public class ReadmeSamples {
      * Sample code for creating async Netty HTTP client.
      */
     public void createBasicClient() {
+        // BEGIN: readme-sample-createBasicClient
         HttpClient client = new OkHttpAsyncHttpClientBuilder().build();
+        // END: readme-sample-createBasicClient
     }
 
     /**
      * Sample code for creating async Netty HTTP client with proxy.
      */
     public void createProxyClient() {
+        // BEGIN: readme-sample-createProxyClient
         HttpClient client = new OkHttpAsyncHttpClientBuilder()
             .proxy(new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("<proxy-host>", 8888)))
             .build();
+        // END: readme-sample-createProxyClient
     }
 
 }

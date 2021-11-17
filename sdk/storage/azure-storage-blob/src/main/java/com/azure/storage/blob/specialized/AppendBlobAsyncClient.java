@@ -147,7 +147,12 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.create}
+     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobAsyncClient.create -->
+     * <pre>
+     * client.create&#40;&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Created AppendBlob at %s%n&quot;, response.getLastModified&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.AppendBlobAsyncClient.create -->
      *
      * @return A {@link Mono} containing the information of the created appended blob.
      */
@@ -165,7 +170,13 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.create#boolean}
+     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobAsyncClient.create#boolean -->
+     * <pre>
+     * boolean overwrite = false; &#47;&#47; Default behavior
+     * client.create&#40;overwrite&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Created AppendBlob at %s%n&quot;, response.getLastModified&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.AppendBlobAsyncClient.create#boolean -->
      *
      * @param overwrite Whether or not to overwrite, should data exist on the blob.
      *
@@ -191,7 +202,19 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#BlobHttpHeaders-Map-BlobRequestConditions}
+     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#BlobHttpHeaders-Map-BlobRequestConditions -->
+     * <pre>
+     * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;;
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * BlobRequestConditions requestConditions = new BlobRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     *
+     * client.createWithResponse&#40;headers, metadata, requestConditions&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Created AppendBlob at %s%n&quot;, response.getValue&#40;&#41;.getLastModified&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#BlobHttpHeaders-Map-BlobRequestConditions -->
      *
      * @param headers {@link BlobHttpHeaders}
      * @param metadata Metadata to associate with the blob. If there is leading or trailing whitespace in any
@@ -214,7 +237,21 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#AppendBlobCreateOptions}
+     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#AppendBlobCreateOptions -->
+     * <pre>
+     * BlobHttpHeaders headers = new BlobHttpHeaders&#40;&#41;
+     *     .setContentType&#40;&quot;binary&quot;&#41;
+     *     .setContentLanguage&#40;&quot;en-US&quot;&#41;;
+     * Map&lt;String, String&gt; metadata = Collections.singletonMap&#40;&quot;metadata&quot;, &quot;value&quot;&#41;;
+     * Map&lt;String, String&gt; tags = Collections.singletonMap&#40;&quot;tag&quot;, &quot;value&quot;&#41;;
+     * BlobRequestConditions requestConditions = new BlobRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     *
+     * client.createWithResponse&#40;new AppendBlobCreateOptions&#40;&#41;.setHeaders&#40;headers&#41;.setMetadata&#40;metadata&#41;
+     *     .setTags&#40;tags&#41;.setRequestConditions&#40;requestConditions&#41;&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;Created AppendBlob at %s%n&quot;, response.getValue&#40;&#41;.getLastModified&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.AppendBlobAsyncClient.createWithResponse#AppendBlobCreateOptions -->
      *
      * @param options {@link AppendBlobCreateOptions}
      * @return A {@link Mono} containing {@link Response} whose {@link Response#getValue() value} contains the created
@@ -262,7 +299,12 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlock#Flux-long}
+     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlock#Flux-long -->
+     * <pre>
+     * client.appendBlock&#40;data, length&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;AppendBlob has %d committed blocks%n&quot;, response.getBlobCommittedBlockCount&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlock#Flux-long -->
      *
      * @param data The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
      * (the default). In other words, the Flux must produce the same data each time it is subscribed to.
@@ -287,7 +329,17 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockWithResponse#Flux-long-byte-AppendBlobRequestConditions}
+     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockWithResponse#Flux-long-byte-AppendBlobRequestConditions -->
+     * <pre>
+     * byte[] md5 = MessageDigest.getInstance&#40;&quot;MD5&quot;&#41;.digest&#40;&quot;data&quot;.getBytes&#40;StandardCharsets.UTF_8&#41;&#41;;
+     * AppendBlobRequestConditions requestConditions = new AppendBlobRequestConditions&#40;&#41;
+     *     .setAppendPosition&#40;POSITION&#41;
+     *     .setMaxSize&#40;maxSize&#41;;
+     *
+     * client.appendBlockWithResponse&#40;data, length, md5, requestConditions&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;AppendBlob has %d committed blocks%n&quot;, response.getValue&#40;&#41;.getBlobCommittedBlockCount&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockWithResponse#Flux-long-byte-AppendBlobRequestConditions -->
      *
      * @param data The data to write to the blob. Note that this {@code Flux} must be replayable if retries are enabled
      * (the default). In other words, the Flux must produce the same data each time it is subscribed to.
@@ -339,7 +391,12 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockFromUrl#String-BlobRange}
+     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockFromUrl#String-BlobRange -->
+     * <pre>
+     * client.appendBlockFromUrl&#40;sourceUrl, new BlobRange&#40;offset, count&#41;&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;AppendBlob has %d committed blocks%n&quot;, response.getBlobCommittedBlockCount&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockFromUrl#String-BlobRange -->
      *
      * @param sourceUrl The url to the blob that will be the source of the copy.  A source blob in the same storage
      * account can be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
@@ -362,7 +419,20 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockFromUrlWithResponse#String-BlobRange-byte-AppendBlobRequestConditions-BlobRequestConditions}
+     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockFromUrlWithResponse#String-BlobRange-byte-AppendBlobRequestConditions-BlobRequestConditions -->
+     * <pre>
+     * AppendBlobRequestConditions appendBlobRequestConditions = new AppendBlobRequestConditions&#40;&#41;
+     *     .setAppendPosition&#40;POSITION&#41;
+     *     .setMaxSize&#40;maxSize&#41;;
+     *
+     * BlobRequestConditions modifiedRequestConditions = new BlobRequestConditions&#40;&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     *
+     * client.appendBlockFromUrlWithResponse&#40;sourceUrl, new BlobRange&#40;offset, count&#41;, null,
+     *     appendBlobRequestConditions, modifiedRequestConditions&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;AppendBlob has %d committed blocks%n&quot;, response.getValue&#40;&#41;.getBlobCommittedBlockCount&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockFromUrlWithResponse#String-BlobRange-byte-AppendBlobRequestConditions-BlobRequestConditions -->
      *
      * @param sourceUrl The url to the blob that will be the source of the copy.  A source blob in the same storage
      * account can be authenticated via Shared Key. However, if the source is a blob in another account, the source blob
@@ -395,7 +465,22 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockFromUrlWithResponse#AppendBlobAppendBlockFromUrlOptions}
+     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockFromUrlWithResponse#AppendBlobAppendBlockFromUrlOptions -->
+     * <pre>
+     * AppendBlobRequestConditions appendBlobRequestConditions = new AppendBlobRequestConditions&#40;&#41;
+     *     .setAppendPosition&#40;POSITION&#41;
+     *     .setMaxSize&#40;maxSize&#41;;
+     *
+     * BlobRequestConditions modifiedRequestConditions = new BlobRequestConditions&#40;&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     *
+     * client.appendBlockFromUrlWithResponse&#40;new AppendBlobAppendBlockFromUrlOptions&#40;sourceUrl&#41;
+     *     .setSourceRange&#40;new BlobRange&#40;offset, count&#41;&#41;
+     *     .setDestinationRequestConditions&#40;appendBlobRequestConditions&#41;
+     *     .setSourceRequestConditions&#40;modifiedRequestConditions&#41;&#41;.subscribe&#40;response -&gt;
+     *     System.out.printf&#40;&quot;AppendBlob has %d committed blocks%n&quot;, response.getValue&#40;&#41;.getBlobCommittedBlockCount&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.AppendBlobAsyncClient.appendBlockFromUrlWithResponse#AppendBlobAppendBlockFromUrlOptions -->
      *
      * @param options Parameters for the operation.
      * @return A {@link Mono} containing {@link Response} whose {@link Response#getValue() value} contains the append
@@ -450,7 +535,11 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.seal}
+     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobAsyncClient.seal -->
+     * <pre>
+     * client.seal&#40;&#41;.subscribe&#40;response -&gt; System.out.println&#40;&quot;Sealed AppendBlob&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.AppendBlobAsyncClient.seal -->
      *
      * @return A reactive response signalling completion.
      */
@@ -469,7 +558,15 @@ public final class AppendBlobAsyncClient extends BlobAsyncClientBase {
      *
      * <p><strong>Code Samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.specialized.AppendBlobAsyncClient.sealWithResponse#AppendBlobSealOptions}
+     * <!-- src_embed com.azure.storage.blob.specialized.AppendBlobAsyncClient.sealWithResponse#AppendBlobSealOptions -->
+     * <pre>
+     * AppendBlobRequestConditions requestConditions = new AppendBlobRequestConditions&#40;&#41;.setLeaseId&#40;leaseId&#41;
+     *     .setIfUnmodifiedSince&#40;OffsetDateTime.now&#40;&#41;.minusDays&#40;3&#41;&#41;;
+     *
+     * client.sealWithResponse&#40;new AppendBlobSealOptions&#40;&#41;.setRequestConditions&#40;requestConditions&#41;&#41;
+     *     .subscribe&#40;response -&gt; System.out.println&#40;&quot;Sealed AppendBlob&quot;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.specialized.AppendBlobAsyncClient.sealWithResponse#AppendBlobSealOptions -->
      *
      * @param options {@link AppendBlobSealOptions}
      * @return A reactive response signalling completion.

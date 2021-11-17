@@ -8,7 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.management.SubResource;
 import com.azure.core.management.provider.IdentifierProvider;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.authorization.AuthorizationManager;
+import com.azure.resourcemanager.authorization.models.BuiltInRole;
+import com.azure.resourcemanager.authorization.utils.RoleAssignmentHelper;
 import com.azure.resourcemanager.compute.ComputeManager;
+import com.azure.resourcemanager.compute.fluent.models.ProximityPlacementGroupInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetExtensionInner;
+import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetInner;
 import com.azure.resourcemanager.compute.models.AdditionalCapabilities;
 import com.azure.resourcemanager.compute.models.ApiEntityReference;
 import com.azure.resourcemanager.compute.models.BillingProfile;
@@ -21,8 +27,10 @@ import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.KnownWindowsVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.LinuxConfiguration;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
+import com.azure.resourcemanager.compute.models.Plan;
 import com.azure.resourcemanager.compute.models.ProximityPlacementGroup;
 import com.azure.resourcemanager.compute.models.ProximityPlacementGroupType;
+import com.azure.resourcemanager.compute.models.PurchasePlan;
 import com.azure.resourcemanager.compute.models.ResourceIdentityType;
 import com.azure.resourcemanager.compute.models.RunCommandInput;
 import com.azure.resourcemanager.compute.models.RunCommandInputParameter;
@@ -57,13 +65,8 @@ import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetVMs;
 import com.azure.resourcemanager.compute.models.WinRMConfiguration;
 import com.azure.resourcemanager.compute.models.WinRMListener;
 import com.azure.resourcemanager.compute.models.WindowsConfiguration;
-import com.azure.resourcemanager.compute.fluent.models.ProximityPlacementGroupInner;
-import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetExtensionInner;
-import com.azure.resourcemanager.compute.fluent.models.VirtualMachineScaleSetInner;
-import com.azure.resourcemanager.authorization.models.BuiltInRole;
-import com.azure.resourcemanager.authorization.AuthorizationManager;
-import com.azure.resourcemanager.authorization.utils.RoleAssignmentHelper;
 import com.azure.resourcemanager.msi.models.Identity;
+import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.models.ApplicationSecurityGroup;
 import com.azure.resourcemanager.network.models.LoadBalancer;
 import com.azure.resourcemanager.network.models.LoadBalancerBackend;
@@ -72,15 +75,15 @@ import com.azure.resourcemanager.network.models.LoadBalancerPrivateFrontend;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkSecurityGroup;
 import com.azure.resourcemanager.network.models.VirtualMachineScaleSetNetworkInterface;
-import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
+import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
-import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.StorageManager;
+import com.azure.resourcemanager.storage.models.StorageAccount;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Mono;
 
@@ -96,7 +99,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.Callable;
-import com.azure.resourcemanager.resources.fluentcore.utils.PagedConverter;
 
 /** Implementation of VirtualMachineScaleSet. */
 public class VirtualMachineScaleSetImpl
@@ -595,11 +597,25 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
+    public Plan plan() {
+        return this.innerModel().plan();
+    }
+
+    @Override
     public VirtualMachineScaleSetNetworkInterface getNetworkInterfaceByInstanceId(String instanceId, String name) {
         return this
             .networkManager
             .networkInterfaces()
             .getByVirtualMachineScaleSetInstanceId(this.resourceGroupName(), this.name(), instanceId, name);
+    }
+
+    @Override
+    public Mono<VirtualMachineScaleSetNetworkInterface> getNetworkInterfaceByInstanceIdAsync(String instanceId,
+                                                                                             String name) {
+        return this
+            .networkManager
+            .networkInterfaces()
+            .getByVirtualMachineScaleSetInstanceIdAsync(this.resourceGroupName(), this.name(), instanceId, name);
     }
 
     @Override
@@ -2696,7 +2712,16 @@ public class VirtualMachineScaleSetImpl
         }
     }
 
-    /** Class to manage Data Disk collection. */
+    @Override
+    public VirtualMachineScaleSetImpl withPlan(PurchasePlan plan) {
+        this.innerModel().withPlan(new Plan());
+        this.innerModel().plan().withPublisher(plan.publisher()).withProduct(plan.product()).withName(plan.name());
+        return this;
+    }
+
+    /**
+     * Class to manage Data Disk collection.
+     */
     private class ManagedDataDiskCollection {
         private final List<VirtualMachineScaleSetDataDisk> implicitDisksToAssociate = new ArrayList<>();
         private final List<Integer> diskLunsToRemove = new ArrayList<>();

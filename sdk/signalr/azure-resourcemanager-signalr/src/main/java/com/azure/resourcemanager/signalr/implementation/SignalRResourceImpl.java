@@ -15,6 +15,7 @@ import com.azure.resourcemanager.signalr.models.ManagedIdentity;
 import com.azure.resourcemanager.signalr.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.signalr.models.ProvisioningState;
 import com.azure.resourcemanager.signalr.models.RegenerateKeyParameters;
+import com.azure.resourcemanager.signalr.models.ResourceLogConfiguration;
 import com.azure.resourcemanager.signalr.models.ResourceSku;
 import com.azure.resourcemanager.signalr.models.ServerlessUpstreamSettings;
 import com.azure.resourcemanager.signalr.models.ServiceKind;
@@ -132,6 +133,10 @@ public final class SignalRResourceImpl implements SignalRResource, SignalRResour
         return this.innerModel().tls();
     }
 
+    public String hostnamePrefix() {
+        return this.innerModel().hostnamePrefix();
+    }
+
     public List<SignalRFeature> features() {
         List<SignalRFeature> inner = this.innerModel().features();
         if (inner != null) {
@@ -139,6 +144,10 @@ public final class SignalRResourceImpl implements SignalRResource, SignalRResour
         } else {
             return Collections.emptyList();
         }
+    }
+
+    public ResourceLogConfiguration resourceLogConfiguration() {
+        return this.innerModel().resourceLogConfiguration();
     }
 
     public SignalRCorsSettings cors() {
@@ -325,6 +334,11 @@ public final class SignalRResourceImpl implements SignalRResource, SignalRResour
 
     public SignalRResourceImpl withFeatures(List<SignalRFeature> features) {
         this.innerModel().withFeatures(features);
+        return this;
+    }
+
+    public SignalRResourceImpl withResourceLogConfiguration(ResourceLogConfiguration resourceLogConfiguration) {
+        this.innerModel().withResourceLogConfiguration(resourceLogConfiguration);
         return this;
     }
 
