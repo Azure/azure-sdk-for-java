@@ -8,7 +8,6 @@ import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureEventHubsResour
 import com.azure.spring.core.connectionstring.ConnectionStringProvider;
 import com.azure.spring.core.connectionstring.implementation.EventHubsConnectionString;
 import com.azure.spring.core.service.AzureServiceType;
-import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -18,7 +17,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.util.Assert;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,7 +29,7 @@ import java.util.Collections;
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(KafkaTemplate.class)
 @ConditionalOnProperty(value = "spring.cloud.azure.eventhubs.kafka.enabled", havingValue = "true", matchIfMissing = true)
-@AutoConfigureAfter({AzureEventHubsAutoConfiguration.class, AzureEventHubsResourceManagerAutoConfiguration.class })
+@AutoConfigureAfter({ AzureEventHubsAutoConfiguration.class, AzureEventHubsResourceManagerAutoConfiguration.class })
 public class AzureEventHubsKafkaAutoConfiguration {
 
     private static final String SASL_CONFIG_VALUE = "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"%s\";%s";
@@ -40,12 +38,9 @@ public class AzureEventHubsKafkaAutoConfiguration {
     @Bean
     @ConditionalOnBean(value = AzureServiceType.EventHubs.class, parameterizedContainer = ConnectionStringProvider.class)
     public KafkaProperties azureKafkaProperties(
-        ObjectProvider<ConnectionStringProvider<AzureServiceType.EventHubs>> connectionStringProviders) {
-        KafkaProperties kafkaProperties = new KafkaProperties();
+        ConnectionStringProvider<AzureServiceType.EventHubs> connectionStringProvider) {
 
-        ConnectionStringProvider<AzureServiceType.EventHubs> connectionStringProvider =
-            connectionStringProviders.getIfAvailable();
-        Assert.notNull(connectionStringProvider, "Connection string provider must not be null.");
+        KafkaProperties kafkaProperties = new KafkaProperties();
 
         String connectionString = connectionStringProvider.getConnectionString();
 
