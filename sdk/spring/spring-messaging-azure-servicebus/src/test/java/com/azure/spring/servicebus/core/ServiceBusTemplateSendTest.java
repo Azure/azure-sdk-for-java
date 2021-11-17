@@ -6,22 +6,24 @@ package com.azure.spring.servicebus.core;
 import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.spring.messaging.PartitionSupplier;
-import com.azure.spring.messaging.core.SendOperation;
-import com.azure.spring.servicebus.support.ServiceBusRuntimeException;
 import com.azure.spring.messaging.core.SendOperationTest;
+import com.azure.spring.servicebus.core.producer.ServiceBusProducerFactory;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.MockitoAnnotations;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.support.GenericMessage;
 import reactor.core.publisher.Mono;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -29,37 +31,45 @@ import static org.mockito.Mockito.when;
 /**
  * Test cases to test service bus send operations.
  *
- * @param <T>
- * @param <C>
  */
-public abstract class ServiceBusTemplateSendTest<T extends ServiceBusSenderFactory,
-                                                    C extends ServiceBusSenderAsyncClient>
-    extends SendOperationTest<SendOperation> {
+public class ServiceBusTemplateSendTest extends SendOperationTest<ServiceBusTemplate> {
 
-    protected String destination = "event-hub";
-    protected Mono<Void> mono = Mono.empty();
     protected String partitionKey = "key";
-    protected String payload = "payload";
     private String partitionId = "1";
-    protected C mockClient;
-    protected T mockClientFactory;
+    protected ServiceBusSenderAsyncClient mockSenderClient;
+    protected ServiceBusProducerFactory producerFactory;
+    private AutoCloseable closeable;
 
     @BeforeEach
-    public abstract void setUp();
+    public void setUp() {
+        this.closeable = MockitoAnnotations.openMocks(this);
+        this.producerFactory = mock(ServiceBusProducerFactory.class);
+        this.mockSenderClient = mock(ServiceBusSenderAsyncClient.class);
+
+        when(this.producerFactory.createProducer(eq(this.destination))).thenReturn(this.mockSenderClient);
+        when(this.mockSenderClient.sendMessage(isA(ServiceBusMessage.class))).thenReturn(this.mono);
+
+        this.sendOperation = new ServiceBusTemplate(producerFactory);
+    }
+
+    @AfterEach
+    public void close() throws Exception {
+        closeable.close();
+    }
 
     @Override
     protected void setupError(String errorMessage) {
-        when(this.mockClient.sendMessage(isA(ServiceBusMessage.class))).thenReturn(Mono.error(new IllegalArgumentException(
+        when(this.mockSenderClient.sendMessage(isA(ServiceBusMessage.class))).thenReturn(Mono.error(new IllegalArgumentException(
             errorMessage)));
     }
 
     @Override
     protected void verifySendCalled(int times) {
-        verify(this.mockClient, times(times)).sendMessage(isA(ServiceBusMessage.class));
+        verify(this.mockSenderClient, times(times)).sendMessage(isA(ServiceBusMessage.class));
     }
 
     @Test
-    public void testSendWithPartitionId() throws ExecutionException, InterruptedException {
+    public void testSendWithPartitionId() {
         PartitionSupplier partitionSupplier = new PartitionSupplier();
         partitionSupplier.setPartitionId(partitionId);
         Mono<Void> mono = this.sendOperation.sendAsync(destination, message, partitionSupplier);
@@ -70,7 +80,7 @@ public abstract class ServiceBusTemplateSendTest<T extends ServiceBusSenderFacto
     }
 
     @Test
-    public void testSendWithPartitionKey() throws ExecutionException, InterruptedException {
+    public void testSendWithPartitionKey() {
         PartitionSupplier partitionSupplier = new PartitionSupplier();
         partitionSupplier.setPartitionKey(partitionKey);
         Mono<Void> mono = this.sendOperation.sendAsync(destination, message, partitionSupplier);
@@ -81,7 +91,7 @@ public abstract class ServiceBusTemplateSendTest<T extends ServiceBusSenderFacto
     }
 
     @Test
-    public void testSendWithSessionId() throws ExecutionException, InterruptedException {
+    public void testSendWithSessionId() {
         Map<String, Object> valueMap = new HashMap<>();
         valueMap.put("key1", "value1");
         valueMap.put("key2", "value2");
@@ -94,7 +104,7 @@ public abstract class ServiceBusTemplateSendTest<T extends ServiceBusSenderFacto
     }
 
     @Test
-    public void testSendWithSessionIdAndPartitionKeyDifferent() throws ExecutionException, InterruptedException {
+    public void testSendWithSessionIdAndPartitionKeyDifferent() {
         Map<String, Object> valueMap = new HashMap<>();
         valueMap.put("key1", "value1");
         valueMap.put("key2", "value2");
@@ -108,7 +118,7 @@ public abstract class ServiceBusTemplateSendTest<T extends ServiceBusSenderFacto
     }
 
     @Test
-    public void testSendWithoutPartition() throws ExecutionException, InterruptedException {
+    public void testSendWithoutPartition() {
         Mono<Void> mono = this.sendOperation.sendAsync(destination, message, new PartitionSupplier());
 
         assertNull(mono.block());
@@ -116,7 +126,7 @@ public abstract class ServiceBusTemplateSendTest<T extends ServiceBusSenderFacto
     }
 
     @Test
-    public void testSendWithoutPartitionSupplier() throws ExecutionException, InterruptedException {
+    public void testSendWithoutPartitionSupplier() {
         Mono<Void> mono = this.sendOperation.sendAsync(destination, message, null);
 
         assertNull(mono.block());
@@ -129,12 +139,12 @@ public abstract class ServiceBusTemplateSendTest<T extends ServiceBusSenderFacto
 
     @Override
     protected void whenSendWithException() {
-        when(this.mockClientFactory.getOrCreateSender(anyString())).thenThrow(ServiceBusRuntimeException.class);
+        when(this.producerFactory.createProducer(anyString())).thenThrow(ServiceBusRuntimeException.class);
     }
 
     @Override
     protected void verifyGetClientCreator(int times) {
-        verify(this.mockClientFactory, times(times)).getOrCreateSender(anyString());
+        verify(this.producerFactory, times(times)).createProducer(anyString());
     }
 
     protected void verifySendWithPartitionKey(int times) {

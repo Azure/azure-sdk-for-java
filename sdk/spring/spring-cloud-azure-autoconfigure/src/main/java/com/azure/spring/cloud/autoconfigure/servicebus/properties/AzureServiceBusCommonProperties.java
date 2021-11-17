@@ -4,6 +4,8 @@
 package com.azure.spring.cloud.autoconfigure.servicebus.properties;
 
 import com.azure.spring.cloud.autoconfigure.properties.AbstractAzureAmqpCP;
+import com.azure.spring.core.connectionstring.implementation.ServiceBusConnectionString;
+import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
 
 /**
  *
@@ -18,8 +20,19 @@ public abstract class AzureServiceBusCommonProperties extends AbstractAzureAmqpC
 
     protected String connectionString;
 
+    private String entityName;
+
+    private ServiceBusEntityType entityType;
+
+    private String extractFqdnFromConnectionString() {
+        if (this.connectionString == null) {
+            return null;
+        }
+        return new ServiceBusConnectionString(this.connectionString).getFullyQualifiedNamespace();
+    }
+
     public String getFQDN() {
-        return this.namespace + "." + this.domainName;
+        return this.namespace == null ? extractFqdnFromConnectionString() : (this.namespace + "." + domainName);
     }
 
     public String getDomainName() {
@@ -46,12 +59,28 @@ public abstract class AzureServiceBusCommonProperties extends AbstractAzureAmqpC
         this.connectionString = connectionString;
     }
 
+    public String getEntityName() {
+        return entityName;
+    }
+
+    public void setEntityName(String name) {
+        this.entityName = name;
+    }
+
+    public ServiceBusEntityType getEntityType() {
+        return entityType;
+    }
+
+    public void setEntityType(ServiceBusEntityType type) {
+        this.entityType = type;
+    }
+
     // TODO (xiada) we removed these properties, and not mark them as deprecated, should we mention them in the migration docs?
-//    public AmqpRetryOptions getRetryOptions() {
-//        return retryOptions;
-//    }
-//
-//    public void setRetryOptions(AmqpRetryOptions retryOptions) {
+    //    public AmqpRetryOptions getRetryOptions() {
+    //        return retryOptions;
+    //    }
+    //
+    //    public void setRetryOptions(AmqpRetryOptions retryOptions) {
 //        this.retryOptions = retryOptions;
 //    }
 //

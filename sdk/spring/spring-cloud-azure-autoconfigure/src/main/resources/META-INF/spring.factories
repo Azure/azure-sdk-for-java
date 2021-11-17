@@ -7,10 +7,10 @@ com.azure.spring.cloud.autoconfigure.cloudfoundry.AzureCloudFoundryEnvironmentPo
 com.azure.spring.cloud.autoconfigure.context.AzureGlobalConfigurationEnvironmentPostProcessor
 
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.azure.spring.cloud.autoconfigure.active.directory.implementation.autoconfigure.aad.AADAutoConfiguration,\
-com.azure.spring.cloud.autoconfigure.active.directory.implementation.autoconfigure.aad.AADAuthenticationFilterAutoConfiguration,\
-com.azure.spring.cloud.autoconfigure.active.directory.implementation.autoconfigure.b2c.AADB2CAutoConfiguration,\
-com.azure.spring.cloud.autoconfigure.active.directory.implementation.autoconfigure.b2c.AADB2CResourceServerAutoConfiguration,\
+com.azure.spring.cloud.autoconfigure.aad.implementation.AADAutoConfiguration,\
+com.azure.spring.cloud.autoconfigure.aad.implementation.filter.AADAuthenticationFilterAutoConfiguration,\
+com.azure.spring.cloud.autoconfigure.aad.b2c.implementation.AADB2CAutoConfiguration,\
+com.azure.spring.cloud.autoconfigure.aad.b2c.implementation.AADB2CResourceServerAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.jms.NonPremiumServiceBusJmsAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.jms.PremiumServiceBusJmsAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.cache.AzureRedisAutoConfiguration,\
@@ -27,8 +27,7 @@ com.azure.spring.cloud.autoconfigure.eventhubs.kafka.AzureEventHubsKafkaAutoConf
 com.azure.spring.cloud.autoconfigure.keyvault.secrets.AzureKeyVaultSecretAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.keyvault.certificates.AzureKeyVaultCertificateAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusAutoConfiguration,\
-com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusQueueOperationAutoConfiguration,\
-com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusTopicOperationAutoConfiguration,\
+com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusMessagingAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.storage.blob.AzureStorageBlobAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.storage.blob.AzureStorageBlobResourceAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.storage.fileshare.AzureStorageFileShareAutoConfiguration,\
