@@ -7,6 +7,8 @@
 - Added support for listing system containers.
 - Added support for listing blobs which contain invalid xml characters.
 
+- When opening a BlobInputStream, removed the initial getProperties call in favor of a download for better performance.
+
 ### Breaking Changes
 
 ### Bugs Fixed
