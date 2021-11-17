@@ -260,17 +260,7 @@ Step01: Replace the maven dependency
 
 ```
 
-
-Step02: Change properties configurations  
-
-| Legacy properties                         | Morden properties                                        | description |
-|-------------------------------------------|----------------------------------------------------------|-------------|
-| spring.cloud.azure.storage.account        | spring.cloud.azure.storage.queue.account-name            |             |
-| spring.cloud.azure.storage.access-key     | spring.cloud.azure.storage.queue.account-key             |             |
-| spring.cloud.azure.storage.resource-group | spring.cloud.azure.storage.queue.resource.resource-group |             |
-
-
-Step03: Resolve import erros  
+Step02: Resolve import erros  
 You may see a lot of import errors just like the picture below:  
 ![img.png](images/import_errors.png)  
 To resolve these errors:
@@ -278,12 +268,14 @@ To resolve these errors:
 2. Use the **auto import** function provided by IDE to import the missing libaries.
 ![img.png](images/auto-import.png)
 
-### Migration steps of spring-integration-azure-storage-queue 
-Step01: Replace the maven dependency
+Step03: Change properties configurations
 
+| Legacy properties                         | Morden properties                                        | description |
+|-------------------------------------------|----------------------------------------------------------|-------------|
+| spring.cloud.azure.storage.account        | spring.cloud.azure.storage.queue.account-name            |             |
+| spring.cloud.azure.storage.access-key     | spring.cloud.azure.storage.queue.account-key             |             |
+| spring.cloud.azure.storage.resource-group | spring.cloud.azure.storage.queue.resource.resource-group |             |
 
-
-Step02: Change properties configurations
 
 
 
