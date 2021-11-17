@@ -3,9 +3,9 @@
 
 package com.azure.spring.core.credential.resolver;
 
+import com.azure.spring.core.aware.authentication.KeyAware;
 import com.azure.spring.core.credential.provider.AzureKeyCredentialProvider;
 import com.azure.spring.core.properties.AzureProperties;
-import com.azure.spring.core.aware.authentication.KeyAware;
 import org.springframework.util.StringUtils;
 
 /**

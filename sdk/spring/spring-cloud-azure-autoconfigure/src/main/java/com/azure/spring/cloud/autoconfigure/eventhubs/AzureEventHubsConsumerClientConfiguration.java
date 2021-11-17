@@ -11,7 +11,7 @@ import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnMissingProper
 import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
-import com.azure.spring.core.properties.PropertyMapper;
+import com.azure.spring.core.properties.util.PropertyMapper;
 import com.azure.spring.core.service.AzureServiceType;
 import com.azure.spring.service.eventhubs.factory.EventHubClientBuilderFactory;
 import org.springframework.beans.factory.annotation.Qualifier;

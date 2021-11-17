@@ -9,7 +9,7 @@ import static com.azure.spring.core.aware.AzureProfileAware.CloudType.AZURE;
 import static com.azure.spring.core.aware.AzureProfileAware.CloudType.AZURE_CHINA;
 import static com.azure.spring.core.aware.AzureProfileAware.CloudType.AZURE_GERMANY;
 import static com.azure.spring.core.aware.AzureProfileAware.CloudType.AZURE_US_GOVERNMENT;
-import static com.azure.spring.core.properties.AzurePropertiesUtils.copyPropertiesIgnoreNull;
+import static com.azure.spring.core.properties.util.AzurePropertiesUtils.copyPropertiesIgnoreNull;
 
 /**
  * Skeleton implementation of a {@link AzureProfileAware.Profile}.
