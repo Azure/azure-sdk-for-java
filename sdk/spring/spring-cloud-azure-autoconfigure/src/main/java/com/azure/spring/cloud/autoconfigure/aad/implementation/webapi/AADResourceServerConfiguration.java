@@ -85,7 +85,7 @@ public class AADResourceServerConfiguration {
     @EnableWebSecurity
     @EnableGlobalMethodSecurity(prePostEnabled = true)
     @ConditionalOnMissingBean(WebSecurityConfigurerAdapter.class)
-    @ConditionalOnExpression("!'${azure.activedirectory.application-type}'.equalsIgnoreCase('web_application_and_resource_server')")
+    @ConditionalOnExpression("!'${spring.cloud.azure.active-directory.application-type}'.equalsIgnoreCase('web_application_and_resource_server')")
     public static class DefaultAADResourceServerWebSecurityConfigurerAdapter extends
         AADResourceServerWebSecurityConfigurerAdapter {
 

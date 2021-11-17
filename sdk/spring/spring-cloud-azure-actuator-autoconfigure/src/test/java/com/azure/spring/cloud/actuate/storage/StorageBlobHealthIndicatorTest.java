@@ -26,6 +26,7 @@ class StorageBlobHealthIndicatorTest {
     private static final String MOCK_URL = "https://example.org/bigly_fake_url";
 
     private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
+        .withPropertyValues("spring.cloud.azure.storage.blob.account-name=testaccount")
         .withConfiguration(AutoConfigurations.of(StorageBlobHealthConfiguration.class));
 
     @Test
@@ -68,9 +69,7 @@ class StorageBlobHealthIndicatorTest {
 
         @Bean
         BlobServiceAsyncClient blobAsyncClient() {
-            @SuppressWarnings("unchecked") Response<BlobServiceProperties> mockResponse =
-                (Response<BlobServiceProperties>) Mockito.mock(
-                    Response.class);
+            @SuppressWarnings("unchecked") Response<BlobServiceProperties> mockResponse = (Response<BlobServiceProperties>) Mockito.mock(Response.class);
 
             BlobServiceAsyncClient mockAsyncClient = Mockito.mock(BlobServiceAsyncClient.class);
             Mockito.when(mockAsyncClient.getAccountUrl()).thenReturn(MOCK_URL);

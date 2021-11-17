@@ -17,7 +17,7 @@ spring:
           destination: queue1
       binders:
         servicebus-1:
-          type: servicebus-topic
+          type: servicebus
           default-candidate: true
           environment:
             spring:
@@ -26,7 +26,7 @@ spring:
                   servicebus:
                     connection-string: ${SERVICEBUS2_BINDER_TEST_CONNECTION_STRING}
         servicebus-2:
-          type: servicebus-queue
+          type: servicebus
           default-candidate: false
           environment:
             spring:
@@ -34,3 +34,11 @@ spring:
                 azure:
                   servicebus:
                     connection-string: ${SERVICEBUS3_BINDER_TEST_CONNECTION_STRING}
+      servicebus:
+        bindings:
+          topicSupply-out-0:
+            producer:
+              entity-type: topic
+          queueSupply-out-0:
+            producer:
+              entity-type: queue
