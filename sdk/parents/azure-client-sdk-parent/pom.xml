@@ -136,8 +136,11 @@
     <additionalSurefireArgLine>
     </additionalSurefireArgLine>
 
-    <!-- This property configures whether tests are ran in parallel. Defaults to true when running in PLAYBACK mode. -->
+    <!-- This property configures whether PLAYBACK tests are ran in parallel. Default is true. -->
     <parallelizeTests>true</parallelizeTests>
+
+    <!-- This property configures whether LIVE or RECORD tests are ran in parallel. Default is false. -->
+    <parallelizeLiveTests>false</parallelizeLiveTests>
 
     <!-- This property configures whether the codesnippet-maven-plugin should be used. -->
     <codesnippet.skip>true</codesnippet.skip>
@@ -145,6 +148,9 @@
     <!-- These properties exist for libraries using the new codesnippet-maven-plugin can easily disable the old doclet. -->
     <javadocDoclet>org.apidesign.javadoc.codesnippet.Doclet</javadocDoclet>
     <javadocDocletOptions>-maxLineLength 120 -snippetpath ${project.basedir}/src/samples/java -suppressMissingLinkWarnings</javadocDocletOptions>
+
+    <!-- THis property configures whether Spotbugs analysis is ran on samples and tests. Default is false. -->
+    <spotbugs.includeTests>false</spotbugs.includeTests>
   </properties>
 
   <build>
@@ -556,7 +562,7 @@
             <fork>true</fork>
             <failOnError>true</failOnError>
             <!-- Set this to true when src/samples and src/test are spotbugs clean in all Track 2 SDKs -->
-            <includeTests>false</includeTests>
+            <includeTests>${spotbugs.includeTests}</includeTests>
 
             <!-- Enable this plugin when issues documented are fixed -->
             <!--          <plugins>-->
@@ -1311,7 +1317,7 @@
         </property>
       </activation>
       <properties>
-        <parallelizeTests>false</parallelizeTests>
+        <parallelizeTests>${parallelizeLiveTests}</parallelizeTests>
       </properties>
     </profile>
 
@@ -1324,7 +1330,7 @@
         </property>
       </activation>
       <properties>
-        <parallelizeTests>false</parallelizeTests>
+        <parallelizeTests>${parallelizeLiveTests}</parallelizeTests>
       </properties>
     </profile>
 
@@ -1337,7 +1343,7 @@
         </property>
       </activation>
       <properties>
-        <parallelizeTests>false</parallelizeTests>
+        <parallelizeTests>${parallelizeLiveTests}</parallelizeTests>
       </properties>
     </profile>
 
@@ -1350,7 +1356,7 @@
         </property>
       </activation>
       <properties>
-        <parallelizeTests>false</parallelizeTests>
+        <parallelizeTests>${parallelizeLiveTests}</parallelizeTests>
       </properties>
     </profile>
 
