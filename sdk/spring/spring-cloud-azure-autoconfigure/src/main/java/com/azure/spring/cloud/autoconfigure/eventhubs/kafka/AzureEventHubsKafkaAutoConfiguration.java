@@ -3,54 +3,55 @@
 
 package com.azure.spring.cloud.autoconfigure.eventhubs.kafka;
 
-import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubsProperties;
+import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureEventHubsResourceManagerAutoConfiguration;
 import com.azure.spring.core.connectionstring.ConnectionStringProvider;
+import com.azure.spring.core.connectionstring.implementation.EventHubsConnectionString;
 import com.azure.spring.core.service.AzureServiceType;
-import org.springframework.beans.factory.ObjectProvider;
+import org.springframework.boot.autoconfigure.AutoConfigureAfter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.kafka.core.KafkaTemplate;
 
+import java.util.ArrayList;
+import java.util.Collections;
+
 
 /**
- * An auto-configuration for Event Hub, which provides {@link KafkaProperties}
+ * An auto-configuration for Azure Event Hubs Kafka, which provides {@link KafkaProperties}
  *
- * @author Warren Zhu
  */
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(KafkaTemplate.class)
-//@EnableConfigurationProperties(AzureEventHubProperties.class)
+@ConditionalOnProperty(value = "spring.cloud.azure.eventhubs.kafka.enabled", havingValue = "true", matchIfMissing = true)
+@AutoConfigureAfter({ AzureEventHubsAutoConfiguration.class, AzureEventHubsResourceManagerAutoConfiguration.class })
 public class AzureEventHubsKafkaAutoConfiguration {
-    private static final String SECURITY_PROTOCOL = "security.protocol";
-    private static final String SASL_SSL = "SASL_SSL";
-    private static final String SASL_JAAS_CONFIG = "sasl.jaas.config";
-    private static final String SASL_CONFIG_VALUE = "org.apache.kafka.common.security.plain.PlainLoginModule required"
-        + " username=\"$ConnectionString\" " + "password=\"%s\";%n";
-    private static final String SASL_MECHANISM = "sasl.mechanism";
-    private static final String SASL_MECHANISM_PLAIN = "PLAIN";
-    private static final int PORT = 9093;
 
-    @SuppressWarnings("rawtypes")
+    private static final String SASL_CONFIG_VALUE = "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"%s\";%s";
+
     @Primary
     @Bean
-    // TODO (xiada): refactor this logic
-    public KafkaProperties kafkaProperties(
-        AzureEventHubsProperties eventHubsProperties,
-        ObjectProvider<ConnectionStringProvider<AzureServiceType.EventHubs>> connectionStringProviders) {
+    @ConditionalOnBean(value = AzureServiceType.EventHubs.class, parameterizedContainer = ConnectionStringProvider.class)
+    public KafkaProperties azureKafkaProperties(
+        ConnectionStringProvider<AzureServiceType.EventHubs> connectionStringProvider) {
+
         KafkaProperties kafkaProperties = new KafkaProperties();
-/*
-        String endpoint = namespace.serviceBusEndpoint();
-        String endpointHost = endpoint.substring("https://".length(), endpoint.lastIndexOf(':'));
-        kafkaProperties.setBootstrapServers(Arrays.asList(endpointHost + ":" + PORT));
-        kafkaProperties.getProperties().put(SECURITY_PROTOCOL, SASL_SSL);
-        kafkaProperties.getProperties().put(SASL_MECHANISM, SASL_MECHANISM_PLAIN);
-        kafkaProperties.getProperties().put(SASL_JAAS_CONFIG,
-            String.format(SASL_CONFIG_VALUE, connectionStringProviders.getIfAvailable().getConnectionString(), System.getProperty("line.separator")));*/
+
+        String connectionString = connectionStringProvider.getConnectionString();
+
+        String bootstrapServer = new EventHubsConnectionString(connectionString).getFullyQualifiedNamespace() + ":9093";
+        kafkaProperties.setBootstrapServers(new ArrayList<>(Collections.singletonList(bootstrapServer)));
+        kafkaProperties.getProperties().put("security.protocol", "SASL_SSL");
+        kafkaProperties.getProperties().put("sasl.mechanism", "PLAIN");
+        kafkaProperties.getProperties().put("sasl.jaas.config", String.format(SASL_CONFIG_VALUE,
+            connectionString, System.getProperty("line.separator")));
         return kafkaProperties;
     }
 
-
 }
+

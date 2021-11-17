@@ -2290,7 +2290,11 @@
     <Method name="OnCloseSessionAsync"/>
     <Bug pattern="NM_METHOD_NAMING_CONVENTION"/>
   </Match>
-
+  <!-- Generated implementation of SubscriptionPropertiesSupplier is using an inline class -->
+  <Match>
+    <Class name="com.azure.spring.servicebus.core.processor.DefaultServiceBusNamespaceProcessorFactory"/>
+    <Bug pattern="SIC_INNER_SHOULD_BE_STATIC_ANON"/>
+  </Match>
   <Match>
     <Bug pattern="UWF_NULL_FIELD"/>
     <Class name="com.azure.spring.integration.endpoint.AbstractInboundChannelAdapter"/>

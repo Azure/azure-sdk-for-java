@@ -1,6 +1,3 @@
-#org.springframework.boot.env.EnvironmentPostProcessor=\
-#com.azure.spring.cloud.autoconfigure.cloudfoundry.AzureCloudFoundryEnvironmentPostProcessor
-
 org.springframework.boot.env.EnvironmentPostProcessor=com.azure.spring.cloud.autoconfigure.cloudfoundry.environment.VcapProcessor,\
 com.azure.spring.cloud.autoconfigure.keyvault.env.KeyVaultEnvironmentPostProcessor,\
 com.azure.spring.cloud.autoconfigure.cloudfoundry.AzureCloudFoundryEnvironmentPostProcessor,\
@@ -13,7 +10,7 @@ com.azure.spring.cloud.autoconfigure.aad.b2c.implementation.AADB2CAutoConfigurat
 com.azure.spring.cloud.autoconfigure.aad.b2c.implementation.AADB2CResourceServerAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.jms.NonPremiumServiceBusJmsAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.jms.PremiumServiceBusJmsAutoConfiguration,\
-com.azure.spring.cloud.autoconfigure.cache.AzureRedisAutoConfiguration,\
+com.azure.spring.cloud.autoconfigure.redis.AzureRedisAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.context.AzureGlobalPropertiesAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.context.AzureDefaultTokenCredentialAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.appconfiguration.AzureAppConfigurationAutoConfiguration,\
@@ -27,14 +24,14 @@ com.azure.spring.cloud.autoconfigure.eventhubs.kafka.AzureEventHubsKafkaAutoConf
 com.azure.spring.cloud.autoconfigure.keyvault.secrets.AzureKeyVaultSecretAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.keyvault.certificates.AzureKeyVaultCertificateAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusAutoConfiguration,\
-com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusQueueOperationAutoConfiguration,\
-com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusTopicOperationAutoConfiguration,\
+com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusMessagingAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.storage.blob.AzureStorageBlobAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.storage.blob.AzureStorageBlobResourceAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.storage.fileshare.AzureStorageFileShareAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.storage.fileshare.AzureStorageFileShareResourceAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.storage.queue.AzureStorageQueueAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.storage.AzureStorageQueueOperationAutoConfiguration,\
+com.azure.spring.cloud.autoconfigure.trace.sleuth.AzureSleuthAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.resourcemanager.AzureResourceManagerAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.resourcemanager.AzureEventHubsResourceManagerAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.resourcemanager.AzureServiceBusResourceManagerAutoConfiguration,\

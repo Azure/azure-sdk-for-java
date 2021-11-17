@@ -27,10 +27,10 @@ import java.util.concurrent.TimeUnit;
 /**
  * {@link EnableAutoConfiguration Auto-configuration} for Azure Active Authentication filters.
  * <p>
- * The configuration will not be activated if no {@literal azure.activedirectory.client-id} property provided.
+ * The configuration will not be activated if no {@literal spring.cloud.azure.active-directory.client-id} property provided.
  * <p>
  * A stateless filter {@link AADAppRoleStatelessAuthenticationFilter} will be auto-configured by specifying {@literal
- * azure.activedirectory.session-stateless=true}. Otherwise, {@link AADAuthenticationFilter} will be configured.
+ * spring.cloud.azure.active-directory.session-stateless=true}. Otherwise, {@link AADAuthenticationFilter} will be configured.
  */
 @Configuration
 @ConditionalOnWebApplication
@@ -39,7 +39,7 @@ import java.util.concurrent.TimeUnit;
 @ConditionalOnProperty(prefix = AADAuthenticationFilterAutoConfiguration.PROPERTY_PREFIX, value = { "client-id" })
 @EnableConfigurationProperties({ AADAuthenticationProperties.class })
 public class AADAuthenticationFilterAutoConfiguration {
-    public static final String PROPERTY_PREFIX = "azure.activedirectory";
+    public static final String PROPERTY_PREFIX = "spring.cloud.azure.active-directory";
     private static final Logger LOG = LoggerFactory.getLogger(AADAuthenticationProperties.class);
 
     private final AADAuthenticationProperties properties;
@@ -57,7 +57,7 @@ public class AADAuthenticationFilterAutoConfiguration {
      */
     @Bean
     @ConditionalOnMissingBean(AADAuthenticationFilter.class)
-    @ConditionalOnExpression("${azure.activedirectory.session-stateless:false} == false")
+    @ConditionalOnExpression("${spring.cloud.azure.active-directory.session-stateless:false} == false")
     // client-id and client-secret used to: get graphApiToken -> groups
     @ConditionalOnProperty(prefix = PROPERTY_PREFIX, value = { "client-id", "client-secret" })
     public AADAuthenticationFilter azureADJwtTokenFilter() {
@@ -72,7 +72,7 @@ public class AADAuthenticationFilterAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean(AADAppRoleStatelessAuthenticationFilter.class)
-    @ConditionalOnExpression("${azure.activedirectory.session-stateless:false} == true")
+    @ConditionalOnExpression("${spring.cloud.azure.active-directory.session-stateless:false} == true")
     // client-id used to: userPrincipalManager.getValidator
     @ConditionalOnProperty(prefix = PROPERTY_PREFIX, value = { "client-id" })
     public AADAppRoleStatelessAuthenticationFilter azureADStatelessAuthFilter(ResourceRetriever resourceRetriever) {

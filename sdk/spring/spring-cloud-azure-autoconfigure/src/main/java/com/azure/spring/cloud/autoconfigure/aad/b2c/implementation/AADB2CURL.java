@@ -2,7 +2,6 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aad.b2c.implementation;
 
-import org.hibernate.validator.constraints.URL;
 import org.springframework.util.Assert;
 
 import java.io.UnsupportedEncodingException;
@@ -71,7 +70,7 @@ public final class AADB2CURL {
         }
     }
 
-    private static String addSlash(@URL String uri) {
+    private static String addSlash(String uri) {
         return uri.endsWith("/") ? uri : uri + "/";
     }
 }

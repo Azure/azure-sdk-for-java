@@ -10,7 +10,7 @@ import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
-import static com.azure.spring.cloud.autoconfigure.eventhubs.EventHubsTestUtils.CONNECTION_STRING;
+import static com.azure.spring.cloud.autoconfigure.eventhubs.EventHubsTestUtils.CONNECTION_STRING_FORMAT;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class AzureEventHubsTemplateConfigurationTest {
@@ -48,7 +48,7 @@ class AzureEventHubsTemplateConfigurationTest {
     void connectionInfoProvidedShouldConfigure() {
         this.contextRunner
             .withPropertyValues(
-                "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING, "test-namespace")
+                "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace")
             )
             .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
             .run(context -> {

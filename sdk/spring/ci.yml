@@ -36,6 +36,7 @@ trigger:
       - sdk/spring/spring-cloud-azure-starter-actuator/pom.xml
       - sdk/spring/spring-cloud-azure-starter-appconfiguration/pom.xml
       - sdk/spring/spring-cloud-azure-starter-cosmos/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-data-cosmos/pom.xml
       - sdk/spring/spring-cloud-azure-starter-eventhubs/pom.xml
       - sdk/spring/spring-cloud-azure-starter-keyvault-certificates/pom.xml
       - sdk/spring/spring-cloud-azure-starter-keyvault-secrets/pom.xml
@@ -48,14 +49,12 @@ trigger:
       - sdk/spring/spring-cloud-azure-starter-integration-servicebus/pom.xml
       - sdk/spring/spring-cloud-azure-starter-integration-storage-queue/pom.xml
       - sdk/spring/spring-cloud-azure-starter-stream-eventhubs/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-stream-servicebus-queue/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-stream-servicebus-topic/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-stream-servicebus/pom.xml
       - sdk/spring/spring-cloud-azure-starter/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-eventhubs-core/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-eventhubs/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-servicebus-core/pom.xml
-      - sdk/spring/spring-cloud-azure-stream-binder-servicebus-queue/pom.xml
-      - sdk/spring/spring-cloud-azure-stream-binder-servicebus-topic/pom.xml
+      - sdk/spring/spring-cloud-azure-stream-binder-servicebus/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-test/pom.xml
       - sdk/spring/spring-cloud-azure-test-servicebus-binder/pom.xml
 
@@ -95,6 +94,7 @@ pr:
       - sdk/spring/spring-cloud-azure-starter-actuator/pom.xml
       - sdk/spring/spring-cloud-azure-starter-appconfiguration/pom.xml
       - sdk/spring/spring-cloud-azure-starter-cosmos/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-data-cosmos/pom.xml
       - sdk/spring/spring-cloud-azure-starter-eventhubs/pom.xml
       - sdk/spring/spring-cloud-azure-starter-keyvault-certificates/pom.xml
       - sdk/spring/spring-cloud-azure-starter-keyvault-secrets/pom.xml
@@ -107,14 +107,12 @@ pr:
       - sdk/spring/spring-cloud-azure-starter-integration-servicebus/pom.xml
       - sdk/spring/spring-cloud-azure-starter-integration-storage-queue/pom.xml
       - sdk/spring/spring-cloud-azure-starter-stream-eventhubs/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-stream-servicebus-queue/pom.xml
-      - sdk/spring/spring-cloud-azure-starter-stream-servicebus-topic/pom.xml
+      - sdk/spring/spring-cloud-azure-starter-stream-servicebus/pom.xml
       - sdk/spring/spring-cloud-azure-starter/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-eventhubs-core/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-eventhubs/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-servicebus-core/pom.xml
-      - sdk/spring/spring-cloud-azure-stream-binder-servicebus-queue/pom.xml
-      - sdk/spring/spring-cloud-azure-stream-binder-servicebus-topic/pom.xml
+      - sdk/spring/spring-cloud-azure-stream-binder-servicebus/pom.xml
       - sdk/spring/spring-cloud-azure-stream-binder-test/pom.xml
       - sdk/spring/spring-cloud-azure-test-servicebus-binder/pom.xml
 
@@ -179,6 +177,12 @@ extends:
       - name: spring-cloud-azure-starter-cosmos
         groupId: com.azure.spring
         safeName: springcloudazurestartercosmos
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-starter-data-cosmos
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterdatacosmos
         skipPublishDocMs: true
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
@@ -269,40 +273,32 @@ extends:
         skipPublishDocMs: true
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
-      - name: spring-cloud-azure-stream-binder-servicebus-core
-        groupId: com.azure.spring
-        safeName: springcloudazurestreambinderservicebuscore
-        skipPublishDocMs: true
-      - name: spring-cloud-azure-stream-binder-test
-        groupId: com.azure.spring
-        safeName: springcloudazurestreambindertest
-        skipPublishDocMs: true
-      - name: spring-cloud-azure-stream-binder-servicebus-topic
-        groupId: com.azure.spring
-        safeName: springcloudazurestreambinderservicebustopic
-        skipPublishDocMs: true
-      - name: spring-cloud-azure-starter-stream-servicebus-topic
-        groupId: com.azure.spring
-        safeName: springcloudazurestarterstreamservicebustopic
-        skipPublishDocMs: true
-        skipUpdatePackageJson: true
-        skipVerifyChangelog: true
-      - name: spring-cloud-azure-stream-binder-servicebus-queue
-        groupId: com.azure.spring
-        safeName: springcloudazurestreambinderservicebusqueue
-        skipPublishDocMs: true
-      - name: spring-cloud-azure-starter-stream-servicebus-topic
-        groupId: com.azure.spring
-        safeName: springcloudazurestarterstreamservicebustopic
-        skipPublishDocMs: true
-        skipUpdatePackageJson: true
-        skipVerifyChangelog: true
       - name: spring-cloud-azure-starter-stream-eventhubs
         groupId: com.azure.spring
         safeName: springcloudazurestarterstreameventhubs
         skipPublishDocMs: true
         skipUpdatePackageJson: true
         skipVerifyChangelog: true
+      - name: spring-cloud-azure-starter-stream-servicebus
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterstreamservicebus
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-starter-storage-queue
+        groupId: com.azure.spring
+        safeName: springcloudazurestarterstoragequeue
+        skipPublishDocMs: true
+        skipUpdatePackageJson: true
+        skipVerifyChangelog: true
+      - name: spring-cloud-azure-stream-binder-servicebus-core
+        groupId: com.azure.spring
+        safeName: springcloudazurestreambinderservicebuscore
+        skipPublishDocMs: true
+      - name: spring-cloud-azure-stream-binder-servicebus
+        groupId: com.azure.spring
+        safeName: springcloudazurestreambinderservicebus
+        skipPublishDocMs: true
       - name: spring-cloud-azure-stream-binder-eventhubs
         groupId: com.azure.spring
         safeName: springcloudazurestreambindereventhubs
@@ -310,4 +306,8 @@ extends:
       - name: spring-cloud-azure-stream-binder-eventhubs-core
         groupId: com.azure.spring
         safeName: springcloudazurestreambindereventhubscore
+        skipPublishDocMs: true
+      - name: spring-cloud-azure-stream-binder-test
+        groupId: com.azure.spring
+        safeName: springcloudazurestreambindertest
         skipPublishDocMs: true

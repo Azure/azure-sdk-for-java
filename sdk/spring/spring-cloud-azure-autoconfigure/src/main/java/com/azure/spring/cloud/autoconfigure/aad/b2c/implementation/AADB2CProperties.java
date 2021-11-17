@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aad.b2c.implementation;
 
+import com.azure.spring.core.util.URLValidator;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
-import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
@@ -29,7 +29,7 @@ public class AADB2CProperties implements InitializingBean {
 
     public static final String DEFAULT_LOGOUT_SUCCESS_URL = "http://localhost:8080/login";
 
-    public static final String PREFIX = "azure.activedirectory.b2c";
+    public static final String PREFIX = "spring.cloud.azure.active-directory.b2c";
 
     private static final String TENANT_NAME_PART_REGEX = "([A-Za-z0-9]+\\.)";
 
@@ -86,7 +86,6 @@ public class AADB2CProperties implements InitializingBean {
      */
     private String clientSecret;
 
-    @URL(message = "logout success should be valid URL")
     private String logoutSuccessUrl = DEFAULT_LOGOUT_SUCCESS_URL;
 
     private Map<String, Object> authenticateAdditionalParameters;
@@ -106,7 +105,6 @@ public class AADB2CProperties implements InitializingBean {
     /**
      * AAD B2C endpoint base uri.
      */
-    @URL(message = "baseUri should be valid URL")
     private String baseUri;
 
     /**
@@ -123,6 +121,7 @@ public class AADB2CProperties implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() {
+        validateURLProperties();
         validateWebappProperties();
         validateCommonProperties();
     }
@@ -157,6 +156,19 @@ public class AADB2CProperties implements InitializingBean {
         }
     }
 
+    /**
+     * Validate URL properties configuration.
+     */
+    private void validateURLProperties() {
+        if (!URLValidator.isValidURL(logoutSuccessUrl)) {
+            throw new AADB2CConfigurationException("logout success should be valid URL.");
+        }
+        if (!URLValidator.isValidURL(baseUri)) {
+            throw new AADB2CConfigurationException("baseUri should be valid URL.");
+        }
+    }
+
+
     protected String getPasswordReset() {
         Optional<String> keyOptional = userFlows.keySet()
                                                 .stream()
@@ -188,7 +200,7 @@ public class AADB2CProperties implements InitializingBean {
      */
     @DeprecatedConfigurationProperty(
         reason = "Configuration updated to baseUri",
-        replacement = "azure.activedirectory.b2c.base-uri")
+        replacement = "spring.cloud.azure.active-directory.b2c.base-uri")
     public String getTenant() {
         if (StringUtils.hasText(baseUri)) {
             Matcher matcher = Pattern.compile(TENANT_NAME_PART_REGEX).matcher(baseUri);

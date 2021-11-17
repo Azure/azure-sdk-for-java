@@ -10,17 +10,17 @@ import org.springframework.boot.actuate.health.HealthIndicator;
 
 import java.time.Duration;
 
+import static com.azure.spring.cloud.actuate.util.Constants.DEFAULT_HEALTH_CHECK_TIMEOUT;
+
 /**
  * Health indicator for Azure Event Hubs.
  */
 public class EventHubsHealthIndicator implements HealthIndicator {
 
-    private static final int DEFAULT_TIMEOUT = 30;
-
     private final EventHubProducerAsyncClient producerAsyncClient;
     private final EventHubConsumerAsyncClient consumerAsyncClient;
 
-    private int timeout = DEFAULT_TIMEOUT;
+    private Duration timeout = DEFAULT_HEALTH_CHECK_TIMEOUT;
 
     public EventHubsHealthIndicator(EventHubProducerAsyncClient producerAsyncClient,
                                     EventHubConsumerAsyncClient consumerAsyncClient) {
@@ -40,11 +40,11 @@ public class EventHubsHealthIndicator implements HealthIndicator {
             if (this.producerAsyncClient != null) {
                 return producerAsyncClient.getEventHubProperties()
                                           .map(p -> Health.up().build())
-                                          .block(Duration.ofSeconds(timeout));
+                                          .block(timeout);
             }
             return consumerAsyncClient.getEventHubProperties()
                                       .map(p -> Health.up().build())
-                                      .block(Duration.ofSeconds(timeout));
+                                      .block(timeout);
         } catch (Exception e) {
             return Health.down(e)
                          .withDetail("Failed to retrieve event hub information", "")
@@ -52,7 +52,7 @@ public class EventHubsHealthIndicator implements HealthIndicator {
         }
     }
 
-    public void setTimeout(int timeout) {
+    public void setTimeout(Duration timeout) {
         this.timeout = timeout;
     }
 }

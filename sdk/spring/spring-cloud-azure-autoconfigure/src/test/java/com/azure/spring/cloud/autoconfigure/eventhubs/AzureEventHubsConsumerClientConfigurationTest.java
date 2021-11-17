@@ -12,7 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
-import static com.azure.spring.cloud.autoconfigure.eventhubs.EventHubsTestUtils.CONNECTION_STRING;
+import static com.azure.spring.cloud.autoconfigure.eventhubs.EventHubsTestUtils.CONNECTION_STRING_FORMAT;
 import static org.assertj.core.api.Assertions.assertThat;
 
 class AzureEventHubsConsumerClientConfigurationTest {
@@ -58,7 +58,7 @@ class AzureEventHubsConsumerClientConfigurationTest {
 
         EventHubClientBuilder clientBuilder = new EventHubClientBuilder()
             .consumerGroup(consumerGroupName)
-            .connectionString(String.format(CONNECTION_STRING, namespace), eventHubName);
+            .connectionString(String.format(CONNECTION_STRING_FORMAT, namespace), eventHubName);
 
         contextRunner
             .withPropertyValues(

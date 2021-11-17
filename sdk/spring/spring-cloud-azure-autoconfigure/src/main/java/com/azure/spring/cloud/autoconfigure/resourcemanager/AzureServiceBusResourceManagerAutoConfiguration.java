@@ -8,10 +8,8 @@ import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnMissingProperty;
 import com.azure.spring.cloud.autoconfigure.servicebus.properties.AzureServiceBusProperties;
 import com.azure.spring.cloud.resourcemanager.connectionstring.ServiceBusArmConnectionStringProvider;
-import com.azure.spring.servicebus.provisioning.ServiceBusQueueProvisioner;
-import com.azure.spring.servicebus.provisioning.ServiceBusTopicProvisioner;
-import com.azure.spring.servicebus.provisioning.arm.DefaultServiceBusQueueProvisioner;
-import com.azure.spring.servicebus.provisioning.arm.DefaultServiceBusTopicProvisioner;
+import com.azure.spring.servicebus.provisioning.ServiceBusProvisioner;
+import com.azure.spring.servicebus.provisioning.arm.DefaultServiceBusProvisioner;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -40,14 +38,8 @@ public class AzureServiceBusResourceManagerAutoConfiguration extends AzureServic
 
     @Bean
     @ConditionalOnMissingBean
-    public ServiceBusQueueProvisioner serviceBusQueueProvisioner() {
-        return new DefaultServiceBusQueueProvisioner(this.azureResourceManager, this.serviceBusProperties.getResource());
-    }
-
-    @Bean
-    @ConditionalOnMissingBean
-    public ServiceBusTopicProvisioner serviceBusTopicProvisioner() {
-        return new DefaultServiceBusTopicProvisioner(this.azureResourceManager, this.serviceBusProperties.getResource());
+    public ServiceBusProvisioner serviceBusProvisioner() {
+        return new DefaultServiceBusProvisioner(this.azureResourceManager, this.serviceBusProperties.getResource());
     }
 
     @Bean

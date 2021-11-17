@@ -61,6 +61,7 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
     private String springIdentifier;
     private ConnectionStringProvider<?> connectionStringProvider;
     private boolean credentialConfigured = false;
+    protected final Configuration configuration = new Configuration();
 
     /**
      * <ol>
@@ -83,6 +84,7 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
     protected void configureCore(T builder) {
         configureApplicationId(builder);
         configureAzureEnvironment(builder);
+        configureConfiguration(builder);
         configureRetry(builder);
         configureProxy(builder);
         configureCredential(builder);
@@ -102,11 +104,11 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
     }
 
     protected void configureAzureEnvironment(T builder) {
-
-        Configuration configuration = new Configuration();
         configuration.put(Configuration.PROPERTY_AZURE_AUTHORITY_HOST,
             getAzureProperties().getProfile().getEnvironment().getActiveDirectoryEndpoint());
+    }
 
+    protected void configureConfiguration(T builder) {
         consumeConfiguration().accept(builder, configuration);
     }
 

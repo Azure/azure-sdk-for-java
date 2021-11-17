@@ -27,15 +27,15 @@ public final class ClientRegistrationCondition extends SpringBootCondition {
         ConditionMessage.Builder message = ConditionMessage.forCondition("AAD Application Client Condition");
         AADAuthenticationProperties properties =
             Binder.get(context.getEnvironment())
-                  .bind("azure.activedirectory", AADAuthenticationProperties.class)
+                  .bind("spring.cloud.azure.active-directory", AADAuthenticationProperties.class)
                   .orElse(null);
         if (properties == null) {
             return ConditionOutcome.noMatch(
-                message.notAvailable("AAD authorization properties(azure.activedirectory" + ".xxx)"));
+                message.notAvailable("AAD authorization properties(spring.cloud.azure.active-directory" + ".xxx)"));
         }
 
         if (!StringUtils.hasText(properties.getClientId())) {
-            return ConditionOutcome.noMatch(message.didNotFind("azure.activedirectory.client-id").atAll());
+            return ConditionOutcome.noMatch(message.didNotFind("spring.cloud.azure.active-directory.client-id").atAll());
         }
 
         // Bind properties will not execute AADAuthenticationProperties#afterPropertiesSet()
@@ -46,6 +46,6 @@ public final class ClientRegistrationCondition extends SpringBootCondition {
                 message.because("Resource server does not need client registration."));
         }
         return ConditionOutcome.match(
-            message.foundExactly("azure.activedirectory.application-type=" + applicationType));
+            message.foundExactly("spring.cloud.azure.active-directory.application-type=" + applicationType));
     }
 }

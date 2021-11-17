@@ -26,7 +26,6 @@
       <version>5.10.2</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
     </dependency>
 
-    <!-- TODO (xiada): should this be optional?   -->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>

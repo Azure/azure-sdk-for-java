@@ -32,7 +32,7 @@ class AzureCosmosPropertiesTest {
         AzureCosmosProperties cosmosProperties = new AzureCosmosProperties();
 
         Set<ConstraintViolation<AzureCosmosProperties>> violations = validator.validate(cosmosProperties);
-        Assertions.assertEquals(1, violations.size());
+        Assertions.assertEquals(0, violations.size());
     }
 
     @Test

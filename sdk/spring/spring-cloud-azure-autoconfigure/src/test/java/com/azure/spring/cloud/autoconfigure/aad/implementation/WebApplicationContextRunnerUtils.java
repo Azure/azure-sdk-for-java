@@ -58,14 +58,14 @@ public class WebApplicationContextRunnerUtils {
 
     public static String[] withWebApplicationOrResourceServerWithOboPropertyValues() {
         return new String[] {
-            "azure.activedirectory.client-id = fake-client-id",
-            "azure.activedirectory.client-secret = fake-client-secret",
-            "azure.activedirectory.tenant-id = fake-tenant-id"};
+            "spring.cloud.azure.active-directory.client-id = fake-client-id",
+            "spring.cloud.azure.active-directory.client-secret = fake-client-secret",
+            "spring.cloud.azure.active-directory.tenant-id = fake-tenant-id"};
     }
 
     public static String[] withResourceServerPropertyValues() {
         return new String[] {
-            "azure.activedirectory.tenant-id=fake-tenant-id",
-            "azure.activedirectory.app-id-uri=fake-app-id-uri"};
+            "spring.cloud.azure.active-directory.tenant-id=fake-tenant-id",
+            "spring.cloud.azure.active-directory.app-id-uri=fake-app-id-uri"};
     }
 }

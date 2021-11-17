@@ -22,7 +22,7 @@ import org.springframework.context.annotation.Import;
     AzureServiceBusClientBuilderConfiguration.class,
     AzureServiceBusProducerClientConfiguration.class,
     AzureServiceBusConsumerClientConfiguration.class,
-    AzureServiceBusProcessorConfiguration.class
+    AzureServiceBusProcessorClientConfiguration.class
 })
 public class AzureServiceBusAutoConfiguration extends AzureServiceConfigurationBase {
 

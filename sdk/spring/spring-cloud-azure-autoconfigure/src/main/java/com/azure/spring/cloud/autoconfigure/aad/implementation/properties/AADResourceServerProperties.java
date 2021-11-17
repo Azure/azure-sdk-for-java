@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * Configuration properties for Azure Active Directory B2C.
  */
-@ConfigurationProperties("azure.activedirectory.resource-server")
+@ConfigurationProperties("spring.cloud.azure.active-directory.resource-server")
 public class AADResourceServerProperties implements InitializingBean {
 
     public static final Map<String, String> DEFAULT_CLAIM_TO_AUTHORITY_PREFIX_MAP;

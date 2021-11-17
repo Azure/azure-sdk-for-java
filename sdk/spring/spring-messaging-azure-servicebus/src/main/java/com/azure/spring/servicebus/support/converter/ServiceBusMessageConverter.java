@@ -25,14 +25,14 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
-import static com.azure.spring.servicebus.support.converter.ServiceBusMessageHeaders.CORRELATION_ID;
-import static com.azure.spring.servicebus.support.converter.ServiceBusMessageHeaders.MESSAGE_ID;
-import static com.azure.spring.servicebus.support.converter.ServiceBusMessageHeaders.PARTITION_KEY;
-import static com.azure.spring.servicebus.support.converter.ServiceBusMessageHeaders.REPLY_TO_SESSION_ID;
-import static com.azure.spring.servicebus.support.converter.ServiceBusMessageHeaders.SCHEDULED_ENQUEUE_TIME;
-import static com.azure.spring.servicebus.support.converter.ServiceBusMessageHeaders.SESSION_ID;
-import static com.azure.spring.servicebus.support.converter.ServiceBusMessageHeaders.TIME_TO_LIVE;
-import static com.azure.spring.servicebus.support.converter.ServiceBusMessageHeaders.TO;
+import static com.azure.spring.servicebus.support.ServiceBusMessageHeaders.CORRELATION_ID;
+import static com.azure.spring.servicebus.support.ServiceBusMessageHeaders.MESSAGE_ID;
+import static com.azure.spring.servicebus.support.ServiceBusMessageHeaders.PARTITION_KEY;
+import static com.azure.spring.servicebus.support.ServiceBusMessageHeaders.REPLY_TO_SESSION_ID;
+import static com.azure.spring.servicebus.support.ServiceBusMessageHeaders.SCHEDULED_ENQUEUE_TIME;
+import static com.azure.spring.servicebus.support.ServiceBusMessageHeaders.SESSION_ID;
+import static com.azure.spring.servicebus.support.ServiceBusMessageHeaders.TIME_TO_LIVE;
+import static com.azure.spring.servicebus.support.ServiceBusMessageHeaders.TO;
 
 /**
  * A converter to turn a {@link org.springframework.messaging.Message} to {@link ServiceBusMessage} and turn a {@link
