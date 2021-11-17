@@ -225,6 +225,7 @@ public final class ShareProperties {
      * @return the provisionedIngressMBps value.
      * @deprecated Please use {@link #getProvisionedBandwidthMiBps()}
      */
+    @Deprecated
     public Integer getProvisionedIngressMBps() {
         return this.provisionedIngressMBps;
     }
@@ -237,6 +238,7 @@ public final class ShareProperties {
      * @return the ShareProperties object itself.
      * @deprecated Please use {@link #setProvisionedBandwidthMiBps(Integer)} ()}
      */
+    @Deprecated
     public ShareProperties setProvisionedIngressMBps(Integer provisionedIngressMBps) {
         this.provisionedIngressMBps = provisionedIngressMBps;
         return this;
@@ -249,6 +251,7 @@ public final class ShareProperties {
      * @return the provisionedEgressMBps value.
      * @deprecated Please use {@link #getProvisionedBandwidthMiBps()}
      */
+    @Deprecated
     public Integer getProvisionedEgressMBps() {
         return this.provisionedEgressMBps;
     }
@@ -261,6 +264,7 @@ public final class ShareProperties {
      * @return the ShareProperties object itself.
      * @deprecated Please use {@link #setProvisionedBandwidthMiBps(Integer)} ()}
      */
+    @Deprecated
     public ShareProperties setProvisionedEgressMBps(Integer provisionedEgressMBps) {
         this.provisionedEgressMBps = provisionedEgressMBps;
         return this;
