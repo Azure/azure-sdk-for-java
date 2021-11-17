@@ -3,7 +3,6 @@
 
 package com.azure.spring.eventhubs.checkpoint;
 
-import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 import com.azure.spring.messaging.checkpoint.CheckpointMode;
@@ -20,7 +19,7 @@ import java.util.concurrent.atomic.AtomicInteger;
  *
  * @author Warren Zhu
  */
-class PartitionCountCheckpointManager extends CheckpointManager {
+class PartitionCountCheckpointManager extends EventCheckpointManager {
     private static final Logger LOG = LoggerFactory.getLogger(PartitionCountCheckpointManager.class);
     private final ConcurrentHashMap<String, AtomicInteger> countByPartition = new ConcurrentHashMap<>();
 
@@ -30,23 +29,24 @@ class PartitionCountCheckpointManager extends CheckpointManager {
             () -> "PartitionCountCheckpointManager should have checkpointMode partition_count");
     }
 
-    public void onMessage(EventContext context, EventData eventData) {
+    @Override
+    protected Logger getLogger() {
+        return LOG;
+    }
+
+    @Override
+    public void checkpoint(EventContext context) {
         String partitionId = context.getPartitionContext().getPartitionId();
         this.countByPartition.computeIfAbsent(partitionId, (k) -> new AtomicInteger(0));
         AtomicInteger count = this.countByPartition.get(partitionId);
         if (count.incrementAndGet() >= checkpointConfig.getCount()) {
             context.updateCheckpointAsync()
-                .doOnError(t -> logCheckpointFail(context, eventData, t))
+                .doOnError(t -> logCheckpointFail(context, context.getEventData(), t))
                 .doOnSuccess(v -> {
-                    logCheckpointSuccess(context, eventData);
+                    logCheckpointSuccess(context, context.getEventData());
                     count.set(0);
                 })
                 .subscribe();
         }
-    }
-
-    @Override
-    protected Logger getLogger() {
-        return LOG;
     }
 }
