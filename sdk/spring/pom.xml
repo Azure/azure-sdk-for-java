@@ -172,6 +172,7 @@
         <module>spring-cloud-azure-starter-actuator</module>
         <module>spring-cloud-azure-starter-appconfiguration</module>
         <module>spring-cloud-azure-starter-cosmos</module>
+        <module>spring-cloud-azure-starter-data-cosmos</module>
         <module>spring-cloud-azure-starter-eventhubs</module>
         <module>spring-cloud-azure-starter-keyvault-certificates</module>
         <module>spring-cloud-azure-starter-keyvault-secrets</module>
@@ -220,6 +221,7 @@
         <module>spring-cloud-azure-starter-actuator</module>
         <module>spring-cloud-azure-starter-appconfiguration</module>
         <module>spring-cloud-azure-starter-cosmos</module>
+        <module>spring-cloud-azure-starter-data-cosmos</module>
         <module>spring-cloud-azure-starter-eventhubs</module>
         <module>spring-cloud-azure-starter-keyvault-certificates</module>
         <module>spring-cloud-azure-starter-keyvault-secrets</module>

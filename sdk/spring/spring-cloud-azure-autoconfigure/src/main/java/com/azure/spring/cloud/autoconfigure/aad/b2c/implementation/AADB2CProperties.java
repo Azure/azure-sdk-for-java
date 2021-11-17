@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aad.b2c.implementation;
 
+import com.azure.spring.core.util.URLValidator;
 import com.nimbusds.jose.jwk.source.RemoteJWKSet;
-import org.hibernate.validator.constraints.URL;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.DeprecatedConfigurationProperty;
@@ -86,7 +86,6 @@ public class AADB2CProperties implements InitializingBean {
      */
     private String clientSecret;
 
-    @URL(message = "logout success should be valid URL")
     private String logoutSuccessUrl = DEFAULT_LOGOUT_SUCCESS_URL;
 
     private Map<String, Object> authenticateAdditionalParameters;
@@ -106,7 +105,6 @@ public class AADB2CProperties implements InitializingBean {
     /**
      * AAD B2C endpoint base uri.
      */
-    @URL(message = "baseUri should be valid URL")
     private String baseUri;
 
     /**
@@ -123,6 +121,7 @@ public class AADB2CProperties implements InitializingBean {
 
     @Override
     public void afterPropertiesSet() {
+        validateURLProperties();
         validateWebappProperties();
         validateCommonProperties();
     }
@@ -156,6 +155,19 @@ public class AADB2CProperties implements InitializingBean {
                 + "when using client credential flow.");
         }
     }
+
+    /**
+     * Validate URL properties configuration.
+     */
+    private void validateURLProperties() {
+        if (!URLValidator.isValidURL(logoutSuccessUrl)) {
+            throw new AADB2CConfigurationException("logout success should be valid URL.");
+        }
+        if (!URLValidator.isValidURL(baseUri)) {
+            throw new AADB2CConfigurationException("baseUri should be valid URL.");
+        }
+    }
+
 
     protected String getPasswordReset() {
         Optional<String> keyOptional = userFlows.keySet()
