@@ -147,6 +147,103 @@ For a full list of common configurations, check this list **[placeholder]**.
 
 ### Each SDK configurations
 
+####  Migration guide of azure-spring-boot-starter-cosmos
+
+  Step01: Replace the maven dependency
+
+  
+
+```
+<!--Before-->
+<dependency>
+  <groupId>com.azure.spring</groupId>
+  <artifactId>azure-spring-boot-starter-cosmos</artifactId>
+  <version>3.10.0</version> 
+</dependency>
+
+<!--After--->
+<dependency>
+  <groupId>com.azure.spring</groupId>
+  <artifactId>spring-cloud-azure-starter-data-cosmos</artifactId>
+  <version>4.0.0-beta.1</version>
+</dependency>
+
+```
+
+Step02: Change properties configurations
+
+| Legacy properties                 | Morden properties                              | description |
+|-----------------------------------|------------------------------------------------|-------------|
+| azure.cosmos.uri                  | spring.cloud.azure.cosmos.endpoint             |             |
+| azure.cosmos.key                  | spring.cloud.azure.cosmos.key                  |             |
+| azure.cosmos.database             | spring.cloud.azure.cosmos.database             |             |
+| azure.cosmos.populateQueryMetrics | spring.cloud.azure.cosmos.populateQueryMetrics |             |
+
+
+
+
+#### Migration guide of azure-spring-boot-starter-storage
+**Overview**
+The artifact `azure-spring-boot-starter-storage` was divided into two artifacts: `spring-cloud-azure-starter-storage-blob`,`spring-cloud-azure-starter-storage-file-share`.
+
+| Artifact Id                                   | Azure Service      |
+|-----------------------------------------------|--------------------|
+| **spring-cloud-azure-starter-storage-blob**       | [Azure Storage Blob](https://docs.microsoft.com/azure/storage/blobs/) |
+| **spring-cloud-azure-starter-storage-file-share** | [Azure Storage File](https://docs.microsoft.com/zh-cn/azure/storage/files/) |
+
+Step01: Replace the maven dependency
+
+
+```
+<!--Before-->
+<dependency>
+  <groupId>com.azure.spring</groupId>
+  <artifactId>azure-spring-boot-starter-storage</artifactId>
+  <version>3.10.0</version>
+</dependency>
+
+<!--After--->
+<dependency>
+  <groupId>com.azure.spring</groupId>
+  <artifactId>spring-cloud-azure-starter-storage-blob</artifactId>
+  <version>4.0.0-beta.1</version>
+</dependency>
+
+<dependency>
+  <groupId>com.azure.spring</groupId>
+  <artifactId>spring-cloud-azure-starter-storage-file-share</artifactId>
+  <version>4.0.0-beta.1</version>
+</dependency>
+
+
+```
+
+
+Step02: Change properties configurations
+
+[Azure Storage Blob]
+
+| Legacy properties           | Morden properties                            | description |
+|-----------------------------|----------------------------------------------|-------------|
+| azure.storage.account-name  | spring.cloud.azure.storage.blob.account-name |             |
+| azure.storage.blob-endpoint | spring.cloud.azure.storage.blob.endpoint     |             |
+| azure.storage.account-key   | spring.cloud.azure.storage.blob.account-key  |             |
+
+[Azure Storage File]
+| Legacy properties           | Morden properties                                 | description |
+|-----------------------------|---------------------------------------------------|-------------|
+| azure.storage.account-name  | spring.cloud.azure.storage.fileshare.account-name |             |
+| azure.storage.file-endpoint | spring.cloud.azure.storage.fileshare.endpoint     |             |
+| azure.storage.account-key   | spring.cloud.azure.storage.fileshare.account-key  |             |
+
+
+
+#### Migration guide of azure-spring-cloud-starter-storage-queue
+
+#### Migration guide of azure-spring-integration-storage-queue
+
+#### Migration guide of azure-spring-cloud-starter-cache
+
 
 
 ## API breaking changes
