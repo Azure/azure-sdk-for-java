@@ -8,10 +8,6 @@
 - Added RouteType as optional parameter when getting a Relay Configuration so users can
   choose the routing type protocol of the requested Relay Configuration.
 
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
 
 ## 1.0.0-beta.1 (2021-09-09)
