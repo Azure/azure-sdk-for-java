@@ -27,8 +27,7 @@ com.azure.spring.cloud.autoconfigure.eventhubs.kafka.AzureEventHubsKafkaAutoConf
 com.azure.spring.cloud.autoconfigure.keyvault.secrets.AzureKeyVaultSecretAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.keyvault.certificates.AzureKeyVaultCertificateAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusAutoConfiguration,\
-com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusQueueOperationAutoConfiguration,\
-com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusTopicOperationAutoConfiguration,\
+com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusMessagingAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.storage.blob.AzureStorageBlobAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.storage.blob.AzureStorageBlobResourceAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.storage.fileshare.AzureStorageFileShareAutoConfiguration,\

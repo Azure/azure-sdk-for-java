@@ -5,6 +5,7 @@ package com.azure.spring.cloud.stream.binder.servicebus.provisioning;
 
 import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusConsumerProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusProducerProperties;
+import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
 import org.springframework.cloud.stream.binder.ExtendedConsumerProperties;
 import org.springframework.cloud.stream.binder.ExtendedProducerProperties;
 import org.springframework.cloud.stream.provisioning.ConsumerDestination;
@@ -22,22 +23,22 @@ public class ServiceBusChannelProvisioner implements
     @Override
     public ProducerDestination provisionProducerDestination(String name,
             ExtendedProducerProperties<ServiceBusProducerProperties> properties) throws ProvisioningException {
-        validateOrCreateForProducer(name);
+        validateOrCreateForProducer(name, properties.getExtension().getEntityType());
         return new ServiceBusProducerDestination(name);
     }
 
     @Override
     public ConsumerDestination provisionConsumerDestination(String name, String group,
             ExtendedConsumerProperties<ServiceBusConsumerProperties> properties) throws ProvisioningException {
-        validateOrCreateForConsumer(name, group);
+        validateOrCreateForConsumer(name, group, properties.getExtension().getEntityType());
         return new ServiceBusConsumerDestination(name);
     }
 
-    protected void validateOrCreateForConsumer(String name, String group) {
+    protected void validateOrCreateForConsumer(String name, String group, ServiceBusEntityType type) {
         // no-op
     }
 
-    protected void validateOrCreateForProducer(String name) {
+    protected void validateOrCreateForProducer(String name, ServiceBusEntityType type) {
         // no-op
     }
 }
