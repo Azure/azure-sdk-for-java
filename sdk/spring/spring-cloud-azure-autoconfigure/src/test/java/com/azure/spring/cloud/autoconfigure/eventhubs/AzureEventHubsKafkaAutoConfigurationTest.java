@@ -58,6 +58,16 @@ class AzureEventHubsKafkaAutoConfigurationTest {
     }
 
     @Test
+    void shouldNotConfigureWhenServiceBusStaticConnectionStringProvided() {
+        this.contextRunner
+            .withUserConfiguration(ServiceBusStaticConnectionStringProviderConfiguration.class)
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureEventHubsKafkaAutoConfiguration.class);
+                assertThat(context).doesNotHaveBean(KafkaProperties.class);
+            });
+    }
+
+    @Test
     void shouldConfigureWhenArmConnectionStringProvided() {
         this.contextRunner
             .withUserConfiguration(ArmConnectionStringProviderConfiguration.class)
@@ -101,6 +111,16 @@ class AzureEventHubsKafkaAutoConfigurationTest {
         StaticConnectionStringProvider<AzureServiceType.EventHubs> connectionStringProvider() {
             return new StaticConnectionStringProvider<>(AzureServiceType.EVENT_HUBS,
                 String.format(EventHubsTestUtils.CONNECTION_STRING_FORMAT, "static-namespace"));
+        }
+    }
+
+    @Configuration
+    static class ServiceBusStaticConnectionStringProviderConfiguration {
+
+        @Bean
+        StaticConnectionStringProvider<AzureServiceType.ServiceBus> connectionStringProvider() {
+            return new StaticConnectionStringProvider<>(AzureServiceType.SERVICE_BUS,
+                String.format(EventHubsTestUtils.CONNECTION_STRING_FORMAT, "servicebus-namespace"));
         }
     }
 
