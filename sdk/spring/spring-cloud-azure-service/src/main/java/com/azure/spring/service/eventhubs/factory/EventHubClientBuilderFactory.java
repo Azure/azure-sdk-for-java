@@ -71,7 +71,6 @@ public class EventHubClientBuilderFactory extends AbstractAzureAmqpClientBuilder
 
     @Override
     protected BiConsumer<EventHubClientBuilder, String> consumeConnectionString() {
-        // TODO (xiada) defines whether the connection-string contains event-hub-name
         return (builder, connectionString) -> builder.connectionString(connectionString, this.eventHubsProperties.getEventHubName());
     }
 

@@ -4,6 +4,7 @@
 package com.azure.spring.servicebus.core.producer;
 
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
+import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.service.servicebus.factory.ServiceBusSenderClientBuilderFactory;
 import com.azure.spring.servicebus.core.properties.NamespaceProperties;
@@ -70,8 +71,9 @@ public class DefaultServiceBusNamespaceProducerFactory implements ServiceBusProd
 
             producerProperties.setEntityName(entityName);
             //TODO(yiliu6): whether to make the producer client share the same service bus client builder
-            ServiceBusSenderAsyncClient producerClient = new ServiceBusSenderClientBuilderFactory(producerProperties)
-                .build().buildAsyncClient();
+            ServiceBusSenderClientBuilderFactory factory = new ServiceBusSenderClientBuilderFactory(producerProperties);
+            factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_SERVICE_BUS);
+            ServiceBusSenderAsyncClient producerClient = factory.build().buildAsyncClient();
 
             this.listeners.forEach(l -> l.producerAdded(entityName));
             return producerClient;

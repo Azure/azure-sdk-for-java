@@ -3,60 +3,59 @@
 
 package com.azure.spring.cloud.stream.binder.eventhubs;
 
-import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsMessagingAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureEventHubsResourceManagerAutoConfiguration;
-import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureResourceManagerAutoConfiguration;
+import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.config.EventHubsBinderConfiguration;
+import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsExtendedBindingProperties;
+import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubsChannelProvisioner;
+import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubsChannelResourceManagerProvisioner;
+import com.azure.spring.eventhubs.core.producer.EventHubsProducerFactory;
+import com.azure.spring.eventhubs.provisioning.EventHubsProvisioner;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
+
 public class EventHubsBinderConfigurationTest {
 
-    private static final String EVENT_HUB_PROPERTY_PREFIX = "spring.cloud.azure.eventhub.";
-    private static final String AZURE_PROPERTY_PREFIX = "spring.cloud.azure.";
+    private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
+        .withConfiguration(AutoConfigurations.of(EventHubsBinderConfiguration.class));
 
-    private String connectionString = "connection-string=Endpoint=sb://eventhub-test-1"
-        + ".servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;"
-        + "SharedAccessKey=ByyyxxxUw=";
-
-    private ApplicationContextRunner contextRunner = new ApplicationContextRunner()
-        .withPropertyValues(AZURE_PROPERTY_PREFIX + "stream.function.definition=supply")
-        .withPropertyValues(AZURE_PROPERTY_PREFIX + "stream.bindings.supply-out-0.destination=eventhub1")
-        .withConfiguration(AutoConfigurations.of(AzureResourceManagerAutoConfiguration.class,
-                                                 AzureEventHubsResourceManagerAutoConfiguration.class,
-                                                 AzureEventHubsAutoConfiguration.class,
-                                                 AzureEventHubsMessagingAutoConfiguration.class,
-                                                 EventHubsBinderConfiguration.class));
-/*
-// TODO (xiada): tests
     @Test
-    public void testStorageNotConfiguredToGetClientFactoryBeanOnConnectionString() {
-        contextRunner
-            .withPropertyValues(EVENT_HUB_PROPERTY_PREFIX + connectionString)
+    void shouldConfigureDefaultChannelProvisionerWhenNoResourceManagerProvided() {
+        this.contextRunner
+            // TODO (xiada) this EventHubsProducerFactory should be deleted after health indicator refactoring
+            .withBean(EventHubsProducerFactory.class, () -> mock(EventHubsProducerFactory.class))
             .run(context -> {
-                assertThat(context).hasSingleBean(EventHubClientFactory.class);
-                assertThat(context).hasSingleBean(EventHubOperation.class);
+                assertThat(context).hasSingleBean(EventHubsBinderConfiguration.class);
+                assertThat(context).hasSingleBean(EventHubsExtendedBindingProperties.class);
+                assertThat(context).hasSingleBean(EventHubsChannelProvisioner.class);
+                assertThat(context).hasSingleBean(EventHubsMessageChannelBinder.class);
+
+                EventHubsChannelProvisioner channelProvisioner = context.getBean(EventHubsChannelProvisioner.class);
+                assertThat(channelProvisioner).isNotInstanceOf(EventHubsChannelResourceManagerProvisioner.class);
             });
     }
 
     @Test
-    public void testStorageNotConfiguredToGetClientFactoryBeanOnMSI() {
-        contextRunner
-            .withPropertyValues(
-                AZURE_PROPERTY_PREFIX + "msi-enabled=true",
-                AZURE_PROPERTY_PREFIX + "client-id=fake-client-id",
-                AZURE_PROPERTY_PREFIX + "resource-group=fake-res-group",
-                AZURE_PROPERTY_PREFIX + "subscription-id=fake-sub"
-            )
-            .withBean(EventHubConnectionStringProvider.class, connectionString)
+    void shouldConfigureArmChannelProvisionerWhenResourceManagerProvided() {
+        AzureEventHubsProperties properties = new AzureEventHubsProperties();
+        properties.setNamespace("test");
+        this.contextRunner
+            // TODO (xiada) this EventHubsProducerFactory should be deleted after health indicator refactoring
+            .withBean(EventHubsProducerFactory.class, () -> mock(EventHubsProducerFactory.class))
+            .withBean(EventHubsProvisioner.class, () -> mock(EventHubsProvisioner.class))
+            .withBean(AzureEventHubsProperties.class, () -> properties)
             .run(context -> {
-                assertThat(context).hasSingleBean(EventHubClientFactory.class);
-                assertThat(context).hasSingleBean(EventHubNamespaceManager.class);
-                assertThat(context).hasSingleBean(EventHubOperation.class);
-                assertThat(context).doesNotHaveBean(com.azure.spring.cloud.resourcemanager.core.impl.StorageAccountCrud.class);
+                assertThat(context).hasSingleBean(EventHubsBinderConfiguration.class);
+                assertThat(context).hasSingleBean(EventHubsExtendedBindingProperties.class);
+                assertThat(context).hasSingleBean(EventHubsChannelProvisioner.class);
+                assertThat(context).hasSingleBean(EventHubsMessageChannelBinder.class);
+
+                EventHubsChannelProvisioner channelProvisioner = context.getBean(EventHubsChannelProvisioner.class);
+                assertThat(channelProvisioner).isInstanceOf(EventHubsChannelResourceManagerProvisioner.class);
             });
     }
-*/
 
 }
