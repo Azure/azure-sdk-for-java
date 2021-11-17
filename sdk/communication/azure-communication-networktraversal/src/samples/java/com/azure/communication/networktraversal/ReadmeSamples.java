@@ -96,15 +96,12 @@ public class ReadmeSamples {
     public CommunicationRelayConfiguration getRelayConfiguration() {
         CommunicationIdentityClient communicationIdentityClient = createCommunicationIdentityClient();
 
-        // BEGIN: readme-sample-getRelayConfiguration
         CommunicationUserIdentifier user = communicationIdentityClient.createUser();
         System.out.println("User id: " + user.getId());
 
         CommunicationRelayClient communicationRelayClient = createCommunicationNetworkTraversalClient();
         CommunicationRelayConfiguration config = communicationRelayClient.getRelayConfiguration(user);
 
-<<<<<<< HEAD
-=======
         System.out.println("Expires on:" + config.getExpiresOn());
         List<CommunicationIceServer> iceServers = config.getIceServers();
 
@@ -123,10 +120,10 @@ public class ReadmeSamples {
      * @return the created user
      */
     public CommunicationRelayConfiguration getRelayConfigurationWithoutIdentity() {
+
         CommunicationRelayClient communicationRelayClient = createCommunicationNetworkTraversalClient();
         CommunicationRelayConfiguration config = communicationRelayClient.getRelayConfiguration();
 
->>>>>>> Update README and CHANGELOG
         System.out.println("Expires on:" + config.getExpiresOn());
         List<CommunicationIceServer> iceServers = config.getIceServers();
 
@@ -134,11 +131,6 @@ public class ReadmeSamples {
             System.out.println("URLS: " + iceS.getUrls());
             System.out.println("Username: " + iceS.getUsername());
             System.out.println("Credential: " + iceS.getCredential());
-<<<<<<< HEAD
-        }
-        // END: readme-sample-getRelayConfiguration
-
-=======
             System.out.println("RouteType: " + iceS.getRouteType());
         }
         return config;
@@ -162,7 +154,6 @@ public class ReadmeSamples {
             System.out.println("Credential: " + iceS.getCredential());
             System.out.println("RouteType: " + iceS.getRouteType());
         }
->>>>>>> Update README and CHANGELOG
         return config;
     }
 
