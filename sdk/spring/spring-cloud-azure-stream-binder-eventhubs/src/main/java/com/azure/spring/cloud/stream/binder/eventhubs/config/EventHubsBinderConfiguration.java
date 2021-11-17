@@ -10,12 +10,12 @@ import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsMessagingAut
 import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureEventHubsResourceManagerAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureResourceManagerAutoConfiguration;
+import com.azure.spring.cloud.resourcemanager.provisioner.eventhubs.EventHubsProvisioner;
 import com.azure.spring.cloud.stream.binder.eventhubs.EventHubsMessageChannelBinder;
 import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsExtendedBindingProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubsChannelProvisioner;
 import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubsChannelResourceManagerProvisioner;
 import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
-import com.azure.spring.eventhubs.provisioning.EventHubsProvisioner;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;

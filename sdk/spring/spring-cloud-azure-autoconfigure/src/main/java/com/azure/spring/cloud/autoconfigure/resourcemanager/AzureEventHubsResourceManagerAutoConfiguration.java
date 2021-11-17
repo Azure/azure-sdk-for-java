@@ -3,18 +3,17 @@
 
 package com.azure.spring.cloud.autoconfigure.resourcemanager;
 
-import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnMissingProperty;
 import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.cloud.resourcemanager.connectionstring.EventHubsArmConnectionStringProvider;
-import com.azure.spring.eventhubs.provisioning.EventHubsProvisioner;
-import com.azure.spring.eventhubs.provisioning.arm.DefaultEventHubsProvisioner;
+import com.azure.spring.cloud.resourcemanager.provisioner.eventhubs.DefaultEventHubsProvisioner;
+import com.azure.spring.cloud.resourcemanager.provisioner.eventhubs.EventHubsProvisioner;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
 
@@ -22,17 +21,17 @@ import org.springframework.core.annotation.Order;
  *
  */
 @ConditionalOnProperty(prefix = AzureEventHubsProperties.PREFIX, value = "enabled", havingValue = "true", matchIfMissing = true)
-@ConditionalOnClass(EventHubClientBuilder.class)
 @ConditionalOnBean(AzureResourceManager.class)
 @AutoConfigureAfter(AzureResourceManagerAutoConfiguration.class)
+@EnableConfigurationProperties(EventHubsResourceMetadata.class)
 public class AzureEventHubsResourceManagerAutoConfiguration extends AzureServiceResourceManagerConfigurationBase {
 
-    private final AzureEventHubsProperties eventHubsProperties;
+    private final EventHubsResourceMetadata resourceMetadata;
 
     public AzureEventHubsResourceManagerAutoConfiguration(AzureResourceManager azureResourceManager,
-                                                          AzureEventHubsProperties eventHubsProperties) {
+                                                          EventHubsResourceMetadata resourceMetadata) {
         super(azureResourceManager);
-        this.eventHubsProperties = eventHubsProperties;
+        this.resourceMetadata = resourceMetadata;
     }
 
     @Bean
@@ -42,15 +41,14 @@ public class AzureEventHubsResourceManagerAutoConfiguration extends AzureService
     @Order
     public EventHubsArmConnectionStringProvider eventHubsArmConnectionStringProvider() {
 
-        return new EventHubsArmConnectionStringProvider(this.azureResourceManager,
-                                                       this.eventHubsProperties.getResource(),
-                                                       this.eventHubsProperties.getNamespace());
+        return new EventHubsArmConnectionStringProvider(this.azureResourceManager, resourceMetadata,
+            resourceMetadata.getName());
     }
 
     @Bean
     @ConditionalOnMissingBean
     public EventHubsProvisioner eventHubsProvisioner() {
-        return new DefaultEventHubsProvisioner(this.azureResourceManager, this.eventHubsProperties.getResource());
+        return new DefaultEventHubsProvisioner(this.azureResourceManager, this.resourceMetadata);
     }
 
 }

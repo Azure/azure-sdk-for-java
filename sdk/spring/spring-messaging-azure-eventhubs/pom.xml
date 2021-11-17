@@ -41,12 +41,6 @@
       <artifactId>azure-messaging-eventhubs</artifactId>
       <version>5.10.2</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;dependency} -->
     </dependency>
-    <dependency>
-      <groupId>com.azure.spring</groupId>
-      <artifactId>spring-cloud-azure-resourcemanager</artifactId>
-      <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-resourcemanager;current} -->
-      <optional>true</optional>
-    </dependency>
     <!-- Contains Azure Storage Blobs checkpoint store when using EventProcessorClient -->
     <dependency>
       <groupId>com.azure</groupId>
