@@ -28,7 +28,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import reactor.util.function.Tuple2;
 
-import static com.azure.spring.core.properties.AzurePropertiesUtils.copyAzureCommonProperties;
+import static com.azure.spring.core.properties.util.AzurePropertiesUtils.copyAzureCommonProperties;
+
 
 /**
  * An auto-configuration for Service Bus Queue.
