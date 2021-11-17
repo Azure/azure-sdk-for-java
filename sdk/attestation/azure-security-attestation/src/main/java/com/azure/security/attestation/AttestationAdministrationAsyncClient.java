@@ -502,14 +502,15 @@ public final class AttestationAdministrationAsyncClient {
      *     to perform the API operation.
      * </p>
      *
+     * @param options Options used to validate the response from the attestation service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the attestation policy expressed as a string.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<AttestationSigner>>> listPolicyManagementCertificatesWithResponse() {
-        return withContext(context -> listPolicyManagementCertificatesWithResponse(null, context));
+    public Mono<Response<List<AttestationSigner>>> listPolicyManagementCertificatesWithResponse(AttestationTokenValidationOptions options) {
+        return withContext(context -> listPolicyManagementCertificatesWithResponse(options, context));
     }
 
     /**
@@ -534,7 +535,7 @@ public final class AttestationAdministrationAsyncClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<List<AttestationSigner>> listPolicyManagementCertificates() {
-        return listPolicyManagementCertificatesWithResponse()
+        return listPolicyManagementCertificatesWithResponse(null)
             .flatMap(FluxUtil::toMono);
     }
 
@@ -553,6 +554,7 @@ public final class AttestationAdministrationAsyncClient {
      *     to perform the API operation.
      * </p>
      * @param context Context for the remote call.
+     * @param validationOptions Options used to validate the response from the attestation service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
