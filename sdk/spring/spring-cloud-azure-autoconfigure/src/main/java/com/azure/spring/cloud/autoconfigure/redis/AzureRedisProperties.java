@@ -29,4 +29,5 @@ public class AzureRedisProperties {
     public AzureResourceMetadata getResource() {
         return resource;
     }
+
 }

@@ -9,6 +9,7 @@ import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureResourceManager
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -25,7 +26,8 @@ import java.util.Arrays;
  */
 @Configuration
 @AutoConfigureAfter(AzureResourceManagerAutoConfiguration.class)
-@ConditionalOnProperty(value = "spring.cloud.azure.redis.enabled", matchIfMissing = true)
+@ConditionalOnExpression("${spring.cloud.azure.redis.enabled:true}")
+@ConditionalOnProperty({ "spring.cloud.azure.redis.name", "spring.cloud.azure.redis.resource.resource-group" })
 @ConditionalOnClass({ RedisOperations.class, AzureResourceManager.class })
 @ConditionalOnBean(AzureResourceManager.class)
 @EnableConfigurationProperties(AzureRedisProperties.class)
