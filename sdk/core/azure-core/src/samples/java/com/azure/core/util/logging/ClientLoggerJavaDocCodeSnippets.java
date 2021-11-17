@@ -80,6 +80,12 @@ public class ClientLoggerJavaDocCodeSnippets {
             .log("A formattable message. Hello, {}", name);
         // END: com.azure.core.util.logging.clientlogger.atInfo
 
+        // BEGIN: com.azure.core.util.logging.clientlogger.atWarning
+        logger.atWarning()
+            .addKeyValue("key", "value")
+            .log("A formattable message. Hello, {}", name, exception);
+        // END: com.azure.core.util.logging.clientlogger.atWarning
+
         // BEGIN: com.azure.core.util.logging.clientlogger.atError#deffered-value
         try {
             upload(resource);

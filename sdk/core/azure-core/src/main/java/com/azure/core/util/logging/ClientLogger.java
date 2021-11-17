@@ -552,6 +552,18 @@ public class ClientLogger {
     /**
      * Creates {@link LoggingEventBuilder} for {@code warning} log level that can be
      * used to enrich log with additional context.
+
+     * <p><strong>Code samples</strong></p>
+     *
+     * <p>Logging with context at warning level.</p>
+     *
+     * <!-- src_embed com.azure.core.util.logging.clientlogger.atWarning -->
+     * <pre>
+     * logger.atWarning&#40;&#41;
+     *     .addKeyValue&#40;&quot;key&quot;, &quot;value&quot;&#41;
+     *     .log&#40;&quot;A formattable message. Hello, &#123;&#125;&quot;, name, exception&#41;;
+     * </pre>
+     * <!-- end com.azure.core.util.logging.clientlogger.atWarning -->
      *
      * @return instance of {@link LoggingEventBuilder} or no-op if verbose logging is disabled.
      */
@@ -626,21 +638,4 @@ public class ClientLogger {
     private Object[] removeThrowable(Object... args) {
         return Arrays.copyOf(args, args.length - 1);
     }
-<<<<<<< HEAD
-=======
-
-    /*
-     * Removes CRLF pattern in the {@code logMessage}.
-     *
-     * @param logMessage The log message to sanitize.
-     * @return The updated logMessage.
-     */
-    private static String sanitizeLogMessageInput(String logMessage) {
-        if (CoreUtils.isNullOrEmpty(logMessage)) {
-            return logMessage;
-        }
-
-        return NEW_LINE_PATTERN.matcher(logMessage).replaceAll("");
-    }
->>>>>>> eaf130023ff (move message into json structure)
 }

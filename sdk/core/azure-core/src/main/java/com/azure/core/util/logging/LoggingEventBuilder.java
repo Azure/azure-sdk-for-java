@@ -205,7 +205,7 @@ public final class LoggingEventBuilder {
 
         StringBuilder sb = new StringBuilder(20 + contextSize * 20 + message.length());
         sb.append("{\"")
-            // message must be first for log paring tooling, key also  serves as a
+            // message must be first for log parsing tooling to work, key also works as a
             // marker for Azure SDK logs so we'll write it even if there is no message
             .append(AZURE_SDK_LOG_MESSAGE_KEY)
             .append("\":\"")
