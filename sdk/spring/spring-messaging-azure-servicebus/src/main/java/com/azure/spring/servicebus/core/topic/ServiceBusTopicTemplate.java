@@ -5,23 +5,23 @@ package com.azure.spring.servicebus.core.topic;
 
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.spring.servicebus.core.DefaultServiceBusMessageProcessor;
-import com.azure.spring.servicebus.support.ServiceBusClientConfig;
-import com.azure.spring.servicebus.support.ServiceBusRuntimeException;
 import com.azure.spring.servicebus.core.ServiceBusTemplate;
-import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
 import com.azure.spring.servicebus.core.ServiceBusTopicClientFactory;
 import com.azure.spring.servicebus.health.Instrumentation;
+import com.azure.spring.servicebus.support.ServiceBusClientConfig;
+import com.azure.spring.servicebus.support.ServiceBusRuntimeException;
+import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;
 import org.springframework.messaging.Message;
 import org.springframework.util.Assert;
+import reactor.util.function.Tuple2;
+import reactor.util.function.Tuples;
 
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
-import reactor.util.function.Tuple2;
-import reactor.util.function.Tuples;
 
 /**
  * Default implementation of {@link ServiceBusTopicOperation}.
@@ -109,7 +109,7 @@ public class ServiceBusTopicTemplate extends ServiceBusTemplate<ServiceBusTopicC
             protected void logCheckpointSuccess(Message<?> message) {
                 if (LOGGER.isDebugEnabled()) {
                     LOGGER.debug(String.format(MSG_SUCCESS_CHECKPOINT, consumer, name, message,
-                        getCheckpointConfig().getCheckpointMode()));
+                        getCheckpointConfig().getMode()));
                 }
             }
         };

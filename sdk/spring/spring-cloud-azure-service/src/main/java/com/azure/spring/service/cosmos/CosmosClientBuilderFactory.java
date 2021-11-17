@@ -7,7 +7,6 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.core.util.Configuration;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.CosmosClientBuilder;
-import com.azure.spring.core.ApplicationId;
 import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.core.credential.descriptor.KeyAuthenticationDescriptor;
 import com.azure.spring.core.credential.descriptor.TokenAuthenticationDescriptor;
@@ -54,11 +53,6 @@ public class CosmosClientBuilderFactory extends AbstractAzureServiceClientBuilde
     }
 
     @Override
-    protected void configureApplicationId(CosmosClientBuilder builder) {
-        builder.userAgentSuffix(ApplicationId.AZURE_SPRING_COSMOS);
-    }
-
-    @Override
     protected void configureProxy(CosmosClientBuilder builder) {
         LOGGER.debug("No configureProxy for CosmosClientBuilder.");
     }
@@ -87,13 +81,16 @@ public class CosmosClientBuilderFactory extends AbstractAzureServiceClientBuilde
         // TODO (xiada): should we count this as authentication
         map.from(this.cosmosProperties.getResourceToken()).to(builder::resourceToken);
         map.from(this.cosmosProperties.getPermissions()).whenNot(List::isEmpty).to(builder::permissions);
-
-        if (ConnectionMode.GATEWAY.equals(this.cosmosProperties.getConnectionMode())) {
+        if (ConnectionMode.DIRECT.equals(this.cosmosProperties.getConnectionMode())) {
+            builder.directMode(this.cosmosProperties.getDirectConnection(), this.cosmosProperties.getGatewayConnection());
+        } else if (ConnectionMode.GATEWAY.equals(this.cosmosProperties.getConnectionMode())) {
             builder.gatewayMode(this.cosmosProperties.getGatewayConnection());
-        } else if (ConnectionMode.DIRECT.equals(this.cosmosProperties.getConnectionMode())) {
-            // TODO (xiada): public CosmosClientBuilder directMode(DirectConnectionConfig directConnectionConfig, GatewayConnectionConfig gatewayConnectionConfig) {
-            builder.directMode(this.cosmosProperties.getDirectConnection());
         }
+    }
+
+    @Override
+    protected BiConsumer<CosmosClientBuilder, String> consumeApplicationId() {
+        return CosmosClientBuilder::userAgentSuffix;
     }
 
     @Override

@@ -7,6 +7,10 @@ com.azure.spring.cloud.autoconfigure.cloudfoundry.AzureCloudFoundryEnvironmentPo
 com.azure.spring.cloud.autoconfigure.context.AzureGlobalConfigurationEnvironmentPostProcessor
 
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.azure.spring.cloud.autoconfigure.aad.implementation.AADAutoConfiguration,\
+com.azure.spring.cloud.autoconfigure.aad.implementation.filter.AADAuthenticationFilterAutoConfiguration,\
+com.azure.spring.cloud.autoconfigure.aad.b2c.implementation.AADB2CAutoConfiguration,\
+com.azure.spring.cloud.autoconfigure.aad.b2c.implementation.AADB2CResourceServerAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.jms.NonPremiumServiceBusJmsAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.jms.PremiumServiceBusJmsAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.cache.AzureRedisAutoConfiguration,\
@@ -17,9 +21,9 @@ com.azure.spring.cloud.autoconfigure.cosmos.AzureCosmosAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.data.cosmos.CosmosDataAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.data.cosmos.CosmosRepositoriesAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.data.cosmos.CosmosReactiveRepositoriesAutoConfiguration,\
-com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubAutoConfiguration,\
-com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubOperationAutoConfiguration,\
-com.azure.spring.cloud.autoconfigure.eventhubs.kafka.AzureEventHubKafkaAutoConfiguration,\
+com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsAutoConfiguration,\
+com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsMessagingAutoConfiguration,\
+com.azure.spring.cloud.autoconfigure.eventhubs.kafka.AzureEventHubsKafkaAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.keyvault.secrets.AzureKeyVaultSecretAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.keyvault.certificates.AzureKeyVaultCertificateAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusAutoConfiguration,\
@@ -33,7 +37,7 @@ com.azure.spring.cloud.autoconfigure.storage.queue.AzureStorageQueueAutoConfigur
 com.azure.spring.cloud.autoconfigure.storage.AzureStorageQueueOperationAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.trace.sleuth.AzureSleuthAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.resourcemanager.AzureResourceManagerAutoConfiguration,\
-com.azure.spring.cloud.autoconfigure.resourcemanager.AzureEventHubResourceManagerAutoConfiguration,\
+com.azure.spring.cloud.autoconfigure.resourcemanager.AzureEventHubsResourceManagerAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.resourcemanager.AzureServiceBusResourceManagerAutoConfiguration,\
 com.azure.spring.cloud.autoconfigure.resourcemanager.AzureStorageQueueResourceManagerAutoConfiguration
 

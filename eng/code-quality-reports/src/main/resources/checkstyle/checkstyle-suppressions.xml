@@ -44,10 +44,7 @@
 
   <!-- Fields tenantId, clientId and clientSecret are not set in all constructors. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.security.keyvault.jca.implementation.KeyVaultClient"/>
-
-  <!-- We should move KeyVaultPrivateKey into implementation. -->
-  <suppress checks="com.azure.tools.checkstyle.checks.NoImplInPublicAPI" files="com.azure.security.keyvault.jca.KeyVaultPrivateKey"/>
-
+  
   <!-- Fields defaultTrustManager and keyStore might be set more than once. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.security.keyvault.jca.KeyVaultTrustManager"/>
 
@@ -354,6 +351,9 @@ the main ServiceBusClientBuilder. -->
 
   <!-- FIXME temp -->
   <suppress checks="ServiceClient" files="com.azure.messaging.webpubsub.*"/>
+  <!-- Suppress ReverseProxyPolicy being package private. It may get moved into azure-core. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.HttpPipelinePolicy"
+            files="com.azure.messaging.webpubsub.ReverseProxyPolicy.java"/>
 
   <!-- Suppress the check on code-gen classes -->
   <suppress checks="[a-zA-Z0-9]*" files="com.azure.monitor.opentelemetry.exporter.implementation.*"/>
@@ -425,6 +425,9 @@ the main ServiceBusClientBuilder. -->
 />
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-spring-cloud-feature-management[/\\]"/>
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-spring-cloud-feature-management-web[/\\]"/>
+  <!-- Suppress the long package name in spring security related implementation class. -->
+  <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.aad.b2c.implementation.*" />
+  <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.aad.implementation.*" />
 
   <!-- perf-test files are not public API, so they don't need to fulfill all requirements. -->
   <suppress checks="Javadoc" files=".*[/\\]azure-\w+-perf[/\\].*\.java"/>
@@ -475,6 +478,8 @@ the main ServiceBusClientBuilder. -->
 
   <!-- MissingJavadocMethod: Temporarily skip -->
   <suppress checks="MissingJavadocMethod" files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*"/>
+  <!-- JavadocThrowsChecks: Temporarily skip -->
+  <suppress checks="JavadocThrowsChecks" files=".*[/\\]com[/\\]azure[/\\]spring[/\\].*"/>
   <!-- MissingJavadocMethod: internal packages -->
   <suppress checks="MissingJavadocType|JavadocThrowsChecks|EnforceFinalFields" files=".*[/\\]com[/\\]azure[/\\]spring[/\\]integration[/\\]test.*"/>
 
@@ -488,7 +493,7 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.messaging.container.AbstractListenerContainer.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="ServiceBusTopicBinderConfiguration.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="ServiceBusQueueBinderConfiguration.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.cloud.stream.binder.eventhubs.config.EventHubBinderConfiguration.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.cloud.stream.binder.eventhubs.config.EventHubsBinderConfiguration.java"/>
 
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.cloud.autoconfigure.keyvault.env.KeyVaultOperation.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.spring.cloud.autoconfigure.data.cosmos.CosmosDataAutoConfiguration.java"/>
@@ -497,8 +502,8 @@ the main ServiceBusClientBuilder. -->
   <suppress checks="MethodName" files="com.azure.spring.servicebus.support.ServiceBusClientConfig.java"/>
 
   <!-- Suppress warnings for EventProcessorSharedAuthenticationClientBuilder and EventHubSharedAuthenticationClientBuilder. They are used by Azure Spring. -->
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="EventHubSharedAuthenticationClientBuilder.java"/>
-  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="EventProcessorSharedAuthenticationClientBuilder.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="EventHubNamespaceProcessorClientBuilder.java"/>
+  <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="EventHubNamespaceClientBuilder.java"/>
   <suppress checks="com.azure.tools.checkstyle.checks.ServiceClientBuilderCheck" files="com.azure.spring.cloud.autoconfigure.servicebus.AzureServiceBusConsumerClientConfiguration.java"/>
 
   <!-- Checkstyle suppressions for azure.spring.data.cosmos package -->

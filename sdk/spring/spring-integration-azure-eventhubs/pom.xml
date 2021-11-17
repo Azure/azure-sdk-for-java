@@ -19,8 +19,8 @@
   <url>https://github.com/Azure/azure-sdk-for-java</url>
 
   <properties>
-    <jacoco.min.linecoverage>0.10</jacoco.min.linecoverage>
-    <jacoco.min.branchcoverage>0.15</jacoco.min.branchcoverage>
+    <jacoco.min.linecoverage>0.00</jacoco.min.linecoverage>
+    <jacoco.min.branchcoverage>0.00</jacoco.min.branchcoverage>
   </properties>
 
   <dependencies>
@@ -46,7 +46,6 @@
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
       <version>1.10.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;dependency} -->
-      <optional>true</optional>
     </dependency>
 
     <!-- Added this dependency to include necessary annotations used by reactor core.
@@ -57,12 +56,6 @@
       <artifactId>jsr305</artifactId>
       <version>3.0.2</version> <!-- {x-version-update;com.google.code.findbugs:jsr305;external_dependency} -->
       <scope>provided</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
-      <version>5.7.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter-api;external_dependency} -->
-      <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.mockito</groupId>
@@ -92,6 +85,12 @@
       <groupId>org.powermock</groupId>
       <artifactId>powermock-module-junit4</artifactId>
       <version>2.0.9</version> <!-- {x-version-update;org.powermock:powermock-module-junit4;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <version>5.7.2</version> <!-- {x-version-update;org.junit.jupiter:junit-jupiter;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>

@@ -3,10 +3,9 @@
 
 package com.azure.spring.cloud.stream.binder.eventhubs;
 
-import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubProducerProperties;
-import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubChannelProvisioner;
-import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubConsumerProperties;
-import com.azure.spring.eventhubs.core.EventHubOperation;
+import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsConsumerProperties;
+import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsProducerProperties;
+import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubsChannelProvisioner;
 import org.springframework.cloud.stream.binder.AbstractTestBinder;
 import org.springframework.cloud.stream.binder.BinderHeaders;
 import org.springframework.cloud.stream.binder.ExtendedConsumerProperties;
@@ -18,15 +17,14 @@ import org.springframework.context.support.GenericApplicationContext;
  */
 
 public class EventHubTestBinder extends
-        AbstractTestBinder<EventHubMessageChannelBinder, ExtendedConsumerProperties<EventHubConsumerProperties>,
-                ExtendedProducerProperties<EventHubProducerProperties>> {
+        AbstractTestBinder<EventHubsMessageChannelBinder, ExtendedConsumerProperties<EventHubsConsumerProperties>,
+                ExtendedProducerProperties<EventHubsProducerProperties>> {
 
-    EventHubTestBinder(EventHubOperation eventHubOperation) {
-        EventHubMessageChannelBinder binder =
-                new EventHubMessageChannelBinder(BinderHeaders.STANDARD_HEADERS, new EventHubChannelProvisioner(),
-                        eventHubOperation);
-        GenericApplicationContext context = new GenericApplicationContext();
-        binder.setApplicationContext(context);
+    EventHubTestBinder() {
+        EventHubsMessageChannelBinder binder = new EventHubsMessageChannelBinder(BinderHeaders.STANDARD_HEADERS,
+            new EventHubsChannelProvisioner());
+
+        binder.setApplicationContext(new GenericApplicationContext());
         this.setBinder(binder);
     }
 

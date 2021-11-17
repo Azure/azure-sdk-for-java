@@ -1,7 +1,52 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.0.0-beta.7 (Unreleased)
 
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 1.0.0-beta.6 (2021-11-11)
+
+### Breaking Changes
+
+- Merged the `Context` parameter into the `RequestOptions` parameter in methods of `WebPubSubServiceClient`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.22.0-beta.1` to `1.22.0`.
+
+## 1.0.0-beta.5 (2021-10-26)
+
+### Features Added
+
+- Added support for method `closeUserConnectionsWithResponse`, `closeGroupConnectionsWithResponse`, `closeAllConnectionsWithResponse` in `WebPubSubServiceClient` and `WebPubSubServiceAsyncClient`.
+
+### Breaking Changes
+
+- Renamed method `getAuthenticationToken` to `getClientAccessToken` in `WebPubSubServiceClient` and `WebPubSubServiceAsyncClient`.
+- Type changed from `String` to `WebPubSubPermission` in method `checkPermissionWithResponse`, `grantPermissionWithResponse`, `revokePermissionWithResponse`, in `WebPubSubServiceClient` and `WebPubSubServiceAsyncClient`.
+- Renamed class `WebPubSubAuthenticationToken` to `WebPubSubClientAccessToken`.
+- Renamed method `getAuthToken` to `getToken` in `WebPubSubClientAccessToken`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2021-10-01`.
+
+## 1.0.0-beta.4 (2021-09-08)
+
+### Features Added
+- Added support for [Azure Active Directory](https://docs.microsoft.com/azure/active-directory/authentication/) based authentication.
+- Added support for API management by configuring `reverseProxyEndpoint` on the client builder. 
+  https://github.com/Azure/azure-webpubsub/issues/194 describes how to integrate with the API Management service.
 
 ## 1.0.0-beta.3 (2021-07-29)
 

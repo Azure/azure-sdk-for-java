@@ -243,7 +243,7 @@ public class PatchTest extends TestSuiteBase {
         } catch (CosmosException ex) {
             assertThat(ex.getStatusCode()).isEqualTo(HttpResponseStatus.BAD_REQUEST.code());
             assertThat(ex.getMessage())
-                .contains("Add Operation only support adding a leaf node of an existing node(array or object), no path found beyond: 'nonExistentParent'");
+                .contains("no path found beyond: 'nonExistentParent'");
         }
 
         // precondition failure - 412 response

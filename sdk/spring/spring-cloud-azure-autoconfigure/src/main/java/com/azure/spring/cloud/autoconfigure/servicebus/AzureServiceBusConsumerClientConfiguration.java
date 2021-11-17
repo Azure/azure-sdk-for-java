@@ -13,7 +13,7 @@ import com.azure.messaging.servicebus.ServiceBusSessionReceiverClient;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnMissingProperty;
 import com.azure.spring.cloud.autoconfigure.servicebus.properties.AzureServiceBusProperties;
-import com.azure.spring.core.ApplicationId;
+import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.core.service.AzureServiceType;
 import com.azure.spring.service.servicebus.ServiceBusClientBuilderFactory;
@@ -70,7 +70,7 @@ class AzureServiceBusConsumerClientConfiguration {
 
             builderFactory.setConnectionStringProvider(new StaticConnectionStringProvider<>(AzureServiceType.SERVICE_BUS,
                 this.consumerProperties.getConnectionString()));
-            builderFactory.setSpringIdentifier(ApplicationId.AZURE_SPRING_SERVICE_BUS);
+            builderFactory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS);
             return builderFactory;
         }
 

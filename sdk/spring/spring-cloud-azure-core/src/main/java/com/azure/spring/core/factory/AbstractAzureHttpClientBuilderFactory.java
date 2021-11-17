@@ -6,22 +6,29 @@ package com.azure.spring.core.factory;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpClientProvider;
 import com.azure.core.http.HttpPipeline;
+import com.azure.core.http.ProxyOptions;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpPipelinePolicy;
+import com.azure.core.http.policy.RetryPolicy;
 import com.azure.core.util.Header;
 import com.azure.core.util.HttpClientOptions;
-import com.azure.spring.core.converter.AzureHttpLogOptionsConverter;
-import com.azure.spring.core.converter.AzureHttpProxyOptionsConverter;
+import com.azure.spring.core.aware.ClientAware;
+import com.azure.spring.core.aware.ProxyAware;
+import com.azure.spring.core.aware.RetryAware;
 import com.azure.spring.core.http.DefaultHttpProvider;
-import com.azure.spring.core.properties.client.ClientProperties;
-import com.azure.spring.core.properties.client.HttpClientProperties;
-import com.azure.spring.core.properties.proxy.ProxyProperties;
+import com.azure.spring.core.properties.proxy.HttpProxyProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
+
+import static com.azure.spring.core.converter.AzureHttpLogOptionsConverter.HTTP_LOG_OPTIONS_CONVERTER;
+import static com.azure.spring.core.converter.AzureHttpProxyOptionsConverter.HTTP_PROXY_CONVERTER;
+import static com.azure.spring.core.converter.AzureHttpRetryPolicyConverter.HTTP_RETRY_CONVERTER;
 
 /**
  * Abstract factory of the http client builder.
@@ -30,13 +37,12 @@ import java.util.stream.Collectors;
  */
 public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractAzureServiceClientBuilderFactory<T> {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractAzureHttpClientBuilderFactory.class);
+
     private final HttpClientOptions httpClientOptions = new HttpClientOptions();
     private HttpClientProvider httpClientProvider = new DefaultHttpProvider();
     private final List<HttpPipelinePolicy> httpPipelinePolicies = new ArrayList<>();
     private HttpPipeline httpPipeline;
-    private final AzureHttpProxyOptionsConverter proxyOptionsConverter = new AzureHttpProxyOptionsConverter();
-    private final AzureHttpLogOptionsConverter logOptionsConverter = new AzureHttpLogOptionsConverter();
-
     protected abstract BiConsumer<T, HttpClient> consumeHttpClient();
 
     protected abstract BiConsumer<T, HttpPipelinePolicy> consumeHttpPipelinePolicy();
@@ -44,6 +50,8 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
     protected abstract BiConsumer<T, HttpPipeline> consumeHttpPipeline();
 
     protected abstract BiConsumer<T, HttpLogOptions> consumeHttpLogOptions();
+
+    protected abstract BiConsumer<T, RetryPolicy> consumeRetryPolicy();
 
     @Override
     protected void configureCore(T builder) {
@@ -66,15 +74,26 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
 
     @Override
     protected void configureProxy(T builder) {
-        final ProxyProperties proxy = getAzureProperties().getProxy();
-        if (proxy != null) {
-            this.httpClientOptions.setProxyOptions(proxyOptionsConverter.convert(proxy));
+        final ProxyAware.Proxy proxy = getAzureProperties().getProxy();
+        if (proxy == null) {
+            return;
+        }
+
+        if (proxy instanceof HttpProxyProperties) {
+            ProxyOptions proxyOptions = HTTP_PROXY_CONVERTER.convert((HttpProxyProperties) proxy);
+            if (proxyOptions != null) {
+                this.httpClientOptions.setProxyOptions(proxyOptions);
+            } else {
+                LOGGER.debug("No HTTP proxy properties available.");
+            }
+        } else {
+            LOGGER.debug("No HTTP proxy configuration will not be applied.");
         }
     }
 
     @Override
-    protected void configureApplicationId(T builder) {
-        this.httpClientOptions.setApplicationId(getApplicationId());
+    protected BiConsumer<T, String> consumeApplicationId() {
+        return (builder, id) -> this.httpClientOptions.setApplicationId(id);
     }
 
     protected void configureHttpHeaders(T builder) {
@@ -82,28 +101,48 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
     }
 
     protected void configureHttpLogOptions(T builder) {
-        ClientProperties client = getAzureProperties().getClient();
-        HttpLogOptions logOptions = this.logOptionsConverter.convert(client.getLogging());
-        consumeHttpLogOptions().accept(builder, logOptions);
+        ClientAware.Client client = getAzureProperties().getClient();
+
+        if (client instanceof HttpClient) {
+            HttpLogOptions logOptions =
+                HTTP_LOG_OPTIONS_CONVERTER.convert(((ClientAware.HttpClient) client).getLogging());
+            consumeHttpLogOptions().accept(builder, logOptions);
+        } else {
+            LOGGER.warn("The client properties of an http-based client is of type {}", client.getClass().getName());
+        }
+
     }
 
     protected void configureHttpTransportProperties(T builder) {
-        final ClientProperties clientProperties = getAzureProperties().getClient();
-        if (clientProperties == null) {
+        final ClientAware.Client client = getAzureProperties().getClient();
+        if (client == null) {
             return;
         }
-        final HttpClientProperties properties;
-        if (clientProperties instanceof HttpClientProperties) {
-            properties = (HttpClientProperties) clientProperties;
+        final ClientAware.HttpClient properties;
+        if (client instanceof ClientAware.HttpClient) {
+            properties = (ClientAware.HttpClient) client;
             httpClientOptions.setWriteTimeout(properties.getWriteTimeout());
             httpClientOptions.responseTimeout(properties.getResponseTimeout());
             httpClientOptions.readTimeout(properties.getReadTimeout());
+            httpClientOptions.setConnectTimeout(properties.getConnectTimeout());
+            httpClientOptions.setConnectionIdleTimeout(properties.getConnectionIdleTimeout());
+            httpClientOptions.setMaximumConnectionPoolSize(properties.getMaximumConnectionPoolSize());
         }
     }
 
     @Override
     protected void configureRetry(T builder) {
+        RetryAware.Retry retry = getAzureProperties().getRetry();
+        if (retry == null) {
+            return;
+        }
 
+        if (retry instanceof RetryAware.HttpRetry) {
+            RetryPolicy retryPolicy = HTTP_RETRY_CONVERTER.convert((RetryAware.HttpRetry) retry);
+            consumeRetryPolicy().accept(builder, retryPolicy);
+        } else {
+            LOGGER.warn("Retry properties of type {} in an http client builder factory.", retry.getClass().getName());
+        }
     }
 
     protected void configureHttpPipelinePolicies(T builder) {
@@ -111,8 +150,9 @@ public abstract class AbstractAzureHttpClientBuilderFactory<T> extends AbstractA
             consumeHttpPipelinePolicy().accept(builder, policy);
         }
     }
+
     protected List<Header> getHeaders() {
-        final ClientProperties client = getAzureProperties().getClient();
+        final ClientAware.Client client = getAzureProperties().getClient();
         if (client == null || client.getHeaders() == null) {
             return null;
         }

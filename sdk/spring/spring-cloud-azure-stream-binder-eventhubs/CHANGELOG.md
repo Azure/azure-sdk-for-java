@@ -6,10 +6,16 @@
 
 ### Breaking Changes
 - Change artifact id from `azure-spring-cloud-stream-binder-eventhubs` to `spring-cloud-azure-stream-binder-eventhubs`.
+- Change the binder type from `eventhub` to `eventhubs`.
+- Change the Spring Cloud Stream Binding extended properties prefix from `spring.cloud.stream.eventhub` to `spring.cloud.stream.eventhubs`. 
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.10.0 (2021-11-02)
+### Features Added
+- Support batch consumers.
 
 ## 2.9.0 (2021-09-27)
 This release is compatible with Spring Boot 2.5.0 - 2.5.4 and Spring Cloud 2020.0.3.

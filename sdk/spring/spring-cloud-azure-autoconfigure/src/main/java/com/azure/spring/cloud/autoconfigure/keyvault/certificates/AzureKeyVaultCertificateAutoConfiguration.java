@@ -7,6 +7,7 @@ import com.azure.security.keyvault.certificates.CertificateAsyncClient;
 import com.azure.security.keyvault.certificates.CertificateClient;
 import com.azure.security.keyvault.certificates.CertificateClientBuilder;
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
+import com.azure.spring.cloud.autoconfigure.keyvault.certificates.properties.AzureKeyVaultCertificateProperties;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.service.keyvault.certificates.CertificateClientBuilderFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -50,6 +51,8 @@ public class AzureKeyVaultCertificateAutoConfiguration extends AzureServiceConfi
     @Bean
     @ConditionalOnMissingBean
     public CertificateClientBuilder certificateClientBuilder(CertificateClientBuilderFactory factory) {
+        // TODO (xiada): how to distinguish this from kv secrets?
+//        factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_KEY_VAULT);
         return factory.build();
     }
 

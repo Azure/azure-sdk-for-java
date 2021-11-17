@@ -58,14 +58,14 @@ public abstract class SendSubscribeOperationTest<T extends SendOperation> {
 
     @Test
     public void testSendReceiveWithManualCheckpointMode() {
-        setCheckpointConfig(CheckpointConfig.builder().checkpointMode(CheckpointMode.MANUAL).build());
+        setCheckpointConfig(new CheckpointConfig(CheckpointMode.MANUAL));
         subscribe(destination, this::manualCheckpointHandler, User.class);
         sendSubscribeOperation.sendAsync(destination, userMessage);
     }
 
     @Test
     public void testSendReceiveWithRecordCheckpointMode() {
-        setCheckpointConfig(CheckpointConfig.builder().checkpointMode(CheckpointMode.RECORD).build());
+        setCheckpointConfig(new CheckpointConfig(CheckpointMode.RECORD));
         subscribe(destination, this::recordCheckpointHandler, User.class);
         messages.forEach(m -> sendSubscribeOperation.sendAsync(destination, m));
         verifyCheckpointSuccessCalled(messages.size());

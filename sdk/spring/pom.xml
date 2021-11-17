@@ -28,7 +28,6 @@
         <module>spring-cloud-azure-actuator</module>
         <module>spring-cloud-azure-actuator-autoconfigure</module>
         <module>spring-cloud-azure-autoconfigure</module>
-        <module>spring-cloud-azure-messaging</module>
         <module>spring-cloud-azure-stream-binder-eventhubs-core</module>
         <module>spring-cloud-azure-stream-binder-eventhubs</module>
         <module>spring-cloud-azure-stream-binder-servicebus-core</module>
@@ -96,11 +95,6 @@
           <groupId>com.azure.spring</groupId>
           <artifactId>spring-cloud-azure-autoconfigure</artifactId>
           <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-autoconfigure;current} -->
-        </dependency>
-        <dependency>
-          <groupId>com.azure.spring</groupId>
-          <artifactId>spring-cloud-azure-messaging</artifactId>
-          <version>4.0.0-beta.1</version> <!-- {x-version-update;com.azure.spring:spring-cloud-azure-messaging;current} -->
         </dependency>
         <dependency>
           <groupId>com.azure.spring</groupId>
@@ -182,28 +176,34 @@
         <module>spring-cloud-azure-core</module>
         <module>spring-cloud-azure-service</module>
         <module>spring-cloud-azure-resourcemanager</module>
-        <module>spring-cloud-azure-messaging</module>
         <module>spring-cloud-azure-actuator</module>
         <module>spring-cloud-azure-actuator-autoconfigure</module>
         <module>spring-cloud-azure-autoconfigure</module>
+        <module>spring-cloud-azure-starter-active-directory</module>
+        <module>spring-cloud-azure-starter-active-directory-b2c</module>
         <module>spring-cloud-azure-starter-actuator</module>
+        <module>spring-cloud-azure-starter-appconfiguration</module>
         <module>spring-cloud-azure-starter-cosmos</module>
         <module>spring-cloud-azure-starter-eventhubs</module>
         <module>spring-cloud-azure-starter-keyvault-certificates</module>
         <module>spring-cloud-azure-starter-keyvault-secrets</module>
         <module>spring-cloud-azure-starter-servicebus-jms</module>
         <module>spring-cloud-azure-starter-servicebus</module>
+        <module>spring-cloud-azure-starter-storage-blob</module>
+        <module>spring-cloud-azure-starter-storage-file-share</module>
         <module>spring-cloud-azure-starter-storage-queue</module>
-        <module>spring-cloud-azure-starter-storage</module>
+        <module>spring-cloud-azure-starter-integration-eventhubs</module>
+        <module>spring-cloud-azure-starter-integration-servicebus</module>
+        <module>spring-cloud-azure-starter-integration-storage-queue</module>
+        <module>spring-cloud-azure-starter-stream-eventhubs</module>
+        <module>spring-cloud-azure-starter-stream-servicebus-queue</module>
+        <module>spring-cloud-azure-starter-stream-servicebus-topic</module>
         <module>spring-cloud-azure-starter</module>
         <module>spring-cloud-azure-stream-binder-eventhubs-core</module>
         <module>spring-cloud-azure-stream-binder-eventhubs</module>
-        <module>spring-cloud-azure-starter-stream-eventhubs</module>
         <module>spring-cloud-azure-stream-binder-servicebus-core</module>
         <module>spring-cloud-azure-stream-binder-servicebus-queue</module>
-        <module>spring-cloud-azure-starter-stream-servicebus-queue</module>
         <module>spring-cloud-azure-stream-binder-servicebus-topic</module>
-        <module>spring-cloud-azure-starter-stream-servicebus-topic</module>
         <module>spring-cloud-azure-stream-binder-test</module>
         <module>spring-cloud-azure-test-servicebus-binder</module>
         <module>spring-cloud-azure-trace-sleuth</module>
@@ -227,31 +227,38 @@
         <module>spring-cloud-azure-core</module>
         <module>spring-cloud-azure-service</module>
         <module>spring-cloud-azure-resourcemanager</module>
-        <module>spring-cloud-azure-messaging</module>
         <module>spring-cloud-azure-actuator</module>
         <module>spring-cloud-azure-actuator-autoconfigure</module>
         <module>spring-cloud-azure-autoconfigure</module>
+        <module>spring-cloud-azure-starter-active-directory</module>
+        <module>spring-cloud-azure-starter-active-directory-b2c</module>
         <module>spring-cloud-azure-starter-actuator</module>
+        <module>spring-cloud-azure-starter-appconfiguration</module>
         <module>spring-cloud-azure-starter-cosmos</module>
         <module>spring-cloud-azure-starter-eventhubs</module>
         <module>spring-cloud-azure-starter-keyvault-certificates</module>
         <module>spring-cloud-azure-starter-keyvault-secrets</module>
         <module>spring-cloud-azure-starter-servicebus-jms</module>
         <module>spring-cloud-azure-starter-servicebus</module>
+        <module>spring-cloud-azure-starter-storage-blob</module>
+        <module>spring-cloud-azure-starter-storage-file-share</module>
         <module>spring-cloud-azure-starter-storage-queue</module>
-        <module>spring-cloud-azure-starter-storage</module>
+        <module>spring-cloud-azure-starter-integration-eventhubs</module>
+        <module>spring-cloud-azure-starter-integration-servicebus</module>
+        <module>spring-cloud-azure-starter-integration-storage-queue</module>
         <module>spring-cloud-azure-starter</module>
         <module>spring-cloud-azure-stream-binder-eventhubs-core</module>
         <module>spring-cloud-azure-stream-binder-eventhubs</module>
-        <module>spring-cloud-azure-starter-stream-eventhubs</module>
         <module>spring-cloud-azure-stream-binder-servicebus-core</module>
         <module>spring-cloud-azure-stream-binder-servicebus-queue</module>
-        <module>spring-cloud-azure-starter-stream-servicebus-queue</module>
         <module>spring-cloud-azure-stream-binder-servicebus-topic</module>
+        <module>spring-cloud-azure-starter-stream-eventhubs</module>
+        <module>spring-cloud-azure-starter-stream-servicebus-queue</module>
         <module>spring-cloud-azure-starter-stream-servicebus-topic</module>
         <module>spring-cloud-azure-stream-binder-test</module>
         <module>spring-cloud-azure-trace-sleuth</module>
       </modules>
     </profile>
+
   </profiles>
 </project>

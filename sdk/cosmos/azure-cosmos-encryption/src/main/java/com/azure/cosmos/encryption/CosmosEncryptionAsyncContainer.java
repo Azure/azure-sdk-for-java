@@ -34,6 +34,11 @@ import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
+import com.azure.cosmos.models.CosmosPatchOperations;
+import com.azure.cosmos.implementation.patch.PatchOperation;
+import com.azure.cosmos.implementation.patch.PatchOperationCore;
+import com.azure.cosmos.implementation.patch.PatchOperationType;
+import com.azure.cosmos.models.CosmosPatchItemRequestOptions;
 import com.azure.cosmos.util.CosmosPagedFlux;
 import com.azure.cosmos.util.UtilBridgeInternal;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -72,6 +77,7 @@ public class CosmosEncryptionAsyncContainer {
     ImplementationBridgeHelpers.CosmosBatchResponseHelper.CosmosBatchResponseAccessor cosmosBatchResponseAccessor;
     ImplementationBridgeHelpers.CosmosBatchOperationResultHelper.CosmosBatchOperationResultAccessor cosmosBatchOperationResultAccessor;
     ImplementationBridgeHelpers.CosmosBatchRequestOptionsHelper.CosmosBatchRequestOptionsAccessor cosmosBatchRequestOptionsAccessor;
+    ImplementationBridgeHelpers.CosmosPatchOperationsHelper.CosmosPatchOperationsAccessor cosmosPatchOperationsAccessor;
 
     CosmosEncryptionAsyncContainer(CosmosAsyncContainer container,
                                    CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient) {
@@ -93,6 +99,7 @@ public class CosmosEncryptionAsyncContainer {
         this.cosmosBatchResponseAccessor = ImplementationBridgeHelpers.CosmosBatchResponseHelper.getCosmosBatchResponseAccessor();
         this.cosmosBatchOperationResultAccessor = ImplementationBridgeHelpers.CosmosBatchOperationResultHelper.getCosmosBatchOperationResultAccessor();
         this.cosmosBatchRequestOptionsAccessor = ImplementationBridgeHelpers.CosmosBatchRequestOptionsHelper.getCosmosBatchRequestOptionsAccessor();
+        this.cosmosPatchOperationsAccessor = ImplementationBridgeHelpers.CosmosPatchOperationsHelper.getCosmosPatchOperationsAccessor();
     }
 
     EncryptionProcessor getEncryptionProcessor() {
@@ -528,6 +535,105 @@ public class CosmosEncryptionAsyncContainer {
         checkNotNull(classType, "Argument 'classType' must not be null.");
 
         return queryChangeFeedHelper(options, classType,false);
+    }
+
+    /**
+     * Run patch operations on an Item.
+     * <p>
+     * After subscription the operation will be performed.
+     * The {@link Mono} upon successful completion will contain a single Cosmos item response with the patched item.
+     *
+     * @param <T> the type parameter.
+     * @param itemId the item id.
+     * @param partitionKey the partition key.
+     * @param cosmosPatchOperations Represents a container having list of operations to be sequentially applied to the referred Cosmos item.
+     * @param options the request options.
+     * @param itemType the item type.
+     *
+     * @return an {@link Mono} containing the Cosmos item resource response with the patched item or an error.
+     */
+    public <T> Mono<CosmosItemResponse<T>> patchItem(
+        String itemId,
+        PartitionKey partitionKey,
+        CosmosPatchOperations cosmosPatchOperations,
+        CosmosPatchItemRequestOptions options,
+        Class<T> itemType) {
+
+        checkNotNull(itemId, "expected non-null itemId");
+        checkNotNull(partitionKey, "expected non-null partitionKey for patchItem");
+        checkNotNull(cosmosPatchOperations, "expected non-null cosmosPatchOperations");
+
+        if (options == null) {
+            options = new CosmosPatchItemRequestOptions();
+        }
+
+        return patchItemHelper(itemId, partitionKey, cosmosPatchOperations, options, itemType);
+    }
+
+    private <T> Mono<CosmosItemResponse<T>> patchItemHelper(String itemId,
+                                                           PartitionKey partitionKey,
+                                                           CosmosPatchOperations cosmosPatchOperations,
+                                                           CosmosPatchItemRequestOptions options,
+                                                           Class<T> itemType) {
+        this.setRequestHeaders(options);
+        List<Mono<PatchOperation>> monoList = new ArrayList<>();
+        for (PatchOperation patchOperation : this.cosmosPatchOperationsAccessor.getPatchOperations(cosmosPatchOperations)) {
+            Mono<PatchOperation> itemPatchOperationMono = null;
+            if (patchOperation.getOperationType() == PatchOperationType.REMOVE) {
+                itemPatchOperationMono = Mono.just(patchOperation);
+            }
+            else if (patchOperation.getOperationType() == PatchOperationType.INCREMENT) {
+                throw new IllegalArgumentException("Increment patch operation is not allowed for encrypted path");
+            }
+            else if (patchOperation instanceof PatchOperationCore) {
+                JsonNode objectNode = EncryptionUtils.getSimpleObjectMapper().valueToTree(((PatchOperationCore)patchOperation).getResource());
+                itemPatchOperationMono =
+                    encryptionProcessor.encryptPatchNode(objectNode, ((PatchOperationCore)patchOperation).getPath()).map(encryptedObjectNode -> {
+                        return new PatchOperationCore<>(
+                            patchOperation.getOperationType(),
+                            ((PatchOperationCore)patchOperation).getPath(),
+                            encryptedObjectNode
+                        );
+                    });
+                }
+            monoList.add(itemPatchOperationMono);
+        }
+        Mono<List<PatchOperation>> encryptedPatchOperationsListMono =
+            Flux.mergeSequential(monoList).collectList();
+        CosmosPatchItemRequestOptions finalRequestOptions = options;
+
+        CosmosPatchOperations encryptedCosmosPatchOperations = CosmosPatchOperations.create();
+
+        return encryptedPatchOperationsListMono.flatMap(patchOperations -> {
+            this.cosmosPatchOperationsAccessor.getPatchOperations(encryptedCosmosPatchOperations).addAll(patchOperations);
+            return patchItemInternalHelper(itemId, partitionKey, encryptedCosmosPatchOperations, finalRequestOptions,itemType, false);
+        });
+    }
+
+    @SuppressWarnings("unchecked") // Casting cosmosItemResponse to CosmosItemResponse<byte[]> from CosmosItemResponse<T>
+    private <T> Mono<CosmosItemResponse<T>> patchItemInternalHelper(String itemId,
+                                                                    PartitionKey partitionKey,
+                                                                    CosmosPatchOperations encryptedCosmosPatchOperations,
+                                                                    CosmosPatchItemRequestOptions requestOptions,
+                                                                    Class<T> itemType,
+                                                                    boolean isRetry) {
+
+        setRequestHeaders(requestOptions);
+        return this.container.patchItem(itemId, partitionKey, encryptedCosmosPatchOperations, requestOptions, itemType).publishOn(encryptionScheduler).
+            flatMap(cosmosItemResponse -> setByteArrayContent((CosmosItemResponse<byte[]>) cosmosItemResponse,
+                this.encryptionProcessor.decrypt(this.cosmosItemResponseBuilderAccessor.getByteArrayContent((CosmosItemResponse<byte[]>) cosmosItemResponse)))
+                .map(bytes -> this.responseFactory.createItemResponse((CosmosItemResponse<byte[]>) cosmosItemResponse,
+                    itemType))).onErrorResume(exception -> {
+                if (!isRetry && exception instanceof CosmosException) {
+                    final CosmosException cosmosException = (CosmosException) exception;
+                    if (isIncorrectContainerRid(cosmosException)) {
+                        this.encryptionProcessor.getIsEncryptionSettingsInitDone().set(false);
+                        return this.encryptionProcessor.initializeEncryptionSettingsAsync(true).then
+                            (Mono.defer(() -> patchItemInternalHelper(itemId, partitionKey, encryptedCosmosPatchOperations, requestOptions, itemType, true)));
+                    }
+                }
+                return Mono.error(exception);
+            });
     }
 
     /**

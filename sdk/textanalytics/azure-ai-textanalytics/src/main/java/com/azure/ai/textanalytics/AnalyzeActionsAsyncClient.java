@@ -8,14 +8,26 @@ import com.azure.ai.textanalytics.implementation.AnalyzeActionsResultPropertiesH
 import com.azure.ai.textanalytics.implementation.AnalyzeSentimentActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.ExtractKeyPhrasesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.ExtractSummaryActionResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.MultiCategoryClassifyActionResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.RecognizeCustomEntitiesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.RecognizeEntitiesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.RecognizeLinkedEntitiesActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.RecognizePiiEntitiesActionResultPropertiesHelper;
+import com.azure.ai.textanalytics.implementation.SingleCategoryClassifyActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsActionResultPropertiesHelper;
 import com.azure.ai.textanalytics.implementation.TextAnalyticsClientImpl;
 import com.azure.ai.textanalytics.implementation.Utility;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeBatchInput;
 import com.azure.ai.textanalytics.implementation.models.AnalyzeJobState;
+import com.azure.ai.textanalytics.implementation.models.CustomEntitiesResult;
+import com.azure.ai.textanalytics.implementation.models.CustomEntitiesTask;
+import com.azure.ai.textanalytics.implementation.models.CustomEntitiesTaskParameters;
+import com.azure.ai.textanalytics.implementation.models.CustomMultiClassificationResult;
+import com.azure.ai.textanalytics.implementation.models.CustomMultiClassificationTask;
+import com.azure.ai.textanalytics.implementation.models.CustomMultiClassificationTaskParameters;
+import com.azure.ai.textanalytics.implementation.models.CustomSingleClassificationResult;
+import com.azure.ai.textanalytics.implementation.models.CustomSingleClassificationTask;
+import com.azure.ai.textanalytics.implementation.models.CustomSingleClassificationTaskParameters;
 import com.azure.ai.textanalytics.implementation.models.EntitiesResult;
 import com.azure.ai.textanalytics.implementation.models.EntitiesTask;
 import com.azure.ai.textanalytics.implementation.models.EntitiesTaskParameters;
@@ -40,6 +52,9 @@ import com.azure.ai.textanalytics.implementation.models.SentimentAnalysisTaskPar
 import com.azure.ai.textanalytics.implementation.models.SentimentResponse;
 import com.azure.ai.textanalytics.implementation.models.StringIndexType;
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasks;
+import com.azure.ai.textanalytics.implementation.models.TasksStateTasksCustomEntityRecognitionTasksItem;
+import com.azure.ai.textanalytics.implementation.models.TasksStateTasksCustomMultiClassificationTasksItem;
+import com.azure.ai.textanalytics.implementation.models.TasksStateTasksCustomSingleClassificationTasksItem;
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasksEntityLinkingTasksItem;
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasksEntityRecognitionPiiTasksItem;
 import com.azure.ai.textanalytics.implementation.models.TasksStateTasksEntityRecognitionTasksItem;
@@ -56,12 +71,18 @@ import com.azure.ai.textanalytics.models.ExtractKeyPhrasesAction;
 import com.azure.ai.textanalytics.models.ExtractKeyPhrasesActionResult;
 import com.azure.ai.textanalytics.models.ExtractSummaryAction;
 import com.azure.ai.textanalytics.models.ExtractSummaryActionResult;
+import com.azure.ai.textanalytics.models.MultiCategoryClassifyAction;
+import com.azure.ai.textanalytics.models.MultiCategoryClassifyActionResult;
+import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesAction;
+import com.azure.ai.textanalytics.models.RecognizeCustomEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesAction;
 import com.azure.ai.textanalytics.models.RecognizeEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesAction;
 import com.azure.ai.textanalytics.models.RecognizeLinkedEntitiesActionResult;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesAction;
 import com.azure.ai.textanalytics.models.RecognizePiiEntitiesActionResult;
+import com.azure.ai.textanalytics.models.SingleCategoryClassifyAction;
+import com.azure.ai.textanalytics.models.SingleCategoryClassifyActionResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsActionResult;
 import com.azure.ai.textanalytics.models.TextAnalyticsActions;
 import com.azure.ai.textanalytics.models.TextAnalyticsErrorCode;
@@ -98,10 +119,13 @@ import static com.azure.ai.textanalytics.implementation.Utility.toAnalyzeSentime
 import static com.azure.ai.textanalytics.implementation.Utility.toCategoriesFilter;
 import static com.azure.ai.textanalytics.implementation.Utility.toExtractKeyPhrasesResultCollection;
 import static com.azure.ai.textanalytics.implementation.Utility.toExtractSummaryResultCollection;
+import static com.azure.ai.textanalytics.implementation.Utility.toMultiCategoryClassifyResultCollection;
 import static com.azure.ai.textanalytics.implementation.Utility.toMultiLanguageInput;
+import static com.azure.ai.textanalytics.implementation.Utility.toRecognizeCustomEntitiesResultCollection;
 import static com.azure.ai.textanalytics.implementation.Utility.toRecognizeEntitiesResultCollectionResponse;
 import static com.azure.ai.textanalytics.implementation.Utility.toRecognizeLinkedEntitiesResultCollection;
 import static com.azure.ai.textanalytics.implementation.Utility.toRecognizePiiEntitiesResultCollection;
+import static com.azure.ai.textanalytics.implementation.Utility.toSingleCategoryClassifyResultCollection;
 import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 
@@ -112,9 +136,15 @@ class AnalyzeActionsAsyncClient {
     private static final String ENTITY_LINKING_TASKS = "entityLinkingTasks";
     private static final String SENTIMENT_ANALYSIS_TASKS = "sentimentAnalysisTasks";
     private static final String EXTRACTIVE_SUMMARIZATION_TASKS = "extractiveSummarizationTasks";
+    private static final String CUSTOM_ENTITY_RECOGNITION_TASKS =  "customEntityRecognitionTasks";
+    private static final String CUSTOM_SINGLE_CLASSIFICATION_TASKS = "customClassificationTasks";
+    private static final String CUSTOM_MULTI_CLASSIFICATION_TASKS = "customMultiClassificationTasks";
+
     private static final String REGEX_ACTION_ERROR_TARGET =
-        String.format("#/tasks/(%s|%s|%s|%s|%s|%s)/(\\d+)", KEY_PHRASE_EXTRACTION_TASKS, ENTITY_RECOGNITION_PII_TASKS,
-            ENTITY_RECOGNITION_TASKS, ENTITY_LINKING_TASKS, SENTIMENT_ANALYSIS_TASKS, EXTRACTIVE_SUMMARIZATION_TASKS);
+        String.format("#/tasks/(%s|%s|%s|%s|%s|%s|%s|%s|%s)/(\\d+)", KEY_PHRASE_EXTRACTION_TASKS,
+            ENTITY_RECOGNITION_PII_TASKS, ENTITY_RECOGNITION_TASKS, ENTITY_LINKING_TASKS, SENTIMENT_ANALYSIS_TASKS,
+            EXTRACTIVE_SUMMARIZATION_TASKS, CUSTOM_ENTITY_RECOGNITION_TASKS, CUSTOM_SINGLE_CLASSIFICATION_TASKS,
+            CUSTOM_MULTI_CLASSIFICATION_TASKS);
 
     private final ClientLogger logger = new ClientLogger(AnalyzeActionsAsyncClient.class);
     private final TextAnalyticsClientImpl service;
@@ -232,6 +262,19 @@ class AnalyzeActionsAsyncClient {
         if (actions.getExtractSummaryActions() != null) {
             jobManifestTasks.setExtractiveSummarizationTasks(toExtractiveSummarizationTask(actions));
         }
+
+        if (actions.getRecognizeCustomEntitiesActions() != null) {
+            jobManifestTasks.setCustomEntityRecognitionTasks(toCustomEntitiesTask(actions));
+        }
+
+        if (actions.getSingleCategoryClassifyActions() != null) {
+            jobManifestTasks.setCustomSingleClassificationTasks(toCustomSingleClassificationTask(actions));
+        }
+
+        if (actions.getMultiCategoryClassifyActions() != null) {
+            jobManifestTasks.setCustomMultiClassificationTasks(toCustomMultiClassificationTask(actions));
+        }
+
         return jobManifestTasks;
     }
 
@@ -356,6 +399,64 @@ class AnalyzeActionsAsyncClient {
         return extractiveSummarizationTasks;
     }
 
+    private List<CustomEntitiesTask> toCustomEntitiesTask(TextAnalyticsActions actions) {
+        final List<CustomEntitiesTask> customEntitiesTasks = new ArrayList<>();
+        for (RecognizeCustomEntitiesAction action : actions.getRecognizeCustomEntitiesActions()) {
+            if (action == null) {
+                customEntitiesTasks.add(null);
+            } else {
+                customEntitiesTasks.add(
+                    new CustomEntitiesTask()
+                        .setTaskName(action.getActionName())
+                        .setParameters(
+                            new CustomEntitiesTaskParameters()
+                                .setProjectName(action.getProjectName())
+                                .setDeploymentName(action.getDeploymentName())
+                                .setStringIndexType(StringIndexType.UTF16CODE_UNIT)
+                                .setLoggingOptOut(action.isServiceLogsDisabled())));
+            }
+        }
+        return customEntitiesTasks;
+    }
+
+    private List<CustomSingleClassificationTask> toCustomSingleClassificationTask(TextAnalyticsActions actions) {
+        final List<CustomSingleClassificationTask> customSingleClassificationTask = new ArrayList<>();
+        for (SingleCategoryClassifyAction action : actions.getSingleCategoryClassifyActions()) {
+            if (action == null) {
+                customSingleClassificationTask.add(null);
+            } else {
+                customSingleClassificationTask.add(
+                    new CustomSingleClassificationTask()
+                        .setTaskName(action.getActionName())
+                        .setParameters(
+                            new CustomSingleClassificationTaskParameters()
+                                .setProjectName(action.getProjectName())
+                                .setDeploymentName(action.getDeploymentName())
+                                .setLoggingOptOut(action.isServiceLogsDisabled())));
+            }
+        }
+        return customSingleClassificationTask;
+    }
+
+    private List<CustomMultiClassificationTask> toCustomMultiClassificationTask(TextAnalyticsActions actions) {
+        final List<CustomMultiClassificationTask> customMultiClassificationTask = new ArrayList<>();
+        for (MultiCategoryClassifyAction action : actions.getMultiCategoryClassifyActions()) {
+            if (action == null) {
+                customMultiClassificationTask.add(null);
+            } else {
+                customMultiClassificationTask.add(
+                    new CustomMultiClassificationTask()
+                        .setTaskName(action.getActionName())
+                        .setParameters(
+                            new CustomMultiClassificationTaskParameters()
+                                .setProjectName(action.getProjectName())
+                                .setDeploymentName(action.getDeploymentName())
+                                .setLoggingOptOut(action.isServiceLogsDisabled())));
+            }
+        }
+        return customMultiClassificationTask;
+    }
+
     private Function<PollingContext<AnalyzeActionsOperationDetail>, Mono<AnalyzeActionsOperationDetail>>
         activationOperation(Mono<AnalyzeActionsOperationDetail> operationResult) {
         return pollingContext -> {
@@ -465,6 +566,12 @@ class AnalyzeActionsAsyncClient {
             tasksStateTasks.getSentimentAnalysisTasks();
         final List<TasksStateTasksExtractiveSummarizationTasksItem> extractiveSummarizationTasksItems =
             tasksStateTasks.getExtractiveSummarizationTasks();
+        final List<TasksStateTasksCustomEntityRecognitionTasksItem> customEntityRecognitionTasksItems =
+            tasksStateTasks.getCustomEntityRecognitionTasks();
+        final List<TasksStateTasksCustomSingleClassificationTasksItem> customSingleClassificationTasksItems =
+            tasksStateTasks.getCustomSingleClassificationTasks();
+        final List<TasksStateTasksCustomMultiClassificationTasksItem> customMultiClassificationTasksItems =
+            tasksStateTasks.getCustomMultiClassificationTasks();
 
         List<RecognizeEntitiesActionResult> recognizeEntitiesActionResults = new ArrayList<>();
         List<RecognizePiiEntitiesActionResult> recognizePiiEntitiesActionResults = new ArrayList<>();
@@ -472,6 +579,11 @@ class AnalyzeActionsAsyncClient {
         List<RecognizeLinkedEntitiesActionResult> recognizeLinkedEntitiesActionResults = new ArrayList<>();
         List<AnalyzeSentimentActionResult> analyzeSentimentActionResults = new ArrayList<>();
         List<ExtractSummaryActionResult> extractSummaryActionResults = new ArrayList<>();
+        List<RecognizeCustomEntitiesActionResult> recognizeCustomEntitiesActionResults = new ArrayList<>();
+        List<SingleCategoryClassifyActionResult> singleCategoryClassifyActionResults =
+            new ArrayList<>();
+        List<MultiCategoryClassifyActionResult> multiCategoryClassifyActionResults =
+            new ArrayList<>();
 
         if (!CoreUtils.isNullOrEmpty(entityRecognitionTasksItems)) {
             for (int i = 0; i < entityRecognitionTasksItems.size(); i++) {
@@ -570,6 +682,59 @@ class AnalyzeActionsAsyncClient {
             }
         }
 
+        if (!CoreUtils.isNullOrEmpty(customEntityRecognitionTasksItems)) {
+            for (int i = 0; i < customEntityRecognitionTasksItems.size(); i++) {
+                final TasksStateTasksCustomEntityRecognitionTasksItem taskItem =
+                    customEntityRecognitionTasksItems.get(i);
+                final RecognizeCustomEntitiesActionResult actionResult = new RecognizeCustomEntitiesActionResult();
+                final CustomEntitiesResult results = taskItem.getResults();
+                if (results != null) {
+                    RecognizeCustomEntitiesActionResultPropertiesHelper.setDocumentsResults(actionResult,
+                        toRecognizeCustomEntitiesResultCollection(results));
+                }
+                TextAnalyticsActionResultPropertiesHelper.setActionName(actionResult, taskItem.getTaskName());
+                TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
+                    taskItem.getLastUpdateDateTime());
+                recognizeCustomEntitiesActionResults.add(actionResult);
+            }
+        }
+
+        if (!CoreUtils.isNullOrEmpty(customSingleClassificationTasksItems)) {
+            for (int i = 0; i < customSingleClassificationTasksItems.size(); i++) {
+                final TasksStateTasksCustomSingleClassificationTasksItem taskItem =
+                    customSingleClassificationTasksItems.get(i);
+                final SingleCategoryClassifyActionResult actionResult =
+                    new SingleCategoryClassifyActionResult();
+                final CustomSingleClassificationResult results = taskItem.getResults();
+                if (results != null) {
+                    SingleCategoryClassifyActionResultPropertiesHelper.setDocumentsResults(actionResult,
+                        toSingleCategoryClassifyResultCollection(results));
+                }
+                TextAnalyticsActionResultPropertiesHelper.setActionName(actionResult, taskItem.getTaskName());
+                TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
+                    taskItem.getLastUpdateDateTime());
+                singleCategoryClassifyActionResults.add(actionResult);
+            }
+        }
+
+        if (!CoreUtils.isNullOrEmpty(customMultiClassificationTasksItems)) {
+            for (int i = 0; i < customMultiClassificationTasksItems.size(); i++) {
+                final TasksStateTasksCustomMultiClassificationTasksItem taskItem =
+                    customMultiClassificationTasksItems.get(i);
+                final MultiCategoryClassifyActionResult actionResult =
+                    new MultiCategoryClassifyActionResult();
+                final CustomMultiClassificationResult results = taskItem.getResults();
+                if (results != null) {
+                    MultiCategoryClassifyActionResultPropertiesHelper.setDocumentsResults(actionResult,
+                        toMultiCategoryClassifyResultCollection(results));
+                }
+                TextAnalyticsActionResultPropertiesHelper.setActionName(actionResult, taskItem.getTaskName());
+                TextAnalyticsActionResultPropertiesHelper.setCompletedAt(actionResult,
+                    taskItem.getLastUpdateDateTime());
+                multiCategoryClassifyActionResults.add(actionResult);
+            }
+        }
+
         final List<TextAnalyticsError> errors = analyzeJobState.getErrors();
         if (!CoreUtils.isNullOrEmpty(errors)) {
             for (TextAnalyticsError error : errors) {
@@ -589,6 +754,12 @@ class AnalyzeActionsAsyncClient {
                     actionResult = analyzeSentimentActionResults.get(taskIndex);
                 } else if (EXTRACTIVE_SUMMARIZATION_TASKS.equals(taskName)) {
                     actionResult = extractSummaryActionResults.get(taskIndex);
+                } else if (CUSTOM_ENTITY_RECOGNITION_TASKS.equals(taskName)) {
+                    actionResult = recognizeCustomEntitiesActionResults.get(taskIndex);
+                } else if (CUSTOM_SINGLE_CLASSIFICATION_TASKS.equals(taskName)) {
+                    actionResult = singleCategoryClassifyActionResults.get(taskIndex);
+                } else if (CUSTOM_MULTI_CLASSIFICATION_TASKS.equals(taskName)) {
+                    actionResult = multiCategoryClassifyActionResults.get(taskIndex);
                 } else {
                     throw logger.logExceptionAsError(new RuntimeException(
                         "Invalid task name in target reference, " + taskName));
@@ -616,6 +787,12 @@ class AnalyzeActionsAsyncClient {
             IterableStream.of(analyzeSentimentActionResults));
         AnalyzeActionsResultPropertiesHelper.setExtractSummaryResults(analyzeActionsResult,
             IterableStream.of(extractSummaryActionResults));
+        AnalyzeActionsResultPropertiesHelper.setRecognizeCustomEntitiesResults(analyzeActionsResult,
+            IterableStream.of(recognizeCustomEntitiesActionResults));
+        AnalyzeActionsResultPropertiesHelper.setClassifySingleCategoryResults(analyzeActionsResult,
+            IterableStream.of(singleCategoryClassifyActionResults));
+        AnalyzeActionsResultPropertiesHelper.setClassifyMultiCategoryResults(analyzeActionsResult,
+            IterableStream.of(multiCategoryClassifyActionResults));
         return analyzeActionsResult;
     }
 

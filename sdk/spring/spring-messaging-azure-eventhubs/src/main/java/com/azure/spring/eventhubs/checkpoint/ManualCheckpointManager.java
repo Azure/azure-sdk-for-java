@@ -19,7 +19,7 @@ public class ManualCheckpointManager extends CheckpointManager {
 
     ManualCheckpointManager(CheckpointConfig checkpointConfig) {
         super(checkpointConfig);
-        Assert.isTrue(this.checkpointConfig.getCheckpointMode() == CheckpointMode.MANUAL,
+        Assert.isTrue(this.checkpointConfig.getMode() == CheckpointMode.MANUAL,
             () -> "ManualCheckpointManager should have checkpointMode manual");
     }
 

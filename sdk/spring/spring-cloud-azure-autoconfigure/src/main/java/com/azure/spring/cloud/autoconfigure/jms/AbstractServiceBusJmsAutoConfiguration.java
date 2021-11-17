@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.jms;
 
+import com.azure.spring.cloud.autoconfigure.jms.properties.AzureServiceBusJmsProperties;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.jms.DefaultJmsListenerContainerFactoryConfigurer;
 import org.springframework.context.annotation.Bean;
@@ -69,9 +70,6 @@ public abstract class AbstractServiceBusJmsAutoConfiguration {
 
     private void configureTopicListenerContainerFactory(DefaultJmsListenerContainerFactory jmsListenerContainerFactory) {
         AzureServiceBusJmsProperties.Listener listener = azureServiceBusJMSProperties.getListener();
-        if (azureServiceBusJMSProperties.getTopicClientId() != null) {
-            jmsListenerContainerFactory.setClientId(azureServiceBusJMSProperties.getTopicClientId());
-        }
         if (listener.isReplyPubSubDomain() != null) {
             jmsListenerContainerFactory.setReplyPubSubDomain(listener.isReplyPubSubDomain());
         }

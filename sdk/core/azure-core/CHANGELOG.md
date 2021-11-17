@@ -1,6 +1,6 @@
 # Release History
 
-## 1.22.0-beta.2 (Unreleased)
+## 1.23.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,32 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.22.0 (2021-11-05)
+
+### Features Added
+
+- Added `ReferenceManager` which is capable of performing `Cleaner`-like functionality by allowing a `Runnable` callback
+  to be triggered when an object reference is eligible for garbage collection.
+- Added `RequestOptions` which allows for a chained set of operations to be applied to an `HttpRequest` before being
+  sent through the `HttpPipeline`.
+- Added an `ETag` class which represents an HTTP ETag.
+- Added `getJavaClass` method to retrieve the representing instance of the `TypeReference` created.
+- Added support for HTTP method OPTIONS by adding an `Options` annotation.
+- Added a function to `CoreUtils` which merges two `Context`s together.
+- Added a new feature flag `AZURE_JACKSON_ADAPTER_USE_ACCESS_HELPER` which indicates to `JacksonAdapter` to wrap 
+  serialization calls in `AccessController.doPrivileged` to prevent `SecurityManager` exceptions when `JacksonAdapter`
+  has the prerequisite permissions.
+
+### Bugs Fixed
+
+- Fixed a bug where an initial length of 0 wasn't permitted when creating a `ByteBuffer` collector.
+- Fixed a bug where an exception type would be instantiated and never used in a hot path, reducing memory usage.
+- Fixed a bug where the content length of a serializable request body may return null when it is known (already serialized).
+
+### Other Changes
+
+- Improved performance of operations that merge or retrieve all values of `Context`.
 
 ## 1.22.0-beta.1 (2021-10-12)
 
@@ -42,6 +68,13 @@
 
 - Upgraded Jackson from `2.12.4` to `2.12.5`.
 - Upgraded Reactor from `3.4.9` to `3.4.10`.
+
+
+## 1.21.0-beta.1 (2021-09-08)
+
+### Features Added
+
+- Added a new way to create a `PollerFlux` from a `PollingStrategy`, including known strategies to poll Azure resources. ([#22795](https://github.com/Azure/azure-sdk-for-java/pull/22795))
 
 ## 1.20.0 (2021-09-07)
 
@@ -102,8 +135,8 @@
 
 ### Features Added
 
- - Added `RequestOptions` for protocol methods
- - Added support for `BinaryData` type as the request body or response body in `RestProxy`
+- Added `RequestOptions` for protocol methods
+- Added support for `BinaryData` type as the request body or response body in `RestProxy`
 
 ## 1.18.0 (2021-07-01)
 

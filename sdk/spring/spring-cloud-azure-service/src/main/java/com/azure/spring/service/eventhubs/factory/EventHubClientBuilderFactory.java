@@ -17,9 +17,9 @@ import com.azure.spring.core.credential.descriptor.TokenAuthenticationDescriptor
 import com.azure.spring.core.factory.AbstractAzureAmqpClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.service.core.PropertyMapper;
-import com.azure.spring.service.eventhubs.properties.EventHubCommonProperties;
-import com.azure.spring.service.eventhubs.properties.EventHubConsumerProperties;
-import com.azure.spring.service.eventhubs.properties.EventHubProperties;
+import com.azure.spring.service.eventhubs.properties.EventHubsCommonDescriptor;
+import com.azure.spring.service.eventhubs.properties.EventHubsConsumerDescriptor;
+import com.azure.spring.service.eventhubs.properties.EventHubsNamespaceDescriptor;
 
 import java.util.Arrays;
 import java.util.List;
@@ -31,10 +31,10 @@ import java.util.function.BiConsumer;
  */
 public class EventHubClientBuilderFactory extends AbstractAzureAmqpClientBuilderFactory<EventHubClientBuilder> {
 
-    private final EventHubCommonProperties eventHubProperties;
+    private final EventHubsCommonDescriptor eventHubsProperties;
 
-    public EventHubClientBuilderFactory(EventHubCommonProperties eventHubProperties) {
-        this.eventHubProperties = eventHubProperties;
+    public EventHubClientBuilderFactory(EventHubsCommonDescriptor eventHubsProperties) {
+        this.eventHubsProperties = eventHubsProperties;
     }
 
     @Override
@@ -64,15 +64,15 @@ public class EventHubClientBuilderFactory extends AbstractAzureAmqpClientBuilder
 
     @Override
     protected BiConsumer<EventHubClientBuilder, TokenCredential> consumeDefaultTokenCredential() {
-        return (builder, tokenCredential) -> builder.credential(eventHubProperties.getFQDN(),
-                                                                eventHubProperties.getEventHubName(),
+        return (builder, tokenCredential) -> builder.credential(eventHubsProperties.getFQDN(),
+                                                                eventHubsProperties.getEventHubName(),
                                                                 tokenCredential);
     }
 
     @Override
     protected BiConsumer<EventHubClientBuilder, String> consumeConnectionString() {
         // TODO (xiada) defines whether the connection-string contains event-hub-name
-        return (builder, connectionString) -> builder.connectionString(connectionString, this.eventHubProperties.getEventHubName());
+        return (builder, connectionString) -> builder.connectionString(connectionString, this.eventHubsProperties.getEventHubName());
     }
 
     @Override
@@ -82,7 +82,7 @@ public class EventHubClientBuilderFactory extends AbstractAzureAmqpClientBuilder
 
     @Override
     protected AzureProperties getAzureProperties() {
-        return this.eventHubProperties;
+        return this.eventHubsProperties;
     }
 
 
@@ -92,21 +92,18 @@ public class EventHubClientBuilderFactory extends AbstractAzureAmqpClientBuilder
     protected void configureService(EventHubClientBuilder builder) {
         PropertyMapper mapper = new PropertyMapper();
 
-        mapper.from(eventHubProperties.getPrefetchCount()).to(builder::prefetchCount);
-        mapper.from(eventHubProperties.getCustomEndpointAddress()).to(builder::customEndpointAddress);
+        mapper.from(eventHubsProperties.getCustomEndpointAddress()).to(builder::customEndpointAddress);
 
-        if (this.eventHubProperties instanceof EventHubProperties) {
-            mapper.from(((EventHubProperties) this.eventHubProperties).getSharedConnection())
+        if (this.eventHubsProperties instanceof EventHubsNamespaceDescriptor) {
+            mapper.from(((EventHubsNamespaceDescriptor) this.eventHubsProperties).getSharedConnection())
                   .whenTrue()
                   .to(t -> builder.shareConnection());
-
-            mapper.from(((EventHubProperties) this.eventHubProperties).getConsumer().getConsumerGroup())
-                .to(builder::consumerGroup);
         }
 
-        if (this.eventHubProperties instanceof EventHubConsumerProperties) {
-            mapper.from(((EventHubConsumerProperties) eventHubProperties).getConsumerGroup())
-                  .to(builder::consumerGroup);
+        if (this.eventHubsProperties instanceof EventHubsConsumerDescriptor) {
+            EventHubsConsumerDescriptor consumerProperties = (EventHubsConsumerDescriptor) this.eventHubsProperties;
+            mapper.from(consumerProperties.getConsumerGroup()).to(builder::consumerGroup);
+            mapper.from(consumerProperties.getPrefetchCount()).to(builder::prefetchCount);
         }
     }
 
@@ -119,20 +116,16 @@ public class EventHubClientBuilderFactory extends AbstractAzureAmqpClientBuilder
     @Override
     protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(EventHubClientBuilder builder) {
         return Arrays.asList(
-            new NamedKeyAuthenticationDescriptor(provider -> builder.credential(eventHubProperties.getFQDN(),
-                                                                                eventHubProperties.getEventHubName(),
+            new NamedKeyAuthenticationDescriptor(provider -> builder.credential(eventHubsProperties.getFQDN(),
+                                                                                eventHubsProperties.getEventHubName(),
                                                                                 provider.getCredential())),
-            new SasAuthenticationDescriptor(provider -> builder.credential(eventHubProperties.getFQDN(),
-                                                                           eventHubProperties.getEventHubName(),
+            new SasAuthenticationDescriptor(provider -> builder.credential(eventHubsProperties.getFQDN(),
+                                                                           eventHubsProperties.getEventHubName(),
                                                                            provider.getCredential())),
-            new TokenAuthenticationDescriptor(provider -> builder.credential(eventHubProperties.getFQDN(),
-                                                                             eventHubProperties.getEventHubName(),
+            new TokenAuthenticationDescriptor(provider -> builder.credential(eventHubsProperties.getFQDN(),
+                                                                             eventHubsProperties.getEventHubName(),
                                                                              provider.getCredential()))
         );
     }
 
-    @Override
-    protected String getApplicationId() {
-        return super.getApplicationId();
-    }
 }

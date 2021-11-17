@@ -587,12 +587,30 @@ public final class AgentPoolInner extends SubResource {
     }
 
     /**
-     * Get the powerState property: Describes whether the Agent Pool is Running or Stopped.
+     * Get the powerState property: When an Agent Pool is first created it is initially Running. The Agent Pool can be
+     * stopped by setting this field to Stopped. A stopped Agent Pool stops all of its VMs and does not accrue billing
+     * charges. An Agent Pool can only be stopped if it is Running and provisioning state is Succeeded.
      *
      * @return the powerState value.
      */
     public PowerState powerState() {
         return this.innerProperties() == null ? null : this.innerProperties().powerState();
+    }
+
+    /**
+     * Set the powerState property: When an Agent Pool is first created it is initially Running. The Agent Pool can be
+     * stopped by setting this field to Stopped. A stopped Agent Pool stops all of its VMs and does not accrue billing
+     * charges. An Agent Pool can only be stopped if it is Running and provisioning state is Succeeded.
+     *
+     * @param powerState the powerState value to set.
+     * @return the AgentPoolInner object itself.
+     */
+    public AgentPoolInner withPowerState(PowerState powerState) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new ManagedClusterAgentPoolProfileProperties();
+        }
+        this.innerProperties().withPowerState(powerState);
+        return this;
     }
 
     /**

@@ -167,6 +167,13 @@ public class KubernetesClusterAgentPoolImpl
     }
 
     @Override
+    public Map<String, String> tags() {
+        return innerModel().tags() == null
+            ? Collections.emptyMap()
+            : Collections.unmodifiableMap(innerModel().tags());
+    }
+
+    @Override
     public KubernetesClusterAgentPoolImpl withVirtualMachineSize(ContainerServiceVMSizeTypes vmSize) {
         this.innerModel().withVmSize(vmSize.toString());
         return this;
@@ -253,6 +260,7 @@ public class KubernetesClusterAgentPoolImpl
         agentPoolInner.withEnableUltraSsd(innerModel().enableUltraSsd());
         agentPoolInner.withEnableFips(innerModel().enableFips());
         agentPoolInner.withGpuInstanceProfile(innerModel().gpuInstanceProfile());
+        agentPoolInner.withPowerState(innerModel().powerState());
         return agentPoolInner;
     }
 
@@ -330,6 +338,29 @@ public class KubernetesClusterAgentPoolImpl
     @Override
     public KubernetesClusterAgentPoolImpl withKubeletDiskType(KubeletDiskType kubeletDiskType) {
         innerModel().withKubeletDiskType(kubeletDiskType);
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterAgentPoolImpl withTags(Map<String, String> tags) {
+        innerModel().withTags(tags);
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterAgentPoolImpl withTag(String key, String value) {
+        if (innerModel().tags() == null) {
+            innerModel().withTags(new TreeMap<>());
+        }
+        innerModel().tags().put(key, value);
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterAgentPoolImpl withoutTag(String key) {
+        if (innerModel().tags() != null) {
+            innerModel().tags().remove(key);
+        }
         return this;
     }
 }

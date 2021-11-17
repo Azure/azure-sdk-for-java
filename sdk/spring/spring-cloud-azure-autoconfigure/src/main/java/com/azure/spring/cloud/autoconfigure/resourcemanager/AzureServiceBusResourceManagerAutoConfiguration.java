@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.resourcemanager;
 
+import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnMissingProperty;
 import com.azure.spring.cloud.autoconfigure.servicebus.properties.AzureServiceBusProperties;
@@ -13,6 +14,7 @@ import com.azure.spring.servicebus.provisioning.arm.DefaultServiceBusQueueProvis
 import com.azure.spring.servicebus.provisioning.arm.DefaultServiceBusTopicProvisioner;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
@@ -22,7 +24,8 @@ import org.springframework.core.annotation.Order;
  * An auto-configuration for Service Bus
  *
  */
-@ConditionalOnProperty(value = "spring.cloud.azure.servicebus.enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnProperty(prefix = AzureServiceBusProperties.PREFIX, value = "enabled", havingValue = "true", matchIfMissing = true)
+@ConditionalOnClass(ServiceBusClientBuilder.class)
 @ConditionalOnBean(AzureResourceManager.class)
 @AutoConfigureAfter(AzureResourceManagerAutoConfiguration.class)
 public class AzureServiceBusResourceManagerAutoConfiguration extends AzureServiceResourceManagerConfigurationBase {
@@ -50,7 +53,7 @@ public class AzureServiceBusResourceManagerAutoConfiguration extends AzureServic
     @Bean
     @ConditionalOnMissingBean
     @ConditionalOnProperty(prefix = AzureServiceBusProperties.PREFIX, value = "namespace")
-    @ConditionalOnMissingProperty("spring.cloud.azure.servicebus.connection-string")
+    @ConditionalOnMissingProperty(prefix = AzureServiceBusProperties.PREFIX, value = "connection-string")
     @Order
     public ServiceBusArmConnectionStringProvider serviceBusArmConnectionStringProvider() {
         return new ServiceBusArmConnectionStringProvider(this.azureResourceManager,
