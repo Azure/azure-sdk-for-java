@@ -14,8 +14,7 @@ libraries, please refer to the README.md**[placeholder]** rather than this guide
 
 ## Migration benefits
 
-A natural question to ask when considering whether to adopt a new version or library is its benefits. As 
-Azure has
+A natural question to ask when considering whether to adopt a new version or library is its benefits. As Azure has
 matured and been embraced by a more diverse group of developers, we have been focused on learning the patterns and
 practices to best support developer productivity and to understand the gaps that the Spring Cloud Azure libraries have.
 
@@ -88,8 +87,8 @@ artifact id following the pattern `azure-spring-*`. This provides a quick and ac
 glance, whether you are using modern or legacy starters.
 
 In the process of developing Spring Cloud Azure 4.0, we renamed some artifacts to make them follow the new naming
-conventions, deleted some artifacts for its functionality could be put in a more appropriate artifact, and added 
-some new artifacts to better serve some scenarios.
+conventions, deleted some artifacts for its functionality could be put in a more appropriate artifact, and added some
+new artifacts to better serve some scenarios.
 
 | Legacy Artifact ID                                | Modern Artifact ID                                           | Description                                                  |
 | :------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
@@ -111,7 +110,8 @@ some new artifacts to better serve some scenarios.
 | azure-spring-cloud-starter-servicebus             | spring-cloud-azure-starter-integration-servicebus            |                                                              |
 | azure-spring-cloud-starter-storage-queue          | spring-cloud-azure-starter-integration-storage-queue         |                                                              |
 | azure-spring-cloud-storage                        | N/A                                                          | This artifact has been deleted with all functionalities merged into the new `spring-cloud-azure-autoconfigure` artifact. |
-| azure-spring-cloud-stream-binder-eventhubs        | spring-cloud-azure-stream-binder-eventhubs                   |                                                              |
+| azure-spring-cloud-stream-binder-eventhubs        | spring-cloud-azure-stream-binder-eventhubs                   | This artifact has been refactored using new redesign, mainly `spring-cloud-azure-stream-binder-eventhubs` and `spring-cloud-azure-stream-binder-eventhubs-core`.
+| N/A                                               | spring-cloud-azure-stream-binder-eventhubs-core                   |                                                              |
 | azure-spring-cloud-stream-binder-service-core  | spring-cloud-azure-stream-binder-servicebus-core             |                                                              |
 | azure-spring-cloud-stream-binder-servicebus-queue | // TODO                                                      |                                                              |
 | azure-spring-cloud-stream-binder-servicebus-topic | // TODO                                                      |                                                              |
@@ -138,7 +138,8 @@ some new artifacts to better serve some scenarios.
 ## Dependencies changes
 
 Some unnecessary dependencies were included in the legacy artifacts, which we have removed in the modern Spring Cloud
-Azure 4.0 libraries. Please make sure add the removed dependencies manually to your project to prevent unintentionally crash.
+Azure 4.0 libraries. Please make sure add the removed dependencies manually to your project to prevent unintentionally
+crash.
 
 ### spring-cloud-azure-starter
 
@@ -165,17 +166,99 @@ configurations can be divided into five categories:
 For a full list of common configurations, check this list **[placeholder]**.
 
 ### Each SDK configurations
-####
-#### EventHubs
-todo...
 
-##### batch consumer support
-| Legacy                                |Modern   Spring Cloud Azure 4.0
---------------------------------------------------------------------------
-`spring.cloud.stream.bindings.<binding-name>.consumer.max-batch-size`|`spring.cloud.stream.bindings.<binding-name>.
-consumer.batch.mode
-`spring.cloud.stream.bindings.<binding-name>.consumer.max-wait-time`
-`spring.cloud.stream.bindings.<binding-name>.consumer.checkpoint-mode`
+#### azure-spring-cloud-starter-eventhubs
+#### azure-spring-integration-eventhubs
+#### azure-spring-cloud-stream-binder-eventhubs
+
+- For checkpoint account settings:
+
+`Notes`: prefix changed from
+`spring.cloud.azure.eventhub.`
+to
+`spring.cloud.azure.eventhubs.`
+
+|  Legacy | Modern Spring Cloud Azure 4.0
+ |:---|:---
+|`checkpoint-storage-account`|`processor.checkpoint-store.account-name`
+|`checkpoint-access-key`|`processor.checkpoint-store.account-key`
+|`checkpoint-container`|`processor.checkpoint-store.container-name`
+for example, you should change from:
+```yaml
+spring:
+  cloud:
+    azure:
+      eventhub:
+        connection-string: [eventhub-namespace-connection-string]
+        checkpoint-storage-account: [checkpoint-storage-account]
+        checkpoint-access-key: [checkpoint-access-key]
+        checkpoint-container: [checkpoint-container]
+```
+to:
+```yaml
+spring:
+  cloud:
+    azure:
+      eventhubs:
+        connection-string: [eventhub-namespace-connection-string]
+        processor:
+          checkpoint-store:
+            container-name: [checkpoint-container]
+            account-name: [checkpoint-storage-account]
+            account-key: [checkpoint-access-key]
+```
+
+- For batch consume settings:
+
+   `Note`: the prefix `spring.cloud.stream.bindings.<binding-name>.consumer.` is omitted for simplicity.
+
+|  Legacy | Modern Spring Cloud Azure 4.0
+ |:---|:---
+|`batch-mode`|`batch.mode`
+
+- For additional consumer batch settings and checkpoint settings
+
+`Notes`: prefix changed from
+    `spring.cloud.stream.eventhub.bindings.<binding-name>.`
+    to
+    `spring.cloud.stream.eventhubs.bindings.<binding-name>.`
+    
+
+|  Legacy | Modern Spring Cloud Azure 4.0
+|:---|:---
+|`consumer.max-batch-size` | `consumer.batch.max-size`
+|`consumer.max-wait-time`|`consumer.batch.max-wait-time`
+|`consumer.checkpoint-mode`|`consumer.checkpoint.mode`
+For example, you should change from:
+```yaml
+spring:
+  cloud:
+    stream:
+      eventhub:
+        bindings:
+            <binding-name>:
+                consumer:
+                  max-batch-size: [max-batch-size]
+                  max-wait-time: [max-wait-time]
+                  checkpoint-mode: [check-point-mode]
+```
+to:
+```yaml
+spring:
+  cloud:
+    stream:
+      eventhubs:
+        bindings:
+            <binding-name>:
+                consumer:
+                  batch:
+                    max-size: [max-batch-size]
+                    max-wait-time: [max-wait-time]
+                  checkpoint:
+                    mode: [check-point-mode]
+```
+
+ 
 
 ## API breaking changes
 
