@@ -5,6 +5,7 @@ package com.azure.spring.cloud.autoconfigure.aad.implementation.webapp;
 
 import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.Constants;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.properties.AADAuthenticationProperties;
+import javax.servlet.http.HttpSession;
 import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
 import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizationRequestResolver;
 import org.springframework.security.oauth2.client.web.OAuth2AuthorizationRequestRedirectFilter;
@@ -14,7 +15,6 @@ import org.springframework.security.oauth2.core.endpoint.OAuth2AuthorizationRequ
 import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 /**
  * To add conditional policy claims to authorization URL.
@@ -50,27 +50,19 @@ public class AADOAuth2AuthorizationRequestResolver implements OAuth2Authorizatio
             return oAuth2AuthorizationRequest;
         }
         // Handle conditional access policy, step 3.
-        final String conditionalAccessPolicyClaims =
-            Optional.of(httpServletRequest)
-                    .map(HttpServletRequest::getSession)
-                    .map(httpSession -> {
-                        String claims = (String) httpSession.getAttribute(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS);
-                        if (claims != null) {
-                            httpSession.removeAttribute(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS);
-                        }
-                        return claims;
-                    })
-                    .orElse(null);
+        HttpSession httpSession = httpServletRequest.getSession(false);
+        String conditionalAccessPolicyClaims = (String) httpSession.getAttribute(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS);
+        if (conditionalAccessPolicyClaims != null) {
+            httpSession.removeAttribute(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS);
+        }
         final Map<String, Object> additionalParameters = new HashMap<>();
         if (conditionalAccessPolicyClaims != null) {
             additionalParameters.put(Constants.CLAIMS, conditionalAccessPolicyClaims);
         }
-        Optional.ofNullable(properties)
-                .map(AADAuthenticationProperties::getAuthenticateAdditionalParameters)
-                .ifPresent(additionalParameters::putAll);
-        Optional.of(oAuth2AuthorizationRequest)
-                .map(OAuth2AuthorizationRequest::getAdditionalParameters)
-                .ifPresent(additionalParameters::putAll);
+        if(properties!=null){
+            additionalParameters.putAll(properties.getAuthenticateAdditionalParameters());
+        }
+        additionalParameters.putAll(oAuth2AuthorizationRequest.getAdditionalParameters());
         return OAuth2AuthorizationRequest.from(oAuth2AuthorizationRequest)
                                          .additionalParameters(additionalParameters)
                                          .build();
