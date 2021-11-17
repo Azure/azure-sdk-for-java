@@ -13,7 +13,6 @@ import com.azure.security.attestation.models.AttestationSigningKey;
 import com.azure.security.attestation.models.AttestationType;
 import com.azure.security.attestation.models.PolicyModification;
 import com.azure.security.attestation.models.PolicyResult;
-import com.nimbusds.jose.JWSSigner;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -144,11 +143,6 @@ public class AttestationPolicyTests extends AttestationClientTestBase {
 
         AttestationAdministrationClientBuilder attestationAdministrationClientBuilder = getAuthenticatedAdministrationBuilder(httpClient, clientUri);
         AttestationAdministrationClient client = attestationAdministrationClientBuilder.buildClient();
-
-        String signingCertificateBase64 = getIsolatedSigningCertificateBase64();
-        String signingKeyBase64 = getIsolatedSigningKeyBase64();
-
-        JWSSigner signer = getJwsSigner(signingKeyBase64);
 
         // AAD or isolated: We want to try setting policy with the Isolated signing certificate.
         if (clientType == ClientTypes.AAD || clientType == ClientTypes.ISOLATED) {

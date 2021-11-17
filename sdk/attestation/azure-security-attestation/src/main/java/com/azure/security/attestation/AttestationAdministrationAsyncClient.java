@@ -56,13 +56,14 @@ import static com.azure.core.util.FluxUtil.withContext;
 /**
  * The AttestationAdministrationClient provides access to the administrative policy APIs
  * implemented by the Attestation Service.
- *
+ * <p>
  * More information on attestation policies can be found <a href='https://docs.microsoft.com/azure/attestation/basic-concepts#attestation-policy'>here</a>
+ * </p>
  *
  * There are two main families of APIs available from the Administration client.
  * <ul>
  *     <li>Attestation Policy Management</li>
- *     <li>Attestation Policy Management Certificate Management</li>
+ *     <li>Policy Management Certificate Management</li>
  * </ul>
  *
  * Attestation service instances operate in three different modes:
@@ -75,10 +76,19 @@ import static com.azure.core.util.FluxUtil.withContext;
  *     <li>Isolated - an attestation instance where the customer does *not* trust Azure Active Directory
  *     (and RBAC) to manage the security of their enclave </li>
  * </ul>
+ *
  *<p>
  * When an attestation instance is in Isolated mode, additional proof needs to be provided by the customer
  * to verify that they are authorized to perform the operation specified.
  *</p>
+ * <p>
+ *     When an Isolated mode attestation instance is created, the creator provides an X.509 certificate
+ *     which forms the set of policy management certificates. Under the covers, each  {@link AttestationAdministrationAsyncClient#setAttestationPolicy(AttestationType, AttestationPolicySetOptions)}.
+ *     API call must be signed with the private key which is associated with one of the policy management
+ *     certificates. This signing operation allows the attestation service to verify that the caller is
+ *     in possession of a private key which has been authorized to add or reset policies, or to modify
+ *     the set of attestation policy certificates.
+ * </p>
  *
  */
 @ServiceClient(builder = AttestationClientBuilder.class, isAsync = true)
@@ -104,7 +114,7 @@ public final class AttestationAdministrationAsyncClient {
         this.logger = new ClientLogger(AttestationAdministrationAsyncClient.class);
         this.cachedSigners = new AtomicReference<>(null);
     }
-    //region Get Attestation Policy.
+
     /**
      * Retrieves the current policy for an attestation type.
      * <p>
@@ -197,9 +207,6 @@ public final class AttestationAdministrationAsyncClient {
                     });
             });
     }
-
-    //endregion
-    //region Set Attestation Policy
 
     /**
      * Sets the current policy for an attestation type with an unsecured attestation policy.
@@ -363,9 +370,6 @@ public final class AttestationAdministrationAsyncClient {
         return setToken;
     }
 
-//endregion
-    //region Reset Attestation Policy
-
     /**
      * Resets the current policy for an attestation type to the default policy.
      *
@@ -481,9 +485,6 @@ public final class AttestationAdministrationAsyncClient {
             });
     }
 
-
-    //endregion
-
     /**
      * Retrieves the current set of attestation policy signing certificates for this instance.
      *
@@ -569,7 +570,6 @@ public final class AttestationAdministrationAsyncClient {
             });
     }
 
-    //region Add Policy Management Certificate
     /**
      * Sets the current policy for an attestation type.
      *
@@ -602,7 +602,7 @@ public final class AttestationAdministrationAsyncClient {
     }
 
     /**
-     * Adds a new attestation policy certificate to the set of policy management certificates.
+     * Adds a new policy management certificate to the set of policy management certificates.
      *
      * @param certificateToAdd Specifies the X.509 certificate to add to the set of policy signing certificates.
      * @param signingKey Signing Key used to sign the request to the service.
@@ -652,10 +652,9 @@ public final class AttestationAdministrationAsyncClient {
                     });
             });
     }
-    //endregion
 
     /**
-     * Adds a new attestation policy certificate to the set of policy management certificates.
+     * Removes a policy management certificate from the set of policy management certificates.
      *
      * @param certificateToRemove Specifies the X.509 certificate to remove from the set of policy signing certificates.
      * @param signingKey Signing Key used to sign the request to the service.
@@ -670,7 +669,7 @@ public final class AttestationAdministrationAsyncClient {
     }
 
     /**
-     * Adds a new attestation policy certificate to the set of policy management certificates.
+     * Removes a policy management certificate from the set of policy management certificates.
      *
      * @param certificateToRemove Specifies the X.509 certificate to remove from the set of policy signing certificates.
      * @param signingKey Signing Key used to sign the request to the service.
@@ -686,7 +685,7 @@ public final class AttestationAdministrationAsyncClient {
     }
 
     /**
-     * Adds a new attestation policy certificate to the set of policy management certificates.
+     * Removes a policy management certificate from the set of policy management certificates.
      *
      * @param certificateToRemove Specifies the X.509 certificate to remove from the set of policy signing certificates.
      * @param signingKey Signing Key used to sign the request to the service.
