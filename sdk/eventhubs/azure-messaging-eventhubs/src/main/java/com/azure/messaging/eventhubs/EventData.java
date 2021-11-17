@@ -157,7 +157,15 @@ public class EventData {
      * <p><strong>Adding serialization hint using {@code getProperties()}</strong></p>
      * <p>In the sample, the type of telemetry is indicated by adding an application property with key "eventType".</p>
      *
-     * {@codesnippet com.azure.messaging.eventhubs.eventdata.getProperties}
+     * <!-- src_embed com.azure.messaging.eventhubs.eventdata.getProperties -->
+     * <pre>
+     * TelemetryEvent telemetry = new TelemetryEvent&#40;&quot;temperature&quot;, &quot;37&quot;&#41;;
+     * byte[] serializedTelemetryData = telemetry.toString&#40;&#41;.getBytes&#40;UTF_8&#41;;
+     *
+     * EventData eventData = new EventData&#40;serializedTelemetryData&#41;;
+     * eventData.getProperties&#40;&#41;.put&#40;&quot;eventType&quot;, TelemetryEvent.class.getName&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.messaging.eventhubs.eventdata.getProperties -->
      *
      * @return Application properties associated with this {@link EventData}. For received {@link EventData}, the map is
      *     a read-only view.

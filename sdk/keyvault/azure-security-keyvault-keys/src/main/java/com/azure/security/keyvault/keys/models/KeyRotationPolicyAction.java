@@ -10,7 +10,14 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines the types of key rotation policy actions that can be executed.
  */
 public enum KeyRotationPolicyAction {
+    /**
+     * Rotate policy action.
+     */
     ROTATE("rotate"),
+
+    /**
+     * Notify policy action.
+     */
     NOTIFY("notify");
 
     /**

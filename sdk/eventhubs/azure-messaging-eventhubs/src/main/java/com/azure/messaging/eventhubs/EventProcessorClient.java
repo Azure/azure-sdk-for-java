@@ -125,7 +125,13 @@ public class EventProcessorClient {
      * </p>
      *
      * <p><strong>Starting the processor to consume events from all partitions</strong></p>
-     * {@codesnippet com.azure.messaging.eventhubs.eventprocessorclient.startstop}
+     * <!-- src_embed com.azure.messaging.eventhubs.eventprocessorclient.startstop -->
+     * <pre>
+     * eventProcessorClient.start&#40;&#41;;
+     * &#47;&#47; Continue to perform other tasks while the processor is running in the background.
+     * eventProcessorClient.stop&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.messaging.eventhubs.eventprocessorclient.startstop -->
      */
     public synchronized void start() {
         if (!isRunning.compareAndSet(false, true)) {
@@ -152,7 +158,13 @@ public class EventProcessorClient {
      * </p>
      *
      * <p><strong>Stopping the processor</strong></p>
-     * {@codesnippet com.azure.messaging.eventhubs.eventprocessorclient.startstop}
+     * <!-- src_embed com.azure.messaging.eventhubs.eventprocessorclient.startstop -->
+     * <pre>
+     * eventProcessorClient.start&#40;&#41;;
+     * &#47;&#47; Continue to perform other tasks while the processor is running in the background.
+     * eventProcessorClient.stop&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.messaging.eventhubs.eventprocessorclient.startstop -->
      */
     public synchronized void stop() {
         if (!isRunning.compareAndSet(true, false)) {

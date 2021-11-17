@@ -37,7 +37,7 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
     @MethodSource("getAttestationClients")
     void testGetPolicyManagementCertificates(HttpClient httpClient, String clientUri) {
 
-        AttestationClientBuilder attestationBuilder = getAdministrationBuilder(httpClient, clientUri);
+        AttestationAdministrationClientBuilder attestationBuilder = getAdministrationBuilder(httpClient, clientUri);
         PolicyCertificatesClient client = attestationBuilder.buildPolicyCertificatesClient();
 
         PolicyCertificatesResponse response = client.get();
@@ -50,7 +50,7 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("getAttestationClients")
     void testGetPolicyManagementCertificatesAsync(HttpClient httpClient, String clientUri) {
-        AttestationClientBuilder attestationBuilder = getAdministrationBuilder(httpClient, clientUri);
+        AttestationAdministrationClientBuilder attestationBuilder = getAdministrationBuilder(httpClient, clientUri);
         PolicyCertificatesAsyncClient client = attestationBuilder.buildPolicyCertificatesAsyncClient();
 
         StepVerifier.create(client.get()
@@ -119,13 +119,13 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
 
         assumeTrue(clientType == ClientTypes.ISOLATED, "This test only works on isolated instances.");
 
-        AttestationClientBuilder attestationBuilder = getAdministrationBuilder(httpClient, clientUri);
+        AttestationAdministrationClientBuilder attestationBuilder = getAdministrationBuilder(httpClient, clientUri);
         PolicyCertificatesClient client = attestationBuilder.buildPolicyCertificatesClient();
 
-        String signingCertificateBase64 = getIsolatedSigningCertificate();
-        String signingKeyBase64 = getIsolatedSigningKey();
+        String signingCertificateBase64 = getIsolatedSigningCertificateBase64();
+        String signingKeyBase64 = getIsolatedSigningKeyBase64();
 
-        String newPolicyCertificateBase64 = getPolicySigningCertificate0();
+        String newPolicyCertificateBase64 = getPolicySigningCertificate0Base64();
 
         JWSSigner existingSigner;
         existingSigner = getJwsSigner(signingKeyBase64);
@@ -182,13 +182,13 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
         // This test only works on isolated instances.
         assumeTrue(clientType == ClientTypes.ISOLATED, "This test only works on isolated instances.");
 
-        AttestationClientBuilder attestationBuilder = getAdministrationBuilder(httpClient, clientUri);
+        AttestationAdministrationClientBuilder attestationBuilder = getAdministrationBuilder(httpClient, clientUri);
         PolicyCertificatesAsyncClient client = attestationBuilder.buildPolicyCertificatesAsyncClient();
 
-        String signingCertificateBase64 = getIsolatedSigningCertificate();
-        String signingKeyBase64 = getIsolatedSigningKey();
+        String signingCertificateBase64 = getIsolatedSigningCertificateBase64();
+        String signingKeyBase64 = getIsolatedSigningKeyBase64();
 
-        String newPolicyCertificateBase64 = getPolicySigningCertificate0();
+        String newPolicyCertificateBase64 = getPolicySigningCertificate0Base64();
 
         JWSSigner existingSigner;
         existingSigner = getJwsSigner(signingKeyBase64);
