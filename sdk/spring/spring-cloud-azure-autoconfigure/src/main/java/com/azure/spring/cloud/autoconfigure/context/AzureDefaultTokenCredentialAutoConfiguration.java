@@ -27,7 +27,7 @@ import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.DEF
 /**
  * Auto-configuration for Azure Spring default token credential.
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class AzureDefaultTokenCredentialAutoConfiguration {
 
     private final AzureGlobalProperties azureGlobalProperties;
@@ -35,11 +35,10 @@ public class AzureDefaultTokenCredentialAutoConfiguration {
     public AzureDefaultTokenCredentialAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
         this.azureGlobalProperties = azureGlobalProperties;
     }
-
-    @Bean(name = DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME)
     @ConditionalOnMissingBean(name = DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME)
+    @Bean(name = DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME)
     @Order
-    public TokenCredential springDefaultAzureCredential(AbstractAzureCredentialBuilderFactory<DefaultAzureCredentialBuilder> factory) {
+    public TokenCredential tokenCredential(AbstractAzureCredentialBuilderFactory<DefaultAzureCredentialBuilder> factory) {
         return factory.build().build();
     }
 
@@ -72,7 +71,8 @@ public class AzureDefaultTokenCredentialAutoConfiguration {
             if (bean instanceof AbstractAzureServiceClientBuilderFactory
                 && beanFactory.containsBean(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME)) {
 
-                ((AbstractAzureServiceClientBuilderFactory) bean).setDefaultTokenCredential((TokenCredential) beanFactory.getBean(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME));
+                ((AbstractAzureServiceClientBuilderFactory) bean).setDefaultTokenCredential(
+                    (TokenCredential) beanFactory.getBean(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME));
             }
             return bean;
         }
