@@ -323,7 +323,7 @@ public class BlobClientBase {
                     .map(ByteBuffer::wrap)
                     .zipWith(Mono.just(downloadResponse));
             })
-            .map(tuple2 -> {
+            .flatMap(tuple2 -> {
                 ByteBuffer initialBuffer = tuple2.getT1();
                 BlobDownloadAsyncResponse downloadResponse = tuple2.getT2();
 
@@ -344,7 +344,7 @@ public class BlobClientBase {
                         break;
                     case VERSION_ID:
                         if (versionId == null) {
-                            throw logger.logExceptionAsError(
+                            return FluxUtil.monoError(logger,
                                 new UnsupportedOperationException("Versioning is not supported on this account."));
                         } else {
                             // Target the user specified version by default. If not provided, target the latest version.
@@ -354,12 +354,12 @@ public class BlobClientBase {
                         }
                         break;
                     default:
-                        throw logger.logExceptionAsError(new IllegalArgumentException("Concurrency control type not "
+                        return FluxUtil.monoError(logger, new IllegalArgumentException("Concurrency control type not "
                             + "supported."));
                 }
 
-                return new BlobInputStream(client, range.getOffset(), range.getCount(), chunkSize, initialBuffer,
-                    requestConditions, properties);
+                return Mono.just(new BlobInputStream(client, range.getOffset(), range.getCount(), chunkSize, initialBuffer,
+                    requestConditions, properties));
             }).block();
     }
 
