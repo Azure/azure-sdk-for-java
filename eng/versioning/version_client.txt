@@ -34,7 +34,6 @@
 # com.azure:azure-new-library;2.0.0-beta.1;2.0.0-beta.1 as its initial version tag.
 
 com.azure:azure-sdk-all;1.0.0;1.0.0
-com.azure:azure-sdk-bom;1.0.5;
 com.azure:azure-sdk-parent;1.6.0;1.6.0
 com.azure:azure-client-sdk-parent;1.7.0;1.7.0
 com.azure:azure-ai-anomalydetector;3.0.0-beta.2;3.0.0-beta.3
