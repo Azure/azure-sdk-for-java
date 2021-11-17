@@ -21,11 +21,10 @@ import org.springframework.context.annotation.Configuration;
 @ConditionalOnClass({ QueueServiceAsyncClient.class, HealthIndicator.class })
 @ConditionalOnBean(QueueServiceAsyncClient.class)
 @AutoConfigureAfter(AzureStorageQueueAutoConfiguration.class)
+@ConditionalOnEnabledHealthIndicator("azure-storage")
 public class StorageQueueHealthConfiguration {
 
     @Bean
-    @ConditionalOnEnabledHealthIndicator("azure-storage")
-    @ConditionalOnBean(QueueServiceAsyncClient.class)
     public StorageQueueHealthIndicator storageQueueHealthIndicator(QueueServiceAsyncClient queueServiceAsyncClient) {
         return new StorageQueueHealthIndicator(queueServiceAsyncClient);
     }

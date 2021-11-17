@@ -152,6 +152,11 @@
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
+        <artifactId>spring-cloud-azure-starter-data-cosmos</artifactId>
+        <version>${project.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>com.azure.spring</groupId>
         <artifactId>spring-cloud-azure-starter-eventhubs</artifactId>
         <version>${project.version}</version>
       </dependency>
@@ -192,12 +197,7 @@
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
-        <artifactId>spring-cloud-azure-starter-stream-servicebus-queue</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.azure.spring</groupId>
-        <artifactId>spring-cloud-azure-starter-stream-servicebus-topic</artifactId>
+        <artifactId>spring-cloud-azure-starter-stream-servicebus</artifactId>
         <version>${project.version}</version>
       </dependency>
 
@@ -219,15 +219,16 @@
       </dependency>
       <dependency>
         <groupId>com.azure.spring</groupId>
-        <artifactId>spring-cloud-azure-stream-binder-servicebus-topic</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.azure.spring</groupId>
-        <artifactId>spring-cloud-azure-stream-binder-servicebus-queue</artifactId>
+        <artifactId>spring-cloud-azure-stream-binder-servicebus</artifactId>
         <version>${project.version}</version>
       </dependency>
 
+      <!-- Tracing -->
+      <dependency>
+        <groupId>com.azure.spring</groupId>
+        <artifactId>spring-cloud-azure-trace-sleuth</artifactId>
+        <version>${project.version}</version>
+      </dependency>
 
       <!-- App Configuration -->
       <dependency>

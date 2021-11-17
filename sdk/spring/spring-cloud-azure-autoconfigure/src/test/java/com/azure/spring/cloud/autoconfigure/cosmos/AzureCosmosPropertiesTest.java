@@ -3,6 +3,7 @@
 
 package com.azure.spring.cloud.autoconfigure.cosmos;
 
+import com.azure.spring.cloud.autoconfigure.cosmos.properties.AzureCosmosProperties;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,7 +32,7 @@ class AzureCosmosPropertiesTest {
         AzureCosmosProperties cosmosProperties = new AzureCosmosProperties();
 
         Set<ConstraintViolation<AzureCosmosProperties>> violations = validator.validate(cosmosProperties);
-        Assertions.assertEquals(1, violations.size());
+        Assertions.assertEquals(0, violations.size());
     }
 
     @Test

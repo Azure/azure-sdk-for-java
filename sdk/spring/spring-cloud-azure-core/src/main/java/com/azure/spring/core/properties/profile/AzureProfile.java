@@ -5,15 +5,17 @@ package com.azure.spring.core.properties.profile;
 
 import com.azure.spring.core.aware.AzureProfileAware;
 
+import static com.azure.spring.core.aware.AzureProfileAware.CloudType.AZURE;
+
 /**
  * The AzureProfile defines the properties related to an Azure subscription.
  */
-public class AzureProfile implements AzureProfileAware.Profile {
+public class AzureProfile extends AzureProfileAdapter {
 
     private String tenantId;
     private String subscriptionId;
-    private String cloud = "Azure"; // TODO (xiada) this name
-    private AzureEnvironment environment = AzureEnvironment.AZURE;
+    private AzureProfileAware.CloudType cloud = AZURE;
+    private final AzureEnvironment environment = new KnownAzureEnvironment(AZURE);
 
     public String getTenantId() {
         return tenantId;
@@ -31,15 +33,19 @@ public class AzureProfile implements AzureProfileAware.Profile {
         this.subscriptionId = subscriptionId;
     }
 
-    public String getCloud() {
+    @Override
+    public AzureProfileAware.CloudType getCloud() {
         return cloud;
     }
 
-    public void setCloud(String cloud) {
+    public void setCloud(AzureProfileAware.CloudType cloud) {
         this.cloud = cloud;
-        this.environment = AzureEnvironment.fromAzureCloud(cloud);
+
+        // Explicitly call this method to merge default cloud endpoints to the environment object.
+        changeEnvironmentAccordingToCloud();
     }
 
+    @Override
     public AzureEnvironment getEnvironment() {
         return environment;
     }

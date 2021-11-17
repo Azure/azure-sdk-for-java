@@ -7,6 +7,7 @@ import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
+import com.azure.spring.cloud.autoconfigure.appconfiguration.properties.AzureAppConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.core.AzureSpringIdentifier;
@@ -22,7 +23,7 @@ import org.springframework.context.annotation.Bean;
  */
 @ConditionalOnClass(ConfigurationClientBuilder.class)
 @ConditionalOnProperty(value = "spring.cloud.azure.appconfiguration.enabled", havingValue = "true", matchIfMissing = true)
-@ConditionalOnAnyProperty(prefix = "spring.cloud.azure.appconfiguration", name = "endpoint")
+@ConditionalOnAnyProperty(prefix = "spring.cloud.azure.appconfiguration", name = {"endpoint", "connection-string"})
 public class AzureAppConfigurationAutoConfiguration extends AzureServiceConfigurationBase {
 
     public AzureAppConfigurationAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {

@@ -4,14 +4,14 @@
 package com.azure.spring.eventhubs.core.properties;
 
 import com.azure.spring.core.aware.authentication.ConnectionStringAware;
-import com.azure.spring.core.connectionstring.implementation.EventHubConnectionString;
-import com.azure.spring.core.properties.AbstractAzureSdkProperties;
-import com.azure.spring.service.eventhubs.properties.EventHubCommonDescriptor;
+import com.azure.spring.core.connectionstring.implementation.EventHubsConnectionString;
+import com.azure.spring.core.properties.AbstractAzureAmqpSdkProperties;
+import com.azure.spring.service.eventhubs.properties.EventHubsCommonDescriptor;
 
 /**
  * Common properties shared by event hub namespace, a producer, and a consumer.
  */
-abstract class CommonProperties extends AbstractAzureSdkProperties implements EventHubCommonDescriptor, ConnectionStringAware {
+abstract class CommonProperties extends AbstractAzureAmqpSdkProperties implements EventHubsCommonDescriptor, ConnectionStringAware {
 
 
     private String domainName = "servicebus.windows.net";
@@ -24,14 +24,14 @@ abstract class CommonProperties extends AbstractAzureSdkProperties implements Ev
         if (this.connectionString == null) {
             return null;
         }
-        return new EventHubConnectionString(this.connectionString).getFullyQualifiedNamespace();
+        return new EventHubsConnectionString(this.connectionString).getFullyQualifiedNamespace();
     }
 
     private String extractEventHubNameFromConnectionString() {
         if (this.connectionString == null) {
             return null;
         }
-        return new EventHubConnectionString(this.connectionString).getEntityPath();
+        return new EventHubsConnectionString(this.connectionString).getEntityPath();
     }
 
 

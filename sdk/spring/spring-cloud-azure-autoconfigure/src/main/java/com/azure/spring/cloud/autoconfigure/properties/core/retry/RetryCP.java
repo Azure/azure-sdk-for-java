@@ -4,7 +4,7 @@
 package com.azure.spring.cloud.autoconfigure.properties.core.retry;
 
 import com.azure.spring.core.aware.RetryAware;
-import com.azure.spring.core.properties.retry.BackoffProperties;
+import org.springframework.boot.context.properties.NestedConfigurationProperty;
 
 import java.time.Duration;
 
@@ -13,13 +13,14 @@ import java.time.Duration;
  */
 public class RetryCP implements RetryAware.Retry {
 
+    @NestedConfigurationProperty
     private final Backoff backoff = new Backoff();
     /**
-     * The maximum number of attempts
+     * The maximum number of attempts.
      */
     private Integer maxAttempts;
     /**
-     * How long to wait until a timeout
+     * Amount of time to wait until a timeout.
      */
     private Duration timeout;
 
@@ -46,7 +47,43 @@ public class RetryCP implements RetryAware.Retry {
     /**
      * Backoff properties when a retry fails.
      */
-    public static class Backoff extends BackoffProperties {
+    public static class Backoff implements RetryAware.Backoff {
+        /**
+         * Amount of time to wait between retry attempts.
+         */
+        private Duration delay;
+        /**
+         * Maximum permissible amount of time between retry attempts.
+         */
+        private Duration maxDelay;
+        /**
+         * Multiplier used to calculate the next backoff delay. If positive, then used as a multiplier for generating
+         * the next delay for backoff.
+         */
+        private Double multiplier;
 
+        public Duration getDelay() {
+            return delay;
+        }
+
+        public void setDelay(Duration delay) {
+            this.delay = delay;
+        }
+
+        public Duration getMaxDelay() {
+            return maxDelay;
+        }
+
+        public void setMaxDelay(Duration maxDelay) {
+            this.maxDelay = maxDelay;
+        }
+
+        public Double getMultiplier() {
+            return multiplier;
+        }
+
+        public void setMultiplier(Double multiplier) {
+            this.multiplier = multiplier;
+        }
     }
 }
