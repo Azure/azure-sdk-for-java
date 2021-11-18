@@ -3863,9 +3863,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         Integer maxItemCount = ModelBridgeInternal.getMaxItemCountFromQueryRequestOptions(options);
         int maxPageSize = maxItemCount != null ? maxItemCount : -1;
         final CosmosQueryRequestOptions finalCosmosQueryRequestOptions = options;
-
         DocumentClientRetryPolicy retryPolicy = this.resetSessionTokenRetryPolicy.getRequestPolicy();
-
         BiFunction<String, Integer, RxDocumentServiceRequest> createRequestFunc = (continuationToken, pageSize) -> {
             Map<String, String> requestHeaders = new HashMap<>();
             if (continuationToken != null) {
@@ -3874,7 +3872,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             requestHeaders.put(HttpConstants.HttpHeaders.PAGE_SIZE, Integer.toString(pageSize));
             RxDocumentServiceRequest request =  RxDocumentServiceRequest.create(this,
                 OperationType.ReadFeed, resourceType, resourceLink, requestHeaders, finalCosmosQueryRequestOptions);
-
             retryPolicy.onBeforeSendRequest(request);
             return request;
         };
@@ -4137,9 +4134,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         return collectionObs.flatMap(documentCollectionResourceResponse -> {
             final DocumentCollection collection = documentCollectionResourceResponse.v;
-
-            logger.info("collection is [{}]", collection != null ? collection.toJson(): null);
-
             if (collection == null) {
                 throw new IllegalStateException("Collection cannot be null");
             }
