@@ -3,6 +3,7 @@
 
 package com.azure.spring.eventhubs.checkpoint;
 
+import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 import com.azure.spring.messaging.checkpoint.CheckpointMode;
 import org.slf4j.Logger;
@@ -14,7 +15,7 @@ import org.springframework.util.Assert;
  *
  * @author Warren Zhu
  */
-public class ManualCheckpointManager extends CheckpointManager {
+public class ManualCheckpointManager extends EventCheckpointManager {
     private static final Logger LOG = LoggerFactory.getLogger(ManualCheckpointManager.class);
 
     ManualCheckpointManager(CheckpointConfig checkpointConfig) {
@@ -25,5 +26,10 @@ public class ManualCheckpointManager extends CheckpointManager {
 
     protected Logger getLogger() {
         return LOG;
+    }
+
+    @Override
+    public void checkpoint(EventContext context) {
+
     }
 }

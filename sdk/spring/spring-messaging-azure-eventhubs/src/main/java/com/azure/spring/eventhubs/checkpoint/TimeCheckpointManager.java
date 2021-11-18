@@ -3,7 +3,6 @@
 
 package com.azure.spring.eventhubs.checkpoint;
 
-import com.azure.messaging.eventhubs.EventData;
 import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.spring.messaging.checkpoint.CheckpointConfig;
 import com.azure.spring.messaging.checkpoint.CheckpointMode;
@@ -21,7 +20,7 @@ import java.util.concurrent.atomic.AtomicReference;
  *
  * @author Warren Zhu
  */
-class TimeCheckpointManager extends CheckpointManager {
+class TimeCheckpointManager extends EventCheckpointManager {
     private static final Logger LOG = LoggerFactory.getLogger(TimeCheckpointManager.class);
     private final AtomicReference<LocalDateTime> lastCheckpointTime = new AtomicReference<>(LocalDateTime.now());
 
@@ -31,22 +30,23 @@ class TimeCheckpointManager extends CheckpointManager {
             () -> "TimeCheckpointManager should have checkpointMode time");
     }
 
-    public void onMessage(EventContext context, EventData eventData) {
+    @Override
+    protected Logger getLogger() {
+        return LOG;
+    }
+
+    @Override
+    public void checkpoint(EventContext context) {
         LocalDateTime now = LocalDateTime.now();
         if (Duration.between(this.lastCheckpointTime.get(), now)
             .compareTo(this.checkpointConfig.getInterval()) > 0) {
             context.updateCheckpointAsync()
-                .doOnError(t -> logCheckpointFail(context, eventData, t))
+                .doOnError(t -> logCheckpointFail(context, context.getEventData(), t))
                 .doOnSuccess(v -> {
-                    logCheckpointSuccess(context, eventData);
+                    logCheckpointSuccess(context, context.getEventData());
                     lastCheckpointTime.set(now);
                 })
                 .subscribe();
         }
-    }
-
-    @Override
-    protected Logger getLogger() {
-        return LOG;
     }
 }

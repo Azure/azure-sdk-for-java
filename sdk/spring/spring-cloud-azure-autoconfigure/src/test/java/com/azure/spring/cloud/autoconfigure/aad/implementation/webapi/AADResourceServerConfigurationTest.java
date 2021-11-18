@@ -32,6 +32,7 @@ class AADResourceServerConfigurationTest {
     @Test
     void testCreateJwtDecoderByJwkKeySetUri() {
         resourceServerContextRunner()
+            .withPropertyValues("spring.cloud.azure.active-directory.enabled=true")
             .run(context -> {
                 final JwtDecoder jwtDecoder = context.getBean(JwtDecoder.class);
                 assertThat(jwtDecoder).isNotNull();
@@ -42,6 +43,7 @@ class AADResourceServerConfigurationTest {
     @Test
     void testNotAudienceDefaultValidator() {
         resourceServerContextRunner()
+            .withPropertyValues("spring.cloud.azure.active-directory.enabled=true")
             .run(context -> {
                 AADResourceServerConfiguration bean = context
                     .getBean(AADResourceServerConfiguration.class);
@@ -54,6 +56,7 @@ class AADResourceServerConfigurationTest {
     @Test
     void testExistAudienceDefaultValidator() {
         resourceServerContextRunner()
+            .withPropertyValues("spring.cloud.azure.active-directory.enabled=true")
             .run(context -> {
                 AADResourceServerConfiguration bean = context
                     .getBean(AADResourceServerConfiguration.class);
@@ -66,6 +69,7 @@ class AADResourceServerConfigurationTest {
     @Test
     void testCreateWebSecurityConfigurerAdapter() {
         resourceServerContextRunner()
+            .withPropertyValues("spring.cloud.azure.active-directory.enabled=true")
             .run(context -> {
                 WebSecurityConfigurerAdapter webSecurityConfigurerAdapter = context
                     .getBean(AADResourceServerConfiguration.DefaultAADResourceServerWebSecurityConfigurerAdapter.class);

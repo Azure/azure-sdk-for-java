@@ -32,7 +32,7 @@ class UserPrincipalManagerTest {
     @BeforeAll
     static void setupClass() throws Exception {
         final X509Certificate cert = (X509Certificate) CertificateFactory.getInstance("X.509")
-                                                                         .generateCertificate(Files.newInputStream(Paths.get("src/test/resources/test-public-key.txt")));
+                                                                         .generateCertificate(Files.newInputStream(Paths.get("src/test/resources/aad/test-public-key.txt")));
         immutableJWKSet = new ImmutableJWKSet<>(new JWKSet(JWK.parse(
             cert)));
     }
@@ -45,7 +45,7 @@ class UserPrincipalManagerTest {
         userPrincipalManager = new UserPrincipalManager(immutableJWKSet);
         final UserPrincipal userPrincipal = userPrincipalManager.buildUserPrincipal(
             new String(Files.readAllBytes(
-                Paths.get("src/test/resources/jwt-signed.txt")), StandardCharsets.UTF_8));
+                Paths.get("src/test/resources/aad/jwt-signed.txt")), StandardCharsets.UTF_8));
         assertThat(userPrincipal).isNotNull().extracting(UserPrincipal::getIssuer, UserPrincipal::getSubject)
                                  .containsExactly("https://sts.windows.net/test", "test@example.com");
     }
@@ -75,12 +75,12 @@ class UserPrincipalManagerTest {
 
     private String readJwtValidIssuerTxt() throws IOException {
         return new String(Files.readAllBytes(
-            Paths.get("src/test/resources/jwt-null-issuer.txt")), StandardCharsets.UTF_8);
+            Paths.get("src/test/resources/aad/jwt-null-issuer.txt")), StandardCharsets.UTF_8);
     }
 
     private static Stream<String> readJwtValidIssuerTxtStream() throws IOException {
         return Stream.of(new String(Files.readAllBytes(
-            Paths.get("src/test/resources/jwt-valid-issuer.txt")), StandardCharsets.UTF_8));
+            Paths.get("src/test/resources/aad/jwt-valid-issuer.txt")), StandardCharsets.UTF_8));
     }
 
 }

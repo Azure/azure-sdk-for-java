@@ -58,6 +58,7 @@ public class WebApplicationContextRunnerUtils {
 
     public static String[] withWebApplicationOrResourceServerWithOboPropertyValues() {
         return new String[] {
+            "spring.cloud.azure.active-directory.enabled = true",
             "spring.cloud.azure.active-directory.client-id = fake-client-id",
             "spring.cloud.azure.active-directory.client-secret = fake-client-secret",
             "spring.cloud.azure.active-directory.tenant-id = fake-tenant-id"};

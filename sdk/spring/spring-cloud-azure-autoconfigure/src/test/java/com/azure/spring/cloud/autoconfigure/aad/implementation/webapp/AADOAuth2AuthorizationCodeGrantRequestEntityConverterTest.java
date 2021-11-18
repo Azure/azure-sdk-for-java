@@ -3,8 +3,8 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.implementation.webapp;
 
-import com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2.AADClientRegistrationRepository;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.WebApplicationContextRunnerUtils;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2.AADClientRegistrationRepository;
 import org.hamcrest.Matcher;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
@@ -32,6 +32,7 @@ class AADOAuth2AuthorizationCodeGrantRequestEntityConverterTest {
         return WebApplicationContextRunnerUtils
             .webApplicationContextRunner()
             .withPropertyValues(
+                "spring.cloud.azure.active-directory.enabled = true",
                 "spring.cloud.azure.active-directory.base-uri = fake-uri",
                 "spring.cloud.azure.active-directory.authorization-clients.graph.scopes = Graph.Scope",
                 "spring.cloud.azure.active-directory.authorization-clients.arm.scopes = Arm.Scope",

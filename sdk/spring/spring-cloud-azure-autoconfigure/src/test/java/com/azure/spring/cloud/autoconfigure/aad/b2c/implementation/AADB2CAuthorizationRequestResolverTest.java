@@ -51,28 +51,32 @@ class AADB2CAuthorizationRequestResolverTest {
 
     @Test
     void testAutoConfigurationBean() {
-        getContextRunner().run(c -> {
-            String requestUri = "/fake-url";
-            HttpServletRequest request = getHttpServletRequest(requestUri);
-            final String registrationId = AADB2CConstants.TEST_SIGN_UP_OR_IN_NAME;
-            final AADB2CAuthorizationRequestResolver resolver = c.getBean(AADB2CAuthorizationRequestResolver.class);
+        getContextRunner()
+            .withPropertyValues("spring.cloud.azure.active-directory.b2c.enabled=true")
+            .run(c -> {
+                String requestUri = "/fake-url";
+                HttpServletRequest request = getHttpServletRequest(requestUri);
+                final String registrationId = AADB2CConstants.TEST_SIGN_UP_OR_IN_NAME;
+                final AADB2CAuthorizationRequestResolver resolver = c.getBean(AADB2CAuthorizationRequestResolver.class);
 
-            Assertions.assertNotNull(resolver);
-            Assertions.assertNull(resolver.resolve(request));
-            Assertions.assertNull(resolver.resolve(request, registrationId));
+                Assertions.assertNotNull(resolver);
+                Assertions.assertNull(resolver.resolve(request));
+                Assertions.assertNull(resolver.resolve(request, registrationId));
 
-            requestUri = "/oauth2/authorization/" + AADB2CConstants.TEST_SIGN_UP_OR_IN_NAME;
-            request = getHttpServletRequest(requestUri);
+                requestUri = "/oauth2/authorization/" + AADB2CConstants.TEST_SIGN_UP_OR_IN_NAME;
+                request = getHttpServletRequest(requestUri);
 
-            Assertions.assertNotNull(resolver.resolve(request));
-            Assertions.assertNotNull(resolver.resolve(request, registrationId));
+                Assertions.assertNotNull(resolver.resolve(request));
+                Assertions.assertNotNull(resolver.resolve(request, registrationId));
 
-            Assertions.assertEquals(resolver.resolve(request).getAdditionalParameters().get("p"), AADB2CConstants.TEST_SIGN_UP_OR_IN_NAME);
-            Assertions.assertEquals(resolver.resolve(request).getAdditionalParameters().get(AADB2CConstants.PROMPT), AADB2CConstants.TEST_PROMPT);
-            Assertions.assertEquals(resolver.resolve(request).getAdditionalParameters().get(AADB2CConstants.LOGIN_HINT), AADB2CConstants.TEST_LOGIN_HINT);
-            Assertions.assertEquals((resolver.resolve(request).getClientId()), AADB2CConstants.TEST_CLIENT_ID);
-            Assertions.assertEquals((resolver.resolve(request).getGrantType()), AuthorizationGrantType.AUTHORIZATION_CODE);
-            Assertions.assertTrue(resolver.resolve(request).getScopes().containsAll(Arrays.asList("openid", AADB2CConstants.TEST_CLIENT_ID)));
-        });
+                Assertions.assertEquals(resolver.resolve(request).getAdditionalParameters().get("p"),
+                    AADB2CConstants.TEST_SIGN_UP_OR_IN_NAME);
+                Assertions.assertEquals(resolver.resolve(request).getAdditionalParameters().get(AADB2CConstants.PROMPT), AADB2CConstants.TEST_PROMPT);
+                Assertions.assertEquals(resolver.resolve(request).getAdditionalParameters().get(AADB2CConstants.LOGIN_HINT), AADB2CConstants.TEST_LOGIN_HINT);
+                Assertions.assertEquals((resolver.resolve(request).getClientId()), AADB2CConstants.TEST_CLIENT_ID);
+                Assertions.assertEquals((resolver.resolve(request).getGrantType()),
+                    AuthorizationGrantType.AUTHORIZATION_CODE);
+                Assertions.assertTrue(resolver.resolve(request).getScopes().containsAll(Arrays.asList("openid", AADB2CConstants.TEST_CLIENT_ID)));
+            });
     }
 }

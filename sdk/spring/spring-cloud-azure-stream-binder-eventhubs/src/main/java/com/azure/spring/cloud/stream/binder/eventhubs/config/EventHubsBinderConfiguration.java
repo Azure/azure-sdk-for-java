@@ -63,11 +63,11 @@ public class EventHubsBinderConfiguration {
     public EventHubsMessageChannelBinder eventHubBinder(EventHubsChannelProvisioner channelProvisioner,
                                                         EventHubsExtendedBindingProperties bindingProperties,
                                                         ObjectProvider<NamespaceProperties> namespaceProperties,
-                                                        CheckpointStore checkpointStore) {
+                                                        ObjectProvider<CheckpointStore> checkpointStores) {
         EventHubsMessageChannelBinder binder = new EventHubsMessageChannelBinder(null, channelProvisioner);
         binder.setBindingProperties(bindingProperties);
         binder.setNamespaceProperties(namespaceProperties.getIfAvailable());
-        binder.setCheckpointStore(checkpointStore);
+        checkpointStores.ifAvailable(binder::setCheckpointStore);
         return binder;
     }
 

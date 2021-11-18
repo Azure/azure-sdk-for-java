@@ -46,7 +46,7 @@ public class ProcessorPropertiesParentMerger implements ParentMerger<ProcessorPr
         propertyMapper.from(child.getMaxConcurrentSessions()).to(properties::setMaxConcurrentSessions);
         propertyMapper.from(child.getMaxConcurrentCalls()).to(properties::setMaxConcurrentCalls);
 
-        propertyMapper.from(child.getSessionAware()).to(properties::setSessionAware);
+        propertyMapper.from(child.getSessionEnabled()).to(properties::setSessionAware);
         propertyMapper.from(child.getAutoComplete()).to(properties::setAutoComplete);
         propertyMapper.from(child.getPrefetchCount()).to(properties::setPrefetchCount);
         propertyMapper.from(child.getSubQueue()).to(properties::setSubQueue);

@@ -19,8 +19,9 @@ import com.azure.spring.core.properties.AzureProperties;
 import com.azure.spring.core.properties.util.PropertyMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import java.time.Duration;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -110,8 +111,9 @@ public abstract class AbstractAzureCredentialBuilderFactory<T extends Credential
 
     @Override
     protected List<AuthenticationDescriptor<?>> getAuthenticationDescriptors(T builder) {
-        return new ArrayList<>();
+        return Collections.emptyList();
     }
+
 
     @Override
     protected BiConsumer<T, TokenCredential> consumeDefaultTokenCredential() {
