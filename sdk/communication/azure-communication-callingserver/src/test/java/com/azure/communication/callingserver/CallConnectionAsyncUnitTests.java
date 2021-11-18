@@ -129,6 +129,30 @@ public class CallConnectionAsyncUnitTests {
     }
 
     @Test
+    public void deleteAsync() {
+        CallConnectionAsync callConnectionAsync = getCallConnectionAsync(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>(generateCreateCallResult(CALL_CONNECTION_ID), 201),
+                new SimpleEntry<String, Integer>("", 202)
+            )));
+
+        callConnectionAsync.delete().block();
+    }
+
+    @Test
+    public void deleteAsyncWithResponse() {
+        CallConnectionAsync callConnectionAsync = getCallConnectionAsync(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>(generateCreateCallResult(CALL_CONNECTION_ID), 201),
+                new SimpleEntry<String, Integer>("", 202)
+            )));
+
+        Response<Void> deleteResponse = callConnectionAsync.deleteWithResponse(Context.NONE).block();
+
+        assertEquals(202, deleteResponse.getStatusCode());
+    }
+
+    @Test
     public void cancelAllMediaOperationsAsync() {
         CallConnectionAsync callConnectionAsync = getCallConnectionAsync(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(

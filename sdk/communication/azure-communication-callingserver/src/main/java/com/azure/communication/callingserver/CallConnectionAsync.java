@@ -218,6 +218,48 @@ public final class CallConnectionAsync {
     }
 
     /**
+     * Terminates the conversation for all participants in the call.
+     *
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful call termination request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Void> delete() {
+        try {
+            return callConnectionInternal.deleteCallAsync(callConnectionId)
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .flatMap(result -> Mono.empty());
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Terminates the conversation for all participants in the call.
+     *
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful call termination request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<Void>> deleteWithResponse() {
+        return hangupWithResponse(Context.NONE);
+    }
+
+    Mono<Response<Void>> deleteWithResponse(Context context) {
+        try {
+            return withContext(contextValue -> {
+                contextValue = context == null ? contextValue : context;
+                return callConnectionInternal.deleteCallWithResponseAsync(callConnectionId, contextValue)
+                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
+            });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
      * Cancel all media operations in the call.
      *
      * @throws CallingServerErrorException thrown if the request is rejected by server.

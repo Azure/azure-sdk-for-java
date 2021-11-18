@@ -128,6 +128,30 @@ public class CallConnectionUnitTests {
     }
 
     @Test
+    public void delete() {
+        CallConnection callConnection = getCallConnection(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>(generateCreateCallResult(CALL_CONNECTION_ID), 201),
+                new SimpleEntry<String, Integer>("", 202)
+            )));
+
+        callConnection.delete();
+    }
+
+    @Test
+    public void deleteWithResponse() {
+        CallConnection callConnection = getCallConnection(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>(generateCreateCallResult(CALL_CONNECTION_ID), 201),
+                new SimpleEntry<String, Integer>("", 202)
+            )));
+
+        Response<Void> deleteResponse = callConnection.deleteWithResponse(Context.NONE);
+
+        assertEquals(202, deleteResponse.getStatusCode());
+    }
+
+    @Test
     public void cancelAllMediaOperations() {
         CallConnection callConnection = getCallConnection(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(

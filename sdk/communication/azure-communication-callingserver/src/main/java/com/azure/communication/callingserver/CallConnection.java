@@ -105,6 +105,31 @@ public final class CallConnection {
     }
 
     /**
+     * Terminates the conversation for all participants in the call.
+     *
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful call termination request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete() {
+        callConnectionAsync.delete().block();
+    }
+
+    /**
+     * Terminates the conversation for all participants in the call.
+     *
+     * @param context A {@link Context} representing the request context.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful call termination request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> deleteWithResponse(Context context) {
+        return callConnectionAsync.deleteWithResponse(context).block();
+    }
+
+    /**
      * Cancel all media operations in the call.
      *
      * @throws CallingServerErrorException thrown if the request is rejected by server.
