@@ -113,8 +113,8 @@ new artifacts to better serve some scenarios.
 | azure-spring-cloud-stream-binder-eventhubs        | spring-cloud-azure-stream-binder-eventhubs                   | This artifact has been refactored using new redesign, mainly `spring-cloud-azure-stream-binder-eventhubs` and `spring-cloud-azure-stream-binder-eventhubs-core`.
 | N/A                                               | spring-cloud-azure-stream-binder-eventhubs-core                   |                                                              |
 | azure-spring-cloud-stream-binder-service-core  | spring-cloud-azure-stream-binder-servicebus-core             |                                                              |
-| azure-spring-cloud-stream-binder-servicebus-queue | // TODO                                                      |                                                              |
-| azure-spring-cloud-stream-binder-servicebus-topic | // TODO                                                      |                                                              |
+| azure-spring-cloud-stream-binder-servicebus-queue | spring-cloud-azure-stream-binder-servicebus                                                      |                                                              |
+| azure-spring-cloud-stream-binder-servicebus-topic | spring-cloud-azure-stream-binder-servicebus                                                      |                                                              |
 | azure-spring-integration-core                     | spring-integration-azure-core                                |                                                              |
 | azure-spring-integration-eventhubs                | spring-integration-azure-eventhubs                           |                                                              |
 | azure-spring-integration-servicebus               | spring-integration-azure-servicebus                          |                                                              |
@@ -165,100 +165,173 @@ configurations can be divided into five categories:
 
 For a full list of common configurations, check this list **[placeholder]**.
 
+
+new entrys not supported in the legacy 
+#### azure-spring-cloud-stream-binder-servicebus-queue
+|  Modern Spring Cloud Azure 4.0 | description
+|:---|:---
+| `spring.cloud.azure.servicebus.entity-type`|` ` |
+|`spring.cloud.stream.bindings.topicConsume-in-0.group` | ` `
+
+
 ### Each SDK configurations
 
-#### azure-spring-cloud-starter-eventhubs
-#### azure-spring-integration-eventhubs
-#### azure-spring-cloud-stream-binder-eventhubs
+#### 1.azure-spring-cloud-stream-binder-servicebus-queue
 
-- For checkpoint account settings:
-
-`Notes`: prefix changed from
-`spring.cloud.azure.eventhub.`
-to
-`spring.cloud.azure.eventhubs.`
-
-|  Legacy | Modern Spring Cloud Azure 4.0
- |:---|:---
-|`checkpoint-storage-account`|`processor.checkpoint-store.account-name`
-|`checkpoint-access-key`|`processor.checkpoint-store.account-key`
-|`checkpoint-container`|`processor.checkpoint-store.container-name`
-for example, you should change from:
-```yaml
-spring:
-  cloud:
-    azure:
-      eventhub:
-        connection-string: [eventhub-namespace-connection-string]
-        checkpoint-storage-account: [checkpoint-storage-account]
-        checkpoint-access-key: [checkpoint-access-key]
-        checkpoint-container: [checkpoint-container]
+##### Step01:  Dependency Changed
+You should change from
+```xml
+  <dependency>
+     <groupId>com.azure.spring</groupId>
+     <artifactId>azure-spring-cloud-stream-binder-servicebus-queue</artifactId>
+  </dependency>
 ```
 to:
-```yaml
-spring:
-  cloud:
-    azure:
-      eventhubs:
-        connection-string: [eventhub-namespace-connection-string]
-        processor:
-          checkpoint-store:
-            container-name: [checkpoint-container]
-            account-name: [checkpoint-storage-account]
-            account-key: [checkpoint-access-key]
+```xml
+  <dependency>
+     <groupId>com.azure.spring</groupId>
+     <artifactId>spring-cloud-azure-stream-binder-servicebus</artifactId>
+  </dependency>
+
 ```
+##### Step02:  Properties Configuration Changed
 
-- For batch consume settings:
-
-   `Note`: the prefix `spring.cloud.stream.bindings.<binding-name>.consumer.` is omitted for simplicity.
-
-|  Legacy | Modern Spring Cloud Azure 4.0
- |:---|:---
-|`batch-mode`|`batch.mode`
-
-- For additional consumer batch settings and checkpoint settings
-
-`Notes`: prefix changed from
-    `spring.cloud.stream.eventhub.bindings.<binding-name>.`
-    to
-    `spring.cloud.stream.eventhubs.bindings.<binding-name>.`
-    
 
 |  Legacy | Modern Spring Cloud Azure 4.0
 |:---|:---
-|`consumer.max-batch-size` | `consumer.batch.max-size`
-|`consumer.max-wait-time`|`consumer.batch.max-wait-time`
-|`consumer.checkpoint-mode`|`consumer.checkpoint.mode`
-For example, you should change from:
+|`spring.cloud.stream.bindings.consume1-in-0` | `spring.cloud.stream.bindings.topicConsume-in-0`
+|`spring.cloud.stream.bindings.supply1-out-0`|`spring.cloud.stream.bindings.topicSupply-out-0`
+|`spring.cloud.stream.bindings.consume2-in-0` | `spring.cloud.stream.bindings.queueConsume-in-0`
+|`spring.cloud.stream.bindings.supply1-out-0`|`spring.cloud.stream.bindings.topicSupply-out-0`
+|`spring.cloud.stream.servicebus.queue.bindings.consume1-in-0.consumer.checkpoint-mode` | `spring.cloud.stream.servicebus.bindings.topicSupply-out-0.producer.entity-type`
+|`spring.cloud.stream.servicebus.queue.bindings.consume2-in-0.consumer.checkpoint-mode`|`spring.cloud.stream.servicebus.bindings.queueSupply-out-0.producer.entity-type`
+
+- If you use the Spring Cloud Stream binder for Azure Service Bus queue，now your properties configuration should be changed to:
+
 ```yaml
 spring:
-  cloud:
-    stream:
-      eventhub:
-        bindings:
-            <binding-name>:
-                consumer:
-                  max-batch-size: [max-batch-size]
-                  max-wait-time: [max-wait-time]
-                  checkpoint-mode: [check-point-mode]
+    cloud:
+        azure:
+            servicebus:
+                connection-string: [servicebus-namespace-connection-string]
+                entity-type: queue
+        stream:
+            function:
+                definition: consume;supply
+            bindings:
+                consume-in-0:
+                    destination: [servicebus-queue-name]
+                supply-out-0:
+                    destination: [servicebus-queue-name-same-as-above]
+            servicebus:
+                queue:
+                    bindings:
+                        consume-in-0:
+                            consumer:
+                                checkpoint-mode: MANUAL
+            poller:
+                fixed-delay: 1000
+                initial-delay: 0
+
 ```
-to:
+ - If you use the Spring Cloud Stream Binder for multiple Azure Service Bus namespaces,now your properties configuration should be changed to:
 ```yaml
 spring:
-  cloud:
-    stream:
-      eventhubs:
-        bindings:
-            <binding-name>:
-                consumer:
-                  batch:
-                    max-size: [max-batch-size]
-                    max-wait-time: [max-wait-time]
-                  checkpoint:
-                    mode: [check-point-mode]
+    cloud:
+        stream:
+            function:
+                definition: queueConsume;queueSupply;topicConsume;topicSupply;
+            bindings:
+                topicConsume-in-0:
+                    destination: [servicebus-topic-1-name]
+                    group: [topic-subscription-name]
+                topicSupply-out-0:
+                    destination: [servicebus-topic-1-name]
+                queueConsume-in-0:
+                    binder: servicebus-2
+                    destination: [servicebus-queue-1-name]
+                queueSupply-out-0:
+                    binder: servicebus-2
+                    destination: [servicebus-queue-1-name]
+            binders:
+                servicebus-1:
+                    type: servicebus
+                    default-candidate: true
+                    environment:
+                        spring:
+                            cloud:
+                                azure:
+                                    servicebus:
+                                        connection-string: [servicebus-namespace-1-connection-string]
+                servicebus-2:
+                    type: servicebus
+                    default-candidate: false
+                    environment:
+                        spring:
+                            cloud:
+                                azure:
+                                    servicebus:
+                                        connection-string: [servicebus-namespace-2-connection-string]
+            servicebus:
+                bindings:
+                    topicSupply-out-0:
+                        producer:
+                            entity-type: topic
+                    queueSupply-out-0:
+                        producer:
+                            entity-type: queue
+            poller:
+              initial-delay: 0
+              fixed-delay: 1000
 ```
 
- 
+#### 2.azure-spring-cloud-stream-binder-servicebus-topic
+
+##### Step01:  Dependency Changed
+You should change from
+```xml
+  <dependency>
+     <groupId>com.azure.spring</groupId>
+     <artifactId>azure-spring-cloud-stream-binder-servicebus-queue</artifactId>
+  </dependency>
+```
+to:
+```xml
+  <dependency>
+     <groupId>com.azure.spring</groupId>
+     <artifactId>spring-cloud-azure-stream-binder-servicebus</artifactId>
+  </dependency>
+
+```
+
+##### Step02:  Properties Configuration Changed
+
+- Now your properties configuration should be changed to:
+```yaml
+spring:
+    cloud:
+        azure:
+            servicebus:
+                connection-string: [servicebus-namespace-connection-string]
+                entity-type: topic
+        stream:
+            function:
+                definition: consume;supply
+            bindings:
+                consume-in-0:
+                    destination: [servicebus-topic-name]
+                supply-out-0:
+                    destination: [servicebus-topic-name-same-as-above]
+            servicebus:
+                queue:
+                    bindings:
+                        consume-in-0:
+                            consumer:
+                                checkpoint-mode: MANUAL
+            poller:
+                fixed-delay: 1000
+                initial-delay: 0
+```
 
 ## API breaking changes
 
