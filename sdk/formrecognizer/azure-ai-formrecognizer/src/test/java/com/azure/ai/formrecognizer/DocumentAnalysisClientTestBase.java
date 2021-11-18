@@ -10,6 +10,7 @@ import com.azure.ai.formrecognizer.models.DocumentFieldType;
 import com.azure.ai.formrecognizer.models.DocumentPage;
 import com.azure.ai.formrecognizer.models.DocumentSelectionMark;
 import com.azure.ai.formrecognizer.models.DocumentTable;
+import com.azure.ai.formrecognizer.models.FormRecognizerAudience;
 import com.azure.ai.formrecognizer.models.LengthUnit;
 import com.azure.ai.formrecognizer.models.SelectionMarkState;
 import com.azure.core.credential.AzureKeyCredential;
@@ -64,7 +65,8 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion)
-            .addPolicy(interceptorManager.getRecordPolicy());
+            .addPolicy(interceptorManager.getRecordPolicy())
+            .audience(getAudience(getEndpoint()));
 
 
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -87,7 +89,9 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion)
-            .addPolicy(interceptorManager.getRecordPolicy());
+            .addPolicy(interceptorManager.getRecordPolicy())
+            .audience(getAudience(getEndpoint()));
+
 
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new AzureKeyCredential(INVALID_KEY));
@@ -807,4 +811,18 @@ public abstract class DocumentAnalysisClientTestBase extends TestBase {
         return interceptorManager.isPlaybackMode()
             ? "https://localhost:8080" : AZURE_FORM_RECOGNIZER_ENDPOINT_CONFIGURATION;
     }
+
+    private FormRecognizerAudience getAudience(String endpoint) {
+        if (endpoint == null) {
+            return FormRecognizerAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD;
+        }
+        if (endpoint.contains(".azurecr.cn")) {
+            return FormRecognizerAudience.AZURE_RESOURCE_MANAGER_CHINA;
+        }
+        if (endpoint.contains(".azurecr.us")) {
+            return FormRecognizerAudience.AZURE_RESOURCE_MANAGER_GOVERNMENT;
+        }
+        return FormRecognizerAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD;
+    }
+
 }
