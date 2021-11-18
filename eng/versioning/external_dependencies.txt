@@ -158,7 +158,6 @@ pl.pragmatists:JUnitParams;1.1.1
 ## Test dependency versions
 org.objenesis:objenesis;3.1
 cglib:cglib-nodep;3.2.7
-com.alibaba:fastjson;1.2.61
 com.github.cverges.expect4j:expect4j;1.6
 com.github.docker-java:docker-java;3.2.1
 com.github.tomakehurst:wiremock-standalone;2.24.1

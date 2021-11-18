@@ -3,20 +3,19 @@
 
 package com.azure.spring.service.storage.common;
 
+import com.azure.spring.core.aware.authentication.ConnectionStringAware;
 import com.azure.spring.core.aware.authentication.SasTokenAware;
 import com.azure.spring.core.properties.AzureProperties;
 
 /**
  * Common properties for all Azure Storage services.
  */
-public interface StorageProperties extends AzureProperties, SasTokenAware {
+public interface StorageProperties extends AzureProperties, SasTokenAware, ConnectionStringAware {
 
     String getEndpoint();
 
     String getAccountName();
 
     String getAccountKey();
-
-    String getConnectionString();
 
 }

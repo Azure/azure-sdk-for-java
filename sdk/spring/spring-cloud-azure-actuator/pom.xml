@@ -85,13 +85,6 @@
       <version>12.11.2</version> <!-- {x-version-update;com.azure:azure-storage-queue;dependency} -->
       <optional>true</optional>
     </dependency>
-
-    <dependency>
-      <groupId>com.azure</groupId>
-      <artifactId>azure-data-appconfiguration</artifactId>
-      <version>1.2.4</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
-      <optional>true</optional>
-    </dependency>
   </dependencies>
 
   <build>

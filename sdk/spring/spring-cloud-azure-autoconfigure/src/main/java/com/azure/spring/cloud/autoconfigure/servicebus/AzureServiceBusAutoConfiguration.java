@@ -33,7 +33,7 @@ public class AzureServiceBusAutoConfiguration extends AzureServiceConfigurationB
 
     @Bean
     @ConfigurationProperties(AzureServiceBusProperties.PREFIX)
-    public AzureServiceBusProperties azureServiceBusProperties(AzureGlobalProperties azureProperties) {
+    public AzureServiceBusProperties azureServiceBusProperties() {
         return loadProperties(this.azureGlobalProperties, new AzureServiceBusProperties());
     }
 

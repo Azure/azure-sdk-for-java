@@ -148,12 +148,9 @@ crash.
 | ------------------------------------------------------- | ------------------------------------------------------------ |
 | org.springframework.boot:spring-boot-starter-validation | Please include the validation starter if you want to use the Hibernate Validator. |
 
-### azure-spring-cloud-starter-eventhubs
-[TODO]
-### azure-spring-integration-eventhubs
-[TODO]
-### azure-spring-cloud-stream-binder-eventhubs
-You should check and update the dependencies. IDE tools is recommended.
+## Import changes
+### some common changes in `import` section for `azure-spring-cloud-starter-eventhubs` and `azure-spring-cloud-stream-binder-eventhubs`
+You should check and update the dependencies. (IDE's `auto-completion tool` is recommended.)
 
 | original dependency name                                  | new dependency name                                                  |
 | ------------------------------------------------------- | ------------------------------------------------------------ |
@@ -184,11 +181,10 @@ For a full list of common configurations, check this list **[placeholder]**.
 
 #### azure-spring-cloud-starter-eventhubs
 [TODO]
-#### azure-spring-integration-eventhubs
-[TODO]
+
 #### azure-spring-cloud-stream-binder-eventhubs
 
-- For checkpoint account settings:
+- For single bind connection string and checkpoint account settings:
 
 `Notes`: prefix changed from
 `spring.cloud.azure.eventhub.`
@@ -200,7 +196,7 @@ to
 |`checkpoint-storage-account`|`processor.checkpoint-store.account-name`
 |`checkpoint-access-key`|`processor.checkpoint-store.account-key`
 |`checkpoint-container`|`processor.checkpoint-store.container-name`
-for example, you should change from:
+for example(single binding), you should change from:
 ```yaml
 spring:
   cloud:
@@ -224,6 +220,11 @@ spring:
             account-name: [checkpoint-storage-account]
             account-key: [checkpoint-access-key]
 ```
+And for multiple bindings, also update `eventhub` to `eventhubs` in environment section just like the above:
+You should change from:  
+`spring.cloud.stream.binders.<eventhub-name>.environment.spring.cloud.azure.eventhub`  
+to:  
+`spring.cloud.stream.binders.<eventhub-name>.environment.spring.cloud.azure.eventhubs`
 
 - For batch consume settings:
 

@@ -3,35 +3,49 @@
 
 package com.azure.spring.cloud.autoconfigure.cloudfoundry;
 
+import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubsProperties;
+import com.azure.spring.cloud.autoconfigure.servicebus.properties.AzureServiceBusProperties;
+import com.azure.spring.cloud.autoconfigure.storage.blob.properties.AzureStorageBlobProperties;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.assertj.AssertableApplicationContext;
+import org.springframework.boot.test.context.runner.ApplicationContextRunner;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.ClassPathResource;
+
+import java.io.IOException;
+import java.nio.file.Files;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * @author Warren Zhu
+ *
  */
 class AzureCloudFoundryEnvironmentPostProcessorTests {
 
-    /*private ApplicationContextRunner contextRunner = new ApplicationContextRunner().withInitializer(
-        context -> new AzureCloudFoundryEnvironmentPostProcessor()
-            .postProcessEnvironment(context.getEnvironment(), null)).withUserConfiguration(
-        AzureCfEnvPPTestConfiguration.class);
-*/
-   /* @Test
+    private final ApplicationContextRunner contextRunner = new ApplicationContextRunner()
+        .withInitializer(
+            context -> new AzureCloudFoundryEnvironmentPostProcessor()
+                .postProcessEnvironment(context.getEnvironment(), null)
+        )
+        .withUserConfiguration(AzureCfEnvPPTestConfiguration.class);
+
+    @Test
     public void testConfigurationProperties() throws IOException {
-        String vcapFileContents =
-            new String(Files.readAllBytes(new ClassPathResource("VCAP_SERVICES").getFile().toPath()));
-        this.contextRunner.withSystemProperties("VCAP_SERVICES=" + vcapFileContents).run(context -> {
-            assertServicebus(context);
-
-            assertStorage(context);
-
-            assertRedis(context);
-
-            assertEventhub(context);
-        });
-    }*/
+        String vcapFileContents = new String(Files.readAllBytes(new ClassPathResource("VCAP_SERVICES").getFile()
+                                                                                                      .toPath()));
+        this.contextRunner
+            .withSystemProperties("VCAP_SERVICES=" + vcapFileContents)
+            .run(context -> {
+                assertServiceBus(context);
+                assertStorage(context);
+                assertRedis(context);
+                assertEventhub(context);
+            });
+    }
 
     private void assertRedis(AssertableApplicationContext context) {
         RedisProperties redisProperties = context.getBean(RedisProperties.class);
@@ -40,32 +54,48 @@ class AzureCloudFoundryEnvironmentPostProcessorTests {
         assertThat(redisProperties.getPort()).isEqualTo(6379);
     }
 
-    // TODO (xiada): testss
-   /* private void assertStorage(AssertableApplicationContext context) {
-        LegacyAzureStorageProperties storageProperties = context.getBean(LegacyAzureStorageProperties.class);
-        assertThat(storageProperties.getAccount()).isEqualTo("fake");
-        assertThat(storageProperties.getAccessKey()).isEqualTo("fakekey==");
+    private void assertStorage(AssertableApplicationContext context) {
+        AzureStorageBlobProperties storageProperties = context.getBean(AzureStorageBlobProperties.class);
+        assertThat(storageProperties.getAccountName()).isEqualTo("fake");
+        assertThat(storageProperties.getAccountKey()).isEqualTo("fakekey==");
     }
 
     private void assertEventhub(AssertableApplicationContext context) {
-        AzureEventHubProperties eventHubProperties = context.getBean(AzureEventHubProperties.class);
-        assertThat(eventHubProperties.getCheckpointStorageAccount()).isEqualTo("fake");
-        assertThat(eventHubProperties.getCheckpointAccessKey()).isEqualTo("fakekey==");
+        AzureEventHubsProperties eventHubProperties = context.getBean(AzureEventHubsProperties.class);
+        assertThat(eventHubProperties.getProcessor().getCheckpointStore().getAccountName()).isEqualTo("fake");
+        assertThat(eventHubProperties.getProcessor().getCheckpointStore().getAccountKey()).isEqualTo("fakekey==");
         assertThat(eventHubProperties.getConnectionString()).isEqualTo(
             "Endpoint=sb://fake.servicebus.windows.net/;"
                 + "SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=fakelongstring=");
     }
 
-    private void assertServicebus(AssertableApplicationContext context) {
+    private void assertServiceBus(AssertableApplicationContext context) {
         AzureServiceBusProperties serviceBusProperties = context.getBean(AzureServiceBusProperties.class);
         assertThat(serviceBusProperties.getConnectionString()).isEqualTo(
             "Endpoint=sb://fake.servicebus.windows.net/;"
                 + "SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=fakekey=");
     }
 
-    @EnableConfigurationProperties({AzureServiceBusProperties.class, LegacyAzureStorageProperties.class,
-        RedisProperties.class, AzureEventHubProperties.class})
+    @EnableConfigurationProperties(RedisProperties.class)
+    @Configuration
     static class AzureCfEnvPPTestConfiguration {
 
-    }*/
+        @ConfigurationProperties(prefix = AzureServiceBusProperties.PREFIX)
+        @Bean
+        AzureServiceBusProperties azureServiceBusProperties() {
+            return new AzureServiceBusProperties();
+        }
+
+        @ConfigurationProperties(prefix = AzureEventHubsProperties.PREFIX)
+        @Bean
+        AzureEventHubsProperties azureEventHubsProperties() {
+            return new AzureEventHubsProperties();
+        }
+
+        @ConfigurationProperties(prefix = AzureStorageBlobProperties.PREFIX)
+        @Bean
+        AzureStorageBlobProperties azureStorageBlobProperties() {
+            return new AzureStorageBlobProperties();
+        }
+    }
 }
