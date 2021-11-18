@@ -143,14 +143,13 @@ public class SearchServiceCustomizations extends Customization {
         JavadocCustomization javadocToCopy = classCustomization.getMethod("isShouldDetectOrientation")
             .getJavadoc();
 
-        JavadocCustomization newJavadoc = classCustomization.addMethod(joinWithNewline(
+        classCustomization.addMethod(joinWithNewline(
                 "public Boolean setShouldDetectOrientation() {",
                 "    return this.shouldDetectOrientation;",
                 "}"))
             .addAnnotation("@Deprecated")
-            .getJavadoc();
-
-        copyJavadocs(javadocToCopy, newJavadoc)
+            .getJavadoc()
+            .replace(javadocToCopy)
             .setDeprecated("Use {@link #isShouldDetectOrientation()} instead.");
     }
 
@@ -241,14 +240,14 @@ public class SearchServiceCustomizations extends Customization {
         String setterReturnJavadoc = keyCustomization.getMethod("setAccessCredentials").getJavadoc().getReturn();
         keyCustomization.removeMethod("setAccessCredentials");
 
-        JavadocCustomization javadoc = keyCustomization.addMethod(joinWithNewline(
+        keyCustomization.addMethod(joinWithNewline(
                 "public String getApplicationId() {",
                 "    return (this.accessCredentials == null) ? null : this.accessCredentials.getApplicationId();",
                 "}"))
-            .getJavadoc();
-        copyJavadocs(credentialCustomization.getMethod("getApplicationId").getJavadoc(), javadoc);
+            .getJavadoc()
+            .replace(credentialCustomization.getMethod("getApplicationId").getJavadoc());
 
-        javadoc = keyCustomization.addMethod(joinWithNewline(
+        keyCustomization.addMethod(joinWithNewline(
                 "public SearchResourceEncryptionKey setApplicationId(String applicationId) {",
                 "    if (this.accessCredentials == null) {",
                 "        this.accessCredentials = new AzureActiveDirectoryApplicationCredentials();",
@@ -257,18 +256,18 @@ public class SearchServiceCustomizations extends Customization {
                 "    this.accessCredentials.setApplicationId(applicationId);",
                 "    return this;",
                 "}"))
-            .getJavadoc();
-        copyJavadocs(credentialCustomization.getMethod("setApplicationId").getJavadoc(), javadoc)
+            .getJavadoc()
+            .replace(credentialCustomization.getMethod("setApplicationId").getJavadoc())
             .setReturn(setterReturnJavadoc);
 
-        javadoc = keyCustomization.addMethod(joinWithNewline(
+        keyCustomization.addMethod(joinWithNewline(
                 "public String getApplicationSecret() {",
                 "    return (this.accessCredentials == null) ? null : this.accessCredentials.getApplicationSecret();",
                 "}"))
-            .getJavadoc();
-        copyJavadocs(credentialCustomization.getMethod("getApplicationSecret").getJavadoc(), javadoc);
+            .getJavadoc()
+            .replace(credentialCustomization.getMethod("getApplicationSecret").getJavadoc());
 
-        javadoc = keyCustomization.addMethod(joinWithNewline(
+        keyCustomization.addMethod(joinWithNewline(
                 "public SearchResourceEncryptionKey setApplicationSecret(String applicationSecret) {",
                 "    if (this.accessCredentials == null) {",
                 "        this.accessCredentials = new AzureActiveDirectoryApplicationCredentials();",
@@ -277,8 +276,8 @@ public class SearchServiceCustomizations extends Customization {
                 "    this.accessCredentials.setApplicationSecret(applicationSecret);",
                 "    return this;",
                 "}"))
-            .getJavadoc();
-        copyJavadocs(credentialCustomization.getMethod("setApplicationSecret").getJavadoc(), javadoc)
+            .getJavadoc()
+            .replace(credentialCustomization.getMethod("setApplicationSecret").getJavadoc())
             .setReturn(setterReturnJavadoc);
     }
 
@@ -442,24 +441,7 @@ public class SearchServiceCustomizations extends Customization {
         String varargMethod = String.format(VARARG_METHOD_TEMPLATE, classCustomization.getClassName(), methodName,
             parameterType, parameterName, parameterName, parameterName, parameterName);
 
-        JavadocCustomization newJavadocs = classCustomization.addMethod(varargMethod).getJavadoc();
-        copyJavadocs(copyJavadocs, newJavadocs);
-    }
-
-    /*
-     * This helper function copies Javadocs from one customization to another.
-     */
-    private static JavadocCustomization copyJavadocs(JavadocCustomization from, JavadocCustomization to) {
-        to.setDescription(from.getDescription())
-            .setReturn(from.getReturn())
-            .setSince(from.getSince())
-            .setDeprecated(from.getDeprecated());
-
-        from.getParams().forEach(to::setParam);
-        from.getThrows().forEach(to::addThrows);
-        from.getSees().forEach(to::addSee);
-
-        return to;
+        classCustomization.addMethod(varargMethod).getJavadoc().replace(copyJavadocs);
     }
 
     private static String joinWithNewline(String... lines) {
