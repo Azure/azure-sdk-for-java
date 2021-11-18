@@ -7,7 +7,15 @@ omitted_paths:
   - sdk/applicationinsights/microsoft-azure-applicationinsights-query/samples/*
   - sdk/boms/azure-spring-boot-bom/*
   - sdk/boms/azure-spring-cloud-dependencies/*
+  - sdk/spring/spring-cloud-azure-starter-*/*
+  - sdk/spring/spring-cloud-azure-starter/*
   - sdk/spring/*
+  - sdk/spring/spring-cloud-azure-autoconfigure/*
+  - sdk/spring/spring-cloud-azure-resourcemanager/*
+  - sdk/spring/spring-cloud-azure-service/*
+  - sdk/spring/spring-cloud-azure-actuator-autoconfigure/*
+  - sdk/spring/spring-cloud-azure-actuator/*
+  - sdk/spring/spring-cloud-azure-core/*
   - sdk/loganalytics/microsoft-azure-loganalytics/samples/*
   - "*/resource-manager/*"
   - "sdk/*/mgmt-*/*"

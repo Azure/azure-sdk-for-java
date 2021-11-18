@@ -55,8 +55,8 @@ The following application starters are provided by Spring Cloud Azure under the 
 | spring-cloud-azure-starter-storage-file-share        | Starter for using Azure Storage File Share                   |
 | spring-cloud-azure-starter-storage-queue             | Starter for using Azure Storage Queue                        |
 | spring-cloud-azure-starter-stream-eventhubs          | Starter for using Azure Event Hubs and Spring Cloud Stream Binder |
-| spring-cloud-azure-starter-stream-servicebus-queue   | Starter for using Azure Service Bus Queue and Spring Cloud Stream Binder |
-| spring-cloud-azure-starter-stream-servicebus-topic   | Starter for using Azure Service Bus Topic and Spring Cloud Stream Binder |
+| spring-cloud-azure-starter-stream-servicebus         | Starter for using Azure Service Bus and Spring Cloud Stream Binder |
+
 
 In addition to the application starters, the following starters can be used to add `production ready` features:
 
@@ -91,8 +91,7 @@ The framework provides a flexible programming model built on already established
 Current binder implementations include:
 
 - spring-cloud-azure-stream-binder-eventhubs
-- spring-cloud-azure-stream-binder-servicebus-queue
-- spring-cloud-azure-stream-binder-servicebus-topic
+- spring-cloud-azure-stream-binder-servicebus
 
 ## Spring Cloud Azure Bill of Materials (BOM)
 
@@ -104,7 +103,7 @@ If you’re a Maven user, add our BOM to your pom.xml `<dependencyManagement>` s
         <dependency>
             <groupId>com.azure.spring</groupId>
             <artifactId>spring-cloud-azure-dependencies</artifactId>
-            <version>4.0.0</version>
+            <version>4.0.0-beta.1</version>
             <type>pom</type>
             <scope>import</scope>
         </dependency>
