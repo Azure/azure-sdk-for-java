@@ -33,13 +33,38 @@ import static com.azure.core.util.FluxUtil.monoError;
  * Registering a schema returns a unique schema id that can be used to quickly associate payloads with that schema.
  * Reactive operations must be subscribed to; this kicks off the operation.
  *
- * {@codesnippet com.azure.data.schemaregistry.schemaregistryasyncclient.registerschema}
+ * <!-- src_embed com.azure.data.schemaregistry.schemaregistryasyncclient.registerschema -->
+ * <pre>
+ * String schema = &quot;&#123;&#92;&quot;type&#92;&quot;:&#92;&quot;enum&#92;&quot;,&#92;&quot;name&#92;&quot;:&#92;&quot;TEST&#92;&quot;,&#92;&quot;symbols&#92;&quot;:[&#92;&quot;UNIT&#92;&quot;,&#92;&quot;INTEGRATION&#92;&quot;]&#125;&quot;;
+ * client.registerSchema&#40;&quot;&#123;schema-group&#125;&quot;, &quot;&#123;schema-name&#125;&quot;, schema, SchemaFormat.AVRO&#41;
+ *     .subscribe&#40;properties -&gt; &#123;
+ *         System.out.printf&#40;&quot;Schema id: %s, schema format: %s%n&quot;, properties.getId&#40;&#41;,
+ *             properties.getFormat&#40;&#41;&#41;;
+ *     &#125;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.schemaregistry.schemaregistryasyncclient.registerschema -->
  *
  * <p><strong>Get a schema</strong></p>
- * {@codesnippet com.azure.data.schemaregistry.schemaregistryasyncclient.getSchema}
+ * <!-- src_embed com.azure.data.schemaregistry.schemaregistryasyncclient.getSchema -->
+ * <pre>
+ * client.getSchema&#40;&quot;&#123;schema-id&#125;&quot;&#41;.subscribe&#40;schema -&gt; &#123;
+ *     System.out.printf&#40;&quot;Schema id: %s, schema format: %s%n&quot;, schema.getProperties&#40;&#41;.getId&#40;&#41;,
+ *         schema.getProperties&#40;&#41;.getFormat&#40;&#41;&#41;;
+ *     System.out.println&#40;&quot;Schema contents: &quot; + schema.getDefinition&#40;&#41;&#41;;
+ * &#125;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.schemaregistry.schemaregistryasyncclient.getSchema -->
  *
  * <p><strong>Get a schema's properties</strong></p>
- * {@codesnippet com.azure.data.schemaregistry.schemaregistryasyncclient.getSchemaProperties}
+ * <!-- src_embed com.azure.data.schemaregistry.schemaregistryasyncclient.getSchemaProperties -->
+ * <pre>
+ * String schema = &quot;&#123;&#92;&quot;type&#92;&quot;:&#92;&quot;enum&#92;&quot;,&#92;&quot;name&#92;&quot;:&#92;&quot;TEST&#92;&quot;,&#92;&quot;symbols&#92;&quot;:[&#92;&quot;UNIT&#92;&quot;,&#92;&quot;INTEGRATION&#92;&quot;]&#125;&quot;;
+ * client.getSchemaProperties&#40;&quot;&#123;schema-group&#125;&quot;, &quot;&#123;schema-name&#125;&quot;, schema,
+ *     SchemaFormat.AVRO&#41;.subscribe&#40;properties -&gt; &#123;
+ *         System.out.println&#40;&quot;The schema id: &quot; + properties.getId&#40;&#41;&#41;;
+ *     &#125;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.schemaregistry.schemaregistryasyncclient.getSchemaProperties -->
  *
  * @see SchemaRegistryClientBuilder Builder object instantiation and additional samples.
  */

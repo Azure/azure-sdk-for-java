@@ -43,25 +43,60 @@ import java.util.Map;
  * CertificateAsyncClient}
  * are {@link String vaultUrl} and {@link TokenCredential credential}. </p>
  *
- * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.instantiation}
+ * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.instantiation -->
+ * <pre>
+ * CertificateAsyncClient certificateAsyncClient = new CertificateClientBuilder&#40;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .vaultUrl&#40;&quot;https:&#47;&#47;myvault.vault.azure.net&#47;&quot;&#41;
+ *     .httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.instantiation -->
  *
  * <p>The {@link HttpLogDetailLevel log detail level}, multiple custom {@link HttpLoggingPolicy policies} and custom
  * {@link HttpClient http client} can be optionally configured in the {@link CertificateClientBuilder}.</p>
  *
- * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.withhttpclient.instantiation}
+ * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.withhttpclient.instantiation -->
+ * <pre>
+ * CertificateAsyncClient certificateAsyncClient = new CertificateClientBuilder&#40;&#41;
+ *     .httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;
+ *     .vaultUrl&#40;&quot;https:&#47;&#47;myvault.azure.net&#47;&quot;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .httpClient&#40;HttpClient.createDefault&#40;&#41;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.withhttpclient.instantiation -->
  *
  * <p>Alternatively, custom {@link HttpPipeline http pipeline} with custom {@link HttpPipelinePolicy} policies and
  * {@link String vaultUrl}
  * can be specified. It provides finer control over the construction of {@link CertificateAsyncClient} and {@link
  * CertificateClient}</p>
  *
- * {@codesnippet com.azure.security.keyvault.certificates.CertificateAsyncClient.pipeline.instantiation}
+ * <!-- src_embed com.azure.security.keyvault.certificates.CertificateAsyncClient.pipeline.instantiation -->
+ * <pre>
+ * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
+ *     .policies&#40;new KeyVaultCredentialPolicy&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;, new RetryPolicy&#40;&#41;&#41;
+ *     .build&#40;&#41;;
+ * CertificateAsyncClient certificateAsyncClient = new CertificateClientBuilder&#40;&#41;
+ *     .pipeline&#40;pipeline&#41;
+ *     .vaultUrl&#40;&quot;https:&#47;&#47;myvault.azure.net&#47;&quot;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.certificates.CertificateAsyncClient.pipeline.instantiation -->
  *
  * <p> The minimal configuration options required by {@link CertificateClientBuilder certificateClientBuilder} to build
  * {@link CertificateClient}
  * are {@link String vaultUrl} and {@link TokenCredential credential}. </p>
  *
- * {@codesnippet com.azure.security.keyvault.certificates.CertificateClient.instantiation}
+ * <!-- src_embed com.azure.security.keyvault.certificates.CertificateClient.instantiation -->
+ * <pre>
+ * CertificateClient certificateClient = new CertificateClientBuilder&#40;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .vaultUrl&#40;&quot;https:&#47;&#47;myvault.vault.azure.net&#47;&quot;&#41;
+ *     .httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.certificates.CertificateClient.instantiation -->
  *
  * @see CertificateAsyncClient
  * @see CertificateClient
@@ -121,14 +156,14 @@ public final class CertificateClientBuilder {
 
     /**
      * Creates a {@link CertificateAsyncClient} based on options set in the builder. Every time
-     * {@link #buildAsyncClient()} is called, a new instance of {@link CertificateAsyncClient} is created.
+     * {@code buildAsyncClient()} is called, a new instance of {@link CertificateAsyncClient} is created.
      *
      * <p>If {@link CertificateClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
      * {@link CertificateClientBuilder#vaultUrl(String) serviceEndpoint} are used to create the {@link
      * CertificateClientBuilder client}. All other builder settings are ignored. If {@code pipeline} is not set, then
-     * {@link CertificateClientBuilder#credential(TokenCredential) key vault credential and {@link
+     * {@link CertificateClientBuilder#credential(TokenCredential) key vault credential} and {@link
      * CertificateClientBuilder#vaultUrl(String)} key vault url are required to build the {@link CertificateAsyncClient
-     * client}.}</p>
+     * client}.</p>
      *
      * @return A {@link CertificateAsyncClient} with the options set from the builder.
      *

@@ -16,19 +16,62 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.security.attestation.implementation.AttestationClientImpl;
 import com.azure.security.attestation.implementation.AttestationClientImplBuilder;
+import com.azure.security.attestation.models.AttestationPolicySetOptions;
 import com.azure.security.attestation.models.AttestationTokenValidationOptions;
+import com.azure.security.attestation.models.AttestationType;
 
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Objects;
 
-/** A builder for creating a new instance of the AttestationClient type. */
+/**
+ * A builder for creating a new instance of the AttestationClient type.
+ *
+ * The AttestationAdministrationClient provides access to the administrative policy APIs
+ * implemented by the Attestation Service.
+ * <p>
+ * More information on attestation policies can be found <a href='https://docs.microsoft.com/azure/attestation/basic-concepts#attestation-policy'>here</a>
+ * </p>
+ *
+ * There are two main families of APIs available from the Administration client.
+ * <ul>
+ *     <li>Attestation Policy Management</li>
+ *     <li>Policy Management Certificate Management</li>
+ * </ul>
+ *
+ * The Policy Management APIs provide the ability to retrieve, modify and reset attestation policies.
+ * The policy management APIs are:
+ * <ul>
+ *     <li>
+ * {@link AttestationAdministrationClient#getAttestationPolicy(AttestationType)}
+ * </li>
+ *     <li>
+ * {@link AttestationAdministrationAsyncClient#getAttestationPolicy(AttestationType)}
+ * </li>
+ *     <li>
+ * {@link AttestationAdministrationClient#setAttestationPolicy(AttestationType, AttestationPolicySetOptions)}
+ * </li>
+ *     <li>
+ * {@link AttestationAdministrationAsyncClient#setAttestationPolicy(AttestationType, AttestationPolicySetOptions)}
+ * </li>
+ *     <li>
+ * {@link AttestationAdministrationClient#resetAttestationPolicy(AttestationType, AttestationPolicySetOptions)}
+ * </li>
+ *     <li>
+ * {@link AttestationAdministrationAsyncClient#resetAttestationPolicy(AttestationType, AttestationPolicySetOptions)}
+ * </li>
+ * </ul>
+ * <p>
+ *     The Policy Management Certificate APIs provide the ability to manage the certificates which are
+ *     used to establish authorization for Isolated mode attestation service instances. They include apis to
+ *     enumerate, add and remove policy management certificates.
+ * </p>
+ *
+ */
 @ServiceClientBuilder(
         serviceClients = {
             AttestationAdministrationClient.class,
             AttestationAdministrationAsyncClient.class,
-            PolicyCertificatesClient.class,
-            PolicyCertificatesAsyncClient.class,
         })
 public final class AttestationAdministrationClientBuilder {
     private static final String SDK_NAME = "name";
@@ -190,7 +233,13 @@ public final class AttestationAdministrationClientBuilder {
      *
      * Instantiating a synchronous Attestation client:
      * <br>
-     * {@codesnippet com.azure.security.attestation.AttestationAdministrationClientBuilder.buildClient}
+     * <!-- src_embed com.azure.security.attestation.AttestationAdministrationClientBuilder.buildClient -->
+     * <pre>
+     * AttestationAdministrationClient client = new AttestationAdministrationClientBuilder&#40;&#41;
+     *     .endpoint&#40;endpoint&#41;
+     *     .buildClient&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationAdministrationClientBuilder.buildClient -->
      * @return an instance of {@link AttestationClient}.
      */
     public AttestationAdministrationClient buildClient() {
@@ -202,7 +251,13 @@ public final class AttestationAdministrationClientBuilder {
      *
      * Instantiating a synchronous Attestation client:
      * <br>
-     * {@codesnippet com.azure.security.attestation.AttestationAdministrationClientBuilder.buildAsyncClient}
+     * <!-- src_embed com.azure.security.attestation.AttestationAdministrationClientBuilder.buildAsyncClient -->
+     * <pre>
+     * AttestationAdministrationAsyncClient asyncClient = new AttestationAdministrationClientBuilder&#40;&#41;
+     *     .endpoint&#40;endpoint&#41;
+     *     .buildAsyncClient&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationAdministrationClientBuilder.buildAsyncClient -->
      * @return an instance of {@link AttestationClient}.
      */
     public AttestationAdministrationAsyncClient buildAsyncClient() {
@@ -227,23 +282,4 @@ public final class AttestationAdministrationClientBuilder {
         }
         return clientImplBuilder.buildClient();
     }
-
-    /**
-     * Builds an instance of PolicyCertificatesAsyncClient async client.
-     *
-     * @return an instance of PolicyCertificatesAsyncClient.
-     */
-    public PolicyCertificatesAsyncClient buildPolicyCertificatesAsyncClient() {
-        return new PolicyCertificatesAsyncClient(buildInnerClient().getPolicyCertificates());
-    }
-
-    /**
-     * Builds an instance of PolicyCertificatesClient sync client.
-     *
-     * @return an instance of PolicyCertificatesClient.
-     */
-    public PolicyCertificatesClient buildPolicyCertificatesClient() {
-        return new PolicyCertificatesClient(buildInnerClient().getPolicyCertificates());
-    }
-
 }

@@ -26,6 +26,12 @@ public final class CheckDomainAvailabilityParameter {
     @JsonProperty(value = "type", required = true)
     private String type;
 
+    /*
+     * The Kind of the resource.
+     */
+    @JsonProperty(value = "kind")
+    private String kind;
+
     /**
      * Get the subdomainName property: The subdomain name to use.
      *
@@ -63,6 +69,26 @@ public final class CheckDomainAvailabilityParameter {
      */
     public CheckDomainAvailabilityParameter withType(String type) {
         this.type = type;
+        return this;
+    }
+
+    /**
+     * Get the kind property: The Kind of the resource.
+     *
+     * @return the kind value.
+     */
+    public String kind() {
+        return this.kind;
+    }
+
+    /**
+     * Set the kind property: The Kind of the resource.
+     *
+     * @param kind the kind value to set.
+     * @return the CheckDomainAvailabilityParameter object itself.
+     */
+    public CheckDomainAvailabilityParameter withKind(String kind) {
+        this.kind = kind;
         return this;
     }
 

@@ -10,6 +10,15 @@
 
 ### Other Changes
 
+## 5.10.3 (2021-11-16)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.21.0` to `1.22.0`.
+- Upgraded `azure-core-amqp` from `2.3.3` to `2.3.4`.
+
 ## 5.10.2 (2021-10-13)
 
 ### Other Changes

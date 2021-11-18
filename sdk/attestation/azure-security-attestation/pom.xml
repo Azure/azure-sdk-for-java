@@ -39,6 +39,9 @@
       --add-opens com.azure.security.attestation/com.azure.security.attestation.models=ALL-UNNAMED
       --add-opens com.azure.security.attestation/com.azure.security.attestation.models=com.fasterxml.jackson.databind
     </javaModulesSurefireArgLine>
+    <codesnippet.skip>false</codesnippet.skip>
+    <javadocDoclet></javadocDoclet>
+    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <dependencies>
