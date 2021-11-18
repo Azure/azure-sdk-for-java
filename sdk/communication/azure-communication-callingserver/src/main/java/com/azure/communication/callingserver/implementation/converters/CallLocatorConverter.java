@@ -5,8 +5,8 @@ package com.azure.communication.callingserver.implementation.converters;
 
 import java.util.ArrayList;
 
-import com.azure.communication.callingserver.implementation.models.CallLocatorModel;
 import com.azure.communication.callingserver.implementation.models.CallLocatorKindModel;
+import com.azure.communication.callingserver.implementation.models.CallLocatorModel;
 import com.azure.communication.callingserver.models.CallLocator;
 import com.azure.communication.callingserver.models.GroupCallLocator;
 import com.azure.communication.callingserver.models.ServerCallLocator;

@@ -109,7 +109,6 @@ public final class CallConnection {
      *
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful call termination request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public void delete() {
@@ -134,11 +133,10 @@ public final class CallConnection {
      *
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful cancel all media operations request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void cancelAllMediaOperations() {
-        return callConnectionAsync.cancelAllMediaOperations().block();
+    public void cancelAllMediaOperations() {
+        callConnectionAsync.cancelAllMediaOperations().block();
     }
 
     /**
@@ -339,11 +337,10 @@ public final class CallConnection {
      *
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response for a successful keep alive request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void keepAlive() {
-        return callConnectionAsync.keepAlive().block();
+    public void keepAlive() {
+        callConnectionAsync.keepAlive().block();
     }
 
     /**
@@ -409,13 +406,12 @@ public final class CallConnection {
      * @param mediaOperationId The Id of the media operation to Cancel.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void cancelParticipantMediaOperation(
+    public void cancelParticipantMediaOperation(
         CommunicationIdentifier participant,
         String mediaOperationId) {
-        return cancelParticipantMediaOperationWithResponse(participant, mediaOperationId, Context.NONE).getValue();
+        cancelParticipantMediaOperationWithResponse(participant, mediaOperationId, Context.NONE).getValue();
     }
 
     /**
@@ -442,12 +438,11 @@ public final class CallConnection {
      * @param participant The identifier of the participant.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void muteParticipant(
+    public void muteParticipant(
         CommunicationIdentifier participant) {
-        return muteParticipantWithResponse(participant, Context.NONE).getValue();
+        muteParticipantWithResponse(participant, Context.NONE).getValue();
     }
 
     /**
@@ -472,12 +467,11 @@ public final class CallConnection {
      * @param participant The identifier of the participant.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void unmuteParticipant(
+    public void unmuteParticipant(
         CommunicationIdentifier participant) {
-        return unmuteParticipantWithResponse(participant, Context.NONE).getValue();
+        unmuteParticipantWithResponse(participant, Context.NONE).getValue();
     }
 
     /**
@@ -502,12 +496,11 @@ public final class CallConnection {
      * @param participant The identifier of the participant.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void holdParticipantMeetingAudio(
+    public void holdParticipantMeetingAudio(
         CommunicationIdentifier participant) {
-        return holdParticipantMeetingAudioWithResponse(participant, Context.NONE).getValue();
+        holdParticipantMeetingAudioWithResponse(participant, Context.NONE).getValue();
     }
 
     /**
@@ -532,12 +525,11 @@ public final class CallConnection {
      * @param participant The identifier of the participant.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response payload for play audio operation.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void resumeParticipantMeetingAudio(
+    public void resumeParticipantMeetingAudio(
         CommunicationIdentifier participant) {
-        return resumeParticipantMeetingAudioWithResponse(participant, Context.NONE).getValue();
+        resumeParticipantMeetingAudioWithResponse(participant, Context.NONE).getValue();
     }
 
     /**

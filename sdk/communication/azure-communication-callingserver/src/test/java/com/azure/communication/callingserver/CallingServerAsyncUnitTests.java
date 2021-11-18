@@ -9,7 +9,6 @@ import com.azure.communication.callingserver.models.*;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.Context;
 import org.junit.jupiter.api.Test;
 
 import java.net.URI;
@@ -213,8 +212,7 @@ public class CallingServerAsyncUnitTests {
 
         Response<Void> removeParticipantResultResponse = callingServerAsyncClient.removeParticipantWithResponse(
             SERVERCALL_LOCATOR,
-            COMMUNICATION_USER,
-            Context.NONE
+            COMMUNICATION_USER
         ).block();
         assertEquals(202, removeParticipantResultResponse.getStatusCode());
     }
@@ -252,8 +250,7 @@ public class CallingServerAsyncUnitTests {
 
         Response<List<CallParticipant>> getParticipantResultResponse = callingServerAsyncClient.getParticipantWithResponse(
             SERVERCALL_LOCATOR,
-            COMMUNICATION_USER,
-            Context.NONE
+            COMMUNICATION_USER
         ).block();
 
         assertEquals(200, getParticipantResultResponse.getStatusCode());

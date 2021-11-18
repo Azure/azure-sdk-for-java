@@ -586,7 +586,7 @@ public final class CallingServerAsyncClient {
     }
 
     private RemoveParticipantWithCallLocatorRequest getRemoveParticipantWithCallLocatorRequest(CallLocator callLocator,
-            CommunicationIdentifier participant) {
+                                                                                               CommunicationIdentifier participant) {
         RemoveParticipantWithCallLocatorRequest requestWithCallLocator = new RemoveParticipantWithCallLocatorRequest()
             .setCallLocator(CallLocatorConverter.convert(callLocator))
             .setIdentifier(CommunicationIdentifierConverter.convert(participant));
@@ -749,7 +749,7 @@ public final class CallingServerAsyncClient {
     }
 
     private StartCallRecordingWithCallLocatorRequest getStartCallRecordingWithCallLocatorRequest(CallLocator callLocator,
-        URI recordingStateCallbackUri) {
+                                                                                                 URI recordingStateCallbackUri) {
         StartCallRecordingWithCallLocatorRequest requestWithCallLocator = new StartCallRecordingWithCallLocatorRequest()
             .setCallLocator(CallLocatorConverter.convert(callLocator))
             .setRecordingStateCallbackUri(recordingStateCallbackUri.toString());
@@ -1210,7 +1210,7 @@ public final class CallingServerAsyncClient {
     }
 
     private PlayAudioWithCallLocatorRequest getPlayAudioWithCallLocatorRequest(CallLocator callLocator, URI audioFileUri,
-            PlayAudioOptions playAudioOptions) {
+                                                                               PlayAudioOptions playAudioOptions) {
 
         PlayAudioWithCallLocatorRequest requestWithCallLocator = new PlayAudioWithCallLocatorRequest()
             .setCallLocator(CallLocatorConverter.convert(callLocator))

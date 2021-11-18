@@ -31,9 +31,9 @@ import com.azure.communication.callingserver.implementation.models.MuteParticipa
 import com.azure.communication.callingserver.implementation.models.PlayAudioRequest;
 import com.azure.communication.callingserver.implementation.models.PlayAudioToParticipantRequest;
 import com.azure.communication.callingserver.implementation.models.ResumeMeetingAudioRequest;
+import com.azure.communication.callingserver.implementation.models.TransferCallRequest;
 import com.azure.communication.callingserver.implementation.models.UnmuteParticipantRequest;
 import com.azure.communication.callingserver.implementation.models.UpdateAudioRoutingGroupRequest;
-import com.azure.communication.callingserver.implementation.models.TransferCallRequest;
 import com.azure.communication.callingserver.models.AddParticipantResult;
 import com.azure.communication.callingserver.models.AudioRoutingMode;
 import com.azure.communication.callingserver.models.CallConnectionProperties;
@@ -244,7 +244,7 @@ public final class CallConnectionAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponse() {
-        return hangupWithResponse(Context.NONE);
+        return deleteWithResponse(Context.NONE);
     }
 
     Mono<Response<Void>> deleteWithResponse(Context context) {
@@ -381,19 +381,6 @@ public final class CallConnectionAsync {
         }
     }
 
-    private AddParticipantRequest getAddParticipantRequest(
-        CommunicationIdentifier participant,
-        String alternateCallerId,
-        String operationContext,
-        URI callbackUri) {
-        AddParticipantRequest request = new AddParticipantRequest()
-            .setParticipant(CommunicationIdentifierConverter.convert(participant))
-            .setAlternateCallerId(PhoneNumberIdentifierConverter.convert(alternateCallerId))
-            .setOperationContext(operationContext)
-            .setCallbackUri(callbackUri.toString());
-        return request;
-    }
-
     /**
      * Remove a participant from the call.
      *
@@ -472,7 +459,7 @@ public final class CallConnectionAsync {
      * @return Response payload for a successful transfer to participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<TransferCallResult>> transferToParticipantWithResponse(CommunicationIdentifier participant, String targetCallConnectionId, String userToUserInformation) {
+    public Mono<Response<TransferCallResult>> transferWithResponse(CommunicationIdentifier participant, String targetCallConnectionId, String userToUserInformation) {
         return transferWithResponse(participant, userToUserInformation, targetCallConnectionId, Context.NONE);
     }
 
@@ -1110,17 +1097,6 @@ public final class CallConnectionAsync {
         }
     }
 
-    private AudioRoutingGroupRequest getAudioRoutingGroupRequest(AudioRoutingMode audioRoutingMode, List<CommunicationIdentifier> targets) {
-        Objects.requireNonNull(targets, "'targets' cannot be null.");
-        AudioRoutingGroupRequest request = new AudioRoutingGroupRequest()
-            .setAudioRoutingMode(audioRoutingMode)
-            .setTargets(targets
-                .stream()
-                .map(CommunicationIdentifierConverter::convert)
-                .collect(Collectors.toList()));
-        return request;
-    }
-
     /**
      * Create Audio Routing Group.
      *
@@ -1178,16 +1154,6 @@ public final class CallConnectionAsync {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
-    }
-
-    private UpdateAudioRoutingGroupRequest getUpdateAudioRoutingGroupRequest(String audioRoutingGroupId, List<CommunicationIdentifier> targets) {
-        Objects.requireNonNull(targets, "'targets' cannot be null.");
-        UpdateAudioRoutingGroupRequest request = new UpdateAudioRoutingGroupRequest()
-            .setTargets(targets
-                .stream()
-                .map(CommunicationIdentifierConverter::convert)
-                .collect(Collectors.toList()));
-        return request;
     }
 
     /**
@@ -1266,5 +1232,39 @@ public final class CallConnectionAsync {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
+    }
+
+    private AddParticipantRequest getAddParticipantRequest(
+        CommunicationIdentifier participant,
+        String alternateCallerId,
+        String operationContext,
+        URI callbackUri) {
+        AddParticipantRequest request = new AddParticipantRequest()
+            .setParticipant(CommunicationIdentifierConverter.convert(participant))
+            .setAlternateCallerId(PhoneNumberIdentifierConverter.convert(alternateCallerId))
+            .setOperationContext(operationContext)
+            .setCallbackUri(callbackUri.toString());
+        return request;
+    }
+
+    private AudioRoutingGroupRequest getAudioRoutingGroupRequest(AudioRoutingMode audioRoutingMode, List<CommunicationIdentifier> targets) {
+        Objects.requireNonNull(targets, "'targets' cannot be null.");
+        AudioRoutingGroupRequest request = new AudioRoutingGroupRequest()
+            .setAudioRoutingMode(audioRoutingMode)
+            .setTargets(targets
+                .stream()
+                .map(CommunicationIdentifierConverter::convert)
+                .collect(Collectors.toList()));
+        return request;
+    }
+
+    private UpdateAudioRoutingGroupRequest getUpdateAudioRoutingGroupRequest(String audioRoutingGroupId, List<CommunicationIdentifier> targets) {
+        Objects.requireNonNull(targets, "'targets' cannot be null.");
+        UpdateAudioRoutingGroupRequest request = new UpdateAudioRoutingGroupRequest()
+            .setTargets(targets
+                .stream()
+                .map(CommunicationIdentifierConverter::convert)
+                .collect(Collectors.toList()));
+        return request;
     }
 }

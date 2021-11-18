@@ -18,7 +18,6 @@ import com.azure.communication.callingserver.models.*;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.http.rest.Response;
-import com.azure.core.util.Context;
 
 import org.junit.jupiter.api.Test;
 
@@ -123,7 +122,7 @@ public class CallConnectionAsyncUnitTests {
                 new SimpleEntry<String, Integer>("", 202)
             )));
 
-        Response<Void> hangupResponse = callConnectionAsync.hangupWithResponse(Context.NONE).block();
+        Response<Void> hangupResponse = callConnectionAsync.hangupWithResponse().block();
 
         assertEquals(202, hangupResponse.getStatusCode());
     }
@@ -147,7 +146,7 @@ public class CallConnectionAsyncUnitTests {
                 new SimpleEntry<String, Integer>("", 202)
             )));
 
-        Response<Void> deleteResponse = callConnectionAsync.deleteWithResponse(Context.NONE).block();
+        Response<Void> deleteResponse = callConnectionAsync.deleteWithResponse().block();
 
         assertEquals(202, deleteResponse.getStatusCode());
     }
@@ -171,7 +170,7 @@ public class CallConnectionAsyncUnitTests {
                 new SimpleEntry<String, Integer>("", 200)
             )));
 
-        Response<Void> cancelMediaOperationResponse = callConnectionAsync.cancelAllMediaOperationsWithResponse(Context.NONE).block();
+        Response<Void> cancelMediaOperationResponse = callConnectionAsync.cancelAllMediaOperationsWithResponse().block();
 
         assertEquals(200, cancelMediaOperationResponse.getStatusCode());
     }
@@ -207,8 +206,7 @@ public class CallConnectionAsyncUnitTests {
             user,
             "alternateCallerId",
             OPERATION_CONTEXT,
-            CALLBACK_URI,
-            Context.NONE
+            CALLBACK_URI
         ).block();
         assertEquals(202, addParticipantResultResponse.getStatusCode());
         AddParticipantResult addParticipantResult = addParticipantResultResponse.getValue();
@@ -235,8 +233,7 @@ public class CallConnectionAsyncUnitTests {
             )));
 
         Response<Void> removeParticipantResponse = callConnectionAsync.removeParticipantWithResponse(
-            new CommunicationUserIdentifier(NEW_PARTICIPANT_ID),
-            Context.NONE
+            new CommunicationUserIdentifier(NEW_PARTICIPANT_ID)
         ).block();
         assertEquals(202, removeParticipantResponse.getStatusCode());
     }
@@ -269,8 +266,7 @@ public class CallConnectionAsyncUnitTests {
         Response<TransferCallResult> transferCallResponse = callConnectionAsync.transferWithResponse(
             new CommunicationUserIdentifier(NEW_PARTICIPANT_ID),
             CALL_CONNECTION_ID,
-            "",
-            Context.NONE
+            ""
         ).block();
 
         assertEquals(202, transferCallResponse.getStatusCode());
@@ -306,7 +302,7 @@ public class CallConnectionAsyncUnitTests {
                 new SimpleEntry<String, Integer>(generateGetCallResult(), 200)
             )));
 
-        Response<CallConnectionProperties> getCallResultResponse = callConnectionAsync.getCallWithResponse(Context.NONE).block();
+        Response<CallConnectionProperties> getCallResultResponse = callConnectionAsync.getCallWithResponse().block();
         assertEquals(200, getCallResultResponse.getStatusCode());
         CallConnectionProperties getCallResult = getCallResultResponse.getValue();
 
@@ -346,7 +342,6 @@ public class CallConnectionAsyncUnitTests {
             )));
 
         Response<List<CallParticipant>> getParticipantsResultResponse = callConnectionAsync.getParticipantsWithResponse(
-            Context.NONE
         ).block();
 
         assertEquals(200, getParticipantsResultResponse.getStatusCode());
@@ -383,8 +378,7 @@ public class CallConnectionAsyncUnitTests {
             )));
 
         Response<List<CallParticipant>> getParticipantResultResponse = callConnectionAsync.getParticipantWithResponse(
-            COMMUNICATION_USER,
-            Context.NONE
+            COMMUNICATION_USER
         ).block();
 
         assertEquals(200, getParticipantResultResponse.getStatusCode());
@@ -414,7 +408,7 @@ public class CallConnectionAsyncUnitTests {
                 new SimpleEntry<String, Integer>("", 200)
             )));
 
-        Response<Void> cancelMediaOperationResponse = callConnectionAsync.keepAliveWithResponse(Context.NONE).block();
+        Response<Void> cancelMediaOperationResponse = callConnectionAsync.keepAliveWithResponse().block();
 
         assertEquals(200, cancelMediaOperationResponse.getStatusCode());
     }
@@ -529,7 +523,7 @@ public class CallConnectionAsyncUnitTests {
                 new SimpleEntry<String, Integer>("", 200)
             )));
 
-        callConnectionAsync.muteParticipant(
+        callConnectionAsync.unmuteParticipant(
             COMMUNICATION_USER
         ).block();
     }
@@ -542,7 +536,7 @@ public class CallConnectionAsyncUnitTests {
                 new SimpleEntry<String, Integer>("", 200)
             )));
 
-        Response<Void> unmuteParticipantResponse = callConnectionAsync.muteParticipantWithResponse(
+        Response<Void> unmuteParticipantResponse = callConnectionAsync.unmuteParticipantWithResponse(
             COMMUNICATION_USER
         ).block();
 

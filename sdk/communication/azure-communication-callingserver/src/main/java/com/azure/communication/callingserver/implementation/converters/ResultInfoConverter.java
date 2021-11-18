@@ -3,8 +3,8 @@
 
 package com.azure.communication.callingserver.implementation.converters;
 
-import com.azure.communication.callingserver.models.CallingOperationResultDetails;
 import com.azure.communication.callingserver.implementation.models.CallingOperationResultDetailsInternal;
+import com.azure.communication.callingserver.models.CallingOperationResultDetails;
 
 /**
  * A converter between {@link CallingOperationResultDetailsInternal} and {@link CallingOperationResultDetails}.
