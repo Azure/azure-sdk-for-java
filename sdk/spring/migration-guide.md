@@ -159,15 +159,7 @@ crash.
 | ------------------------------------------------------- | ------------------------------------------------------------ |
 | org.springframework.boot:spring-boot-starter-validation | Please include the validation starter if you want to use the Hibernate Validator. |
 
-## Import changes
-### some common changes in `import` section for `azure-spring-cloud-starter-eventhubs` and `azure-spring-cloud-stream-binder-eventhubs`
-You should check and update the dependencies. (IDE's `auto-completion tool` is recommended.)
 
-| original dependency name                                  | new dependency name                                                  |
-| ------------------------------------------------------- | ------------------------------------------------------------ |
-| com.azure.spring.integration.core.EventHubsHeaders | com.azure.spring.eventhubs.support.EventHubsHeaders |
-| com.azure.spring.integration.core.api.reactor.Checkpointer | com.azure.spring.messaging.checkpoint.Checkpointer |
-| com.azure.spring.integration.core.AzureHeaders.CHECKPOINTER | com.azure.spring.messaging.AzureHeaders.CHECKPOINTER |
 
 ## Configuration properties
 
@@ -189,7 +181,7 @@ For a full list of common configurations, check this list **[placeholder]**.
 
 ### Each SDK configurations
 
-#### spring-cloud-azure-starter-integration-eventhubs
+#### spring-cloud-azure-starter-integration-eventhubs(old: azure-spring-cloud-starter-eventhubs)
 - For single bind connection string and checkpoint account settings:
   > ( ***This part is shared for all eventhub connection and checkpoint settings!***)
   
@@ -228,7 +220,7 @@ spring:
             account-key: [checkpoint-access-key]
 ```
 
-#### azure-spring-cloud-stream-binder-eventhubs
+#### spring-cloud-azure-stream-binder-eventhubs(old: azure-spring-cloud-stream-binder-eventhubs)
 - For single bind connection string and checkpoint account settings:
   [As per above](#azure-spring-cloud-starter-eventhubs)
 
@@ -259,6 +251,8 @@ to:
 |`consumer.max-batch-size` | `consumer.batch.max-size`
 |`consumer.max-wait-time`|`consumer.batch.max-wait-time`
 |`consumer.checkpoint-mode`|`consumer.checkpoint.mode`
+|`consumer.checkpoint-count`|`consumer.checkpoint.count`
+|`consumer.checkpoint-interval`|`consumer.checkpoint.interval`
 For example, you should change from:
 ```yaml
 spring:
@@ -271,6 +265,9 @@ spring:
                   max-batch-size: [max-batch-size]
                   max-wait-time: [max-wait-time]
                   checkpoint-mode: [check-point-mode]
+                  checkpoint-count: [checkpoint-count]
+                  checkpoint-interval: [checkpoint-interval]
+
 ```
 to:
 ```yaml
@@ -286,12 +283,20 @@ spring:
                     max-wait-time: [max-wait-time]
                   checkpoint:
                     mode: [check-point-mode]
+                    count: [checkpoint-count]
+                    interval: [checkpoint-interval]
 ```
-
- 
 
 ## API breaking changes
 
+### some common changes in `import` section for `azure-spring-cloud-starter-eventhubs` and `azure-spring-cloud-stream-binder-eventhubs`
+You should check and update the dependencies. (IDE's `auto-completion tool` is recommended.)
+
+| original dependency name                                  | new dependency name                                                  |
+| ------------------------------------------------------- | ------------------------------------------------------------ |
+| com.azure.spring.integration.core.EventHubsHeaders | com.azure.spring.eventhubs.support.EventHubsHeaders |
+| com.azure.spring.integration.core.api.reactor.Checkpointer | com.azure.spring.messaging.checkpoint.Checkpointer |
+| com.azure.spring.integration.core.AzureHeaders.CHECKPOINTER | com.azure.spring.messaging.AzureHeaders.CHECKPOINTER |
 ## Authentication
 
 Spring Cloud Azure 4.0 supports all the authentication methods each Azure Service SDK supports. It allows to configure a
