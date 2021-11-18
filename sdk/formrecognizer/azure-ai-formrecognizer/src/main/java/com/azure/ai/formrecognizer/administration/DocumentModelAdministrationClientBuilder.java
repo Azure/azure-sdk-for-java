@@ -3,11 +3,13 @@
 
 package com.azure.ai.formrecognizer.administration;
 
+import com.azure.ai.formrecognizer.DocumentAnalysisClientBuilder;
 import com.azure.ai.formrecognizer.DocumentAnalysisServiceVersion;
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImpl;
 import com.azure.ai.formrecognizer.implementation.FormRecognizerClientImplBuilder;
 import com.azure.ai.formrecognizer.implementation.util.Constants;
 import com.azure.ai.formrecognizer.implementation.util.Utility;
+import com.azure.ai.formrecognizer.models.FormRecognizerAudience;
 import com.azure.core.annotation.ServiceClientBuilder;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.TokenCredential;
@@ -100,6 +102,7 @@ public final class DocumentModelAdministrationClientBuilder {
     private RetryPolicy retryPolicy;
     private TokenCredential tokenCredential;
     private DocumentAnalysisServiceVersion version;
+    private FormRecognizerAudience audience;
 
     /**
      * Creates a {@link DocumentModelAdministrationClient} based on options set in the builder. Every time
@@ -151,7 +154,7 @@ public final class DocumentModelAdministrationClientBuilder {
         // Create a default Pipeline if it is not given
         if (pipeline == null) {
             pipeline = Utility.buildHttpPipeline(clientOptions, httpLogOptions, buildConfiguration,
-                retryPolicy, credential, tokenCredential, perCallPolicies, perRetryPolicies, httpClient);
+                retryPolicy, credential, tokenCredential, audience, perCallPolicies, perRetryPolicies, httpClient);
         }
         final FormRecognizerClientImpl formRecognizerAPI = new FormRecognizerClientImplBuilder()
             .endpoint(endpoint)
@@ -349,6 +352,19 @@ public final class DocumentModelAdministrationClientBuilder {
      */
     public DocumentModelAdministrationClientBuilder serviceVersion(DocumentAnalysisServiceVersion version) {
         this.version = version;
+        return this;
+    }
+
+    /**
+     * Sets the audience for the Azure Form Recognizer service.
+     *
+     * @param audience ARM management scope associated with the given form recognizer resource.
+     * @throws NullPointerException If {@code audience} is null.
+     * @return The updated {@link DocumentModelAdministrationClientBuilder} object.
+     */
+    public DocumentModelAdministrationClientBuilder audience(FormRecognizerAudience audience) {
+        Objects.requireNonNull(audience, "'audience' can't be null");
+        this.audience = audience;
         return this;
     }
 }

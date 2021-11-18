@@ -9,6 +9,7 @@ import com.azure.ai.formrecognizer.TestUtils;
 import com.azure.ai.formrecognizer.administration.models.AccountProperties;
 import com.azure.ai.formrecognizer.administration.models.CopyAuthorization;
 import com.azure.ai.formrecognizer.administration.models.DocumentModel;
+import com.azure.ai.formrecognizer.models.FormRecognizerAudience;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
@@ -55,7 +56,8 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestBase
             .httpClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient)
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .serviceVersion(serviceVersion)
-            .addPolicy(interceptorManager.getRecordPolicy());
+            .addPolicy(interceptorManager.getRecordPolicy())
+            .audience(getAudience(getEndpoint()));
 
         if (getTestMode() == TestMode.PLAYBACK) {
             builder.credential(new AzureKeyCredential(INVALID_KEY));
@@ -115,9 +117,22 @@ public abstract class DocumentModelAdministrationClientTestBase extends TestBase
         TestUtils.getMultipageTrainingContainerHelper(testRunner, interceptorManager.isPlaybackMode());
     }
 
-    String getEndpoint() {
+    private String getEndpoint() {
         return interceptorManager.isPlaybackMode()
             ? "https://localhost:8080"
             : AZURE_FORM_RECOGNIZER_ENDPOINT_CONFIGURATION;
+    }
+
+    private FormRecognizerAudience getAudience(String endpoint) {
+        if (endpoint == null) {
+            return FormRecognizerAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD;
+        }
+        if (endpoint.contains(".azurecr.cn")) {
+            return FormRecognizerAudience.AZURE_RESOURCE_MANAGER_CHINA;
+        }
+        if (endpoint.contains(".azurecr.us")) {
+            return FormRecognizerAudience.AZURE_RESOURCE_MANAGER_GOVERNMENT;
+        }
+        return FormRecognizerAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD;
     }
 }
