@@ -189,7 +189,7 @@ The artifact `azure-spring-boot-starter-storage` was divided into two artifacts:
 | Artifact Id                                   | Azure Service      |
 |-----------------------------------------------|--------------------|
 | **spring-cloud-azure-starter-storage-blob**       | [Azure Storage Blob](https://docs.microsoft.com/azure/storage/blobs/) |
-| **spring-cloud-azure-starter-storage-file-share** | [Azure Storage File](https://docs.microsoft.com/zh-cn/azure/storage/files/) |
+| **spring-cloud-azure-starter-storage-file-share** | [Azure Storage File](https://docs.microsoft.com/azure/storage/files/) |
 
 Step01: Replace the maven dependency
 
