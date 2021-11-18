@@ -146,7 +146,8 @@ Create a `FileSystem` using the [`shared key`](#get-credentials) retrieved above
 Note that you can further configure the file system using constants available in `AzureFileSystem`.
 Please see the docs for `AzureFileSystemProvider` for a full explanation of initializing and configuring a filesystem
 
-```java readme-sample-createAFileSystem
+<!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L40-L45 -->
+```java
 Map<String, Object> config = new HashMap<>();
 String stores = "<container_name>,<another_container_name>"; // A comma separated list of container names
 StorageSharedKeyCredential credential = new StorageSharedKeyCredential("<account_name", "account_key");
@@ -159,7 +160,8 @@ FileSystem myFs = FileSystems.newFileSystem(new URI("azb://?endpoint=<account_en
 
 Create a directory using the `Files` api
 
-```java readme-sample-createADirectory
+<!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L49-L50 -->
+```java
 Path dirPath = myFs.getPath("dir");
 Files.createDirectory(dirPath);
 ```
@@ -168,7 +170,8 @@ Files.createDirectory(dirPath);
 
 Iterate over a directory using a `DirectoryStream`
 
-```java readme-sample-iterateOverDirectoryContents
+<!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L54-L56 -->
+```java
 for (Path p : Files.newDirectoryStream(dirPath)) {
     System.out.println(p.toString());
 }
@@ -178,11 +181,12 @@ for (Path p : Files.newDirectoryStream(dirPath)) {
 
 Read the contents of a file using an `InputStream`. Skipping, marking, and resetting are all supported.
 
-```java readme-sample-readAFile
+<!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L60-L63 -->
+```java
 Path filePath = myFs.getPath("file");
-try (InputStream is = Files.newInputStream(filePath)) {
-    is.read();
-}
+InputStream is = Files.newInputStream(filePath);
+is.read();
+is.close();
 ```
 
 ### Write to a file
@@ -190,15 +194,25 @@ try (InputStream is = Files.newInputStream(filePath)) {
 Write to a file. Only writing whole files is supported. Random IO is not supported. The stream must be closed in order 
 to guarantee that the data is available to be read.
 
-```java readme-sample-writeToAFile
-```java readme-sample-copyAFile
+<!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L67-L69 -->
+```java
+OutputStream os = Files.newOutputStream(filePath);
+os.write(0);
+os.close();
+``` 
+
+### Copy a file
+
+<!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L73-L74 -->
+```java
 Path destinationPath = myFs.getPath("destinationFile");
 Files.copy(filePath, destinationPath, StandardCopyOption.COPY_ATTRIBUTES);
 ```
 
 ### Delete a file
 
-```java readme-sample-deleteAFile
+<!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L78-L78 -->
+```java
 Files.delete(filePath);
 ```
 
@@ -206,7 +220,8 @@ Files.delete(filePath);
 
 Read attributes of a file through the `AzureBlobFileAttributes`.
 
-```java readme-sample-readAttributesOnAFile
+<!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L82-L83 -->
+```java
 AzureBlobFileAttributes attr = Files.readAttributes(filePath, AzureBlobFileAttributes.class);
 BlobHttpHeaders headers = attr.blobHttpHeaders();
 ```
@@ -215,7 +230,8 @@ Or read attributes dynamically by specifying a string of desired attributes. Thi
 to retrieve any attribute will always retrieve all of them as an atomic bulk operation. You may specify "*" instead of a 
 list of specific attributes to have all attributes returned in the map.
 
-```java readme-sample-readAttributesOnAFileString
+<!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L87-L87 -->
+```java
 Map<String, Object> attributes = Files.readAttributes(filePath, "azureBlob:metadata,headers");
 ```
 
@@ -223,14 +239,16 @@ Map<String, Object> attributes = Files.readAttributes(filePath, "azureBlob:metad
 
 Set attributes of a file through the `AzureBlobFileAttributeView`.
 
-```java readme-sample-writeAttributesToAFile
+<!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L91-L92 -->
+```java
 AzureBlobFileAttributeView view = Files.getFileAttributeView(filePath, AzureBlobFileAttributeView.class);
-view.setMetadata(Collections.emptyMap());
+view.setMetadata(Collections.EMPTY_MAP);
 ```
 
 Or set an attribute dynamically by specifying the attribute as a string.
 
-```java readme-sample-writeAttributesToAFileString
+<!-- embedme ./src/samples/java/com/azure/storage/blob/nio/ReadmeSamples.java#L96-L96 -->
+```java
 Files.setAttribute(filePath, "azureBlob:blobHttpHeaders", new BlobHttpHeaders());
 ```
 
