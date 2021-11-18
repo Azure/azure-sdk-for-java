@@ -291,7 +291,20 @@ to configure in Spring Cloud Azure 4.0, it can leverage the credential stored in
 managed identity in Azure Services, just make sure the principal has been granted sufficient permission to access the
 target Azure resources. 
 
+## Package name
 
+### spring-cloud-azure-starter-active-directory
+| Legacy class                                                                        | Modern class                                                                                                 |
+| ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| com.azure.spring.aad.webapi.AADResourceServerWebSecurityConfigurerAdapter           | com.azure.spring.cloud.autoconfigure.aad.implementation.webapi.AADResourceServerWebSecurityConfigurerAdapter |
+| com.azure.spring.aad.webapp.AADWebSecurityConfigurerAdapter                         | com.azure.spring.cloud.autoconfigure.aad.implementation.webapp.AADWebSecurityConfigurerAdapter               |
+| com.azure.spring.autoconfigure.aad.AADAppRoleStatelessAuthenticationFilter          | com.azure.spring.cloud.autoconfigure.aad.implementation.filter.AADAppRoleStatelessAuthenticationFilter       |
+| com.azure.spring.autoconfigure.aad.AADAuthenticationFilter                          | com.azure.spring.cloud.autoconfigure.aad.implementation.filter.AADAuthenticationFilter                       |
+| com.azure.spring.autoconfigure.aad.AADAuthenticationProperties                      | com.azure.spring.cloud.autoconfigure.aad.implementation.properties.AADAuthenticationProperties               |
+| com.azure.spring.autoconfigure.aad.Membership                                       | com.azure.spring.cloud.autoconfigure.aad.implementation.graph.Membership                                     |
+| com.azure.spring.autoconfigure.aad.UserPrincipal                                    | com.azure.spring.cloud.autoconfigure.aad.implementation.filter.UserPrincipal                                 |
+| com.azure.spring.autoconfigure.b2c.AADB2CJwtBearerTokenAuthenticationConverter      | com.azure.spring.cloud.autoconfigure.aad.b2c.implementation.AADB2CJwtBearerTokenAuthenticationConverter      |
+| com.azure.spring.autoconfigure.b2c.AADB2COidcLoginConfigurer                        | com.azure.spring.cloud.autoconfigure.aad.b2c.implementation.AADB2COidcLoginConfigurer                        |
 
 
 
