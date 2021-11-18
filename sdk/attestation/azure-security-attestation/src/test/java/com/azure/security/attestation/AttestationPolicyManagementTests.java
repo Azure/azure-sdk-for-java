@@ -10,13 +10,13 @@ import com.azure.security.attestation.models.AttestationSigningKey;
 import com.azure.security.attestation.models.CertificateModification;
 import com.azure.security.attestation.models.PolicyCertificatesModificationResult;
 import com.azure.security.attestation.models.PolicyManagementCertificateOptions;
+import org.bouncycastle.util.encoders.Hex;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 import reactor.test.StepVerifier;
 
-import javax.xml.bind.DatatypeConverter;
 import java.security.MessageDigest;
 import java.security.cert.X509Certificate;
 import java.util.List;
@@ -184,9 +184,9 @@ public class AttestationPolicyManagementTests extends AttestationClientTestBase 
         X509Certificate certificate = getPolicySigningCertificate0();
         // Calculate the certificate thumbprint we're adding and removing.
         String expectedThumbprint =
-            assertDoesNotThrow(() -> DatatypeConverter.printHexBinary(
+            assertDoesNotThrow(() -> new String(Hex.encode(
                 MessageDigest.getInstance("SHA-1").digest(
-                    certificate.getEncoded())).toUpperCase());
+                    certificate.getEncoded()))).toUpperCase());
 
         StepVerifier.create(client.addPolicyManagementCertificate(new PolicyManagementCertificateOptions(
             certificate,
