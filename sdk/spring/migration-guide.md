@@ -106,9 +106,9 @@ new artifacts to better serve some scenarios.
 | azure-spring-cloud-messaging                      | // TODO                                                      |                                                              |
 | azure-spring-cloud-starter-cache                  | // TODO                                                      |                                                              |
 | azure-spring-cloud-starter-eventhubs-kafka        | // TODO                                                      |                                                              |
-| azure-spring-cloud-starter-eventhubs              | spring-cloud-azure-starter-integration-eventhubs             |                                                              |
-| azure-spring-cloud-starter-servicebus             | spring-cloud-azure-starter-integration-servicebus            |                                                              |
-| azure-spring-cloud-starter-storage-queue          | spring-cloud-azure-starter-integration-storage-queue         |                                                              |
+| azure-spring-cloud-starter-eventhubs              | spring-cloud-azure-starter-integration-eventhubs             | Starter for using Azure Event Hubs Spring Integration client library   |
+| azure-spring-cloud-starter-servicebus             | spring-cloud-azure-starter-integration-servicebus            | Starter for using Azure Service Bus Spring Integration client library  |
+| azure-spring-cloud-starter-storage-queue          | spring-cloud-azure-starter-integration-storage-queue         | Starter for using Azure Storage Queue Spring Integration client library|
 | azure-spring-cloud-storage                        | N/A                                                          | This artifact has been deleted with all functionalities merged into the new `spring-cloud-azure-autoconfigure` artifact. |
 | azure-spring-cloud-stream-binder-eventhubs        | spring-cloud-azure-stream-binder-eventhubs                   | This artifact has been refactored using new redesign, mainly `spring-cloud-azure-stream-binder-eventhubs` and `spring-cloud-azure-stream-binder-eventhubs-core`.
 | N/A                                               | spring-cloud-azure-stream-binder-eventhubs-core                   |                                                              |
@@ -127,13 +127,13 @@ new artifacts to better serve some scenarios.
 | N/A                                               | spring-cloud-azure-service                                   |                                                              |
 | N/A                                               | spring-cloud-azure-starter                                   | The Core Spring Cloud Azure starter, including auto-configuration support. |
 | N/A                                               | spring-cloud-azure-starter-appconfiguration                  | Starter for using Azure App Configuration.                   |
-| N/A                                               | spring-cloud-azure-starter-eventhubs                         | Starter for using Azure Event Hubs.                          |
-| N/A                                               | spring-cloud-azure-starter-servicebus                        | Starter for using Azure Service Bus.                         |
-| N/A                                               | spring-cloud-azure-starter-storage-blob                      | Starter for using Azure Storage Blob.                        |
-| N/A                                               | spring-cloud-azure-starter-storage-file-share                | Starter for using Azure Storage File Share.                  |
-| N/A                                               | spring-cloud-azure-starter-storage-queue                     | Starter for using Azure Storage Queue.                       |
-| N/A                                               | spring-cloud-azure-starter-stream-eventhubs                  |                                                              |
-| N/A                                               | spring-cloud-azure-starter-stream-servicebus                 |                                                              |
+| N/A                                               | spring-cloud-azure-starter-eventhubs                         | Starter for using Azure Event Hubs Client library for Java.                          |
+| N/A                                               | spring-cloud-azure-starter-servicebus                        | Starter for using Azure Service Bus Client library for Java.                         |
+| N/A                                               | spring-cloud-azure-starter-storage-blob                      | Starter for using Azure Storage Blob Client library for Java..                        |
+| N/A                                               | spring-cloud-azure-starter-storage-file-share                | Starter for using Azure Storage File Share Client library for Java..                  |
+| N/A                                               | spring-cloud-azure-starter-storage-queue                     | Starter for using Azure Storage Queue Client library for Java..                       |
+| N/A                                               | spring-cloud-azure-starter-stream-eventhubs                  | Starter for using Azure Event Hubs Spring Cloud Stream Binder  |
+| N/A                                               | spring-cloud-azure-starter-stream-servicebus                 | Starter for using Azure Service Bus Spring Cloud Stream Binder |
 
 ## Dependencies changes
 
@@ -272,6 +272,21 @@ spring:
                     mode: [check-point-mode]
 ```
 
+#### spring-cloud-azure-starter-integration-servicebus & spring-integration-azure-servicebus
+For all configuration options supported in spring-cloud-azure-starter-integration-servicebus & spring-integration-azure-servicebus libraries,
+the prefix remains to be as `spring.cloud.azure.servicebus.`.
+
+- Renamed configuration options
+
+| Legacy configuration suffix value| Current configuration suffix value| Current type
+|:---|:---|:---
+|`transport-type`|`client.transport-type`|AmqpTransportType
+|`retry-options.max-retries`|`retry.max-attempts`|Integer
+|`retry-options.delay`|`retry.delay`|Duration
+|`retry-options.max-delay`|`retry.max-delay`|Duration
+|`retry-options.try-timeout`|`retry.timeout`|Duration
+|`retry-options.retry-mode`|//TODO|
+
 #### spring-cloud-azure-starter-active-directory
 1. All configuration property names changed the prefix from `azure.activedirectory.` to `spring.cloud.azure.active-directory.`.
 2. New property `spring.cloud.azure.active-directory.enabled=true` is necessary to enable related features.
@@ -283,6 +298,16 @@ spring:
 
 ## API breaking changes
 
+#### spring-cloud-azure-starter-integration-servicebus & spring-integration-azure-servicebus
+1. SendOperation
+ - Combine the original `ServiceBusQueueTemplate#sendAsync` and `ServiceBusTopicTemplate#sendAsync` as `ServiceBusTemplate#sendAsync`
+ and drop class of `ServiceBusQueueTemplate` and `ServiceBusTopicTemplate`.
+ - Drop interface of `ServiceBusQueueOperation` and `ServiceBusTopicOperation`.
+ - Drop API of `ServiceBusQueueOperation#abandon` and `ServiceBusQueueOperation#deadletter`.
+2. SubscribeOperation
+ - Combine the original `ServiceBusQueueTemplate#subscribe` and `ServiceBusTopicTemplate#subscribe` as `ServiceBusProcessorClient#subscribe`.
+ - Deprecate the interface of `SubscribeOperation`.
+ 
 ## Authentication
 
 Spring Cloud Azure 4.0 supports all the authentication methods each Azure Service SDK supports. It allows to configure a

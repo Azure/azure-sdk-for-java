@@ -13,7 +13,7 @@ import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
 public abstract class AzureServiceBusCommonProperties extends AbstractAzureAmqpCP {
 
     // https://help.boomi.com/bundle/connectors/page/r-atm-Microsoft_Azure_Service_Bus_connection.html
-    // https://docs.microsoft.com/en-us/rest/api/servicebus/addressing-and-protocol
+    // https://docs.microsoft.com/rest/api/servicebus/addressing-and-protocol
     protected String domainName = "servicebus.windows.net";
 
     protected String namespace;

@@ -58,37 +58,8 @@ ReplyToSessionId | com.azure.spring.integration.servicebus.converter.ServiceBusM
 ## Usage examples
 **Example: Manually set the partition key for the message**
 
-This example demonstrates how to manually set the partition key for the message in the application.
-
-**Way 1:**
-This example requires that `spring.cloud.stream.default.producer.partitionKeyExpression` be set `"'partitionKey-' + headers[<message-header-key>]"`.
-```yaml
-spring:
-  cloud:
-    azure:
-      servicebus:
-        connection-string: [servicebus-namespace-connection-string]
-    stream:
-      default:
-        producer:
-          partitionKeyExpression:  "'partitionKey-' + headers[<message-header-key>]"
-```
-```java
-@PostMapping("/messages")
-public ResponseEntity<String> sendMessage(@RequestParam String message) {
-    LOGGER.info("Going to add message {} to Sinks.Many.", message);
-    many.emitNext(MessageBuilder.withPayload(message)
-                                .setHeader("<message-header-key>", "Customize partirion key")
-                                .build(), Sinks.EmitFailureHandler.FAIL_FAST);
-    return ResponseEntity.ok("Sent!");
-}
-```
-
-> **NOTE:** When using `application.yml` to configure the partition key, its priority will be the lowest.
-> It will take effect only when the `ServiceBusMessageHeaders.SESSION_ID`, `ServiceBusMessageHeaders.PARTITION_KEY`, `AzureHeaders.PARTITION_KEY` are not configured.
-
-**Way 2:**
-Manually add the partition Key in the message header by code.
+This example demonstrates how to manually set the partition key for the message in the application by 
+manually add the partition Key in the message header by code.
 
 *Recommended:* Use `ServiceBusMessageHeaders.PARTITION_KEY` as the key of the header.
 ```java
