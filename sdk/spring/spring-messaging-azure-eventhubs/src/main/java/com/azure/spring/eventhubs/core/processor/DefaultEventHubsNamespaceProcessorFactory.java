@@ -41,6 +41,8 @@ public class DefaultEventHubsNamespaceProcessorFactory implements EventHubsProce
     private final PropertiesSupplier<Tuple2<String, String>, ProcessorProperties> propertiesSupplier;
     private final Map<Tuple2<String, String>, EventProcessorClient> processorClientMap = new ConcurrentHashMap<>();
     private final ProcessorPropertiesParentMerger propertiesMerger = new ProcessorPropertiesParentMerger();
+    public static final String INVALID_SUBSCRIPTION =
+        DefaultEventHubsNamespaceProcessorFactory.class.getSimpleName() + "INVALID_SUBSCRIPTION";
 
     public DefaultEventHubsNamespaceProcessorFactory(CheckpointStore checkpointStore) {
         this(checkpointStore, null, null);

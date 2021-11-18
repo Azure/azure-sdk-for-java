@@ -4,6 +4,7 @@
 package com.azure.spring.integration.eventhubs.inbound;
 
 import com.azure.messaging.eventhubs.EventData;
+import com.azure.messaging.eventhubs.models.ErrorContext;
 import com.azure.messaging.eventhubs.models.EventBatchContext;
 import com.azure.messaging.eventhubs.models.EventContext;
 import com.azure.messaging.eventhubs.models.PartitionContext;
@@ -12,6 +13,9 @@ import com.azure.spring.eventhubs.checkpoint.EventCheckpointManager;
 import com.azure.spring.eventhubs.core.EventHubsProcessorContainer;
 import com.azure.spring.eventhubs.support.converter.EventHubBatchMessageConverter;
 import com.azure.spring.eventhubs.support.converter.EventHubsMessageConverter;
+import com.azure.spring.integration.eventhubs.inbound.health.EventHusProcessorInstrumentation;
+import com.azure.spring.integration.instrumentation.Instrumentation;
+import com.azure.spring.integration.instrumentation.InstrumentationManager;
 import com.azure.spring.messaging.AzureHeaders;
 import com.azure.spring.messaging.ListenerMode;
 import com.azure.spring.messaging.checkpoint.AzureCheckpointer;
@@ -49,7 +53,7 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
         new IntegrationBatchEventProcessingListener();
 
     private final CheckpointConfig checkpointConfig;
-    private EventProcessingListener listener;
+    private InstrumentationEventProcessingListener listener;
     private EventCheckpointManager checkpointManager;
 
     public EventHubsInboundChannelAdapter(EventHubsProcessorContainer processorContainer,
@@ -74,10 +78,10 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
 
     @Override
     protected void onInit() {
-        if (ListenerMode.RECORD.equals(this.listenerMode)) {
-            this.listener = recordEventProcessor;
-        } else {
+        if (ListenerMode.BATCH.equals(this.listenerMode)) {
             this.listener = batchEventProcessor;
+        } else {
+            this.listener = recordEventProcessor;
         }
 
         this.checkpointManager = CheckpointManagers.of(checkpointConfig, this.listenerMode);
@@ -103,17 +107,57 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
         this.recordEventProcessor.setPayloadType(payloadType);
     }
 
-    private class IntegrationRecordEventProcessingListener implements RecordEventProcessingListener {
+    public void setInstrumentationManager(InstrumentationManager instrumentationManager) {
+        if (ListenerMode.BATCH.equals(this.listenerMode)) {
+            this.batchEventProcessor.setInstrumentationManager(instrumentationManager);
+        } else {
+            this.recordEventProcessor.setInstrumentationManager(instrumentationManager);
+        }
+    }
+
+    public void setInstrumentationId(String instrumentationId) {
+        if (ListenerMode.BATCH.equals(this.listenerMode)) {
+            this.batchEventProcessor.setInstrumentationId(instrumentationId);
+        } else {
+            this.recordEventProcessor.setInstrumentationId(instrumentationId);
+        }
+    }
+
+    /**
+     *
+     */
+    public interface InstrumentationEventProcessingListener extends EventProcessingListener {
+        void setInstrumentationManager(InstrumentationManager instrumentationManager);
+        void setInstrumentationId(String instrumentationId);
+        default void updateInstrumentation(ErrorContext errorContext,
+                                           InstrumentationManager instrumentationManager,
+                                           String instrumentationId) {
+            Instrumentation instrumentation = instrumentationManager.getHealthInstrumentation(instrumentationId);
+            if (instrumentation != null) {
+                if (instrumentation instanceof EventHusProcessorInstrumentation) {
+                    ((EventHusProcessorInstrumentation) instrumentation).markError(errorContext);
+                } else {
+                    instrumentation.markDown(errorContext.getThrowable());
+                }
+            }
+        }
+    }
+
+    private class IntegrationRecordEventProcessingListener implements InstrumentationEventProcessingListener, RecordEventProcessingListener {
 
         private EventHubsMessageConverter messageConverter = new EventHubsMessageConverter();
         private Class<?> payloadType = byte[].class;
-
+        private InstrumentationManager instrumentationManager;
+        private String instrumentationId;
 
         @Override
         public ErrorContextConsumer getErrorContextConsumer() {
-            return errorContext -> LOGGER.error("Error occurred on partition: {}. Error: {}",
-                errorContext.getPartitionContext().getPartitionId(),
-                errorContext.getThrowable());
+            return errorContext -> {
+                LOGGER.error("Record event error occurred on partition: {}. Error: {}",
+                    errorContext.getPartitionContext().getPartitionId(),
+                    errorContext.getThrowable());
+                updateInstrumentation(errorContext, instrumentationManager, instrumentationId);
+            };
         }
 
         @Override
@@ -138,7 +182,6 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
 
         }
 
-
         @Override
         public CloseContextConsumer getCloseContextConsumer() {
             return closeContext -> LOGGER.info("Stopped receiving on partition: {}. Reason: {}",
@@ -159,21 +202,34 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
         public void setPayloadType(Class<?> payloadType) {
             this.payloadType = payloadType;
         }
+
+        @Override
+        public void setInstrumentationManager(InstrumentationManager instrumentationManager) {
+            this.instrumentationManager = instrumentationManager;
+        }
+
+        @Override
+        public void setInstrumentationId(String instrumentationId) {
+            this.instrumentationId = instrumentationId;
+        }
     }
 
-    private class IntegrationBatchEventProcessingListener implements BatchEventProcessingListener {
+    private class IntegrationBatchEventProcessingListener implements InstrumentationEventProcessingListener, BatchEventProcessingListener {
 
         private EventHubBatchMessageConverter messageConverter = new EventHubBatchMessageConverter();
         private Class<?> payloadType = byte[].class;
-
+        private InstrumentationManager instrumentationManager;
+        private String instrumentationId;
 
         @Override
         public ErrorContextConsumer getErrorContextConsumer() {
-            return errorContext -> LOGGER.error("Error occurred on partition: {}. Error: {}",
-                errorContext.getPartitionContext().getPartitionId(),
-                errorContext.getThrowable());
+            return errorContext -> {
+                LOGGER.error("Error occurred on partition: {}. Error: {}",
+                    errorContext.getPartitionContext().getPartitionId(),
+                    errorContext.getThrowable());
+                updateInstrumentation(errorContext, instrumentationManager, instrumentationId);
+            };
         }
-
 
         @Override
         public CloseContextConsumer getCloseContextConsumer() {
@@ -214,6 +270,16 @@ public class EventHubsInboundChannelAdapter extends MessageProducerSupport {
             if (checkpointConfig.getMode().equals(CheckpointMode.BATCH)) {
                 checkpointManager.checkpoint(eventBatchContext);
             }
+        }
+
+        @Override
+        public void setInstrumentationManager(InstrumentationManager instrumentationManager) {
+            this.instrumentationManager = instrumentationManager;
+        }
+
+        @Override
+        public void setInstrumentationId(String instrumentationId) {
+            this.instrumentationId = instrumentationId;
         }
     }
 
