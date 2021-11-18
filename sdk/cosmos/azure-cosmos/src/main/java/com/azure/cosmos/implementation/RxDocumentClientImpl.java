@@ -4122,7 +4122,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private Mono<List<FeedRange>> getFeedRangesInternal(RxDocumentServiceRequest request, String collectionLink) {
-        logger.info("getFeedRange collectionLink=[{}]", collectionLink);
+        logger.debug("getFeedRange collectionLink=[{}]", collectionLink);
 
         if (StringUtils.isEmpty(collectionLink)) {
             throw new IllegalArgumentException("collectionLink");
