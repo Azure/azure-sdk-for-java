@@ -9,6 +9,7 @@ omitted_paths:
   - sdk/boms/azure-spring-cloud-dependencies/*
   - sdk/spring/spring-cloud-azure-starter-*/*
   - sdk/spring/spring-cloud-azure-starter/*
+  - sdk/spring/*
   - sdk/spring/spring-cloud-azure-autoconfigure/*
   - sdk/spring/spring-cloud-azure-resourcemanager/*
   - sdk/spring/spring-cloud-azure-service/*
