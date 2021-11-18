@@ -5,6 +5,7 @@
 package com.azure.analytics.purview.scanning;
 
 import com.azure.analytics.purview.scanning.implementation.FiltersImpl;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -17,13 +18,14 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous PurviewScanningClient type. */
 @ServiceClient(builder = PurviewScanningClientBuilder.class, isAsync = true)
 public final class FiltersAsyncClient {
-    private final FiltersImpl serviceClient;
+    @Generated private final FiltersImpl serviceClient;
 
     /**
      * Initializes an instance of Filters client.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     FiltersAsyncClient(FiltersImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -63,6 +65,7 @@ public final class FiltersAsyncClient {
      *     false.
      * @return a filter.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponse(
             String dataSourceName, String scanName, RequestOptions requestOptions) {
@@ -121,9 +124,10 @@ public final class FiltersAsyncClient {
      *     false.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> upsertWithResponse(
+    public Mono<Response<BinaryData>> createOrUpdateWithResponse(
             String dataSourceName, String scanName, RequestOptions requestOptions) {
-        return this.serviceClient.upsertWithResponseAsync(dataSourceName, scanName, requestOptions);
+        return this.serviceClient.createOrUpdateWithResponseAsync(dataSourceName, scanName, requestOptions);
     }
 }

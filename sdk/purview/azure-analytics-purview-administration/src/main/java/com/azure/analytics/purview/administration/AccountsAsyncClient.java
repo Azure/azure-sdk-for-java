@@ -5,6 +5,7 @@
 package com.azure.analytics.purview.administration;
 
 import com.azure.analytics.purview.administration.implementation.AccountsImpl;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -17,13 +18,14 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous PurviewAccountClient type. */
 @ServiceClient(builder = PurviewAccountClientBuilder.class, isAsync = true)
 public final class AccountsAsyncClient {
-    private final AccountsImpl serviceClient;
+    @Generated private final AccountsImpl serviceClient;
 
     /**
      * Initializes an instance of Accounts client.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     AccountsAsyncClient(AccountsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -115,6 +117,7 @@ public final class AccountsAsyncClient {
      *     false.
      * @return an account.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getAccountPropertiesWithResponse(RequestOptions requestOptions) {
         return this.serviceClient.getAccountPropertiesWithResponseAsync(requestOptions);
@@ -216,6 +219,7 @@ public final class AccountsAsyncClient {
      *     false.
      * @return account resource.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateAccountPropertiesWithResponse(
             BinaryData accountUpdateParameters, RequestOptions requestOptions) {
@@ -247,6 +251,7 @@ public final class AccountsAsyncClient {
      *     false.
      * @return the Account access keys.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getAccessKeysWithResponse(RequestOptions requestOptions) {
         return this.serviceClient.getAccessKeysWithResponseAsync(requestOptions);
@@ -286,6 +291,7 @@ public final class AccountsAsyncClient {
      *     false.
      * @return the Account access keys.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> regenerateAccessKeyWithResponse(
             BinaryData keyOptions, RequestOptions requestOptions) {

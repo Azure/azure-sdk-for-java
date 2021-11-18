@@ -5,6 +5,7 @@
 package com.azure.analytics.purview.scanning;
 
 import com.azure.analytics.purview.scanning.implementation.ScansImpl;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -18,13 +19,14 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous PurviewScanningClient type. */
 @ServiceClient(builder = PurviewScanningClientBuilder.class, isAsync = true)
 public final class ScansAsyncClient {
-    private final ScansImpl serviceClient;
+    @Generated private final ScansImpl serviceClient;
 
     /**
      * Initializes an instance of Scans client.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     ScansAsyncClient(ScansImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -158,10 +160,11 @@ public final class ScansAsyncClient {
      *     false.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> upsertWithResponse(
+    public Mono<Response<BinaryData>> createOrUpdateWithResponse(
             String dataSourceName, String scanName, BinaryData body, RequestOptions requestOptions) {
-        return this.serviceClient.upsertWithResponseAsync(dataSourceName, scanName, body, requestOptions);
+        return this.serviceClient.createOrUpdateWithResponseAsync(dataSourceName, scanName, body, requestOptions);
     }
 
     /**
@@ -237,6 +240,7 @@ public final class ScansAsyncClient {
      *     false.
      * @return a scan information.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponse(
             String dataSourceName, String scanName, RequestOptions requestOptions) {
@@ -316,6 +320,7 @@ public final class ScansAsyncClient {
      *     false.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteWithResponse(
             String dataSourceName, String scanName, RequestOptions requestOptions) {
@@ -400,6 +405,7 @@ public final class ScansAsyncClient {
      *     false.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listByDataSource(String dataSourceName, RequestOptions requestOptions) {
         return this.serviceClient.listByDataSourceAsync(dataSourceName, requestOptions);
