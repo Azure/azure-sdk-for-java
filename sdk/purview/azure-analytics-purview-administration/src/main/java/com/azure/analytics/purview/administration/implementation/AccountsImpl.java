@@ -355,14 +355,13 @@ public final class AccountsImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return an account.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getAccountPropertiesWithResponse(RequestOptions requestOptions, Context context) {
-        return getAccountPropertiesWithResponseAsync(requestOptions, context).block();
+    public Response<BinaryData> getAccountPropertiesWithResponse(RequestOptions requestOptions) {
+        return getAccountPropertiesWithResponseAsync(requestOptions).block();
     }
 
     /**
@@ -674,15 +673,14 @@ public final class AccountsImpl {
      *
      * @param accountUpdateParameters The account properties that can be updated through data plane.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return account resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateAccountPropertiesWithResponse(
-            BinaryData accountUpdateParameters, RequestOptions requestOptions, Context context) {
-        return updateAccountPropertiesWithResponseAsync(accountUpdateParameters, requestOptions, context).block();
+            BinaryData accountUpdateParameters, RequestOptions requestOptions) {
+        return updateAccountPropertiesWithResponseAsync(accountUpdateParameters, requestOptions).block();
     }
 
     /**
@@ -774,14 +772,13 @@ public final class AccountsImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the Account access keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getAccessKeysWithResponse(RequestOptions requestOptions, Context context) {
-        return getAccessKeysWithResponseAsync(requestOptions, context).block();
+    public Response<BinaryData> getAccessKeysWithResponse(RequestOptions requestOptions) {
+        return getAccessKeysWithResponseAsync(requestOptions).block();
     }
 
     /**
@@ -907,14 +904,12 @@ public final class AccountsImpl {
      *
      * @param keyOptions A access key options used for regeneration.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the Account access keys.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> regenerateAccessKeyWithResponse(
-            BinaryData keyOptions, RequestOptions requestOptions, Context context) {
-        return regenerateAccessKeyWithResponseAsync(keyOptions, requestOptions, context).block();
+    public Response<BinaryData> regenerateAccessKeyWithResponse(BinaryData keyOptions, RequestOptions requestOptions) {
+        return regenerateAccessKeyWithResponseAsync(keyOptions, requestOptions).block();
     }
 }
