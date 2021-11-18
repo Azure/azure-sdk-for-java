@@ -93,8 +93,8 @@ new artifacts to better serve some scenarios.
 | Legacy Artifact ID                                | Modern Artifact ID                                           | Description                                                  |
 | :------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | azure-spring-boot-starter                         | spring-cloud-azure-starter                                   | This artifact has been deleted with all functionality be merged into the new `spring-cloud-azure-starter` artifact. |
-| azure-spring-boot-starter-active-directory        | // TODO                                                      |                                                              |
-| azure-spring-boot-starter-active-directory-b2c    | // TODO                                                      |                                                              |
+| azure-spring-boot-starter-active-directory        | spring-cloud-azure-starter-active-directory                  |                                                              |
+| azure-spring-boot-starter-active-directory-b2c    | spring-cloud-azure-starter-active-directory-b2c              |                                                              |
 | azure-spring-boot-starter-cosmos                  | spring-cloud-azure-starter-cosmos                            |                                                              |
 | azure-spring-boot-starter-keyvault-certificates   | // TODO                                                      |                                                              |
 | azure-spring-boot-starter-keyvault-secrets        | spring-cloud-azure-starter-keyvault-secrets                  |                                                              |
@@ -146,6 +146,20 @@ crash.
 | Removed dependencies                                    | Description                                                  |
 | ------------------------------------------------------- | ------------------------------------------------------------ |
 | org.springframework.boot:spring-boot-starter-validation | Please include the validation starter if you want to use the Hibernate Validator. |
+
+### spring-cloud-azure-starter-active-directory
+
+| Removed dependencies                                    | Description                                                  |
+| ------------------------------------------------------- | ------------------------------------------------------------ |
+| org.springframework.boot:spring-boot-starter-validation | Please include the validation starter if you want to use the Hibernate Validator. |
+
+### spring-cloud-azure-starter-active-directory-b2c
+
+| Removed dependencies                                    | Description                                                  |
+| ------------------------------------------------------- | ------------------------------------------------------------ |
+| org.springframework.boot:spring-boot-starter-validation | Please include the validation starter if you want to use the Hibernate Validator. |
+
+
 
 ## Configuration properties
 
@@ -258,6 +272,13 @@ spring:
                     mode: [check-point-mode]
 ```
 
+#### spring-cloud-azure-starter-active-directory
+1. All configuration property names changed the prefix from `azure.activedirectory.` to `spring.cloud.azure.active-directory.`.
+2. New property `spring.cloud.azure.active-directory.enabled=true` is necessary to enable related features.
+
+#### spring-cloud-azure-starter-active-directory.b2c
+1. All configuration property names changed the prefix from `azure.activedirectory.b2c.` to `spring.cloud.azure.active-directory.b2c.`.
+2. New property `spring.cloud.azure.active-directory.b2c.enabled=true` is necessary to enable related features.
  
 
 ## API breaking changes
