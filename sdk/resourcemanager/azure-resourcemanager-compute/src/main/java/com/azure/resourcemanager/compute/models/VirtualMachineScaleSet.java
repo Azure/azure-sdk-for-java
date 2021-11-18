@@ -399,7 +399,7 @@ public interface VirtualMachineScaleSet
     /**
      * Get orchestration mode of the Virtual Machine Scale Set.
      * Scale set orchestration modes allow you to have greater control over how virtual machine instances are managed by the scale set.
-     * @return orchestration mode of the virtual machine scale set
+     * @return the orchestration mode of the virtual machine scale set
      */
     OrchestrationMode orchestrationMode();
 
