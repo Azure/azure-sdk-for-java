@@ -6,7 +6,7 @@ package com.azure.spring.cloud.stream.binder.servicebus.provisioning;
 import org.springframework.cloud.stream.provisioning.ConsumerDestination;
 
 /**
- * @author Warren Zhu
+ *
  */
 public class ServiceBusConsumerDestination implements ConsumerDestination {
 

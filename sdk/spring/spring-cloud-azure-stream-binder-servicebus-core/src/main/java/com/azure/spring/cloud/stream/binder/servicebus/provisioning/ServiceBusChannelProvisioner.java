@@ -14,7 +14,7 @@ import org.springframework.cloud.stream.provisioning.ProvisioningException;
 import org.springframework.cloud.stream.provisioning.ProvisioningProvider;
 
 /**
- * @author Warren Zhu
+ *
  */
 public class ServiceBusChannelProvisioner implements
         ProvisioningProvider<ExtendedConsumerProperties<ServiceBusConsumerProperties>,
