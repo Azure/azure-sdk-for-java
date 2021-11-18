@@ -109,7 +109,7 @@ class ServiceAPITest extends APISpec {
         def headers = primaryDataLakeServiceClient.setPropertiesWithResponse(sentProperties, null, null).getHeaders()
 
         // Service properties may take up to 30s to take effect. If they weren't already in place, wait.
-        sleepIfRecord(30 * 1000)
+        sleepIfRecord(35 * 1000)
 
         def receivedProperties = primaryDataLakeServiceClient.getProperties()
 
@@ -126,12 +126,12 @@ class ServiceAPITest extends APISpec {
             received.getLogging().getRetentionPolicy().getDays() == sent.getLogging().getRetentionPolicy().getDays()
             received.getLogging().getRetentionPolicy().isEnabled() == sent.getLogging().getRetentionPolicy().isEnabled()
 
-//            received.getCors().size() == sent.getCors().size()
-//            received.getCors().get(0).getAllowedMethods() == sent.getCors().get(0).getAllowedMethods()
-//            received.getCors().get(0).getAllowedHeaders() == sent.getCors().get(0).getAllowedHeaders()
-//            received.getCors().get(0).getAllowedOrigins() == sent.getCors().get(0).getAllowedOrigins()
-//            received.getCors().get(0).getExposedHeaders() == sent.getCors().get(0).getExposedHeaders()
-//            received.getCors().get(0).getMaxAgeInSeconds() == sent.getCors().get(0).getMaxAgeInSeconds()
+            received.getCors().size() == sent.getCors().size()
+            received.getCors().get(0).getAllowedMethods() == sent.getCors().get(0).getAllowedMethods()
+            received.getCors().get(0).getAllowedHeaders() == sent.getCors().get(0).getAllowedHeaders()
+            received.getCors().get(0).getAllowedOrigins() == sent.getCors().get(0).getAllowedOrigins()
+            received.getCors().get(0).getExposedHeaders() == sent.getCors().get(0).getExposedHeaders()
+            received.getCors().get(0).getMaxAgeInSeconds() == sent.getCors().get(0).getMaxAgeInSeconds()
 
             received.getDefaultServiceVersion() == sent.getDefaultServiceVersion()
 
