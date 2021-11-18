@@ -20,10 +20,27 @@ import java.util.Objects;
  * An AAD credential that acquires a token with a client secret for an AAD application.
  *
  * <p><strong>Sample: Construct a simple ClientSecretCredential</strong></p>
- * {@codesnippet com.azure.identity.credential.clientsecretcredential.construct}
+ * <!-- src_embed com.azure.identity.credential.clientsecretcredential.construct -->
+ * <pre>
+ * ClientSecretCredential credential1 = new ClientSecretCredentialBuilder&#40;&#41;
+ *     .tenantId&#40;tenantId&#41;
+ *     .clientId&#40;clientId&#41;
+ *     .clientSecret&#40;clientSecret&#41;
+ *     .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.identity.credential.clientsecretcredential.construct -->
  *
  * <p><strong>Sample: Construct a ClientSecretCredential behind a proxy</strong></p>
- * {@codesnippet com.azure.identity.credential.clientsecretcredential.constructwithproxy}
+ * <!-- src_embed com.azure.identity.credential.clientsecretcredential.constructwithproxy -->
+ * <pre>
+ * ClientSecretCredential credential2 = new ClientSecretCredentialBuilder&#40;&#41;
+ *     .tenantId&#40;tenantId&#41;
+ *     .clientId&#40;clientId&#41;
+ *     .clientSecret&#40;clientSecret&#41;
+ *     .proxyOptions&#40;new ProxyOptions&#40;Type.HTTP, new InetSocketAddress&#40;&quot;10.21.32.43&quot;, 5465&#41;&#41;&#41;
+ *     .build&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.identity.credential.clientsecretcredential.constructwithproxy -->
  */
 @Immutable
 public class ClientSecretCredential implements TokenCredential {

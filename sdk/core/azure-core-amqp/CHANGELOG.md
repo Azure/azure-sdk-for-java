@@ -10,6 +10,20 @@
 
 ### Other Changes
 
+## 2.3.4 (2021-11-15)
+
+### Bugs Fixed
+
+- Fixed GC leak where `AmqpChannelProcessor` did not remove subscribers on success. https://github.com/Azure/azure-sdk-for-java/pull/25129
+- Fixed GC leak where `TokenManager` was not closed if `authorize()` fails. https://github.com/Azure/azure-sdk-for-java/pull/25129
+
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.21.0` to `1.22.0`.
+
 ## 2.3.3 (2021-10-07)
 
 ### Features Added

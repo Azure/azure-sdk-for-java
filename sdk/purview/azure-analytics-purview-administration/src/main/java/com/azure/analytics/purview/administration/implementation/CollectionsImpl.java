@@ -261,15 +261,13 @@ public final class CollectionsImpl {
      *
      * @param collectionName The collectionName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return a collection.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getCollectionWithResponse(
-            String collectionName, RequestOptions requestOptions, Context context) {
-        return getCollectionWithResponseAsync(collectionName, requestOptions, context).block();
+    public Response<BinaryData> getCollectionWithResponse(String collectionName, RequestOptions requestOptions) {
+        return getCollectionWithResponseAsync(collectionName, requestOptions).block();
     }
 
     /**
@@ -337,7 +335,7 @@ public final class CollectionsImpl {
      * @return collection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> upsertCollectionWithResponseAsync(
+    public Mono<Response<BinaryData>> createOrUpdateCollectionWithResponseAsync(
             String collectionName, BinaryData collection, RequestOptions requestOptions) {
         return FluxUtil.withContext(
                 context ->
@@ -416,7 +414,7 @@ public final class CollectionsImpl {
      * @return collection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> upsertCollectionWithResponseAsync(
+    public Mono<Response<BinaryData>> createOrUpdateCollectionWithResponseAsync(
             String collectionName, BinaryData collection, RequestOptions requestOptions, Context context) {
         return service.createOrUpdateCollection(
                 this.client.getEndpoint(),
@@ -487,15 +485,14 @@ public final class CollectionsImpl {
      * @param collectionName The collectionName parameter.
      * @param collection Collection resource.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return collection resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> upsertCollectionWithResponse(
-            String collectionName, BinaryData collection, RequestOptions requestOptions, Context context) {
-        return upsertCollectionWithResponseAsync(collectionName, collection, requestOptions, context).block();
+    public Response<BinaryData> createOrUpdateCollectionWithResponse(
+            String collectionName, BinaryData collection, RequestOptions requestOptions) {
+        return createOrUpdateCollectionWithResponseAsync(collectionName, collection, requestOptions).block();
     }
 
     /**
@@ -570,15 +567,13 @@ public final class CollectionsImpl {
      *
      * @param collectionName The collectionName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteCollectionWithResponse(
-            String collectionName, RequestOptions requestOptions, Context context) {
-        return deleteCollectionWithResponseAsync(collectionName, requestOptions, context).block();
+    public Response<Void> deleteCollectionWithResponse(String collectionName, RequestOptions requestOptions) {
+        return deleteCollectionWithResponseAsync(collectionName, requestOptions).block();
     }
 
     /**
@@ -862,14 +857,13 @@ public final class CollectionsImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return paged list of collections.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listCollections(RequestOptions requestOptions, Context context) {
-        return new PagedIterable<>(listCollectionsAsync(requestOptions, context));
+    public PagedIterable<BinaryData> listCollections(RequestOptions requestOptions) {
+        return new PagedIterable<>(listCollectionsAsync(requestOptions));
     }
 
     /**
@@ -1092,15 +1086,13 @@ public final class CollectionsImpl {
      *
      * @param collectionName The collectionName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return paged list of collections.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listChildCollectionNames(
-            String collectionName, RequestOptions requestOptions, Context context) {
-        return new PagedIterable<>(listChildCollectionNamesAsync(collectionName, requestOptions, context));
+    public PagedIterable<BinaryData> listChildCollectionNames(String collectionName, RequestOptions requestOptions) {
+        return new PagedIterable<>(listChildCollectionNamesAsync(collectionName, requestOptions));
     }
 
     /**
@@ -1214,15 +1206,13 @@ public final class CollectionsImpl {
      *
      * @param collectionName The collectionName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the parent name and parent friendly name chains that represent the collection path.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getCollectionPathWithResponse(
-            String collectionName, RequestOptions requestOptions, Context context) {
-        return getCollectionPathWithResponseAsync(collectionName, requestOptions, context).block();
+    public Response<BinaryData> getCollectionPathWithResponse(String collectionName, RequestOptions requestOptions) {
+        return getCollectionPathWithResponseAsync(collectionName, requestOptions).block();
     }
 
     /**

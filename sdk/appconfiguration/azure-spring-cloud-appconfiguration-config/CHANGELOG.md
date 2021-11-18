@@ -2,13 +2,7 @@
 
 ## 2.2.0-beta.1 (Unreleased)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+* Fixed a bug where JsonNode type was passed to Spring instead of a String, when the JsonNode was a number Spring had issues resolving the value.
 
 ## 2.1.1 (2021-09-28)
 

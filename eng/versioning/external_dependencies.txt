@@ -18,7 +18,7 @@ com.fasterxml.jackson.module:jackson-module-parameter-names;2.12.5
 com.github.spotbugs:spotbugs;4.2.2
 com.github.spotbugs:spotbugs-annotations;4.2.2
 com.github.spotbugs:spotbugs-maven-plugin;4.2.2
-com.google.code.gson:gson;2.8.8
+com.google.code.gson:gson;2.8.9
 com.google.guava:guava;30.1.1-jre
 com.h3xstream.findsecbugs:findsecbugs-plugin;1.9.0
 com.microsoft.azure:azure-annotations;1.7.0

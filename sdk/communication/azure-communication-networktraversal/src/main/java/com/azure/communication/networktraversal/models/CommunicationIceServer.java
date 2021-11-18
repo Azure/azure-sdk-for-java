@@ -29,6 +29,13 @@ public final class CommunicationIceServer {
     @JsonProperty(value = "credential", required = true)
     private String credential;
 
+    /*
+     * The routing methodology to where the ICE server will be located from the
+     * client.
+     */
+    @JsonProperty(value = "routeType", required = true)
+    private RouteType routeType;
+
     /**
      * Get the urls property: List of STUN/TURN server URLs.
      *
@@ -86,6 +93,26 @@ public final class CommunicationIceServer {
      */
     public CommunicationIceServer setCredential(String credential) {
         this.credential = credential;
+        return this;
+    }
+
+    /**
+     * Get the routeType property: The routing methodology to where the ICE server will be located from the client.
+     *
+     * @return the routeType value.
+     */
+    public RouteType getRouteType() {
+        return this.routeType;
+    }
+
+    /**
+     * Set the routeType property: The routing methodology to where the ICE server will be located from the client.
+     *
+     * @param routeType the routeType value to set.
+     * @return the CommunicationIceServer object itself.
+     */
+    public CommunicationIceServer setRouteType(RouteType routeType) {
+        this.routeType = routeType;
         return this;
     }
 }

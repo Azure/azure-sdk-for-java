@@ -20,8 +20,14 @@ public class KeyVaultPrivateKey implements PrivateKey, SecretKey {
      */
     private static final long serialVersionUID = 30_10_00;
 
+    /**
+     * Key ID.
+     */
     private String kid;
 
+    /**
+     * Algorithm.
+     */
     private String algorithm;
 
     /**

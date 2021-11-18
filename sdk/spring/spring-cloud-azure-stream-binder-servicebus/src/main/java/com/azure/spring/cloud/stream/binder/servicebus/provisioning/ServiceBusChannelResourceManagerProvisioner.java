@@ -3,15 +3,15 @@
 
 package com.azure.spring.cloud.stream.binder.servicebus.provisioning;
 
+import com.azure.spring.cloud.resourcemanager.provisioner.servicebus.ServiceBusProvisioner;
 import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
-import com.azure.spring.servicebus.provisioning.ServiceBusProvisioner;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 
 import static com.azure.spring.service.servicebus.properties.ServiceBusEntityType.QUEUE;
 
 /**
- * @author Warren Zhu
+ *
  */
 public class ServiceBusChannelResourceManagerProvisioner extends ServiceBusChannelProvisioner {
 

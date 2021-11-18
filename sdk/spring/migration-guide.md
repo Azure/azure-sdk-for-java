@@ -93,8 +93,8 @@ new artifacts to better serve some scenarios.
 | Legacy Artifact ID                                | Modern Artifact ID                                           | Description                                                  |
 | :------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
 | azure-spring-boot-starter                         | spring-cloud-azure-starter                                   | This artifact has been deleted with all functionality be merged into the new `spring-cloud-azure-starter` artifact. |
-| azure-spring-boot-starter-active-directory        | // TODO                                                      |                                                              |
-| azure-spring-boot-starter-active-directory-b2c    | // TODO                                                      |                                                              |
+| azure-spring-boot-starter-active-directory        | spring-cloud-azure-starter-active-directory                  |                                                              |
+| azure-spring-boot-starter-active-directory-b2c    | spring-cloud-azure-starter-active-directory-b2c              |                                                              |
 | azure-spring-boot-starter-cosmos                  | spring-cloud-azure-starter-cosmos                            |                                                              |
 | azure-spring-boot-starter-keyvault-certificates   | // TODO                                                      |                                                              |
 | azure-spring-boot-starter-keyvault-secrets        | spring-cloud-azure-starter-keyvault-secrets                  |                                                              |
@@ -116,7 +116,6 @@ new artifacts to better serve some scenarios.
 | azure-spring-cloud-stream-binder-servicebus-queue | // TODO                                                      |                                                              |
 | azure-spring-cloud-stream-binder-servicebus-topic | // TODO                                                      |                                                              |
 | azure-spring-integration-core                     | spring-integration-azure-core                                |                                                              |
-| N/A                                               | spring-messaging-azure
 | azure-spring-integration-eventhubs                | spring-integration-azure-eventhubs                           |                                                              |
 | azure-spring-integration-servicebus               | spring-integration-azure-servicebus                          |                                                              |
 | azure-spring-integration-storage-queue            | spring-integration-azure-storage-queue                       |                                                              |
@@ -148,6 +147,18 @@ crash.
 | ------------------------------------------------------- | ------------------------------------------------------------ |
 | org.springframework.boot:spring-boot-starter-validation | Please include the validation starter if you want to use the Hibernate Validator. |
 
+### spring-cloud-azure-starter-active-directory
+
+| Removed dependencies                                    | Description                                                  |
+| ------------------------------------------------------- | ------------------------------------------------------------ |
+| org.springframework.boot:spring-boot-starter-validation | Please include the validation starter if you want to use the Hibernate Validator. |
+
+### spring-cloud-azure-starter-active-directory-b2c
+
+| Removed dependencies                                    | Description                                                  |
+| ------------------------------------------------------- | ------------------------------------------------------------ |
+| org.springframework.boot:spring-boot-starter-validation | Please include the validation starter if you want to use the Hibernate Validator. |
+
 ## Import changes
 ### some common changes in `import` section for `azure-spring-cloud-starter-eventhubs` and `azure-spring-cloud-stream-binder-eventhubs`
 You should check and update the dependencies. (IDE's `auto-completion tool` is recommended.)
@@ -158,7 +169,6 @@ You should check and update the dependencies. (IDE's `auto-completion tool` is r
 | com.azure.spring.integration.core.api.reactor.Checkpointer | com.azure.spring.messaging.checkpoint.Checkpointer |
 | com.azure.spring.integration.core.AzureHeaders.CHECKPOINTER | com.azure.spring.messaging.AzureHeaders.CHECKPOINTER |
 
- 
 ## Configuration properties
 
 ### Global configurations
