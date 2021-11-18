@@ -134,7 +134,7 @@
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-tcnative-boringssl-static</artifactId>
-      <version>2.0.43.Final</version> <!-- {x-version-update;io.netty:netty-tcnative-boringssl-static;external_dependency} -->
+      <version>2.0.44.Final</version> <!-- {x-version-update;io.netty:netty-tcnative-boringssl-static;external_dependency} -->
       <classifier>${boring-ssl-classifier}</classifier>
     </dependency>
     <dependency>
@@ -236,7 +236,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>io.netty:netty-tcnative-boringssl-static:[2.0.43.Final]</include> <!-- {x-include-update;io.netty:netty-tcnative-boringssl-static;external_dependency} -->
+                <include>io.netty:netty-tcnative-boringssl-static:[2.0.44.Final]</include> <!-- {x-include-update;io.netty:netty-tcnative-boringssl-static;external_dependency} -->
                 <include>io.projectreactor:reactor-core:[3.4.10]</include> <!-- {x-include-update;io.projectreactor:reactor-core;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-annotations:[2.12.5]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-annotations;external_dependency} -->
                 <include>com.fasterxml.jackson.core:jackson-core:[2.12.5]</include> <!-- {x-include-update;com.fasterxml.jackson.core:jackson-core;external_dependency} -->
