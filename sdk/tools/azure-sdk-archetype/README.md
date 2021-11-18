@@ -1,6 +1,6 @@
 # Azure SDK Maven Archetype
 
-The Azure SDK Maven archetype can accelerate the bootstrapping of a new project.The Azure SDK for Java Maven archetype 
+The Azure SDK Maven archetype can accelerate the bootstrapping of a new project. The Azure SDK for Java Maven archetype 
 creates a new application, with files and a directory structure that follows best practices. In particular, the 
 Azure SDK for Java Maven archetype creates a new Maven project with the following features:
 
