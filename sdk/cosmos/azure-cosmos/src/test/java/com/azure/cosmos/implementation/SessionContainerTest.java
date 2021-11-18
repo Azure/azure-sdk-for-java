@@ -68,6 +68,17 @@ public class SessionContainerTest {
 
         sessionToken = sessionContainer.resolvePartitionLocalSessionToken(request, resolvedPKRange.getId());
         assertThat(sessionToken.getLSN()).isEqualTo(2);
+
+        String globalSessionToken = sessionContainer.resolveGlobalSessionToken(request);
+        assertThat(globalSessionToken).isEqualTo("range_0:1#0#4=90#5=2,range_1:1#1#4=90#5=2,range_4:1#4#4=90#5=2,range_2:1#2#4=90#5=2,range_3:1#3#4=90#5=2");
+
+        request.getHeaders().put(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID, "not_found");
+        globalSessionToken = sessionContainer.resolveGlobalSessionToken(request);
+        assertThat(globalSessionToken).isEqualTo("range_0:1#0#4=90#5=2,range_1:1#1#4=90#5=2,range_4:1#4#4=90#5=2,range_2:1#2#4=90#5=2,range_3:1#3#4=90#5=2");
+
+        request.getHeaders().put(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID, "range_1");
+        globalSessionToken = sessionContainer.resolveGlobalSessionToken(request);
+        assertThat(globalSessionToken).isEqualTo("range_1:1#1#4=90#5=2");
     }
 
     @Test(groups = "unit")
