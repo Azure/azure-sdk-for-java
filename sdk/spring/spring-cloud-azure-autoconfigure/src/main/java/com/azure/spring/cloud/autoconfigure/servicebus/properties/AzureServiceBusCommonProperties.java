@@ -75,21 +75,4 @@ public abstract class AzureServiceBusCommonProperties extends AbstractAzureAmqpC
         this.entityType = type;
     }
 
-    // TODO (xiada) we removed these properties, and not mark them as deprecated, should we mention them in the migration docs?
-    //    public AmqpRetryOptions getRetryOptions() {
-    //        return retryOptions;
-    //    }
-    //
-    //    public void setRetryOptions(AmqpRetryOptions retryOptions) {
-//        this.retryOptions = retryOptions;
-//    }
-//
-//    @DeprecatedConfigurationProperty(reason = "Use ", replacement = "")
-//    public AmqpTransportType getTransportType() {
-//        return transportType;
-//    }
-//
-//    public void setTransportType(AmqpTransportType transportType) {
-//        this.transportType = transportType;
-//    }
 }
