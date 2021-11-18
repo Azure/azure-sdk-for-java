@@ -280,16 +280,16 @@ public class CallingServerUnitTests {
     }
 
     @Test
-    public void getAllParticipants() {
+    public void getParticipants() {
         CallingServerClient callingServerClient = getCallingServerClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(
-                    generateGetAllParticipantsResult(),
+                    generateGetParticipantsResult(),
                     200)
             ))
         );
 
-        List<CallParticipant> getParticipantResult = callingServerClient.getAllParticipants(
+        List<CallParticipant> getParticipantResult = callingServerClient.getParticipants(
             SERVERCALL_LOCATOR
         );
 
@@ -301,16 +301,16 @@ public class CallingServerUnitTests {
     }
 
     @Test
-    public void getAllParticipantsWithResponse() {
+    public void getParticipantsWithResponse() {
         CallingServerClient callingServerClient = getCallingServerClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(
-                    generateGetAllParticipantsResult(),
+                    generateGetParticipantsResult(),
                     200)
             ))
         );
 
-        Response<List<CallParticipant>> getParticipantResultResponse = callingServerClient.getAllParticipantsWithResponse(
+        Response<List<CallParticipant>> getParticipantResultResponse = callingServerClient.getParticipantsWithResponse(
             SERVERCALL_LOCATOR,
             Context.NONE
         );

@@ -265,16 +265,16 @@ public class CallingServerAsyncUnitTests {
     }
 
     @Test
-    public void getAllParticipantsAsync() {
+    public void getParticipantsAsync() {
         CallingServerAsyncClient callingServerAsyncClient = getCallingServerAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(
-                    generateGetAllParticipantsResult(),
+                    generateGetParticipantsResult(),
                     200)
             ))
         );
 
-        List<CallParticipant> getParticipantResult = callingServerAsyncClient.getAllParticipants(
+        List<CallParticipant> getParticipantResult = callingServerAsyncClient.getParticipants(
             SERVERCALL_LOCATOR
         ).block();
 
@@ -286,16 +286,16 @@ public class CallingServerAsyncUnitTests {
     }
 
     @Test
-    public void getAllParticipantsAsyncWithResponse() {
+    public void getParticipantsAsyncWithResponse() {
         CallingServerAsyncClient callingServerAsyncClient = getCallingServerAsyncClient(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(
-                    generateGetAllParticipantsResult(),
+                    generateGetParticipantsResult(),
                     200)
             ))
         );
 
-        Response<List<CallParticipant>> getParticipantResultResponse = callingServerAsyncClient.getAllParticipantsWithResponse(
+        Response<List<CallParticipant>> getParticipantResultResponse = callingServerAsyncClient.getParticipantsWithResponse(
             SERVERCALL_LOCATOR
         ).block();
 

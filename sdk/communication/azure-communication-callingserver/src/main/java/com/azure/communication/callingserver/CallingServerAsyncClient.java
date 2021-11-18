@@ -662,7 +662,7 @@ public final class CallingServerAsyncClient {
     }
 
     /**
-     * Get all participants of the call.
+     * Get participants from a server call.
      *
      * @param callLocator the call locator.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
@@ -670,7 +670,7 @@ public final class CallingServerAsyncClient {
      * @return Response for a successful get participants request.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<List<CallParticipant>> getAllParticipants(CallLocator callLocator) {
+    public Mono<List<CallParticipant>> getParticipants(CallLocator callLocator) {
         try {
             GetAllParticipantsWithCallLocatorRequest requestWithCallLocator = new GetAllParticipantsWithCallLocatorRequest()
                 .setCallLocator(CallLocatorConverter.convert(callLocator));
@@ -685,14 +685,14 @@ public final class CallingServerAsyncClient {
     }
 
     /**
-     * Get all participants of the call.
+     * Get participants from a server call.
      * @param callLocator the call locator.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful get participants request.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<Response<List<CallParticipant>>> getAllParticipantsWithResponse(CallLocator callLocator) {
+    public Mono<Response<List<CallParticipant>>> getParticipantsWithResponse(CallLocator callLocator) {
         return getParticipantsWithResponse(callLocator, Context.NONE);
     }
 

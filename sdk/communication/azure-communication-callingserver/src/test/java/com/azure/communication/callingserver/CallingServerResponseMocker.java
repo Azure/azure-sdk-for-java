@@ -72,10 +72,6 @@ public class CallingServerResponseMocker {
     }
 
     public static String generateGetParticipantsResult() {
-        return generateGetAllParticipantsResult();
-    }
-
-    public static String generateGetAllParticipantsResult() {
         List<CallParticipantInternal> result = new ArrayList<>();
         CallParticipantInternal participant = new CallParticipantInternal()
             .setParticipantId(NEW_PARTICIPANT_ID)

@@ -306,7 +306,7 @@ public final class CallingServerClient {
     }
 
     /**
-     * Get all participants of the call.
+     * Get participants from a server call.
      *
      * @param callLocator the call locator.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
@@ -314,12 +314,12 @@ public final class CallingServerClient {
      * @return Response for a successful get participants request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<CallParticipant> getAllParticipants(CallLocator callLocator) {
-        return callingServerAsyncClient.getAllParticipants(callLocator).block();
+    public List<CallParticipant> getParticipants(CallLocator callLocator) {
+        return callingServerAsyncClient.getParticipants(callLocator).block();
     }
 
     /**
-     * Get all participants of the call.
+     * Get participants from a server call.
      *
      * @param callLocator the call locator.
      * @param context A {@link Context} representing the request context.
@@ -328,7 +328,7 @@ public final class CallingServerClient {
      * @return Response for a successful get participants request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<CallParticipant>> getAllParticipantsWithResponse(CallLocator callLocator, Context context) {
+    public Response<List<CallParticipant>> getParticipantsWithResponse(CallLocator callLocator, Context context) {
         return callingServerAsyncClient.getParticipantsWithResponse(callLocator, context).block();
     }
 
