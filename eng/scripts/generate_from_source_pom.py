@@ -122,6 +122,10 @@ def load_client_artifact_identifiers():
             # Split the version line on ';' which should create 3 substrings of artifact identifier - released version - source version.
             splitVersionLine = stripped_line.split(";")
 
+            # When defining a special version tag, only one version number is provided
+            if len(splitVersionLine) == 2:
+                splitVersionLine.append(splitVersionLine[1])
+
             # From the split lines create the artifact identifier - source version map entry.
             artifact_identifiers[splitVersionLine[0]]=splitVersionLine[2]
 
@@ -176,7 +180,7 @@ def add_project_to_dependency_and_module_mappings(file_path: str, project_depend
 
     for dependency in dependencies:
 
-        # not all the <dependency> are maven dependencies, ignore them 
+        # not all the <dependency> are maven dependencies, ignore them
         if dependencies[dependency].tag == maven_xml_namespace + 'dependenciesToScan':
             continue
 
