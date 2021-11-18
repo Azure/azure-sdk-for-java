@@ -10,12 +10,24 @@ import java.util.stream.Collectors;
 
 enum AzureCfService {
 
-    SERVICEBUS("servicebus", "azure-servicebus", getImmutableMap("connectionString", "connection-string")),
-    EVENTHUB("eventhub", "azure-eventhubs", getImmutableMap("connectionString", "connection-string")),
-    STORAGE("storage", "azure-storage", getImmutableMap("storageAccountName", "account", "accessKey", "access-key")),
-    STORAGE_EVENTHUB("eventhub", "azure-storage",
-        getImmutableMap("storageAccountName", "checkpoint-storage-account", "accessKey", "checkpoint-access-key")),
-    REDIS("spring.redis", "azure-rediscache", getImmutableMap("host", "host", "password", "password", "port", "port"),
+    SERVICEBUS("servicebus", "azure-servicebus",
+        getImmutableMap("connectionString", "connection-string")),
+
+    EVENTHUBS("eventhubs", "azure-eventhubs",
+        getImmutableMap("connectionString", "connection-string")),
+
+    STORAGE("storage.blob", "azure-storage",
+        getImmutableMap(
+            "storageAccountName", "account-name", "accessKey", "account-key")),
+
+    EVENTHUBS_PROCESSOR("eventhubs.processor.checkpoint-store", "azure-storage",
+        getImmutableMap(
+            "storageAccountName", "account-name",
+            "accessKey", "account-key"
+        )),
+
+    REDIS("spring.redis", "azure-rediscache",
+        getImmutableMap("host", "host", "password", "password", "port", "port"),
         false);
 
     private static final String SPRING_CLOUD_AZURE_PROPERTY_PREFIX = "spring.cloud.azure.";

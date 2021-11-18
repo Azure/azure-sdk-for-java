@@ -38,7 +38,7 @@ class AzureEventHubsClientBuilderConfiguration {
         final EventHubClientBuilderFactory builderFactory = new EventHubClientBuilderFactory(properties);
 
         builderFactory.setConnectionStringProvider(connectionStringProviders.getIfAvailable());
-        builderFactory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_EVENT_HUB);
+        builderFactory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_EVENT_HUBS);
         return builderFactory;
     }
 
