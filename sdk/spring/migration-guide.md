@@ -227,12 +227,7 @@ spring:
             account-name: [checkpoint-storage-account]
             account-key: [checkpoint-access-key]
 ```
-
-#### azure-spring-cloud-stream-binder-eventhubs
-- For single bind connection string and checkpoint account settings:
-  [As per above](#azure-spring-cloud-starter-eventhubs)
-
-As per multiple bindings, also update `eventhub` to `eventhubs` in environment section just like the above:
+And for multiple bindings, also update `eventhub` to `eventhubs` in environment section just like the above:
 You should change from:  
 `spring.cloud.stream.binders.<eventhub-name>.environment.spring.cloud.azure.eventhub`  
 to:  
