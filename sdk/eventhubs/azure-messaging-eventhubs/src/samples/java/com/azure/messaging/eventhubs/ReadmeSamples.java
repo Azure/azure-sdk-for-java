@@ -16,10 +16,6 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * WARNING: MODIFYING THIS FILE WILL REQUIRE CORRESPONDING UPDATES TO README.md FILE. LINE NUMBERS ARE USED TO EXTRACT
- * APPROPRIATE CODE SEGMENTS FROM THIS FILE. ADD NEW CODE AT THE BOTTOM TO AVOID CHANGING LINE NUMBERS OF EXISTING CODE
- * SAMPLES.
- *
  * Class containing code snippets that will be injected to README.md.
  */
 public class ReadmeSamples {
@@ -28,17 +24,20 @@ public class ReadmeSamples {
      * Code sample for creating a synchronous Event Hub producer.
      */
     public void createSynchronousEventHubProducer() {
+        // BEGIN: readme-sample-createSynchronousEventHubProducer
         String connectionString = "<< CONNECTION STRING FOR THE EVENT HUBS NAMESPACE >>";
         String eventHubName = "<< NAME OF THE EVENT HUB >>";
         EventHubProducerClient producer = new EventHubClientBuilder()
             .connectionString(connectionString, eventHubName)
             .buildProducerClient();
+        // END: readme-sample-createSynchronousEventHubProducer
     }
 
     /**
      * Code sample for using AAD authorization to create a client.
      */
     public void useAadAuthorization() {
+        // BEGIN: readme-sample-useAadAuthorization
         TokenCredential credential = new DefaultAzureCredentialBuilder()
             .build();
 
@@ -49,6 +48,7 @@ public class ReadmeSamples {
         EventHubProducerClient client = new EventHubClientBuilder()
             .credential(fullyQualifiedNamespace, eventHubName, credential)
             .buildProducerClient();
+        // END: readme-sample-useAadAuthorization
     }
 
     /**
@@ -56,6 +56,7 @@ public class ReadmeSamples {
      * @throws IllegalArgumentException if the event data is bigger than max batch size.
      */
     public void publishEvents() {
+        // BEGIN: readme-sample-publishEvents
         EventHubProducerClient producer = new EventHubClientBuilder()
             .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
             .buildProducerClient();
@@ -79,12 +80,14 @@ public class ReadmeSamples {
         if (eventDataBatch.getCount() > 0) {
             producer.send(eventDataBatch);
         }
+        // END: readme-sample-publishEvents
     }
 
     /**
      * Code sample for publishing events to a specific partition.
      */
     public void publishEventsToPartition() {
+        // BEGIN: readme-sample-publishEventsToPartition
         EventHubProducerClient producer = new EventHubClientBuilder()
             .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
             .buildProducerClient();
@@ -94,12 +97,14 @@ public class ReadmeSamples {
 
         // Add events to batch and when you want to send the batch, send it using the producer.
         producer.send(batch);
+        // END: readme-sample-publishEventsToPartition
     }
 
     /**
      * Code sample for publishing events with a partition key.
      */
     public void publishEventsWithPartitionKey() {
+        // BEGIN: readme-sample-publishEventsWithPartitionKey
         EventHubProducerClient producer = new EventHubClientBuilder()
             .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
             .buildProducerClient();
@@ -109,12 +114,14 @@ public class ReadmeSamples {
 
         // Add events to batch and when you want to send the batch, send it using the producer.
         producer.send(eventDataBatch);
+        // END: readme-sample-publishEventsWithPartitionKey
     }
 
     /**
      * Code sample for consuming events from a specific partition.
      */
     public void consumeEventsFromPartition() {
+        // BEGIN: readme-sample-consumeEventsFromPartition
         EventHubConsumerAsyncClient consumer = new EventHubClientBuilder()
             .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
@@ -126,12 +133,14 @@ public class ReadmeSamples {
             // Process each event as it arrives.
         });
         // add sleep or System.in.read() to receive events before exiting the process.
+        // END: readme-sample-consumeEventsFromPartition
     }
 
     /**
      * Code sample for consuming events from synchronous client.
      */
     public void consumeEventsFromPartitionUsingSyncClient() {
+        // BEGIN: readme-sample-consumeEventsFromPartitionUsingSyncClient
         EventHubConsumerClient consumer = new EventHubClientBuilder()
             .connectionString("<< CONNECTION STRING FOR SPECIFIC EVENT HUB INSTANCE >>")
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
@@ -145,6 +154,7 @@ public class ReadmeSamples {
         for (PartitionEvent event : events) {
             System.out.println("Event: " + event.getData().getBodyAsString());
         }
+        // END: readme-sample-consumeEventsFromPartitionUsingSyncClient
     }
 
     /**
@@ -152,6 +162,7 @@ public class ReadmeSamples {
      * @throws InterruptedException if the thread is interrupted.
      */
     public void consumeEventsUsingEventProcessor() throws InterruptedException {
+        // BEGIN: readme-sample-consumeEventsUsingEventProcessor
         EventProcessorClient eventProcessorClient = new EventProcessorClientBuilder()
             .consumerGroup("<< CONSUMER GROUP NAME >>")
             .connectionString("<< EVENT HUB CONNECTION STRING >>")
@@ -174,6 +185,7 @@ public class ReadmeSamples {
 
         // This will stop processing events.
         eventProcessorClient.stop();
+        // END: readme-sample-consumeEventsUsingEventProcessor
     }
 }
 

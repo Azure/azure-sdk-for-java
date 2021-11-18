@@ -80,7 +80,21 @@ public final class BlobBatchAsyncClient {
      *
      * <p><strong>Code samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.batch.BlobBatchAsyncClient.submitBatch#BlobBatch}
+     * <!-- src_embed com.azure.storage.blob.batch.BlobBatchAsyncClient.submitBatch#BlobBatch -->
+     * <pre>
+     * BlobBatch batch = batchAsyncClient.getBlobBatch&#40;&#41;;
+     *
+     * Response&lt;Void&gt; deleteResponse1 = batch.deleteBlob&#40;&quot;container&quot;, &quot;blob1&quot;&#41;;
+     * Response&lt;Void&gt; deleteResponse2 = batch.deleteBlob&#40;&quot;container&quot;, &quot;blob2&quot;, DeleteSnapshotsOptionType.INCLUDE,
+     *     new BlobRequestConditions&#40;&#41;.setLeaseId&#40;&quot;leaseId&quot;&#41;&#41;;
+     *
+     * batchAsyncClient.submitBatch&#40;batch&#41;.subscribe&#40;response -&gt; &#123;
+     *     System.out.println&#40;&quot;Batch submission completed successfully.&quot;&#41;;
+     *     System.out.printf&#40;&quot;Delete operation 1 completed with status code: %d%n&quot;, deleteResponse1.getStatusCode&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Delete operation 2 completed with status code: %d%n&quot;, deleteResponse2.getStatusCode&#40;&#41;&#41;;
+     * &#125;, error -&gt; System.err.printf&#40;&quot;Batch submission failed. Error message: %s%n&quot;, error.getMessage&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.batch.BlobBatchAsyncClient.submitBatch#BlobBatch -->
      *
      * @param batch Batch to submit.
      * @return An empty response indicating that the batch operation has completed.
@@ -104,7 +118,21 @@ public final class BlobBatchAsyncClient {
      *
      * <p><strong>Code samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.batch.BlobBatchAsyncClient.submitBatch#BlobBatch-boolean}
+     * <!-- src_embed com.azure.storage.blob.batch.BlobBatchAsyncClient.submitBatch#BlobBatch-boolean -->
+     * <pre>
+     * BlobBatch batch = batchAsyncClient.getBlobBatch&#40;&#41;;
+     *
+     * Response&lt;Void&gt; deleteResponse1 = batch.deleteBlob&#40;&quot;container&quot;, &quot;blob1&quot;&#41;;
+     * Response&lt;Void&gt; deleteResponse2 = batch.deleteBlob&#40;&quot;container&quot;, &quot;blob2&quot;, DeleteSnapshotsOptionType.INCLUDE,
+     *     new BlobRequestConditions&#40;&#41;.setLeaseId&#40;&quot;leaseId&quot;&#41;&#41;;
+     *
+     * batchAsyncClient.submitBatchWithResponse&#40;batch, true&#41;.subscribe&#40;response -&gt; &#123;
+     *     System.out.printf&#40;&quot;Batch submission completed with status code: %d%n&quot;, response.getStatusCode&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Delete operation 1 completed with status code: %d%n&quot;, deleteResponse1.getStatusCode&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Delete operation 2 completed with status code: %d%n&quot;, deleteResponse2.getStatusCode&#40;&#41;&#41;;
+     * &#125;, error -&gt; System.err.printf&#40;&quot;Batch submission failed. Error message: %s%n&quot;, error.getMessage&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.batch.BlobBatchAsyncClient.submitBatch#BlobBatch-boolean -->
      *
      * @param batch Batch to submit.
      * @param throwOnAnyFailure Flag to indicate if an exception should be thrown if any request in the batch fails.
@@ -146,7 +174,19 @@ public final class BlobBatchAsyncClient {
      *
      * <p><strong>Code samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.batch.BlobBatchAsyncClient.deleteBlobs#List-DeleteSnapshotsOptionType}
+     * <!-- src_embed com.azure.storage.blob.batch.BlobBatchAsyncClient.deleteBlobs#List-DeleteSnapshotsOptionType -->
+     * <pre>
+     * List&lt;String&gt; blobUrls = new ArrayList&lt;&gt;&#40;&#41;;
+     * blobUrls.add&#40;blobClient1.getBlobUrl&#40;&#41;&#41;;
+     * blobUrls.add&#40;blobClient2.getBlobUrl&#40;&#41;&#41;;
+     * blobUrls.add&#40;blobClient3.getBlobUrl&#40;&#41;&#41;;
+     *
+     * batchAsyncClient.deleteBlobs&#40;blobUrls, DeleteSnapshotsOptionType.INCLUDE&#41;.subscribe&#40;response -&gt;
+     *         System.out.printf&#40;&quot;Deleting blob with URL %s completed with status code %d%n&quot;,
+     *             response.getRequest&#40;&#41;.getUrl&#40;&#41;, response.getStatusCode&#40;&#41;&#41;,
+     *     error -&gt; System.err.printf&#40;&quot;Deleting blob failed with exception: %s%n&quot;, error.getMessage&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.batch.BlobBatchAsyncClient.deleteBlobs#List-DeleteSnapshotsOptionType -->
      *
      * @param blobUrls Urls of the blobs to delete. Blob names must be encoded to UTF-8.
      * @param deleteOptions The deletion option for all blobs.
@@ -180,7 +220,19 @@ public final class BlobBatchAsyncClient {
      *
      * <p><strong>Code samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.batch.BlobBatchAsyncClient.setBlobsAccessTier#List-AccessTier}
+     * <!-- src_embed com.azure.storage.blob.batch.BlobBatchAsyncClient.setBlobsAccessTier#List-AccessTier -->
+     * <pre>
+     * List&lt;String&gt; blobUrls = new ArrayList&lt;&gt;&#40;&#41;;
+     * blobUrls.add&#40;blobClient1.getBlobUrl&#40;&#41;&#41;;
+     * blobUrls.add&#40;blobClient2.getBlobUrl&#40;&#41;&#41;;
+     * blobUrls.add&#40;blobClient3.getBlobUrl&#40;&#41;&#41;;
+     *
+     * batchAsyncClient.setBlobsAccessTier&#40;blobUrls, AccessTier.HOT&#41;.subscribe&#40;response -&gt;
+     *         System.out.printf&#40;&quot;Setting blob access tier with URL %s completed with status code %d%n&quot;,
+     *             response.getRequest&#40;&#41;.getUrl&#40;&#41;, response.getStatusCode&#40;&#41;&#41;,
+     *     error -&gt; System.err.printf&#40;&quot;Setting blob access tier failed with exception: %s%n&quot;, error.getMessage&#40;&#41;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.storage.blob.batch.BlobBatchAsyncClient.setBlobsAccessTier#List-AccessTier -->
      *
      * @param blobUrls Urls of the blobs to set their access tier. Blob names must be encoded to UTF-8.
      * @param accessTier {@link AccessTier} to set on each blob.

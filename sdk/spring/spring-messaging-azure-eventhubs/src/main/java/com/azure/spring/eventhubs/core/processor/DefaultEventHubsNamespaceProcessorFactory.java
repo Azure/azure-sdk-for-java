@@ -5,6 +5,7 @@ package com.azure.spring.eventhubs.core.processor;
 
 import com.azure.messaging.eventhubs.CheckpointStore;
 import com.azure.messaging.eventhubs.EventProcessorClient;
+import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
 import com.azure.spring.eventhubs.core.properties.ProcessorProperties;
 import com.azure.spring.eventhubs.core.properties.merger.ProcessorPropertiesParentMerger;
@@ -92,9 +93,11 @@ public class DefaultEventHubsNamespaceProcessorFactory implements EventHubsProce
             processorProperties.setEventHubName(k.getT1());
             processorProperties.setConsumerGroup(k.getT2());
 
-            EventProcessorClient client = new EventProcessorClientBuilderFactory(processorProperties, this.checkpointStore,
-                listener).build().buildEventProcessorClient();
-            LOGGER.info("EventProcessor created for event hub '{}' with consumer group '{}'", k.getT1(), k.getT2());
+            EventProcessorClientBuilderFactory factory =
+                new EventProcessorClientBuilderFactory(processorProperties, this.checkpointStore, listener);
+            factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_EVENT_HUBS);
+            EventProcessorClient client = factory.build().buildEventProcessorClient();
+            LOGGER.info("EventProcessor created for event hub '{}' with consumer group '{}'", eventHub, consumerGroup);
 
             this.listeners.forEach(l -> l.processorAdded(k.getT1(), k.getT2(), client));
 

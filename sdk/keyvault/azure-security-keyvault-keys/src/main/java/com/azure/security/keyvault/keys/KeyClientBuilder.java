@@ -41,23 +41,56 @@ import java.util.Map;
  * <p> The minimal configuration options required by {@link KeyClientBuilder} to build {@link KeyAsyncClient} are
  * {@link String vaultUrl} and {@link TokenCredential credential}. </p>
  *
- * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.instantiation}
+ * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.instantiation -->
+ * <pre>
+ * KeyAsyncClient keyAsyncClient = new KeyClientBuilder&#40;&#41;
+ *     .vaultUrl&#40;&quot;https:&#47;&#47;myvault.azure.net&#47;&quot;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.instantiation -->
  *
  * <p>The {@link HttpLogDetailLevel log detail level}, multiple custom {@link HttpLoggingPolicy policies} and custom
  * {@link HttpClient http client} can be optionally configured in the {@link KeyClientBuilder}.</p>
  *
- * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.instantiation.withHttpClient}
+ * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.instantiation.withHttpClient -->
+ * <pre>
+ * KeyAsyncClient keyAsyncClient = new KeyClientBuilder&#40;&#41;
+ *     .vaultUrl&#40;&quot;https:&#47;&#47;myvault.azure.net&#47;&quot;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;
+ *     .httpClient&#40;HttpClient.createDefault&#40;&#41;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.instantiation.withHttpClient -->
  *
  * <p>Alternatively, custom {@link HttpPipeline http pipeline} with custom {@link HttpPipelinePolicy} policies and
  * {@link String vaultUrl} can be specified. It provides finer control over the construction of {@link KeyAsyncClient}
  * and {@link KeyClient}</p>
  *
- * {@codesnippet com.azure.security.keyvault.keys.KeyAsyncClient.instantiation.withHttpPipeline}
+ * <!-- src_embed com.azure.security.keyvault.keys.KeyAsyncClient.instantiation.withHttpPipeline -->
+ * <pre>
+ * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
+ *     .policies&#40;new KeyVaultCredentialPolicy&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;, new RetryPolicy&#40;&#41;&#41;
+ *     .build&#40;&#41;;
+ * KeyAsyncClient keyAsyncClient = new KeyClientBuilder&#40;&#41;
+ *     .pipeline&#40;pipeline&#41;
+ *     .vaultUrl&#40;&quot;https:&#47;&#47;myvault.azure.net&#47;&quot;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.keys.KeyAsyncClient.instantiation.withHttpPipeline -->
  *
  * <p> The minimal configuration options required by {@link KeyClientBuilder secretClientBuilder} to build {@link
  * KeyClient} are {@link String vaultUrl} and {@link TokenCredential credential}. </p>
  *
- * {@codesnippet com.azure.security.keyvault.keys.KeyClient.instantiation}
+ * <!-- src_embed com.azure.security.keyvault.keys.KeyClient.instantiation -->
+ * <pre>
+ * KeyClient keyClient = new KeyClientBuilder&#40;&#41;
+ *     .vaultUrl&#40;&quot;https:&#47;&#47;myvault.azure.net&#47;&quot;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.keys.KeyClient.instantiation -->
  *
  * @see KeyAsyncClient
  * @see KeyClient
@@ -121,8 +154,8 @@ public final class KeyClientBuilder {
      * <p>If {@link KeyClientBuilder#pipeline(HttpPipeline) pipeline} is set, then the {@code pipeline} and
      * {@link KeyClientBuilder#vaultUrl(String) vaultUrl} are used to create the {@link KeyClientBuilder client}.
      * All other builder settings are ignored. If {@code pipeline} is not set, then {@link
-     * KeyClientBuilder#credential(TokenCredential) key vault credential and {@link KeyClientBuilder#vaultUrl(String)}
-     * key vault url are required to build the {@link KeyAsyncClient client}.}</p>
+     * KeyClientBuilder#credential(TokenCredential) key vault credential} and {@link KeyClientBuilder#vaultUrl(String)}
+     * key vault url are required to build the {@link KeyAsyncClient client}.</p>
      *
      * @return A {@link KeyAsyncClient} with the options set from the builder.
      *

@@ -6,8 +6,8 @@ package com.azure.spring.cloud.resourcemanager.connectionstring;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.resourcemanager.servicebus.models.AuthorizationKeys;
 import com.azure.resourcemanager.servicebus.models.AuthorizationRule;
-import com.azure.spring.core.properties.resource.AzureResourceMetadata;
 import com.azure.spring.cloud.resourcemanager.implementation.crud.ServiceBusNamespaceCrud;
+import com.azure.spring.core.properties.resource.AzureResourceMetadata;
 import com.azure.spring.core.service.AzureServiceType;
 
 /**

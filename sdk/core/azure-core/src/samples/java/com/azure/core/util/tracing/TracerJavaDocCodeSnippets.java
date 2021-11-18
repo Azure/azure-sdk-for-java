@@ -4,10 +4,11 @@
 package com.azure.core.util.tracing;
 
 import com.azure.core.util.Context;
+
 import static com.azure.core.util.tracing.Tracer.ENTITY_PATH_KEY;
 import static com.azure.core.util.tracing.Tracer.HOST_NAME_KEY;
-import static com.azure.core.util.tracing.Tracer.SPAN_BUILDER_KEY;
 import static com.azure.core.util.tracing.Tracer.PARENT_TRACE_CONTEXT_KEY;
+import static com.azure.core.util.tracing.Tracer.SPAN_BUILDER_KEY;
 
 /**
  * Contains code snippets when generating javadocs through doclets for {@link Tracer}.
@@ -53,7 +54,7 @@ public class TracerJavaDocCodeSnippets {
         // context when process kind MESSAGE
         Context updatedReceiveContext = tracer.start("EventHubs.receive", traceContext,
             ProcessKind.MESSAGE);
-        System.out.printf("Diagnostic Id: %s%n", updatedReceiveContext.getData(diagnosticIdKey).get().toString());
+        System.out.printf("Diagnostic Id: %s%n", updatedReceiveContext.getData(diagnosticIdKey).get());
         // END: com.azure.core.util.tracing.start#string-context-processKind-MESSAGE
 
         // BEGIN: com.azure.core.util.tracing.start#string-context-processKind-PROCESS
@@ -97,7 +98,8 @@ public class TracerJavaDocCodeSnippets {
         Context contextWithName = tracer.setSpanName("keyvault.setsecret", Context.NONE);
         Context traceContext = tracer.start("placeholder", contextWithName);
 
-        System.out.printf("OpenTelemetry Context with started `keyvault.setsecret` span:  %s%n", traceContext.getData(PARENT_TRACE_CONTEXT_KEY).get().toString());
+        System.out.printf("OpenTelemetry Context with started `keyvault.setsecret` span: %s%n",
+            traceContext.getData(PARENT_TRACE_CONTEXT_KEY).get());
         // END: com.azure.core.util.tracing.setSpanName#string-context
     }
 

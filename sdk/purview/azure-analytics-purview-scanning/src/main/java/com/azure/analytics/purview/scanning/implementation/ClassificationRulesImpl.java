@@ -220,15 +220,13 @@ public final class ClassificationRulesImpl {
      *
      * @param classificationRuleName The classificationRuleName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return a classification rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(
-            String classificationRuleName, RequestOptions requestOptions, Context context) {
-        return getWithResponseAsync(classificationRuleName, requestOptions, context).block();
+    public Response<BinaryData> getWithResponse(String classificationRuleName, RequestOptions requestOptions) {
+        return getWithResponseAsync(classificationRuleName, requestOptions).block();
     }
 
     /**
@@ -267,7 +265,7 @@ public final class ClassificationRulesImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> upsertWithResponseAsync(
+    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
             String classificationRuleName, RequestOptions requestOptions) {
         return FluxUtil.withContext(
                 context ->
@@ -316,7 +314,7 @@ public final class ClassificationRulesImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> upsertWithResponseAsync(
+    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
             String classificationRuleName, RequestOptions requestOptions, Context context) {
         return service.createOrUpdate(
                 this.client.getEndpoint(),
@@ -357,15 +355,14 @@ public final class ClassificationRulesImpl {
      *
      * @param classificationRuleName The classificationRuleName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> upsertWithResponse(
-            String classificationRuleName, RequestOptions requestOptions, Context context) {
-        return upsertWithResponseAsync(classificationRuleName, requestOptions, context).block();
+    public Response<BinaryData> createOrUpdateWithResponse(
+            String classificationRuleName, RequestOptions requestOptions) {
+        return createOrUpdateWithResponseAsync(classificationRuleName, requestOptions).block();
     }
 
     /**
@@ -467,15 +464,13 @@ public final class ClassificationRulesImpl {
      *
      * @param classificationRuleName The classificationRuleName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteWithResponse(
-            String classificationRuleName, RequestOptions requestOptions, Context context) {
-        return deleteWithResponseAsync(classificationRuleName, requestOptions, context).block();
+    public Response<BinaryData> deleteWithResponse(String classificationRuleName, RequestOptions requestOptions) {
+        return deleteWithResponseAsync(classificationRuleName, requestOptions).block();
     }
 
     /**
@@ -682,14 +677,13 @@ public final class ClassificationRulesImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listAll(RequestOptions requestOptions, Context context) {
-        return new PagedIterable<>(listAllAsync(requestOptions, context));
+    public PagedIterable<BinaryData> listAll(RequestOptions requestOptions) {
+        return new PagedIterable<>(listAllAsync(requestOptions));
     }
 
     /**
@@ -910,16 +904,14 @@ public final class ClassificationRulesImpl {
      *
      * @param classificationRuleName The classificationRuleName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listVersionsByClassificationRuleName(
-            String classificationRuleName, RequestOptions requestOptions, Context context) {
-        return new PagedIterable<>(
-                listVersionsByClassificationRuleNameAsync(classificationRuleName, requestOptions, context));
+            String classificationRuleName, RequestOptions requestOptions) {
+        return new PagedIterable<>(listVersionsByClassificationRuleNameAsync(classificationRuleName, requestOptions));
     }
 
     /**
@@ -1083,19 +1075,15 @@ public final class ClassificationRulesImpl {
      * @param classificationRuleName The classificationRuleName parameter.
      * @param classificationRuleVersion The classificationRuleVersion parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> tagClassificationVersionWithResponse(
-            String classificationRuleName,
-            int classificationRuleVersion,
-            RequestOptions requestOptions,
-            Context context) {
+            String classificationRuleName, int classificationRuleVersion, RequestOptions requestOptions) {
         return tagClassificationVersionWithResponseAsync(
-                        classificationRuleName, classificationRuleVersion, requestOptions, context)
+                        classificationRuleName, classificationRuleVersion, requestOptions)
                 .block();
     }
 

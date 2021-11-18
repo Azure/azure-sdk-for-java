@@ -5,6 +5,7 @@
 package com.azure.analytics.purview.catalog;
 
 import com.azure.analytics.purview.catalog.implementation.TypesImpl;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -17,13 +18,14 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous PurviewCatalogClient type. */
 @ServiceClient(builder = PurviewCatalogClientBuilder.class, isAsync = true)
 public final class TypesAsyncClient {
-    private final TypesImpl serviceClient;
+    @Generated private final TypesImpl serviceClient;
 
     /**
      * Initializes an instance of Types client.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     TypesAsyncClient(TypesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -133,6 +135,7 @@ public final class TypesAsyncClient {
      *     false.
      * @return the classification definition for the given GUID.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getClassificationDefByGuidWithResponse(
             String guid, RequestOptions requestOptions) {
@@ -244,6 +247,7 @@ public final class TypesAsyncClient {
      *     false.
      * @return the classification definition by its name (unique).
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getClassificationDefByNameWithResponse(
             String name, RequestOptions requestOptions) {
@@ -375,6 +379,7 @@ public final class TypesAsyncClient {
      *     false.
      * @return the Entity definition for the given GUID.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEntityDefinitionByGuidWithResponse(
             String guid, RequestOptions requestOptions) {
@@ -506,6 +511,7 @@ public final class TypesAsyncClient {
      *     false.
      * @return the entity definition by its name (unique).
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEntityDefinitionByNameWithResponse(
             String name, RequestOptions requestOptions) {
@@ -590,6 +596,7 @@ public final class TypesAsyncClient {
      *     false.
      * @return the enum definition for the given GUID.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEnumDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
         return this.serviceClient.getEnumDefByGuidWithResponseAsync(guid, requestOptions);
@@ -673,6 +680,7 @@ public final class TypesAsyncClient {
      *     false.
      * @return the enum definition by its name (unique).
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEnumDefByNameWithResponse(String name, RequestOptions requestOptions) {
         return this.serviceClient.getEnumDefByNameWithResponseAsync(name, requestOptions);
@@ -785,6 +793,7 @@ public final class TypesAsyncClient {
      *     false.
      * @return the relationship definition for the given GUID.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getRelationshipDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
         return this.serviceClient.getRelationshipDefByGuidWithResponseAsync(guid, requestOptions);
@@ -897,6 +906,7 @@ public final class TypesAsyncClient {
      *     false.
      * @return the relationship definition by its name (unique).
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getRelationshipDefByNameWithResponse(String name, RequestOptions requestOptions) {
         return this.serviceClient.getRelationshipDefByNameWithResponseAsync(name, requestOptions);
@@ -998,6 +1008,7 @@ public final class TypesAsyncClient {
      *     false.
      * @return the struct definition for the given GUID.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getStructDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
         return this.serviceClient.getStructDefByGuidWithResponseAsync(guid, requestOptions);
@@ -1099,6 +1110,7 @@ public final class TypesAsyncClient {
      *     false.
      * @return the struct definition by its name (unique).
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getStructDefByNameWithResponse(String name, RequestOptions requestOptions) {
         return this.serviceClient.getStructDefByNameWithResponseAsync(name, requestOptions);
@@ -1251,6 +1263,7 @@ public final class TypesAsyncClient {
      *     false.
      * @return the type definition for the given GUID.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTypeDefinitionByGuidWithResponse(String guid, RequestOptions requestOptions) {
         return this.serviceClient.getTypeDefinitionByGuidWithResponseAsync(guid, requestOptions);
@@ -1403,6 +1416,7 @@ public final class TypesAsyncClient {
      *     false.
      * @return the type definition by its name (unique).
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTypeDefinitionByNameWithResponse(String name, RequestOptions requestOptions) {
         return this.serviceClient.getTypeDefinitionByNameWithResponseAsync(name, requestOptions);
@@ -1417,6 +1431,7 @@ public final class TypesAsyncClient {
      *     false.
      * @return the completion.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTypeByNameWithResponse(String name, RequestOptions requestOptions) {
         return this.serviceClient.deleteTypeByNameWithResponseAsync(name, requestOptions);
@@ -1700,6 +1715,7 @@ public final class TypesAsyncClient {
      *     false.
      * @return all type definitions in Atlas in bulk.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getAllTypeDefinitionsWithResponse(RequestOptions requestOptions) {
         return this.serviceClient.getAllTypeDefinitionsWithResponseAsync(requestOptions);
@@ -2235,6 +2251,7 @@ public final class TypesAsyncClient {
      *     false.
      * @return atlasTypesDef.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createTypeDefinitionsWithResponse(
             BinaryData typesDef, RequestOptions requestOptions) {
@@ -2770,6 +2787,7 @@ public final class TypesAsyncClient {
      *     false.
      * @return atlasTypesDef.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateAtlasTypeDefinitionsWithResponse(
             BinaryData typesDef, RequestOptions requestOptions) {
@@ -3045,6 +3063,7 @@ public final class TypesAsyncClient {
      *     false.
      * @return the completion.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTypeDefinitionsWithResponse(BinaryData typesDef, RequestOptions requestOptions) {
         return this.serviceClient.deleteTypeDefinitionsWithResponseAsync(typesDef, requestOptions);
@@ -3080,6 +3099,7 @@ public final class TypesAsyncClient {
      *     false.
      * @return an array of AtlasTypeDefHeader matching the search criteria or an empty list if no match.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listTypeDefinitionHeadersWithResponse(RequestOptions requestOptions) {
         return this.serviceClient.listTypeDefinitionHeadersWithResponseAsync(requestOptions);
@@ -3189,6 +3209,7 @@ public final class TypesAsyncClient {
      *     false.
      * @return the term template definition for the given GUID.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTermTemplateDefByGuidWithResponse(String guid, RequestOptions requestOptions) {
         return this.serviceClient.getTermTemplateDefByGuidWithResponseAsync(guid, requestOptions);
@@ -3298,6 +3319,7 @@ public final class TypesAsyncClient {
      *     false.
      * @return the term template definition by its name (unique).
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getTermTemplateDefByNameWithResponse(String name, RequestOptions requestOptions) {
         return this.serviceClient.getTermTemplateDefByNameWithResponseAsync(name, requestOptions);

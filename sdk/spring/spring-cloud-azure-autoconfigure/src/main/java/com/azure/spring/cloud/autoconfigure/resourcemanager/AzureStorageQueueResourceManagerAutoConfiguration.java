@@ -6,32 +6,30 @@ package com.azure.spring.cloud.autoconfigure.resourcemanager;
 import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.autoconfigure.storage.queue.properties.AzureStorageQueueProperties;
 import com.azure.spring.cloud.resourcemanager.connectionstring.StorageQueueArmConnectionStringProvider;
-import com.azure.storage.queue.QueueServiceClientBuilder;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.annotation.Order;
 
 /**
  * An auto-configuration for Service Bus
  *
- * @author Warren Zhu
  */
 @ConditionalOnProperty(prefix = AzureStorageQueueProperties.PREFIX, value = "enabled", matchIfMissing = true)
-@ConditionalOnClass(QueueServiceClientBuilder.class)
 @ConditionalOnBean(AzureResourceManager.class)
 @AutoConfigureAfter(AzureResourceManagerAutoConfiguration.class)
+@EnableConfigurationProperties(StorageQueueResourceMetadata.class)
 public class AzureStorageQueueResourceManagerAutoConfiguration extends AzureServiceResourceManagerConfigurationBase {
 
-    private final AzureStorageQueueProperties storageQueueProperties;
+    private final StorageQueueResourceMetadata resourceMetadata;
 
     public AzureStorageQueueResourceManagerAutoConfiguration(AzureResourceManager azureResourceManager,
-                                                             AzureStorageQueueProperties storageQueueProperties) {
+                                                             StorageQueueResourceMetadata resourceMetadata) {
         super(azureResourceManager);
-        this.storageQueueProperties = storageQueueProperties;
+        this.resourceMetadata = resourceMetadata;
     }
 
     @Bean
@@ -40,8 +38,8 @@ public class AzureStorageQueueResourceManagerAutoConfiguration extends AzureServ
     @Order
     public StorageQueueArmConnectionStringProvider storageQueueArmConnectionStringProvider() {
         return new StorageQueueArmConnectionStringProvider(this.azureResourceManager,
-                                                           this.storageQueueProperties.getResource(),
-                                                           this.storageQueueProperties.getAccountName());
+                                                           this.resourceMetadata,
+                                                           this.resourceMetadata.getName());
     }
 
 }

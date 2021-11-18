@@ -27,7 +27,21 @@ import java.util.function.Consumer;
  * topic on Azure Service Bus.
  *
  * <p><strong>Create an instance of receiver</strong></p>
- * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverclient.instantiation}
+ * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverclient.instantiation -->
+ * <pre>
+ * &#47;&#47; The required parameters is connectionString, a way to authenticate with Service Bus using credentials.
+ * &#47;&#47; The connectionString&#47;queueName must be set by the application. The 'connectionString' format is shown below.
+ * &#47;&#47; &quot;Endpoint=&#123;fully-qualified-namespace&#125;;SharedAccessKeyName=&#123;policy-name&#125;;SharedAccessKey=&#123;key&#125;&quot;
+ * ServiceBusReceiverClient receiver = new ServiceBusClientBuilder&#40;&#41;
+ *     .connectionString&#40;connectionString&#41;
+ *     .receiver&#40;&#41;
+ *     .queueName&#40;queueName&#41;
+ *     .buildClient&#40;&#41;;
+ *
+ * &#47;&#47; Use the receiver and finally close it.
+ * receiver.close&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.servicebus.servicebusreceiverclient.instantiation -->
  *
  * @see ServiceBusClientBuilder
  * @see ServiceBusReceiverAsyncClient To communicate with a Service Bus resource using an asynchronous client.
@@ -595,7 +609,17 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * operations that need to be in this transaction.
      *
      * <p><strong>Creating and using a transaction</strong></p>
-     * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverclient.committransaction#servicebustransactioncontext}
+     * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverclient.committransaction#servicebustransactioncontext -->
+     * <pre>
+     * ServiceBusTransactionContext transaction = receiver.createTransaction&#40;&#41;;
+     *
+     * &#47;&#47; Process messages and associate operations with the transaction.
+     * ServiceBusReceivedMessage deferredMessage = receiver.receiveDeferredMessage&#40;sequenceNumber&#41;;
+     * receiver.complete&#40;deferredMessage, new CompleteOptions&#40;&#41;.setTransactionContext&#40;transaction&#41;&#41;;
+     * receiver.abandon&#40;receivedMessage, new AbandonOptions&#40;&#41;.setTransactionContext&#40;transaction&#41;&#41;;
+     * receiver.commitTransaction&#40;transaction&#41;;
+     * </pre>
+     * <!-- end com.azure.messaging.servicebus.servicebusreceiverclient.committransaction#servicebustransactioncontext -->
      *
      * @return A new {@link ServiceBusTransactionContext}.
      *
@@ -610,7 +634,17 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * Commits the transaction and all the operations associated with it.
      *
      * <p><strong>Creating and using a transaction</strong></p>
-     * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverclient.committransaction#servicebustransactioncontext}
+     * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverclient.committransaction#servicebustransactioncontext -->
+     * <pre>
+     * ServiceBusTransactionContext transaction = receiver.createTransaction&#40;&#41;;
+     *
+     * &#47;&#47; Process messages and associate operations with the transaction.
+     * ServiceBusReceivedMessage deferredMessage = receiver.receiveDeferredMessage&#40;sequenceNumber&#41;;
+     * receiver.complete&#40;deferredMessage, new CompleteOptions&#40;&#41;.setTransactionContext&#40;transaction&#41;&#41;;
+     * receiver.abandon&#40;receivedMessage, new AbandonOptions&#40;&#41;.setTransactionContext&#40;transaction&#41;&#41;;
+     * receiver.commitTransaction&#40;transaction&#41;;
+     * </pre>
+     * <!-- end com.azure.messaging.servicebus.servicebusreceiverclient.committransaction#servicebustransactioncontext -->
      *
      * @param transactionContext The transaction to be commit.
      *
@@ -626,7 +660,17 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      * Rollbacks the transaction given and all operations associated with it.
      *
      * <p><strong>Creating and using a transaction</strong></p>
-     * {@codesnippet com.azure.messaging.servicebus.servicebusreceiverclient.committransaction#servicebustransactioncontext}
+     * <!-- src_embed com.azure.messaging.servicebus.servicebusreceiverclient.committransaction#servicebustransactioncontext -->
+     * <pre>
+     * ServiceBusTransactionContext transaction = receiver.createTransaction&#40;&#41;;
+     *
+     * &#47;&#47; Process messages and associate operations with the transaction.
+     * ServiceBusReceivedMessage deferredMessage = receiver.receiveDeferredMessage&#40;sequenceNumber&#41;;
+     * receiver.complete&#40;deferredMessage, new CompleteOptions&#40;&#41;.setTransactionContext&#40;transaction&#41;&#41;;
+     * receiver.abandon&#40;receivedMessage, new AbandonOptions&#40;&#41;.setTransactionContext&#40;transaction&#41;&#41;;
+     * receiver.commitTransaction&#40;transaction&#41;;
+     * </pre>
+     * <!-- end com.azure.messaging.servicebus.servicebusreceiverclient.committransaction#servicebustransactioncontext -->
      *
      * @param transactionContext The transaction to be rollback.
      *

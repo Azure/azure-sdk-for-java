@@ -238,7 +238,8 @@ argument but defaults to the authority matching VS Code's "Azure: Cloud" setting
 
 ### Authenticating Azure Hosted Applications
         
-<table border="1" width="100%">
+<table style="border: 1px; width: 100%;">
+  <caption>Authenticating Azure-hosted applications</caption>
   <thead>
     <tr>
       <th>credential class</th>
@@ -277,7 +278,8 @@ argument but defaults to the authority matching VS Code's "Azure: Cloud" setting
     
 ### Authenticating Service Principals
 
-<table border="1" width="100%">
+<table style="border: 1px; width: 100%;">
+  <caption>Authenticating service principals</caption>
   <thead>
     <tr>
       <th>credential class</th>
@@ -307,7 +309,8 @@ argument but defaults to the authority matching VS Code's "Azure: Cloud" setting
 
 ### Authenticating Users
 
-<table border="1" width="100%">
+<table style="border: 1px; width: 100%;">
+  <caption>Authenticating users</caption>
   <thead>
     <tr>
       <th>credential class</th>
@@ -351,7 +354,8 @@ argument but defaults to the authority matching VS Code's "Azure: Cloud" setting
 
 ### Authenticating via Development Tools
 
-<table border="1" width="100%">
+<table style="border: 1px; width: 100%;">
+  <caption>Authenticating via development tools</caption>
   <thead>
     <tr>
       <th>credential class</th>
@@ -393,8 +397,9 @@ Credentials can be chained together to be tried in turn until one succeeds using
 ## Environment Variables
 `DefaultAzureCredential` and `EnvironmentCredential` can be configured with environment variables. Each type of authentication requires values for specific variables:
 
-#### Service principal with secret
-<table border="1" width="100%">
+### Service principal with secret
+<table style="border: 1px; width: 100%;">
+  <caption>Service principal with secret</caption>
   <thead>
     <tr>
       <th>variable name</th>
@@ -417,8 +422,9 @@ Credentials can be chained together to be tried in turn until one succeeds using
   </tbody>
 </table>
 
-#### Service principal with certificate
-<table border="1" width="100%">
+### Service principal with certificate
+<table style="border: 1px; width: 100%;">
+  <caption>Service principal with certificate</caption>
   <thead>
     <tr>
       <th>variable name</th>
@@ -441,8 +447,9 @@ Credentials can be chained together to be tried in turn until one succeeds using
   </tbody>
 </table>
 
-#### Username and password
-<table border="1" width="100%">
+### Username and password
+<table style="border: 1px; width: 100%;">
+  <caption>Username and password</caption>
   <thead>
     <tr>
       <th>variable name</th>
@@ -508,5 +515,6 @@ This project has adopted the [Microsoft Open Source Code of Conduct][code_of_con
 [azure_core_library]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/core
 [javadoc]: https://azure.github.io/azure-sdk-for-java
 [jdk_link]: https://docs.microsoft.com/java/azure/jdk/?view=azure-java-stable
+[chaining_credentials]: https://github.com/Azure/azure-sdk-for-java/wiki/Azure-Identity-Examples#chaining-credentials
 
 ![Impressions](https://azure-sdk-impressions.azurewebsites.net/api/impressions/azure-sdk-for-java%2Fsdk%2Fidentity%2Fazure-identity%2FREADME.png)

@@ -4,6 +4,7 @@
 package com.azure.spring.eventhubs.core.producer;
 
 import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
+import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
 import com.azure.spring.eventhubs.core.properties.ProducerProperties;
 import com.azure.spring.eventhubs.core.properties.merger.ProducerPropertiesParentMerger;
@@ -48,10 +49,10 @@ public final class DefaultEventHubsNamespaceProducerFactory implements EventHubs
     private EventHubProducerAsyncClient doCreateProducer(String eventHub, @Nullable ProducerProperties properties) {
         return clients.computeIfAbsent(eventHub, entityName -> {
             ProducerProperties producerProperties = parentMerger.mergeParent(properties, this.namespaceProperties);
-            producerProperties.setEventHubName(entityName);
-            EventHubProducerAsyncClient producerClient = new EventHubClientBuilderFactory(producerProperties)
-                .build().buildAsyncProducerClient();
-
+            producerProperties.setEventHubName(eventHub);
+            EventHubClientBuilderFactory factory = new EventHubClientBuilderFactory(producerProperties);
+            factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_EVENT_HUBS);
+            EventHubProducerAsyncClient producerClient = factory.build().buildAsyncProducerClient();
             this.listeners.forEach(l -> l.producerAdded(entityName, producerClient));
 
             return producerClient;

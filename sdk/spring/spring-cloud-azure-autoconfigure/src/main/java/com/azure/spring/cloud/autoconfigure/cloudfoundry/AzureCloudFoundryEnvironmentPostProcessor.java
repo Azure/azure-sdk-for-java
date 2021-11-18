@@ -26,7 +26,6 @@ import java.util.Set;
 /**
  * Converts Azure service broker metadata into Spring Cloud Azure configuration properties.
  *
- * @author Warren
  */
 public class AzureCloudFoundryEnvironmentPostProcessor implements EnvironmentPostProcessor, Ordered {
     private static final Logger LOG = LoggerFactory.getLogger(AzureCloudFoundryEnvironmentPostProcessor.class);

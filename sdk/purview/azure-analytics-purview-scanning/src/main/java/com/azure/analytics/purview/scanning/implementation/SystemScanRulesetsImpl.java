@@ -326,14 +326,13 @@ public final class SystemScanRulesetsImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listAll(RequestOptions requestOptions, Context context) {
-        return new PagedIterable<>(listAllAsync(requestOptions, context));
+    public PagedIterable<BinaryData> listAll(RequestOptions requestOptions) {
+        return new PagedIterable<>(listAllAsync(requestOptions));
     }
 
     /**
@@ -443,14 +442,13 @@ public final class SystemScanRulesetsImpl {
      *
      * @param dataSourceType The dataSourceType parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return a system scan ruleset for a data source.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(String dataSourceType, RequestOptions requestOptions, Context context) {
-        return getWithResponseAsync(dataSourceType, requestOptions, context).block();
+    public Response<BinaryData> getWithResponse(String dataSourceType, RequestOptions requestOptions) {
+        return getWithResponseAsync(dataSourceType, requestOptions).block();
     }
 
     /**
@@ -563,14 +561,13 @@ public final class SystemScanRulesetsImpl {
      *
      * @param version The version parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return a scan ruleset by version.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getByVersionWithResponse(int version, RequestOptions requestOptions, Context context) {
-        return getByVersionWithResponseAsync(version, requestOptions, context).block();
+    public Response<BinaryData> getByVersionWithResponse(int version, RequestOptions requestOptions) {
+        return getByVersionWithResponseAsync(version, requestOptions).block();
     }
 
     /**
@@ -674,14 +671,13 @@ public final class SystemScanRulesetsImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the latest version of a system scan ruleset.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getLatestWithResponse(RequestOptions requestOptions, Context context) {
-        return getLatestWithResponseAsync(requestOptions, context).block();
+    public Response<BinaryData> getLatestWithResponse(RequestOptions requestOptions) {
+        return getLatestWithResponseAsync(requestOptions).block();
     }
 
     /**
@@ -910,14 +906,13 @@ public final class SystemScanRulesetsImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listVersionsByDataSource(RequestOptions requestOptions, Context context) {
-        return new PagedIterable<>(listVersionsByDataSourceAsync(requestOptions, context));
+    public PagedIterable<BinaryData> listVersionsByDataSource(RequestOptions requestOptions) {
+        return new PagedIterable<>(listVersionsByDataSourceAsync(requestOptions));
     }
 
     /**

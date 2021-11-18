@@ -4,6 +4,7 @@
 package com.azure.spring.servicebus.core.processor;
 
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
+import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.service.servicebus.factory.ServiceBusProcessorClientBuilderFactory;
 import com.azure.spring.service.servicebus.factory.ServiceBusSessionProcessorClientBuilderFactory;
@@ -29,7 +30,6 @@ import java.util.function.Consumer;
 /**
  * Default implementation of {@link ServiceBusProcessorFactory}. Client will be cached to improve performance
  *
- * @author Warren Zhu
  */
 public class DefaultServiceBusNamespaceProcessorFactory implements ServiceBusProcessorFactory, DisposableBean {
 
@@ -42,7 +42,6 @@ public class DefaultServiceBusNamespaceProcessorFactory implements ServiceBusPro
     public static final String INVALID_SUBSCRIPTION =
         DefaultServiceBusNamespaceProcessorFactory.class.getSimpleName() + "INVALID_SUBSCRIPTION";
 
-    // TODO (xiada) the application id should be different for spring integration
     public DefaultServiceBusNamespaceProcessorFactory(NamespaceProperties namespaceProperties) {
         this(namespaceProperties, key -> null);
     }
@@ -103,12 +102,16 @@ public class DefaultServiceBusNamespaceProcessorFactory implements ServiceBusPro
 
             ServiceBusProcessorClient client;
             //TODO(yiliu6): whether to use shared ServiceBusClientBuilder
-            if (Boolean.TRUE.equals(processorProperties.getSessionAware())) {
-                client = new ServiceBusSessionProcessorClientBuilderFactory(processorProperties, listener).build()
-                                                                                                          .buildProcessorClient();
+            if (Boolean.TRUE.equals(processorProperties.getSessionEnabled())) {
+                ServiceBusSessionProcessorClientBuilderFactory factory =
+                    new ServiceBusSessionProcessorClientBuilderFactory(processorProperties, listener);
+                factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_SERVICE_BUS);
+                client = factory.build().buildProcessorClient();
             } else {
-                client = new ServiceBusProcessorClientBuilderFactory(processorProperties, listener).build()
-                                                                                                   .buildProcessorClient();
+                ServiceBusProcessorClientBuilderFactory factory =
+                    new ServiceBusProcessorClientBuilderFactory(processorProperties, listener);
+                factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_SERVICE_BUS);
+                client = factory.build().buildProcessorClient();
             }
 
             this.listeners.forEach(l -> l.processorAdded(k.getT1(), INVALID_SUBSCRIPTION.equals(k.getT2()) ? null
