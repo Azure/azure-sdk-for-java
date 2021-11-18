@@ -218,14 +218,14 @@ public class CallConnectionAsyncUnitTests {
     }
 
     @Test
-    public void transferCallAsync() {
+    public void transferAsync() {
         CallConnectionAsync callConnectionAsync = getCallConnectionAsync(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(generateCreateCallResult(CALL_CONNECTION_ID), 201),
                 new SimpleEntry<String, Integer>(generateTransferCallResult(), 202)
             )));
 
-        TransferCallResult transferCallResult = callConnectionAsync.transferCall(
+        TransferCallResult transferCallResult = callConnectionAsync.transfer(
             new CommunicationUserIdentifier(NEW_PARTICIPANT_ID),
             CALL_CONNECTION_ID,
             ""
@@ -235,14 +235,14 @@ public class CallConnectionAsyncUnitTests {
     }
 
     @Test
-    public void transferCallAsyncWithResponse() {
+    public void transferAsyncWithResponse() {
         CallConnectionAsync callConnectionAsync = getCallConnectionAsync(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(generateCreateCallResult(CALL_CONNECTION_ID), 201),
                 new SimpleEntry<String, Integer>(generateTransferCallResult(), 202)
             )));
 
-        Response<TransferCallResult> transferCallResponse = callConnectionAsync.transferCallWithResponse(
+        Response<TransferCallResult> transferCallResponse = callConnectionAsync.transferWithResponse(
             new CommunicationUserIdentifier(NEW_PARTICIPANT_ID),
             CALL_CONNECTION_ID,
             "",

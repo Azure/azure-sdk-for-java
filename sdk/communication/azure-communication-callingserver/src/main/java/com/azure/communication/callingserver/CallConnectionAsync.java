@@ -408,7 +408,7 @@ public final class CallConnectionAsync {
      * @return Response payload for a successful transfer to participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<TransferCallResult> transferCall(CommunicationIdentifier targetParticipant, String targetCallConnectionId, String userToUserInformation) {
+    public Mono<TransferCallResult> transfer(CommunicationIdentifier targetParticipant, String targetCallConnectionId, String userToUserInformation) {
         try {
             TransferCallRequest request = TransferCallRequestConverter.convert(targetParticipant, targetCallConnectionId, userToUserInformation);
             return callConnectionInternal.transferAsync(callConnectionId, request)
@@ -431,10 +431,10 @@ public final class CallConnectionAsync {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<TransferCallResult>> transferToParticipantWithResponse(CommunicationIdentifier participant, String targetCallConnectionId, String userToUserInformation) {
-        return transferCallWithResponse(participant, userToUserInformation, targetCallConnectionId, Context.NONE);
+        return transferWithResponse(participant, userToUserInformation, targetCallConnectionId, Context.NONE);
     }
 
-    Mono<Response<TransferCallResult>> transferCallWithResponse(CommunicationIdentifier targetParticipant, String targetCallConnectionId, String userToUserInformation, Context context) {
+    Mono<Response<TransferCallResult>> transferWithResponse(CommunicationIdentifier targetParticipant, String targetCallConnectionId, String userToUserInformation, Context context) {
         try {
             TransferCallRequest request = TransferCallRequestConverter.convert(targetParticipant, targetCallConnectionId, userToUserInformation);
             return withContext(contextValue -> {

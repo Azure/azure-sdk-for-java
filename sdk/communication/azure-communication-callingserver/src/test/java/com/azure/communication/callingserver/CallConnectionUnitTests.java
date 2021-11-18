@@ -217,14 +217,14 @@ public class CallConnectionUnitTests {
     }
 
     @Test
-    public void transferCall() {
+    public void transfer() {
         CallConnection callConnection = getCallConnection(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(generateCreateCallResult(CALL_CONNECTION_ID), 201),
                 new SimpleEntry<String, Integer>(generateTransferCallResult(), 202)
             )));
 
-        TransferCallResult transferCallResult = callConnection.transferCall(
+        TransferCallResult transferCallResult = callConnection.transfer(
             new CommunicationUserIdentifier(NEW_PARTICIPANT_ID),
             CALL_CONNECTION_ID,
             ""
@@ -234,14 +234,14 @@ public class CallConnectionUnitTests {
     }
 
     @Test
-    public void transferCallWithResponse() {
+    public void transferWithResponse() {
         CallConnection callConnection = getCallConnection(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(
                 new SimpleEntry<String, Integer>(generateCreateCallResult(CALL_CONNECTION_ID), 201),
                 new SimpleEntry<String, Integer>(generateTransferCallResult(), 202)
             )));
 
-        Response<TransferCallResult> transferCallResponse = callConnection.transferCallWithResponse(
+        Response<TransferCallResult> transferCallResponse = callConnection.transferWithResponse(
             new CommunicationUserIdentifier(NEW_PARTICIPANT_ID),
             CALL_CONNECTION_ID,
             "",

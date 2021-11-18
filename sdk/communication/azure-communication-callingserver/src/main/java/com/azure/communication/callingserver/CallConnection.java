@@ -212,8 +212,8 @@ public final class CallConnection {
      * @return Response for a successful transfer to participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public TransferCallResult transferCall(CommunicationIdentifier targetParticipant, String targetCallConnectionId, String userToUserInformation) {
-        return callConnectionAsync.transferCall(targetParticipant, targetCallConnectionId, userToUserInformation).block();
+    public TransferCallResult transfer(CommunicationIdentifier targetParticipant, String targetCallConnectionId, String userToUserInformation) {
+        return callConnectionAsync.transfer(targetParticipant, targetCallConnectionId, userToUserInformation).block();
     }
 
     /**
@@ -228,8 +228,8 @@ public final class CallConnection {
      * @return Response for a successful transfer to participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<TransferCallResult> transferCallWithResponse(CommunicationIdentifier targetParticipant, String targetCallConnectionId, String userToUserInformation, Context context) {
-        return callConnectionAsync.transferCallWithResponse(targetParticipant, targetCallConnectionId, userToUserInformation, context).block();
+    public Response<TransferCallResult> transferWithResponse(CommunicationIdentifier targetParticipant, String targetCallConnectionId, String userToUserInformation, Context context) {
+        return callConnectionAsync.transferWithResponse(targetParticipant, targetCallConnectionId, userToUserInformation, context).block();
     }
 
     /**
