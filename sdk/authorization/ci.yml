@@ -12,7 +12,6 @@ trigger:
       - sdk/authorization/microsoft-azure-authentication-msi-token-provider/
     exclude:
       - sdk/authorization/pom.xml
-      - sdk/authorization/microsoft-azure-authentication-msi-token-provider/pom.xml
 
 pr:
   branches:
@@ -27,14 +26,9 @@ pr:
       - sdk/authorization/microsoft-azure-authentication-msi-token-provider/
     exclude:
       - sdk/authorization/pom.xml
-      - sdk/authorization/microsoft-azure-authentication-msi-token-provider/pom.xml
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     SDKType: data
     ServiceDirectory: authorization
-    Artifacts:
-      - name: azure-authentication-msi-token-provider
-        groupId: com.microsoft.azure.msi_auth_token_provider
-        safeName: azureauthenticationmsitokenprovider

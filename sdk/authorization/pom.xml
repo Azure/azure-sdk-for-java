@@ -8,7 +8,4 @@
   <artifactId>azure-authorization-service</artifactId>
   <packaging>pom</packaging>
   <version>1.0.0</version><!-- Need not change for every release-->
-  <modules>
-    <module>microsoft-azure-authentication-msi-token-provider</module>
-  </modules>
 </project>
