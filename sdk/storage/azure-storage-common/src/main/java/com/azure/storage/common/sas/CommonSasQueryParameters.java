@@ -6,6 +6,7 @@ package com.azure.storage.common.sas;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
+import com.azure.storage.common.implementation.TimeAndFormat;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -22,9 +23,9 @@ public class CommonSasQueryParameters {
 
     private final SasProtocol protocol;
 
-    private final OffsetDateTime startTime;
+    private final TimeAndFormat startTime;
 
-    private final OffsetDateTime expiryTime;
+    private final TimeAndFormat expiryTime;
 
     private final SasIpRange sasIpRange;
 
@@ -42,9 +43,9 @@ public class CommonSasQueryParameters {
 
     private final String keyTenantId;
 
-    private final OffsetDateTime keyStart;
+    private final TimeAndFormat keyStart;
 
-    private final OffsetDateTime keyExpiry;
+    private final TimeAndFormat keyExpiry;
 
     private final String keyService;
 
@@ -295,14 +296,14 @@ public class CommonSasQueryParameters {
      * @return the datetime when the key becomes active.
      */
     public OffsetDateTime getKeyStart() {
-        return keyStart;
+        return keyStart.getDateTime();
     }
 
     /**
      * @return the datetime when the key expires.
      */
     public OffsetDateTime getKeyExpiry() {
-        return keyExpiry;
+        return keyExpiry.getDateTime();
     }
 
     /**
@@ -353,14 +354,14 @@ public class CommonSasQueryParameters {
      * @return The start time for this SAS token or {@code null}.
      */
     public OffsetDateTime getStartTime() {
-        return startTime;
+        return startTime.getDateTime();
     }
 
     /**
      * @return The expiry time for this SAS token.
      */
     public OffsetDateTime getExpiryTime() {
-        return expiryTime;
+        return expiryTime.getDateTime();
     }
 
     /**
