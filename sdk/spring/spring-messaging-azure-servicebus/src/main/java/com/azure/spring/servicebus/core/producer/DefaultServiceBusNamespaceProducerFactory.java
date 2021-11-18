@@ -57,7 +57,7 @@ public class DefaultServiceBusNamespaceProducerFactory implements ServiceBusProd
     @Override
     public void destroy() {
         clients.forEach((name, producer) -> {
-            listeners.forEach(l -> l.producerRemoved(name));
+            listeners.forEach(l -> l.producerRemoved(name, producer));
             producer.close();
         });
         this.clients.clear();
@@ -73,7 +73,7 @@ public class DefaultServiceBusNamespaceProducerFactory implements ServiceBusProd
             ServiceBusSenderAsyncClient producerClient = new ServiceBusSenderClientBuilderFactory(producerProperties)
                 .build().buildAsyncClient();
 
-            this.listeners.forEach(l -> l.producerAdded(entityName));
+            this.listeners.forEach(l -> l.producerAdded(entityName, producerClient));
             return producerClient;
         });
     }

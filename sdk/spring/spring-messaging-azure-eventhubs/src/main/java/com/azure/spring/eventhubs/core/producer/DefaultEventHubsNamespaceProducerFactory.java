@@ -46,19 +46,16 @@ public final class DefaultEventHubsNamespaceProducerFactory implements EventHubs
     }
 
     private EventHubProducerAsyncClient doCreateProducer(String eventHub, @Nullable ProducerProperties properties) {
-        if (this.clients.containsKey(eventHub)) {
-            return this.clients.get(eventHub);
-        }
+        return clients.computeIfAbsent(eventHub, entityName -> {
+            ProducerProperties producerProperties = parentMerger.mergeParent(properties, this.namespaceProperties);
+            producerProperties.setEventHubName(entityName);
+            EventHubProducerAsyncClient producerClient = new EventHubClientBuilderFactory(producerProperties)
+                .build().buildAsyncProducerClient();
 
-        ProducerProperties producerProperties = parentMerger.mergeParent(properties, this.namespaceProperties);
-        producerProperties.setEventHubName(eventHub);
-        EventHubProducerAsyncClient producerClient = new EventHubClientBuilderFactory(producerProperties)
-            .build().buildAsyncProducerClient();
+            this.listeners.forEach(l -> l.producerAdded(entityName, producerClient));
 
-        this.listeners.forEach(l -> l.producerAdded(eventHub));
-
-        this.clients.put(eventHub, producerClient);
-        return producerClient;
+            return producerClient;
+        });
     }
 
     @Override
@@ -73,7 +70,11 @@ public final class DefaultEventHubsNamespaceProducerFactory implements EventHubs
 
     @Override
     public void destroy() {
-        this.clients.values().forEach(EventHubProducerAsyncClient::close);
+        this.clients.forEach((name, client) -> {
+            this.listeners.forEach(l -> l.producerRemoved(name, client));
+            client.close();
+        });
         this.clients.clear();
+        this.listeners.clear();
     }
 }

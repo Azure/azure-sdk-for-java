@@ -25,7 +25,7 @@ public class DefaultServiceBusNamespaceProducerFactoryTest {
         namespaceProperties.setEntityType(ServiceBusEntityType.QUEUE);
         this.producerFactory = new DefaultServiceBusNamespaceProducerFactory(namespaceProperties);
         producerAddedTimes = 0;
-        this.producerFactory.addListener((name) -> producerAddedTimes++);
+        this.producerFactory.addListener((name, client) -> producerAddedTimes++);
     }
 
     @Test

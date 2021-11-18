@@ -36,9 +36,9 @@ public interface ServiceBusProducerFactory {
     @FunctionalInterface
     interface Listener {
 
-        void producerAdded(String name);
+        void producerAdded(String name, ServiceBusSenderAsyncClient client);
 
-        default void producerRemoved(String name) {
+        default void producerRemoved(String name, ServiceBusSenderAsyncClient client) {
         }
 
     }

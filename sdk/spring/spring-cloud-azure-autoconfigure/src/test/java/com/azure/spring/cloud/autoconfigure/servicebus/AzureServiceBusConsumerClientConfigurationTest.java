@@ -25,7 +25,7 @@ class AzureServiceBusConsumerClientConfigurationTest {
     }
 
     @Test
-    void entityTypeProvidedShouldNotConfigure() {
+    void entityNameProvidedShouldConfigure() {
         ServiceBusClientBuilder serviceBusClientBuilder = new ServiceBusClientBuilder();
         serviceBusClientBuilder.connectionString(String.format(CONNECTION_STRING, "test-namespace"));
 
@@ -42,7 +42,7 @@ class AzureServiceBusConsumerClientConfigurationTest {
     }
 
     @Test
-    void entityNameProvidedShouldNotConfigure() {
+    void entityTypeProvidedShouldConfigure() {
         ServiceBusClientBuilder serviceBusClientBuilder = new ServiceBusClientBuilder();
         serviceBusClientBuilder.connectionString(String.format(CONNECTION_STRING, "test-namespace"));
 

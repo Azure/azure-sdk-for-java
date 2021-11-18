@@ -48,7 +48,7 @@ public class AzureServiceBusMessagingAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public NamespaceProperties serviceBusNamespaceTopicProperties(AzureServiceBusProperties properties) {
+    public NamespaceProperties serviceBusNamespaceProperties(AzureServiceBusProperties properties) {
         NamespaceProperties namespaceProperties = new NamespaceProperties();
         BeanUtils.copyProperties(properties, namespaceProperties);
         copyAzureCommonProperties(properties, namespaceProperties);
@@ -83,7 +83,7 @@ public class AzureServiceBusMessagingAutoConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        public ServiceBusProducerFactory defaultServiceBusNamespaceQueueProducerFactory(
+        public ServiceBusProducerFactory defaultServiceBusNamespaceProducerFactory(
             NamespaceProperties properties,
             ObjectProvider<PropertiesSupplier<String, ProducerProperties>> suppliers) {
             return new DefaultServiceBusNamespaceProducerFactory(properties, suppliers.getIfAvailable());
@@ -98,8 +98,8 @@ public class AzureServiceBusMessagingAutoConfiguration {
         @Bean
         @ConditionalOnMissingBean
         @ConditionalOnBean(ServiceBusProducerFactory.class)
-        public ServiceBusTemplate queueOperation(ServiceBusProducerFactory senderClientfactory,
-                                                 ServiceBusMessageConverter messageConverter) {
+        public ServiceBusTemplate serviceBusTemplate(ServiceBusProducerFactory senderClientfactory,
+                                                     ServiceBusMessageConverter messageConverter) {
             ServiceBusTemplate serviceBusTemplate = new ServiceBusTemplate(senderClientfactory);
             serviceBusTemplate.setMessageConverter(messageConverter);
             return serviceBusTemplate;
