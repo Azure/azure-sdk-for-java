@@ -21,7 +21,7 @@ schema identifiers rather than full schemas.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-data-schemaregistry</artifactId>
-  <version>1.0.0-beta.6</version>
+  <version>1.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -42,7 +42,7 @@ To use the [DefaultAzureCredential][DefaultAzureCredential] provider shown below
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.3.7</version>
+    <version>1.4.1</version>
 </dependency>
 ```
 
@@ -52,8 +52,8 @@ You will also need to [register a new AAD application][register_aad_app] and [gr
 Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables: AZURE_CLIENT_ID, AZURE_TENANT_ID, AZURE_CLIENT_SECRET.
 
 ##### Async client
-<!-- embedme ./src/samples/java/com/azure/data/schemaregistry/ReadmeSamples.java#L25-L30 -->
-```java
+
+```java readme-sample-createAsyncClient
 TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
 SchemaRegistryAsyncClient schemaRegistryAsyncClient = new SchemaRegistryClientBuilder()
@@ -63,8 +63,8 @@ SchemaRegistryAsyncClient schemaRegistryAsyncClient = new SchemaRegistryClientBu
 ```
 
 ##### Sync client
-<!-- embedme ./src/samples/java/com/azure/data/schemaregistry/ReadmeSamples.java#L37-L42 -->
-```java
+
+```java readme-sample-createSyncClient
 TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
 SchemaRegistryClient schemaRegistryClient = new SchemaRegistryClientBuilder()
@@ -97,15 +97,7 @@ SchemaRegistry operations. Those exposed properties are `Content` and `Id`.
 ### Register a schema
 Register a schema to be stored in the Azure Schema Registry.
 
-<!-- embedme ./src/samples/java/com/azure/data/schemaregistry/ReadmeSamples.java#L49-L72 -->
-```java
-TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
-
-SchemaRegistryClient schemaRegistryClient = new SchemaRegistryClientBuilder()
-    .fullyQualifiedNamespace("{schema-registry-endpoint")
-    .credential(tokenCredential)
-    .buildClient();
-
+```java readme-sample-registerSchema
 String schemaContent = "{\n"
     + "    \"type\" : \"record\",  \n"
     + "    \"namespace\" : \"SampleSchemaNameSpace\", \n"
@@ -128,15 +120,7 @@ System.out.println("Registered schema: " + schemaProperties.getId());
 ### Retrieve a schema's properties
 Retrieve a previously registered schema's properties from the Azure Schema Registry.
 
-<!-- embedme ./src/samples/java/com/azure/data/schemaregistry/ReadmeSamples.java#L79-L89 -->
-```java
-TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
-
-SchemaRegistryClient schemaRegistryClient = new SchemaRegistryClientBuilder()
-    .fullyQualifiedNamespace("{schema-registry-endpoint")
-    .credential(tokenCredential)
-    .buildClient();
-
+```java readme-sample-getSchema
 SchemaRegistrySchema schema = schemaRegistryClient.getSchema("{schema-id}");
 
 System.out.printf("Retrieved schema: '%s'. Contents: %s%n", schema.getProperties().getId(),
@@ -146,15 +130,7 @@ System.out.printf("Retrieved schema: '%s'. Contents: %s%n", schema.getProperties
 ### Retrieve a schema
 Retrieve a previously registered schema's content and properties from the Azure Schema Registry.
 
-<!-- embedme ./src/samples/java/com/azure/data/schemaregistry/ReadmeSamples.java#L96-L119 -->
-```java
-TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
-
-SchemaRegistryClient schemaRegistryClient = new SchemaRegistryClientBuilder()
-    .fullyQualifiedNamespace("{schema-registry-endpoint")
-    .credential(tokenCredential)
-    .buildClient();
-
+```java readme-sample-getSchemaId
 String schemaContent = "{\n"
     + "    \"type\" : \"record\",  \n"
     + "    \"namespace\" : \"SampleSchemaNameSpace\", \n"

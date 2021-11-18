@@ -4,11 +4,13 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
+- Supported `getByVirtualMachineScaleSetInstanceIdAsync()` in `NetworkInterfaces`.
 
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2021-05-01`.
 
 ## 2.9.0 (2021-10-21)
 

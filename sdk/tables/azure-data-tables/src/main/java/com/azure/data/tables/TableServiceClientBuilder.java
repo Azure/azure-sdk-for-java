@@ -42,9 +42,23 @@ import static com.azure.data.tables.BuilderHelper.validateCredentials;
  * {@link TableServiceClientBuilder#sasToken(String)}</p>
  *
  * <p><strong>Samples to construct a sync client</strong></p>
- * {@codesnippet com.azure.data.tables.tableServiceClient.instantiation}
+ * <!-- src_embed com.azure.data.tables.tableServiceClient.instantiation -->
+ * <pre>
+ * TableServiceClient tableServiceClient = new TableServiceClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;https:&#47;&#47;myvault.azure.net&#47;&quot;&#41;
+ *     .credential&#40;new AzureNamedKeyCredential&#40;&quot;name&quot;, &quot;key&quot;&#41;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.tables.tableServiceClient.instantiation -->
  * <p><strong>Samples to construct an async client</strong></p>
- * {@codesnippet com.azure.data.tables.tableServiceAsyncClient.instantiation}
+ * <!-- src_embed com.azure.data.tables.tableServiceAsyncClient.instantiation -->
+ * <pre>
+ * TableServiceAsyncClient tableServiceAsyncClient = new TableServiceClientBuilder&#40;&#41;
+ *     .endpoint&#40;&quot;https:&#47;&#47;myvault.azure.net&#47;&quot;&#41;
+ *     .credential&#40;new AzureNamedKeyCredential&#40;&quot;name&quot;, &quot;key&quot;&#41;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.data.tables.tableServiceAsyncClient.instantiation -->
  *
  * @see TableServiceAsyncClient
  * @see TableServiceClient

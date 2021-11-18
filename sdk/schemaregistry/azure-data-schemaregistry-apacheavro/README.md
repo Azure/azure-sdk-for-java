@@ -23,7 +23,7 @@ and deserialization.
 <dependency>
   <groupId>com.azure</groupId>
   <artifactId>azure-data-schemaregistry-apacheavro</artifactId>
-  <version>1.0.0-beta.6</version>
+  <version>1.0.0-beta.7</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -52,28 +52,26 @@ with the Azure SDK, please include the `azure-identity` package:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-identity</artifactId>
-    <version>1.3.7</version>
+    <version>1.4.1</version>
 </dependency>
 ```
 
 You will also need to [register a new AAD application][register_aad_app] and [grant access][aad_grant_access] to
  Schema Registry service.
 
- <!-- embedme ./src/samples/java/com/azure/data/schemaregistry/avro/ReadmeSamples.java#L32-L37 -->
- ```java
- TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
+```java readme-sample-createSchemaRegistryAsyncClient
+TokenCredential tokenCredential = new DefaultAzureCredentialBuilder().build();
 
- SchemaRegistryAsyncClient schemaRegistryAsyncClient = new SchemaRegistryClientBuilder()
-     .endpoint("{schema-registry-endpoint")
-     .credential(tokenCredential)
-     .buildAsyncClient();
- ```
+SchemaRegistryAsyncClient schemaRegistryAsyncClient = new SchemaRegistryClientBuilder()
+    .fullyQualifiedNamespace("{schema-registry-endpoint")
+    .credential(tokenCredential)
+    .buildAsyncClient();
+```
 
 #### Create `SchemaRegistryAvroSerializer` through the builder
 
-<!-- embedme ./src/samples/java/com/azure/data/schemaregistry/avro/ReadmeSamples.java#L39-L42 -->
-```java
-SchemaRegistryAvroSerializer schemaRegistryAvroSerializer = new SchemaRegistryAvroSerializerBuilder()
+```java readme-sample-createSchemaRegistryAvroSerializer
+SchemaRegistryApacheAvroSerializer schemaRegistryAvroSerializer = new SchemaRegistryApacheAvroSerializerBuilder()
     .schemaRegistryAsyncClient(schemaRegistryAsyncClient)
     .schemaGroup("{schema-group}")
     .buildSerializer();
@@ -84,7 +82,7 @@ SchemaRegistryAvroSerializer schemaRegistryAvroSerializer = new SchemaRegistryAv
 ### ObjectSerializer
 This library provides a serializer, `SchemaRegistryAvroSerializer`, that implements the `ObjectSerializer` interface.
 This allows a developer to use this serializer in any Java Azure SDKs that utilize `ObjectSerializer`. The
-`SchemaRegistryAvroSerializer` utilitizes a `SchemaRegistryAsyncClient` to construct messages using a wire format
+`SchemaRegistryAvroSerializer` utilizes a `SchemaRegistryAsyncClient` to construct messages using a wire format
 containing schema information such as a schema ID.
 
 This serializer requires the Apache Avro library. The payload types accepted by this serializer include
@@ -104,14 +102,14 @@ The serializer in this library creates messages in a wire format. The format is 
 
 ### Serialize
 Serialize a strongly-typed object into Schema Registry-compatible avro payload.
-<!-- embedme ./src/samples/java/com/azure//data/schemaregistry/avro/ReadmeSamples.java#L53-L61 -->
-```java
+
+```java readme-sample-serializeSample
 PlayingCard playingCard = new PlayingCard();
 playingCard.setPlayingCardSuit(PlayingCardSuit.SPADES);
 playingCard.setIsFaceCard(false);
 playingCard.setCardValue(5);
 
-// write serialized data to byte array outputstream
+// write serialized data to ByteArrayOutputStream
 ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 
 schemaRegistryAvroSerializer.serialize(outputStream, playingCard);
@@ -123,9 +121,8 @@ The avro type `PlayingCard` is available in samples package
 ### Deserialize
 Deserialize a Schema Registry-compatible avro payload into a strongly-type object.
 
-<!-- embedme ./src/samples/java/com/azure//data/schemaregistry/avro/ReadmeSamples.java#L68-L71 -->
-```java
-SchemaRegistryAvroSerializer schemaRegistryAvroSerializer = createAvroSchemaRegistrySerializer();
+```java readme-sample-deserializeSample
+SchemaRegistryApacheAvroSerializer schemaRegistryAvroSerializer = createAvroSchemaRegistrySerializer();
 InputStream inputStream = getSchemaRegistryAvroData();
 PlayingCard playingCard = schemaRegistryAvroSerializer.deserialize(inputStream,
     TypeReference.createInstance(PlayingCard.class));

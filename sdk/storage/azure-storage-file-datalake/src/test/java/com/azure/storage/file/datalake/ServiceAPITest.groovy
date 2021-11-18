@@ -8,6 +8,7 @@ import com.azure.core.http.rest.Response
 import com.azure.core.test.TestMode
 import com.azure.core.util.Context
 import com.azure.identity.DefaultAzureCredentialBuilder
+import com.azure.storage.blob.BlobContainerClient
 import com.azure.storage.blob.BlobUrlParts
 import com.azure.storage.blob.models.BlobStorageException
 import com.azure.storage.common.ParallelTransferOptions
@@ -343,6 +344,28 @@ class ServiceAPITest extends APISpec {
 
         cleanup:
         fileSystems.each { fileSystem -> fileSystem.delete() }
+    }
+
+    @RequiredServiceVersion(clazz = DataLakeServiceVersion.class, min = "V2020_10_02")
+    def "List system file systems"() {
+        setup:
+        def retentionPolicy = new DataLakeRetentionPolicy().setDays(5).setEnabled(true)
+        def logging = new DataLakeAnalyticsLogging().setRead(true).setVersion("1.0")
+            .setRetentionPolicy(retentionPolicy)
+        def serviceProps = new DataLakeServiceProperties()
+            .setLogging(logging)
+
+        // Ensure $logs container exists. These will be reverted in test cleanup
+        primaryDataLakeServiceClient.setPropertiesWithResponse(serviceProps, null, null)
+
+        sleepIfRecord(30 * 1000) // allow the service properties to take effect
+
+        when:
+        def fileSystems = primaryDataLakeServiceClient.listFileSystems(
+            new ListFileSystemsOptions().setDetails(new FileSystemListDetails().setRetrieveSystemFileSystems(true)), null)
+
+        then:
+        fileSystems.any {item -> return item.getName() == BlobContainerClient.LOG_CONTAINER_NAME }
     }
 
     def "Get UserDelegationKey"() {

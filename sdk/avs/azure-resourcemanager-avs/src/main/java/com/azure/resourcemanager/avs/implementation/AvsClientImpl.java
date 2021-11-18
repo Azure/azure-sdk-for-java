@@ -31,10 +31,12 @@ import com.azure.resourcemanager.avs.fluent.GlobalReachConnectionsClient;
 import com.azure.resourcemanager.avs.fluent.HcxEnterpriseSitesClient;
 import com.azure.resourcemanager.avs.fluent.LocationsClient;
 import com.azure.resourcemanager.avs.fluent.OperationsClient;
+import com.azure.resourcemanager.avs.fluent.PlacementPoliciesClient;
 import com.azure.resourcemanager.avs.fluent.PrivateCloudsClient;
 import com.azure.resourcemanager.avs.fluent.ScriptCmdletsClient;
 import com.azure.resourcemanager.avs.fluent.ScriptExecutionsClient;
 import com.azure.resourcemanager.avs.fluent.ScriptPackagesClient;
+import com.azure.resourcemanager.avs.fluent.VirtualMachinesClient;
 import com.azure.resourcemanager.avs.fluent.WorkloadNetworksClient;
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -255,6 +257,30 @@ public final class AvsClientImpl implements AvsClient {
         return this.addons;
     }
 
+    /** The VirtualMachinesClient object to access its operations. */
+    private final VirtualMachinesClient virtualMachines;
+
+    /**
+     * Gets the VirtualMachinesClient object to access its operations.
+     *
+     * @return the VirtualMachinesClient object.
+     */
+    public VirtualMachinesClient getVirtualMachines() {
+        return this.virtualMachines;
+    }
+
+    /** The PlacementPoliciesClient object to access its operations. */
+    private final PlacementPoliciesClient placementPolicies;
+
+    /**
+     * Gets the PlacementPoliciesClient object to access its operations.
+     *
+     * @return the PlacementPoliciesClient object.
+     */
+    public PlacementPoliciesClient getPlacementPolicies() {
+        return this.placementPolicies;
+    }
+
     /** The ScriptPackagesClient object to access its operations. */
     private final ScriptPackagesClient scriptPackages;
 
@@ -313,7 +339,7 @@ public final class AvsClientImpl implements AvsClient {
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2021-06-01";
+        this.apiVersion = "2021-12-01";
         this.operations = new OperationsClientImpl(this);
         this.locations = new LocationsClientImpl(this);
         this.privateClouds = new PrivateCloudsClientImpl(this);
@@ -325,6 +351,8 @@ public final class AvsClientImpl implements AvsClient {
         this.workloadNetworks = new WorkloadNetworksClientImpl(this);
         this.cloudLinks = new CloudLinksClientImpl(this);
         this.addons = new AddonsClientImpl(this);
+        this.virtualMachines = new VirtualMachinesClientImpl(this);
+        this.placementPolicies = new PlacementPoliciesClientImpl(this);
         this.scriptPackages = new ScriptPackagesClientImpl(this);
         this.scriptCmdlets = new ScriptCmdletsClientImpl(this);
         this.scriptExecutions = new ScriptExecutionsClientImpl(this);

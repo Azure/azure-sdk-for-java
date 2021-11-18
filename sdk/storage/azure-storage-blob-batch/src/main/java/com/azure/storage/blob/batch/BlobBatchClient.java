@@ -49,7 +49,24 @@ public final class BlobBatchClient {
      *
      * <p><strong>Code samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.batch.BlobBatchClient.submitBatch#BlobBatch}
+     * <!-- src_embed com.azure.storage.blob.batch.BlobBatchClient.submitBatch#BlobBatch -->
+     * <pre>
+     * BlobBatch batch = batchClient.getBlobBatch&#40;&#41;;
+     *
+     * Response&lt;Void&gt; deleteResponse1 = batch.deleteBlob&#40;&quot;container&quot;, &quot;blob1&quot;&#41;;
+     * Response&lt;Void&gt; deleteResponse2 = batch.deleteBlob&#40;&quot;container&quot;, &quot;blob2&quot;, DeleteSnapshotsOptionType.INCLUDE,
+     *     new BlobRequestConditions&#40;&#41;.setLeaseId&#40;&quot;leaseId&quot;&#41;&#41;;
+     *
+     * try &#123;
+     *     batchClient.submitBatch&#40;batch&#41;;
+     *     System.out.println&#40;&quot;Batch submission completed successfully.&quot;&#41;;
+     *     System.out.printf&#40;&quot;Delete operation 1 completed with status code: %d%n&quot;, deleteResponse1.getStatusCode&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Delete operation 2 completed with status code: %d%n&quot;, deleteResponse2.getStatusCode&#40;&#41;&#41;;
+     * &#125; catch &#40;BlobStorageException error&#41; &#123;
+     *     System.err.printf&#40;&quot;Batch submission failed. Error message: %s%n&quot;, error.getMessage&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.blob.batch.BlobBatchClient.submitBatch#BlobBatch -->
      *
      * @param batch Batch to submit.
      * @throws BlobStorageException If the batch request is malformed.
@@ -68,7 +85,24 @@ public final class BlobBatchClient {
      *
      * <p><strong>Code samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.batch.BlobBatchClient.submitBatch#BlobBatch-boolean-Duration-Context}
+     * <!-- src_embed com.azure.storage.blob.batch.BlobBatchClient.submitBatch#BlobBatch-boolean-Duration-Context -->
+     * <pre>
+     * BlobBatch batch = batchClient.getBlobBatch&#40;&#41;;
+     *
+     * Response&lt;Void&gt; deleteResponse1 = batch.deleteBlob&#40;&quot;container&quot;, &quot;blob1&quot;&#41;;
+     * Response&lt;Void&gt; deleteResponse2 = batch.deleteBlob&#40;&quot;container&quot;, &quot;blob2&quot;, DeleteSnapshotsOptionType.INCLUDE,
+     *     new BlobRequestConditions&#40;&#41;.setLeaseId&#40;&quot;leaseId&quot;&#41;&#41;;
+     *
+     * try &#123;
+     *     System.out.printf&#40;&quot;Batch submission completed with status code: %d%n&quot;,
+     *         batchClient.submitBatchWithResponse&#40;batch, true, timeout, Context.NONE&#41;.getStatusCode&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Delete operation 1 completed with status code: %d%n&quot;, deleteResponse1.getStatusCode&#40;&#41;&#41;;
+     *     System.out.printf&#40;&quot;Delete operation 2 completed with status code: %d%n&quot;, deleteResponse2.getStatusCode&#40;&#41;&#41;;
+     * &#125; catch &#40;BlobStorageException error&#41; &#123;
+     *     System.err.printf&#40;&quot;Batch submission failed. Error message: %s%n&quot;, error.getMessage&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.blob.batch.BlobBatchClient.submitBatch#BlobBatch-boolean-Duration-Context -->
      *
      * @param batch Batch to submit.
      * @param throwOnAnyFailure Flag to indicate if an exception should be thrown if any request in the batch fails.
@@ -93,7 +127,22 @@ public final class BlobBatchClient {
      *
      * <p><strong>Code samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.batch.BlobBatchClient.deleteBlobs#List-DeleteSnapshotsOptionType}
+     * <!-- src_embed com.azure.storage.blob.batch.BlobBatchClient.deleteBlobs#List-DeleteSnapshotsOptionType -->
+     * <pre>
+     * List&lt;String&gt; blobUrls = new ArrayList&lt;&gt;&#40;&#41;;
+     * blobUrls.add&#40;blobClient1.getBlobUrl&#40;&#41;&#41;;
+     * blobUrls.add&#40;blobClient2.getBlobUrl&#40;&#41;&#41;;
+     * blobUrls.add&#40;blobClient3.getBlobUrl&#40;&#41;&#41;;
+     *
+     * try &#123;
+     *     batchClient.deleteBlobs&#40;blobUrls, DeleteSnapshotsOptionType.INCLUDE&#41;.forEach&#40;response -&gt;
+     *         System.out.printf&#40;&quot;Deleting blob with URL %s completed with status code %d%n&quot;,
+     *             response.getRequest&#40;&#41;.getUrl&#40;&#41;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * &#125; catch &#40;Throwable error&#41; &#123;
+     *     System.err.printf&#40;&quot;Deleting blob failed with exception: %s%n&quot;, error.getMessage&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.blob.batch.BlobBatchClient.deleteBlobs#List-DeleteSnapshotsOptionType -->
      *
      * @param blobUrls Urls of the blobs to delete. Blob names must be encoded to UTF-8.
      * @param deleteOptions The deletion option for all blobs.
@@ -111,7 +160,22 @@ public final class BlobBatchClient {
      *
      * <p><strong>Code samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.batch.BlobBatchClient.deleteBlobs#List-DeleteSnapshotsOptionType-Duration-Context}
+     * <!-- src_embed com.azure.storage.blob.batch.BlobBatchClient.deleteBlobs#List-DeleteSnapshotsOptionType-Duration-Context -->
+     * <pre>
+     * List&lt;String&gt; blobUrls = new ArrayList&lt;&gt;&#40;&#41;;
+     * blobUrls.add&#40;blobClient1.getBlobUrl&#40;&#41;&#41;;
+     * blobUrls.add&#40;blobClient2.getBlobUrl&#40;&#41;&#41;;
+     * blobUrls.add&#40;blobClient3.getBlobUrl&#40;&#41;&#41;;
+     *
+     * try &#123;
+     *     batchClient.deleteBlobs&#40;blobUrls, DeleteSnapshotsOptionType.INCLUDE, timeout, Context.NONE&#41;
+     *         .forEach&#40;response -&gt; System.out.printf&#40;&quot;Deleting blob with URL %s completed with status code %d%n&quot;,
+     *             response.getRequest&#40;&#41;.getUrl&#40;&#41;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * &#125; catch &#40;Throwable error&#41; &#123;
+     *     System.err.printf&#40;&quot;Deleting blob failed with exception: %s%n&quot;, error.getMessage&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.blob.batch.BlobBatchClient.deleteBlobs#List-DeleteSnapshotsOptionType-Duration-Context -->
      *
      * @param blobUrls Urls of the blobs to delete. Blob names must be encoded to UTF-8.
      * @param deleteOptions The deletion option for all blobs.
@@ -133,7 +197,22 @@ public final class BlobBatchClient {
      *
      * <p><strong>Code samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.batch.BlobBatchClient.setBlobsAccessTier#List-AccessTier}
+     * <!-- src_embed com.azure.storage.blob.batch.BlobBatchClient.setBlobsAccessTier#List-AccessTier -->
+     * <pre>
+     * List&lt;String&gt; blobUrls = new ArrayList&lt;&gt;&#40;&#41;;
+     * blobUrls.add&#40;blobClient1.getBlobUrl&#40;&#41;&#41;;
+     * blobUrls.add&#40;blobClient2.getBlobUrl&#40;&#41;&#41;;
+     * blobUrls.add&#40;blobClient3.getBlobUrl&#40;&#41;&#41;;
+     *
+     * try &#123;
+     *     batchClient.setBlobsAccessTier&#40;blobUrls, AccessTier.HOT&#41;.forEach&#40;response -&gt;
+     *         System.out.printf&#40;&quot;Setting blob access tier with URL %s completed with status code %d%n&quot;,
+     *             response.getRequest&#40;&#41;.getUrl&#40;&#41;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * &#125; catch &#40;Throwable error&#41; &#123;
+     *     System.err.printf&#40;&quot;Setting blob access tier failed with exception: %s%n&quot;, error.getMessage&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.blob.batch.BlobBatchClient.setBlobsAccessTier#List-AccessTier -->
      *
      * @param blobUrls Urls of the blobs to set their access tier. Blob names must be encoded to UTF-8.
      * @param accessTier {@link AccessTier} to set on each blob.
@@ -151,7 +230,22 @@ public final class BlobBatchClient {
      *
      * <p><strong>Code samples</strong></p>
      *
-     * {@codesnippet com.azure.storage.blob.batch.BlobBatchClient.setBlobsAccessTier#List-AccessTier-Duration-Context}
+     * <!-- src_embed com.azure.storage.blob.batch.BlobBatchClient.setBlobsAccessTier#List-AccessTier-Duration-Context -->
+     * <pre>
+     * List&lt;String&gt; blobUrls = new ArrayList&lt;&gt;&#40;&#41;;
+     * blobUrls.add&#40;blobClient1.getBlobUrl&#40;&#41;&#41;;
+     * blobUrls.add&#40;blobClient2.getBlobUrl&#40;&#41;&#41;;
+     * blobUrls.add&#40;blobClient3.getBlobUrl&#40;&#41;&#41;;
+     *
+     * try &#123;
+     *     batchClient.setBlobsAccessTier&#40;blobUrls, AccessTier.HOT, timeout, Context.NONE&#41;.forEach&#40;response -&gt;
+     *         System.out.printf&#40;&quot;Setting blob access tier with URL %s completed with status code %d%n&quot;,
+     *             response.getRequest&#40;&#41;.getUrl&#40;&#41;, response.getStatusCode&#40;&#41;&#41;&#41;;
+     * &#125; catch &#40;Throwable error&#41; &#123;
+     *     System.err.printf&#40;&quot;Setting blob access tier failed with exception: %s%n&quot;, error.getMessage&#40;&#41;&#41;;
+     * &#125;
+     * </pre>
+     * <!-- end com.azure.storage.blob.batch.BlobBatchClient.setBlobsAccessTier#List-AccessTier-Duration-Context -->
      *
      * @param blobUrls Urls of the blobs to set their access tier. Blob names must be encoded to UTF-8.
      * @param accessTier {@link AccessTier} to set on each blob.

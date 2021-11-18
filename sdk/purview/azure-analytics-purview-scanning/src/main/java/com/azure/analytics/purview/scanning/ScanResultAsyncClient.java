@@ -5,6 +5,7 @@
 package com.azure.analytics.purview.scanning;
 
 import com.azure.analytics.purview.scanning.implementation.ScanResultsImpl;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -18,13 +19,14 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous PurviewScanningClient type. */
 @ServiceClient(builder = PurviewScanningClientBuilder.class, isAsync = true)
 public final class ScanResultAsyncClient {
-    private final ScanResultsImpl serviceClient;
+    @Generated private final ScanResultsImpl serviceClient;
 
     /**
      * Initializes an instance of ScanResults client.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     ScanResultAsyncClient(ScanResultsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -75,6 +77,7 @@ public final class ScanResultAsyncClient {
      *     false.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> runScanWithResponse(
             String dataSourceName, String scanName, String runId, RequestOptions requestOptions) {
@@ -126,6 +129,7 @@ public final class ScanResultAsyncClient {
      *     false.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> cancelScanWithResponse(
             String dataSourceName, String scanName, String runId, RequestOptions requestOptions) {
@@ -205,6 +209,7 @@ public final class ScanResultAsyncClient {
      *     false.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listScanHistory(
             String dataSourceName, String scanName, RequestOptions requestOptions) {

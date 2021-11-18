@@ -319,6 +319,27 @@ public final class DockerBuildRequest extends RunRequest {
         return this;
     }
 
+    /** {@inheritDoc} */
+    @Override
+    public DockerBuildRequest withIsArchiveEnabled(Boolean isArchiveEnabled) {
+        super.withIsArchiveEnabled(isArchiveEnabled);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DockerBuildRequest withAgentPoolName(String agentPoolName) {
+        super.withAgentPoolName(agentPoolName);
+        return this;
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    public DockerBuildRequest withLogTemplate(String logTemplate) {
+        super.withLogTemplate(logTemplate);
+        return this;
+    }
+
     /**
      * Validates the instance.
      *

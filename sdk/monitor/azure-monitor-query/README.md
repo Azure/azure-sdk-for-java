@@ -32,7 +32,7 @@ Install the Azure Monitor Query client library for Java by adding the following 
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-monitor-query</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 </dependency>
 ```
 
@@ -44,15 +44,13 @@ An authenticated client is required to query Logs or Metrics. The library includ
 
 #### Synchronous clients
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L44-L46 -->
-```java
+```java readme-sample-createLogsQueryClient
 LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildClient();
 ```
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L57-L59 -->
-```java
+```java readme-sample-createMetricsQueryClient
 MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildClient();
@@ -60,15 +58,13 @@ MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
 
 #### Asynchronous clients
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L48-L50 -->
-```java
+```java readme-sample-createLogsQueryAsyncClient
 LogsQueryAsyncClient logsQueryAsyncClient = new LogsQueryClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildAsyncClient();
 ```
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L61-L63 -->
-```java
+```java readme-sample-createMetricsQueryAsyncClient
 MetricsQueryAsyncClient metricsQueryAsyncClient = new MetricsQueryClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildAsyncClient();
@@ -110,8 +106,7 @@ Each set of metric values is a time series with the following characteristics:
 
 ### Logs query
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L70-L79 -->
-```java
+```java readme-sample-logsquery
 LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
@@ -126,8 +121,7 @@ for (LogsTableRow row : queryResults.getTable().getRows()) {
 
 #### Map logs query results to a model
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L85-L96 -->
-```java
+```java readme-sample-custommodel
 public class CustomLogModel {
     private String resourceGroup;
     private String operationName;
@@ -142,8 +136,7 @@ public class CustomLogModel {
 }
 ```
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L102-L111 -->
-```java
+```java readme-sample-logsquerycustommodel
 LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
@@ -179,8 +172,7 @@ LogsQueryResult / LogsBatchQueryResult
 
 ### Batch logs query
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L118-L143 -->
-```java
+```java readme-sample-batchlogsquery
 LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
@@ -213,8 +205,7 @@ if (query3Result.getQueryResultStatus() == LogsQueryResultStatus.FAILURE) {
 
 #### Set logs query timeout
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L151-L160 -->
-```java
+```java readme-sample-logsquerytimeout
 LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildClient();
@@ -236,8 +227,7 @@ workspace from which it was retrieved. To identify the workspace of a row in the
 "TenantId" column in the result table. If this column is not in the table, then you may have to update your query string
 to include this column.
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L167-L175 -->
-```java
+```java readme-sample-logsquerymultipleworkspaces
 LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
@@ -257,8 +247,7 @@ A resource ID, as denoted by the `{resource-id}` placeholder in the sample below
 2. From the **Overview** blade, select the **JSON View** link.
 3. In the resulting JSON, copy the value of the `id` property.
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L183-L198 -->
-```java
+```java readme-sample-metricsquery
 MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
         .credential(new DefaultAzureCredentialBuilder().build())
         .buildClient();
@@ -306,8 +295,7 @@ MetricsQueryResult
 
 #### Get average and count metrics
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L205-L226 -->
-```java
+```java readme-sample-metricsqueryaggregation
 MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildClient();
@@ -356,8 +344,7 @@ reduce the dependency size, refer to the [performance tuning][performance_tuning
 ### Enable HTTP request/response logging
 Reviewing the HTTP request sent or response received over the wire to/from the Azure Monitor service can be useful in troubleshooting issues. To enable logging the HTTP request and response payload, the LogsQueryClient and the MetricsQueryClient can be configured as shown below:
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L235-L243 -->
-```java
+```java readme-sample-enablehttplogging
 LogsQueryClient logsQueryClient = new LogsQueryClientBuilder()
         .credential(credential)
         .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
@@ -396,8 +383,7 @@ If your Kusto query returns empty no logs, please validate the following:
 
 Some Kusto queries can run for a long time on the server depending on the complexity of the query and the number of results that the query has to fetch. This can lead to the client timing out before the server has had chance to respond. To increase the client side timeout, you can configure the HTTP client to have an extended timeout by doing the following.
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L252-L255 -->
-```java
+```java readme-sample-responsetimeout
 LogsQueryClient client = new LogsQueryClientBuilder()
         .credential(credential)
         .clientOptions(new HttpClientOptions().setResponseTimeout(Duration.ofSeconds(120)))
@@ -411,8 +397,7 @@ Similar to the above section, complex Kusto queries can take a long time to comp
 
 The following code shows a sample on how to set the server timeout to 10 minutes. Note that by setting this server timeout, the Azure Monitor Query library will automatically also extend the client timeout to wait for 10 minutes for the server to respond. You don't need to configure your HTTP client to extend the response timeout as shown in the previous section.
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L263-L268 -->
-```java
+```java readme-sample-servertimeout
 LogsQueryClient client = new LogsQueryClientBuilder()
         .credential(credential)
         .buildClient();
@@ -425,8 +410,7 @@ client.queryWorkspaceWithResponse("{workspaceId}", "{kusto-query-string}", Query
 
 Due to the limitations in OkHTTP client, extending the timeout of a specific logs query request is not supported. So, to workaround this, the client has to be configured with longer timeout value at the time of building the client as shown below. The downside to doing this is that every request from this client will have this extended client-side timeout.
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L252-L255 -->
-```java
+```java readme-sample-okhttpresponsetimeout
 LogsQueryClient client = new LogsQueryClientBuilder()
         .credential(credential)
         .clientOptions(new HttpClientOptions().setResponseTimeout(Duration.ofSeconds(120)))
@@ -438,8 +422,7 @@ LogsQueryClient client = new LogsQueryClientBuilder()
 
 By default, if the execution of a Kusto query resulted in a partially successful response, the Azure Monitor Query client library will throw an exception to indicate to the user that the query was not fully successful. To turn this behavior off and consume the partially successful response, you can set the `allowPartialErrors` property to `true` in `LogsQueryOptions` as shown below:
 
-<!-- embedme ./src/samples/java/com/azure/monitor/query/ReadmeSamples.java#L280-L281 -->
-```java
+```java readme-sample-allowpartialerrors
 client.queryWorkspaceWithResponse("{workspaceId}", "{kusto-query-string}", QueryTimeInterval.LAST_DAY,
         new LogsQueryOptions().setAllowPartialErrors(true), Context.NONE);
 ```
