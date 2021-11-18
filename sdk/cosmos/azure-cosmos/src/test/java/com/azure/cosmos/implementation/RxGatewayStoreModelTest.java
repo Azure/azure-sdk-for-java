@@ -82,7 +82,8 @@ public class RxGatewayStoreModelTest {
                 queryCompatibilityMode,
                 userAgentContainer,
                 globalEndpointManager,
-                httpClient);
+                httpClient,
+                null);
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(clientContext,
                 OperationType.Read, "/dbs/db/colls/col/docs/docId", ResourceType.Document);
@@ -110,7 +111,7 @@ public class RxGatewayStoreModelTest {
 
         String sdkGlobalSessionToken = "1#100#1=20#2=5#3=30";
         String userControlledSessionToken = "1#99";
-
+        ApiType apiType = ApiType.SQL;
         DiagnosticsClientContext clientContext = mockDiagnosticsClientContext();
         ISessionContainer sessionContainer = Mockito.mock(ISessionContainer.class);
         Mockito.doReturn(sdkGlobalSessionToken).when(sessionContainer).resolveGlobalSessionToken(Mockito.any());
@@ -130,7 +131,8 @@ public class RxGatewayStoreModelTest {
             QueryCompatibilityMode.Default,
             new UserAgentContainer(),
             globalEndpointManager,
-            httpClient);
+            httpClient,
+            apiType);
 
         RxDocumentServiceRequest dsr = RxDocumentServiceRequest.createFromName(
             clientContext,
