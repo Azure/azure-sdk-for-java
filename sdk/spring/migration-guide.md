@@ -189,13 +189,10 @@ For a full list of common configurations, check this list **[placeholder]**.
 
 ### Each SDK configurations
 
-#### azure-spring-cloud-starter-eventhubs
-[TODO]
-
-#### azure-spring-cloud-stream-binder-eventhubs
-
+#### spring-cloud-azure-starter-integration-eventhubs
 - For single bind connection string and checkpoint account settings:
-
+  > ( ***This part is shared for all eventhub connection and checkpoint settings!***)
+  
 `Notes`: prefix changed from
 `spring.cloud.azure.eventhub.`
 to
@@ -230,7 +227,12 @@ spring:
             account-name: [checkpoint-storage-account]
             account-key: [checkpoint-access-key]
 ```
-And for multiple bindings, also update `eventhub` to `eventhubs` in environment section just like the above:
+
+#### azure-spring-cloud-stream-binder-eventhubs
+- For single bind connection string and checkpoint account settings:
+  [As per above](#azure-spring-cloud-starter-eventhubs)
+
+As per multiple bindings, also update `eventhub` to `eventhubs` in environment section just like the above:
 You should change from:  
 `spring.cloud.stream.binders.<eventhub-name>.environment.spring.cloud.azure.eventhub`  
 to:  
