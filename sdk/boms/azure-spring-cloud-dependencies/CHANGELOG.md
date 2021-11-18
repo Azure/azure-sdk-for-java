@@ -1,5 +1,8 @@
 # Release History
 
+## 2.10.1 (2021-11-18)
+This release is compatible with Spring Boot 2.5.0 - 2.5.4.
+
 ## 2.10.0 (2021-11-03)
 This release is compatible with Spring Boot 2.5.0 - 2.5.4 and Spring Cloud 2020.0.3.
 
