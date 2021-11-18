@@ -343,20 +343,20 @@ com.azure.resourcemanager:azure-resourcemanager-desktopvirtualization;1.0.0-beta
 # note: Released beta versions will not be manipulated with the automatic PR creation code.
 
 # Spring Cloud Azure uses the following Azure SDK versions, which are the same as the Azure SDK Bom released.
-spring_cloud_azure_com.azure:azure-core;1.21.0
-spring_cloud_azure_com.azure:azure-cosmos;4.20.0
-spring_cloud_azure_com.azure:azure-core-management;1.4.2
-spring_cloud_azure_com.azure:azure-core-amqp;2.3.3
-spring_cloud_azure_com.azure:azure-data-appconfiguration;1.2.3
-spring_cloud_azure_com.azure:azure-identity;1.4.0
-spring_cloud_azure_com.azure:azure-messaging-eventhubs;5.10.2
-spring_cloud_azure_com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.10.1
-spring_cloud_azure_com.azure:azure-messaging-servicebus;7.4.2
-spring_cloud_azure_com.azure:azure-sdk-bom;1.0.5
-spring_cloud_azure_com.azure:azure-security-keyvault-certificates;4.2.4
-spring_cloud_azure_com.azure:azure-security-keyvault-secrets;4.3.4
-spring_cloud_azure_com.azure:azure-spring-data-cosmos;3.13.0
-spring_cloud_azure_com.azure:azure-storage-blob;12.14.1
-spring_cloud_azure_com.azure:azure-storage-file-share;12.11.1
-spring_cloud_azure_com.azure:azure-storage-queue;12.11.1
-spring_cloud_azure_com.azure:azure-core-serializer-json-jackson;1.2.8
+spring_com.azure:azure-core;1.21.0
+spring_com.azure:azure-cosmos;4.20.0
+spring_com.azure:azure-core-management;1.4.2
+spring_com.azure:azure-core-amqp;2.3.3
+spring_com.azure:azure-data-appconfiguration;1.2.3
+spring_com.azure:azure-identity;1.4.0
+spring_com.azure:azure-messaging-eventhubs;5.10.2
+spring_com.azure:azure-messaging-eventhubs-checkpointstore-blob;1.10.1
+spring_com.azure:azure-messaging-servicebus;7.4.2
+spring_com.azure:azure-sdk-bom;1.0.5
+spring_com.azure:azure-security-keyvault-certificates;4.2.4
+spring_com.azure:azure-security-keyvault-secrets;4.3.4
+spring_com.azure:azure-spring-data-cosmos;3.13.0
+spring_com.azure:azure-storage-blob;12.14.1
+spring_com.azure:azure-storage-file-share;12.11.1
+spring_com.azure:azure-storage-queue;12.11.1
+spring_com.azure:azure-core-serializer-json-jackson;1.2.8

@@ -33,7 +33,7 @@
       <dependency>
         <groupId>com.azure</groupId>
         <artifactId>azure-core</artifactId>
-        <version>1.21.0</version> <!-- {x-version-update;spring_cloud_azure_com.azure:azure-core;dependency} -->
+        <version>1.21.0</version> <!-- {x-version-update;spring_com.azure:azure-core;dependency} -->
       </dependency>
     </dependencies>
   </dependencyManagement>

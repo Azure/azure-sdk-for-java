@@ -30,7 +30,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-queue</artifactId>
-      <version>12.11.1</version> <!-- {x-version-update;spring_cloud_azure_com.azure:azure-storage-queue;dependency} -->
+      <version>12.11.1</version> <!-- {x-version-update;spring_com.azure:azure-storage-queue;dependency} -->
     </dependency>
   </dependencies>
 
