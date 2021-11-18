@@ -397,6 +397,13 @@ public interface VirtualMachineScaleSet
     Plan plan();
 
     /**
+     * Get orchestration mode of the Virtual Machine Scale Set.
+     * Scale set orchestration modes allow you to have greater control over how virtual machine instances are managed by the scale set.
+     * @return orchestration mode of the virtual machine scale set
+     */
+    OrchestrationMode orchestrationMode();
+
+    /**
      * The virtual machine scale set stages shared between managed and unmanaged based virtual machine scale set
      * definitions.
      */

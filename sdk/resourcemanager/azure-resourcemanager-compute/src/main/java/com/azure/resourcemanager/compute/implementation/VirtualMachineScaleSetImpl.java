@@ -27,6 +27,7 @@ import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.KnownWindowsVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.LinuxConfiguration;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
+import com.azure.resourcemanager.compute.models.OrchestrationMode;
 import com.azure.resourcemanager.compute.models.Plan;
 import com.azure.resourcemanager.compute.models.ProximityPlacementGroup;
 import com.azure.resourcemanager.compute.models.ProximityPlacementGroupType;
@@ -182,7 +183,9 @@ public class VirtualMachineScaleSetImpl
     @Override
     protected void initializeChildrenFromInner() {
         this.extensions = new HashMap<>();
-        if (this.innerModel() != null && this.innerModel().virtualMachineProfile() != null && this.innerModel().virtualMachineProfile().extensionProfile() != null) {
+        if (this.innerModel() != null
+            && this.innerModel().virtualMachineProfile() != null
+            && this.innerModel().virtualMachineProfile().extensionProfile() != null) {
             if (this.innerModel().virtualMachineProfile().extensionProfile().extensions() != null) {
                 for (VirtualMachineScaleSetExtensionInner inner
                     : this.innerModel().virtualMachineProfile().extensionProfile().extensions()) {
@@ -615,6 +618,11 @@ public class VirtualMachineScaleSetImpl
     @Override
     public Plan plan() {
         return this.innerModel().plan();
+    }
+
+    @Override
+    public OrchestrationMode orchestrationMode() {
+        return this.innerModel().orchestrationMode() == null ? OrchestrationMode.UNIFORM : this.innerModel().orchestrationMode();
     }
 
     @Override
@@ -1579,7 +1587,9 @@ public class VirtualMachineScaleSetImpl
     //
     @Override
     protected void beforeCreating() {
-        if (this.extensions.size() > 0 && this.innerModel() != null && this.innerModel().virtualMachineProfile() != null) {
+        if (this.extensions.size() > 0
+            && this.innerModel() != null
+            && this.innerModel().virtualMachineProfile() != null) {
             this
                 .innerModel()
                 .virtualMachineProfile()
@@ -2391,6 +2401,9 @@ public class VirtualMachineScaleSetImpl
 
     protected VirtualMachineScaleSetImpl withUnmanagedDataDisk(
         VirtualMachineScaleSetUnmanagedDataDiskImpl unmanagedDisk) {
+        if (this.innerModel() == null || this.innerModel().virtualMachineProfile() == null) {
+            return this;
+        }
         if (this.innerModel().virtualMachineProfile().storageProfile().dataDisks() == null) {
             this
                 .innerModel()
