@@ -48,17 +48,17 @@
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-core</artifactId>
-      <version>5.5.2</version> <!-- {x-version-update;org.springframework.security:spring-security-core;external_dependency} -->
+      <version>5.6.0</version> <!-- {x-version-update;org.springframework.security:spring-security-core;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-web</artifactId>
-      <version>5.5.2</version> <!-- {x-version-update;org.springframework.security:spring-security-web;external_dependency} -->
+      <version>5.6.0</version> <!-- {x-version-update;org.springframework.security:spring-security-web;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.security</groupId>
       <artifactId>spring-security-config</artifactId>
-      <version>5.5.2</version> <!-- {x-version-update;org.springframework.security:spring-security-config;external_dependency} -->
+      <version>5.6.0</version> <!-- {x-version-update;org.springframework.security:spring-security-config;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
@@ -99,9 +99,9 @@
                 <include>org.springframework.boot:spring-boot-starter-validation:[2.5.4]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-validation;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter-webflux:[2.5.4]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-webflux;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter:[2.5.4]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
-                <include>org.springframework.security:spring-security-config:[5.5.2]</include> <!-- {x-include-update;org.springframework.security:spring-security-config;external_dependency} -->
-                <include>org.springframework.security:spring-security-core:[5.5.2]</include> <!-- {x-include-update;org.springframework.security:spring-security-core;external_dependency} -->
-                <include>org.springframework.security:spring-security-web:[5.5.2]</include> <!-- {x-include-update;org.springframework.security:spring-security-web;external_dependency} -->
+                <include>org.springframework.security:spring-security-config:[5.6.0]</include> <!-- {x-include-update;org.springframework.security:spring-security-config;external_dependency} -->
+                <include>org.springframework.security:spring-security-core:[5.6.0]</include> <!-- {x-include-update;org.springframework.security:spring-security-core;external_dependency} -->
+                <include>org.springframework.security:spring-security-web:[5.6.0]</include> <!-- {x-include-update;org.springframework.security:spring-security-web;external_dependency} -->
                 <include>org.springframework:spring-web:[5.3.9]</include> <!-- {x-include-update;org.springframework:spring-web;external_dependency} -->
               </includes>
             </bannedDependencies>
