@@ -4119,7 +4119,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return ObservableHelper.inlineIfPossibleAsObs(
             () -> getFeedRangesInternal(request, collectionLink),
             invalidPartitionExceptionRetryPolicy);
-
     }
 
     private Mono<List<FeedRange>> getFeedRangesInternal(RxDocumentServiceRequest request, String collectionLink) {
