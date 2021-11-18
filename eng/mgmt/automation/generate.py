@@ -661,7 +661,7 @@ def sdk_automation(input_file: str, output_file: str):
                 tag = tag,
             )
             if succeeded:
-                succeeded = compile_package(sdk_root, service)
+                compile_package(sdk_root, service)
 
             generated_folder = OUTPUT_FOLDER_FORMAT.format(service)
             packages.append({

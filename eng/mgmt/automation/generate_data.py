@@ -45,7 +45,7 @@ def sdk_automation(config: dict) -> List[dict]:
 
             if succeeded:
                 install_build_tools(sdk_root)
-                succeeded = compile_package(os.path.join(sdk_root, generated_folder))
+                compile_package(os.path.join(sdk_root, generated_folder))
 
             artifacts = [
                 '{0}/pom.xml'.format(generated_folder)
