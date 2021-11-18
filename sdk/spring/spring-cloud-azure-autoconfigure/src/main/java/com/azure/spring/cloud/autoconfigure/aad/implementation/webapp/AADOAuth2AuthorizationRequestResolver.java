@@ -58,8 +58,6 @@ public class AADOAuth2AuthorizationRequestResolver implements OAuth2Authorizatio
                 Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS);
             if (conditionalAccessPolicyClaims != null) {
                 httpSession.removeAttribute(Constants.CONDITIONAL_ACCESS_POLICY_CLAIMS);
-            }
-            if (conditionalAccessPolicyClaims != null) {
                 additionalParameters.put(Constants.CLAIMS, conditionalAccessPolicyClaims);
             }
         }
