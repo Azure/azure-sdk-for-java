@@ -45,26 +45,73 @@ import java.util.Map;
  * for the specific key version that was used for the corresponding inverse operation: {@code Encrypt},
  * {@code Wrap}, or {@code Sign}, respectively.</p>
  *
- * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.instantiation}
- * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withJsonWebKey.instantiation}
+ * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.instantiation -->
+ * <pre>
+ * CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder&#40;&#41;
+ *     .keyIdentifier&#40;&quot;&lt;your-key-id&gt;&quot;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.instantiation -->
+ * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withJsonWebKey.instantiation -->
+ * <pre>
+ * JsonWebKey jsonWebKey = new JsonWebKey&#40;&#41;.setId&#40;&quot;SampleJsonWebKey&quot;&#41;;
+ * CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder&#40;&#41;
+ *     .jsonWebKey&#40;jsonWebKey&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withJsonWebKey.instantiation -->
  *
  * <p>The {@link HttpLogDetailLevel log detail level}, multiple custom {@link HttpLoggingPolicy policies} and a custom
  * {@link HttpClient http client} can be optionally configured in the {@link CryptographyClientBuilder}.</p>
  *
- * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withHttpClient.instantiation}
+ * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withHttpClient.instantiation -->
+ * <pre>
+ * CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder&#40;&#41;
+ *     .keyIdentifier&#40;&quot;&lt;your-key-id&gt;&quot;&#41;
+ *     .httpLogOptions&#40;new HttpLogOptions&#40;&#41;.setLogLevel&#40;HttpLogDetailLevel.BODY_AND_HEADERS&#41;&#41;
+ *     .addPolicy&#40;new KeyVaultCredentialPolicy&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;&#41;
+ *     .httpClient&#40;HttpClient.createDefault&#40;&#41;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withHttpClient.instantiation -->
  *
  * <p>Alternatively, a custom {@link HttpPipeline http pipeline} with custom {@link HttpPipelinePolicy} policies
  * can be specified. It provides finer control over the construction of {@link CryptographyAsyncClient} and
  * {@link CryptographyClient}</p>
  *
- * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withPipeline.instantiation}
+ * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withPipeline.instantiation -->
+ * <pre>
+ * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
+ *     .policies&#40;new KeyVaultCredentialPolicy&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;, new RetryPolicy&#40;&#41;&#41;
+ *     .build&#40;&#41;;
+ * CryptographyAsyncClient cryptographyAsyncClient = new CryptographyClientBuilder&#40;&#41;
+ *     .pipeline&#40;pipeline&#41;
+ *     .keyIdentifier&#40;&quot;&lt;your-key-id&gt;&quot;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyAsyncClient.withPipeline.instantiation -->
  *
  * <p>The minimal configuration options required by {@link CryptographyClientBuilder cryptographyClientBuilder} to
  * build {@link CryptographyClient} are {@link JsonWebKey jsonWebKey} or
  * {@link String Azure Key Vault key identifier} and {@link TokenCredential credential}.</p>
  *
- * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.instantiation}
- * {@codesnippet com.azure.security.keyvault.keys.cryptography.CryptographyClient.withJsonWebKey.instantiation}
+ * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.instantiation -->
+ * <pre>
+ * CryptographyClient cryptographyClient = new CryptographyClientBuilder&#40;&#41;
+ *     .keyIdentifier&#40;&quot;&lt;your-key-id&gt;&quot;&#41;
+ *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;.build&#40;&#41;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyClient.instantiation -->
+ * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.withJsonWebKey.instantiation -->
+ * <pre>
+ * JsonWebKey jsonWebKey = new JsonWebKey&#40;&#41;.setId&#40;&quot;SampleJsonWebKey&quot;&#41;;
+ * CryptographyClient cryptographyClient = new CryptographyClientBuilder&#40;&#41;
+ *     .jsonWebKey&#40;jsonWebKey&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyClient.withJsonWebKey.instantiation -->
  *
  * @see CryptographyAsyncClient
  * @see CryptographyClient

@@ -5,6 +5,7 @@
 package com.azure.analytics.purview.catalog;
 
 import com.azure.analytics.purview.catalog.implementation.GlossariesImpl;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -20,13 +21,14 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous PurviewCatalogClient type. */
 @ServiceClient(builder = PurviewCatalogClientBuilder.class, isAsync = true)
 public final class GlossaryAsyncClient {
-    private final GlossariesImpl serviceClient;
+    @Generated private final GlossariesImpl serviceClient;
 
     /**
      * Initializes an instance of Glossaries client.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     GlossaryAsyncClient(GlossariesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -111,6 +113,7 @@ public final class GlossaryAsyncClient {
      *     false.
      * @return all glossaries registered with Atlas.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listGlossariesWithResponse(RequestOptions requestOptions) {
         return this.serviceClient.listGlossariesWithResponseAsync(requestOptions);
@@ -244,6 +247,7 @@ public final class GlossaryAsyncClient {
      *     false.
      * @return atlasGlossary.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createGlossaryWithResponse(
             BinaryData atlasGlossary, RequestOptions requestOptions) {
@@ -389,6 +393,7 @@ public final class GlossaryAsyncClient {
      *     false.
      * @return an array of glossary category created successfully in bulk.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createGlossaryCategoriesWithResponse(
             BinaryData glossaryCategory, RequestOptions requestOptions) {
@@ -531,6 +536,7 @@ public final class GlossaryAsyncClient {
      *     false.
      * @return atlasGlossaryCategory.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createGlossaryCategoryWithResponse(
             BinaryData glossaryCategory, RequestOptions requestOptions) {
@@ -609,6 +615,7 @@ public final class GlossaryAsyncClient {
      *     false.
      * @return specific glossary category by its GUID.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getGlossaryCategoryWithResponse(
             String categoryGuid, RequestOptions requestOptions) {
@@ -751,6 +758,7 @@ public final class GlossaryAsyncClient {
      *     false.
      * @return atlasGlossaryCategory.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateGlossaryCategoryWithResponse(
             String categoryGuid, BinaryData glossaryCategory, RequestOptions requestOptions) {
@@ -767,6 +775,7 @@ public final class GlossaryAsyncClient {
      *     false.
      * @return the completion.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteGlossaryCategoryWithResponse(String categoryGuid, RequestOptions requestOptions) {
         return this.serviceClient.deleteGlossaryCategoryWithResponseAsync(categoryGuid, requestOptions);
@@ -854,6 +863,7 @@ public final class GlossaryAsyncClient {
      *     false.
      * @return atlasGlossaryCategory.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> partialUpdateGlossaryCategoryWithResponse(
             String categoryGuid, BinaryData partialUpdates, RequestOptions requestOptions) {
@@ -897,6 +907,7 @@ public final class GlossaryAsyncClient {
      *     false.
      * @return all related categories (parent and children).
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listRelatedCategoriesWithResponse(
             String categoryGuid, RequestOptions requestOptions) {
@@ -939,6 +950,7 @@ public final class GlossaryAsyncClient {
      *     false.
      * @return all terms associated with the specific category.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listCategoryTermsWithResponse(
             String categoryGuid, RequestOptions requestOptions) {
@@ -1265,6 +1277,7 @@ public final class GlossaryAsyncClient {
      *     false.
      * @return atlasGlossaryTerm.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createGlossaryTermWithResponse(
             BinaryData glossaryTerm, RequestOptions requestOptions) {
@@ -1439,6 +1452,7 @@ public final class GlossaryAsyncClient {
      *     false.
      * @return a specific glossary term by its GUID.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getGlossaryTermWithResponse(String termGuid, RequestOptions requestOptions) {
         return this.serviceClient.getGlossaryTermWithResponseAsync(termGuid, requestOptions);
@@ -1756,6 +1770,7 @@ public final class GlossaryAsyncClient {
      *     false.
      * @return atlasGlossaryTerm.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateGlossaryTermWithResponse(
             String termGuid, BinaryData glossaryTerm, RequestOptions requestOptions) {
@@ -1771,6 +1786,7 @@ public final class GlossaryAsyncClient {
      *     false.
      * @return the completion.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteGlossaryTermWithResponse(String termGuid, RequestOptions requestOptions) {
         return this.serviceClient.deleteGlossaryTermWithResponseAsync(termGuid, requestOptions);
@@ -1954,6 +1970,7 @@ public final class GlossaryAsyncClient {
      *     false.
      * @return atlasGlossaryTerm.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> partialUpdateGlossaryTermWithResponse(
             String termGuid, BinaryData partialUpdates, RequestOptions requestOptions) {
@@ -2283,6 +2300,7 @@ public final class GlossaryAsyncClient {
      *     false.
      * @return if bulk glossary terms creation was successful.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createGlossaryTermsWithResponse(
             BinaryData glossaryTerm, RequestOptions requestOptions) {
@@ -2334,6 +2352,7 @@ public final class GlossaryAsyncClient {
      *     false.
      * @return all related objects assigned with the specified term.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEntitiesAssignedWithTermWithResponse(
             String termGuid, RequestOptions requestOptions) {
@@ -2376,6 +2395,7 @@ public final class GlossaryAsyncClient {
      *     false.
      * @return the completion.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> assignTermToEntitiesWithResponse(
             String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions) {
@@ -2418,6 +2438,7 @@ public final class GlossaryAsyncClient {
      *     false.
      * @return the completion.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> removeTermAssignmentFromEntitiesWithResponse(
             String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions) {
@@ -2461,6 +2482,7 @@ public final class GlossaryAsyncClient {
      *     false.
      * @return the completion.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteTermAssignmentFromEntitiesWithResponse(
             String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions) {
@@ -2507,6 +2529,7 @@ public final class GlossaryAsyncClient {
      *     false.
      * @return all related terms for a specific term by its GUID.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listRelatedTermsWithResponse(String termGuid, RequestOptions requestOptions) {
         return this.serviceClient.listRelatedTermsWithResponseAsync(termGuid, requestOptions);
@@ -2580,6 +2603,7 @@ public final class GlossaryAsyncClient {
      *     false.
      * @return a specific Glossary by its GUID.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getGlossaryWithResponse(String glossaryGuid, RequestOptions requestOptions) {
         return this.serviceClient.getGlossaryWithResponseAsync(glossaryGuid, requestOptions);
@@ -2713,6 +2737,7 @@ public final class GlossaryAsyncClient {
      *     false.
      * @return atlasGlossary.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateGlossaryWithResponse(
             String glossaryGuid, BinaryData updatedGlossary, RequestOptions requestOptions) {
@@ -2728,6 +2753,7 @@ public final class GlossaryAsyncClient {
      *     false.
      * @return the completion.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteGlossaryWithResponse(String glossaryGuid, RequestOptions requestOptions) {
         return this.serviceClient.deleteGlossaryWithResponseAsync(glossaryGuid, requestOptions);
@@ -2817,6 +2843,7 @@ public final class GlossaryAsyncClient {
      *     false.
      * @return the categories belonging to a specific glossary.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listGlossaryCategoriesWithResponse(
             String glossaryGuid, RequestOptions requestOptions) {
@@ -2856,6 +2883,7 @@ public final class GlossaryAsyncClient {
      *     false.
      * @return the category headers belonging to a specific glossary.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listGlossaryCategoriesHeadersWithResponse(
             String glossaryGuid, RequestOptions requestOptions) {
@@ -3078,6 +3106,7 @@ public final class GlossaryAsyncClient {
      *     false.
      * @return a specific glossary with detailed information.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getDetailedGlossaryWithResponse(
             String glossaryGuid, RequestOptions requestOptions) {
@@ -3169,6 +3198,7 @@ public final class GlossaryAsyncClient {
      *     false.
      * @return atlasGlossary.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> partialUpdateGlossaryWithResponse(
             String glossaryGuid, BinaryData partialUpdates, RequestOptions requestOptions) {
@@ -3348,6 +3378,7 @@ public final class GlossaryAsyncClient {
      *     false.
      * @return terms belonging to a specific glossary.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listGlossaryTermsWithResponse(
             String glossaryGuid, RequestOptions requestOptions) {
@@ -3390,6 +3421,7 @@ public final class GlossaryAsyncClient {
      *     false.
      * @return term headers belonging to a specific glossary.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listGlossaryTermHeadersWithResponse(
             String glossaryGuid, RequestOptions requestOptions) {
@@ -3448,6 +3480,7 @@ public final class GlossaryAsyncClient {
      *     false.
      * @return status of import csv operation.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> importGlossaryTermsViaCsvWithResponse(
             String glossaryGuid, BinaryData file, RequestOptions requestOptions) {
@@ -3506,6 +3539,7 @@ public final class GlossaryAsyncClient {
      *     false.
      * @return status of import csv operation.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BinaryData, BinaryData> beginImportGlossaryTermsViaCsv(
             String glossaryGuid, BinaryData file, RequestOptions requestOptions) {
@@ -3564,6 +3598,7 @@ public final class GlossaryAsyncClient {
      *     false.
      * @return status of import csv operation.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> importGlossaryTermsViaCsvByGlossaryNameWithResponse(
             String glossaryName, BinaryData file, RequestOptions requestOptions) {
@@ -3623,6 +3658,7 @@ public final class GlossaryAsyncClient {
      *     false.
      * @return status of import csv operation.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public PollerFlux<BinaryData, BinaryData> beginImportGlossaryTermsViaCsvByGlossaryName(
             String glossaryName, BinaryData file, RequestOptions requestOptions) {
@@ -3665,6 +3701,7 @@ public final class GlossaryAsyncClient {
      *     false.
      * @return the status of import csv operation.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getImportCsvOperationStatusWithResponse(
             String operationGuid, RequestOptions requestOptions) {
@@ -3704,6 +3741,7 @@ public final class GlossaryAsyncClient {
      *     false.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> exportGlossaryTermsAsCsvWithResponse(
             String glossaryGuid, BinaryData termGuids, RequestOptions requestOptions) {
@@ -3883,6 +3921,7 @@ public final class GlossaryAsyncClient {
      *     false.
      * @return terms by glossary name.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> listTermsByGlossaryNameWithResponse(
             String glossaryName, RequestOptions requestOptions) {

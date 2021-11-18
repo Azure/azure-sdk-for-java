@@ -27,9 +27,8 @@ import java.util.function.BiConsumer;
  * </p>
  *
  */
-
 @Fluent
-public class AttestationTokenValidationOptions {
+public final class AttestationTokenValidationOptions {
     private boolean validateToken;
     private String expectedIssuer;
     private boolean validateExpiresOn;

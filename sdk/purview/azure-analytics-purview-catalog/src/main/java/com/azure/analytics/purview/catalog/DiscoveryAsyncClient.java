@@ -5,6 +5,7 @@
 package com.azure.analytics.purview.catalog;
 
 import com.azure.analytics.purview.catalog.implementation.DiscoveriesImpl;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -17,13 +18,14 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous PurviewCatalogClient type. */
 @ServiceClient(builder = PurviewCatalogClientBuilder.class, isAsync = true)
 public final class DiscoveryAsyncClient {
-    private final DiscoveriesImpl serviceClient;
+    @Generated private final DiscoveriesImpl serviceClient;
 
     /**
      * Initializes an instance of Discoveries client.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     DiscoveryAsyncClient(DiscoveriesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -155,6 +157,7 @@ public final class DiscoveryAsyncClient {
      *     false.
      * @return data using search.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> queryWithResponse(BinaryData searchRequest, RequestOptions requestOptions) {
         return this.serviceClient.queryWithResponseAsync(searchRequest, requestOptions);
@@ -229,6 +232,7 @@ public final class DiscoveryAsyncClient {
      *     false.
      * @return search suggestions by query criteria.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> suggestWithResponse(BinaryData suggestRequest, RequestOptions requestOptions) {
         return this.serviceClient.suggestWithResponseAsync(suggestRequest, requestOptions);
@@ -288,6 +292,7 @@ public final class DiscoveryAsyncClient {
      *     false.
      * @return browseResult.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> browseWithResponse(BinaryData browseRequest, RequestOptions requestOptions) {
         return this.serviceClient.browseWithResponseAsync(browseRequest, requestOptions);
@@ -333,6 +338,7 @@ public final class DiscoveryAsyncClient {
      *     false.
      * @return auto complete options.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> autoCompleteWithResponse(
             BinaryData autoCompleteRequest, RequestOptions requestOptions) {

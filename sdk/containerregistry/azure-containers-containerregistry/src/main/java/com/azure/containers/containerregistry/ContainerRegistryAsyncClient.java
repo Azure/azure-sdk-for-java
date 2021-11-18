@@ -30,10 +30,31 @@ import static com.azure.core.util.FluxUtil.withContext;
  *
  * <p><strong>Instantiating an asynchronous Container Registry client</strong></p>
  *
- * {@codesnippet com.azure.containers.containerregistry.ContainerRegistryAsyncClient.instantiation}
+ * <!-- src_embed com.azure.containers.containerregistry.ContainerRegistryAsyncClient.instantiation -->
+ * <pre>
+ * ContainerRegistryAsyncClient registryAsyncClient = new ContainerRegistryClientBuilder&#40;&#41;
+ *     .endpoint&#40;endpoint&#41;
+ *     .credential&#40;credential&#41;
+ *     .audience&#40;ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.containers.containerregistry.ContainerRegistryAsyncClient.instantiation -->
  *
  * <p><strong>Instantiating an asynchronous Container Registry client using a custom pipeline</strong></p>
- * {@codesnippet com.azure.containers.containerregistry.ContainerRegistryAsyncClient.pipeline.instantiation}
+ * <!-- src_embed com.azure.containers.containerregistry.ContainerRegistryAsyncClient.pipeline.instantiation -->
+ * <pre>
+ * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
+ *     .policies&#40;&#47;* add policies *&#47;&#41;
+ *     .build&#40;&#41;;
+ *
+ * ContainerRegistryAsyncClient registryAsyncClient = new ContainerRegistryClientBuilder&#40;&#41;
+ *     .pipeline&#40;pipeline&#41;
+ *     .endpoint&#40;endpoint&#41;
+ *     .audience&#40;ContainerRegistryAudience.AZURE_RESOURCE_MANAGER_PUBLIC_CLOUD&#41;
+ *     .credential&#40;credential&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.containers.containerregistry.ContainerRegistryAsyncClient.pipeline.instantiation -->
  *
  * <p>View {@link ContainerRegistryClientBuilder this} for additional ways to construct the client.</p>
  *
@@ -74,7 +95,13 @@ public final class ContainerRegistryAsyncClient {
      *
      * <p><strong>List repository names in the registry.</strong></p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.ContainerRegistryAsyncClient.listRepositoryNames}
+     * <!-- src_embed com.azure.containers.containerregistry.ContainerRegistryAsyncClient.listRepositoryNames -->
+     * <pre>
+     * client.listRepositoryNames&#40;&#41;.subscribe&#40;name -&gt; &#123;
+     *     System.out.printf&#40;&quot;Repository Name:%s,&quot;, name&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.ContainerRegistryAsyncClient.listRepositoryNames -->
      *
      * @return list of repository names.
      * @throws ClientAuthenticationException thrown if the client's credentials do not have access to modify the namespace.
@@ -122,7 +149,15 @@ public final class ContainerRegistryAsyncClient {
      *
      * <p><strong>Delete a repository in the registry.</strong></p>
      *
-     * {@codesnippet com.azure.containers.containerregistry.ContainerRegistryAsyncClient.deleteRepositoryWithResponse#String}
+     * <!-- src_embed com.azure.containers.containerregistry.ContainerRegistryAsyncClient.deleteRepositoryWithResponse#String -->
+     * <pre>
+     * client.deleteRepositoryWithResponse&#40;repositoryName&#41;.subscribe&#40;response -&gt; &#123;
+     *     System.out.printf&#40;&quot;Successfully initiated delete of the repository.&quot;&#41;;
+     * &#125;, error -&gt; &#123;
+     *     System.out.println&#40;&quot;Failed to initiate a delete of the repository.&quot;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.ContainerRegistryAsyncClient.deleteRepositoryWithResponse#String -->
      *
      * @param repositoryName Name of the repository (including the namespace).
      * @return the completion.
@@ -157,7 +192,15 @@ public final class ContainerRegistryAsyncClient {
      * Delete the repository identified by {@code repositoryName}.
      *
      * <p><strong>Delete a repository in the registry.</strong></p>
-     * {@codesnippet com.azure.containers.containerregistry.ContainerRegistryAsyncClient.deleteRepository#String}
+     * <!-- src_embed com.azure.containers.containerregistry.ContainerRegistryAsyncClient.deleteRepository#String -->
+     * <pre>
+     * client.deleteRepository&#40;repositoryName&#41;.subscribe&#40;response -&gt; &#123;
+     *     System.out.printf&#40;&quot;Successfully initiated delete of the repository.&quot;&#41;;
+     * &#125;, error -&gt; &#123;
+     *     System.out.println&#40;&quot;Failed to initiate a delete of the repository.&quot;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.ContainerRegistryAsyncClient.deleteRepository#String -->
      *
      * @param repositoryName Name of the image (including the namespace).
      * @return the completion stream.
@@ -178,7 +221,14 @@ public final class ContainerRegistryAsyncClient {
      * Creates a new instance of {@link ContainerRepositoryAsync} object for the specified repository.
      *
      * <p><strong>Create an instance of ContainerRepositoryAsync helper type</strong></p>
-     * {@codesnippet com.azure.containers.containerregistry.containeregistryasyncclient.getRepository}
+     * <!-- src_embed com.azure.containers.containerregistry.containeregistryasyncclient.getRepository -->
+     * <pre>
+     * ContainerRepositoryAsync repositoryAsync = client.getRepository&#40;repositoryName&#41;;
+     * repositoryAsync.getProperties&#40;&#41;.subscribe&#40;properties -&gt; &#123;
+     *     System.out.println&#40;properties.getName&#40;&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.containeregistryasyncclient.getRepository -->
      *
      * @param repositoryName Name of the repository to reference.
      * @return A new {@link ContainerRepositoryAsync} for the desired repository.
@@ -193,7 +243,14 @@ public final class ContainerRegistryAsyncClient {
      * Creates a new instance of {@link RegistryArtifactAsync} object for the specified artifact.
      *
      * <p><strong>Create an instance of RegistryArtifactAsync helper type</strong></p>
-     * {@codesnippet com.azure.containers.containerregistry.containeregistryasyncclient.getArtifact}
+     * <!-- src_embed com.azure.containers.containerregistry.containeregistryasyncclient.getArtifact -->
+     * <pre>
+     * RegistryArtifactAsync registryArtifactAsync = client.getArtifact&#40;repositoryName, tagOrDigest&#41;;
+     * registryArtifactAsync.getManifestProperties&#40;&#41;.subscribe&#40;properties -&gt; &#123;
+     *     System.out.println&#40;properties.getDigest&#40;&#41;&#41;;
+     * &#125;&#41;;
+     * </pre>
+     * <!-- end com.azure.containers.containerregistry.containeregistryasyncclient.getArtifact -->
      *
      * @param repositoryName Name of the repository to reference.
      * @param digest Either a tag or digest that uniquely identifies the artifact.

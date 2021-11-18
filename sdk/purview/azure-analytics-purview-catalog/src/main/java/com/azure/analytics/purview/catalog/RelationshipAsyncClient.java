@@ -5,6 +5,7 @@
 package com.azure.analytics.purview.catalog;
 
 import com.azure.analytics.purview.catalog.implementation.RelationshipsImpl;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -17,13 +18,14 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous PurviewCatalogClient type. */
 @ServiceClient(builder = PurviewCatalogClientBuilder.class, isAsync = true)
 public final class RelationshipAsyncClient {
-    private final RelationshipsImpl serviceClient;
+    @Generated private final RelationshipsImpl serviceClient;
 
     /**
      * Initializes an instance of Relationships client.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     RelationshipAsyncClient(RelationshipsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -97,6 +99,7 @@ public final class RelationshipAsyncClient {
      *     false.
      * @return atlasRelationship.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> createWithResponse(BinaryData relationship, RequestOptions requestOptions) {
         return this.serviceClient.createWithResponseAsync(relationship, requestOptions);
@@ -171,6 +174,7 @@ public final class RelationshipAsyncClient {
      *     false.
      * @return atlasRelationship.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> updateWithResponse(BinaryData relationship, RequestOptions requestOptions) {
         return this.serviceClient.updateWithResponseAsync(relationship, requestOptions);
@@ -280,6 +284,7 @@ public final class RelationshipAsyncClient {
      *     false.
      * @return relationship information between entities by its GUID.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponse(String guid, RequestOptions requestOptions) {
         return this.serviceClient.getWithResponseAsync(guid, requestOptions);
@@ -294,6 +299,7 @@ public final class RelationshipAsyncClient {
      *     false.
      * @return the completion.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteWithResponse(String guid, RequestOptions requestOptions) {
         return this.serviceClient.deleteWithResponseAsync(guid, requestOptions);

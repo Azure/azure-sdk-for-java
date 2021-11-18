@@ -49,11 +49,27 @@ import java.util.Objects;
  *
  * <p><strong>Instantiating an asynchronous Metrics Advisor Client</strong></p>
  *
- * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.instantiation}
+ * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.instantiation -->
+ * <pre>
+ * MetricsAdvisorAsyncClient metricsAdvisorAsyncClient =
+ *     new MetricsAdvisorClientBuilder&#40;&#41;
+ *         .credential&#40;new MetricsAdvisorKeyCredential&#40;&quot;&#123;subscription_key&#125;&quot;, &quot;&#123;api_key&#125;&quot;&#41;&#41;
+ *         .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *         .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorAsyncClient.instantiation -->
  *
  * <p><strong>Instantiating a synchronous Metrics Advisor Client</strong></p>
  *
- * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.instantiation}
+ * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.instantiation -->
+ * <pre>
+ * MetricsAdvisorClient metricsAdvisorClient =
+ *     new MetricsAdvisorClientBuilder&#40;&#41;
+ *         .credential&#40;new MetricsAdvisorKeyCredential&#40;&quot;&#123;subscription_key&#125;&quot;, &quot;&#123;api_key&#125;&quot;&#41;&#41;
+ *         .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *         .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.instantiation -->
  *
  * <p>
  * Another way to construct the client is using a {@link HttpPipeline}. The pipeline gives the client an
@@ -63,7 +79,20 @@ import java.util.Objects;
  * {@link MetricsAdvisorAsyncClient} is built.
  * </p>
  *
- * {@codesnippet com.azure.ai.metricsadvisor.MetricsAdvisorClient.pipeline.instantiation}
+ * <!-- src_embed com.azure.ai.metricsadvisor.MetricsAdvisorClient.pipeline.instantiation -->
+ * <pre>
+ * HttpPipeline pipeline = new HttpPipelineBuilder&#40;&#41;
+ *     .policies&#40;&#47;* add policies *&#47;&#41;
+ *     .build&#40;&#41;;
+ *
+ * MetricsAdvisorClient metricsAdvisorClient =
+ *     new MetricsAdvisorClientBuilder&#40;&#41;
+ *         .credential&#40;new MetricsAdvisorKeyCredential&#40;&quot;&#123;subscription_key&#125;&quot;, &quot;&#123;api_key&#125;&quot;&#41;&#41;
+ *         .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *         .pipeline&#40;pipeline&#41;
+ *         .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.ai.metricsadvisor.MetricsAdvisorClient.pipeline.instantiation -->
  *
  * @see MetricsAdvisorAsyncClient
  * @see MetricsAdvisorClient

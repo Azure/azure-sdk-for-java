@@ -5,6 +5,7 @@
 package com.azure.analytics.purview.scanning;
 
 import com.azure.analytics.purview.scanning.implementation.DataSourcesImpl;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -18,13 +19,14 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous PurviewScanningClient type. */
 @ServiceClient(builder = PurviewScanningClientBuilder.class, isAsync = true)
 public final class DataSourcesAsyncClient {
-    private final DataSourcesImpl serviceClient;
+    @Generated private final DataSourcesImpl serviceClient;
 
     /**
      * Initializes an instance of DataSources client.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     DataSourcesAsyncClient(DataSourcesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -168,9 +170,10 @@ public final class DataSourcesAsyncClient {
      *     false.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> upsertWithResponse(String dataSourceName, RequestOptions requestOptions) {
-        return this.serviceClient.upsertWithResponseAsync(dataSourceName, requestOptions);
+    public Mono<Response<BinaryData>> createOrUpdateWithResponse(String dataSourceName, RequestOptions requestOptions) {
+        return this.serviceClient.createOrUpdateWithResponseAsync(dataSourceName, requestOptions);
     }
 
     /**
@@ -251,6 +254,7 @@ public final class DataSourcesAsyncClient {
      *     false.
      * @return a data source.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponse(String dataSourceName, RequestOptions requestOptions) {
         return this.serviceClient.getWithResponseAsync(dataSourceName, requestOptions);
@@ -334,6 +338,7 @@ public final class DataSourcesAsyncClient {
      *     false.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteWithResponse(String dataSourceName, RequestOptions requestOptions) {
         return this.serviceClient.deleteWithResponseAsync(dataSourceName, requestOptions);
@@ -422,6 +427,7 @@ public final class DataSourcesAsyncClient {
      *     false.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listAll(RequestOptions requestOptions) {
         return this.serviceClient.listAllAsync(requestOptions);

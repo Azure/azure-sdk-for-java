@@ -230,7 +230,7 @@ public final class ScansImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> upsertWithResponseAsync(
+    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
             String dataSourceName, String scanName, BinaryData body, RequestOptions requestOptions) {
         return FluxUtil.withContext(
                 context ->
@@ -375,7 +375,7 @@ public final class ScansImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> upsertWithResponseAsync(
+    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
             String dataSourceName, String scanName, BinaryData body, RequestOptions requestOptions, Context context) {
         return service.createOrUpdate(
                 this.client.getEndpoint(),
@@ -512,15 +512,14 @@ public final class ScansImpl {
      * @param scanName The scanName parameter.
      * @param body The body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> upsertWithResponse(
-            String dataSourceName, String scanName, BinaryData body, RequestOptions requestOptions, Context context) {
-        return upsertWithResponseAsync(dataSourceName, scanName, body, requestOptions, context).block();
+    public Response<BinaryData> createOrUpdateWithResponse(
+            String dataSourceName, String scanName, BinaryData body, RequestOptions requestOptions) {
+        return createOrUpdateWithResponseAsync(dataSourceName, scanName, body, requestOptions).block();
     }
 
     /**
@@ -765,15 +764,13 @@ public final class ScansImpl {
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return a scan information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(
-            String dataSourceName, String scanName, RequestOptions requestOptions, Context context) {
-        return getWithResponseAsync(dataSourceName, scanName, requestOptions, context).block();
+    public Response<BinaryData> getWithResponse(String dataSourceName, String scanName, RequestOptions requestOptions) {
+        return getWithResponseAsync(dataSourceName, scanName, requestOptions).block();
     }
 
     /**
@@ -1018,15 +1015,14 @@ public final class ScansImpl {
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> deleteWithResponse(
-            String dataSourceName, String scanName, RequestOptions requestOptions, Context context) {
-        return deleteWithResponseAsync(dataSourceName, scanName, requestOptions, context).block();
+            String dataSourceName, String scanName, RequestOptions requestOptions) {
+        return deleteWithResponseAsync(dataSourceName, scanName, requestOptions).block();
     }
 
     /**
@@ -1474,15 +1470,13 @@ public final class ScansImpl {
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listByDataSource(
-            String dataSourceName, RequestOptions requestOptions, Context context) {
-        return new PagedIterable<>(listByDataSourceAsync(dataSourceName, requestOptions, context));
+    public PagedIterable<BinaryData> listByDataSource(String dataSourceName, RequestOptions requestOptions) {
+        return new PagedIterable<>(listByDataSourceAsync(dataSourceName, requestOptions));
     }
 
     /**
