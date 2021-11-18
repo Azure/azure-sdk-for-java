@@ -60,7 +60,7 @@ public class CreateIndexWithFieldBuilderExample {
         @SearchableField(isFilterable = true, isFacetable = true)
         private List<String> tags;
 
-        @SimpleField
+        // Complex fields are included automatically in an index if not ignored.
         private Address address;
 
         /**
