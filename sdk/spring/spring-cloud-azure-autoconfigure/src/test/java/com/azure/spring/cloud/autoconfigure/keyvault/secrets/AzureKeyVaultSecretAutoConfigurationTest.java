@@ -3,9 +3,11 @@
 
 package com.azure.spring.cloud.autoconfigure.keyvault.secrets;
 
+import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.security.keyvault.secrets.SecretAsyncClient;
 import com.azure.security.keyvault.secrets.SecretClient;
 import com.azure.security.keyvault.secrets.SecretClientBuilder;
+import com.azure.spring.cloud.autoconfigure.TestBuilderCustomizer;
 import com.azure.spring.cloud.autoconfigure.keyvault.secrets.properties.AzureKeyVaultSecretProperties;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.service.keyvault.secrets.SecretClientBuilderFactory;
@@ -60,6 +62,41 @@ class AzureKeyVaultSecretAutoConfigurationTest {
                 assertThat(context).hasSingleBean(SecretClientBuilder.class);
                 assertThat(context).hasSingleBean(SecretClientBuilderFactory.class);
             });
+    }
+
+    @Test
+    void customizerShouldBeCalled() {
+        SecretBuilderCustomizer customizer = new SecretBuilderCustomizer();
+        this.contextRunner
+            .withPropertyValues("spring.cloud.azure.keyvault.secret.endpoint=" + String.format(ENDPOINT, "mykv"))
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean("customizer1", SecretBuilderCustomizer.class, () -> customizer)
+            .withBean("customizer2", SecretBuilderCustomizer.class, () -> customizer)
+            .run(context -> assertThat(customizer.getCustomizedTimes()).isEqualTo(2));
+    }
+
+    @Test
+    void otherCustomizerShouldNotBeCalled() {
+        SecretBuilderCustomizer customizer = new SecretBuilderCustomizer();
+        OtherBuilderCustomizer otherBuilderCustomizer = new OtherBuilderCustomizer();
+        this.contextRunner
+            .withPropertyValues("spring.cloud.azure.keyvault.secret.endpoint=" + String.format(ENDPOINT, "mykv"))
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean("customizer1", SecretBuilderCustomizer.class, () -> customizer)
+            .withBean("customizer2", SecretBuilderCustomizer.class, () -> customizer)
+            .withBean("customizer3", OtherBuilderCustomizer.class, () -> otherBuilderCustomizer)
+            .run(context -> {
+                assertThat(customizer.getCustomizedTimes()).isEqualTo(2);
+                assertThat(otherBuilderCustomizer.getCustomizedTimes()).isEqualTo(0);
+            });
+    }
+
+    private static class SecretBuilderCustomizer extends TestBuilderCustomizer<SecretClientBuilder> {
+
+    }
+
+    private static class OtherBuilderCustomizer extends TestBuilderCustomizer<ConfigurationClientBuilder> {
+
     }
 
 }

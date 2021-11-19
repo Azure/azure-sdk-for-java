@@ -3,7 +3,9 @@
 
 package com.azure.spring.cloud.autoconfigure.eventhubs;
 
+import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
+import com.azure.spring.cloud.autoconfigure.TestBuilderCustomizer;
 import com.azure.spring.service.eventhubs.factory.EventHubClientBuilderFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -36,6 +38,47 @@ class AzureEventHubsClientBuilderConfigurationTest {
                 assertThat(context).hasSingleBean(EventHubClientBuilderFactory.class);
                 assertThat(context).hasSingleBean(EventHubClientBuilder.class);
             });
+    }
+
+    @Test
+    void customizerShouldBeCalled() {
+        EventHubBuilderCustomizer customizer = new EventHubBuilderCustomizer();
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace"),
+                "spring.cloud.azure.eventhubs.event-hub-name=test-event-hub"
+            )
+            .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
+            .withBean("customizer1", EventHubBuilderCustomizer.class, () -> customizer)
+            .withBean("customizer2", EventHubBuilderCustomizer.class, () -> customizer)
+            .run(context -> assertThat(customizer.getCustomizedTimes()).isEqualTo(2));
+    }
+
+    @Test
+    void otherCustomizerShouldNotBeCalled() {
+        EventHubBuilderCustomizer customizer = new EventHubBuilderCustomizer();
+        OtherBuilderCustomizer otherBuilderCustomizer = new OtherBuilderCustomizer();
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.eventhubs.connection-string=" + String.format(CONNECTION_STRING_FORMAT, "test-namespace"),
+                "spring.cloud.azure.eventhubs.event-hub-name=test-event-hub"
+            )
+            .withUserConfiguration(AzureEventHubsPropertiesTestConfiguration.class)
+            .withBean("customizer1", EventHubBuilderCustomizer.class, () -> customizer)
+            .withBean("customizer2", EventHubBuilderCustomizer.class, () -> customizer)
+            .withBean("customizer3", OtherBuilderCustomizer.class, () -> otherBuilderCustomizer)
+            .run(context -> {
+                assertThat(customizer.getCustomizedTimes()).isEqualTo(2);
+                assertThat(otherBuilderCustomizer.getCustomizedTimes()).isEqualTo(0);
+            });
+    }
+
+    private static class EventHubBuilderCustomizer extends TestBuilderCustomizer<EventHubClientBuilder> {
+
+    }
+
+    private static class OtherBuilderCustomizer extends TestBuilderCustomizer<ConfigurationClientBuilder> {
+
     }
 
 }

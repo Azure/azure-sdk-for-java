@@ -3,7 +3,9 @@
 
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
+import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
+import com.azure.spring.cloud.autoconfigure.TestBuilderCustomizer;
 import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.core.service.AzureServiceType;
 import com.azure.spring.service.servicebus.factory.ServiceBusClientBuilderFactory;
@@ -44,4 +46,43 @@ class AzureServiceBusClientBuilderConfigurationTest {
             });
     }
 
+    @Test
+    void customizerShouldBeCalled() {
+        ServiceBusBuilderCustomizer customizer = new ServiceBusBuilderCustomizer();
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.servicebus.connection-string=" + String.format(CONNECTION_STRING, "test-namespace")
+            )
+            .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
+            .withBean("customizer1", ServiceBusBuilderCustomizer.class, () -> customizer)
+            .withBean("customizer2", ServiceBusBuilderCustomizer.class, () -> customizer)
+            .run(context -> assertThat(customizer.getCustomizedTimes()).isEqualTo(2));
+    }
+
+    @Test
+    void otherCustomizerShouldNotBeCalled() {
+        ServiceBusBuilderCustomizer customizer = new ServiceBusBuilderCustomizer();
+        OtherBuilderCustomizer otherBuilderCustomizer = new OtherBuilderCustomizer();
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.servicebus.connection-string=" + String.format(CONNECTION_STRING, "test-namespace")
+            )
+            .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
+            .withBean("customizer1", ServiceBusBuilderCustomizer.class, () -> customizer)
+            .withBean("customizer2", ServiceBusBuilderCustomizer.class, () -> customizer)
+            .withBean("customizer3", OtherBuilderCustomizer.class, () -> otherBuilderCustomizer)
+            .run(context -> {
+                assertThat(customizer.getCustomizedTimes()).isEqualTo(2);
+                assertThat(otherBuilderCustomizer.getCustomizedTimes()).isEqualTo(0);
+            });
+    }
+
+    private static class ServiceBusBuilderCustomizer extends TestBuilderCustomizer<ServiceBusClientBuilder> {
+
+    }
+
+    private static class OtherBuilderCustomizer extends TestBuilderCustomizer<ConfigurationClientBuilder> {
+
+    }
+    
 }

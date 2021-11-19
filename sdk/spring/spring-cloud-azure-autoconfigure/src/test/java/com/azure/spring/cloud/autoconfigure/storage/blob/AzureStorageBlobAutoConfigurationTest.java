@@ -3,6 +3,8 @@
 
 package com.azure.spring.cloud.autoconfigure.storage.blob;
 
+import com.azure.data.appconfiguration.ConfigurationClientBuilder;
+import com.azure.spring.cloud.autoconfigure.TestBuilderCustomizer;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.storage.blob.properties.AzureStorageBlobProperties;
 import com.azure.spring.service.storage.blob.BlobServiceClientBuilderFactory;
@@ -52,6 +54,41 @@ class AzureStorageBlobAutoConfigurationTest {
                 assertThat(context).hasSingleBean(BlobServiceClientBuilder.class);
                 assertThat(context).hasSingleBean(BlobServiceClientBuilderFactory.class);
             });
+    }
+
+    @Test
+    void customizerShouldBeCalled() {
+        BlobServiceClientBuilderCustomizer customizer = new BlobServiceClientBuilderCustomizer();
+        this.contextRunner
+            .withPropertyValues("spring.cloud.azure.storage.blob.account-name=sa")
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean("customizer1", BlobServiceClientBuilderCustomizer.class, () -> customizer)
+            .withBean("customizer2", BlobServiceClientBuilderCustomizer.class, () -> customizer)
+            .run(context -> assertThat(customizer.getCustomizedTimes()).isEqualTo(2));
+    }
+
+    @Test
+    void otherCustomizerShouldNotBeCalled() {
+        BlobServiceClientBuilderCustomizer customizer = new BlobServiceClientBuilderCustomizer();
+        OtherBuilderCustomizer otherBuilderCustomizer = new OtherBuilderCustomizer();
+        this.contextRunner
+            .withPropertyValues("spring.cloud.azure.storage.blob.account-name=sa")
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean("customizer1", BlobServiceClientBuilderCustomizer.class, () -> customizer)
+            .withBean("customizer2", BlobServiceClientBuilderCustomizer.class, () -> customizer)
+            .withBean("customizer3", OtherBuilderCustomizer.class, () -> otherBuilderCustomizer)
+            .run(context -> {
+                assertThat(customizer.getCustomizedTimes()).isEqualTo(2);
+                assertThat(otherBuilderCustomizer.getCustomizedTimes()).isEqualTo(0);
+            });
+    }
+
+    private static class BlobServiceClientBuilderCustomizer extends TestBuilderCustomizer<BlobServiceClientBuilder> {
+
+    }
+
+    private static class OtherBuilderCustomizer extends TestBuilderCustomizer<ConfigurationClientBuilder> {
+
     }
 
 }

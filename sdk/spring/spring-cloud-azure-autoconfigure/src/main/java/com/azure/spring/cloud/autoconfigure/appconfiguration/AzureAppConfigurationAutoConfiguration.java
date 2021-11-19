@@ -11,7 +11,12 @@ import com.azure.spring.cloud.autoconfigure.appconfiguration.properties.AzureApp
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.core.AzureSpringIdentifier;
+import com.azure.spring.core.connectionstring.ConnectionStringProvider;
+import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
+import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
+import com.azure.spring.core.service.AzureServiceType;
 import com.azure.spring.service.appconfiguration.ConfigurationClientBuilderFactory;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -51,13 +56,28 @@ public class AzureAppConfigurationAutoConfiguration extends AzureServiceConfigur
     @Bean
     @ConditionalOnMissingBean
     public ConfigurationClientBuilder configurationClientBuilder(ConfigurationClientBuilderFactory factory) {
-        factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_APP_CONFIG);
         return factory.build();
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public ConfigurationClientBuilderFactory configurationClientBuilderFactory(AzureAppConfigurationProperties properties) {
-        return new ConfigurationClientBuilderFactory(properties);
+    public ConfigurationClientBuilderFactory configurationClientBuilderFactory(
+        AzureAppConfigurationProperties properties,
+        ObjectProvider<ConnectionStringProvider<AzureServiceType.AppConfiguration>> connectionStringProviders,
+        ObjectProvider<AzureServiceClientBuilderCustomizer<ConfigurationClientBuilder>> customizers) {
+        ConfigurationClientBuilderFactory factory = new ConfigurationClientBuilderFactory(properties);
+
+        factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_APP_CONFIG);
+        connectionStringProviders.orderedStream().findFirst().ifPresent(factory::setConnectionStringProvider);
+        customizers.orderedStream().forEach(factory::addBuilderCustomizer);
+        return factory;
+    }
+
+    @Bean
+    @ConditionalOnProperty("spring.cloud.azure.appconfiguration.connection-string")
+    public StaticConnectionStringProvider<AzureServiceType.AppConfiguration> staticAppConfigurationConnectionStringProvider(
+        AzureAppConfigurationProperties properties) {
+
+        return new StaticConnectionStringProvider<>(AzureServiceType.APP_CONFIGURATION, properties.getConnectionString());
     }
 }

@@ -3,6 +3,8 @@
 
 package com.azure.spring.cloud.autoconfigure.storage.queue;
 
+import com.azure.data.appconfiguration.ConfigurationClientBuilder;
+import com.azure.spring.cloud.autoconfigure.TestBuilderCustomizer;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.storage.queue.properties.AzureStorageQueueProperties;
 import com.azure.spring.service.storage.queue.QueueServiceClientBuilderFactory;
@@ -52,5 +54,40 @@ class AzureStorageQueueAutoConfigurationTest {
                 assertThat(context).hasSingleBean(QueueServiceClientBuilder.class);
                 assertThat(context).hasSingleBean(QueueServiceClientBuilderFactory.class);
             });
+    }
+    
+    @Test
+    void customizerShouldBeCalled() {
+        QueueServiceClientBuilderCustomizer customizer = new QueueServiceClientBuilderCustomizer();
+        this.contextRunner
+            .withPropertyValues("spring.cloud.azure.storage.queue.account-name=sa")
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean("customizer1", QueueServiceClientBuilderCustomizer.class, () -> customizer)
+            .withBean("customizer2", QueueServiceClientBuilderCustomizer.class, () -> customizer)
+            .run(context -> assertThat(customizer.getCustomizedTimes()).isEqualTo(2));
+    }
+
+    @Test
+    void otherCustomizerShouldNotBeCalled() {
+        QueueServiceClientBuilderCustomizer customizer = new QueueServiceClientBuilderCustomizer();
+        OtherBuilderCustomizer otherBuilderCustomizer = new OtherBuilderCustomizer();
+        this.contextRunner
+            .withPropertyValues("spring.cloud.azure.storage.queue.account-name=sa")
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean("customizer1", QueueServiceClientBuilderCustomizer.class, () -> customizer)
+            .withBean("customizer2", QueueServiceClientBuilderCustomizer.class, () -> customizer)
+            .withBean("customizer3", OtherBuilderCustomizer.class, () -> otherBuilderCustomizer)
+            .run(context -> {
+                assertThat(customizer.getCustomizedTimes()).isEqualTo(2);
+                assertThat(otherBuilderCustomizer.getCustomizedTimes()).isEqualTo(0);
+            });
+    }
+
+    private static class QueueServiceClientBuilderCustomizer extends TestBuilderCustomizer<QueueServiceClientBuilder> {
+
+    }
+
+    private static class OtherBuilderCustomizer extends TestBuilderCustomizer<ConfigurationClientBuilder> {
+
     }
 }
