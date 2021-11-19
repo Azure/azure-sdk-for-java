@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aad.b2c.implementation;
 
-import com.azure.spring.cloud.autoconfigure.aad.implementation.core.AADAuthorizationGrantType;
+import com.azure.spring.cloud.autoconfigure.aad.core.AADAuthorizationGrantType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.security.oauth2.client.servlet.OAuth2ClientAutoConfiguration;
