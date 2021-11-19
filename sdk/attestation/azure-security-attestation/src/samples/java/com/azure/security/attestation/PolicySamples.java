@@ -3,7 +3,7 @@
 
 package com.azure.security.attestation;
 
-import com.azure.identity.EnvironmentCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.attestation.models.AttestationPolicySetOptions;
 import com.azure.security.attestation.models.AttestationSigningKey;
 import com.azure.security.attestation.models.AttestationTokenValidationOptions;
@@ -24,7 +24,7 @@ public class PolicySamples {
         // Note that the "policy" calls require authentication.
         AttestationAdministrationClient client = attestationBuilder
             .endpoint(endpoint)
-            .credential(new EnvironmentCredentialBuilder().build())
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
         //END: readme-sample-create-admin-client
 
@@ -41,7 +41,7 @@ public class PolicySamples {
         // Note that the "policy" calls require authentication.
         AttestationAdministrationAsyncClient client = attestationBuilder
             .endpoint(endpoint)
-            .credential(new EnvironmentCredentialBuilder().build())
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
         // BEGIN: readme-sample-getCurrentPolicyAsync
@@ -57,7 +57,7 @@ public class PolicySamples {
         // Note that the "policy" calls require authentication.
         AttestationAdministrationClient client = attestationBuilder
             .endpoint(endpoint)
-            .credential(new EnvironmentCredentialBuilder().build())
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
         // BEGIN: readme-sample-set-unsigned-policy
@@ -74,7 +74,7 @@ public class PolicySamples {
         // Note that the "policy" calls require authentication.
         AttestationAdministrationAsyncClient client = attestationBuilder
             .endpoint(endpoint)
-            .credential(new EnvironmentCredentialBuilder().build())
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
         System.out.println("Setting an async policy");
@@ -92,7 +92,7 @@ public class PolicySamples {
         // Note that the "policy" calls require authentication.
         AttestationAdministrationClient client = attestationBuilder
             .endpoint(endpoint)
-            .credential(new EnvironmentCredentialBuilder().build())
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
         X509Certificate certificate = SampleCollateral.getSigningCertificate();
@@ -114,7 +114,7 @@ public class PolicySamples {
         // Note that the "policy" calls require authentication.
         AttestationAdministrationAsyncClient client = attestationBuilder
             .endpoint(endpoint)
-            .credential(new EnvironmentCredentialBuilder().build())
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
         X509Certificate certificate = SampleCollateral.getSigningCertificate();
@@ -141,7 +141,7 @@ public class PolicySamples {
         // Note that the "policy" calls require authentication.
         AttestationAdministrationClient client = attestationBuilder
             .endpoint(endpoint)
-            .credential(new EnvironmentCredentialBuilder().build())
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildClient();
 
         // BEGIN: readme-sample-resetCurrentPolicy
@@ -157,7 +157,7 @@ public class PolicySamples {
         // Note that the "policy" calls require authentication.
         AttestationAdministrationAsyncClient client = attestationBuilder
             .endpoint(endpoint)
-            .credential(new EnvironmentCredentialBuilder().build())
+            .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
         //END: readme-sample-create-async-admin-client
 

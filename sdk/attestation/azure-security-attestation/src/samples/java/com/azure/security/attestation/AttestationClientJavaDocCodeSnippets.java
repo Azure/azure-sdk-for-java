@@ -7,7 +7,6 @@ package com.azure.security.attestation;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.identity.DefaultAzureCredentialBuilder;
-import com.azure.identity.EnvironmentCredentialBuilder;
 import com.azure.security.attestation.models.AttestationData;
 import com.azure.security.attestation.models.AttestationDataInterpretation;
 import com.azure.security.attestation.models.AttestationOpenIdMetadata;
@@ -106,7 +105,7 @@ public class AttestationClientJavaDocCodeSnippets {
     }
     public static void attestationOptionsSnippets3() {
         BinaryData inittimeData = null;
-        BinaryData openEnclaveReport = null;
+        BinaryData openEnclaveReport = BinaryData.fromBytes(SampleCollateral.getOpenEnclaveReport());
 
         // BEGIN: com.azure.security.attestation.models.AttestationOptions.getInitTimeData
         AttestationOptions attestationOptions = new AttestationOptions(openEnclaveReport)
@@ -172,7 +171,7 @@ public class AttestationClientJavaDocCodeSnippets {
         String endpoint = System.getenv("ATTESTATION_AAD_URL");
         AttestationAdministrationAsyncClient client = new AttestationAdministrationClientBuilder()
             .endpoint(endpoint)
-            .credential(new EnvironmentCredentialBuilder()
+            .credential(new DefaultAzureCredentialBuilder()
                 .build())
             .buildAsyncClient();
 
@@ -185,7 +184,9 @@ public class AttestationClientJavaDocCodeSnippets {
         // BEGIN: com.azure.security.attestation.AttestationAdministrationAsyncClient.checkPolicyTokenHash
         BinaryData expectedHash = client.calculatePolicyTokenHash(policyToSet, null);
         BinaryData actualHash = result.getPolicyTokenHash();
-        if (!expectedHash.equals(actualHash)) {
+        String expectedString = Hex.toHexString(expectedHash.toBytes());
+        String actualString = Hex.toHexString(actualHash.toBytes());
+        if (!expectedString.equals(actualString)) {
             throw new RuntimeException("Policy was set but not received!!!");
         }
         // END: com.azure.security.attestation.AttestationAdministrationAsyncClient.checkPolicyTokenHash
@@ -196,7 +197,7 @@ public class AttestationClientJavaDocCodeSnippets {
         String endpoint = System.getenv("ATTESTATION_AAD_URL");
         AttestationAdministrationClient client = new AttestationAdministrationClientBuilder()
             .endpoint(endpoint)
-            .credential(new EnvironmentCredentialBuilder()
+            .credential(new DefaultAzureCredentialBuilder()
                 .build())
             .buildClient();
 
@@ -223,6 +224,7 @@ public class AttestationClientJavaDocCodeSnippets {
         createAdminSyncClient();
         createSyncClient();
         setPolicyCheckHash();
+        setPolicyCheckHashAsync();
     }
 
 }

@@ -6,7 +6,7 @@ import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestBase;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.identity.EnvironmentCredentialBuilder;
+import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.security.attestation.models.AttestationTokenValidationOptions;
 import com.azure.security.attestation.models.AttestationType;
 import com.nimbusds.jose.util.X509CertUtils;
@@ -92,7 +92,9 @@ public class AttestationClientTestBase extends TestBase {
     AttestationClientBuilder getAuthenticatedAttestationBuilder(HttpClient httpClient, String clientUri) {
         AttestationClientBuilder builder = getAttestationBuilder(httpClient, clientUri);
         if (!interceptorManager.isPlaybackMode()) {
-            builder.credential(new EnvironmentCredentialBuilder().httpClient(httpClient).build());
+            builder
+                .credential(new DefaultAzureCredentialBuilder()
+                .httpClient(httpClient).build());
         }
         return builder;
     }
@@ -142,7 +144,7 @@ public class AttestationClientTestBase extends TestBase {
             );
         }
         if (!interceptorManager.isPlaybackMode()) {
-            builder.credential(new EnvironmentCredentialBuilder().httpClient(httpClient).build());
+            builder.credential(new DefaultAzureCredentialBuilder().httpClient(httpClient).build());
         }
         return builder;
     }

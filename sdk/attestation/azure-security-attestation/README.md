@@ -167,7 +167,7 @@ AttestationAdministrationClientBuilder attestationBuilder = new AttestationAdmin
 // Note that the "policy" calls require authentication.
 AttestationAdministrationClient client = attestationBuilder
     .endpoint(endpoint)
-    .credential(new EnvironmentCredentialBuilder().build())
+    .credential(new DefaultAzureCredentialBuilder().build())
     .buildClient();
 ```
 
@@ -177,12 +177,12 @@ AttestationAdministrationClientBuilder attestationBuilder = new AttestationAdmin
 // Note that the "policy" calls require authentication.
 AttestationAdministrationAsyncClient client = attestationBuilder
     .endpoint(endpoint)
-    .credential(new EnvironmentCredentialBuilder().build())
+    .credential(new DefaultAzureCredentialBuilder().build())
     .buildAsyncClient();
 ```
 
 ### Retrieve current attestation policy for OpenEnclave
-Use the `getCurrentPolicy` API to retrieve the current attestation policy for a given TEE.
+Use the `getAttestationPolicy` API to retrieve the current attestation policy for a given TEE.
 ```java readme-sample-getCurrentPolicy
 String currentPolicy = client.getAttestationPolicy(AttestationType.OPEN_ENCLAVE);
 System.out.printf("Current policy for OpenEnclave is: %s\n", currentPolicy);

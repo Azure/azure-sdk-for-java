@@ -327,7 +327,9 @@ public final class AttestationAdministrationAsyncClient {
      * <pre>
      * BinaryData expectedHash = client.calculatePolicyTokenHash&#40;policyToSet, null&#41;;
      * BinaryData actualHash = result.getPolicyTokenHash&#40;&#41;;
-     * if &#40;!expectedHash.equals&#40;actualHash&#41;&#41; &#123;
+     * String expectedString = Hex.toHexString&#40;expectedHash.toBytes&#40;&#41;&#41;;
+     * String actualString = Hex.toHexString&#40;actualHash.toBytes&#40;&#41;&#41;;
+     * if &#40;!expectedString.equals&#40;actualString&#41;&#41; &#123;
      *     throw new RuntimeException&#40;&quot;Policy was set but not received!!!&quot;&#41;;
      * &#125;
      * </pre>
