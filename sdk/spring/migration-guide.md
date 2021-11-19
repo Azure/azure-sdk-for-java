@@ -303,6 +303,10 @@ target Azure resources.
 | com.azure.spring.autoconfigure.aad.AADAuthenticationProperties                      | com.azure.spring.cloud.autoconfigure.aad.implementation.properties.AADAuthenticationProperties               |
 | com.azure.spring.autoconfigure.aad.Membership                                       | com.azure.spring.cloud.autoconfigure.aad.implementation.graph.Membership                                     |
 | com.azure.spring.autoconfigure.aad.UserPrincipal                                    | com.azure.spring.cloud.autoconfigure.aad.implementation.filter.UserPrincipal                                 |
+
+### spring-cloud-azure-starter-active-directory-b2c
+| Legacy class                                                                        | Modern class                                                                                                 |
+| ----------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------ |
 | com.azure.spring.autoconfigure.b2c.AADB2CJwtBearerTokenAuthenticationConverter      | com.azure.spring.cloud.autoconfigure.aad.b2c.implementation.AADB2CJwtBearerTokenAuthenticationConverter      |
 | com.azure.spring.autoconfigure.b2c.AADB2COidcLoginConfigurer                        | com.azure.spring.cloud.autoconfigure.aad.b2c.implementation.AADB2COidcLoginConfigurer                        |
 
