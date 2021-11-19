@@ -501,8 +501,6 @@ public final class CallingServerClient {
                                                  OutputStream destinationStream,
                                                  HttpRange httpRange,
                                                  Context context) {
-        Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
-        Objects.requireNonNull(destinationStream, "'destinationStream' cannot be null");
         return callingServerAsyncClient
             .downloadToWithResponse(sourceEndpoint, destinationStream, httpRange, context)
             .block();
@@ -542,8 +540,6 @@ public final class CallingServerClient {
                                                  ParallelDownloadOptions parallelDownloadOptions,
                                                  boolean overwrite,
                                                  Context context) {
-        Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
-        Objects.requireNonNull(destinationPath, "'destinationPath' cannot be null");
         return callingServerAsyncClient.downloadToWithResponse(sourceEndpoint, destinationPath,
             parallelDownloadOptions, overwrite, context).block();
     }
@@ -787,7 +783,6 @@ public final class CallingServerClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<HttpResponse> deleteRecordingWithResponse(String deleteEndpoint, final Context context) {
-        Objects.requireNonNull(deleteEndpoint, "'deleteEndpoint' cannot be null");
         return callingServerAsyncClient.deleteRecordingWithResponse(deleteEndpoint, context).block();
     }
 }

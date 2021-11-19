@@ -324,7 +324,6 @@ public final class CallConnectionAsync {
         String operationContext,
         URI callbackUri) {
         try {
-            Objects.requireNonNull(participant, "'participant' cannot be null.");
             AddParticipantRequest request = getAddParticipantRequest(participant,
                 alternateCallerId,
                 operationContext,
@@ -784,9 +783,6 @@ public final class CallConnectionAsync {
         CommunicationIdentifier participant,
         String mediaOperationId) {
         try {
-            Objects.requireNonNull(participant, "'participant' cannot be null.");
-            Objects.requireNonNull(mediaOperationId, "'mediaOperationId' cannot be null.");
-
             CancelParticipantMediaOperationRequest cancelParticipantMediaOperationRequest =
                 new CancelParticipantMediaOperationRequest()
                     .setMediaOperationId(mediaOperationId)
@@ -813,8 +809,6 @@ public final class CallConnectionAsync {
     public Mono<Response<Void>> cancelParticipantMediaOperationWithResponse(
         CommunicationIdentifier participant,
         String mediaOperationId) {
-        Objects.requireNonNull(participant, "'participant' cannot be null.");
-        Objects.requireNonNull(mediaOperationId, "'mediaOperationId' cannot be null.");
         return cancelParticipantMediaOperationWithResponseInternal(participant, mediaOperationId, Context.NONE);
     }
 
@@ -850,8 +844,6 @@ public final class CallConnectionAsync {
     public Mono<Void> muteParticipant(
         CommunicationIdentifier participant) {
         try {
-            Objects.requireNonNull(participant, "'participant' cannot be null.");
-
             MuteParticipantRequest muteParticipantRequest =
                 new MuteParticipantRequest()
                     .setIdentifier(CommunicationIdentifierConverter.convert(participant));
@@ -875,7 +867,6 @@ public final class CallConnectionAsync {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> muteParticipantWithResponse(
         CommunicationIdentifier participant) {
-        Objects.requireNonNull(participant, "'participant' cannot be null.");
         return muteParticipantWithResponseInternal(participant, Context.NONE);
     }
 
@@ -909,8 +900,6 @@ public final class CallConnectionAsync {
     public Mono<Void> unmuteParticipant(
         CommunicationIdentifier participant) {
         try {
-            Objects.requireNonNull(participant, "'participant' cannot be null.");
-
             UnmuteParticipantRequest unmuteParticipantRequest =
                 new UnmuteParticipantRequest()
                     .setIdentifier(CommunicationIdentifierConverter.convert(participant));
@@ -934,7 +923,6 @@ public final class CallConnectionAsync {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> unmuteParticipantWithResponse(
         CommunicationIdentifier participant) {
-        Objects.requireNonNull(participant, "'participant' cannot be null.");
         return unmuteParticipantWithResponseInternal(participant, Context.NONE);
     }
 
@@ -968,8 +956,6 @@ public final class CallConnectionAsync {
     public Mono<Void> holdParticipantMeetingAudio(
         CommunicationIdentifier participant) {
         try {
-            Objects.requireNonNull(participant, "'participant' cannot be null.");
-
             HoldMeetingAudioRequest holdParticipantMeetingAudioRequest =
                 new HoldMeetingAudioRequest()
                     .setIdentifier(CommunicationIdentifierConverter.convert(participant));
@@ -993,7 +979,6 @@ public final class CallConnectionAsync {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> holdParticipantMeetingAudioWithResponse(
         CommunicationIdentifier participant) {
-        Objects.requireNonNull(participant, "'participant' cannot be null.");
         return holdParticipantMeetingAudioWithResponseInternal(participant, Context.NONE);
     }
 
@@ -1027,8 +1012,6 @@ public final class CallConnectionAsync {
     public Mono<Void> resumeParticipantMeetingAudio(
         CommunicationIdentifier participant) {
         try {
-            Objects.requireNonNull(participant, "'participant' cannot be null.");
-
             ResumeMeetingAudioRequest resumeParticipantMeetingAudioRequest =
                 new ResumeMeetingAudioRequest()
                     .setIdentifier(CommunicationIdentifierConverter.convert(participant));
@@ -1147,9 +1130,7 @@ public final class CallConnectionAsync {
         String audioRoutingGroupId,
         List<CommunicationIdentifier> targets) {
         try {
-            Objects.requireNonNull(audioRoutingGroupId, "'audioRoutingGroupId' cannot be null.");
             UpdateAudioRoutingGroupRequest request = getUpdateAudioRoutingGroupRequest(audioRoutingGroupId, targets);
-
             return callConnectionInternal.updateAudioRoutingGroupAsync(callConnectionId, audioRoutingGroupId, request)
             .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
                 .flatMap(result -> Mono.empty());
@@ -1200,7 +1181,6 @@ public final class CallConnectionAsync {
     public Mono<AudioRoutingGroupResult> getAudioRoutingGroups(
         String audioRoutingGroupId) {
         try {
-
             return callConnectionInternal.getAudioRoutingGroupsAsync(callConnectionId, audioRoutingGroupId)
                 .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
                 .flatMap(result -> Mono.just(AudioRoutingGroupResultConverter.convert(result)));
@@ -1252,8 +1232,6 @@ public final class CallConnectionAsync {
     public Mono<Void> deleteAudioRoutingGroup(
         String audioRoutingGroupId) {
         try {
-            Objects.requireNonNull(audioRoutingGroupId, "'audioRoutingGroupId' cannot be null.");
-
             return callConnectionInternal.deleteAudioRoutingGroupAsync(callConnectionId, audioRoutingGroupId)
                 .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
                 .flatMap(result -> Mono.empty());

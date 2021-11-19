@@ -154,9 +154,6 @@ public final class CallingServerAsyncClient {
         List<CommunicationIdentifier> targets,
         CreateCallOptions createCallOptions) {
         try {
-            Objects.requireNonNull(source, "'source' cannot be null.");
-            Objects.requireNonNull(targets, "'targets' cannot be null.");
-            Objects.requireNonNull(createCallOptions, "'createCallOptions' cannot be null.");
             CreateCallRequest request = CallConnectionRequestConverter.convert(source, targets, createCallOptions);
             return callConnectionInternal.createCallAsync(request)
                 .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
@@ -182,9 +179,6 @@ public final class CallingServerAsyncClient {
         List<CommunicationIdentifier> targets,
         CreateCallOptions createCallOptions) {
         try {
-            Objects.requireNonNull(source, "'source' cannot be null.");
-            Objects.requireNonNull(targets, "'targets' cannot be null.");
-            Objects.requireNonNull(createCallOptions, "'CreateCallOptions' cannot be null.");
             CreateCallRequest request = CallConnectionRequestConverter.convert(source, targets, createCallOptions);
             return callConnectionInternal.createCallWithResponseAsync(request)
                 .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
@@ -249,8 +243,6 @@ public final class CallingServerAsyncClient {
         CommunicationIdentifier source,
         JoinCallOptions joinCallOptions) {
         try {
-            Objects.requireNonNull(source, "'source' cannot be null.");
-            Objects.requireNonNull(joinCallOptions, "'joinCallOptions' cannot be null.");
             return serverCallInternal
                 .joinCallAsync(JoinCallRequestConverter.convert(callLocator, source, joinCallOptions))
                 .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
@@ -276,8 +268,6 @@ public final class CallingServerAsyncClient {
         CommunicationIdentifier source,
         JoinCallOptions joinCallOptions) {
         try {
-            Objects.requireNonNull(source, "'source' cannot be null.");
-            Objects.requireNonNull(joinCallOptions, "'joinCallOptions' cannot be null.");
             return serverCallInternal.
                 joinCallWithResponseAsync(JoinCallRequestConverter.convert(callLocator, source, joinCallOptions))
                 .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
@@ -346,7 +336,6 @@ public final class CallingServerAsyncClient {
         String incomingCallContext,
         AnswerCallOptions answerCallOptions) {
         try {
-            Objects.requireNonNull(incomingCallContext, "'incomingCallContext' cannot be null.");
             return serverCallInternal
                 .answerCallAsync(AnswerCallRequestConverter.convert(incomingCallContext, answerCallOptions))
                 .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
@@ -370,7 +359,6 @@ public final class CallingServerAsyncClient {
         String incomingCallContext,
         AnswerCallOptions answerCallOptions) {
         try {
-            Objects.requireNonNull(incomingCallContext, "'incomingCallContext' cannot be null.");
             return serverCallInternal
                 .answerCallWithResponseAsync(AnswerCallRequestConverter.convert(incomingCallContext, answerCallOptions))
                 .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
@@ -458,9 +446,6 @@ public final class CallingServerAsyncClient {
         String alternateCallerId,
         String operationContext) {
         try {
-            Objects.requireNonNull(participant, "'participant' cannot be null.");
-            Objects.requireNonNull(callLocator, "'callLocator' cannot be null.");
-
             AddParticipantWithCallLocatorRequest requestWithCallLocator = new AddParticipantWithCallLocatorRequest()
                 .setCallLocator(CallLocatorConverter.convert(callLocator))
                 .setParticipant(CommunicationIdentifierConverter.convert(participant))
@@ -986,7 +971,6 @@ public final class CallingServerAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<ByteBuffer> downloadStream(String sourceEndpoint) {
         try {
-            Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
             return downloadStream(sourceEndpoint, null);
         } catch (RuntimeException ex) {
             return fluxError(logger, ex);
@@ -1004,7 +988,6 @@ public final class CallingServerAsyncClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public Flux<ByteBuffer> downloadStream(String sourceEndpoint, HttpRange httpRange) {
         try {
-            Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
             return contentDownloader.downloadStreamWithResponse(sourceEndpoint, httpRange, Context.NONE)
                 .map(Response::getValue)
                 .flux()
@@ -1024,7 +1007,6 @@ public final class CallingServerAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Flux<ByteBuffer>>> downloadStreamWithResponse(String sourceEndpoint, HttpRange range) {
         try {
-            Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
             return contentDownloader.downloadStreamWithResponse(sourceEndpoint, range, Context.NONE);
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
