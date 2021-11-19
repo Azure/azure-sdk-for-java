@@ -47,8 +47,6 @@ public class FeedRangeTest extends TestSuiteBase {
         try(CosmosAsyncClient clientUnderTest = cosmosClientBuilderUnderTest.buildAsyncClient()) {
             for (int i = 0; i < 2; i++) {
                 CosmosContainerProperties cosmosContainerProperties = new CosmosContainerProperties(containerName, "/PE_Name");
-                cosmosContainerProperties.setAnalyticalStoreTimeToLiveInSeconds(-1);
-                cosmosContainerProperties.setDefaultTimeToLiveInSeconds(-1);
                 houseKeepingClient.getDatabase(databaseName).createContainerIfNotExists(cosmosContainerProperties);
 
                 List<FeedRange> rsp =
