@@ -171,8 +171,8 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
                 fail("Request should fail with 404/1002 error");
             } catch (CosmosException ex) {
                 assertThat(ex.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
-                Iterator<String> regionContactedIterator = ex.getDiagnostics().getRegionsContacted().iterator();
-                assertThat(ex.getDiagnostics().getRegionsContacted().size()).isEqualTo(preferredLocations.size());
+                Iterator<String> regionContactedIterator = ex.getDiagnostics().getContactedRegionNames().iterator();
+                assertThat(ex.getDiagnostics().getContactedRegionNames().size()).isEqualTo(preferredLocations.size());
                 for (String regionName :
                     getAvailableRegionNames(rxDocumentClient, true)) {
                     assertThat(regionName).isEqualTo(regionContactedIterator.next());
@@ -279,15 +279,15 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
                 assertThat(ex.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
                 GlobalEndpointManager globalEndpointManager =
                     ReflectionUtils.getGlobalEndpointManager(rxDocumentClient);
-                Iterator<String> regionContactedIterator = ex.getDiagnostics().getRegionsContacted().iterator();
+                Iterator<String> regionContactedIterator = ex.getDiagnostics().getContactedRegionNames().iterator();
                 if (operationType.isWriteOperation() || regionalSuffix.get(0).equals(masterOrHubRegionSuffix)) {
-                    assertThat(ex.getDiagnostics().getRegionsContacted().size()).isEqualTo(1);
+                    assertThat(ex.getDiagnostics().getContactedRegionNames().size()).isEqualTo(1);
                     for (String regionName :
                         getAvailableRegionNames(rxDocumentClient, true)) {
                         assertThat(regionName.toLowerCase()).isEqualTo(regionContactedIterator.next());
                     }
                 } else {
-                    assertThat(ex.getDiagnostics().getRegionsContacted().size()).isEqualTo(preferredLocations.size());
+                    assertThat(ex.getDiagnostics().getContactedRegionNames().size()).isEqualTo(preferredLocations.size());
                     for (String regionName :
                         getAvailableRegionNames(rxDocumentClient, false)) {
                         assertThat(regionName).isEqualTo(regionContactedIterator.next());
@@ -405,9 +405,9 @@ public class SessionNotAvailableRetryTest extends TestSuiteBase {
                 fail("Request should fail with 404/1002 error");
             } catch (CosmosException ex) {
                 assertThat(ex.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
-                assertThat(ex.getDiagnostics().getRegionsContacted().size()).isEqualTo(1);
+                assertThat(ex.getDiagnostics().getContactedRegionNames().size()).isEqualTo(1);
                 String regionName = getAvailableRegionNames(rxDocumentClient, true).iterator().next();
-                assertThat(ex.getDiagnostics().getRegionsContacted().iterator().next()).isEqualTo(regionName.toLowerCase());
+                assertThat(ex.getDiagnostics().getContactedRegionNames().iterator().next()).isEqualTo(regionName.toLowerCase());
             }
 
             HashSet<String> uniqueHost = new HashSet<>();

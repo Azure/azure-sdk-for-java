@@ -160,7 +160,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(diagnostics).contains("\"serializationType\":\"PARTITION_KEY_FETCH_SERIALIZATION\"");
             assertThat(diagnostics).contains("\"userAgent\":\"" + Utils.getUserAgent() + "\"");
             assertThat(createResponse.getDiagnostics().getDuration()).isNotNull();
-            assertThat(createResponse.getDiagnostics().getRegionsContacted()).isNotNull();
+            assertThat(createResponse.getDiagnostics().getContactedRegionNames()).isNotNull();
             // TODO: (nakumars) - Uncomment the following line after your client telemetry fix
             // assertThat(createResponse.getDiagnostics().getRegionsContacted()).isNotEmpty();
             validateTransportRequestTimelineGateway(diagnostics);
@@ -197,7 +197,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(diagnostics).contains("\"operationType\":\"Read\"");
             assertThat(diagnostics).contains("\"userAgent\":\"" + Utils.getUserAgent() + "\"");
             assertThat(diagnostics).doesNotContain(("\"resourceAddress\":null"));
-            assertThat(createResponse.getDiagnostics().getRegionsContacted()).isNotNull();
+            assertThat(createResponse.getDiagnostics().getContactedRegionNames()).isNotNull();
             validateRegionContacted(createResponse.getDiagnostics(), this.container.asyncContainer.getDatabase().getClient());
             // TODO: (nakumars) - Uncomment the following line after your client telemetry fix
             // assertThat(createResponse.getDiagnostics().getRegionsContacted()).isNotEmpty();
@@ -247,7 +247,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(diagnostics).contains("\"backendLatencyInMs\"");
             // TODO: Add this check back when enable the channelAcquisitionContext again
             // assertThat(diagnostics).contains("\"transportRequestChannelAcquisitionContext\"");
-            assertThat(createResponse.getDiagnostics().getRegionsContacted()).isNotEmpty();
+            assertThat(createResponse.getDiagnostics().getContactedRegionNames()).isNotEmpty();
             assertThat(createResponse.getDiagnostics().getDuration()).isNotNull();
             validateTransportRequestTimelineDirect(diagnostics);
             validateRegionContacted(createResponse.getDiagnostics(), testDirectClient.asyncClient());
@@ -564,7 +564,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(exception.getStatusCode()).isEqualTo(HttpConstants.StatusCodes.NOTFOUND);
             assertThat(diagnostics).contains("\"connectionMode\":\"DIRECT\"");
             assertThat(diagnostics).doesNotContain(("\"resourceAddress\":null"));
-            assertThat(exception.getDiagnostics().getRegionsContacted()).isNotEmpty();
+            assertThat(exception.getDiagnostics().getContactedRegionNames()).isNotEmpty();
             assertThat(exception.getDiagnostics().getDuration()).isNotNull();
             assertThat(diagnostics).contains("\"backendLatencyInMs\"");
             isValidJSON(diagnostics);
@@ -604,7 +604,7 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
             assertThat(diagnostics).contains("\"connectionMode\":\"DIRECT\"");
             assertThat(diagnostics).doesNotContain(("\"resourceAddress\":null"));
             assertThat(diagnostics).contains("\"resourceType\":\"DocumentCollection\"");
-            assertThat(exception.getDiagnostics().getRegionsContacted()).isNotEmpty();
+            assertThat(exception.getDiagnostics().getContactedRegionNames()).isNotEmpty();
             assertThat(exception.getDiagnostics().getDuration()).isNotNull();
             isValidJSON(diagnostics);
         } finally {
@@ -1048,8 +1048,8 @@ public class CosmosDiagnosticsTest extends TestSuiteBase {
         @SuppressWarnings("unchecked")
         Map<String, URI> map = (Map<String, URI>) availableWriteEndpointByLocation.get(locationInfo);
         String regionName = map.keySet().iterator().next();
-        assertThat(cosmosDiagnostics.getRegionsContacted().size()).isEqualTo(1);
-        assertThat(cosmosDiagnostics.getRegionsContacted().iterator().next()).isEqualTo(regionName.toLowerCase());
+        assertThat(cosmosDiagnostics.getContactedRegionNames().size()).isEqualTo(1);
+        assertThat(cosmosDiagnostics.getContactedRegionNames().iterator().next()).isEqualTo(regionName.toLowerCase());
     }
 
     public static class TestItem {

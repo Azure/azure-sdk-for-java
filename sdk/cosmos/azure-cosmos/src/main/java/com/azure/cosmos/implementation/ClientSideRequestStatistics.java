@@ -40,6 +40,7 @@ public class ClientSideRequestStatistics {
     private Instant requestStartTimeUTC;
     private Instant requestEndTimeUTC;
     private Set<String> regionsContacted;
+    private Set<URI> locationEndpointsContacted;
     private RetryContext retryContext;
     private GatewayStatistics gatewayStatistics;
     private RequestTimeline gatewayRequestTimeline;
@@ -57,6 +58,7 @@ public class ClientSideRequestStatistics {
         this.contactedReplicas = Collections.synchronizedList(new ArrayList<>());
         this.failedReplicas = Collections.synchronizedSet(new HashSet<>());
         this.regionsContacted = Collections.synchronizedSet(new HashSet<>());
+        this.locationEndpointsContacted = Collections.synchronizedSet(new HashSet<>());
         this.metadataDiagnosticsContext = new MetadataDiagnosticsContext();
         this.serializationDiagnosticsContext = new SerializationDiagnosticsContext();
         this.retryContext = new RetryContext();
@@ -99,6 +101,7 @@ public class ClientSideRequestStatistics {
 
             if (locationEndPoint != null) {
                 this.regionsContacted.add(this.globalEndpointManager.getRegionName(locationEndPoint, request.getOperationType()));
+                this.locationEndpointsContacted.add(locationEndPoint);
             }
 
             if (storeResponseStatistics.requestOperationType == OperationType.Head
@@ -128,6 +131,7 @@ public class ClientSideRequestStatistics {
 
             if (locationEndPoint != null) {
                 this.regionsContacted.add(this.globalEndpointManager.getRegionName(locationEndPoint, rxDocumentServiceRequest.getOperationType()));
+                this.locationEndpointsContacted.add(locationEndPoint);
             }
 
             this.gatewayStatistics = new GatewayStatistics();
@@ -219,12 +223,20 @@ public class ClientSideRequestStatistics {
         this.failedReplicas = Collections.synchronizedSet(failedReplicas);
     }
 
-    public Set<String> getRegionsContacted() {
+    public Set<String> getContactedRegionNames() {
         return regionsContacted;
     }
 
     public void setRegionsContacted(Set<String> regionsContacted) {
         this.regionsContacted = Collections.synchronizedSet(regionsContacted);
+    }
+
+    public Set<URI> getLocationEndpointsContacted() {
+        return locationEndpointsContacted;
+    }
+
+    public void setLocationEndpointsContacted(Set<URI> locationEndpointsContacted) {
+        this.locationEndpointsContacted = locationEndpointsContacted;
     }
 
     public MetadataDiagnosticsContext getMetadataDiagnosticsContext(){

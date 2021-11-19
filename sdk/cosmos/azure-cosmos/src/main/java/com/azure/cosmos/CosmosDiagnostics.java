@@ -85,11 +85,25 @@ public final class CosmosDiagnostics {
      * @return set of regions contacted for this request
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    public Set<String> getRegionsContacted() {
+    @Deprecated(since = "4.22.0", forRemoval = true)
+    public Set<URI> getRegionsContacted() {
         if (this.feedResponseDiagnostics != null) {
             return null;
         }
-        return this.clientSideRequestStatistics.getRegionsContacted();
+        return this.clientSideRequestStatistics.getLocationEndpointsContacted();
+    }
+
+    /**
+     * Regions contacted for this request
+     *
+     * @return set of regions contacted for this request
+     */
+    @Beta(value = Beta.SinceVersion.V4_22_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
+    public Set<String> getContactedRegionNames() {
+        if (this.feedResponseDiagnostics != null) {
+            return null;
+        }
+        return this.clientSideRequestStatistics.getContactedRegionNames();
     }
 
     FeedResponseDiagnostics getFeedResponseDiagnostics() {

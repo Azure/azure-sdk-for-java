@@ -79,7 +79,7 @@ public final class BridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static Set<String> getRegionsContacted(CosmosDiagnostics cosmosDiagnostics) {
-        return cosmosDiagnostics.clientSideRequestStatistics().getRegionsContacted();
+        return cosmosDiagnostics.clientSideRequestStatistics().getContactedRegionNames();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
