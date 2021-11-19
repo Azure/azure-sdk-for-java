@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aad.webapi;
 
-import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.Constants;
 import com.azure.spring.cloud.autoconfigure.aad.core.AADAuthorizationGrantType;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.Constants;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;
 import com.microsoft.aad.msal4j.IClientSecret;

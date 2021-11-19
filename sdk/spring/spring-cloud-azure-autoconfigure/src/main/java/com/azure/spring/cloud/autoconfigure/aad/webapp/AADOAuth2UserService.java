@@ -3,10 +3,10 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.webapp;
 
-import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AADTokenClaim;
-import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AuthorityPrefix;
 import com.azure.spring.cloud.autoconfigure.aad.graph.GraphClient;
 import com.azure.spring.cloud.autoconfigure.aad.graph.GroupInformation;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AADTokenClaim;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AuthorityPrefix;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthenticationProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

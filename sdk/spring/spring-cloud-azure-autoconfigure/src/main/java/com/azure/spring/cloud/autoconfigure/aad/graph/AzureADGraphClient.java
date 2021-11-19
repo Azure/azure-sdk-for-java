@@ -3,10 +3,10 @@
 
 package com.azure.spring.cloud.autoconfigure.aad.graph;
 
-import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AuthorityPrefix;
 import com.azure.spring.cloud.autoconfigure.aad.core.AADAuthorizationServerEndpoints;
-import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthenticationProperties;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.constants.AuthorityPrefix;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.utils.JacksonObjectMapperFactory;
+import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthenticationProperties;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.aad.msal4j.ClientCredentialFactory;
 import com.microsoft.aad.msal4j.ConfidentialClientApplication;

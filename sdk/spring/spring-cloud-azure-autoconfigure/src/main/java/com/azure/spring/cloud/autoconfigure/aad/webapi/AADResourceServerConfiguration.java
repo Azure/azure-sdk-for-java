@@ -3,8 +3,8 @@
 package com.azure.spring.cloud.autoconfigure.aad.webapi;
 
 
-import com.azure.spring.cloud.autoconfigure.aad.implementation.conditions.ResourceServerCondition;
 import com.azure.spring.cloud.autoconfigure.aad.core.AADAuthorizationServerEndpoints;
+import com.azure.spring.cloud.autoconfigure.aad.implementation.conditions.ResourceServerCondition;
 import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthenticationProperties;
 import com.azure.spring.cloud.autoconfigure.aad.webapi.validator.AADJwtAudienceValidator;
 import com.azure.spring.cloud.autoconfigure.aad.webapi.validator.AADJwtIssuerValidator;
