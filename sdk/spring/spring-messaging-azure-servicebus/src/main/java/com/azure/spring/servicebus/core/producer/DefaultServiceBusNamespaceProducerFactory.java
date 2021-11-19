@@ -47,7 +47,12 @@ public class DefaultServiceBusNamespaceProducerFactory implements ServiceBusProd
     }
 
     public ServiceBusSenderAsyncClient createProducer(String name, ServiceBusEntityType entityType) {
-        return doCreateProducer(name, entityType, this.propertiesSupplier.getProperties(name));
+        ProducerProperties producerProperties = this.propertiesSupplier.getProperties(name) != null
+            ? this.propertiesSupplier.getProperties(name) : new ProducerProperties();
+        if (entityType != null) {
+            producerProperties.setEntityType(entityType);
+        }
+        return doCreateProducer(name, producerProperties);
     }
 
     @Override
@@ -70,14 +75,11 @@ public class DefaultServiceBusNamespaceProducerFactory implements ServiceBusProd
         this.listeners.clear();
     }
 
-    private ServiceBusSenderAsyncClient doCreateProducer(String name, @Nullable ServiceBusEntityType entityType,
-                                                         @Nullable ProducerProperties properties) {
+    private ServiceBusSenderAsyncClient doCreateProducer(String name, @Nullable ProducerProperties properties) {
         return clients.computeIfAbsent(name, entityName -> {
             ProducerProperties producerProperties = parentMerger.mergeParent(properties, this.namespaceProperties);
             producerProperties.setEntityName(entityName);
-            if (producerProperties.getEntityType() == null) {
-                producerProperties.setEntityType(entityType);
-            }
+
             //TODO(yiliu6): whether to make the producer client share the same service bus client builder
             ServiceBusSenderClientBuilderFactory factory = new ServiceBusSenderClientBuilderFactory(producerProperties);
             factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_SERVICE_BUS);
