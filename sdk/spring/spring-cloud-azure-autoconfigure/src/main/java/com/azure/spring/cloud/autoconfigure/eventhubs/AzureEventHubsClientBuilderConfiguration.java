@@ -8,6 +8,7 @@ import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.core.connectionstring.ConnectionStringProvider;
+import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.core.service.AzureServiceType;
 import com.azure.spring.service.eventhubs.factory.EventHubClientBuilderFactory;
 import org.springframework.beans.factory.ObjectProvider;
@@ -15,6 +16,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import java.util.List;
 
 /**
  * Configuration for Event Hub client builder, which provides {@link EventHubClientBuilder}.
@@ -34,12 +37,14 @@ class AzureEventHubsClientBuilderConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public EventHubClientBuilderFactory eventHubClientBuilderFactory(AzureEventHubsProperties properties,
-                                                                     ObjectProvider<ConnectionStringProvider<AzureServiceType.EventHubs>> connectionStringProviders) {
-        final EventHubClientBuilderFactory builderFactory = new EventHubClientBuilderFactory(properties);
+        ObjectProvider<ConnectionStringProvider<AzureServiceType.EventHubs>> connectionStringProviders,
+        ObjectProvider<List<AzureServiceClientBuilderCustomizer<EventHubClientBuilder>>> customizers) {
+        final EventHubClientBuilderFactory factory = new EventHubClientBuilderFactory(properties);
 
-        builderFactory.setConnectionStringProvider(connectionStringProviders.getIfAvailable());
-        builderFactory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_EVENT_HUBS);
-        return builderFactory;
+        factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_EVENT_HUBS);
+        connectionStringProviders.ifAvailable(factory::setConnectionStringProvider);
+        customizers.ifAvailable(cs -> cs.forEach(factory::addBuilderCustomizer));
+        return factory;
     }
 
 }

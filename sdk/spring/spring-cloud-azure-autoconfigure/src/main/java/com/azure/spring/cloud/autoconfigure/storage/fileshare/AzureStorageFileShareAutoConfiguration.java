@@ -8,6 +8,10 @@ import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.storage.fileshare.properties.AzureStorageFileShareProperties;
 import com.azure.spring.core.AzureSpringIdentifier;
+import com.azure.spring.core.connectionstring.ConnectionStringProvider;
+import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
+import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
+import com.azure.spring.core.service.AzureServiceType;
 import com.azure.spring.service.storage.fileshare.ShareServiceClientBuilderFactory;
 import com.azure.storage.file.share.ShareAsyncClient;
 import com.azure.storage.file.share.ShareClient;
@@ -16,6 +20,7 @@ import com.azure.storage.file.share.ShareFileClient;
 import com.azure.storage.file.share.ShareServiceAsyncClient;
 import com.azure.storage.file.share.ShareServiceClient;
 import com.azure.storage.file.share.ShareServiceClientBuilder;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -54,14 +59,23 @@ public class AzureStorageFileShareAutoConfiguration extends AzureServiceConfigur
 
     @Bean
     @ConditionalOnMissingBean
-    public ShareServiceClientBuilderFactory shareServiceClientBuilderFactory(AzureStorageFileShareProperties properties) {
-        return new ShareServiceClientBuilderFactory(properties);
+    public ShareServiceClientBuilderFactory shareServiceClientBuilderFactory(
+        AzureStorageFileShareProperties properties,
+        ObjectProvider<ConnectionStringProvider<AzureServiceType.StorageFileShare>> connectionStringProviders,
+        ObjectProvider<AzureServiceClientBuilderCustomizer<ShareServiceClientBuilder>> customizers) {
+        ShareServiceClientBuilderFactory factory = new ShareServiceClientBuilderFactory(properties);
+
+        factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_STORAGE_FILES);
+        connectionStringProviders.ifAvailable(factory::setConnectionStringProvider);
+        if (customizers.getIfAvailable() != null) {
+            customizers.forEach(factory::addBuilderCustomizer);
+        }
+        return factory;
     }
 
     @Bean
     @ConditionalOnMissingBean
     public ShareServiceClientBuilder shareServiceClientBuilder(ShareServiceClientBuilderFactory factory) {
-        factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_STORAGE_FILES);
         return factory.build();
     }
 
@@ -95,6 +109,13 @@ public class AzureStorageFileShareAutoConfiguration extends AzureServiceConfigur
     public ShareClient shareClient(AzureStorageFileShareProperties properties,
                                                      ShareServiceClient shareServiceClient) {
         return shareServiceClient.getShareClient(properties.getShareName());
+    }
+
+    @Bean
+    @ConditionalOnProperty("spring.cloud.azure.storage.fileshare.connection-string")
+    public StaticConnectionStringProvider<AzureServiceType.StorageFileShare> staticStorageBlobConnectionStringProvider(
+        AzureStorageFileShareProperties properties) {
+        return new StaticConnectionStringProvider<>(AzureServiceType.STORAGE_FILE_SHARE, properties.getConnectionString());
     }
 
 

@@ -5,6 +5,9 @@ package com.azure.spring.cloud.autoconfigure.context;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.DefaultAzureCredential;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.messaging.eventhubs.EventHubClientBuilder;
+import com.azure.spring.cloud.autoconfigure.TestBuilderCustomizer;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.core.factory.credential.AbstractAzureCredentialBuilderFactory;
 import org.junit.jupiter.api.Assertions;
@@ -34,6 +37,39 @@ class AzureDefaultTokenCredentialAutoConfigurationTest {
                 Assertions.assertTrue(credential instanceof DefaultAzureCredential);
 
             });
+    }
+
+    @Test
+    void customizerShouldBeCalled() {
+        DefaultTokenCredentialBuilderCustomizer customizer = new DefaultTokenCredentialBuilderCustomizer();
+        this.contextRunner
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean("customizer1", DefaultTokenCredentialBuilderCustomizer.class, () -> customizer)
+            .withBean("customizer2", DefaultTokenCredentialBuilderCustomizer.class, () -> customizer)
+            .run(context -> assertThat(customizer.getCustomizedTimes()).isEqualTo(2));
+    }
+
+    @Test
+    void otherCustomizerShouldNotBeCalled() {
+        DefaultTokenCredentialBuilderCustomizer customizer = new DefaultTokenCredentialBuilderCustomizer();
+        OtherBuilderCustomizer otherBuilderCustomizer = new OtherBuilderCustomizer();
+        this.contextRunner
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean("customizer1", DefaultTokenCredentialBuilderCustomizer.class, () -> customizer)
+            .withBean("customizer2", DefaultTokenCredentialBuilderCustomizer.class, () -> customizer)
+            .withBean("customizer3", OtherBuilderCustomizer.class, () -> otherBuilderCustomizer)
+            .run(context -> {
+                assertThat(customizer.getCustomizedTimes()).isEqualTo(2);
+                assertThat(otherBuilderCustomizer.getCustomizedTimes()).isEqualTo(0);
+            });
+    }
+
+    private static class DefaultTokenCredentialBuilderCustomizer extends TestBuilderCustomizer<DefaultAzureCredentialBuilder> {
+
+    }
+
+    private static class OtherBuilderCustomizer extends TestBuilderCustomizer<EventHubClientBuilder> {
+
     }
 
 }

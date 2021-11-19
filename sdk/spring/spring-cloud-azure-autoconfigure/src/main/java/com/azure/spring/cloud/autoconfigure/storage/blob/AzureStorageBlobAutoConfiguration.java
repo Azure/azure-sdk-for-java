@@ -8,6 +8,10 @@ import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.storage.blob.properties.AzureStorageBlobProperties;
 import com.azure.spring.core.AzureSpringIdentifier;
+import com.azure.spring.core.connectionstring.ConnectionStringProvider;
+import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
+import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
+import com.azure.spring.core.service.AzureServiceType;
 import com.azure.spring.service.storage.blob.BlobServiceClientBuilderFactory;
 import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.blob.BlobClient;
@@ -16,6 +20,7 @@ import com.azure.storage.blob.BlobContainerClient;
 import com.azure.storage.blob.BlobServiceAsyncClient;
 import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.BlobServiceClientBuilder;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -89,16 +94,32 @@ public class AzureStorageBlobAutoConfiguration extends AzureServiceConfiguration
 
     @Bean(STORAGE_BLOB_CLIENT_BUILDER_FACTORY_BEAN_NAME)
     @ConditionalOnMissingBean(name = STORAGE_BLOB_CLIENT_BUILDER_FACTORY_BEAN_NAME)
-    public BlobServiceClientBuilderFactory blobServiceClientBuilderFactory(AzureStorageBlobProperties properties) {
-        return new BlobServiceClientBuilderFactory(properties);
+    public BlobServiceClientBuilderFactory blobServiceClientBuilderFactory(
+        AzureStorageBlobProperties properties,
+        ObjectProvider<ConnectionStringProvider<AzureServiceType.StorageBlob>> connectionStringProviders,
+        ObjectProvider<AzureServiceClientBuilderCustomizer<BlobServiceClientBuilder>> customizers) {
+        BlobServiceClientBuilderFactory factory = new BlobServiceClientBuilderFactory(properties);
+
+        factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_STORAGE_BLOB);
+        connectionStringProviders.ifAvailable(factory::setConnectionStringProvider);
+        if (customizers.getIfAvailable() != null) {
+            customizers.forEach(factory::addBuilderCustomizer);
+        }
+        return factory;
     }
 
     @Bean
     @ConditionalOnMissingBean
     public BlobServiceClientBuilder blobServiceClientBuilder(@Qualifier(STORAGE_BLOB_CLIENT_BUILDER_FACTORY_BEAN_NAME)
                                                                      BlobServiceClientBuilderFactory factory) {
-        factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_STORAGE_BLOB);
         return factory.build();
+    }
+
+    @Bean
+    @ConditionalOnProperty("spring.cloud.azure.storage.blob.connection-string")
+    public StaticConnectionStringProvider<AzureServiceType.StorageBlob> staticStorageBlobConnectionStringProvider(
+        AzureStorageBlobProperties properties) {
+        return new StaticConnectionStringProvider<>(AzureServiceType.STORAGE_BLOB, properties.getConnectionString());
     }
 
 }

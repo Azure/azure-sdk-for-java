@@ -11,12 +11,16 @@ import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.keyvault.secrets.properties.AzureKeyVaultSecretProperties;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.core.AzureSpringIdentifier;
+import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.service.keyvault.secrets.SecretClientBuilderFactory;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+
+import java.util.List;
 
 /**
  * Auto-configuration for a {@link SecretClientBuilder} and Azure Key Vault secret clients.
@@ -52,14 +56,19 @@ public class AzureKeyVaultSecretAutoConfiguration extends AzureServiceConfigurat
     @Bean
     @ConditionalOnMissingBean
     public SecretClientBuilder secretClientBuilder(SecretClientBuilderFactory factory) {
-        factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_KEY_VAULT);
         return factory.build();
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public SecretClientBuilderFactory secretClientBuilderFactory(AzureKeyVaultSecretProperties properties) {
-        return new SecretClientBuilderFactory(properties);
+    public SecretClientBuilderFactory secretClientBuilderFactory(
+        AzureKeyVaultSecretProperties properties,
+        ObjectProvider<List<AzureServiceClientBuilderCustomizer<SecretClientBuilder>>> customizers) {
+        SecretClientBuilderFactory factory = new SecretClientBuilderFactory(properties);
+
+        factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_KEY_VAULT);
+        customizers.ifAvailable(cs -> cs.forEach(factory::addBuilderCustomizer));
+        return factory;
     }
 
 }

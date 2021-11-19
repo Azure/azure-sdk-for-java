@@ -10,6 +10,7 @@ import com.azure.spring.cloud.autoconfigure.storage.queue.properties.AzureStorag
 import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.core.connectionstring.ConnectionStringProvider;
 import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
+import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.core.service.AzureServiceType;
 import com.azure.spring.service.storage.queue.QueueServiceClientBuilderFactory;
 import com.azure.storage.queue.QueueServiceAsyncClient;
@@ -54,17 +55,24 @@ public class AzureStorageQueueAutoConfiguration extends AzureServiceConfiguratio
 
     @Bean
     @ConditionalOnMissingBean
-    public QueueServiceClientBuilderFactory queueServiceClientBuilderFactory(AzureStorageQueueProperties properties,
-                                                                             ObjectProvider<ConnectionStringProvider<AzureServiceType.StorageQueue>> connectionStringProviders) {
+    public QueueServiceClientBuilderFactory queueServiceClientBuilderFactory(
+        AzureStorageQueueProperties properties,
+        ObjectProvider<ConnectionStringProvider<AzureServiceType.StorageQueue>> connectionStringProviders,
+        ObjectProvider<AzureServiceClientBuilderCustomizer<QueueServiceClientBuilder>> customizers) {
+
         final QueueServiceClientBuilderFactory factory = new QueueServiceClientBuilderFactory(properties);
-        factory.setConnectionStringProvider(connectionStringProviders.getIfAvailable());
+
+        factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_STORAGE_QUEUE);
+        connectionStringProviders.ifAvailable(factory::setConnectionStringProvider);
+        if (customizers.getIfAvailable() != null) {
+            customizers.forEach(factory::addBuilderCustomizer);
+        }
         return factory;
     }
 
     @Bean
     @ConditionalOnMissingBean
     public QueueServiceClientBuilder queueServiceClientBuilder(QueueServiceClientBuilderFactory factory) {
-        factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_STORAGE_QUEUE);
         return factory.build();
     }
 

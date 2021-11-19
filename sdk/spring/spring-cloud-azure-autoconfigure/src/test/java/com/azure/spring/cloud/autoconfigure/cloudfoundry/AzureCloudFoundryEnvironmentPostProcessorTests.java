@@ -8,11 +8,9 @@ import com.azure.spring.cloud.autoconfigure.servicebus.properties.AzureServiceBu
 import com.azure.spring.cloud.autoconfigure.storage.blob.properties.AzureStorageBlobProperties;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.data.redis.RedisProperties;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.test.context.assertj.AssertableApplicationContext;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 
@@ -80,22 +78,22 @@ class AzureCloudFoundryEnvironmentPostProcessorTests {
     @Configuration
     static class AzureCfEnvPPTestConfiguration {
 
-        @ConfigurationProperties(prefix = AzureServiceBusProperties.PREFIX)
-        @Bean
-        AzureServiceBusProperties azureServiceBusProperties() {
-            return new AzureServiceBusProperties();
-        }
-
-        @ConfigurationProperties(prefix = AzureEventHubsProperties.PREFIX)
-        @Bean
-        AzureEventHubsProperties azureEventHubsProperties() {
-            return new AzureEventHubsProperties();
-        }
-
-        @ConfigurationProperties(prefix = AzureStorageBlobProperties.PREFIX)
-        @Bean
-        AzureStorageBlobProperties azureStorageBlobProperties() {
-            return new AzureStorageBlobProperties();
-        }
+//        @ConfigurationProperties(prefix = AzureServiceBusProperties.PREFIX)
+//        @Bean
+//        AzureServiceBusProperties azureServiceBusProperties() {
+//            return new AzureServiceBusProperties();
+//        }
+//
+//        @ConfigurationProperties(prefix = AzureEventHubsProperties.PREFIX)
+//        @Bean
+//        AzureEventHubsProperties azureEventHubsProperties() {
+//            return new AzureEventHubsProperties();
+//        }
+//
+//        @ConfigurationProperties(prefix = AzureStorageBlobProperties.PREFIX)
+//        @Bean
+//        AzureStorageBlobProperties azureStorageBlobProperties() {
+//            return new AzureStorageBlobProperties();
+//        }
     }
 }

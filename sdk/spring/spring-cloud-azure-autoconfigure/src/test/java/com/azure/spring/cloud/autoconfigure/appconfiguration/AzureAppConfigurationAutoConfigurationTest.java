@@ -6,6 +6,8 @@ package com.azure.spring.cloud.autoconfigure.appconfiguration;
 import com.azure.data.appconfiguration.ConfigurationAsyncClient;
 import com.azure.data.appconfiguration.ConfigurationClient;
 import com.azure.data.appconfiguration.ConfigurationClientBuilder;
+import com.azure.messaging.eventhubs.EventHubClientBuilder;
+import com.azure.spring.cloud.autoconfigure.TestBuilderCustomizer;
 import com.azure.spring.cloud.autoconfigure.appconfiguration.properties.AzureAppConfigurationProperties;
 import com.azure.spring.cloud.autoconfigure.keyvault.secrets.AzureKeyVaultSecretAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
@@ -66,4 +68,38 @@ class AzureAppConfigurationAutoConfigurationTest {
             });
     }
 
+    @Test
+    void customizerShouldBeCalled() {
+        AppConfigurationBuilderCustomizer customizer = new AppConfigurationBuilderCustomizer();
+        this.contextRunner
+            .withPropertyValues("spring.cloud.azure.appconfiguration.endpoint=" + String.format(ENDPOINT, "my-appconfig"))
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean("customizer1", AppConfigurationBuilderCustomizer.class, () -> customizer)
+            .withBean("customizer2", AppConfigurationBuilderCustomizer.class, () -> customizer)
+            .run(context -> assertThat(customizer.getCustomizedTimes()).isEqualTo(2));
+    }
+
+    @Test
+    void otherCustomizerShouldNotBeCalled() {
+        AppConfigurationBuilderCustomizer customizer = new AppConfigurationBuilderCustomizer();
+        OtherBuilderCustomizer otherBuilderCustomizer = new OtherBuilderCustomizer();
+        this.contextRunner
+            .withPropertyValues("spring.cloud.azure.appconfiguration.endpoint=" + String.format(ENDPOINT, "my-appconfig"))
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean("customizer1", AppConfigurationBuilderCustomizer.class, () -> customizer)
+            .withBean("customizer2", AppConfigurationBuilderCustomizer.class, () -> customizer)
+            .withBean("customizer3", OtherBuilderCustomizer.class, () -> otherBuilderCustomizer)
+            .run(context -> {
+                assertThat(customizer.getCustomizedTimes()).isEqualTo(2);
+                assertThat(otherBuilderCustomizer.getCustomizedTimes()).isEqualTo(0);
+            });
+    }
+
+    private static class AppConfigurationBuilderCustomizer extends TestBuilderCustomizer<ConfigurationClientBuilder> {
+
+    }
+
+    private static class OtherBuilderCustomizer extends TestBuilderCustomizer<EventHubClientBuilder> {
+
+    }
 }

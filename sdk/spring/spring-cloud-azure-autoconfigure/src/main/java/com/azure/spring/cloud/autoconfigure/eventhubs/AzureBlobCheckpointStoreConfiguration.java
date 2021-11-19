@@ -6,8 +6,11 @@ package com.azure.spring.cloud.autoconfigure.eventhubs;
 import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore;
 import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubsProperties;
+import com.azure.spring.core.AzureSpringIdentifier;
+import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.service.storage.blob.BlobServiceClientBuilderFactory;
 import com.azure.storage.blob.BlobContainerAsyncClient;
+import com.azure.storage.blob.BlobServiceClientBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -20,6 +23,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.time.Duration;
+import java.util.List;
 
 import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.EVENT_HUB_PROCESSOR_CHECKPOINT_STORE_STORAGE_CLIENT_BUILDER_FACTORY_BEAN_NAME;
 import static com.azure.spring.core.properties.util.AzurePropertiesUtils.mergeAzureCommonProperties;
@@ -40,13 +44,13 @@ public class AzureBlobCheckpointStoreConfiguration {
         @Qualifier(EVENT_HUB_PROCESSOR_CHECKPOINT_STORE_STORAGE_CLIENT_BUILDER_FACTORY_BEAN_NAME)
             BlobServiceClientBuilderFactory factory,
         AzureEventHubsProperties eventHubsProperties,
-        ObjectProvider<BlobCheckpointStoreContainerInitializer> initializers) {
+        ObjectProvider<List<BlobCheckpointStoreContainerInitializer>> initializers) {
         final BlobContainerAsyncClient blobContainerAsyncClient = factory
             .build()
             .buildAsyncClient()
             .getBlobContainerAsyncClient(eventHubsProperties.getProcessor().getCheckpointStore().getContainerName());
 
-        initializers.ifAvailable(initializer -> initializer.init(blobContainerAsyncClient));
+        initializers.ifAvailable(is -> is.forEach(i -> i.init(blobContainerAsyncClient)));
 
         return new BlobCheckpointStore(blobContainerAsyncClient);
     }
@@ -66,8 +70,14 @@ public class AzureBlobCheckpointStoreConfiguration {
     @Bean(EVENT_HUB_PROCESSOR_CHECKPOINT_STORE_STORAGE_CLIENT_BUILDER_FACTORY_BEAN_NAME)
     @ConditionalOnMissingBean(name = EVENT_HUB_PROCESSOR_CHECKPOINT_STORE_STORAGE_CLIENT_BUILDER_FACTORY_BEAN_NAME)
     public BlobServiceClientBuilderFactory eventHubProcessorBlobServiceClientBuilderFactory(
-        AzureEventHubsProperties eventHubsProperties) {
-        return new BlobServiceClientBuilderFactory(getCheckpointStoreProperties(eventHubsProperties));
+        AzureEventHubsProperties eventHubsProperties,
+        ObjectProvider<List<AzureServiceClientBuilderCustomizer<BlobServiceClientBuilder>>> customizers) {
+        BlobServiceClientBuilderFactory factory =
+            new BlobServiceClientBuilderFactory(getCheckpointStoreProperties(eventHubsProperties));
+
+        factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_EVENT_HUBS);
+        customizers.ifAvailable(cs -> cs.forEach(factory::addBuilderCustomizer));
+        return factory;
     }
 
     private AzureEventHubsProperties.Processor.BlobCheckpointStore getCheckpointStoreProperties(
