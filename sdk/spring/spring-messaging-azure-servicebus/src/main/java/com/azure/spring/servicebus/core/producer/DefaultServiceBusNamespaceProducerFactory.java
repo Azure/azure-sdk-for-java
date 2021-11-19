@@ -7,6 +7,7 @@ import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.messaging.PropertiesSupplier;
 import com.azure.spring.service.servicebus.factory.ServiceBusSenderClientBuilderFactory;
+import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.servicebus.core.properties.ProducerProperties;
 import com.azure.spring.servicebus.core.properties.merger.ProducerPropertiesParentMerger;
@@ -42,7 +43,11 @@ public class DefaultServiceBusNamespaceProducerFactory implements ServiceBusProd
     }
 
     public ServiceBusSenderAsyncClient createProducer(String name) {
-        return doCreateProducer(name, this.propertiesSupplier.getProperties(name));
+        return createProducer(name, null);
+    }
+
+    public ServiceBusSenderAsyncClient createProducer(String name, ServiceBusEntityType entityType) {
+        return doCreateProducer(name, entityType, this.propertiesSupplier.getProperties(name));
     }
 
     @Override
@@ -65,11 +70,14 @@ public class DefaultServiceBusNamespaceProducerFactory implements ServiceBusProd
         this.listeners.clear();
     }
 
-    private ServiceBusSenderAsyncClient doCreateProducer(String name, @Nullable ProducerProperties properties) {
+    private ServiceBusSenderAsyncClient doCreateProducer(String name, @Nullable ServiceBusEntityType entityType,
+                                                         @Nullable ProducerProperties properties) {
         return clients.computeIfAbsent(name, entityName -> {
             ProducerProperties producerProperties = parentMerger.mergeParent(properties, this.namespaceProperties);
-
             producerProperties.setEntityName(entityName);
+            if (producerProperties.getEntityType() == null) {
+                producerProperties.setEntityType(entityType);
+            }
             //TODO(yiliu6): whether to make the producer client share the same service bus client builder
             ServiceBusSenderClientBuilderFactory factory = new ServiceBusSenderClientBuilderFactory(producerProperties);
             factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_SERVICE_BUS);

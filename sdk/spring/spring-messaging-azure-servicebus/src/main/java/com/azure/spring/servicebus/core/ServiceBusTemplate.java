@@ -7,6 +7,7 @@ import com.azure.messaging.servicebus.ServiceBusMessage;
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.spring.messaging.PartitionSupplier;
 import com.azure.spring.messaging.core.SendOperation;
+import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.servicebus.core.producer.ServiceBusProducerFactory;
 import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
 import org.springframework.lang.NonNull;
@@ -25,6 +26,7 @@ public class ServiceBusTemplate implements SendOperation {
     private static final ServiceBusMessageConverter DEFAULT_CONVERTER = new ServiceBusMessageConverter();
     private final ServiceBusProducerFactory producerFactory;
     private ServiceBusMessageConverter messageConverter = DEFAULT_CONVERTER;
+    private ServiceBusEntityType defaultEntityType;
 
     public ServiceBusTemplate(@NonNull ServiceBusProducerFactory producerFactory) {
         this.producerFactory = producerFactory;
@@ -35,7 +37,7 @@ public class ServiceBusTemplate implements SendOperation {
                                     Message<U> message,
                                     PartitionSupplier partitionSupplier) {
         Assert.hasText(destination, "destination can't be null or empty");
-        ServiceBusSenderAsyncClient senderAsyncClient = this.producerFactory.createProducer(destination);
+        ServiceBusSenderAsyncClient senderAsyncClient = this.producerFactory.createProducer(destination, defaultEntityType);
         ServiceBusMessage serviceBusMessage = messageConverter.fromMessage(message, ServiceBusMessage.class);
 
         if (Objects.nonNull(serviceBusMessage) && !StringUtils.hasText(serviceBusMessage.getPartitionKey())) {
@@ -67,5 +69,9 @@ public class ServiceBusTemplate implements SendOperation {
         }
 
         return "";
+    }
+
+    public void setDefaultEntityType(ServiceBusEntityType entityType) {
+        defaultEntityType = entityType;
     }
 }

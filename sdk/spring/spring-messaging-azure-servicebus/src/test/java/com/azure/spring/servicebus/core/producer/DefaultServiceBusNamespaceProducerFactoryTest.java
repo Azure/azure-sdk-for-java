@@ -29,8 +29,22 @@ public class DefaultServiceBusNamespaceProducerFactoryTest {
     }
 
     @Test
-    void testCreateServiceBusSenderClientWithEntityType() {
+    void testCreateServiceBusSenderClient() {
         ServiceBusSenderAsyncClient producer = producerFactory.createProducer(entityName);
+        assertNotNull(producer);
+        assertEquals(1, producerAddedTimes);
+    }
+
+    @Test
+    void testCreateServiceBusSenderClientWithEntityType() {
+        NamespaceProperties namespaceProperties = new NamespaceProperties();
+        namespaceProperties.setNamespace("test-namespace");
+        this.producerFactory = new DefaultServiceBusNamespaceProducerFactory(namespaceProperties);
+        producerAddedTimes = 0;
+        this.producerFactory.addListener((name, client) -> producerAddedTimes++);
+
+        ServiceBusSenderAsyncClient producer = producerFactory.createProducer(entityName, ServiceBusEntityType.QUEUE);
+
         assertNotNull(producer);
         assertEquals(1, producerAddedTimes);
     }
