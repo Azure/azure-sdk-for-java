@@ -4,9 +4,9 @@
 package com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2;
 
 import com.azure.spring.cloud.autoconfigure.aad.implementation.conditions.ClientRegistrationCondition;
-import com.azure.spring.cloud.autoconfigure.aad.implementation.properties.AADAuthenticationProperties;
-import com.azure.spring.cloud.autoconfigure.aad.implementation.webapi.AADOBOOAuth2AuthorizedClientProvider;
-import com.azure.spring.cloud.autoconfigure.aad.implementation.webapp.AADAzureDelegatedOAuth2AuthorizedClientProvider;
+import com.azure.spring.cloud.autoconfigure.aad.properties.AADAuthenticationProperties;
+import com.azure.spring.cloud.autoconfigure.aad.webapi.AADOBOOAuth2AuthorizedClientProvider;
+import com.azure.spring.cloud.autoconfigure.aad.webapp.AADAzureDelegatedOAuth2AuthorizedClientProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;

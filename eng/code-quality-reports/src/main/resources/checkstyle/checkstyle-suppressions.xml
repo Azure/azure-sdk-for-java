@@ -425,9 +425,9 @@ the main ServiceBusClientBuilder. -->
 />
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-spring-cloud-feature-management[/\\]"/>
   <suppress checks="[a-zA-Z0-9]*" files="[/\\]azure-spring-cloud-feature-management-web[/\\]"/>
-  <!-- Suppress the long package name in spring security related implementation class. -->
-  <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.aad.b2c.implementation.*" />
-  <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.aad.implementation.*" />
+
+  <!-- Suppress the b2c is the product name. -->
+  <suppress checks="PackageName" files="com.azure.spring.cloud.autoconfigure.aad.*" />
 
   <!-- perf-test files are not public API, so they don't need to fulfill all requirements. -->
   <suppress checks="Javadoc" files=".*[/\\]azure-\w+-perf[/\\].*\.java"/>
