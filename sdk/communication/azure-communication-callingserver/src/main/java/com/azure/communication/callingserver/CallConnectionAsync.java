@@ -364,7 +364,6 @@ public final class CallConnectionAsync {
         URI callbackUri,
         Context context) {
         try {
-            Objects.requireNonNull(participant, "'participant' cannot be null.");
             AddParticipantRequest request = getAddParticipantRequest(participant,
                 alternateCallerId,
                 operationContext,
@@ -1073,7 +1072,6 @@ public final class CallConnectionAsync {
         List<CommunicationIdentifier> targets) {
         try {
             AudioRoutingGroupRequest request = getAudioRoutingGroupRequest(audioRoutingMode, targets);
-
             return callConnectionInternal.createAudioRoutingGroupAsync(callConnectionId, request)
             .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
                 .flatMap(result -> Mono.just(new CreateAudioRoutingGroupResult(result.getAudioRoutingGroupId())));
@@ -1160,7 +1158,6 @@ public final class CallConnectionAsync {
         try {
             Objects.requireNonNull(audioRoutingGroupId, "'audioRoutingGroupId' cannot be null.");
             UpdateAudioRoutingGroupRequest request = getUpdateAudioRoutingGroupRequest(audioRoutingGroupId, targets);
-
             return callConnectionInternal.updateAudioRoutingGroupWithResponseAsync(callConnectionId, audioRoutingGroupId, request, context)
             .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
         } catch (RuntimeException ex) {

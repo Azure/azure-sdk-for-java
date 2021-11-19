@@ -4,6 +4,7 @@
 package com.azure.communication.callingserver;
 
 import static com.azure.communication.callingserver.CallingServerResponseMocker.*;
+import static com.azure.communication.callingserver.CallingServerResponseMocker.CALL_CONNECTION_ID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -667,6 +668,40 @@ public class CallConnectionAsyncUnitTests {
         ).block();
 
         assertEquals(200, updateAudioRoutingGroupResponse.getStatusCode());
+    }
+
+    @Test
+    public void getAudioRoutingGroupsAsync() {
+        CallConnectionAsync callConnectionAsync = getCallConnectionAsync(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>(generateCreateCallResult(CALL_CONNECTION_ID), 201),
+                new SimpleEntry<String, Integer>(generateGetAudioRoutingGroupsResult(), 200)
+            )));
+
+        AudioRoutingGroupResult getAudioRoutingGroupsResult = callConnectionAsync.getAudioRoutingGroups(
+            AUDIOROUTING_GROUPID
+        ).block();
+
+        assertEquals(AudioRoutingMode.ONE_TO_ONE, getAudioRoutingGroupsResult.getAudioRoutingMode());
+        assertEquals(COMMUNICATION_USER, getAudioRoutingGroupsResult.getTargets().get(0));
+    }
+
+    @Test
+    public void getAudioRoutingGroupsAsyncWithResponse() {
+        CallConnectionAsync callConnectionAsync = getCallConnectionAsync(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>(generateCreateCallResult(CALL_CONNECTION_ID), 201),
+                new SimpleEntry<String, Integer>(generateGetAudioRoutingGroupsResult(), 200)
+            )));
+
+        Response<AudioRoutingGroupResult> getAudioRoutingGroupsResponse = callConnectionAsync.getAudioRoutingGroupsWithResponse(
+            AUDIOROUTING_GROUPID
+        ).block();
+
+        assertEquals(200, getAudioRoutingGroupsResponse.getStatusCode());
+        AudioRoutingGroupResult getAudioRoutingGroupsResult = getAudioRoutingGroupsResponse.getValue();
+        assertEquals(AudioRoutingMode.ONE_TO_ONE, getAudioRoutingGroupsResult.getAudioRoutingMode());
+        assertEquals(COMMUNICATION_USER, getAudioRoutingGroupsResult.getTargets().get(0));
     }
 
     @Test

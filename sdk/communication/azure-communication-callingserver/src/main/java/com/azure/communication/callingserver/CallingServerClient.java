@@ -31,7 +31,6 @@ import java.nio.file.Path;
 import java.net.URI;
 import java.security.InvalidParameterException;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * Synchronous client that supports calling server operations.
