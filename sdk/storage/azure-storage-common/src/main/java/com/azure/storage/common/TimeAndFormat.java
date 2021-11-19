@@ -13,7 +13,7 @@ import java.time.format.DateTimeFormatter;
  * or in a connection string, we have to preserve the formatting, especially the precision, so the signature still
  * matches.
  */
-public class TimeAndFormat {
+public final class TimeAndFormat {
     private final OffsetDateTime dateTime;
     private final DateTimeFormatter format;
 

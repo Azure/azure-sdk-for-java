@@ -3,10 +3,10 @@
 
 package com.azure.storage.common.sas;
 
-import com.azure.storage.common.Utility;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
 import com.azure.storage.common.TimeAndFormat;
+import com.azure.storage.common.implementation.StorageImplUtils;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -86,9 +86,9 @@ public class CommonSasQueryParameters {
         this.protocol = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_PROTOCOL,
             removeSasParametersFromMap, SasProtocol::parse);
         this.startTime = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_START_TIME,
-            removeSasParametersFromMap, Utility::parseDateAndFormat);
+            removeSasParametersFromMap, StorageImplUtils::parseDateAndFormat);
         this.expiryTime = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_EXPIRY_TIME,
-            removeSasParametersFromMap, Utility::parseDateAndFormat);
+            removeSasParametersFromMap, StorageImplUtils::parseDateAndFormat);
         this.sasIpRange = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_IP_RANGE,
             removeSasParametersFromMap, SasIpRange::parse);
         this.permissions = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_PERMISSIONS,
@@ -106,9 +106,9 @@ public class CommonSasQueryParameters {
         this.keyTenantId = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_TENANT_ID,
             removeSasParametersFromMap);
         this.keyStart = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_KEY_START,
-            removeSasParametersFromMap, Utility::parseDateAndFormat);
+            removeSasParametersFromMap, StorageImplUtils::parseDateAndFormat);
         this.keyExpiry = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_KEY_EXPIRY,
-            removeSasParametersFromMap, Utility::parseDateAndFormat);
+            removeSasParametersFromMap, StorageImplUtils::parseDateAndFormat);
         this.keyService = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_KEY_SERVICE,
             removeSasParametersFromMap);
         this.keyVersion = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_KEY_VERSION,
