@@ -7,7 +7,7 @@ omitted_paths:
   - sdk/applicationinsights/microsoft-azure-applicationinsights-query/samples/*
   - sdk/boms/spring-cloud-azure-dependencies/*
   - sdk/spring/*
-  - sdk/spring/*/*
+  - "sdk/spring/*/*"
   - sdk/loganalytics/microsoft-azure-loganalytics/samples/*
   - "*/resource-manager/*"
   - "sdk/*/mgmt-*/*"
