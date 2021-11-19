@@ -3,7 +3,9 @@
 
 package com.azure.spring.cloud.autoconfigure.eventhubs;
 
+import com.azure.messaging.eventhubs.EventHubClientBuilder;
 import com.azure.messaging.eventhubs.checkpointstore.blob.BlobCheckpointStore;
+import com.azure.spring.cloud.autoconfigure.TestBuilderCustomizer;
 import com.azure.spring.cloud.autoconfigure.context.AzureContextUtils;
 import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
@@ -93,5 +95,46 @@ class AzureBlobCheckpointStoreConfigurationTest {
                     return beanNamesForType.length == 2;
                 }, "There should be two beans of type BlobServiceClientBuilderFactory"));
             });
+    }
+
+    @Test
+    void customizerShouldBeCalled() {
+        StorageBlobBuilderCustomizer customizer = new StorageBlobBuilderCustomizer();
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name=abc",
+                "spring.cloud.azure.eventhubs.processor.checkpoint-store.account-name=sa"
+            )
+            .withBean(AzureEventHubsProperties.class, AzureEventHubsProperties::new)
+            .withBean("customizer1", StorageBlobBuilderCustomizer.class, () -> customizer)
+            .withBean("customizer2", StorageBlobBuilderCustomizer.class, () -> customizer)
+            .run(context -> assertThat(customizer.getCustomizedTimes()).isEqualTo(2));
+    }
+
+    @Test
+    void otherCustomizerShouldNotBeCalled() {
+        StorageBlobBuilderCustomizer customizer = new StorageBlobBuilderCustomizer();
+        OtherBuilderCustomizer otherBuilderCustomizer = new OtherBuilderCustomizer();
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name=abc",
+                "spring.cloud.azure.eventhubs.processor.checkpoint-store.account-name=sa"
+            )
+            .withBean(AzureEventHubsProperties.class, AzureEventHubsProperties::new)
+            .withBean("customizer1", StorageBlobBuilderCustomizer.class, () -> customizer)
+            .withBean("customizer2", StorageBlobBuilderCustomizer.class, () -> customizer)
+            .withBean("customizer3", OtherBuilderCustomizer.class, () -> otherBuilderCustomizer)
+            .run(context -> {
+                assertThat(customizer.getCustomizedTimes()).isEqualTo(2);
+                assertThat(otherBuilderCustomizer.getCustomizedTimes()).isEqualTo(0);
+            });
+    }
+
+    private static class StorageBlobBuilderCustomizer extends TestBuilderCustomizer<BlobServiceClientBuilder> {
+
+    }
+
+    private static class OtherBuilderCustomizer extends TestBuilderCustomizer<EventHubClientBuilder> {
+
     }
 }

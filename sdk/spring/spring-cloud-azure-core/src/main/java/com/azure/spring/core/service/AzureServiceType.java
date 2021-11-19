@@ -11,6 +11,7 @@ public final class AzureServiceType {
     public static final ServiceBus SERVICE_BUS = new ServiceBus();
     public static final EventHubs EVENT_HUBS = new EventHubs();
     public static final StorageBlob STORAGE_BLOB = new StorageBlob();
+    public static final StorageFileShare STORAGE_FILE_SHARE = new StorageFileShare();
     public static final StorageQueue STORAGE_QUEUE = new StorageQueue();
     public static final AppConfiguration APP_CONFIGURATION = new AppConfiguration();
 
@@ -32,6 +33,13 @@ public final class AzureServiceType {
      * The Storage Blob service.
      */
     public static class StorageBlob {
+
+    }
+
+    /**
+     * The Storage File Share service.
+     */
+    public static class StorageFileShare {
 
     }
 
