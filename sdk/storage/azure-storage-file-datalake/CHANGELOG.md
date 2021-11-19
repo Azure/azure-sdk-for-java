@@ -9,6 +9,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Fixed a bug in DataLakeFileClient.flush() in which the logic of the overwrite parameter was reversed.
 
 ### Other Changes
 
