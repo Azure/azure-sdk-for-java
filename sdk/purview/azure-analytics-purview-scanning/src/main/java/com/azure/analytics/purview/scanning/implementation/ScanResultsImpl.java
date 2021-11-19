@@ -256,15 +256,14 @@ public final class ScanResultsImpl {
      * @param scanName The scanName parameter.
      * @param runId The runId parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> runScanWithResponse(
-            String dataSourceName, String scanName, String runId, RequestOptions requestOptions, Context context) {
-        return runScanWithResponseAsync(dataSourceName, scanName, runId, requestOptions, context).block();
+            String dataSourceName, String scanName, String runId, RequestOptions requestOptions) {
+        return runScanWithResponseAsync(dataSourceName, scanName, runId, requestOptions).block();
     }
 
     /**
@@ -427,15 +426,14 @@ public final class ScanResultsImpl {
      * @param scanName The scanName parameter.
      * @param runId The runId parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> cancelScanWithResponse(
-            String dataSourceName, String scanName, String runId, RequestOptions requestOptions, Context context) {
-        return cancelScanWithResponseAsync(dataSourceName, scanName, runId, requestOptions, context).block();
+            String dataSourceName, String scanName, String runId, RequestOptions requestOptions) {
+        return cancelScanWithResponseAsync(dataSourceName, scanName, runId, requestOptions).block();
     }
 
     /**
@@ -861,15 +859,14 @@ public final class ScanResultsImpl {
      * @param dataSourceName The dataSourceName parameter.
      * @param scanName The scanName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<BinaryData> listScanHistory(
-            String dataSourceName, String scanName, RequestOptions requestOptions, Context context) {
-        return new PagedIterable<>(listScanHistoryAsync(dataSourceName, scanName, requestOptions, context));
+            String dataSourceName, String scanName, RequestOptions requestOptions) {
+        return new PagedIterable<>(listScanHistoryAsync(dataSourceName, scanName, requestOptions));
     }
 
     /**

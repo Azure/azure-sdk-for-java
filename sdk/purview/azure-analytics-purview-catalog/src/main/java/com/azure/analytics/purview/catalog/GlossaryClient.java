@@ -5,6 +5,7 @@
 package com.azure.analytics.purview.catalog;
 
 import com.azure.analytics.purview.catalog.implementation.GlossariesImpl;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -12,7 +13,6 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
-import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
@@ -20,13 +20,14 @@ import reactor.core.publisher.Flux;
 /** Initializes a new instance of the synchronous PurviewCatalogClient type. */
 @ServiceClient(builder = PurviewCatalogClientBuilder.class)
 public final class GlossaryClient {
-    private final GlossariesImpl serviceClient;
+    @Generated private final GlossariesImpl serviceClient;
 
     /**
      * Initializes an instance of Glossaries client.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     GlossaryClient(GlossariesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -107,14 +108,14 @@ public final class GlossaryClient {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return all glossaries registered with Atlas.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listGlossariesWithResponse(RequestOptions requestOptions, Context context) {
-        return this.serviceClient.listGlossariesWithResponse(requestOptions, context);
+    public Response<BinaryData> listGlossariesWithResponse(RequestOptions requestOptions) {
+        return this.serviceClient.listGlossariesWithResponse(requestOptions);
     }
 
     /**
@@ -241,15 +242,14 @@ public final class GlossaryClient {
      * @param atlasGlossary Glossary definition, terms &amp;amp; categories can be anchored to a glossary. Using the
      *     anchor attribute when creating the Term/Category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return atlasGlossary.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createGlossaryWithResponse(
-            BinaryData atlasGlossary, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.createGlossaryWithResponse(atlasGlossary, requestOptions, context);
+    public Response<BinaryData> createGlossaryWithResponse(BinaryData atlasGlossary, RequestOptions requestOptions) {
+        return this.serviceClient.createGlossaryWithResponse(atlasGlossary, requestOptions);
     }
 
     /**
@@ -387,15 +387,15 @@ public final class GlossaryClient {
      *
      * @param glossaryCategory An array of glossary category definitions to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return an array of glossary category created successfully in bulk.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createGlossaryCategoriesWithResponse(
-            BinaryData glossaryCategory, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.createGlossaryCategoriesWithResponse(glossaryCategory, requestOptions, context);
+            BinaryData glossaryCategory, RequestOptions requestOptions) {
+        return this.serviceClient.createGlossaryCategoriesWithResponse(glossaryCategory, requestOptions);
     }
 
     /**
@@ -530,15 +530,15 @@ public final class GlossaryClient {
      * @param glossaryCategory The glossary category definition. A category must be anchored to a Glossary when
      *     creating. Optionally, terms belonging to the category and the hierarchy can also be defined during creation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return atlasGlossaryCategory.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createGlossaryCategoryWithResponse(
-            BinaryData glossaryCategory, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.createGlossaryCategoryWithResponse(glossaryCategory, requestOptions, context);
+            BinaryData glossaryCategory, RequestOptions requestOptions) {
+        return this.serviceClient.createGlossaryCategoryWithResponse(glossaryCategory, requestOptions);
     }
 
     /**
@@ -609,15 +609,14 @@ public final class GlossaryClient {
      *
      * @param categoryGuid The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return specific glossary category by its GUID.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getGlossaryCategoryWithResponse(
-            String categoryGuid, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.getGlossaryCategoryWithResponse(categoryGuid, requestOptions, context);
+    public Response<BinaryData> getGlossaryCategoryWithResponse(String categoryGuid, RequestOptions requestOptions) {
+        return this.serviceClient.getGlossaryCategoryWithResponse(categoryGuid, requestOptions);
     }
 
     /**
@@ -752,16 +751,15 @@ public final class GlossaryClient {
      * @param categoryGuid The globally unique identifier of the category.
      * @param glossaryCategory The glossary category to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return atlasGlossaryCategory.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateGlossaryCategoryWithResponse(
-            String categoryGuid, BinaryData glossaryCategory, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.updateGlossaryCategoryWithResponse(
-                categoryGuid, glossaryCategory, requestOptions, context);
+            String categoryGuid, BinaryData glossaryCategory, RequestOptions requestOptions) {
+        return this.serviceClient.updateGlossaryCategoryWithResponse(categoryGuid, glossaryCategory, requestOptions);
     }
 
     /**
@@ -769,15 +767,14 @@ public final class GlossaryClient {
      *
      * @param categoryGuid The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteGlossaryCategoryWithResponse(
-            String categoryGuid, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.deleteGlossaryCategoryWithResponse(categoryGuid, requestOptions, context);
+    public Response<Void> deleteGlossaryCategoryWithResponse(String categoryGuid, RequestOptions requestOptions) {
+        return this.serviceClient.deleteGlossaryCategoryWithResponse(categoryGuid, requestOptions);
     }
 
     /**
@@ -858,16 +855,16 @@ public final class GlossaryClient {
      * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute values for
      *     partial update.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return atlasGlossaryCategory.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> partialUpdateGlossaryCategoryWithResponse(
-            String categoryGuid, BinaryData partialUpdates, RequestOptions requestOptions, Context context) {
+            String categoryGuid, BinaryData partialUpdates, RequestOptions requestOptions) {
         return this.serviceClient.partialUpdateGlossaryCategoryWithResponse(
-                categoryGuid, partialUpdates, requestOptions, context);
+                categoryGuid, partialUpdates, requestOptions);
     }
 
     /**
@@ -902,15 +899,14 @@ public final class GlossaryClient {
      *
      * @param categoryGuid The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return all related categories (parent and children).
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listRelatedCategoriesWithResponse(
-            String categoryGuid, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.listRelatedCategoriesWithResponse(categoryGuid, requestOptions, context);
+    public Response<BinaryData> listRelatedCategoriesWithResponse(String categoryGuid, RequestOptions requestOptions) {
+        return this.serviceClient.listRelatedCategoriesWithResponse(categoryGuid, requestOptions);
     }
 
     /**
@@ -945,15 +941,14 @@ public final class GlossaryClient {
      *
      * @param categoryGuid The globally unique identifier of the category.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return all terms associated with the specific category.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listCategoryTermsWithResponse(
-            String categoryGuid, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.listCategoryTermsWithResponse(categoryGuid, requestOptions, context);
+    public Response<BinaryData> listCategoryTermsWithResponse(String categoryGuid, RequestOptions requestOptions) {
+        return this.serviceClient.listCategoryTermsWithResponse(categoryGuid, requestOptions);
     }
 
     /**
@@ -1272,15 +1267,14 @@ public final class GlossaryClient {
      * @param glossaryTerm The glossary term definition. A term must be anchored to a Glossary at the time of creation.
      *     Optionally it can be categorized as well.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return atlasGlossaryTerm.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createGlossaryTermWithResponse(
-            BinaryData glossaryTerm, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.createGlossaryTermWithResponse(glossaryTerm, requestOptions, context);
+    public Response<BinaryData> createGlossaryTermWithResponse(BinaryData glossaryTerm, RequestOptions requestOptions) {
+        return this.serviceClient.createGlossaryTermWithResponse(glossaryTerm, requestOptions);
     }
 
     /**
@@ -1447,15 +1441,14 @@ public final class GlossaryClient {
      *
      * @param termGuid The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return a specific glossary term by its GUID.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getGlossaryTermWithResponse(
-            String termGuid, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.getGlossaryTermWithResponse(termGuid, requestOptions, context);
+    public Response<BinaryData> getGlossaryTermWithResponse(String termGuid, RequestOptions requestOptions) {
+        return this.serviceClient.getGlossaryTermWithResponse(termGuid, requestOptions);
     }
 
     /**
@@ -1766,15 +1759,15 @@ public final class GlossaryClient {
      * @param termGuid The globally unique identifier for glossary term.
      * @param glossaryTerm The glossary term to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return atlasGlossaryTerm.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateGlossaryTermWithResponse(
-            String termGuid, BinaryData glossaryTerm, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.updateGlossaryTermWithResponse(termGuid, glossaryTerm, requestOptions, context);
+            String termGuid, BinaryData glossaryTerm, RequestOptions requestOptions) {
+        return this.serviceClient.updateGlossaryTermWithResponse(termGuid, glossaryTerm, requestOptions);
     }
 
     /**
@@ -1782,15 +1775,14 @@ public final class GlossaryClient {
      *
      * @param termGuid The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteGlossaryTermWithResponse(
-            String termGuid, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.deleteGlossaryTermWithResponse(termGuid, requestOptions, context);
+    public Response<Void> deleteGlossaryTermWithResponse(String termGuid, RequestOptions requestOptions) {
+        return this.serviceClient.deleteGlossaryTermWithResponse(termGuid, requestOptions);
     }
 
     /**
@@ -1967,16 +1959,15 @@ public final class GlossaryClient {
      * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute values to be
      *     updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return atlasGlossaryTerm.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> partialUpdateGlossaryTermWithResponse(
-            String termGuid, BinaryData partialUpdates, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.partialUpdateGlossaryTermWithResponse(
-                termGuid, partialUpdates, requestOptions, context);
+            String termGuid, BinaryData partialUpdates, RequestOptions requestOptions) {
+        return this.serviceClient.partialUpdateGlossaryTermWithResponse(termGuid, partialUpdates, requestOptions);
     }
 
     /**
@@ -2298,15 +2289,15 @@ public final class GlossaryClient {
      *
      * @param glossaryTerm An array of glossary term definitions to be created in bulk.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return if bulk glossary terms creation was successful.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createGlossaryTermsWithResponse(
-            BinaryData glossaryTerm, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.createGlossaryTermsWithResponse(glossaryTerm, requestOptions, context);
+            BinaryData glossaryTerm, RequestOptions requestOptions) {
+        return this.serviceClient.createGlossaryTermsWithResponse(glossaryTerm, requestOptions);
     }
 
     /**
@@ -2350,15 +2341,15 @@ public final class GlossaryClient {
      *
      * @param termGuid The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return all related objects assigned with the specified term.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getEntitiesAssignedWithTermWithResponse(
-            String termGuid, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.getEntitiesAssignedWithTermWithResponse(termGuid, requestOptions, context);
+            String termGuid, RequestOptions requestOptions) {
+        return this.serviceClient.getEntitiesAssignedWithTermWithResponse(termGuid, requestOptions);
     }
 
     /**
@@ -2393,15 +2384,15 @@ public final class GlossaryClient {
      * @param termGuid The globally unique identifier for glossary term.
      * @param relatedObjectIds An array of related object IDs to which the term has to be associated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> assignTermToEntitiesWithResponse(
-            String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.assignTermToEntitiesWithResponse(termGuid, relatedObjectIds, requestOptions, context);
+            String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions) {
+        return this.serviceClient.assignTermToEntitiesWithResponse(termGuid, relatedObjectIds, requestOptions);
     }
 
     /**
@@ -2436,16 +2427,16 @@ public final class GlossaryClient {
      * @param termGuid The globally unique identifier for glossary term.
      * @param relatedObjectIds An array of related object IDs from which the term has to be dissociated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> removeTermAssignmentFromEntitiesWithResponse(
-            String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions, Context context) {
+            String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions) {
         return this.serviceClient.removeTermAssignmentFromEntitiesWithResponse(
-                termGuid, relatedObjectIds, requestOptions, context);
+                termGuid, relatedObjectIds, requestOptions);
     }
 
     /**
@@ -2480,16 +2471,16 @@ public final class GlossaryClient {
      * @param termGuid The globally unique identifier for glossary term.
      * @param relatedObjectIds An array of related object IDs from which the term has to be dissociated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> deleteTermAssignmentFromEntitiesWithResponse(
-            String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions, Context context) {
+            String termGuid, BinaryData relatedObjectIds, RequestOptions requestOptions) {
         return this.serviceClient.deleteTermAssignmentFromEntitiesWithResponse(
-                termGuid, relatedObjectIds, requestOptions, context);
+                termGuid, relatedObjectIds, requestOptions);
     }
 
     /**
@@ -2527,15 +2518,14 @@ public final class GlossaryClient {
      *
      * @param termGuid The globally unique identifier for glossary term.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return all related terms for a specific term by its GUID.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listRelatedTermsWithResponse(
-            String termGuid, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.listRelatedTermsWithResponse(termGuid, requestOptions, context);
+    public Response<BinaryData> listRelatedTermsWithResponse(String termGuid, RequestOptions requestOptions) {
+        return this.serviceClient.listRelatedTermsWithResponse(termGuid, requestOptions);
     }
 
     /**
@@ -2602,15 +2592,14 @@ public final class GlossaryClient {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return a specific Glossary by its GUID.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getGlossaryWithResponse(
-            String glossaryGuid, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.getGlossaryWithResponse(glossaryGuid, requestOptions, context);
+    public Response<BinaryData> getGlossaryWithResponse(String glossaryGuid, RequestOptions requestOptions) {
+        return this.serviceClient.getGlossaryWithResponse(glossaryGuid, requestOptions);
     }
 
     /**
@@ -2737,15 +2726,15 @@ public final class GlossaryClient {
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param updatedGlossary The glossary definition to be updated.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return atlasGlossary.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> updateGlossaryWithResponse(
-            String glossaryGuid, BinaryData updatedGlossary, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.updateGlossaryWithResponse(glossaryGuid, updatedGlossary, requestOptions, context);
+            String glossaryGuid, BinaryData updatedGlossary, RequestOptions requestOptions) {
+        return this.serviceClient.updateGlossaryWithResponse(glossaryGuid, updatedGlossary, requestOptions);
     }
 
     /**
@@ -2753,15 +2742,14 @@ public final class GlossaryClient {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteGlossaryWithResponse(
-            String glossaryGuid, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.deleteGlossaryWithResponse(glossaryGuid, requestOptions, context);
+    public Response<Void> deleteGlossaryWithResponse(String glossaryGuid, RequestOptions requestOptions) {
+        return this.serviceClient.deleteGlossaryWithResponse(glossaryGuid, requestOptions);
     }
 
     /**
@@ -2844,15 +2832,14 @@ public final class GlossaryClient {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the categories belonging to a specific glossary.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listGlossaryCategoriesWithResponse(
-            String glossaryGuid, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.listGlossaryCategoriesWithResponse(glossaryGuid, requestOptions, context);
+    public Response<BinaryData> listGlossaryCategoriesWithResponse(String glossaryGuid, RequestOptions requestOptions) {
+        return this.serviceClient.listGlossaryCategoriesWithResponse(glossaryGuid, requestOptions);
     }
 
     /**
@@ -2884,15 +2871,15 @@ public final class GlossaryClient {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the category headers belonging to a specific glossary.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listGlossaryCategoriesHeadersWithResponse(
-            String glossaryGuid, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.listGlossaryCategoriesHeadersWithResponse(glossaryGuid, requestOptions, context);
+            String glossaryGuid, RequestOptions requestOptions) {
+        return this.serviceClient.listGlossaryCategoriesHeadersWithResponse(glossaryGuid, requestOptions);
     }
 
     /**
@@ -3107,15 +3094,14 @@ public final class GlossaryClient {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return a specific glossary with detailed information.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getDetailedGlossaryWithResponse(
-            String glossaryGuid, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.getDetailedGlossaryWithResponse(glossaryGuid, requestOptions, context);
+    public Response<BinaryData> getDetailedGlossaryWithResponse(String glossaryGuid, RequestOptions requestOptions) {
+        return this.serviceClient.getDetailedGlossaryWithResponse(glossaryGuid, requestOptions);
     }
 
     /**
@@ -3199,16 +3185,15 @@ public final class GlossaryClient {
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param partialUpdates A map containing keys as attribute names and values as corresponding attribute values.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return atlasGlossary.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> partialUpdateGlossaryWithResponse(
-            String glossaryGuid, BinaryData partialUpdates, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.partialUpdateGlossaryWithResponse(
-                glossaryGuid, partialUpdates, requestOptions, context);
+            String glossaryGuid, BinaryData partialUpdates, RequestOptions requestOptions) {
+        return this.serviceClient.partialUpdateGlossaryWithResponse(glossaryGuid, partialUpdates, requestOptions);
     }
 
     /**
@@ -3380,15 +3365,14 @@ public final class GlossaryClient {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return terms belonging to a specific glossary.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> listGlossaryTermsWithResponse(
-            String glossaryGuid, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.listGlossaryTermsWithResponse(glossaryGuid, requestOptions, context);
+    public Response<BinaryData> listGlossaryTermsWithResponse(String glossaryGuid, RequestOptions requestOptions) {
+        return this.serviceClient.listGlossaryTermsWithResponse(glossaryGuid, requestOptions);
     }
 
     /**
@@ -3423,15 +3407,15 @@ public final class GlossaryClient {
      *
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return term headers belonging to a specific glossary.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listGlossaryTermHeadersWithResponse(
-            String glossaryGuid, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.listGlossaryTermHeadersWithResponse(glossaryGuid, requestOptions, context);
+            String glossaryGuid, RequestOptions requestOptions) {
+        return this.serviceClient.listGlossaryTermHeadersWithResponse(glossaryGuid, requestOptions);
     }
 
     /**
@@ -3482,15 +3466,15 @@ public final class GlossaryClient {
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param file The csv file to import glossary terms from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return status of import csv operation.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginImportGlossaryTermsViaCsv(
-            String glossaryGuid, BinaryData file, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.beginImportGlossaryTermsViaCsv(glossaryGuid, file, requestOptions, context);
+            String glossaryGuid, BinaryData file, RequestOptions requestOptions) {
+        return this.serviceClient.beginImportGlossaryTermsViaCsv(glossaryGuid, file, requestOptions);
     }
 
     /**
@@ -3541,16 +3525,15 @@ public final class GlossaryClient {
      * @param glossaryName The name of the glossary.
      * @param file The csv file to import glossary terms from.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return status of import csv operation.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<BinaryData, BinaryData> beginImportGlossaryTermsViaCsvByGlossaryName(
-            String glossaryName, BinaryData file, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.beginImportGlossaryTermsViaCsvByGlossaryName(
-                glossaryName, file, requestOptions, context);
+            String glossaryName, BinaryData file, RequestOptions requestOptions) {
+        return this.serviceClient.beginImportGlossaryTermsViaCsvByGlossaryName(glossaryName, file, requestOptions);
     }
 
     /**
@@ -3585,15 +3568,15 @@ public final class GlossaryClient {
      *
      * @param operationGuid The globally unique identifier for async operation/job.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the status of import csv operation.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getImportCsvOperationStatusWithResponse(
-            String operationGuid, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.getImportCsvOperationStatusWithResponse(operationGuid, requestOptions, context);
+            String operationGuid, RequestOptions requestOptions) {
+        return this.serviceClient.getImportCsvOperationStatusWithResponse(operationGuid, requestOptions);
     }
 
     /**
@@ -3625,16 +3608,15 @@ public final class GlossaryClient {
      * @param glossaryGuid The globally unique identifier for glossary.
      * @param termGuids An array of term guids.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Flux<ByteBuffer>> exportGlossaryTermsAsCsvWithResponse(
-            String glossaryGuid, BinaryData termGuids, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.exportGlossaryTermsAsCsvWithResponse(
-                glossaryGuid, termGuids, requestOptions, context);
+            String glossaryGuid, BinaryData termGuids, RequestOptions requestOptions) {
+        return this.serviceClient.exportGlossaryTermsAsCsvWithResponse(glossaryGuid, termGuids, requestOptions);
     }
 
     /**
@@ -3806,14 +3788,14 @@ public final class GlossaryClient {
      *
      * @param glossaryName The name of the glossary.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return terms by glossary name.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> listTermsByGlossaryNameWithResponse(
-            String glossaryName, RequestOptions requestOptions, Context context) {
-        return this.serviceClient.listTermsByGlossaryNameWithResponse(glossaryName, requestOptions, context);
+            String glossaryName, RequestOptions requestOptions) {
+        return this.serviceClient.listTermsByGlossaryNameWithResponse(glossaryName, requestOptions);
     }
 }

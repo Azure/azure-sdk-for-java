@@ -59,7 +59,7 @@
     <dependency>
     <groupId>com.azure</groupId>
       <artifactId>azure-communication-chat</artifactId>
-      <version>1.1.2</version> <!-- {x-version-update;com.azure:azure-communication-chat;current} -->
+      <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-chat;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -219,12 +219,12 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs</artifactId>
-      <version>5.10.3</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;current} -->
+      <version>5.11.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-messaging-eventhubs-checkpointstore-blob</artifactId>
-      <version>1.10.2</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;current} -->
+      <version>1.11.0-beta.1</version> <!-- {x-version-update;com.azure:azure-messaging-eventhubs-checkpointstore-blob;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -239,7 +239,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-monitor-opentelemetry-exporter</artifactId>
-      <version>1.0.0-beta.5</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;current} -->
+      <version>1.0.0-beta.6</version> <!-- {x-version-update;com.azure:azure-monitor-opentelemetry-exporter;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -599,7 +599,7 @@
             <bannedDependencies>
               <includes>
                 <!-- Track 2 library with a non-standard groupId -->
-                <include>com.azure:azure-monitor-opentelemetry-exporter:[1.0.0-beta.5]</include> <!-- {x-include-update;com.azure:azure-monitor-opentelemetry-exporter;current} -->
+                <include>com.azure:azure-monitor-opentelemetry-exporter:[1.0.0-beta.6]</include> <!-- {x-include-update;com.azure:azure-monitor-opentelemetry-exporter;current} -->
                 <include>com.microsoft.azure:spring-cloud-starter-azure-appconfiguration-config:[1.4.0-beta.1]</include> <!-- {x-include-update;com.microsoft.azure:spring-cloud-starter-azure-appconfiguration-config;current} -->
               </includes>
             </bannedDependencies>

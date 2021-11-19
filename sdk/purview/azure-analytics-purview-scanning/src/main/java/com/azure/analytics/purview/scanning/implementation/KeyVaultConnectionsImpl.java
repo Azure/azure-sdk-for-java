@@ -208,14 +208,13 @@ public final class KeyVaultConnectionsImpl {
      *
      * @param keyVaultName The keyVaultName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return key vault information.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(String keyVaultName, RequestOptions requestOptions, Context context) {
-        return getWithResponseAsync(keyVaultName, requestOptions, context).block();
+    public Response<BinaryData> getWithResponse(String keyVaultName, RequestOptions requestOptions) {
+        return getWithResponseAsync(keyVaultName, requestOptions).block();
     }
 
     /**
@@ -373,15 +372,14 @@ public final class KeyVaultConnectionsImpl {
      * @param keyVaultName The keyVaultName parameter.
      * @param body The body parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createWithResponse(
-            String keyVaultName, BinaryData body, RequestOptions requestOptions, Context context) {
-        return createWithResponseAsync(keyVaultName, body, requestOptions, context).block();
+            String keyVaultName, BinaryData body, RequestOptions requestOptions) {
+        return createWithResponseAsync(keyVaultName, body, requestOptions).block();
     }
 
     /**
@@ -494,15 +492,13 @@ public final class KeyVaultConnectionsImpl {
      *
      * @param keyVaultName The keyVaultName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteWithResponse(
-            String keyVaultName, RequestOptions requestOptions, Context context) {
-        return deleteWithResponseAsync(keyVaultName, requestOptions, context).block();
+    public Response<BinaryData> deleteWithResponse(String keyVaultName, RequestOptions requestOptions) {
+        return deleteWithResponseAsync(keyVaultName, requestOptions).block();
     }
 
     /**
@@ -729,14 +725,13 @@ public final class KeyVaultConnectionsImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listAll(RequestOptions requestOptions, Context context) {
-        return new PagedIterable<>(listAllAsync(requestOptions, context));
+    public PagedIterable<BinaryData> listAll(RequestOptions requestOptions) {
+        return new PagedIterable<>(listAllAsync(requestOptions));
     }
 
     /**

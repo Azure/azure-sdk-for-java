@@ -110,7 +110,7 @@ public final class KqlScriptsOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KqlScriptResource>> createOrUpdateWithResponseAsync(
             String kqlScriptName, KqlScriptResource kqlScript) {
-        final String apiVersion = "2021-06-01-preview";
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -132,7 +132,7 @@ public final class KqlScriptsOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KqlScriptResource>> createOrUpdateWithResponseAsync(
             String kqlScriptName, KqlScriptResource kqlScript, Context context) {
-        final String apiVersion = "2021-06-01-preview";
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         return service.createOrUpdate(this.client.getEndpoint(), kqlScriptName, apiVersion, kqlScript, accept, context);
     }
@@ -228,7 +228,7 @@ public final class KqlScriptsOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KqlScriptResource>> getByNameWithResponseAsync(String kqlScriptName) {
-        final String apiVersion = "2021-06-01-preview";
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context -> service.getByName(this.client.getEndpoint(), kqlScriptName, apiVersion, accept, context));
@@ -246,7 +246,7 @@ public final class KqlScriptsOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<KqlScriptResource>> getByNameWithResponseAsync(String kqlScriptName, Context context) {
-        final String apiVersion = "2021-06-01-preview";
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         return service.getByName(this.client.getEndpoint(), kqlScriptName, apiVersion, accept, context);
     }
@@ -336,7 +336,7 @@ public final class KqlScriptsOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteByNameWithResponseAsync(String kqlScriptName) {
-        final String apiVersion = "2021-06-01-preview";
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context -> service.deleteByName(this.client.getEndpoint(), kqlScriptName, apiVersion, accept, context));
@@ -354,7 +354,7 @@ public final class KqlScriptsOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteByNameWithResponseAsync(String kqlScriptName, Context context) {
-        final String apiVersion = "2021-06-01-preview";
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         return service.deleteByName(this.client.getEndpoint(), kqlScriptName, apiVersion, accept, context);
     }
@@ -428,7 +428,7 @@ public final class KqlScriptsOperationsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renameWithResponseAsync(String kqlScriptName, ArtifactRenameRequest renameRequest) {
-        final String apiVersion = "2021-06-01-preview";
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         return FluxUtil.withContext(
                 context ->
@@ -450,7 +450,7 @@ public final class KqlScriptsOperationsImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> renameWithResponseAsync(
             String kqlScriptName, ArtifactRenameRequest renameRequest, Context context) {
-        final String apiVersion = "2021-06-01-preview";
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         return service.rename(this.client.getEndpoint(), kqlScriptName, apiVersion, renameRequest, accept, context);
     }

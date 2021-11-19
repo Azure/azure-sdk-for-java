@@ -3,6 +3,7 @@
 package com.azure.security.attestation.models;
 
 import com.azure.core.util.serializer.JacksonAdapter;
+import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.security.attestation.AttestationClientTestBase;
 import com.azure.security.attestation.implementation.models.AttestationResult;
 import com.azure.security.attestation.implementation.models.AttestationTokenImpl;
@@ -210,7 +211,7 @@ public class AttestationTokenTests extends AttestationClientTestBase {
             .setAlg("Test Algorithm")
             .setInteger(31415926)
             .setIntegerArray(new int[]{123, 456, 789});
-        String objectString = assertDoesNotThrow(() -> adapter.serializer().writeValueAsString(testObject));
+        String objectString = assertDoesNotThrow(() -> adapter.serialize(testObject, SerializerEncoding.JSON));
 
         AttestationToken newToken = AttestationTokenImpl.createUnsecuredToken(objectString);
 
@@ -323,8 +324,7 @@ public class AttestationTokenTests extends AttestationClientTestBase {
             .setNotBefore(timeNow)
             .setExpiresOn(timeNow.plusSeconds(30))
             .setIssuer("Fred");
-
-        String objectString = assertDoesNotThrow(() -> adapter.serializer().writeValueAsString(testObject));
+        String objectString = assertDoesNotThrow(() -> adapter.serialize(testObject, SerializerEncoding.JSON));
 
         AttestationToken newToken = AttestationTokenImpl.createSecuredToken(objectString, signingKey);
 
@@ -357,7 +357,7 @@ public class AttestationTokenTests extends AttestationClientTestBase {
             .setExpiresOn(timeNow.plusSeconds(30))
             .setIssuer("Fred");
 
-        String objectString = assertDoesNotThrow(() -> adapter.serializer().writeValueAsString(testObject));
+        String objectString = assertDoesNotThrow(() -> adapter.serialize(testObject, SerializerEncoding.JSON));
 
         AttestationToken newToken = AttestationTokenImpl.createUnsecuredToken(objectString);
 
@@ -393,7 +393,7 @@ public class AttestationTokenTests extends AttestationClientTestBase {
             .setExpiresOn(timeNow.minusSeconds(30))
             .setIssuer("Fred");
 
-        String objectString = assertDoesNotThrow(() -> adapter.serializer().writeValueAsString(testObjectExpired30SecondsAgo));
+        String objectString = assertDoesNotThrow(() -> adapter.serialize(testObjectExpired30SecondsAgo, SerializerEncoding.JSON));
 
         AttestationToken newToken = AttestationTokenImpl.createUnsecuredToken(objectString);
 
@@ -421,7 +421,7 @@ public class AttestationTokenTests extends AttestationClientTestBase {
             .setExpiresOn(timeNow.plusSeconds(60))
             .setIssuer("Fred");
 
-        String objectString = assertDoesNotThrow(() -> adapter.serializer().writeValueAsString(testObjectExpired30SecondsAgo));
+        String objectString = assertDoesNotThrow(() -> adapter.serialize(testObjectExpired30SecondsAgo, SerializerEncoding.JSON));
 
         AttestationToken newToken = AttestationTokenImpl.createUnsecuredToken(objectString);
 
@@ -450,7 +450,7 @@ public class AttestationTokenTests extends AttestationClientTestBase {
             .setExpiresOn(timeNow.plusSeconds(60))
             .setIssuer("Fred");
 
-        String objectString = assertDoesNotThrow(() -> adapter.serializer().writeValueAsString(testObjectExpired30SecondsAgo));
+        String objectString = assertDoesNotThrow(() -> adapter.serialize(testObjectExpired30SecondsAgo, SerializerEncoding.JSON));
 
         AttestationToken newToken = AttestationTokenImpl.createUnsecuredToken(objectString);
 

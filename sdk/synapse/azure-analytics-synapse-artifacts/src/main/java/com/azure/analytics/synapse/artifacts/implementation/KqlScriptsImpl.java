@@ -82,7 +82,7 @@ public final class KqlScriptsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<KqlScriptResource>> getAllSinglePageAsync() {
-        final String apiVersion = "2021-06-01-preview";
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.getAll(this.client.getEndpoint(), apiVersion, accept, context))
                 .map(
@@ -107,7 +107,7 @@ public final class KqlScriptsImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<KqlScriptResource>> getAllSinglePageAsync(Context context) {
-        final String apiVersion = "2021-06-01-preview";
+        final String apiVersion = "2021-11-01-preview";
         final String accept = "application/json";
         return service.getAll(this.client.getEndpoint(), apiVersion, accept, context)
                 .map(

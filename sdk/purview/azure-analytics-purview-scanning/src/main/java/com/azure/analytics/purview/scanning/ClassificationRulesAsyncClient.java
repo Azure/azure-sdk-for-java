@@ -5,6 +5,7 @@
 package com.azure.analytics.purview.scanning;
 
 import com.azure.analytics.purview.scanning.implementation.ClassificationRulesImpl;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -18,13 +19,14 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous PurviewScanningClient type. */
 @ServiceClient(builder = PurviewScanningClientBuilder.class, isAsync = true)
 public final class ClassificationRulesAsyncClient {
-    private final ClassificationRulesImpl serviceClient;
+    @Generated private final ClassificationRulesImpl serviceClient;
 
     /**
      * Initializes an instance of ClassificationRules client.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     ClassificationRulesAsyncClient(ClassificationRulesImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -55,6 +57,7 @@ public final class ClassificationRulesAsyncClient {
      *     false.
      * @return a classification rule.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getWithResponse(String classificationRuleName, RequestOptions requestOptions) {
         return this.serviceClient.getWithResponseAsync(classificationRuleName, requestOptions);
@@ -95,10 +98,11 @@ public final class ClassificationRulesAsyncClient {
      *     false.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> upsertWithResponse(
+    public Mono<Response<BinaryData>> createOrUpdateWithResponse(
             String classificationRuleName, RequestOptions requestOptions) {
-        return this.serviceClient.upsertWithResponseAsync(classificationRuleName, requestOptions);
+        return this.serviceClient.createOrUpdateWithResponseAsync(classificationRuleName, requestOptions);
     }
 
     /**
@@ -127,6 +131,7 @@ public final class ClassificationRulesAsyncClient {
      *     false.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> deleteWithResponse(String classificationRuleName, RequestOptions requestOptions) {
         return this.serviceClient.deleteWithResponseAsync(classificationRuleName, requestOptions);
@@ -163,6 +168,7 @@ public final class ClassificationRulesAsyncClient {
      *     false.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listAll(RequestOptions requestOptions) {
         return this.serviceClient.listAllAsync(requestOptions);
@@ -200,6 +206,7 @@ public final class ClassificationRulesAsyncClient {
      *     false.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listVersionsByClassificationRuleName(
             String classificationRuleName, RequestOptions requestOptions) {
@@ -251,6 +258,7 @@ public final class ClassificationRulesAsyncClient {
      *     false.
      * @return the response.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> tagClassificationVersionWithResponse(
             String classificationRuleName, int classificationRuleVersion, RequestOptions requestOptions) {
