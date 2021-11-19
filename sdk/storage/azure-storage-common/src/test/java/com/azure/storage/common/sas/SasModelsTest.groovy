@@ -266,7 +266,7 @@ class SasModelsTest extends Specification {
     def "Sas date time round trip"() {
         setup:
         // These datetime values do not specify seconds, which is valid on azure, but our default is always to add seconds
-        def originalString = "ss=2021-07-20T13%3A21Z&se=2021-07-20T13%3A21Z&skt=2021-07-20T13%3A21Z&ske=2021-07-20T13%3A21Z"
+        def originalString = "st=2021-07-20T13%3A21Z&se=2021-07-20T13%3A21Z&skt=2021-07-20T13%3A21Z&ske=2021-07-20T13%3A21Z"
         def splitOriginalParams = SasImplUtils.parseQueryString(originalString)
 
         when:
