@@ -46,6 +46,9 @@ public class ReactiveCosmosRepositoryFactoryBean<T extends Repository<S, K>, S,
         return getFactoryInstance();
     }
 
+    /**
+     * @return the factory instance
+     */
     protected RepositoryFactorySupport getFactoryInstance() {
         return new ReactiveCosmosRepositoryFactory(cosmosOperations);
     }

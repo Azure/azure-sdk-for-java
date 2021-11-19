@@ -49,47 +49,56 @@ public class ReadmeSamples {
      * Code snippet for configuring http client.
      */
     public void configureHttpClient() {
+        // BEGIN: readme-sample-configureHttpClient
         HttpClient client = new NettyAsyncHttpClientBuilder()
             .port(8080)
             .wiretap(true)
             .build();
+        // END: readme-sample-configureHttpClient
     }
 
     /**
      * Code snippet for getting sync client using the AzureKeyCredential authentication.
      */
     public void useAzureKeyCredentialSyncClient() {
+        // BEGIN: readme-sample-createTextAnalyticsClientWithKeyCredential
         TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildClient();
+        // END: readme-sample-createTextAnalyticsClientWithKeyCredential
     }
 
     /**
      * Code snippet for getting async client using AzureKeyCredential authentication.
      */
     public void useAzureKeyCredentialAsyncClient() {
-        TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
+        // BEGIN: readme-sample-createTextAnalyticsAsyncClientWithKeyCredential
+        TextAnalyticsAsyncClient textAnalyticsAsyncClient = new TextAnalyticsClientBuilder()
             .credential(new AzureKeyCredential("{key}"))
             .endpoint("{endpoint}")
             .buildAsyncClient();
+        // END: readme-sample-createTextAnalyticsAsyncClientWithKeyCredential
     }
 
     /**
      * Code snippet for getting async client using AAD authentication.
      */
     public void useAadAsyncClient() {
+        // BEGIN: readme-sample-createTextAnalyticsAsyncClientWithAAD
         TokenCredential defaultCredential = new DefaultAzureCredentialBuilder().build();
-        TextAnalyticsAsyncClient textAnalyticsClient = new TextAnalyticsClientBuilder()
+        TextAnalyticsAsyncClient textAnalyticsAsyncClient = new TextAnalyticsClientBuilder()
             .endpoint("{endpoint}")
             .credential(defaultCredential)
             .buildAsyncClient();
+        // END: readme-sample-createTextAnalyticsAsyncClientWithAAD
     }
 
     /**
      * Code snippet for rotating AzureKeyCredential of the client
      */
     public void rotatingAzureKeyCredential() {
+        // BEGIN: readme-sample-rotatingAzureKeyCredential
         AzureKeyCredential credential = new AzureKeyCredential("{key}");
         TextAnalyticsClient textAnalyticsClient = new TextAnalyticsClientBuilder()
             .credential(credential)
@@ -97,12 +106,14 @@ public class ReadmeSamples {
             .buildClient();
 
         credential.update("{new_key}");
+        // END: readme-sample-rotatingAzureKeyCredential
     }
 
     /**
      * Code snippet for handling exception
      */
     public void handlingException() {
+        // BEGIN: readme-sample-handlingException
         List<DetectLanguageInput> documents = Arrays.asList(
             new DetectLanguageInput("1", "This is written in English.", "us"),
             new DetectLanguageInput("1", "Este es un documento  escrito en Español.", "es")
@@ -113,43 +124,51 @@ public class ReadmeSamples {
         } catch (HttpResponseException e) {
             System.out.println(e.getMessage());
         }
+        // END: readme-sample-handlingException
     }
 
     /**
      * Code snippet for analyzing sentiment of a document.
      */
     public void analyzeSentiment() {
+        // BEGIN: readme-sample-analyzeSentiment
         String document = "The hotel was dark and unclean. I like microsoft.";
         DocumentSentiment documentSentiment = textAnalyticsClient.analyzeSentiment(document);
         System.out.printf("Analyzed document sentiment: %s.%n", documentSentiment.getSentiment());
         documentSentiment.getSentences().forEach(sentenceSentiment ->
             System.out.printf("Analyzed sentence sentiment: %s.%n", sentenceSentiment.getSentiment()));
+        // END: readme-sample-analyzeSentiment
     }
 
     /**
      * Code snippet for detecting language in a document.
      */
     public void detectLanguages() {
+        // BEGIN: readme-sample-detectLanguages
         String document = "Bonjour tout le monde";
         DetectedLanguage detectedLanguage = textAnalyticsClient.detectLanguage(document);
         System.out.printf("Detected language name: %s, ISO 6391 name: %s, confidence score: %f.%n",
             detectedLanguage.getName(), detectedLanguage.getIso6391Name(), detectedLanguage.getConfidenceScore());
+        // END: readme-sample-detectLanguages
     }
 
     /**
      * Code snippet for recognizing category entity in a document.
      */
     public void recognizeEntity() {
+        // BEGIN: readme-sample-recognizeEntity
         String document = "Satya Nadella is the CEO of Microsoft";
         textAnalyticsClient.recognizeEntities(document).forEach(entity ->
             System.out.printf("Recognized entity: %s, category: %s, subcategory: %s, confidence score: %f.%n",
                 entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore()));
+        // END: readme-sample-recognizeEntity
     }
 
     /**
      * Code snippet for recognizing linked entity in a document.
      */
     public void recognizeLinkedEntity() {
+        // BEGIN: readme-sample-recognizeLinkedEntity
         String document = "Old Faithful is a geyser at Yellowstone Park.";
         textAnalyticsClient.recognizeLinkedEntities(document).forEach(linkedEntity -> {
             System.out.println("Linked Entities:");
@@ -158,21 +177,25 @@ public class ReadmeSamples {
             linkedEntity.getMatches().forEach(match ->
                 System.out.printf("Text: %s, confidence score: %f.%n", match.getText(), match.getConfidenceScore()));
         });
+        // END: readme-sample-recognizeLinkedEntity
     }
 
     /**
      * Code snippet for extracting key phrases in a document.
      */
     public void extractKeyPhrases() {
+        // BEGIN: readme-sample-extractKeyPhrases
         String document = "My cat might need to see a veterinarian.";
         System.out.println("Extracted phrases:");
         textAnalyticsClient.extractKeyPhrases(document).forEach(keyPhrase -> System.out.printf("%s.%n", keyPhrase));
+        // END: readme-sample-extractKeyPhrases
     }
 
     /**
      * Code snippet for recognizing Personally Identifiable Information entity in a document.
      */
     public void recognizePiiEntity() {
+        // BEGIN: readme-sample-recognizePiiEntity
         String document = "My SSN is 859-98-0987";
         PiiEntityCollection piiEntityCollection = textAnalyticsClient.recognizePiiEntities(document);
         System.out.printf("Redacted Text: %s%n", piiEntityCollection.getRedactedText());
@@ -180,12 +203,14 @@ public class ReadmeSamples {
             "Recognized Personally Identifiable Information entity: %s, entity category: %s, entity subcategory: %s,"
                 + " confidence score: %f.%n",
             entity.getText(), entity.getCategory(), entity.getSubcategory(), entity.getConfidenceScore()));
+        // END: readme-sample-recognizePiiEntity
     }
 
     /**
      * Code snippet for recognizing healthcare entities in documents.
      */
     public void recognizeHealthcareEntities() {
+        // BEGIN: readme-sample-recognizeHealthcareEntities
         List<TextDocumentInput> documents = Arrays.asList(new TextDocumentInput("0",
             "RECORD #333582770390100 | MH | 85986313 | | 054351 | 2/14/2001 12:00:00 AM | "
                 + "CORONARY ARTERY DISEASE | Signed | DIS | Admission Date: 5/22/2001 "
@@ -234,12 +259,14 @@ public class ReadmeSamples {
                         });
                     });
                 }));
+        // END: readme-sample-recognizeHealthcareEntities
     }
 
     /**
      * Code snippet for executing actions in a batch of documents.
      */
     public void analyzeActions() {
+        // BEGIN: readme-sample-analyzeActions
         List<TextDocumentInput> documents = Arrays.asList(
             new TextDocumentInput("0",
                 "We went to Contoso Steakhouse located at midtown NYC last week for a dinner party, and we adore"
@@ -290,4 +317,5 @@ public class ReadmeSamples {
             });
         });
     }
+    // END: readme-sample-analyzeActions
 }

@@ -22,6 +22,24 @@ public class Transformation {
     @JsonProperty(value = "description")
     private String description;
 
+    /*
+     * Dataset reference.
+     */
+    @JsonProperty(value = "dataset")
+    private DatasetReference dataset;
+
+    /*
+     * Linked service reference.
+     */
+    @JsonProperty(value = "linkedService")
+    private LinkedServiceReference linkedService;
+
+    /*
+     * Flowlet Reference
+     */
+    @JsonProperty(value = "flowlet")
+    private DataFlowReference flowlet;
+
     /**
      * Get the name property: Transformation name.
      *
@@ -59,6 +77,66 @@ public class Transformation {
      */
     public Transformation setDescription(String description) {
         this.description = description;
+        return this;
+    }
+
+    /**
+     * Get the dataset property: Dataset reference.
+     *
+     * @return the dataset value.
+     */
+    public DatasetReference getDataset() {
+        return this.dataset;
+    }
+
+    /**
+     * Set the dataset property: Dataset reference.
+     *
+     * @param dataset the dataset value to set.
+     * @return the Transformation object itself.
+     */
+    public Transformation setDataset(DatasetReference dataset) {
+        this.dataset = dataset;
+        return this;
+    }
+
+    /**
+     * Get the linkedService property: Linked service reference.
+     *
+     * @return the linkedService value.
+     */
+    public LinkedServiceReference getLinkedService() {
+        return this.linkedService;
+    }
+
+    /**
+     * Set the linkedService property: Linked service reference.
+     *
+     * @param linkedService the linkedService value to set.
+     * @return the Transformation object itself.
+     */
+    public Transformation setLinkedService(LinkedServiceReference linkedService) {
+        this.linkedService = linkedService;
+        return this;
+    }
+
+    /**
+     * Get the flowlet property: Flowlet Reference.
+     *
+     * @return the flowlet value.
+     */
+    public DataFlowReference getFlowlet() {
+        return this.flowlet;
+    }
+
+    /**
+     * Set the flowlet property: Flowlet Reference.
+     *
+     * @param flowlet the flowlet value to set.
+     * @return the Transformation object itself.
+     */
+    public Transformation setFlowlet(DataFlowReference flowlet) {
+        this.flowlet = flowlet;
         return this;
     }
 }
