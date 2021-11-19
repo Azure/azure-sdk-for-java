@@ -280,8 +280,56 @@ spring:
 1. All configuration property names changed the prefix from `azure.activedirectory.b2c.` to `spring.cloud.azure.active-directory.b2c.`.
 2. New property `spring.cloud.azure.active-directory.b2c.enabled=true` is necessary to enable related features.
  
+### spring-cloud-azure-starter-data-cosmos
+1. All configuration property names changed the prefix from `azure.cosmos` to `spring.cloud.azure.cosmos`.
+
+| Legacy properties                 | Morden properties                              | 
+|-----------------------------------|------------------------------------------------|
+| azure.cosmos.uri                  | spring.cloud.azure.cosmos.endpoint             |
+| azure.cosmos.key                  | spring.cloud.azure.cosmos.key                  |
+| azure.cosmos.database             | spring.cloud.azure.cosmos.database             |
+| azure.cosmos.populateQueryMetrics | spring.cloud.azure.cosmos.populateQueryMetrics |
+
+
+### spring-cloud-azure-starter-storage-blob
+1. All configuration property names changed the prefix from `azure.storage` to `spring.cloud.azure.storage.blob`.
+
+| Legacy properties           | Morden properties                            | 
+|-----------------------------|----------------------------------------------|
+| azure.storage.account-name  | spring.cloud.azure.storage.blob.account-name |
+| azure.storage.account-key   | spring.cloud.azure.storage.blob.account-key  |
+| azure.storage.blob-endpoint | spring.cloud.azure.storage.blob.endpoint     |
+
+### spring-cloud-azure-starter-storage-file-share
+ All configuration property names changed the prefix from `azure.storage` to `spring.cloud.azure.storage.fileshare`.
+
+| Legacy properties           | Morden properties                                 | 
+|-----------------------------|---------------------------------------------------|
+| azure.storage.account-name  | spring.cloud.azure.storage.fileshare.account-name |
+| azure.storage.account-key   | spring.cloud.azure.storage.fileshare.account-key  |
+| azure.storage.file-endpoint | spring.cloud.azure.storage.fileshare.endpoint     |
+   
+
+### spring-cloud-azure-starter-integration-storage-queue
+All configuration property names changed the prefix from `spring.cloud.azure.storage` to `spring.cloud.azure.storage.queue`.
+
+| Legacy properties                         | Morden properties                                        |
+|-------------------------------------------|----------------------------------------------------------|
+| spring.cloud.azure.storage.account        | spring.cloud.azure.storage.queue.account-name            |
+| spring.cloud.azure.storage.access-key     | spring.cloud.azure.storage.queue.account-key             |
+| spring.cloud.azure.storage.resource-group | spring.cloud.azure.storage.queue.resource.resource-group |
 
 ## API breaking changes
+
+
+### spring-cloud-azure-starter-integration-storage-queue
+| Legacy class                                                        | Modern class                                               |
+|---------------------------------------------------------------------|------------------------------------------------------------|
+| com.azure.spring.integration.core.api.CheckpointMode                | com.azure.spring.messaging.checkpoint.CheckpointMode       |
+| com.azure.spring.integration.core.api.reactor.Checkpointer          | com.azure.spring.messaging.checkpoint.Checkpointer         |
+| com.azure.spring.integration.core.api.reactor.DefaultMessageHandler | com.azure.spring.integration.handler.DefaultMessageHandler |
+| com.azure.spring.integration.core.AzureHeaders                      | com.azure.spring.messaging.AzureHeaders                    |
+| com.azure.spring.integration.storage.queue.StorageQueueOperation    | com.azure.spring.storage.queue.core.StorageQueueOperation  |
 
 ## Authentication
 
