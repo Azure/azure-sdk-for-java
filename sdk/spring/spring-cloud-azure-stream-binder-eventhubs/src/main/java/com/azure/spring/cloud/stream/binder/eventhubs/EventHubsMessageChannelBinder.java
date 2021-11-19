@@ -80,8 +80,6 @@ public class EventHubsMessageChannelBinder extends
     private final Map<Tuple2<String, String>, ExtendedConsumerProperties<EventHubsConsumerProperties>>
         extendedConsumerPropertiesMap = new ConcurrentHashMap<>();
 
-    private final Map<String, EventHubInformation> eventHubsInUse = new ConcurrentHashMap<>();
-
     public EventHubsMessageChannelBinder(String[] headersToEmbed, EventHubsChannelProvisioner provisioningProvider) {
         super(headersToEmbed, provisioningProvider);
     }
@@ -93,8 +91,6 @@ public class EventHubsMessageChannelBinder extends
         MessageChannel errorChannel) {
         extendedProducerPropertiesMap.put(destination.getName(), producerProperties);
         Assert.notNull(getEventHubTemplate(), "eventHubsTemplate can't be null when create a producer");
-
-        eventHubsInUse.put(destination.getName(), new EventHubInformation(null));
 
         DefaultMessageHandler handler = new DefaultMessageHandler(destination.getName(), this.eventHubsTemplate);
 
@@ -120,8 +116,6 @@ public class EventHubsMessageChannelBinder extends
                                                      ExtendedConsumerProperties<EventHubsConsumerProperties> properties) {
         extendedConsumerPropertiesMap.put(Tuples.of(destination.getName(), group), properties);
         Assert.notNull(getProcessorContainer(), "eventProcessorsContainer can't be null when create a consumer");
-
-        eventHubsInUse.put(destination.getName(), new EventHubInformation(group));
 
         boolean anonymous = !StringUtils.hasText(group);
         if (anonymous) {
@@ -170,23 +164,6 @@ public class EventHubsMessageChannelBinder extends
         this.bindingProperties = bindingProperties;
     }
 
-    Map<String, EventHubInformation> getEventHubsInUse() {
-        return eventHubsInUse;
-    }
-
-    static class EventHubInformation {
-
-        private final String consumerGroup;
-
-        EventHubInformation(String consumerGroup) {
-            this.consumerGroup = consumerGroup;
-        }
-
-        public String getConsumerGroup() {
-            return consumerGroup;
-        }
-    }
-
     private PropertiesSupplier<String, ProducerProperties> getProducerPropertiesSupplier() {
         return key -> {
             if (this.extendedProducerPropertiesMap.containsKey(key)) {
@@ -216,7 +193,7 @@ public class EventHubsMessageChannelBinder extends
         };
     }
 
-    private EventHubsTemplate getEventHubTemplate() {
+    public EventHubsTemplate getEventHubTemplate() {
         if (this.eventHubsTemplate == null) {
             DefaultEventHubsNamespaceProducerFactory factory = new DefaultEventHubsNamespaceProducerFactory(
                 this.namespaceProperties, getProducerPropertiesSupplier());

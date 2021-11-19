@@ -73,7 +73,6 @@ public class ServiceBusBinderHealthIndicatorTest {
     private static final String NAMESPACE_NAME = "test-namespace";
 
     @BeforeEach
-
     public void init() {
         MockitoAnnotations.openMocks(this);
         GenericApplicationContext context = new GenericApplicationContext();

@@ -9,10 +9,7 @@ import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusExte
 import com.azure.spring.cloud.stream.binder.servicebus.properties.ServiceBusProducerProperties;
 import com.azure.spring.cloud.stream.binder.servicebus.provisioning.ServiceBusChannelProvisioner;
 import com.azure.spring.integration.handler.DefaultMessageHandler;
-import com.azure.spring.integration.instrumentation.DefaultInstrumentation;
-import com.azure.spring.integration.instrumentation.DefaultInstrumentationManager;
-import com.azure.spring.integration.instrumentation.Instrumentation;
-import com.azure.spring.integration.instrumentation.InstrumentationManager;
+import com.azure.spring.integration.instrumentation.*;
 import com.azure.spring.integration.servicebus.inbound.ServiceBusInboundChannelAdapter;
 import com.azure.spring.integration.servicebus.inbound.health.ServiceBusProcessorInstrumentation;
 import com.azure.spring.messaging.PropertiesSupplier;
@@ -28,12 +25,7 @@ import com.azure.spring.servicebus.support.ServiceBusMessageHeaders;
 import com.azure.spring.servicebus.support.converter.ServiceBusMessageConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.cloud.stream.binder.AbstractMessageChannelBinder;
-import org.springframework.cloud.stream.binder.BinderHeaders;
-import org.springframework.cloud.stream.binder.BinderSpecificPropertiesProvider;
-import org.springframework.cloud.stream.binder.ExtendedConsumerProperties;
-import org.springframework.cloud.stream.binder.ExtendedProducerProperties;
-import org.springframework.cloud.stream.binder.ExtendedPropertiesBinder;
+import org.springframework.cloud.stream.binder.*;
 import org.springframework.cloud.stream.provisioning.ConsumerDestination;
 import org.springframework.cloud.stream.provisioning.ProducerDestination;
 import org.springframework.integration.core.MessageProducer;
@@ -45,7 +37,6 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
 import org.springframework.messaging.support.ErrorMessage;
 import org.springframework.util.Assert;
-import org.springframework.util.concurrent.ListenableFutureCallback;
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
@@ -294,27 +285,5 @@ public class ServiceBusMessageChannelBinder extends
 
     public InstrumentationManager getInstrumentationManager() {
         return instrumentationManager;
-    }
-
-    private static class InstrumentationSendCallback implements ListenableFutureCallback<Void> {
-
-        private final InstrumentationManager instrumentationManager;
-
-        private final String instrumentationId;
-
-        InstrumentationSendCallback(String instrumentationId, InstrumentationManager instrumentationManager) {
-            this.instrumentationId = instrumentationId;
-            this.instrumentationManager = instrumentationManager;
-        }
-
-        @Override
-        public void onFailure(Throwable ex) {
-            this.instrumentationManager.getHealthInstrumentation(instrumentationId).markDown(ex);
-        }
-
-        @Override
-        public void onSuccess(Void result) {
-            this.instrumentationManager.getHealthInstrumentation(instrumentationId).markUp();
-        }
     }
 }
