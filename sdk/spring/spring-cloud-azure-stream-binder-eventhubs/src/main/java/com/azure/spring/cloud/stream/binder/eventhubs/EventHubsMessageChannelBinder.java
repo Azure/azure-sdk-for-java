@@ -52,7 +52,6 @@ import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
-import static com.azure.spring.eventhubs.core.processor.DefaultEventHubsNamespaceProcessorFactory.INVALID_SUBSCRIPTION;
 import static com.azure.spring.integration.instrumentation.Instrumentation.Type.CONSUMER;
 import static com.azure.spring.integration.instrumentation.Instrumentation.Type.PRODUCER;
 
@@ -131,7 +130,7 @@ public class EventHubsMessageChannelBinder extends
                 destination.getName(), group, properties.getExtension().getCheckpoint());
         }
         inboundAdapter.setBeanFactory(getBeanFactory());
-        String instrumentationId = Instrumentation.buildId(CONSUMER, destination.getName() + "/" + (!INVALID_SUBSCRIPTION.equals(group) ? group : ""));
+        String instrumentationId = Instrumentation.buildId(CONSUMER, destination.getName() + "/" +  group);
         inboundAdapter.setInstrumentationManager(instrumentationManager);
         inboundAdapter.setInstrumentationId(instrumentationId);
         ErrorInfrastructure errorInfrastructure = registerErrorInfrastructure(destination, group, properties);
@@ -212,7 +211,7 @@ public class EventHubsMessageChannelBinder extends
             DefaultEventHubsNamespaceProcessorFactory factory = new DefaultEventHubsNamespaceProcessorFactory(
                 this.checkpointStore, this.namespaceProperties, getProcessorPropertiesSupplier());
             factory.addListener((name, consumerGroup) -> {
-                String instrumentationName = name + "/" + consumerGroup == null ? "" : consumerGroup;
+                String instrumentationName = name + "/" + consumerGroup;
                 Instrumentation instrumentation = new EventHusProcessorInstrumentation(instrumentationName, CONSUMER, Duration.ofMinutes(2));
                 instrumentation.markUp();
                 instrumentationManager.addHealthInstrumentation(instrumentation.getId(), instrumentation);
