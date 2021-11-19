@@ -49,7 +49,7 @@ public final class DefaultEventHubsNamespaceProducerFactory implements EventHubs
     private EventHubProducerAsyncClient doCreateProducer(String eventHub, @Nullable ProducerProperties properties) {
         return clients.computeIfAbsent(eventHub, entityName -> {
             ProducerProperties producerProperties = parentMerger.mergeParent(properties, this.namespaceProperties);
-            producerProperties.setEventHubName(eventHub);
+            producerProperties.setEventHubName(entityName);
             EventHubClientBuilderFactory factory = new EventHubClientBuilderFactory(producerProperties);
             factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_EVENT_HUBS);
             EventHubProducerAsyncClient producerClient = factory.build().buildAsyncProducerClient();

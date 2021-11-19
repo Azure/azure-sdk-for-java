@@ -97,7 +97,7 @@ public class DefaultEventHubsNamespaceProcessorFactory implements EventHubsProce
                 new EventProcessorClientBuilderFactory(processorProperties, this.checkpointStore, listener);
             factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_EVENT_HUBS);
             EventProcessorClient client = factory.build().buildEventProcessorClient();
-            LOGGER.info("EventProcessor created for event hub '{}' with consumer group '{}'", eventHub, consumerGroup);
+            LOGGER.info("EventProcessor created for event hub '{}' with consumer group '{}'", k.getT1(), k.getT2());
 
             this.listeners.forEach(l -> l.processorAdded(k.getT1(), k.getT2(), client));
 
