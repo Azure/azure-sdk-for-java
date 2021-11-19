@@ -234,7 +234,16 @@ public class AzureEventHubsProperties extends AzureEventHubsCommonProperties imp
          */
         public static class BlobCheckpointStore extends AzureStorageBlobProperties  {
 
+            private Boolean createContainerIfNotExists;
 
+
+            public Boolean getCreateContainerIfNotExists() {
+                return createContainerIfNotExists;
+            }
+
+            public void setCreateContainerIfNotExists(Boolean createContainerIfNotExists) {
+                this.createContainerIfNotExists = createContainerIfNotExists;
+            }
         }
     }
 

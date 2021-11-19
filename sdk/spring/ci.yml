@@ -130,18 +130,22 @@ extends:
         groupId: com.azure.spring
         safeName: springmessagingazure
         skipPublishDocMs: true
+        skipVerifyChangelog: true
       - name: spring-messaging-azure-eventhubs
         groupId: com.azure.spring
         safeName: springmessagingazureeventhubs
         skipPublishDocMs: true
+        skipVerifyChangelog: true
       - name: spring-messaging-azure-servicebus
         groupId: com.azure.spring
         safeName: springmessagingazureservicebus
         skipPublishDocMs: true
+        skipVerifyChangelog: true
       - name: spring-messaging-azure-storage-queue
         groupId: com.azure.spring
         safeName: springmessagingazurestoragequeue
         skipPublishDocMs: true
+        skipVerifyChangelog: true
       - name: spring-cloud-azure-autoconfigure
         groupId: com.azure.spring
         safeName: springcloudazureautoconfigure
@@ -256,17 +260,21 @@ extends:
         groupId: com.azure.spring
         safeName: springintegrationazurecore
         skipPublishDocMs: true
+        skipVerifyChangelog: true
       - name: spring-integration-azure-eventhubs
         groupId: com.azure.spring
         safeName: springintegrationazureeventhubs
         skipPublishDocMs: true
+        skipVerifyChangelog: true
       - name: spring-integration-azure-servicebus
         groupId: com.azure.spring
         safeName: springintegrationazureservicebus
         skipPublishDocMs: true
+        skipVerifyChangelog: true
       - name: spring-integration-azure-storage-queue
         groupId: com.azure.spring
         safeName: springintegrationazurestoragequeue
+        skipVerifyChangelog: true
       - name: spring-cloud-azure-starter-actuator
         groupId: com.azure.spring
         safeName: springcloudazurestarteractuator
@@ -295,19 +303,24 @@ extends:
         groupId: com.azure.spring
         safeName: springcloudazurestreambinderservicebuscore
         skipPublishDocMs: true
+        skipVerifyChangelog: true
       - name: spring-cloud-azure-stream-binder-servicebus
         groupId: com.azure.spring
         safeName: springcloudazurestreambinderservicebus
         skipPublishDocMs: true
+        skipVerifyChangelog: true
       - name: spring-cloud-azure-stream-binder-eventhubs
         groupId: com.azure.spring
         safeName: springcloudazurestreambindereventhubs
         skipPublishDocMs: true
+        skipVerifyChangelog: true
       - name: spring-cloud-azure-stream-binder-eventhubs-core
         groupId: com.azure.spring
         safeName: springcloudazurestreambindereventhubscore
         skipPublishDocMs: true
+        skipVerifyChangelog: true
       - name: spring-cloud-azure-stream-binder-test
         groupId: com.azure.spring
         safeName: springcloudazurestreambindertest
         skipPublishDocMs: true
+        skipVerifyChangelog: true
