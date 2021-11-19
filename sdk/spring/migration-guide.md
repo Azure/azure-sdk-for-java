@@ -182,7 +182,7 @@ For a full list of common configurations, check this list **[placeholder]**.
 ### Each SDK configurations
 
 #### spring-cloud-azure-starter-integration-eventhubs  
-    (legacy: azure-spring-cloud-starter-eventhubs)
+> (legacy: azure-spring-cloud-starter-eventhubs)
 - As per prefix of `spring.cloud.azure.`  
 
 prefix changed from
@@ -224,20 +224,20 @@ spring:
 ```
 
 #### spring-cloud-azure-stream-binder-eventhubs
-    (legacy: azure-spring-cloud-stream-binder-eventhubs)
+> (legacy: azure-spring-cloud-stream-binder-eventhubs)
 - As per prefix of `spring.cloud.azure.`  
   [please refer the above section](#azure-spring-cloud-starter-eventhubs)
 
 - As per prefix of `spring.cloud.stream.binders.<eventhub-name>.environment.spring.cloud.azure`:  
 prefix change from:  
-`spring.cloud.stream.binders.<eventhub-name>.environment.spring.cloud.azure.eventhub`  
+`spring.cloud.stream.binders.<eventhub-name>.environment.spring.cloud.azure.eventhub`   
 to:  
 `spring.cloud.stream.binders.<eventhub-name>.environment.spring.cloud.azure.eventhubs`
 
 - As per prefix of `spring.cloud.stream.eventhub`:  
-    prefix changed from
-    `spring.cloud.stream.eventhub.bindings.<binding-name>.`
-    to
+    prefix changed from  
+    `spring.cloud.stream.eventhub.bindings.<binding-name>.`  
+    to  
     `spring.cloud.stream.eventhubs.bindings.<binding-name>.`
 
 Changes for the child entries for this prefix, please refer the following tables:    
@@ -249,6 +249,7 @@ Changes for the child entries for this prefix, please refer the following tables
 |`consumer.checkpoint-mode`|`consumer.checkpoint.mode`
 |`consumer.checkpoint-count`|`consumer.checkpoint.count`
 |`consumer.checkpoint-interval`|`consumer.checkpoint.interval`
+
 For example, you should change from:
 ```yaml
 spring:
