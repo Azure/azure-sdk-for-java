@@ -51,9 +51,9 @@ public interface ServiceBusProcessorFactory {
     @FunctionalInterface
     interface Listener {
 
-        void processorAdded(String name, String subscription);
+        void processorAdded(String name, String subscription, ServiceBusProcessorClient client);
 
-        default void processorRemoved(String name, String subscription) {
+        default void processorRemoved(String name, String subscription, ServiceBusProcessorClient client) {
         }
 
     }

@@ -4,8 +4,8 @@ package com.azure.spring.cloud.autoconfigure.aad.b2c.implementation;
 
 import com.azure.spring.cloud.autoconfigure.aad.implementation.jwt.AADIssuerJWSKeySelector;
 import com.azure.spring.cloud.autoconfigure.aad.implementation.jwt.AADTrustedIssuerRepository;
-import com.azure.spring.cloud.autoconfigure.aad.implementation.webapi.validator.AADJwtAudienceValidator;
-import com.azure.spring.cloud.autoconfigure.aad.implementation.webapi.validator.AADJwtIssuerValidator;
+import com.azure.spring.cloud.autoconfigure.aad.webapi.validator.AADJwtAudienceValidator;
+import com.azure.spring.cloud.autoconfigure.aad.webapi.validator.AADJwtIssuerValidator;
 import com.nimbusds.jose.proc.SecurityContext;
 import com.nimbusds.jwt.proc.ConfigurableJWTProcessor;
 import com.nimbusds.jwt.proc.DefaultJWTProcessor;

@@ -3,9 +3,11 @@
 
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
+import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusProcessorClient;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
+import com.azure.spring.cloud.autoconfigure.TestBuilderCustomizer;
 import com.azure.spring.service.servicebus.factory.ServiceBusSessionProcessorClientBuilderFactory;
 import com.azure.spring.service.servicebus.processor.MessageProcessingListener;
 import com.azure.spring.service.servicebus.processor.RecordMessageProcessingListener;
@@ -142,7 +144,7 @@ class AzureServiceBusProcessorClientConfigurationTest {
                 "spring.cloud.azure.servicebus.processor.entity-name=test-topic",
                 "spring.cloud.azure.servicebus.processor.subscription-name=test-sub",
                 "spring.cloud.azure.servicebus.processor.entity-type=topic",
-                "spring.cloud.azure.servicebus.processor.session-aware=true"
+                "spring.cloud.azure.servicebus.processor.session-enabled=true"
             )
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .withBean(MessageProcessingListener.class, TestMessageProcessingListener::new)
@@ -166,7 +168,7 @@ class AzureServiceBusProcessorClientConfigurationTest {
                 "spring.cloud.azure.servicebus.processor.entity-name=test-queue",
                 "spring.cloud.azure.servicebus.processor.entity-type=queue",
                 "spring.cloud.azure.servicebus.processor.connection-string=" + String.format(CONNECTION_STRING, "test-namespace"),
-                "spring.cloud.azure.servicebus.processor.session-aware=true"
+                "spring.cloud.azure.servicebus.processor.session-enabled=true"
             )
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .withBean(MessageProcessingListener.class, TestMessageProcessingListener::new)
@@ -180,6 +182,56 @@ class AzureServiceBusProcessorClientConfigurationTest {
                 assertThat(context).hasSingleBean(ServiceBusProcessorClient.class);
             });
     }
+
+    @Test
+    void customizerShouldBeCalledForSession() {
+        ServiceBusSessionProcessorClientBuilderCustomizer customizer = new ServiceBusSessionProcessorClientBuilderCustomizer();
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.servicebus.processor.entity-name=test-queue",
+                "spring.cloud.azure.servicebus.processor.entity-type=queue",
+                "spring.cloud.azure.servicebus.processor.connection-string=" + String.format(CONNECTION_STRING, "test-namespace"),
+                "spring.cloud.azure.servicebus.processor.session-enabled=true"
+            )
+            .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
+            .withBean(MessageProcessingListener.class, TestMessageProcessingListener::new)
+            .withBean("customizer1", ServiceBusSessionProcessorClientBuilderCustomizer.class, () -> customizer)
+            .withBean("customizer2", ServiceBusSessionProcessorClientBuilderCustomizer.class, () -> customizer)
+            .run(context -> assertThat(customizer.getCustomizedTimes()).isEqualTo(2));
+    }
+
+    @Test
+    void otherCustomizerShouldNotBeCalled() {
+        ServiceBusProcessorClientBuilderCustomizer customizer = new ServiceBusProcessorClientBuilderCustomizer();
+        OtherBuilderCustomizer otherBuilderCustomizer = new OtherBuilderCustomizer();
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.servicebus.processor.entity-name=test-queue",
+                "spring.cloud.azure.servicebus.processor.entity-type=queue",
+                "spring.cloud.azure.servicebus.processor.connection-string=" + String.format(CONNECTION_STRING, "test-namespace")
+            )
+            .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
+            .withBean(MessageProcessingListener.class, TestMessageProcessingListener::new)
+            .withBean("customizer1", ServiceBusProcessorClientBuilderCustomizer.class, () -> customizer)
+            .withBean("customizer2", ServiceBusProcessorClientBuilderCustomizer.class, () -> customizer)
+            .withBean("customizer3", OtherBuilderCustomizer.class, () -> otherBuilderCustomizer)
+            .run(context -> {
+                assertThat(customizer.getCustomizedTimes()).isEqualTo(2);
+                assertThat(otherBuilderCustomizer.getCustomizedTimes()).isEqualTo(0);
+            });
+    }
+
+    private static class ServiceBusProcessorClientBuilderCustomizer extends TestBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder> {
+
+    }
+    private static class ServiceBusSessionProcessorClientBuilderCustomizer extends TestBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder> {
+
+    }
+
+    private static class OtherBuilderCustomizer extends TestBuilderCustomizer<ConfigurationClientBuilder> {
+
+    }
+    
 
     static class TestMessageProcessingListener implements RecordMessageProcessingListener {
 

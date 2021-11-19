@@ -6,6 +6,7 @@ package com.azure.spring.cloud.autoconfigure.context;
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
+import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.core.factory.AbstractAzureServiceClientBuilderFactory;
 import com.azure.spring.core.factory.credential.AbstractAzureCredentialBuilderFactory;
 import com.azure.spring.core.factory.credential.DefaultAzureCredentialBuilderFactory;
@@ -20,8 +21,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import java.util.concurrent.ThreadPoolExecutor;
-
 import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME;
 
 /**
@@ -35,6 +34,7 @@ public class AzureDefaultTokenCredentialAutoConfiguration {
     public AzureDefaultTokenCredentialAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
         this.azureGlobalProperties = azureGlobalProperties;
     }
+
     @ConditionalOnMissingBean(name = DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME)
     @Bean(name = DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME)
     @Order
@@ -45,12 +45,14 @@ public class AzureDefaultTokenCredentialAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public AbstractAzureCredentialBuilderFactory<DefaultAzureCredentialBuilder> azureCredentialBuilderFactory(
+        ObjectProvider<AzureServiceClientBuilderCustomizer<DefaultAzureCredentialBuilder>> customizers,
         ObjectProvider<ThreadPoolTaskExecutor> threadPoolTaskExecutors) {
-        ThreadPoolExecutor threadPoolExecutor = null;
-        if (threadPoolTaskExecutors.getIfAvailable() != null) {
-            threadPoolExecutor = threadPoolTaskExecutors.getObject().getThreadPoolExecutor();
-        }
-        return new DefaultAzureCredentialBuilderFactory(azureGlobalProperties, threadPoolExecutor);
+        DefaultAzureCredentialBuilderFactory factory = new DefaultAzureCredentialBuilderFactory(azureGlobalProperties);
+
+        threadPoolTaskExecutors.ifAvailable(tpe -> factory.setExecutorService(tpe.getThreadPoolExecutor()));
+        customizers.orderedStream().forEach(factory::addBuilderCustomizer);
+
+        return factory;
     }
 
     @Bean
