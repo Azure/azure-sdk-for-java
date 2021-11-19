@@ -12,6 +12,7 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 import com.azure.communication.callingserver.implementation.CallConnectionsImpl;
+import com.azure.communication.callingserver.implementation.converters.AudioRoutingGroupResultConverter;
 import com.azure.communication.callingserver.implementation.converters.CallingServerErrorConverter;
 import com.azure.communication.callingserver.implementation.converters.CallParticipantConverter;
 import com.azure.communication.callingserver.implementation.converters.CallConnectionPropertiesConverter;
@@ -35,6 +36,7 @@ import com.azure.communication.callingserver.implementation.models.TransferCallR
 import com.azure.communication.callingserver.implementation.models.UnmuteParticipantRequest;
 import com.azure.communication.callingserver.implementation.models.UpdateAudioRoutingGroupRequest;
 import com.azure.communication.callingserver.models.AddParticipantResult;
+import com.azure.communication.callingserver.models.AudioRoutingGroupResult;
 import com.azure.communication.callingserver.models.AudioRoutingMode;
 import com.azure.communication.callingserver.models.CallConnectionProperties;
 import com.azure.communication.callingserver.models.CallParticipant;
@@ -1186,7 +1188,59 @@ public final class CallConnectionAsync {
     }
 
     /**
-     * Delete Audio Routing Group.
+     * Get audio routing groups in a call.
+     *
+     * @param audioRoutingGroupId The audio routing group id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful create audio routing group request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<AudioRoutingGroupResult> getAudioRoutingGroups(
+        String audioRoutingGroupId) {
+        try {
+
+            return callConnectionInternal.getAudioRoutingGroupsAsync(callConnectionId, audioRoutingGroupId)
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .flatMap(result -> Mono.just(AudioRoutingGroupResultConverter.convert(result)));
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Get audio routing groups in a call.
+     *
+     * @param audioRoutingGroupId The audio routing group id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful create audio routing group request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<AudioRoutingGroupResult>> getAudioRoutingGroupsWithResponse(
+        String audioRoutingGroupId) {
+        return getAudioRoutingGroupsWithResponseInternal(audioRoutingGroupId, Context.NONE);
+    }
+
+    Mono<Response<AudioRoutingGroupResult>> getAudioRoutingGroupsWithResponseInternal(String audioRoutingGroupId, Context context) {
+        try {
+            return withContext(contextValue -> {
+                contextValue = context == null ? contextValue : context;
+                return callConnectionInternal
+                    .getAudioRoutingGroupsWithResponseAsync(callConnectionId, audioRoutingGroupId, contextValue)
+                    .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                    .map(response ->
+                        new SimpleResponse<>(response, AudioRoutingGroupResultConverter.convert(response.getValue())));
+            });
+        } catch (RuntimeException ex) {
+            return monoError(logger, ex);
+        }
+    }
+
+    /**
+     * Delete audio routing group from a call.
      *
      * @param audioRoutingGroupId The audio routing group id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1201,7 +1255,7 @@ public final class CallConnectionAsync {
             Objects.requireNonNull(audioRoutingGroupId, "'audioRoutingGroupId' cannot be null.");
 
             return callConnectionInternal.deleteAudioRoutingGroupAsync(callConnectionId, audioRoutingGroupId)
-            .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
+                .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
                 .flatMap(result -> Mono.empty());
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -1209,7 +1263,7 @@ public final class CallConnectionAsync {
     }
 
     /**
-     * Delete Audio Routing Group.
+     * Delete audio routing group from a call.
      *
      * @param audioRoutingGroupId The audio routing group id.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

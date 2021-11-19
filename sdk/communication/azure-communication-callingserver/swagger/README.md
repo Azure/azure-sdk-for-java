@@ -72,6 +72,9 @@ directive:
     from: CallParticipant
     to: CallParticipantInternal
 - rename-model:
+    from: AudioRoutingGroupResult
+    to: AudioRoutingGroupResultInternal
+- rename-model:
     from: CreateAudioRoutingGroupResult
     to: CreateAudioRoutingGroupResultInternal
 - rename-model:

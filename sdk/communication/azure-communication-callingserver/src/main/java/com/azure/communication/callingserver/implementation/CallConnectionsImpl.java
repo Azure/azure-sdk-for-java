@@ -7,7 +7,7 @@ package com.azure.communication.callingserver.implementation;
 import com.azure.communication.callingserver.implementation.models.AddParticipantRequest;
 import com.azure.communication.callingserver.implementation.models.AddParticipantResultInternal;
 import com.azure.communication.callingserver.implementation.models.AudioRoutingGroupRequest;
-import com.azure.communication.callingserver.implementation.models.AudioRoutingGroupResult;
+import com.azure.communication.callingserver.implementation.models.AudioRoutingGroupResultInternal;
 import com.azure.communication.callingserver.implementation.models.CallConnectionPropertiesInternal;
 import com.azure.communication.callingserver.implementation.models.CallParticipantInternal;
 import com.azure.communication.callingserver.implementation.models.CancelParticipantMediaOperationRequest;
@@ -78,7 +78,7 @@ public final class CallConnectionsImpl {
         @Get("/calling/callConnections/{callConnectionId}/audioRoutingGroups/{audioRoutingGroupId}")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<AudioRoutingGroupResult>> getAudioRoutingGroups(
+        Mono<Response<AudioRoutingGroupResultInternal>> getAudioRoutingGroups(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @PathParam("audioRoutingGroupId") String audioRoutingGroupId,
@@ -323,7 +323,7 @@ public final class CallConnectionsImpl {
      * @return audio routing groups from a call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AudioRoutingGroupResult>> getAudioRoutingGroupsWithResponseAsync(
+    public Mono<Response<AudioRoutingGroupResultInternal>> getAudioRoutingGroupsWithResponseAsync(
             String callConnectionId, String audioRoutingGroupId) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -349,7 +349,7 @@ public final class CallConnectionsImpl {
      * @return audio routing groups from a call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<AudioRoutingGroupResult>> getAudioRoutingGroupsWithResponseAsync(
+    public Mono<Response<AudioRoutingGroupResultInternal>> getAudioRoutingGroupsWithResponseAsync(
             String callConnectionId, String audioRoutingGroupId, Context context) {
         final String accept = "application/json";
         return service.getAudioRoutingGroups(
@@ -372,11 +372,11 @@ public final class CallConnectionsImpl {
      * @return audio routing groups from a call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AudioRoutingGroupResult> getAudioRoutingGroupsAsync(
+    public Mono<AudioRoutingGroupResultInternal> getAudioRoutingGroupsAsync(
             String callConnectionId, String audioRoutingGroupId) {
         return getAudioRoutingGroupsWithResponseAsync(callConnectionId, audioRoutingGroupId)
                 .flatMap(
-                        (Response<AudioRoutingGroupResult> res) -> {
+                        (Response<AudioRoutingGroupResultInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -397,11 +397,11 @@ public final class CallConnectionsImpl {
      * @return audio routing groups from a call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<AudioRoutingGroupResult> getAudioRoutingGroupsAsync(
+    public Mono<AudioRoutingGroupResultInternal> getAudioRoutingGroupsAsync(
             String callConnectionId, String audioRoutingGroupId, Context context) {
         return getAudioRoutingGroupsWithResponseAsync(callConnectionId, audioRoutingGroupId, context)
                 .flatMap(
-                        (Response<AudioRoutingGroupResult> res) -> {
+                        (Response<AudioRoutingGroupResultInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -421,7 +421,7 @@ public final class CallConnectionsImpl {
      * @return audio routing groups from a call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public AudioRoutingGroupResult getAudioRoutingGroups(String callConnectionId, String audioRoutingGroupId) {
+    public AudioRoutingGroupResultInternal getAudioRoutingGroups(String callConnectionId, String audioRoutingGroupId) {
         return getAudioRoutingGroupsAsync(callConnectionId, audioRoutingGroupId).block();
     }
 
@@ -437,7 +437,7 @@ public final class CallConnectionsImpl {
      * @return audio routing groups from a call.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<AudioRoutingGroupResult> getAudioRoutingGroupsWithResponse(
+    public Response<AudioRoutingGroupResultInternal> getAudioRoutingGroupsWithResponse(
             String callConnectionId, String audioRoutingGroupId, Context context) {
         return getAudioRoutingGroupsWithResponseAsync(callConnectionId, audioRoutingGroupId, context).block();
     }

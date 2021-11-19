@@ -683,6 +683,41 @@ public class CallConnectionUnitTests {
     }
 
     @Test
+    public void getAudioRoutingGroups() {
+        CallConnection callConnection = getCallConnection(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>(generateCreateCallResult(CALL_CONNECTION_ID), 201),
+                new SimpleEntry<String, Integer>(generateGetAudioRoutingGroupsResult(), 200)
+            )));
+
+        AudioRoutingGroupResult getAudioRoutingGroupsResult = callConnection.getAudioRoutingGroups(
+            AUDIOROUTING_GROUPID
+        );
+
+        assertEquals(AudioRoutingMode.ONE_TO_ONE, getAudioRoutingGroupsResult.getAudioRoutingMode());
+        assertEquals(COMMUNICATION_USER, getAudioRoutingGroupsResult.getTargets().get(0));
+    }
+
+    @Test
+    public void getAudioRoutingGroupsWithResponse() {
+        CallConnection callConnection = getCallConnection(new ArrayList<SimpleEntry<String, Integer>>(
+            Arrays.asList(
+                new SimpleEntry<String, Integer>(generateCreateCallResult(CALL_CONNECTION_ID), 201),
+                new SimpleEntry<String, Integer>(generateGetAudioRoutingGroupsResult(), 200)
+            )));
+
+        Response<AudioRoutingGroupResult> getAudioRoutingGroupsResponse = callConnection.getAudioRoutingGroupsWithResponse(
+            AUDIOROUTING_GROUPID,
+            Context.NONE
+        );
+
+        assertEquals(200, getAudioRoutingGroupsResponse.getStatusCode());
+        AudioRoutingGroupResult getAudioRoutingGroupsResult = getAudioRoutingGroupsResponse.getValue();
+        assertEquals(AudioRoutingMode.ONE_TO_ONE, getAudioRoutingGroupsResult.getAudioRoutingMode());
+        assertEquals(COMMUNICATION_USER, getAudioRoutingGroupsResult.getTargets().get(0));
+    }
+
+    @Test
     public void deleteAudioRoutingGroup() {
         CallConnection callConnection = getCallConnection(new ArrayList<SimpleEntry<String, Integer>>(
             Arrays.asList(

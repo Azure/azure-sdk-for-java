@@ -52,6 +52,15 @@ public class CallingServerResponseMocker {
         return serializeObject(result);
     }
 
+    public static String generateGetAudioRoutingGroupsResult() {
+
+        AudioRoutingGroupResultInternal result = new AudioRoutingGroupResultInternal()
+            .setAudioRoutingMode(AudioRoutingMode.ONE_TO_ONE)
+            .setTargets(Collections.singletonList(CommunicationIdentifierConverter.convert(COMMUNICATION_USER)));
+
+        return serializeObject(result);
+    }
+
     public static String generateAddParticipantResult(String participantId) {
 
         AddParticipantResultInternal result = new AddParticipantResultInternal()

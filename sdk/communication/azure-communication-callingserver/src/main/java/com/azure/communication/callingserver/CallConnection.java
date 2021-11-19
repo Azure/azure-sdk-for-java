@@ -7,6 +7,7 @@ import java.net.URI;
 import java.util.List;
 
 import com.azure.communication.callingserver.models.AddParticipantResult;
+import com.azure.communication.callingserver.models.AudioRoutingGroupResult;
 import com.azure.communication.callingserver.models.AudioRoutingMode;
 import com.azure.communication.callingserver.models.CallConnectionProperties;
 import com.azure.communication.callingserver.models.CallParticipant;
@@ -617,6 +618,38 @@ public final class CallConnection {
         List<CommunicationIdentifier> targets,
         Context context) {
         return callConnectionAsync.updateAudioRoutingGroupWithResponseInternal(audioRoutingGroupId, targets, context).block();
+    }
+
+    /**
+     * Get audio routing groups in a call.
+     *
+     * @param audioRoutingGroupId The audio routing group id.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful create audio routing group request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public AudioRoutingGroupResult getAudioRoutingGroups(
+        String audioRoutingGroupId) {
+        return getAudioRoutingGroupsWithResponse(audioRoutingGroupId, Context.NONE).getValue();
+    }
+
+    /**
+     * Get audio routing groups in a call.
+     *
+     * @param audioRoutingGroupId The audio routing group id.
+     * @param context A {@link Context} representing the request context.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful create audio routing group request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<AudioRoutingGroupResult> getAudioRoutingGroupsWithResponse(
+        String audioRoutingGroupId,
+        Context context) {
+        return callConnectionAsync.getAudioRoutingGroupsWithResponseInternal(audioRoutingGroupId, context).block();
     }
 
     /**

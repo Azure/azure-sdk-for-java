@@ -11,7 +11,7 @@ import java.util.List;
 
 /** The audio routing group result. */
 @Fluent
-public final class AudioRoutingGroupResult {
+public final class AudioRoutingGroupResultInternal {
     /*
      * The audio routing mode.
      */
@@ -38,9 +38,9 @@ public final class AudioRoutingGroupResult {
      * Set the audioRoutingMode property: The audio routing mode.
      *
      * @param audioRoutingMode the audioRoutingMode value to set.
-     * @return the AudioRoutingGroupResult object itself.
+     * @return the AudioRoutingGroupResultInternal object itself.
      */
-    public AudioRoutingGroupResult setAudioRoutingMode(AudioRoutingMode audioRoutingMode) {
+    public AudioRoutingGroupResultInternal setAudioRoutingMode(AudioRoutingMode audioRoutingMode) {
         this.audioRoutingMode = audioRoutingMode;
         return this;
     }
@@ -58,9 +58,9 @@ public final class AudioRoutingGroupResult {
      * Set the targets property: The target identities that would be receivers in the audio routing group.
      *
      * @param targets the targets value to set.
-     * @return the AudioRoutingGroupResult object itself.
+     * @return the AudioRoutingGroupResultInternal object itself.
      */
-    public AudioRoutingGroupResult setTargets(List<CommunicationIdentifierModel> targets) {
+    public AudioRoutingGroupResultInternal setTargets(List<CommunicationIdentifierModel> targets) {
         this.targets = targets;
         return this;
     }
