@@ -7,7 +7,6 @@ import com.azure.core.exception.UnexpectedLengthException;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.UrlBuilder;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.implementation.TimeAndFormat;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -18,7 +17,6 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -189,6 +187,47 @@ public final class Utility {
      * @throws IllegalArgumentException If {@code dateString} doesn't match an ISO8601 pattern
      */
     public static TimeAndFormat parseDate(String dateString) {
+        String pattern = MAX_PRECISION_PATTERN;
+        switch (dateString.length()) {
+            case 28: // "yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'"-> [2012-01-04T23:21:59.1234567Z] length = 28
+            case 27: // "yyyy-MM-dd'T'HH:mm:ss.SSSSSS'Z'"-> [2012-01-04T23:21:59.123456Z] length = 27
+            case 26: // "yyyy-MM-dd'T'HH:mm:ss.SSSSS'Z'"-> [2012-01-04T23:21:59.12345Z] length = 26
+            case 25: // "yyyy-MM-dd'T'HH:mm:ss.SSSS'Z'"-> [2012-01-04T23:21:59.1234Z] length = 25
+            case 24: // "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"-> [2012-01-04T23:21:59.123Z] length = 24
+                dateString = dateString.substring(0, MAX_PRECISION_DATESTRING_LENGTH);
+                break;
+            case 23: // "yyyy-MM-dd'T'HH:mm:ss.SS'Z'"-> [2012-01-04T23:21:59.12Z] length = 23
+                // SS is assumed to be milliseconds, so a trailing 0 is necessary
+                dateString = Z_PATTERN.matcher(dateString).replaceAll("0");
+                break;
+            case 22: // "yyyy-MM-dd'T'HH:mm:ss.S'Z'"-> [2012-01-04T23:21:59.1Z] length = 22
+                // S is assumed to be milliseconds, so trailing 0's are necessary
+                dateString = Z_PATTERN.matcher(dateString).replaceAll("00");
+                break;
+            case 20: // "yyyy-MM-dd'T'HH:mm:ss'Z'"-> [2012-01-04T23:21:59Z] length = 20
+                pattern = Utility.ISO8601_PATTERN;
+                break;
+            case 17: // "yyyy-MM-dd'T'HH:mm'Z'"-> [2012-01-04T23:21Z] length = 17
+                pattern = Utility.ISO8601_PATTERN_NO_SECONDS;
+                break;
+            default:
+                throw new IllegalArgumentException(String.format(Locale.ROOT, INVALID_DATE_STRING, dateString));
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern, Locale.ROOT);
+        return new TimeAndFormat(LocalDateTime.parse(dateString, formatter).atZone(ZoneOffset.UTC).toOffsetDateTime(),
+            formatter);
+    }
+
+    /**
+     * Given a String representing a date in a form of the ISO8601 pattern, generates a Date representing it with up to
+     * millisecond precision.
+     *
+     * @param dateString the {@code String} to be interpreted as a <code>Date</code>
+     * @return the corresponding <code>Date</code> object
+     * @throws IllegalArgumentException If {@code dateString} doesn't match an ISO8601 pattern
+     */
+    public static TimeAndFormat parseDateAndFormat(String dateString) {
         String pattern = MAX_PRECISION_PATTERN;
         switch (dateString.length()) {
             case 28: // "yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'"-> [2012-01-04T23:21:59.1234567Z] length = 28

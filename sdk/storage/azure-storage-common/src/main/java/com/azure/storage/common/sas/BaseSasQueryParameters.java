@@ -7,7 +7,7 @@ import com.azure.storage.common.Utility;
 
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.SasImplUtils;
-import com.azure.storage.common.implementation.TimeAndFormat;
+import com.azure.storage.common.TimeAndFormat;
 
 import java.time.OffsetDateTime;
 import java.util.Map;
@@ -54,9 +54,9 @@ public abstract class BaseSasQueryParameters {
         this.protocol = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_PROTOCOL,
             removeSASParametersFromMap, SasProtocol::parse);
         this.startTime = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_START_TIME,
-            removeSASParametersFromMap, Utility::parseDate).getDateTime();
+            removeSASParametersFromMap, Utility::parseDateAndFormat).getDateTime();
         this.expiryTime = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_EXPIRY_TIME,
-            removeSASParametersFromMap, Utility::parseDate).getDateTime();
+            removeSASParametersFromMap, Utility::parseDateAndFormat).getDateTime();
         this.sasIpRange = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_IP_RANGE,
             removeSASParametersFromMap, SasIpRange::parse);
         this.permissions = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_PERMISSIONS,

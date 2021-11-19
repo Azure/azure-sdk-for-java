@@ -6,6 +6,7 @@ package com.azure.storage.common.implementation;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.util.CoreUtils;
 import com.azure.storage.common.StorageSharedKeyCredential;
+import com.azure.storage.common.TimeAndFormat;
 import com.azure.storage.common.Utility;
 import com.azure.storage.common.policy.StorageSharedKeyCredentialPolicy;
 

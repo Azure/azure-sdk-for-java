@@ -10,7 +10,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
 import com.azure.storage.common.implementation.StorageImplUtils;
-import com.azure.storage.common.implementation.TimeAndFormat;
+import com.azure.storage.common.TimeAndFormat;
 import com.azure.storage.common.sas.SasIpRange;
 import com.azure.storage.common.sas.SasProtocol;
 import com.azure.storage.file.share.ShareServiceVersion;

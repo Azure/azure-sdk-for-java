@@ -71,9 +71,9 @@ public final class BlobServiceSasQueryParameters extends BaseSasQueryParameters 
         this.keyTenantId = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_TENANT_ID,
             removeSasParametersFromMap);
         this.keyStart = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_KEY_START,
-            removeSasParametersFromMap, Utility::parseDate).getDateTime();
+            removeSasParametersFromMap, Utility::parseDateAndFormat).getDateTime();
         this.keyExpiry = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_KEY_EXPIRY,
-            removeSasParametersFromMap, Utility::parseDate).getDateTime();
+            removeSasParametersFromMap, Utility::parseDateAndFormat).getDateTime();
         this.keyService = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_KEY_SERVICE,
             removeSasParametersFromMap);
         this.keyVersion = getQueryParameter(queryParamsMap, Constants.UrlConstants.SAS_SIGNED_KEY_VERSION,

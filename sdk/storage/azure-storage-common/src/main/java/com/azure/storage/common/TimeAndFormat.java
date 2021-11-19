@@ -1,11 +1,10 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.common.implementation;
+package com.azure.storage.common;
 
 import java.time.OffsetDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Objects;
 
 /**
  * A class to hold an {@code OffsetDateTime} object and the formatter from which it was parsed for effective

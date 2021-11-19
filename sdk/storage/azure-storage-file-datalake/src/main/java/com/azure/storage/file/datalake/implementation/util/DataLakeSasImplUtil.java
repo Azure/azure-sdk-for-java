@@ -7,7 +7,7 @@ import com.azure.core.util.Configuration;
 import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.common.implementation.TimeAndFormat;
+import com.azure.storage.common.TimeAndFormat;
 import com.azure.storage.file.datalake.DataLakeServiceVersion;
 import com.azure.storage.file.datalake.models.UserDelegationKey;
 import com.azure.storage.common.StorageSharedKeyCredential;
