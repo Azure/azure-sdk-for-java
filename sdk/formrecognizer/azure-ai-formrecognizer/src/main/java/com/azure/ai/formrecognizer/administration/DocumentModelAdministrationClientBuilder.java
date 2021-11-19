@@ -162,7 +162,7 @@ public final class DocumentModelAdministrationClientBuilder {
             .pipeline(pipeline)
             .buildClient();
 
-        return new DocumentModelAdministrationAsyncClient(formRecognizerAPI, serviceVersion);
+        return new DocumentModelAdministrationAsyncClient(formRecognizerAPI, serviceVersion, audience);
     }
 
     /**
