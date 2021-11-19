@@ -223,7 +223,7 @@ public class ServiceBusMessageChannelBinder extends
         return new CheckpointConfig(properties.getExtension().getCheckpointMode());
     }
 
-    public ServiceBusTemplate getServiceBusTemplate() {
+    protected ServiceBusTemplate getServiceBusTemplate() {
         if (this.serviceBusTemplate == null) {
             DefaultServiceBusNamespaceProducerFactory factory = new DefaultServiceBusNamespaceProducerFactory(
                 this.namespaceProperties, getProducerPropertiesSupplier());
