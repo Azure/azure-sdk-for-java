@@ -6,8 +6,12 @@ import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.implementation.caches.RxClientCollectionCache;
+import com.azure.cosmos.implementation.caches.RxPartitionKeyRangeCache;
 import com.azure.cosmos.implementation.directconnectivity.DirectBridgeInternal;
+import com.azure.cosmos.implementation.directconnectivity.GatewayServiceConfigurationReader;
 import com.azure.cosmos.implementation.directconnectivity.HttpUtils;
+import com.azure.cosmos.implementation.directconnectivity.RequestHelper;
 import com.azure.cosmos.implementation.directconnectivity.StoreResponse;
 import com.azure.cosmos.implementation.directconnectivity.WebExceptionUtility;
 import com.azure.cosmos.implementation.http.HttpClient;
@@ -15,6 +19,8 @@ import com.azure.cosmos.implementation.http.HttpHeaders;
 import com.azure.cosmos.implementation.http.HttpRequest;
 import com.azure.cosmos.implementation.http.HttpResponse;
 import com.azure.cosmos.implementation.http.ReactorNettyRequestRecord;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternal;
+import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.implementation.throughputControl.ThroughputControlStore;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpResponseStatus;
@@ -50,6 +56,10 @@ class RxGatewayStoreModel implements RxStoreModel {
     private ConsistencyLevel defaultConsistencyLevel;
     private ISessionContainer sessionContainer;
     private ThroughputControlStore throughputControlStore;
+    private boolean useMultipleWriteLocations;
+    private RxPartitionKeyRangeCache partitionKeyRangeCache;
+    private GatewayServiceConfigurationReader gatewayServiceConfigurationReader;
+    private RxClientCollectionCache collectionCache;
 
     public RxGatewayStoreModel(
             DiagnosticsClientContext clientContext,
@@ -83,6 +93,22 @@ class RxGatewayStoreModel implements RxStoreModel {
 
         this.httpClient = httpClient;
         this.sessionContainer = sessionContainer;
+    }
+
+    void setGatewayServiceConfigurationReader(GatewayServiceConfigurationReader gatewayServiceConfigurationReader) {
+        this.gatewayServiceConfigurationReader = gatewayServiceConfigurationReader;
+    }
+
+    public void setPartitionKeyRangeCache(RxPartitionKeyRangeCache partitionKeyRangeCache) {
+        this.partitionKeyRangeCache = partitionKeyRangeCache;
+    }
+
+    public void setUseMultipleWriteLocations(boolean useMultipleWriteLocations) {
+        this.useMultipleWriteLocations = useMultipleWriteLocations;
+    }
+
+    public void setCollectionCache(RxClientCollectionCache collectionCache) {
+        this.collectionCache = collectionCache;
     }
 
     private Mono<RxDocumentServiceResponse> create(RxDocumentServiceRequest request) {
@@ -422,9 +448,7 @@ class RxGatewayStoreModel implements RxStoreModel {
 
     @Override
     public Mono<RxDocumentServiceResponse> processMessage(RxDocumentServiceRequest request) {
-        this.applySessionToken(request);
-
-        Mono<RxDocumentServiceResponse> responseObs = invokeAsync(request);
+        Mono<RxDocumentServiceResponse> responseObs =  this.applySessionToken(request).then(invokeAsync(request));
 
         return responseObs.onErrorResume(
                 e -> {
@@ -482,40 +506,62 @@ class RxGatewayStoreModel implements RxStoreModel {
         }
     }
 
-    private void applySessionToken(RxDocumentServiceRequest request) {
+    private Mono<Void> applySessionToken(RxDocumentServiceRequest request) {
         Map<String, String> headers = request.getHeaders();
         Objects.requireNonNull(headers, "RxDocumentServiceRequest::headers is required and cannot be null");
 
-        String requestConsistencyLevel = headers.get(HttpConstants.HttpHeaders.CONSISTENCY_LEVEL);
-
-        boolean sessionTokenApplicable =
-            Strings.areEqual(requestConsistencyLevel, ConsistencyLevel.SESSION.toString()) ||
-                (this.defaultConsistencyLevel == ConsistencyLevel.SESSION &&
-                    // skip applying the session token when Eventual Consistency is explicitly requested
-                    // on request-level for data plane operations.
-                    // The session token is ignored on teh backend/gateway in this case anyway
-                    // and the session token can be rather large (even run in the 16 KB header length problem
-                    // on the gateway - so not worth sending when not needed
-                    (!request.isReadOnlyRequest() ||
-                        request.getResourceType() != ResourceType.Document ||
-                        !Strings.areEqual(requestConsistencyLevel, ConsistencyLevel.EVENTUAL.toString())));
-
-        if (!Strings.isNullOrEmpty(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))) {
-            if (!sessionTokenApplicable || isMasterOperation(request.getResourceType(), request.getOperationType())) {
+        // Master resource operations don't require session token.
+        if (isMasterOperation(request.getResourceType(), request.getOperationType())) {
+            if (!Strings.isNullOrEmpty(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))) {
                 request.getHeaders().remove(HttpConstants.HttpHeaders.SESSION_TOKEN);
             }
-            return; //User is explicitly controlling the session.
+            return Mono.empty();
         }
 
-        if (!sessionTokenApplicable || isMasterOperation(request.getResourceType(), request.getOperationType())) {
-            return; // Only apply the session token in case of session consistency and when resource is not a master resource
+        if (!Strings.isNullOrEmpty(request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN))) {
+            return Mono.empty(); // User is explicitly controlling the session.
         }
 
-        //Apply the ambient session.
-        String sessionToken = this.sessionContainer.resolveGlobalSessionToken(request);
+        boolean sessionConsistency = RequestHelper.getConsistencyLevelToUse(this.gatewayServiceConfigurationReader,
+            request) == ConsistencyLevel.SESSION;
 
-        if (!Strings.isNullOrEmpty(sessionToken)) {
-            headers.put(HttpConstants.HttpHeaders.SESSION_TOKEN, sessionToken);
+        if (!sessionConsistency ||
+            (!request.isReadOnlyRequest() && request.getOperationType() != OperationType.Batch && !this.useMultipleWriteLocations)) {
+            return Mono.empty();
+            // Only apply the session token in case of session consistency and if request is read only,
+            // apply token for write request only if batch operation or multi master
+        }
+
+        String partitionKeyRangeId = request.getHeaders().get(HttpConstants.HttpHeaders.PARTITION_KEY_RANGE_ID);
+        PartitionKeyInternal partitionKeyInternal = request.getPartitionKeyInternal();
+
+        if (StringUtils.isNotEmpty(partitionKeyRangeId)) {
+            SessionTokenHelper.setPartitionLocalSessionToken(request, partitionKeyRangeId, sessionContainer);
+            return Mono.empty();
+        } else if (partitionKeyInternal != null) {
+            return this.collectionCache.resolveCollectionAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics), request).
+                flatMap(collectionValueHolder -> partitionKeyRangeCache.tryLookupAsync(BridgeInternal.getMetaDataDiagnosticContext(request.requestContext.cosmosDiagnostics),
+                    collectionValueHolder.v.getResourceId(),
+                    null,
+                    null).flatMap(collectionRoutingMapValueHolder -> {
+                    String effectivePartitionKeyString = PartitionKeyInternalHelper
+                        .getEffectivePartitionKeyString(
+                            partitionKeyInternal,
+                            collectionValueHolder.v.getPartitionKey());
+                    PartitionKeyRange range =
+                        collectionRoutingMapValueHolder.v.getRangeByEffectivePartitionKey(effectivePartitionKeyString);
+                    request.requestContext.resolvedPartitionKeyRange = range;
+                    SessionTokenHelper.setPartitionLocalSessionToken(request, sessionContainer);
+                    return Mono.empty();
+                }));
+        } else {
+            //Apply the ambient session.
+            String sessionToken = this.sessionContainer.resolveGlobalSessionToken(request);
+
+            if (!Strings.isNullOrEmpty(sessionToken)) {
+                headers.put(HttpConstants.HttpHeaders.SESSION_TOKEN, sessionToken);
+            }
+            return Mono.empty();
         }
     }
 

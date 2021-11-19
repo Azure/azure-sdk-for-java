@@ -31,10 +31,8 @@ public class SessionTokenHelper {
         }
     }
 
-    public static void setPartitionLocalSessionToken(RxDocumentServiceRequest request, ISessionContainer sessionContainer) {
+    public static void setPartitionLocalSessionToken(RxDocumentServiceRequest request, String  partitionKeyRangeId, ISessionContainer sessionContainer) {
         String originalSessionToken = request.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN);
-        String partitionKeyRangeId = request.requestContext.resolvedPartitionKeyRange.getId();
-
 
         if (Strings.isNullOrEmpty(partitionKeyRangeId)) {
             // AddressCache/address resolution didn't produce partition key range id.
@@ -58,6 +56,12 @@ public class SessionTokenHelper {
             request.getHeaders().put(HttpConstants.HttpHeaders.SESSION_TOKEN,
                                      concatPartitionKeyRangeIdWithSessionToken(partitionKeyRangeId, request.requestContext.sessionToken.convertToString()));
         }
+    }
+
+    public static void setPartitionLocalSessionToken(RxDocumentServiceRequest request,
+                                                     ISessionContainer sessionContainer) {
+        setPartitionLocalSessionToken(request, request.requestContext.resolvedPartitionKeyRange.getId(),
+            sessionContainer);
     }
 
     private static ISessionToken getLocalSessionToken(
