@@ -20,8 +20,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
-import java.util.List;
-
 /**
  * Auto-configuration for a {@link CertificateClientBuilder} and Azure Key Vault secret clients.
  */
@@ -63,11 +61,11 @@ public class AzureKeyVaultCertificateAutoConfiguration extends AzureServiceConfi
     @ConditionalOnMissingBean
     public CertificateClientBuilderFactory certificateClientBuilderFactory(
         AzureKeyVaultCertificateProperties properties,
-        ObjectProvider<List<AzureServiceClientBuilderCustomizer<CertificateClientBuilder>>> customizers) {
+        ObjectProvider<AzureServiceClientBuilderCustomizer<CertificateClientBuilder>> customizers) {
         CertificateClientBuilderFactory factory = new CertificateClientBuilderFactory(properties);
 
         factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_KEY_VAULT);
-        customizers.ifAvailable(cs -> cs.forEach(factory::addBuilderCustomizer));
+        customizers.orderedStream().forEach(factory::addBuilderCustomizer);
         return factory;
     }
 

@@ -21,8 +21,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-import java.util.List;
-
 import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME;
 
 /**
@@ -47,12 +45,12 @@ public class AzureDefaultTokenCredentialAutoConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public AbstractAzureCredentialBuilderFactory<DefaultAzureCredentialBuilder> azureCredentialBuilderFactory(
-        ObjectProvider<List<AzureServiceClientBuilderCustomizer<DefaultAzureCredentialBuilder>>> customizers,
+        ObjectProvider<AzureServiceClientBuilderCustomizer<DefaultAzureCredentialBuilder>> customizers,
         ObjectProvider<ThreadPoolTaskExecutor> threadPoolTaskExecutors) {
         DefaultAzureCredentialBuilderFactory factory = new DefaultAzureCredentialBuilderFactory(azureGlobalProperties);
 
         threadPoolTaskExecutors.ifAvailable(tpe -> factory.setExecutorService(tpe.getThreadPoolExecutor()));
-        customizers.ifAvailable(cs -> cs.forEach(factory::addBuilderCustomizer));
+        customizers.orderedStream().forEach(factory::addBuilderCustomizer);
 
         return factory;
     }

@@ -23,8 +23,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
-import java.util.List;
-
 /**
  * Auto-configuration for a {@link ConfigurationClientBuilder} and Azure App Configuration clients.
  */
@@ -66,12 +64,12 @@ public class AzureAppConfigurationAutoConfiguration extends AzureServiceConfigur
     public ConfigurationClientBuilderFactory configurationClientBuilderFactory(
         AzureAppConfigurationProperties properties,
         ObjectProvider<ConnectionStringProvider<AzureServiceType.AppConfiguration>> connectionStringProviders,
-        ObjectProvider<List<AzureServiceClientBuilderCustomizer<ConfigurationClientBuilder>>> customizers) {
+        ObjectProvider<AzureServiceClientBuilderCustomizer<ConfigurationClientBuilder>> customizers) {
         ConfigurationClientBuilderFactory factory = new ConfigurationClientBuilderFactory(properties);
 
         factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_APP_CONFIG);
-        factory.setConnectionStringProvider(connectionStringProviders.getIfAvailable());
-        customizers.ifAvailable(cs -> cs.forEach(factory::addBuilderCustomizer));
+        connectionStringProviders.orderedStream().findFirst().ifPresent(factory::setConnectionStringProvider);
+        customizers.orderedStream().forEach(factory::addBuilderCustomizer);
         return factory;
     }
 

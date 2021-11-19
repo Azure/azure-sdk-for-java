@@ -21,8 +21,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.List;
-
 import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.EVENT_HUB_PRODUCER_CLIENT_BUILDER_BEAN_NAME;
 import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.EVENT_HUB_PRODUCER_CLIENT_BUILDER_FACTORY_BEAN_NAME;
 
@@ -67,13 +65,14 @@ class AzureEventHubsProducerClientConfiguration {
         @ConditionalOnMissingBean(name = EVENT_HUB_PRODUCER_CLIENT_BUILDER_FACTORY_BEAN_NAME)
         public EventHubClientBuilderFactory eventHubClientBuilderFactoryForProducer(
             ObjectProvider<ConnectionStringProvider<AzureServiceType.EventHubs>> connectionStringProviders,
-            ObjectProvider<List<AzureServiceClientBuilderCustomizer<EventHubClientBuilder>>> customizers) {
+            ObjectProvider<AzureServiceClientBuilderCustomizer<EventHubClientBuilder>> customizers) {
 
             final EventHubClientBuilderFactory factory = new EventHubClientBuilderFactory(this.producerProperties);
 
             factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_EVENT_HUBS);
             connectionStringProviders.ifAvailable(factory::setConnectionStringProvider);
-            customizers.ifAvailable(cs -> cs.forEach(factory::addBuilderCustomizer));
+            connectionStringProviders.orderedStream().findFirst().ifPresent(factory::setConnectionStringProvider);
+            customizers.orderedStream().forEach(factory::addBuilderCustomizer);
             return factory;
         }
 

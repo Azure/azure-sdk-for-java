@@ -24,8 +24,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.List;
-
 /**
  * Configures a {@link EventProcessorClient}.
  */
@@ -53,13 +51,13 @@ class AzureEventHubsProcessorClientConfiguration {
     public EventProcessorClientBuilderFactory eventProcessorClientBuilderFactory(
         CheckpointStore checkpointStore, EventProcessingListener listener,
         ObjectProvider<ConnectionStringProvider<AzureServiceType.EventHubs>> connectionStringProviders,
-        ObjectProvider<List<AzureServiceClientBuilderCustomizer<EventProcessorClientBuilder>>> customizers) {
+        ObjectProvider<AzureServiceClientBuilderCustomizer<EventProcessorClientBuilder>> customizers) {
         final EventProcessorClientBuilderFactory factory =
             new EventProcessorClientBuilderFactory(this.processorProperties, checkpointStore, listener);
 
         factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_EVENT_HUBS);
-        connectionStringProviders.ifAvailable(factory::setConnectionStringProvider);
-        customizers.ifAvailable(cs -> cs.forEach(factory::addBuilderCustomizer));
+        connectionStringProviders.orderedStream().findFirst().ifPresent(factory::setConnectionStringProvider);
+        customizers.orderedStream().forEach(factory::addBuilderCustomizer);
         return factory;
     }
 

@@ -23,8 +23,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
-import java.util.List;
-
 /**
  * Auto-configuration for a {@link QueueServiceClientBuilder} and queue service clients.
  */
@@ -60,13 +58,13 @@ public class AzureStorageQueueAutoConfiguration extends AzureServiceConfiguratio
     public QueueServiceClientBuilderFactory queueServiceClientBuilderFactory(
         AzureStorageQueueProperties properties,
         ObjectProvider<ConnectionStringProvider<AzureServiceType.StorageQueue>> connectionStringProviders,
-        ObjectProvider<List<AzureServiceClientBuilderCustomizer<QueueServiceClientBuilder>>> customizers) {
+        ObjectProvider<AzureServiceClientBuilderCustomizer<QueueServiceClientBuilder>> customizers) {
 
         final QueueServiceClientBuilderFactory factory = new QueueServiceClientBuilderFactory(properties);
 
         factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_STORAGE_QUEUE);
-        connectionStringProviders.ifAvailable(factory::setConnectionStringProvider);
-        customizers.ifAvailable(cs -> cs.forEach(factory::addBuilderCustomizer));
+        connectionStringProviders.orderedStream().findFirst().ifPresent(factory::setConnectionStringProvider);
+        customizers.orderedStream().forEach(factory::addBuilderCustomizer);
         return factory;
     }
 

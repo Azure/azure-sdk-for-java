@@ -17,8 +17,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.List;
-
 /**
  * Configuration for Event Hub client builder, which provides {@link EventHubClientBuilder}.
  *
@@ -38,12 +36,12 @@ class AzureEventHubsClientBuilderConfiguration {
     @ConditionalOnMissingBean
     public EventHubClientBuilderFactory eventHubClientBuilderFactory(AzureEventHubsProperties properties,
         ObjectProvider<ConnectionStringProvider<AzureServiceType.EventHubs>> connectionStringProviders,
-        ObjectProvider<List<AzureServiceClientBuilderCustomizer<EventHubClientBuilder>>> customizers) {
+        ObjectProvider<AzureServiceClientBuilderCustomizer<EventHubClientBuilder>> customizers) {
         final EventHubClientBuilderFactory factory = new EventHubClientBuilderFactory(properties);
 
         factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_EVENT_HUBS);
-        connectionStringProviders.ifAvailable(factory::setConnectionStringProvider);
-        customizers.ifAvailable(cs -> cs.forEach(factory::addBuilderCustomizer));
+        connectionStringProviders.orderedStream().findFirst().ifPresent(factory::setConnectionStringProvider);
+        customizers.orderedStream().forEach(factory::addBuilderCustomizer);
         return factory;
     }
 

@@ -19,8 +19,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.List;
-
 @Configuration(proxyBeanMethods = false)
 @ConditionalOnClass(ServiceBusClientBuilder.class)
 @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.servicebus", name = { "connection-string", "namespace" })
@@ -36,13 +34,13 @@ class AzureServiceBusClientBuilderConfiguration {
     @ConditionalOnMissingBean
     public ServiceBusClientBuilderFactory serviceBusClientBuilderFactory(
         ObjectProvider<ConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders,
-        ObjectProvider<List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>>> customizers) {
+        ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> customizers) {
 
         final ServiceBusClientBuilderFactory factory = new ServiceBusClientBuilderFactory(this.serviceBusProperties);
 
         factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS);
-        factory.setConnectionStringProvider(connectionStringProviders.getIfAvailable());
-        customizers.ifAvailable(cs -> cs.forEach(factory::addBuilderCustomizer));
+        connectionStringProviders.orderedStream().findFirst().ifPresent(factory::setConnectionStringProvider);
+        customizers.orderedStream().forEach(factory::addBuilderCustomizer);
         return factory;
     }
 

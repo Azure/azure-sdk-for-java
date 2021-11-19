@@ -27,8 +27,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
-import java.util.List;
-
 /**
  * Auto-configuration for a {@link ShareServiceClientBuilder} and file share service clients.
  */
@@ -64,12 +62,12 @@ public class AzureStorageFileShareAutoConfiguration extends AzureServiceConfigur
     public ShareServiceClientBuilderFactory shareServiceClientBuilderFactory(
         AzureStorageFileShareProperties properties,
         ObjectProvider<ConnectionStringProvider<AzureServiceType.StorageFileShare>> connectionStringProviders,
-        ObjectProvider<List<AzureServiceClientBuilderCustomizer<ShareServiceClientBuilder>>> customizers) {
+        ObjectProvider<AzureServiceClientBuilderCustomizer<ShareServiceClientBuilder>> customizers) {
         ShareServiceClientBuilderFactory factory = new ShareServiceClientBuilderFactory(properties);
 
         factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_STORAGE_FILES);
-        connectionStringProviders.ifAvailable(factory::setConnectionStringProvider);
-        customizers.ifAvailable(cs -> cs.forEach(factory::addBuilderCustomizer));
+        connectionStringProviders.orderedStream().findFirst().ifPresent(factory::setConnectionStringProvider);
+        customizers.orderedStream().forEach(factory::addBuilderCustomizer);
         return factory;
     }
 
