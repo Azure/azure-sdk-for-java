@@ -61,7 +61,7 @@ public class AADOAuth2AuthorizationRequestResolver implements OAuth2Authorizatio
                 additionalParameters.put(Constants.CLAIMS, conditionalAccessPolicyClaims);
             }
         }
-        if (properties != null) {
+        if (properties != null && properties.getAuthenticateAdditionalParameters() != null) {
             additionalParameters.putAll(properties.getAuthenticateAdditionalParameters());
         }
         additionalParameters.putAll(oAuth2AuthorizationRequest.getAdditionalParameters());
