@@ -2,7 +2,7 @@
 // Licensed under the MIT License.
 package com.azure.spring.cloud.autoconfigure.aad.b2c.implementation;
 
-import com.azure.spring.cloud.autoconfigure.aad.implementation.core.AADAuthorizationGrantType;
+import com.azure.spring.cloud.autoconfigure.aad.core.AADAuthorizationGrantType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;

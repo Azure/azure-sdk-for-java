@@ -10,7 +10,9 @@ import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.cosmos.properties.AzureCosmosProperties;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
+import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.service.cosmos.CosmosClientBuilderFactory;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
@@ -56,8 +58,12 @@ public class AzureCosmosAutoConfiguration extends AzureServiceConfigurationBase 
 
     @Bean
     @ConditionalOnMissingBean
-    public CosmosClientBuilderFactory cosmosClientBuilderFactory(AzureCosmosProperties properties) {
-        return new CosmosClientBuilderFactory(properties);
+    public CosmosClientBuilderFactory cosmosClientBuilderFactory(AzureCosmosProperties properties,
+        ObjectProvider<AzureServiceClientBuilderCustomizer<CosmosClientBuilder>> customizers) {
+        CosmosClientBuilderFactory factory = new CosmosClientBuilderFactory(properties);
+
+        customizers.orderedStream().forEach(factory::addBuilderCustomizer);
+        return factory;
     }
 
 }

@@ -6,6 +6,7 @@ package com.azure.spring.servicebus.core.producer;
 
 import com.azure.messaging.servicebus.ServiceBusSenderAsyncClient;
 import com.azure.messaging.servicebus.ServiceBusSenderClient;
+import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
 
 /**
  * Factory to return functional creator of service bus sender
@@ -17,10 +18,19 @@ public interface ServiceBusProducerFactory {
     /**
      * Return a function which accepts service bus topic or queue name, then returns {@link ServiceBusSenderClient}
      *
-     * @param name sender name
+     * @param name entity name
      * @return message sender implement instance
      */
     ServiceBusSenderAsyncClient createProducer(String name);
+
+    /**
+     * Return a function which accepts service bus topic or queue name, then returns {@link ServiceBusSenderClient}
+     *
+     * @param name entity name of the sender destination
+     * @param entityType entity type of the sender destination
+     * @return message sender implement instance
+     */
+    ServiceBusSenderAsyncClient createProducer(String name, ServiceBusEntityType entityType);
 
     default void addListener(Listener listener) {
 
@@ -36,9 +46,9 @@ public interface ServiceBusProducerFactory {
     @FunctionalInterface
     interface Listener {
 
-        void producerAdded(String name);
+        void producerAdded(String name, ServiceBusSenderAsyncClient client);
 
-        default void producerRemoved(String name) {
+        default void producerRemoved(String name, ServiceBusSenderAsyncClient client) {
         }
 
     }

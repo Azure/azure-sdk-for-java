@@ -8,6 +8,7 @@ import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.core.connectionstring.ConnectionStringProvider;
+import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.core.service.AzureServiceType;
 import com.azure.spring.service.eventhubs.factory.EventHubClientBuilderFactory;
 import org.springframework.beans.factory.ObjectProvider;
@@ -34,12 +35,14 @@ class AzureEventHubsClientBuilderConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public EventHubClientBuilderFactory eventHubClientBuilderFactory(AzureEventHubsProperties properties,
-                                                                     ObjectProvider<ConnectionStringProvider<AzureServiceType.EventHubs>> connectionStringProviders) {
-        final EventHubClientBuilderFactory builderFactory = new EventHubClientBuilderFactory(properties);
+        ObjectProvider<ConnectionStringProvider<AzureServiceType.EventHubs>> connectionStringProviders,
+        ObjectProvider<AzureServiceClientBuilderCustomizer<EventHubClientBuilder>> customizers) {
+        final EventHubClientBuilderFactory factory = new EventHubClientBuilderFactory(properties);
 
-        builderFactory.setConnectionStringProvider(connectionStringProviders.getIfAvailable());
-        builderFactory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_EVENT_HUBS);
-        return builderFactory;
+        factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_EVENT_HUBS);
+        connectionStringProviders.orderedStream().findFirst().ifPresent(factory::setConnectionStringProvider);
+        customizers.orderedStream().forEach(factory::addBuilderCustomizer);
+        return factory;
     }
 
 }

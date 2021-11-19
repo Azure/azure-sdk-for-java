@@ -11,6 +11,9 @@ import com.azure.messaging.servicebus.ServiceBusSessionReceiverClient;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.servicebus.properties.AzureServiceBusProperties;
 import com.azure.spring.core.AzureSpringIdentifier;
+import com.azure.spring.core.connectionstring.ConnectionStringProvider;
+import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
+import com.azure.spring.core.service.AzureServiceType;
 import com.azure.spring.service.servicebus.factory.ServiceBusReceiverClientBuilderFactory;
 import com.azure.spring.service.servicebus.factory.ServiceBusSessionReceiverClientBuilderFactory;
 import org.springframework.beans.factory.ObjectProvider;
@@ -43,17 +46,21 @@ class AzureServiceBusConsumerClientConfiguration {
         @ConditionalOnMissingBean
         public ServiceBusReceiverClientBuilderFactory serviceBusReceiverClientBuilderFactory(
             AzureServiceBusProperties serviceBusProperties,
-            ObjectProvider<ServiceBusClientBuilder> serviceBusClientBuilders) {
+            ObjectProvider<ServiceBusClientBuilder> serviceBusClientBuilders,
+            ObjectProvider<ConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders,
+            ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusReceiverClientBuilder>> customizers) {
 
-            ServiceBusReceiverClientBuilderFactory builderFactory;
+            ServiceBusReceiverClientBuilderFactory factory;
             if (isDedicatedConnection(serviceBusProperties.getConsumer())) {
-                builderFactory = new ServiceBusReceiverClientBuilderFactory(serviceBusProperties.buildConsumerProperties());
+                factory = new ServiceBusReceiverClientBuilderFactory(serviceBusProperties.buildConsumerProperties());
             } else {
-                builderFactory = new ServiceBusReceiverClientBuilderFactory(
+                factory = new ServiceBusReceiverClientBuilderFactory(
                     serviceBusClientBuilders.getIfAvailable(), serviceBusProperties.buildConsumerProperties());
             }
-            builderFactory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS);
-            return builderFactory;
+            factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS);
+            connectionStringProviders.orderedStream().findFirst().ifPresent(factory::setConnectionStringProvider);
+            customizers.orderedStream().forEach(factory::addBuilderCustomizer);
+            return factory;
         }
 
         @Bean
@@ -88,18 +95,21 @@ class AzureServiceBusConsumerClientConfiguration {
         @ConditionalOnMissingBean
         public ServiceBusSessionReceiverClientBuilderFactory serviceBusSessionReceiverClientBuilderFactory(
             AzureServiceBusProperties serviceBusProperties,
-            ObjectProvider<ServiceBusClientBuilder> serviceBusClientBuilders) {
-
-            ServiceBusSessionReceiverClientBuilderFactory builderFactory;
+            ObjectProvider<ServiceBusClientBuilder> serviceBusClientBuilders,
+            ObjectProvider<ConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders,
+            ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder>> customizers) {
+            ServiceBusSessionReceiverClientBuilderFactory factory;
             if (isDedicatedConnection(serviceBusProperties.getConsumer())) {
-                builderFactory = new ServiceBusSessionReceiverClientBuilderFactory(serviceBusProperties.buildConsumerProperties());
+                factory = new ServiceBusSessionReceiverClientBuilderFactory(serviceBusProperties.buildConsumerProperties());
             } else {
-                builderFactory = new ServiceBusSessionReceiverClientBuilderFactory(
+                factory = new ServiceBusSessionReceiverClientBuilderFactory(
                     serviceBusClientBuilders.getIfAvailable(), serviceBusProperties.buildConsumerProperties());
             }
 
-            builderFactory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS);
-            return builderFactory;
+            factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS);
+            connectionStringProviders.orderedStream().findFirst().ifPresent(factory::setConnectionStringProvider);
+            customizers.orderedStream().forEach(factory::addBuilderCustomizer);
+            return factory;
         }
 
         @Bean

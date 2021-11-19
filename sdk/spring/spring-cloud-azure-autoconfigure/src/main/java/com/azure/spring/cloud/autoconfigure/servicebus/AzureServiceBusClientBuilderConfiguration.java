@@ -9,6 +9,7 @@ import com.azure.spring.cloud.autoconfigure.servicebus.properties.AzureServiceBu
 import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.core.connectionstring.ConnectionStringProvider;
 import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
+import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.core.service.AzureServiceType;
 import com.azure.spring.service.servicebus.factory.ServiceBusClientBuilderFactory;
 import org.springframework.beans.factory.ObjectProvider;
@@ -32,11 +33,14 @@ class AzureServiceBusClientBuilderConfiguration {
     @Bean
     @ConditionalOnMissingBean
     public ServiceBusClientBuilderFactory serviceBusClientBuilderFactory(
-        ObjectProvider<ConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders) {
+        ObjectProvider<ConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders,
+        ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder>> customizers) {
 
         final ServiceBusClientBuilderFactory factory = new ServiceBusClientBuilderFactory(this.serviceBusProperties);
-        factory.setConnectionStringProvider(connectionStringProviders.getIfAvailable());
+
         factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS);
+        connectionStringProviders.orderedStream().findFirst().ifPresent(factory::setConnectionStringProvider);
+        customizers.orderedStream().forEach(factory::addBuilderCustomizer);
         return factory;
     }
 

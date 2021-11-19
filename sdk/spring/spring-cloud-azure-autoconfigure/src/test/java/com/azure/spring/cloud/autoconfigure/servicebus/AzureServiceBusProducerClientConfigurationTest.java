@@ -3,8 +3,10 @@
 
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
+import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusSenderClient;
+import com.azure.spring.cloud.autoconfigure.TestBuilderCustomizer;
 import com.azure.spring.service.servicebus.factory.ServiceBusSenderClientBuilderFactory;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -74,6 +76,49 @@ class AzureServiceBusProducerClientConfigurationTest {
                 assertThat(context).hasSingleBean(AzureServiceBusProducerClientConfiguration.class);
                 assertThat(context).hasSingleBean(ServiceBusSenderClient.class);
             });
+    }
+
+    @Test
+    void customizerShouldBeCalled() {
+        ServiceBusSenderClientBuilderCustomizer customizer = new ServiceBusSenderClientBuilderCustomizer();
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.servicebus.producer.entity-name=test-queue",
+                "spring.cloud.azure.servicebus.producer.entity-type=topic",
+                "spring.cloud.azure.servicebus.producer.connection-string=" + String.format(CONNECTION_STRING, "test-namespace")
+            )
+            .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
+            .withBean("customizer1", ServiceBusSenderClientBuilderCustomizer.class, () -> customizer)
+            .withBean("customizer2", ServiceBusSenderClientBuilderCustomizer.class, () -> customizer)
+            .run(context -> assertThat(customizer.getCustomizedTimes()).isEqualTo(2));
+    }
+
+    @Test
+    void otherCustomizerShouldNotBeCalled() {
+        ServiceBusSenderClientBuilderCustomizer customizer = new ServiceBusSenderClientBuilderCustomizer();
+        OtherBuilderCustomizer otherBuilderCustomizer = new OtherBuilderCustomizer();
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.servicebus.producer.entity-name=test-queue",
+                "spring.cloud.azure.servicebus.producer.entity-type=topic",
+                "spring.cloud.azure.servicebus.producer.connection-string=" + String.format(CONNECTION_STRING, "test-namespace")
+            )
+            .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
+            .withBean("customizer1", ServiceBusSenderClientBuilderCustomizer.class, () -> customizer)
+            .withBean("customizer2", ServiceBusSenderClientBuilderCustomizer.class, () -> customizer)
+            .withBean("customizer3", OtherBuilderCustomizer.class, () -> otherBuilderCustomizer)
+            .run(context -> {
+                assertThat(customizer.getCustomizedTimes()).isEqualTo(2);
+                assertThat(otherBuilderCustomizer.getCustomizedTimes()).isEqualTo(0);
+            });
+    }
+
+    private static class ServiceBusSenderClientBuilderCustomizer extends TestBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder> {
+
+    }
+
+    private static class OtherBuilderCustomizer extends TestBuilderCustomizer<ConfigurationClientBuilder> {
+
     }
 
 }

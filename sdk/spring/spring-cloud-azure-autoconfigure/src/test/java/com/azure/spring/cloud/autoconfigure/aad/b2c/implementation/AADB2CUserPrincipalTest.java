@@ -3,7 +3,7 @@
 package com.azure.spring.cloud.autoconfigure.aad.b2c.implementation;
 
 import com.azure.spring.cloud.autoconfigure.aad.implementation.oauth2.AADOAuth2AuthenticatedPrincipal;
-import com.azure.spring.cloud.autoconfigure.aad.implementation.webapi.AADJwtBearerTokenAuthenticationConverter;
+import com.azure.spring.cloud.autoconfigure.aad.webapi.AADJwtBearerTokenAuthenticationConverter;
 import net.minidev.json.JSONArray;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
