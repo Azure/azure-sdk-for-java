@@ -7,11 +7,19 @@ import com.azure.autorest.customization.JavadocCustomization;
 import com.azure.autorest.customization.LibraryCustomization;
 import com.azure.autorest.customization.PackageCustomization;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.github.javaparser.ast.Node;
+import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
+import com.github.javaparser.ast.expr.AnnotationExpr;
+import com.github.javaparser.ast.expr.ArrayInitializerExpr;
+import com.github.javaparser.ast.expr.ClassExpr;
+import com.github.javaparser.ast.expr.MemberValuePair;
 import org.slf4j.Logger;
 
 import java.lang.reflect.Modifier;
 import java.util.Collections;
 import java.util.Locale;
+import java.util.Objects;
+import java.util.Optional;
 
 /**
  * Contains customizations for Azure Search's service swagger code generation.
@@ -39,9 +47,11 @@ public class SearchServiceCustomizations extends Customization {
         // Customize implementation models.
 
         // Customize models.
+        customizeSearchIndexerSkill(publicCustomization.getClass("SearchIndexerSkill"));
+
         // Change class modifiers to 'public abstract'.
         bulkChangeClassModifiers(publicCustomization, PUBLIC_ABSTRACT, "ScoringFunction", "DataChangeDetectionPolicy",
-            "DataDeletionDetectionPolicy", "CharFilter", "CognitiveServicesAccount", "SearchIndexerSkill",
+            "DataDeletionDetectionPolicy", "CharFilter", "CognitiveServicesAccount",
             "LexicalAnalyzer", "SearchIndexerKnowledgeStoreProjectionSelector",
             "SearchIndexerKnowledgeStoreBlobProjectionSelector", "SearchIndexerDataIdentity");
 
@@ -409,6 +419,56 @@ public class SearchServiceCustomizations extends Customization {
                     "}"), Collections.singletonList("java.util.List"))
                 .addAnnotation("@Override");
         }
+    }
+
+    private void customizeSearchIndexerSkill(ClassCustomization classCustomization) {
+        classCustomization.customizeAst(compilationUnit -> {
+            ClassOrInterfaceDeclaration searchIndexerSkillClass = compilationUnit.getClassByName("SearchIndexerSkill")
+                .get();
+
+            // Add the modifier 'abstract' to SearchIndexerSkill.
+            searchIndexerSkillClass.addModifier(com.github.javaparser.ast.Modifier.Keyword.ABSTRACT);
+
+            // Get the JsonSubTypes annotation.
+            AnnotationExpr jsonSubTypes = searchIndexerSkillClass.getAnnotationByName("JsonSubTypes").get();
+
+            // JsonSubTypes only has a single annotation value which is an array of Types.
+            ArrayInitializerExpr jsonSubTypesTypes = (ArrayInitializerExpr) jsonSubTypes.getChildNodes().get(1);
+
+            // Both #Microsoft.Skills.Text.V3.SentimentSkill and #Microsoft.Skills.Text.V3.EntityRecognitionSkill
+            // should use the non-V3 subtype as they were merged into a single class.
+            for (Node jsonSubTypesType : jsonSubTypesTypes.getChildNodes()) {
+                Optional<MemberValuePair> potentialNameNode = jsonSubTypesType.getChildNodes().stream()
+                    .filter(childNode -> childNode instanceof MemberValuePair)
+                    .map(childNode -> (MemberValuePair) childNode)
+                    .filter(mvp -> "name".equals(mvp.getName().asString()))
+                    .filter(mvp -> {
+                        String mvpValue = mvp.getValue().asStringLiteralExpr().asString();
+                        return "#Microsoft.Skills.Text.V3.SentimentSkill".equals(mvpValue)
+                            || "#Microsoft.Skills.Text.V3.EntityRecognitionSkill".equals(mvpValue);
+                    }).findFirst();
+
+                if (potentialNameNode.isPresent()) {
+                    MemberValuePair valueNode = jsonSubTypesType.getChildNodes().stream()
+                        .filter(childNode -> childNode instanceof MemberValuePair)
+                        .map(childNode -> (MemberValuePair) childNode)
+                        .filter(mvp -> "value".equals(mvp.getName().asString()))
+                        .findFirst()
+                        .get();
+
+                    MemberValuePair nameNode = potentialNameNode.get();
+                    String subTypeName = nameNode.getValue().asStringLiteralExpr().asString();
+                    ClassExpr valueClass = valueNode.getValue().asClassExpr();
+                    if ("#Microsoft.Skills.Text.V3.SentimentSkill".equals(subTypeName)) {
+                        valueClass.setType("SentimentSkill");
+                    } else {
+                        valueClass.setType("EntityRecognitionSkill");
+                    }
+                }
+            }
+
+            return compilationUnit;
+        });
     }
 
     private static void bulkChangeClassModifiers(PackageCustomization packageCustomization, int modifier,
