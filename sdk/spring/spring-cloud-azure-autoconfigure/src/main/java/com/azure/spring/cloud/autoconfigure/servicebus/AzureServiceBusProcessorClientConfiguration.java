@@ -23,6 +23,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
+
 /**
  * Configuration for a {@link ServiceBusProcessorClient}.
  */
@@ -48,7 +50,7 @@ class AzureServiceBusProcessorClientConfiguration {
             MessageProcessingListener listener,
             ObjectProvider<ServiceBusClientBuilder> serviceBusClientBuilders,
             ObjectProvider<ConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders,
-            ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder>> customizers) {
+            ObjectProvider<List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusProcessorClientBuilder>>> customizers) {
 
             ServiceBusProcessorClientBuilderFactory factory;
             if (isDedicatedConnection(serviceBusProperties.getProcessor())) {
@@ -59,9 +61,7 @@ class AzureServiceBusProcessorClientConfiguration {
             }
             factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS);
             connectionStringProviders.ifAvailable(factory::setConnectionStringProvider);
-            if (customizers.getIfAvailable() != null) {
-                customizers.forEach(factory::addBuilderCustomizer);
-            }
+            customizers.ifAvailable(cs -> cs.forEach(factory::addBuilderCustomizer));
             return factory;
         }
 
@@ -93,7 +93,7 @@ class AzureServiceBusProcessorClientConfiguration {
             MessageProcessingListener listener,
             ObjectProvider<ServiceBusClientBuilder> serviceBusClientBuilders,
             ObjectProvider<ConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders,
-            ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder>> customizers) {
+            ObjectProvider<List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionProcessorClientBuilder>>> customizers) {
 
             ServiceBusSessionProcessorClientBuilderFactory factory;
             if (isDedicatedConnection(serviceBusProperties.getProcessor())) {
@@ -105,9 +105,7 @@ class AzureServiceBusProcessorClientConfiguration {
             }
             factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS);
             connectionStringProviders.ifAvailable(factory::setConnectionStringProvider);
-            if (customizers.getIfAvailable() != null) {
-                customizers.forEach(factory::addBuilderCustomizer);
-            }
+            customizers.ifAvailable(cs -> cs.forEach(factory::addBuilderCustomizer));
             return factory;
         }
 

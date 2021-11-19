@@ -20,6 +20,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
+
 /**
  * Configuration for a {@link ServiceBusSenderClient} and a {@link ServiceBusSenderAsyncClient}.
  */
@@ -34,7 +36,7 @@ class AzureServiceBusProducerClientConfiguration {
         AzureServiceBusProperties serviceBusProperties,
         ObjectProvider<ServiceBusClientBuilder> serviceBusClientBuilders,
         ObjectProvider<ConnectionStringProvider<AzureServiceType.ServiceBus>> connectionStringProviders,
-        ObjectProvider<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>> customizers) {
+        ObjectProvider<List<AzureServiceClientBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSenderClientBuilder>>> customizers) {
 
         ServiceBusSenderClientBuilderFactory factory;
         if (isDedicatedConnection(serviceBusProperties.getProducer())) {
@@ -45,9 +47,7 @@ class AzureServiceBusProducerClientConfiguration {
         }
         factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_SERVICE_BUS);
         connectionStringProviders.ifAvailable(factory::setConnectionStringProvider);
-        if (customizers.getIfAvailable() != null) {
-            customizers.forEach(factory::addBuilderCustomizer);
-        }
+        customizers.ifAvailable(cs -> cs.forEach(factory::addBuilderCustomizer));
         return factory;
     }
 

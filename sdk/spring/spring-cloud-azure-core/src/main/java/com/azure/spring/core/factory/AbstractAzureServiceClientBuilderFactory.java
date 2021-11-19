@@ -98,7 +98,7 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
      * @param builder the service client builder
      */
     protected void configureApplicationId(T builder) {
-        String applicationId = getApplicationId() + ( this.springIdentifier == null ? "" : this.springIdentifier);
+        String applicationId = getApplicationId() + (this.springIdentifier == null ? "" : this.springIdentifier);
         consumeApplicationId().accept(builder, applicationId);
     }
 

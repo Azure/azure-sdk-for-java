@@ -191,16 +191,17 @@ class AzureServiceBusConsumerClientConfigurationTest {
 
     @Test
     void customizerShouldBeCalledForSession() {
-        ServiceBusReceiverClientBuilderCustomizer customizer = new ServiceBusReceiverClientBuilderCustomizer();
+        ServiceBusSessionReceiverClientBuilderCustomizer customizer = new ServiceBusSessionReceiverClientBuilderCustomizer();
         this.contextRunner
             .withPropertyValues(
                 "spring.cloud.azure.servicebus.consumer.entity-name=test-queue",
                 "spring.cloud.azure.servicebus.consumer.entity-type=queue",
-                "spring.cloud.azure.servicebus.consumer.connection-string=" + String.format(CONNECTION_STRING, "test-namespace")
+                "spring.cloud.azure.servicebus.consumer.connection-string=" + String.format(CONNECTION_STRING, "test-namespace"),
+                "spring.cloud.azure.servicebus.consumer.session-enabled=true"
             )
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
-            .withBean("customizer1", ServiceBusReceiverClientBuilderCustomizer.class, () -> customizer)
-            .withBean("customizer2", ServiceBusReceiverClientBuilderCustomizer.class, () -> customizer)
+            .withBean("customizer1", ServiceBusSessionReceiverClientBuilderCustomizer.class, () -> customizer)
+            .withBean("customizer2", ServiceBusSessionReceiverClientBuilderCustomizer.class, () -> customizer)
             .run(context -> assertThat(customizer.getCustomizedTimes()).isEqualTo(2));
     }
 
@@ -227,7 +228,7 @@ class AzureServiceBusConsumerClientConfigurationTest {
     private static class ServiceBusReceiverClientBuilderCustomizer extends TestBuilderCustomizer<ServiceBusClientBuilder.ServiceBusReceiverClientBuilder> {
 
     }
-    private static class ServiceBusSessionRecieverClientBuilderCustomizer extends TestBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder> {
+    private static class ServiceBusSessionReceiverClientBuilderCustomizer extends TestBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder> {
 
     }
 

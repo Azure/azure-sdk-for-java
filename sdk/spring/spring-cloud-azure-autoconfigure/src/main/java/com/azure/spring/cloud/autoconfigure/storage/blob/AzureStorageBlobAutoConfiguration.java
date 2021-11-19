@@ -28,6 +28,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 
+import java.util.List;
+
 import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.STORAGE_BLOB_CLIENT_BUILDER_FACTORY_BEAN_NAME;
 
 /**
@@ -97,14 +99,12 @@ public class AzureStorageBlobAutoConfiguration extends AzureServiceConfiguration
     public BlobServiceClientBuilderFactory blobServiceClientBuilderFactory(
         AzureStorageBlobProperties properties,
         ObjectProvider<ConnectionStringProvider<AzureServiceType.StorageBlob>> connectionStringProviders,
-        ObjectProvider<AzureServiceClientBuilderCustomizer<BlobServiceClientBuilder>> customizers) {
+        ObjectProvider<List<AzureServiceClientBuilderCustomizer<BlobServiceClientBuilder>>> customizers) {
         BlobServiceClientBuilderFactory factory = new BlobServiceClientBuilderFactory(properties);
 
         factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_STORAGE_BLOB);
         connectionStringProviders.ifAvailable(factory::setConnectionStringProvider);
-        if (customizers.getIfAvailable() != null) {
-            customizers.forEach(factory::addBuilderCustomizer);
-        }
+        customizers.ifAvailable(cs -> cs.forEach(factory::addBuilderCustomizer));
         return factory;
     }
 
