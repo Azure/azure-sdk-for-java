@@ -10,7 +10,9 @@ import com.azure.spring.cloud.autoconfigure.AzureServiceConfigurationBase;
 import com.azure.spring.cloud.autoconfigure.keyvault.certificates.properties.AzureKeyVaultCertificateProperties;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.core.AzureSpringIdentifier;
+import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.service.keyvault.certificates.CertificateClientBuilderFactory;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnExpression;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -52,14 +54,19 @@ public class AzureKeyVaultCertificateAutoConfiguration extends AzureServiceConfi
     @Bean
     @ConditionalOnMissingBean
     public CertificateClientBuilder certificateClientBuilder(CertificateClientBuilderFactory factory) {
-        factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_KEY_VAULT);
         return factory.build();
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public CertificateClientBuilderFactory certificateClientBuilderFactory(AzureKeyVaultCertificateProperties properties) {
-        return new CertificateClientBuilderFactory(properties);
+    public CertificateClientBuilderFactory certificateClientBuilderFactory(
+        AzureKeyVaultCertificateProperties properties,
+        ObjectProvider<AzureServiceClientBuilderCustomizer<CertificateClientBuilder>> customizers) {
+        CertificateClientBuilderFactory factory = new CertificateClientBuilderFactory(properties);
+
+        factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_KEY_VAULT);
+        customizers.orderedStream().forEach(factory::addBuilderCustomizer);
+        return factory;
     }
 
 }

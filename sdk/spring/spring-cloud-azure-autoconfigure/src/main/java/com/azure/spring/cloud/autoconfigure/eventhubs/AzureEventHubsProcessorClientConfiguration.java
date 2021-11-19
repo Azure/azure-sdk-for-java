@@ -8,8 +8,9 @@ import com.azure.messaging.eventhubs.EventProcessorClient;
 import com.azure.messaging.eventhubs.EventProcessorClientBuilder;
 import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnAnyProperty;
 import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubsProperties;
-import com.azure.spring.cloud.resourcemanager.connectionstring.AbstractArmConnectionStringProvider;
-import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
+import com.azure.spring.core.AzureSpringIdentifier;
+import com.azure.spring.core.connectionstring.ConnectionStringProvider;
+import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
 import com.azure.spring.core.service.AzureServiceType;
 import com.azure.spring.service.eventhubs.factory.EventProcessorClientBuilderFactory;
 import com.azure.spring.service.eventhubs.processor.EventProcessingListener;
@@ -22,9 +23,6 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Conditional;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.util.StringUtils;
-
-import static com.azure.spring.core.service.AzureServiceType.EVENT_HUBS;
 
 /**
  * Configures a {@link EventProcessorClient}.
@@ -52,16 +50,14 @@ class AzureEventHubsProcessorClientConfiguration {
     @ConditionalOnMissingBean
     public EventProcessorClientBuilderFactory eventProcessorClientBuilderFactory(
         CheckpointStore checkpointStore, EventProcessingListener listener,
-        ObjectProvider<AbstractArmConnectionStringProvider<AzureServiceType.EventHubs>> connectionStringProviders) {
+        ObjectProvider<ConnectionStringProvider<AzureServiceType.EventHubs>> connectionStringProviders,
+        ObjectProvider<AzureServiceClientBuilderCustomizer<EventProcessorClientBuilder>> customizers) {
         final EventProcessorClientBuilderFactory factory =
             new EventProcessorClientBuilderFactory(this.processorProperties, checkpointStore, listener);
 
-        if (StringUtils.hasText(this.processorProperties.getConnectionString())) {
-            factory.setConnectionStringProvider(
-                new StaticConnectionStringProvider<>(EVENT_HUBS, this.processorProperties.getConnectionString()));
-        } else {
-            factory.setConnectionStringProvider(connectionStringProviders.getIfAvailable());
-        }
+        factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_EVENT_HUBS);
+        connectionStringProviders.orderedStream().findFirst().ifPresent(factory::setConnectionStringProvider);
+        customizers.orderedStream().forEach(factory::addBuilderCustomizer);
         return factory;
     }
 

@@ -15,16 +15,10 @@ import java.util.concurrent.ExecutorService;
  */
 public class DefaultAzureCredentialBuilderFactory extends AbstractAzureCredentialBuilderFactory<DefaultAzureCredentialBuilder> {
 
-    private final ExecutorService executorService;
+    private ExecutorService executorService = null;
 
     public DefaultAzureCredentialBuilderFactory(AzureProperties azureProperties) {
-        this(azureProperties, null);
-    }
-
-    public DefaultAzureCredentialBuilderFactory(AzureProperties azureProperties,
-                                                ExecutorService executorService) {
         super(azureProperties);
-        this.executorService = executorService;
     }
 
     @Override
@@ -41,5 +35,9 @@ public class DefaultAzureCredentialBuilderFactory extends AbstractAzureCredentia
         map.from(profile.getEnvironment().getActiveDirectoryEndpoint()).to(builder::authorityHost);
         map.from(azureProperties.getCredential().getManagedIdentityClientId()).to(builder::managedIdentityClientId);
         map.from(executorService).to(builder::executorService);
+    }
+
+    public void setExecutorService(ExecutorService executorService) {
+        this.executorService = executorService;
     }
 }

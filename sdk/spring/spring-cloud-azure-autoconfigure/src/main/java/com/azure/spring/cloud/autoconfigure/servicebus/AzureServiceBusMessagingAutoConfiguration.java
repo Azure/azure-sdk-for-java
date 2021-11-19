@@ -63,8 +63,9 @@ public class AzureServiceBusMessagingAutoConfiguration {
 
         @Bean
         @ConditionalOnMissingBean
-        public ServiceBusProcessorFactory defaultServiceBusNamespaceProcessorFactory(NamespaceProperties properties,
-                                                                                     ObjectProvider<PropertiesSupplier<Tuple2<String, String>, ProcessorProperties>> suppliers) {
+        public ServiceBusProcessorFactory defaultServiceBusNamespaceProcessorFactory(
+            NamespaceProperties properties,
+            ObjectProvider<PropertiesSupplier<Tuple2<String, String>, ProcessorProperties>> suppliers) {
             return new DefaultServiceBusNamespaceProcessorFactory(properties, suppliers.getIfAvailable());
         }
 

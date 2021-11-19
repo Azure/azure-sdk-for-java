@@ -6,6 +6,8 @@ package com.azure.spring.cloud.autoconfigure.cosmos;
 import com.azure.cosmos.CosmosAsyncClient;
 import com.azure.cosmos.CosmosClient;
 import com.azure.cosmos.CosmosClientBuilder;
+import com.azure.messaging.eventhubs.EventHubClientBuilder;
+import com.azure.spring.cloud.autoconfigure.TestBuilderCustomizer;
 import com.azure.spring.cloud.autoconfigure.cosmos.properties.AzureCosmosProperties;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.service.cosmos.CosmosClientBuilderFactory;
@@ -78,11 +80,12 @@ class AzureCosmosAutoConfigurationTest {
         this.contextRunner
             .withBean(AzureGlobalProperties.class, () -> azureProperties)
             .withBean(CosmosClientBuilder.class, () -> mock(CosmosClientBuilder.class))
-            .withPropertyValues("spring.cloud.azure.cosmos.credential.client-id=cosmos-client-id",
-                                "spring.cloud.azure.cosmos.proxy.nonProxyHosts=127.0.0.1",
-                                "spring.cloud.azure.cosmos.endpoint=" + TEST_ENDPOINT_HTTPS,
-                                "spring.cloud.azure.cosmos.key=cosmos-key"
-                                )
+            .withPropertyValues(
+                "spring.cloud.azure.cosmos.credential.client-id=cosmos-client-id",
+                "spring.cloud.azure.cosmos.proxy.nonProxyHosts=127.0.0.1",
+                "spring.cloud.azure.cosmos.endpoint=" + TEST_ENDPOINT_HTTPS,
+                "spring.cloud.azure.cosmos.key=cosmos-key"
+            )
             .run(context -> {
                 assertThat(context).hasSingleBean(AzureCosmosProperties.class);
                 final AzureCosmosProperties properties = context.getBean(AzureCosmosProperties.class);
@@ -95,6 +98,47 @@ class AzureCosmosAutoConfigurationTest {
 
                 assertThat(azureProperties.getCredential().getClientId()).isEqualTo("azure-client-id");
             });
+    }
+
+    @Test
+    void customizerShouldBeCalled() {
+        CosmosBuilderCustomizer customizer = new CosmosBuilderCustomizer();
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.cosmos.endpoint=" + TEST_ENDPOINT_HTTPS,
+                "spring.cloud.azure.cosmos.key=cosmos-key"
+            )
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean("customizer1", CosmosBuilderCustomizer.class, () -> customizer)
+            .withBean("customizer2", CosmosBuilderCustomizer.class, () -> customizer)
+            .run(context -> assertThat(customizer.getCustomizedTimes()).isEqualTo(2));
+    }
+
+    @Test
+    void otherCustomizerShouldNotBeCalled() {
+        CosmosBuilderCustomizer customizer = new CosmosBuilderCustomizer();
+        OtherBuilderCustomizer otherBuilderCustomizer = new OtherBuilderCustomizer();
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.cosmos.endpoint=" + TEST_ENDPOINT_HTTPS,
+                "spring.cloud.azure.cosmos.key=cosmos-key"
+            )
+            .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
+            .withBean("customizer1", CosmosBuilderCustomizer.class, () -> customizer)
+            .withBean("customizer2", CosmosBuilderCustomizer.class, () -> customizer)
+            .withBean("customizer3", OtherBuilderCustomizer.class, () -> otherBuilderCustomizer)
+            .run(context -> {
+                assertThat(customizer.getCustomizedTimes()).isEqualTo(2);
+                assertThat(otherBuilderCustomizer.getCustomizedTimes()).isEqualTo(0);
+            });
+    }
+
+    private static class CosmosBuilderCustomizer extends TestBuilderCustomizer<CosmosClientBuilder> {
+
+    }
+
+    private static class OtherBuilderCustomizer extends TestBuilderCustomizer<EventHubClientBuilder> {
+
     }
 
 }

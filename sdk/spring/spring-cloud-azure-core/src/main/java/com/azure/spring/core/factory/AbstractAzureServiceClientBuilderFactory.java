@@ -14,13 +14,12 @@ import com.azure.spring.core.credential.provider.AzureCredentialProvider;
 import com.azure.spring.core.credential.resolver.AzureCredentialResolver;
 import com.azure.spring.core.credential.resolver.AzureCredentialResolvers;
 import com.azure.spring.core.customizer.AzureServiceClientBuilderCustomizer;
-import com.azure.spring.core.customizer.NoOpAzureServiceClientBuilderCustomizer;
 import com.azure.spring.core.properties.AzureProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiConsumer;
@@ -57,11 +56,11 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
     protected abstract BiConsumer<T, String> consumeConnectionString();
 
     protected TokenCredential defaultTokenCredential = DEFAULT_TOKEN_CREDENTIAL;
-    private String applicationId; // end-user
     private String springIdentifier;
     private ConnectionStringProvider<?> connectionStringProvider;
     private boolean credentialConfigured = false;
     protected final Configuration configuration = new Configuration();
+    private final List<AzureServiceClientBuilderCustomizer<T>> customizers = new ArrayList<>();
 
     /**
      * <ol>
@@ -99,7 +98,7 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
      * @param builder the service client builder
      */
     protected void configureApplicationId(T builder) {
-        String applicationId = getApplicationId() + this.springIdentifier;
+        String applicationId = getApplicationId() + (this.springIdentifier == null ? "" : this.springIdentifier);
         consumeApplicationId().accept(builder, applicationId);
     }
 
@@ -134,23 +133,26 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
     }
 
     protected void configureConnectionString(T builder) {
+        AzureProperties azureProperties = getAzureProperties();
+
+        // connection string set to properties will advantage the one from connection string provider
+        if (azureProperties instanceof ConnectionStringAware) {
+            String connectionString = ((ConnectionStringAware) azureProperties).getConnectionString();
+
+            if (StringUtils.hasText(connectionString)) {
+                consumeConnectionString().accept(builder, connectionString);
+                credentialConfigured = true;
+                LOGGER.debug("Connection string configured for class {}.", builder.getClass().getSimpleName());
+                return;
+            }
+        }
+
         if (this.connectionStringProvider != null
                 && StringUtils.hasText(this.connectionStringProvider.getConnectionString())) {
             consumeConnectionString().accept(builder, this.connectionStringProvider.getConnectionString());
             credentialConfigured = true;
             LOGGER.debug("Connection string configured for class {}.", builder.getClass().getSimpleName());
-        } else {
-            AzureProperties azureProperties = getAzureProperties();
-            if (azureProperties instanceof ConnectionStringAware) {
-                String connectionString = ((ConnectionStringAware) azureProperties).getConnectionString();
-                if (StringUtils.hasText(connectionString)) {
-                    consumeConnectionString().accept(builder, connectionString);
-                    credentialConfigured = true;
-                    LOGGER.debug("Connection string configured for class {}.", builder.getClass().getSimpleName());
-                }
-            }
         }
-
     }
 
     protected void configureDefaultCredential(T builder) {
@@ -160,8 +162,12 @@ public abstract class AbstractAzureServiceClientBuilderFactory<T> implements Azu
         }
     }
 
+    public void addBuilderCustomizer(AzureServiceClientBuilderCustomizer<T> customizer) {
+        this.customizers.add(customizer);
+    }
+
     protected List<AzureServiceClientBuilderCustomizer<T>> getBuilderCustomizers() {
-        return Collections.singletonList(new NoOpAzureServiceClientBuilderCustomizer<>());
+        return this.customizers;
     }
 
     protected void customizeBuilder(T builder) {

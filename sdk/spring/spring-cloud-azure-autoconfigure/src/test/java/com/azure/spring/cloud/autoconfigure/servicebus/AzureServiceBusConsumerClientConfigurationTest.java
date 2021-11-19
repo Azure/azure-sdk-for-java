@@ -3,9 +3,11 @@
 
 package com.azure.spring.cloud.autoconfigure.servicebus;
 
+import com.azure.data.appconfiguration.ConfigurationClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusClientBuilder;
 import com.azure.messaging.servicebus.ServiceBusReceiverClient;
 import com.azure.messaging.servicebus.ServiceBusSessionReceiverClient;
+import com.azure.spring.cloud.autoconfigure.TestBuilderCustomizer;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
@@ -170,6 +172,68 @@ class AzureServiceBusConsumerClientConfigurationTest {
                 assertThat(context).hasSingleBean(ServiceBusSessionReceiverClient.class);
                 assertThat(context).doesNotHaveBean(ServiceBusReceiverClient.class);
             });
+    }
+
+    @Test
+    void customizerShouldBeCalledForNonSession() {
+        ServiceBusReceiverClientBuilderCustomizer customizer = new ServiceBusReceiverClientBuilderCustomizer();
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.servicebus.consumer.entity-name=test-queue",
+                "spring.cloud.azure.servicebus.consumer.entity-type=queue",
+                "spring.cloud.azure.servicebus.consumer.connection-string=" + String.format(CONNECTION_STRING, "test-namespace")
+            )
+            .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
+            .withBean("customizer1", ServiceBusReceiverClientBuilderCustomizer.class, () -> customizer)
+            .withBean("customizer2", ServiceBusReceiverClientBuilderCustomizer.class, () -> customizer)
+            .run(context -> assertThat(customizer.getCustomizedTimes()).isEqualTo(2));
+    }
+
+    @Test
+    void customizerShouldBeCalledForSession() {
+        ServiceBusSessionReceiverClientBuilderCustomizer customizer = new ServiceBusSessionReceiverClientBuilderCustomizer();
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.servicebus.consumer.entity-name=test-queue",
+                "spring.cloud.azure.servicebus.consumer.entity-type=queue",
+                "spring.cloud.azure.servicebus.consumer.connection-string=" + String.format(CONNECTION_STRING, "test-namespace"),
+                "spring.cloud.azure.servicebus.consumer.session-enabled=true"
+            )
+            .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
+            .withBean("customizer1", ServiceBusSessionReceiverClientBuilderCustomizer.class, () -> customizer)
+            .withBean("customizer2", ServiceBusSessionReceiverClientBuilderCustomizer.class, () -> customizer)
+            .run(context -> assertThat(customizer.getCustomizedTimes()).isEqualTo(2));
+    }
+
+    @Test
+    void otherCustomizerShouldNotBeCalled() {
+        ServiceBusReceiverClientBuilderCustomizer customizer = new ServiceBusReceiverClientBuilderCustomizer();
+        OtherBuilderCustomizer otherBuilderCustomizer = new OtherBuilderCustomizer();
+        this.contextRunner
+            .withPropertyValues(
+                "spring.cloud.azure.servicebus.consumer.entity-name=test-queue",
+                "spring.cloud.azure.servicebus.consumer.entity-type=queue",
+                "spring.cloud.azure.servicebus.consumer.connection-string=" + String.format(CONNECTION_STRING, "test-namespace")
+            )
+            .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
+            .withBean("customizer1", ServiceBusReceiverClientBuilderCustomizer.class, () -> customizer)
+            .withBean("customizer2", ServiceBusReceiverClientBuilderCustomizer.class, () -> customizer)
+            .withBean("customizer3", OtherBuilderCustomizer.class, () -> otherBuilderCustomizer)
+            .run(context -> {
+                assertThat(customizer.getCustomizedTimes()).isEqualTo(2);
+                assertThat(otherBuilderCustomizer.getCustomizedTimes()).isEqualTo(0);
+            });
+    }
+
+    private static class ServiceBusReceiverClientBuilderCustomizer extends TestBuilderCustomizer<ServiceBusClientBuilder.ServiceBusReceiverClientBuilder> {
+
+    }
+    private static class ServiceBusSessionReceiverClientBuilderCustomizer extends TestBuilderCustomizer<ServiceBusClientBuilder.ServiceBusSessionReceiverClientBuilder> {
+
+    }
+
+    private static class OtherBuilderCustomizer extends TestBuilderCustomizer<ConfigurationClientBuilder> {
+
     }
 
 }
