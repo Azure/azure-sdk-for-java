@@ -20,9 +20,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isA;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -46,7 +48,7 @@ public class ServiceBusTemplateSendTest extends SendOperationTest<ServiceBusTemp
         this.producerFactory = mock(ServiceBusProducerFactory.class);
         this.mockSenderClient = mock(ServiceBusSenderAsyncClient.class);
 
-        when(this.producerFactory.createProducer(eq(this.destination))).thenReturn(this.mockSenderClient);
+        when(this.producerFactory.createProducer(eq(this.destination), any())).thenReturn(this.mockSenderClient);
         when(this.mockSenderClient.sendMessage(isA(ServiceBusMessage.class))).thenReturn(this.mono);
 
         this.sendOperation = new ServiceBusTemplate(producerFactory);
@@ -139,12 +141,12 @@ public class ServiceBusTemplateSendTest extends SendOperationTest<ServiceBusTemp
 
     @Override
     protected void whenSendWithException() {
-        when(this.producerFactory.createProducer(anyString())).thenThrow(ServiceBusRuntimeException.class);
+        when(this.producerFactory.createProducer(anyString(), any())).thenThrow(ServiceBusRuntimeException.class);
     }
 
     @Override
     protected void verifyGetClientCreator(int times) {
-        verify(this.producerFactory, times(times)).createProducer(anyString());
+        verify(this.producerFactory, times(times)).createProducer(anyString(), any());
     }
 
     protected void verifySendWithPartitionKey(int times) {
