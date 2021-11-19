@@ -27,6 +27,7 @@ import com.azure.ai.formrecognizer.implementation.util.Transforms;
 import com.azure.ai.formrecognizer.implementation.util.Utility;
 import com.azure.ai.formrecognizer.models.DocumentModelOperationException;
 import com.azure.ai.formrecognizer.models.DocumentOperationResult;
+import com.azure.ai.formrecognizer.models.FormRecognizerAudience;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -80,17 +81,21 @@ public final class DocumentModelAdministrationAsyncClient {
     private final ClientLogger logger = new ClientLogger(DocumentModelAdministrationAsyncClient.class);
     private final FormRecognizerClientImpl service;
     private final DocumentAnalysisServiceVersion serviceVersion;
+    private final FormRecognizerAudience audience;
 
     /**
      * Create a {@link DocumentModelAdministrationAsyncClient} that sends requests to the Form Recognizer service's endpoint.
      * Each service call goes through the {@link DocumentModelAdministrationClientBuilder#pipeline http pipeline}.
-     *
-     * @param service The proxy service used to perform REST calls.
+     *  @param service The proxy service used to perform REST calls.
      * @param serviceVersion The versions of Azure Form Recognizer supported by this client library.
+     * @param audience ARM management scope associated with the given form recognizer resource.
      */
-    DocumentModelAdministrationAsyncClient(FormRecognizerClientImpl service, DocumentAnalysisServiceVersion serviceVersion) {
+    DocumentModelAdministrationAsyncClient(FormRecognizerClientImpl service,
+                                           DocumentAnalysisServiceVersion serviceVersion,
+                                           FormRecognizerAudience audience) {
         this.service = service;
         this.serviceVersion = serviceVersion;
+        this.audience = audience;
     }
 
     /**
@@ -101,6 +106,7 @@ public final class DocumentModelAdministrationAsyncClient {
      */
     public DocumentAnalysisAsyncClient getDocumentAnalysisAsyncClient() {
         return new DocumentAnalysisClientBuilder().endpoint(getEndpoint()).pipeline(getHttpPipeline())
+            .audience(this.audience)
             .buildAsyncClient();
     }
 
@@ -120,6 +126,15 @@ public final class DocumentModelAdministrationAsyncClient {
      */
     String getEndpoint() {
         return service.getEndpoint();
+    }
+
+    /**
+     * Gets the audience the client is using.
+     *
+     * @return the audience the client is using.
+     */
+    public FormRecognizerAudience getAudience() {
+        return audience;
     }
 
     /**
