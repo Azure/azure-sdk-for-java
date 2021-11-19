@@ -10,6 +10,15 @@
 
 ### Other Changes
 
+## 1.1.2 (2021-11-17)
+
+### Other Changes
+- The SDK now uses a 2s polling interval when waiting for a Standard sized rendering VM. For Premium, 10s is still used.
+
+#### Dependency updates
+- Updated azure-core to 1.22.0.
+- Updated azure-identity to 1.4.1.
+
 ## 1.1.1 (2021-10-07)
 
 ### Other Changes

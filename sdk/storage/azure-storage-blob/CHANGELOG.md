@@ -3,14 +3,24 @@
 ## 12.15.0-beta.2 (Unreleased)
 
 ### Features Added
-- Added support for the 2021-02-12 service version.
+- Added support for 2021-02-12 service version.
+- Added support for listing system containers.
 - Added support for listing blobs which contain invalid xml characters.
+
+- When opening a BlobInputStream, removed the initial getProperties call in favor of a download for better performance.
 
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 12.14.2 (2021-11-10)
+
+### Other Changes
+#### Dependency Updates
+- Updated to version `1.22.0` of `azure-core`
+- Updated to version `12.14.1` of `azure-storage-common`
 
 ## 12.15.0-beta.1 (2021-11-05)
 

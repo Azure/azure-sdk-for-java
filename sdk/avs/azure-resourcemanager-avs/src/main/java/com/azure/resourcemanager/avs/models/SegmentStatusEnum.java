@@ -10,8 +10,11 @@ import java.util.Collection;
 
 /** Defines values for SegmentStatusEnum. */
 public final class SegmentStatusEnum extends ExpandableStringEnum<SegmentStatusEnum> {
-    /** Static value SUCCESS, FAILURE for SegmentStatusEnum. */
-    public static final SegmentStatusEnum SUCCESS_FAILURE = fromString("SUCCESS, FAILURE");
+    /** Static value SUCCESS for SegmentStatusEnum. */
+    public static final SegmentStatusEnum SUCCESS = fromString("SUCCESS");
+
+    /** Static value FAILURE for SegmentStatusEnum. */
+    public static final SegmentStatusEnum FAILURE = fromString("FAILURE");
 
     /**
      * Creates or finds a SegmentStatusEnum from its string representation.

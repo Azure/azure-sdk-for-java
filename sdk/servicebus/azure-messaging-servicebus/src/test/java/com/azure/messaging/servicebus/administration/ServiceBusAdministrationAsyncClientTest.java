@@ -100,7 +100,6 @@ class ServiceBusAdministrationAsyncClientTest {
     private final String queueName = "some-queue";
     private final String responseString = "some-xml-response-string";
     private final String secondResponseString = "second-xml-response";
-    private final String validToken = "some-valid-token";
     private final String dummyEndpoint = "endpoint.servicebus.foo";
     private final String forwardToEntity = "forward-to-entity";
     private final HttpHeaders httpHeaders = new HttpHeaders().put("foo", "baz");
@@ -450,7 +449,7 @@ class ServiceBusAdministrationAsyncClientTest {
         final List<ResponseLink> links = Arrays.asList(
             new ResponseLink().setRel("self").setHref("foo"),
             new ResponseLink().setRel("bar").setHref("baz"),
-            new ResponseLink().setRel("next").setHref("https://foo.bar.net?api-version=2017-04&$skip=" + firstEntities)
+            new ResponseLink().setRel("next").setHref("https://foo.bar.net?api-version=2021-05&$skip=" + firstEntities)
         );
         final QueueDescriptionFeed firstFeed = new QueueDescriptionFeed()
             .setLink(links)

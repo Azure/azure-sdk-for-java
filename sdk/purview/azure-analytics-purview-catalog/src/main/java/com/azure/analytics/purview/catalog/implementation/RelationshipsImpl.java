@@ -295,15 +295,13 @@ public final class RelationshipsImpl {
      *
      * @param relationship The AtlasRelationship object containing the information for the relationship to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return atlasRelationship.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> createWithResponse(
-            BinaryData relationship, RequestOptions requestOptions, Context context) {
-        return createWithResponseAsync(relationship, requestOptions, context).block();
+    public Response<BinaryData> createWithResponse(BinaryData relationship, RequestOptions requestOptions) {
+        return createWithResponseAsync(relationship, requestOptions).block();
     }
 
     /**
@@ -522,15 +520,13 @@ public final class RelationshipsImpl {
      *
      * @param relationship The AtlasRelationship object containing the information for the relationship to be created.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return atlasRelationship.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateWithResponse(
-            BinaryData relationship, RequestOptions requestOptions, Context context) {
-        return updateWithResponseAsync(relationship, requestOptions, context).block();
+    public Response<BinaryData> updateWithResponse(BinaryData relationship, RequestOptions requestOptions) {
+        return updateWithResponseAsync(relationship, requestOptions).block();
     }
 
     /**
@@ -853,14 +849,13 @@ public final class RelationshipsImpl {
      *
      * @param guid The globally unique identifier of the relationship.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return relationship information between entities by its GUID.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(String guid, RequestOptions requestOptions, Context context) {
-        return getWithResponseAsync(guid, requestOptions, context).block();
+    public Response<BinaryData> getWithResponse(String guid, RequestOptions requestOptions) {
+        return getWithResponseAsync(guid, requestOptions).block();
     }
 
     /**
@@ -898,13 +893,12 @@ public final class RelationshipsImpl {
      *
      * @param guid The globally unique identifier of the relationship.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(String guid, RequestOptions requestOptions, Context context) {
-        return deleteWithResponseAsync(guid, requestOptions, context).block();
+    public Response<Void> deleteWithResponse(String guid, RequestOptions requestOptions) {
+        return deleteWithResponseAsync(guid, requestOptions).block();
     }
 }

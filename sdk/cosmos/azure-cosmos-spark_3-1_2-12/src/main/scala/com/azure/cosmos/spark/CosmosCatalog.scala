@@ -6,11 +6,12 @@ package com.azure.cosmos.spark
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 
 import java.util
+import scala.collection.immutable.Map
 import scala.collection.mutable.ArrayBuffer
 // scalastyle:off underscore.import
 import com.azure.cosmos.models._
 // scalastyle:on underscore.import
-import com.azure.cosmos.{CosmosAsyncClient, CosmosException}
+import com.azure.cosmos.CosmosException
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.catalyst.analysis.{NamespaceAlreadyExistsException, NoSuchNamespaceException, NoSuchTableException}
 import org.apache.spark.sql.connector.catalog.{CatalogPlugin, Identifier, NamespaceChange, SupportsNamespaces, Table, TableCatalog, TableChange}
@@ -49,26 +50,27 @@ class CosmosCatalog
 
   // mutable but only expected to be changed from within initialize method
   private var catalogName: String = _
-  private var client: CosmosAsyncClient = _
+  //private var client: CosmosAsyncClient = _
+  private var config: Map[String, String] = _
+  private var readConfig: CosmosReadConfig = _
   private var tableOptions: Map[String, String] = _
   private var viewRepository: Option[HDFSMetadataLog[Array[ViewDefinition]]] = None
 
   /**
-    * Called to initialize configuration.
-    * <p>
-    * This method is called once, just after the provider is instantiated.
-    *
-    * @param name the name used to identify and load this catalog
-    * @param options a case-insensitive string map of configuration
-    */
+   * Called to initialize configuration.
+   * <p>
+   * This method is called once, just after the provider is instantiated.
+   *
+   * @param name    the name used to identify and load this catalog
+   * @param options a case-insensitive string map of configuration
+   */
   override def initialize(name: String,
                           options: CaseInsensitiveStringMap): Unit = {
-    val config = CosmosConfig.getEffectiveConfig(
-        None,
-        None,
-        options.asCaseSensitiveMap().asScala.toMap)
-    val readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
-    this.client = CosmosClientCache(CosmosClientConfiguration(config, readConfig.forceEventualConsistency), None)
+    this.config = CosmosConfig.getEffectiveConfig(
+      None,
+      None,
+      options.asCaseSensitiveMap().asScala.toMap)
+    this.readConfig = CosmosReadConfig.parseCosmosReadConfig(config)
 
     tableOptions = toTableConfig(options)
     this.catalogName = name
@@ -82,79 +84,99 @@ class CosmosCatalog
   }
 
   /**
-    * Catalog implementations are registered to a name by adding a configuration option to Spark:
-    * spark.sql.catalog.catalog-name=com.example.YourCatalogClass.
-    * All configuration properties in the Spark configuration that share the catalog name prefix,
-    * spark.sql.catalog.catalog-name.(key)=(value) will be passed in the case insensitive
-    * string map of options in initialization with the prefix removed.
-    * name, is also passed and is the catalog's name; in this case, "catalog-name".
-    * @return catalog name
-    */
+   * Catalog implementations are registered to a name by adding a configuration option to Spark:
+   * spark.sql.catalog.catalog-name=com.example.YourCatalogClass.
+   * All configuration properties in the Spark configuration that share the catalog name prefix,
+   * spark.sql.catalog.catalog-name.(key)=(value) will be passed in the case insensitive
+   * string map of options in initialization with the prefix removed.
+   * name, is also passed and is the catalog's name; in this case, "catalog-name".
+   *
+   * @return catalog name
+   */
   override def name(): String = catalogName
 
   /**
-    * List top-level namespaces from the catalog.
-    * <p>
-    * If an object such as a table, view, or function exists, its parent namespaces must also exist
-    * and must be returned by this discovery method. For example, if table a.t exists, this method
-    * must return ["a"] in the result array.
-    *
-    * @return an array of multi-part namespace names.
-    */
+   * List top-level namespaces from the catalog.
+   * <p>
+   * If an object such as a table, view, or function exists, its parent namespaces must also exist
+   * and must be returned by this discovery method. For example, if table a.t exists, this method
+   * must return ["a"] in the result array.
+   *
+   * @return an array of multi-part namespace names.
+   */
   override def listNamespaces(): Array[Array[String]] = {
     logDebug("catalog:listNamespaces")
-    getClient
-      .readAllDatabases()
-      .toIterable
-      .asScala
-      .map(database => Array(database.getId))
-      .toArray
+
+    Loan(CosmosClientCache(
+      CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
+      None,
+      s"CosmosCatalog(name $catalogName).listNamespaces"
+    ))
+      .to(cosmosClientCacheItem => {
+        cosmosClientCacheItem
+          .client
+          .readAllDatabases()
+          .toIterable
+          .asScala
+          .map(database => Array(database.getId))
+          .toArray
+      })
   }
 
   /**
-    * List namespaces in a namespace.
-    * <p>
-    * Cosmos supports only single depth database. Hence we always return an empty list of namespaces.
-    * or throw if the root namespace doesn't exist
-    */
+   * List namespaces in a namespace.
+   * <p>
+   * Cosmos supports only single depth database. Hence we always return an empty list of namespaces.
+   * or throw if the root namespace doesn't exist
+   */
   @throws(classOf[NoSuchNamespaceException])
   override def listNamespaces(
-      namespace: Array[String]): Array[Array[String]] = {
+                               namespace: Array[String]): Array[Array[String]] = {
     loadNamespaceMetadata(namespace) // throws NoSuchNamespaceException if namespace doesn't exist
     // Cosmos DB only has one single level depth databases
     Array.empty[Array[String]]
   }
 
   /**
-    * Load metadata properties for a namespace.
-    *
-    * @param namespace a multi-part namespace
-    * @return a string map of properties for the given namespace
-    * @throws NoSuchNamespaceException If the namespace does not exist (optional)
-    */
+   * Load metadata properties for a namespace.
+   *
+   * @param namespace a multi-part namespace
+   * @return a string map of properties for the given namespace
+   * @throws NoSuchNamespaceException If the namespace does not exist (optional)
+   */
   @throws(classOf[NoSuchNamespaceException])
   override def loadNamespaceMetadata(
-      namespace: Array[String]): util.Map[String, String] = {
-    checkNamespace(namespace)
-    val databaseName = toCosmosDatabaseName(namespace.head)
-    try {
-      client.getDatabase(databaseName).read().block()
-    } catch {
-      case e: CosmosException if isNotFound(e) =>
-        throw new NoSuchNamespaceException(namespace)
-    }
+                                      namespace: Array[String]): util.Map[String, String] = {
 
-    try {
-      val throughput = client
-        .getDatabase(toCosmosDatabaseName(namespace.head))
-        .readThroughput()
-        .block()
-      CosmosThroughputProperties.toMap(throughput.getProperties).asJava
-    } catch {
-      case e: CosmosException if e.getStatusCode == 400 =>
-        Map[String, String]().asJava
-      // not a shared throughput database account
-    }
+    checkNamespace(namespace)
+
+    Loan(CosmosClientCache(
+      CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
+      None,
+      s"CosmosCatalog(name $catalogName).loadNamespaceMetadata([${namespace.mkString(", ")}])"
+    ))
+      .to(clientCacheItem => {
+        val databaseName = toCosmosDatabaseName(namespace.head)
+        try {
+          clientCacheItem.client.getDatabase(databaseName).read().block()
+        } catch {
+          case e: CosmosException if isNotFound(e) =>
+            throw new NoSuchNamespaceException(namespace)
+        }
+
+        try {
+          val throughput = clientCacheItem
+            .client
+            .getDatabase(toCosmosDatabaseName(namespace.head))
+            .readThroughput()
+            .block()
+          CosmosThroughputProperties.toMap(throughput.getProperties).asJava
+        } catch {
+          case e: CosmosException if e.getStatusCode == 400 =>
+            Map[String, String]().asJava
+          // not a shared throughput database account
+        }
+      })
   }
 
   @throws(classOf[NamespaceAlreadyExistsException])
@@ -166,22 +188,29 @@ class CosmosCatalog
         metadata.asScala.toMap)
     val databaseName = toCosmosDatabaseName(namespace.head)
 
-    try {
-      if (throughputPropertiesOpt.isDefined) {
-        logDebug(
-          s"creating database $databaseName with shared throughput ${throughputPropertiesOpt.get}")
-        getClient
-          .createDatabase(databaseName, throughputPropertiesOpt.get)
-          .block()
-      } else {
-        logDebug(s"creating database $databaseName")
-        getClient.createDatabase(databaseName).block()
-      }
+    Loan(CosmosClientCache(
+      CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
+      None,
+      s"CosmosCatalog(name $catalogName).createNamespace([${namespace.mkString(", ")}])"
+    ))
+      .to(cosmosClientCacheItem => {
+        try {
+          if (throughputPropertiesOpt.isDefined) {
+            logDebug(
+              s"creating database $databaseName with shared throughput ${throughputPropertiesOpt.get}")
+            cosmosClientCacheItem.client
+              .createDatabase(databaseName, throughputPropertiesOpt.get)
+              .block()
+          } else {
+            logDebug(s"creating database $databaseName")
+            cosmosClientCacheItem.client.createDatabase(databaseName).block()
+          }
 
-    } catch {
-      case e: CosmosException if alreadyExists(e) =>
-        throw new NamespaceAlreadyExistsException(namespace)
-    }
+        } catch {
+          case e: CosmosException if alreadyExists(e) =>
+            throw new NamespaceAlreadyExistsException(namespace)
+        }
+      })
   }
 
   @throws(classOf[UnsupportedOperationException])
@@ -193,18 +222,27 @@ class CosmosCatalog
   }
 
   /**
-    * Drop a namespace from the catalog, recursively dropping all objects within the namespace.
-    * @param namespace - a multi-part namespace
-    * @return true if the namespace was dropped
-    */
+   * Drop a namespace from the catalog, recursively dropping all objects within the namespace.
+   *
+   * @param namespace - a multi-part namespace
+   * @return true if the namespace was dropped
+   */
   @throws(classOf[NoSuchNamespaceException])
   override def dropNamespace(namespace: Array[String]): Boolean = {
     checkNamespace(namespace)
     try {
-      getClient
-        .getDatabase(toCosmosDatabaseName(namespace.head))
-        .delete()
-        .block()
+      Loan(CosmosClientCache(
+        CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
+        None,
+        s"CosmosCatalog(name $catalogName).dropNamespace([${namespace.mkString(", ")}])"
+      ))
+        .to(cosmosClientCacheItem => {
+          cosmosClientCacheItem
+            .client
+            .getDatabase(toCosmosDatabaseName(namespace.head))
+            .delete()
+            .block()
+        })
       true
     } catch {
       case e: CosmosException if isNotFound(e) =>
@@ -217,12 +255,21 @@ class CosmosCatalog
     val databaseName = toCosmosDatabaseName(namespace.head)
 
     try {
-      val cosmosTables = getClient
-        .getDatabase(databaseName)
-        .readAllContainers()
-        .toIterable
-        .asScala
-        .map(prop => getContainerIdentifier(namespace.head, prop))
+      val cosmosTables =
+        Loan(CosmosClientCache(
+          CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
+          None,
+          s"CosmosCatalog(name $catalogName).listTables([${namespace.mkString(", ")}])"
+        ))
+          .to(cosmosClientCacheItem => {
+            cosmosClientCacheItem
+              .client
+              .getDatabase(databaseName)
+              .readAllContainers()
+              .toIterable
+              .asScala
+              .map(prop => getContainerIdentifier(namespace.head, prop))
+          })
 
       val tableIdentifiers = this.tryGetViewDefinitions(databaseName) match {
         case Some(viewDefinitions) =>
@@ -310,6 +357,7 @@ class CosmosCatalog
     throw new UnsupportedOperationException("renaming table not supported")
   }
 
+  //scalastyle:off method.length
   private def createPhysicalTable(databaseName: String,
                                   containerName: String,
                                   schema: StructType,
@@ -331,18 +379,27 @@ class CosmosCatalog
       case None =>
     }
 
-    if (throughputPropertiesOpt.isDefined) {
-      getClient
-        .getDatabase(databaseName)
-        .createContainer(cosmosContainerProperties,
-          throughputPropertiesOpt.get)
-        .block()
-    } else {
-      getClient
-        .getDatabase(databaseName)
-        .createContainer(cosmosContainerProperties)
-        .block()
-    }
+    Loan(CosmosClientCache(
+      CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
+      None,
+      s"CosmosCatalog(name $catalogName).createPhysicalTable($databaseName, $containerName)"
+    ))
+      .to(cosmosClientCacheItem => {
+        if (throughputPropertiesOpt.isDefined) {
+          cosmosClientCacheItem
+            .client
+            .getDatabase(databaseName)
+            .createContainer(cosmosContainerProperties,
+              throughputPropertiesOpt.get)
+            .block()
+        } else {
+          cosmosClientCacheItem
+            .client
+            .getDatabase(databaseName)
+            .createContainer(cosmosContainerProperties)
+            .block()
+        }
+      })
 
     val effectiveOptions = tableOptions ++ containerProperties
 
@@ -354,6 +411,7 @@ class CosmosCatalog
       effectiveOptions.asJava,
       Option.apply(schema))
   }
+  //scalastyle:on method.length
 
   //scalastyle:off method.length
   @tailrec
@@ -416,11 +474,18 @@ class CosmosCatalog
 
   private def deletePhysicalTable(databaseName: String, containerName: String): Boolean = {
     try {
-      getClient
-        .getDatabase(databaseName)
-        .getContainer(containerName)
-        .delete()
-        .block()
+      Loan(CosmosClientCache(
+        CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
+        None,
+        s"CosmosCatalog(name $catalogName).deletePhysicalTable($databaseName, $containerName)"
+      ))
+        .to (cosmosClientCacheItem =>
+          cosmosClientCacheItem
+            .client
+            .getDatabase(databaseName)
+            .getContainer(containerName)
+            .delete()
+            .block())
       true
     } catch {
       case e: CosmosException if isNotFound(e) => false
@@ -459,10 +524,6 @@ class CosmosCatalog
     }
   }
 
-  private def getClient: CosmosAsyncClient = {
-    this.client
-  }
-
   private def tryGetContainerMetadata
   (
     databaseName: String,
@@ -470,12 +531,20 @@ class CosmosCatalog
   ): Option[CosmosContainerProperties] = {
 
     try {
-      Some(getClient
-        .getDatabase(databaseName)
-        .getContainer(containerName)
-        .read()
-        .block()
-        .getProperties)
+      Some(
+        Loan(CosmosClientCache(
+          CosmosClientConfiguration(config, readConfig.forceEventualConsistency),
+          None,
+          s"CosmosCatalog(name $catalogName).tryGetContainerMetadata($databaseName, $containerName)"))
+          .to(cosmosClientCacheItem =>
+            cosmosClientCacheItem
+              .client
+              .getDatabase(databaseName)
+              .getContainer(containerName)
+              .read()
+              .block()
+              .getProperties
+        ))
     } catch {
       case e: CosmosException if isNotFound(e) =>
         None
@@ -483,7 +552,7 @@ class CosmosCatalog
   }
 
   private def tryGetViewDefinition(databaseName: String,
-                                   containerName: String) : Option[ViewDefinition] = {
+                                   containerName: String): Option[ViewDefinition] = {
 
     this.tryGetViewDefinitions(databaseName) match {
       case Some(viewDefinitions) =>
@@ -493,7 +562,7 @@ class CosmosCatalog
     }
   }
 
-  private def tryGetViewDefinitions(databaseName: String) : Option[Array[ViewDefinition]] = {
+  private def tryGetViewDefinitions(databaseName: String): Option[Array[ViewDefinition]] = {
 
     this.viewRepository match {
       case Some(viewRepositorySnapshot) =>
@@ -518,8 +587,8 @@ class CosmosCatalog
     exception.getStatusCode == 409
 
   private def getContainerIdentifier(
-      namespaceName: String,
-      cosmosContainerProperties: CosmosContainerProperties): Identifier = {
+                                      namespaceName: String,
+                                      cosmosContainerProperties: CosmosContainerProperties): Identifier = {
     Identifier.of(Array(namespaceName), cosmosContainerProperties.getId)
   }
 
@@ -602,7 +671,7 @@ class CosmosCatalog
     private val autoScaleMaxThroughputName = "autoScaleMaxThroughput"
 
     def tryGetThroughputProperties(
-        properties: Map[String, String]): Option[ThroughputProperties] = {
+                                    properties: Map[String, String]): Option[ThroughputProperties] = {
       properties
         .get(manualThroughputFieldName)
         .map(
@@ -621,7 +690,7 @@ class CosmosCatalog
     }
 
     def toMap(
-        throughputProperties: ThroughputProperties): Map[String, String] = {
+               throughputProperties: ThroughputProperties): Map[String, String] = {
       val props = new util.HashMap[String, String]()
       val manualThroughput = throughputProperties.getManualThroughput
       if (manualThroughput != null) {

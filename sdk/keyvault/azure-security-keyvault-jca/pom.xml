@@ -22,6 +22,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <jacoco.min.branchcoverage>0</jacoco.min.branchcoverage>
         <jacoco.min.linecoverage>0.05</jacoco.min.linecoverage>
+        <codesnippet.skip>false</codesnippet.skip>
+        <javadocDoclet></javadocDoclet>
+        <javadocDocletOptions></javadocDocletOptions>
     </properties>
 
     <dependencies>

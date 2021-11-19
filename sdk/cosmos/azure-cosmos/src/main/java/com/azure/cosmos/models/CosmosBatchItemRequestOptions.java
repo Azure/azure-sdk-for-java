@@ -13,6 +13,9 @@ public final class CosmosBatchItemRequestOptions {
     private String ifMatchETag;
     private String ifNoneMatchETag;
 
+    /**
+     * Creates a new {@link CosmosBatchItemRequestOptions} object.
+     */
     public CosmosBatchItemRequestOptions() {
     }
 

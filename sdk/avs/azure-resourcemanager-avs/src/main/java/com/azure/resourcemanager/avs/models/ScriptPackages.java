@@ -11,7 +11,7 @@ import com.azure.core.util.Context;
 /** Resource collection API of ScriptPackages. */
 public interface ScriptPackages {
     /**
-     * Return script packages available for a private cloud to run on their Private Cloud.
+     * List script packages available to run on the private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
@@ -23,7 +23,7 @@ public interface ScriptPackages {
     PagedIterable<ScriptPackage> list(String resourceGroupName, String privateCloudName);
 
     /**
-     * Return script packages available for a private cloud to run on their Private Cloud.
+     * List script packages available to run on the private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
@@ -36,7 +36,7 @@ public interface ScriptPackages {
     PagedIterable<ScriptPackage> list(String resourceGroupName, String privateCloudName, Context context);
 
     /**
-     * Return script package available to run on an Private Cloud.
+     * Get a script package available to run on a private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
@@ -44,12 +44,12 @@ public interface ScriptPackages {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return script Package resources available for execution.
+     * @return a script package available to run on a private cloud.
      */
     ScriptPackage get(String resourceGroupName, String privateCloudName, String scriptPackageName);
 
     /**
-     * Return script package available to run on an Private Cloud.
+     * Get a script package available to run on a private cloud.
      *
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param privateCloudName Name of the private cloud.
@@ -58,7 +58,7 @@ public interface ScriptPackages {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return script Package resources available for execution.
+     * @return a script package available to run on a private cloud.
      */
     Response<ScriptPackage> getWithResponse(
         String resourceGroupName, String privateCloudName, String scriptPackageName, Context context);

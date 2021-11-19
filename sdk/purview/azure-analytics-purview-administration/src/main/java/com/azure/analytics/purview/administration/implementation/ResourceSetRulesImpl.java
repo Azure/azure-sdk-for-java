@@ -461,14 +461,13 @@ public final class ResourceSetRulesImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return a resource set config service model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getResourceSetRuleWithResponse(RequestOptions requestOptions, Context context) {
-        return getResourceSetRuleWithResponseAsync(requestOptions, context).block();
+    public Response<BinaryData> getResourceSetRuleWithResponse(RequestOptions requestOptions) {
+        return getResourceSetRuleWithResponseAsync(requestOptions).block();
     }
 
     /**
@@ -691,7 +690,7 @@ public final class ResourceSetRulesImpl {
      * @return resourceSetRuleConfig implementation class.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> upsertResourceSetRuleWithResponseAsync(
+    public Mono<Response<BinaryData>> createOrUpdateResourceSetRuleWithResponseAsync(
             BinaryData resourceSetRuleConfig, RequestOptions requestOptions) {
         return FluxUtil.withContext(
                 context ->
@@ -924,7 +923,7 @@ public final class ResourceSetRulesImpl {
      * @return resourceSetRuleConfig implementation class.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> upsertResourceSetRuleWithResponseAsync(
+    public Mono<Response<BinaryData>> createOrUpdateResourceSetRuleWithResponseAsync(
             BinaryData resourceSetRuleConfig, RequestOptions requestOptions, Context context) {
         return service.createOrUpdateResourceSetRule(
                 this.client.getEndpoint(),
@@ -1149,15 +1148,14 @@ public final class ResourceSetRulesImpl {
      *
      * @param resourceSetRuleConfig ResourceSetRuleConfig implementation class.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return resourceSetRuleConfig implementation class.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> upsertResourceSetRuleWithResponse(
-            BinaryData resourceSetRuleConfig, RequestOptions requestOptions, Context context) {
-        return upsertResourceSetRuleWithResponseAsync(resourceSetRuleConfig, requestOptions, context).block();
+    public Response<BinaryData> createOrUpdateResourceSetRuleWithResponse(
+            BinaryData resourceSetRuleConfig, RequestOptions requestOptions) {
+        return createOrUpdateResourceSetRuleWithResponseAsync(resourceSetRuleConfig, requestOptions).block();
     }
 
     /**
@@ -1222,14 +1220,13 @@ public final class ResourceSetRulesImpl {
      * </table>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteResourceSetRuleWithResponse(RequestOptions requestOptions, Context context) {
-        return deleteResourceSetRuleWithResponseAsync(requestOptions, context).block();
+    public Response<Void> deleteResourceSetRuleWithResponse(RequestOptions requestOptions) {
+        return deleteResourceSetRuleWithResponseAsync(requestOptions).block();
     }
 
     /**
@@ -1903,14 +1900,13 @@ public final class ResourceSetRulesImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return a resource set config service model.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listResourceSetRules(RequestOptions requestOptions, Context context) {
-        return new PagedIterable<>(listResourceSetRulesAsync(requestOptions, context));
+    public PagedIterable<BinaryData> listResourceSetRules(RequestOptions requestOptions) {
+        return new PagedIterable<>(listResourceSetRulesAsync(requestOptions));
     }
 
     /**

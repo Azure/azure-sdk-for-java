@@ -12,5 +12,7 @@ public class IdentityConstants {
     /**
      * The default IMDS authentication endpoint.
      */
-    public static final String DEFAULT_IMDS_ENDPOINT = "http://169.254.169.254/metadata/identity/oauth2/token";
+    public static final String DEFAULT_IMDS_ENDPOINT = "http://169.254.169.254";
+
+    public static final String DEFAULT_IMDS_TOKENPATH = "/metadata/identity/oauth2/token";
 }

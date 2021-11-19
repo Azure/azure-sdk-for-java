@@ -35,6 +35,10 @@ public final class DomainAvailabilityImpl implements DomainAvailability {
         return this.innerModel().type();
     }
 
+    public String kind() {
+        return this.innerModel().kind();
+    }
+
     public DomainAvailabilityInner innerModel() {
         return this.innerObject;
     }

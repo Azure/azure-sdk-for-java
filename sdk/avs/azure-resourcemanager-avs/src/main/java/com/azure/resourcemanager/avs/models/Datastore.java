@@ -52,6 +52,13 @@ public interface Datastore {
     DiskPoolVolume diskPoolVolume();
 
     /**
+     * Gets the status property: The operational status of the datastore.
+     *
+     * @return the status value.
+     */
+    DatastoreStatus status();
+
+    /**
      * Gets the inner com.azure.resourcemanager.avs.fluent.models.DatastoreInner object.
      *
      * @return the inner object.

@@ -4,11 +4,10 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Supported `withPlan()` for `VirtualMachineScaleSet` during create.
+- Supported `getNetworkInterfaceByInstanceIdAsync()` in `VirtualMachineScaleSet`.
+- Supported `getNetworkInterfaceAsync()` in `VirtualMachineScaleSetVM`.
+- Supported `orchestrationMode()` in `VirtualMachineScaleSet`.
 
 ## 2.9.0 (2021-10-21)
 
