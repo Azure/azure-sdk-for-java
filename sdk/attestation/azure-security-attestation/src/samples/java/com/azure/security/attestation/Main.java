@@ -3,21 +3,26 @@
 
 package com.azure.security.attestation;
 
-import java.util.Scanner;
-
 /**
  * Entry point for running samples.
  */
 public class Main {
     public static void main(String[] args) throws InterruptedException {
+        PolicySamples.resetCurrentPolicy();
+        PolicySamples.resetCurrentPolicyAsync();
 
-        // Attestation samples.
-        ReadmeSamples.signingCertificatesGet();
-        ReadmeSamples.testAttestSgxEnclave();
+        // Readme samples.
+        ReadmeSamples.executeSamples();
 
-        Scanner userInput = new Scanner(System.in);
-        System.out.println("Press any key to exit.");
-        userInput.nextLine();
-        System.exit(1);
+        // JavaDocSnippets
+        AttestationClientJavaDocCodeSnippets.executeSamples();
+
+        // Attestation Samples
+        AttestationSamples.executeSamples();
+
+        // Policy samples.
+        PolicySamples.executeSamples();
+
+        System.exit(0);
     }
 }

@@ -190,6 +190,7 @@ public final class AttestationAdministrationAsyncClient {
     Mono<Response<String>> getAttestationPolicyWithResponse(AttestationType attestationType, AttestationTokenValidationOptions validationOptions, Context context) {
         final AttestationTokenValidationOptions validationOptionsToUse = (validationOptions != null ? validationOptions : this.tokenValidationOptions);
         return this.policyImpl.getWithResponseAsync(attestationType, context)
+            .onErrorMap(Utilities::mapException)
             .flatMap(response -> {
                 Response<AttestationTokenImpl> token = Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken()));
                 return getCachedAttestationSigners()
@@ -215,6 +216,14 @@ public final class AttestationAdministrationAsyncClient {
      *
      * <p>Note that this API will only work on AAD mode attestation instances, because it sets the policy
      * using an unsecured attestation token.</p>
+     *
+     * <!-- src_embed com.azure.security.attestation.AttestationAdministrationAsyncClient.setPolicy -->
+     * <pre>
+     * String policyToSet = &quot;version=1.0; authorizationrules&#123;=&gt; permit&#40;&#41;;&#125;; issuancerules&#123;&#125;;&quot;;
+     * Mono&lt;PolicyResult&gt; resultMono = client.setAttestationPolicy&#40;AttestationType.OPEN_ENCLAVE, policyToSet&#41;;
+     * PolicyResult result = resultMono.block&#40;&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationAdministrationAsyncClient.setPolicy -->
      *
      * @param attestationType Specifies the trusted execution environment to be used to validate the evidence.
      * @param newAttestationPolicy Specifies the policy to be set on the instance.
@@ -287,6 +296,7 @@ public final class AttestationAdministrationAsyncClient {
         AttestationToken setToken = generatePolicySetToken(options.getAttestationPolicy(), options.getAttestationSigner());
 
         return this.policyImpl.setWithResponseAsync(attestationType, setToken.serialize(), context)
+            .onErrorMap(Utilities::mapException)
             .flatMap(response -> {
                 Response<AttestationTokenImpl> token = Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken()));
                 return getCachedAttestationSigners()
@@ -476,6 +486,7 @@ public final class AttestationAdministrationAsyncClient {
             setToken = AttestationTokenImpl.createSecuredToken(options.getAttestationSigner());
         }
         return this.policyImpl.resetWithResponseAsync(attestationType, setToken.serialize(), context)
+            .onErrorMap(Utilities::mapException)
             .flatMap(response -> {
                 Response<AttestationTokenImpl> token = Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken()));
                 return getCachedAttestationSigners()
@@ -563,6 +574,7 @@ public final class AttestationAdministrationAsyncClient {
     Mono<Response<List<AttestationSigner>>> listPolicyManagementCertificatesWithResponse(AttestationTokenValidationOptions validationOptions, Context context) {
         final AttestationTokenValidationOptions optionsToUse = (validationOptions != null ? validationOptions : this.tokenValidationOptions);
         return this.certificatesImpl.getWithResponseAsync(context)
+            .onErrorMap(Utilities::mapException)
             .flatMap(response -> {
                 Response<AttestationTokenImpl> responseWithToken = Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken()));
                 return getCachedAttestationSigners()
@@ -647,6 +659,7 @@ public final class AttestationAdministrationAsyncClient {
         }
 
         return this.certificatesImpl.addWithResponseAsync(addToken.serialize(), context)
+            .onErrorMap(Utilities::mapException)
             .flatMap(response -> {
                 Response<AttestationTokenImpl> token = Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken()));
                 return getCachedAttestationSigners()
@@ -730,6 +743,7 @@ public final class AttestationAdministrationAsyncClient {
         }
 
         return this.certificatesImpl.removeWithResponseAsync(addToken.serialize(), context)
+            .onErrorMap(Utilities::mapException)
             .flatMap(response -> {
                 Response<AttestationTokenImpl> token = Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken()));
                 return getCachedAttestationSigners()

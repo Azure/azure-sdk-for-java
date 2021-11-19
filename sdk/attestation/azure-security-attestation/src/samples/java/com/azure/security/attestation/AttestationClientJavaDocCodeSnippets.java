@@ -6,6 +6,8 @@ package com.azure.security.attestation;
 
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.identity.EnvironmentCredentialBuilder;
 import com.azure.security.attestation.models.AttestationData;
 import com.azure.security.attestation.models.AttestationDataInterpretation;
 import com.azure.security.attestation.models.AttestationOpenIdMetadata;
@@ -13,13 +15,14 @@ import com.azure.security.attestation.models.AttestationOptions;
 import com.azure.security.attestation.models.AttestationSigner;
 import com.azure.security.attestation.models.AttestationType;
 import com.azure.security.attestation.models.PolicyResult;
+import org.bouncycastle.util.encoders.Hex;
 import reactor.core.publisher.Mono;
 
 import java.util.List;
 
 public class AttestationClientJavaDocCodeSnippets {
     public static AttestationClient createSyncClient() {
-        String endpoint = null;
+        String endpoint = "https://sharedcus.cus.attest.azure.net";
         // BEGIN: com.azure.security.attestation.AttestationClientBuilder.buildClient
         AttestationClient client = new AttestationClientBuilder()
             .endpoint(endpoint)
@@ -36,16 +39,20 @@ public class AttestationClientJavaDocCodeSnippets {
     }
 
     public static AttestationAdministrationClient createAdminSyncClient() {
-        String endpoint = null;
+        String endpoint = "https://attestcus.cus.attest.azure.net";
         // BEGIN: com.azure.security.attestation.AttestationAdministrationClientBuilder.buildClient
         AttestationAdministrationClient client = new AttestationAdministrationClientBuilder()
             .endpoint(endpoint)
+            .credential(new DefaultAzureCredentialBuilder()
+                .build())
             .buildClient();
         // END: com.azure.security.attestation.AttestationAdministrationClientBuilder.buildClient
 
         // BEGIN: com.azure.security.attestation.AttestationAdministrationClientBuilder.buildAsyncClient
         AttestationAdministrationAsyncClient asyncClient = new AttestationAdministrationClientBuilder()
             .endpoint(endpoint)
+            .credential(new DefaultAzureCredentialBuilder()
+                .build())
             .buildAsyncClient();
         // END: com.azure.security.attestation.AttestationAdministrationClientBuilder.buildAsyncClient
 
@@ -123,12 +130,14 @@ public class AttestationClientJavaDocCodeSnippets {
     }
 
     public static void attestAsync1() {
-        BinaryData runtimeData = null;
+        BinaryData runtimeData = BinaryData.fromBytes(SampleCollateral.getRunTimeData());
         BinaryData inittimeData = null;
-        BinaryData openEnclaveReport = null;
-        BinaryData sgxQuote = null;
+        BinaryData openEnclaveReport = BinaryData.fromBytes(SampleCollateral.getOpenEnclaveReport());
+        BinaryData sgxQuote = BinaryData.fromBytes(SampleCollateral.getSgxEnclaveQuote());
 
-        AttestationAsyncClient client = null;
+        AttestationAsyncClient client = new AttestationClientBuilder()
+            .endpoint("https://sharedcus.cus.attest.azure.net")
+            .buildAsyncClient();
 
         // BEGIN: com.azure.security.attestation.AttestationAsyncClient.getOpenIdMetadataWithResponse
         Mono<Response<AttestationOpenIdMetadata>> response = client.getOpenIdMetadataWithResponse();
@@ -159,14 +168,19 @@ public class AttestationClientJavaDocCodeSnippets {
         // END: com.azure.security.attestation.AttestationAsyncClient.getAttestationSignersWithResponse
     }
 
-    public static void setPolicyCheckHash() {
-        AttestationAdministrationAsyncClient client = null;
+    public static void setPolicyCheckHashAsync() {
+        String endpoint = System.getenv("ATTESTATION_AAD_URL");
+        AttestationAdministrationAsyncClient client = new AttestationAdministrationClientBuilder()
+            .endpoint(endpoint)
+            .credential(new EnvironmentCredentialBuilder()
+                .build())
+            .buildAsyncClient();
 
-        // BEGIN: com.azure.security.attestation.AttestationAdministrationAsyncClient.getPolicy
+        // BEGIN: com.azure.security.attestation.AttestationAdministrationAsyncClient.setPolicy
         String policyToSet = "version=1.0; authorizationrules{=> permit();}; issuancerules{};";
         Mono<PolicyResult> resultMono = client.setAttestationPolicy(AttestationType.OPEN_ENCLAVE, policyToSet);
         PolicyResult result = resultMono.block();
-        // END: com.azure.security.attestation.AttestationAdministrationAsyncClient.getPolicy
+        // END: com.azure.security.attestation.AttestationAdministrationAsyncClient.setPolicy
 
         // BEGIN: com.azure.security.attestation.AttestationAdministrationAsyncClient.checkPolicyTokenHash
         BinaryData expectedHash = client.calculatePolicyTokenHash(policyToSet, null);
@@ -176,6 +190,39 @@ public class AttestationClientJavaDocCodeSnippets {
         }
         // END: com.azure.security.attestation.AttestationAdministrationAsyncClient.checkPolicyTokenHash
 
+    }
+
+    public static void setPolicyCheckHash() {
+        String endpoint = System.getenv("ATTESTATION_AAD_URL");
+        AttestationAdministrationClient client = new AttestationAdministrationClientBuilder()
+            .endpoint(endpoint)
+            .credential(new EnvironmentCredentialBuilder()
+                .build())
+            .buildClient();
+
+        // BEGIN: com.azure.security.attestation.AttestationAdministrationClient.setPolicy
+        String policyToSet = "version=1.0; authorizationrules{=> permit();}; issuancerules{};";
+        PolicyResult result = client.setAttestationPolicy(AttestationType.OPEN_ENCLAVE, policyToSet);
+        // END: com.azure.security.attestation.AttestationAdministrationClient.setPolicy
+
+        // BEGIN: com.azure.security.attestation.AttestationAdministrationClient.checkPolicyTokenHash
+        BinaryData expectedHash = client.calculatePolicyTokenHash(policyToSet, null);
+        BinaryData actualHash = result.getPolicyTokenHash();
+        String expectedString = Hex.toHexString(expectedHash.toBytes());
+        String actualString = Hex.toHexString(actualHash.toBytes());
+        if (!expectedString.equals(actualString)) {
+            throw new RuntimeException("Policy was set but not received!!!");
+        }
+        // END: com.azure.security.attestation.AttestationAdministrationClient.checkPolicyTokenHash
+    }
+    static void executeSamples() {
+        attestAsync1();
+        attestationOptionsSnippets();
+        attestationOptionsSnippets2();
+        attestationOptionsSnippets3();
+        createAdminSyncClient();
+        createSyncClient();
+        setPolicyCheckHash();
     }
 
 }

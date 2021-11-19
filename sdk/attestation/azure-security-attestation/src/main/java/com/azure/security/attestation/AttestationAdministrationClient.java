@@ -58,7 +58,6 @@ public final class AttestationAdministrationClient {
         this.asyncClient = asyncClient;
     }
 
-    //region Get Attestation Policy
     /**
      * Retrieves the current policy for an attestation type.
      *
@@ -119,9 +118,6 @@ public final class AttestationAdministrationClient {
         return asyncClient.getAttestationPolicy(attestationType).block();
     }
 
-//endregion
-
-    //region Set Attestation Policy
     /**
      * Sets the attestation policy for the specified attestation type for an AAD mode attestation instance.
      *
@@ -129,6 +125,14 @@ public final class AttestationAdministrationClient {
      * no key signing certificate provided.
      *
      * More information about Attestation Policy can be found <a href='https://docs.microsoft.com/azure/attestation/basic-concepts#attestation-policy'>here.</a>
+     *
+     * <p>Set attestation policy to a constant value.</p>
+     * <!-- src_embed com.azure.security.attestation.AttestationAdministrationClient.setPolicy -->
+     * <pre>
+     * String policyToSet = &quot;version=1.0; authorizationrules&#123;=&gt; permit&#40;&#41;;&#125;; issuancerules&#123;&#125;;&quot;;
+     * PolicyResult result = client.setAttestationPolicy&#40;AttestationType.OPEN_ENCLAVE, policyToSet&#41;;
+     * </pre>
+     * <!-- end com.azure.security.attestation.AttestationAdministrationClient.setPolicy -->
      *
      * @param attestationType The {@link AttestationType} to be updated.
      * @param policyToSet Attestation Policy to set on the instance.
@@ -187,15 +191,17 @@ public final class AttestationAdministrationClient {
      * which the customer specified.
      *
      * For an example of how to check the policy token hash:
-     * <!-- src_embed com.azure.security.attestation.AttestationAdministrationAsyncClient.checkPolicyTokenHash -->
+     * <!-- src_embed com.azure.security.attestation.AttestationAdministrationClient.checkPolicyTokenHash -->
      * <pre>
      * BinaryData expectedHash = client.calculatePolicyTokenHash&#40;policyToSet, null&#41;;
      * BinaryData actualHash = result.getPolicyTokenHash&#40;&#41;;
-     * if &#40;!expectedHash.equals&#40;actualHash&#41;&#41; &#123;
+     * String expectedString = Hex.toHexString&#40;expectedHash.toBytes&#40;&#41;&#41;;
+     * String actualString = Hex.toHexString&#40;actualHash.toBytes&#40;&#41;&#41;;
+     * if &#40;!expectedString.equals&#40;actualString&#41;&#41; &#123;
      *     throw new RuntimeException&#40;&quot;Policy was set but not received!!!&quot;&#41;;
      * &#125;
      * </pre>
-     * <!-- end com.azure.security.attestation.AttestationAdministrationAsyncClient.checkPolicyTokenHash -->
+     * <!-- end com.azure.security.attestation.AttestationAdministrationClient.checkPolicyTokenHash -->
      *
      * @param policy AttestationPolicy document use in the underlying JWT.
      * @param signer Optional signing key used to sign the underlying JWT.
@@ -205,9 +211,7 @@ public final class AttestationAdministrationClient {
     public BinaryData calculatePolicyTokenHash(String policy, AttestationSigningKey signer) {
         return asyncClient.calculatePolicyTokenHash(policy, signer);
     }
-    //endregion
 
-    //region Reset Attestation Policy
     /**
      * Resets the attestation policy for the specified attestation type to the default, using the specified options.
      *
@@ -252,8 +256,6 @@ public final class AttestationAdministrationClient {
     public Response<PolicyResult> resetAttestationPolicyWithResponse(AttestationType attestationType, AttestationPolicySetOptions options, Context context) {
         return asyncClient.resetAttestationPolicyWithResponse(attestationType, options, context).block();
     }
-
-//  endregion
 
     /**
      * Retrieves the current set of attestation policy signing certificates for this instance.

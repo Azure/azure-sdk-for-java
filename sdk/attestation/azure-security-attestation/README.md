@@ -83,88 +83,162 @@ For more information on attestation policies, see [Attestation Policy](https://d
 When an attestation instance is running in "Isolated" mode, the customer who created the instance will have provided
 a policy management certificate at the time the instance is created. All policy modification operations require that the customer sign
 the policy data with one of the existing policy management certificates. The Policy Management Certificate Management APIs enable 
-clients to "roll" the policy management certificates.
+clients to add, remove or enumerate the policy management certificates.
 
 
 ## Examples
 
-* [Attest an SGX enclave](#attest-sgx-enclave)
-* [Get attestation policy](#get-attestation-policy)
+* [Instantiate a synchronous attestation client](#create-a-synchronous-attestation-client)
+* [Instantiate an asynchronous attestation client](#create-an-asynchronous-attestation-client)
 * [Retrieve token validation certificates](#retrieve-token-certificates)
+* [Attest an SGX enclave](#attest-an-sgx-enclave)
+* [Instantiate a synchronous administrative client](#create-a-synchronous-administrative-client)
+* [Instantiate an asynchronous administrative client](#create-an-asynchronous-administrative-client)
+* [Get attestation policy](#retrieve-current-attestation-policy-for-openenclave)
+* [Set unsigned attestation policy](#set-unsigned-attestation-policy-aad-clients-only)
+* [Set signed attestation policy](#set-signed-attestation-policy)
 
-### Attest SGX Enclave
+### Create a synchronous attestation client
+The `AttestationClientBuilder` class is used to create instances of the attestation client:
 
-Use the `attestSgxEnclave` method to attest an SGX enclave.
-<!-- embedme src\samples\com\azure\security\attestation\ReadmeSamples.java#L36-L44 -->
-```java
-AttestSgxEnclaveRequest request = new AttestSgxEnclaveRequest();
-request.setQuote(decodedSgxQuote);
-RuntimeData runtimeData = new RuntimeData();
-runtimeData.setDataType(DataType.BINARY);
-runtimeData.setData(decodedRuntimeData);
-request.setRuntimeData(runtimeData);
-AttestationResponse response = client.attestSgxEnclave(request);
-
-JWTClaimsSet claims = null;
+```java readme-sample-create-synchronous-client
+AttestationClientBuilder attestationBuilder = new AttestationClientBuilder();
+// Note that the "attest" calls do not require authentication.
+AttestationClient client = attestationBuilder
+    .endpoint(endpoint)
+    .buildClient();
 ```
 
-### Get attestation policy
-
-The `attestationPolicyClient.get` method retrieves the attestation policy from the service.
-Attestation Policies are instanced on a per-attestation type basis, the `AttestationType` parameter defines the type to retrieve. 
-The response to an attestation policy get is a JSON Web Token signed by the attestation service.
-The token contains an `x-ms-policy` claim, which in turn contains the secured (or unsecured) attestation policy document which was 
-set by the customer. 
-
-The attestation policy document is a JSON Web Signature object, with a single field named `AttestationPolicy`, whose value is the actual policy document encoded in Base64Url.
-
-<!-- embedme src\samples\com\azure\security\attestation\ReadmeSamples.java#L59-L84 -->
-```java
-
-sponse policyResponse = client.get(AttestationType.SGX_ENCLAVE);
-testationToken(httpClient, clientUri, policyResponse.getToken())
-scribe(claims -> {
-if (claims != null) {
-
-    String policyDocument = claims.getClaims().get("x-ms-policy").toString();
-
-    JOSEObject policyJose = null;
-    try {
-        policyJose = JOSEObject.parse(policyDocument);
-    } catch (ParseException e) {
-        throw logger.logExceptionAsError(new RuntimeException(e.toString()));
-    }
-    assert policyJose != null;
-    Map<String, Object> jsonObject = policyJose.getPayload().toJSONObject();
-    if (jsonObject != null) {
-        assertTrue(jsonObject.containsKey("AttestationPolicy"));
-        String base64urlPolicy = jsonObject.get("AttestationPolicy").toString();
-
-        byte[] attestationPolicyUtf8 = Base64.getUrlDecoder().decode(base64urlPolicy);
-        String attestationPolicy;
-        attestationPolicy = new String(attestationPolicyUtf8, StandardCharsets.UTF_8);
-        // Inspect the retrieved policy.
-    }
-}
+### Create an asynchronous attestation client
+```java readme-sample-create-asynchronous-client
+AttestationClientBuilder attestationBuilder = new AttestationClientBuilder();
+// Note that the "attest" calls do not require authentication.
+AttestationAsyncClient client = attestationBuilder
+    .endpoint(endpoint)
+    .buildAsyncClient();
 ```
 
 ### Retrieve Token Certificates
 
-Use `SigningCertificatesClient.get` to retrieve the certificates which can be used to validate the token returned from the attestation service.
+Use `listAttestationSigners` to retrieve the set of certificates which can be used to validate the token returned from the attestation service.
+Normally, this information is not required as the attestation SDK will perform the validation as a part of the interaction with the 
+attestation service, however the APIs are provided for completeness and to facilitate customer's independently validating
+attestation results.
 
-<!-- embedme src\samples\com\azure\security\attestation\ReadmeSamples.java#L89-L92 -->
-```java
+```java readme-sample-getSigningCertificates
+List<AttestationSigner> certs = client.listAttestationSigners();
 
-AttestationClientBuilder attestationBuilder = getBuilder(httpClient, clientUri);
+certs.forEach(cert -> {
+    System.out.println("Found certificate.");
+    if (cert.getKeyId() != null) {
+        System.out.println("    Certificate Key ID: " + cert.getKeyId());
+    } else {
+        System.out.println("    Signer does not have a Key ID");
+    }
+    cert.getCertificates().forEach(chainElement -> {
+        System.out.println("        Cert Subject: " + chainElement.getSubjectDN().getName());
+        System.out.println("        Cert Issuer: " + chainElement.getIssuerDN().getName());
+    });
+});
+```
+### Attest an SGX Enclave
 
-JsonWebKeySet certs = attestationBuilder.buildSigningCertificatesClient().get();
+Use the `attestSgxEnclave` method to attest an SGX enclave.
+```java readme-sample-attest-sgx-enclave
+BinaryData decodedRuntimeData = BinaryData.fromBytes(SampleCollateral.getRunTimeData());
+BinaryData sgxQuote = BinaryData.fromBytes(SampleCollateral.getSgxEnclaveQuote());
+
+// Attest evidence from an OpenEnclave enclave specifying runtime data which should be
+// interpreted as binary data.
+AttestationResult result = client.attestSgxEnclave(new AttestationOptions(sgxQuote)
+    .setRunTimeData(
+        new AttestationData(decodedRuntimeData, AttestationDataInterpretation.BINARY)));
+
+String issuer = result.getIssuer();
+
+System.out.println("Attest Sgx Enclave completed. Issuer: " + issuer);
+System.out.printf("Runtime Data Length: %d\n", result.getEnclaveHeldData().getLength());
 ```
 
-## Troubleshooting
+### Create a synchronous administrative client
 
+```java readme-sample-create-admin-client
+AttestationAdministrationClientBuilder attestationBuilder = new AttestationAdministrationClientBuilder();
+// Note that the "policy" calls require authentication.
+AttestationAdministrationClient client = attestationBuilder
+    .endpoint(endpoint)
+    .credential(new EnvironmentCredentialBuilder().build())
+    .buildClient();
+```
+
+### Create an asynchronous administrative client
+```java readme-sample-create-async-admin-client
+AttestationAdministrationClientBuilder attestationBuilder = new AttestationAdministrationClientBuilder();
+// Note that the "policy" calls require authentication.
+AttestationAdministrationAsyncClient client = attestationBuilder
+    .endpoint(endpoint)
+    .credential(new EnvironmentCredentialBuilder().build())
+    .buildAsyncClient();
+```
+
+### Retrieve current attestation policy for OpenEnclave
+Use the `getCurrentPolicy` API to retrieve the current attestation policy for a given TEE.
+```java readme-sample-getCurrentPolicy
+String currentPolicy = client.getAttestationPolicy(AttestationType.OPEN_ENCLAVE);
+System.out.printf("Current policy for OpenEnclave is: %s\n", currentPolicy);
+```
+or:
+```java readme-sample-getCurrentPolicyAsync
+client.getAttestationPolicy(AttestationType.OPEN_ENCLAVE)
+        .subscribe(policy -> System.out.printf("Current policy for OpenEnclave is: %s\n", policy));
+```
+### Set unsigned attestation policy (AAD clients only)
+When an attestation instance is in AAD mode, the caller can use a convenience method to set an unsigned attestation
+policy on the instance.
+
+```java readme-sample-set-unsigned-policy
+// Set the listed policy on an attestation instance. Please note that this particular policy will deny all
+// attestation requests and should not be used in production.
+PolicyResult policyResult = client.setAttestationPolicy(AttestationType.OPEN_ENCLAVE, "version=1.0; authorizationrules{=> deny();}; issuancerules{};");
+System.out.printf("Policy set for OpenEnclave result: %s\n", policyResult.getPolicyResolution());
+```
+or
+```java readme-sample-set-unsigned-policy-async
+// Set the listed policy on an attestation instance. Please note that this particular policy will deny all
+// attestation requests and should not be used in production.
+client.setAttestationPolicy(AttestationType.OPEN_ENCLAVE, "version=1.0; authorizationrules{=> deny();}; issuancerules{};")
+        .subscribe(result -> System.out.printf("Async policy set for OpenEnclave result: %s\n", result.getPolicyResolution()));
+```
+
+### Set signed attestation policy
+For isolated mode attestation instances, the set or reset policy request must be signed using the key which is associated 
+with the attestation signing certificates which are configured on the attestation instance.
+```java readme-sample-set-signed-policy
+// Set the listed policy on an attestation instance using a signed policy token.
+PolicyResult policyResult = client.setAttestationPolicy(AttestationType.SGX_ENCLAVE,
+    new AttestationPolicySetOptions()
+        .setAttestationPolicy("version=1.0; authorizationrules{=> permit();}; issuancerules{};")
+            .setAttestationSigner(new AttestationSigningKey(certificate, privateKey)));
+System.out.printf("Policy set for Sgx result: %s\n", policyResult.getPolicyResolution());
+```
+
+or
+
+```java readme-sample-set-signed-policy-async
+// Set the listed policy on an attestation instance. Please note that this particular policy will deny all
+// attestation requests and should not be used in production.
+client.setAttestationPolicy(AttestationType.OPEN_ENCLAVE, new AttestationPolicySetOptions()
+        .setAttestationPolicy("version=1.0; authorizationrules{=> permit();}; issuancerules{};")
+        .setAttestationSigner(new AttestationSigningKey(certificate, privateKey)))
+    .subscribe(result -> System.out.printf("Async policy set for OpenEnclave result: %s\n", result.getPolicyResolution()));
+```
+
+
+## Troubleshooting
 Troubleshooting information for the MAA service can be found [here](https://docs.microsoft.com/azure/attestation/troubleshoot-guide)
+
 ## Next steps
-For more information about the Microsoft Azure Attestation service, please see our [documentation page](https://docs.microsoft.com/azure/attestation/). 
+For more information about the Microsoft Azure Attestation service, please see our [documentation page](https://docs.microsoft.com/azure/attestation/).
 
 ## Contributing
 This project welcomes contributions and suggestions. Most contributions require you to agree to a Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us the rights to use your contribution. For details, visit https://cla.microsoft.com.
@@ -172,7 +246,6 @@ This project welcomes contributions and suggestions. Most contributions require 
 When you submit a pull request, a CLA-bot will automatically determine whether you need to provide a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions provided by the bot. You will only need to do this once across all repos using our CLA.
 
 This project has adopted the [Microsoft Open Source Code of Conduct][microsoft_code_of_conduct]. For more information see the Code of Conduct FAQ or contact <opencode@microsoft.com> with any additional questions or comments.
-
 
 <!-- LINKS -->
 [style-guide-msft]: https://docs.microsoft.com/style-guide/capitalization

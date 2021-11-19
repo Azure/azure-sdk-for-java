@@ -237,6 +237,8 @@ public final class AttestationAdministrationClientBuilder {
      * <pre>
      * AttestationAdministrationClient client = new AttestationAdministrationClientBuilder&#40;&#41;
      *     .endpoint&#40;endpoint&#41;
+     *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;
+     *         .build&#40;&#41;&#41;
      *     .buildClient&#40;&#41;;
      * </pre>
      * <!-- end com.azure.security.attestation.AttestationAdministrationClientBuilder.buildClient -->
@@ -255,6 +257,8 @@ public final class AttestationAdministrationClientBuilder {
      * <pre>
      * AttestationAdministrationAsyncClient asyncClient = new AttestationAdministrationClientBuilder&#40;&#41;
      *     .endpoint&#40;endpoint&#41;
+     *     .credential&#40;new DefaultAzureCredentialBuilder&#40;&#41;
+     *         .build&#40;&#41;&#41;
      *     .buildAsyncClient&#40;&#41;;
      * </pre>
      * <!-- end com.azure.security.attestation.AttestationAdministrationClientBuilder.buildAsyncClient -->

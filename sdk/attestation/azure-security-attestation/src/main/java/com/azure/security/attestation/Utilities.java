@@ -3,8 +3,15 @@
 
 package com.azure.security.attestation;
 
+import com.azure.core.exception.ClientAuthenticationException;
+import com.azure.core.exception.HttpResponseException;
+import com.azure.core.exception.ResourceExistsException;
+import com.azure.core.exception.ResourceModifiedException;
+import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpResponse;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
+import com.azure.security.attestation.implementation.models.CloudErrorException;
 import com.azure.security.attestation.models.AttestationResponse;
 import com.azure.security.attestation.models.AttestationToken;
 
@@ -59,5 +66,45 @@ class Utilities {
     static InputStream base64ToStream(String base64) {
         byte[] decoded = Base64.getDecoder().decode(base64);
         return new ByteArrayInputStream(decoded);
+    }
+
+    /**
+     * This method converts the API response codes into well known exceptions.
+     * @param exception The exception returned by the rest client.
+     * @return The exception returned by the public methods.
+     */
+    static Throwable mapException(Throwable exception) {
+        CloudErrorException cloudErrorException = null;
+
+        if (exception instanceof CloudErrorException) {
+            cloudErrorException = ((CloudErrorException) exception);
+        } else if (exception instanceof RuntimeException) {
+            RuntimeException runtimeException = (RuntimeException) exception;
+            Throwable throwable = runtimeException.getCause();
+            if (throwable instanceof CloudErrorException) {
+                cloudErrorException = (CloudErrorException) throwable;
+            }
+        }
+
+        if (cloudErrorException == null) {
+            return exception;
+        }
+
+        final HttpResponse errorHttpResponse = cloudErrorException.getResponse();
+        final int statusCode = errorHttpResponse.getStatusCode();
+        final String errorDetail = cloudErrorException.getMessage();
+
+        switch (statusCode) {
+            case 401:
+                return new ClientAuthenticationException(errorDetail, cloudErrorException.getResponse(), exception);
+            case 404:
+                return new ResourceNotFoundException(errorDetail, cloudErrorException.getResponse(), exception);
+            case 409:
+                return new ResourceExistsException(errorDetail, cloudErrorException.getResponse(), exception);
+            case 412:
+                return new ResourceModifiedException(errorDetail, cloudErrorException.getResponse(), exception);
+            default:
+                return new HttpResponseException(errorDetail, cloudErrorException.getResponse(), exception);
+        }
     }
 }

@@ -351,6 +351,7 @@ public final class AttestationAsyncClient {
 
         AttestationTokenValidationOptions finalValidationOptions = validationOptions;
         return this.attestImpl.attestOpenEnclaveWithResponseAsync(optionsImpl.getInternalAttestOpenEnclaveRequest(), context)
+            .onErrorMap(Utilities::mapException)
             .map(response -> Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken())))
             .flatMap(response -> {
                 if (finalValidationOptions.getValidateToken()) {
@@ -458,6 +459,7 @@ public final class AttestationAsyncClient {
 
         AttestationTokenValidationOptions finalValidationOptions = validationOptions;
         return this.attestImpl.attestSgxEnclaveWithResponseAsync(optionsImpl.getInternalAttestSgxRequest(), context)
+            .onErrorMap(Utilities::mapException)
             .map(response -> Utilities.generateResponseFromModelType(response, new AttestationTokenImpl(response.getValue().getToken())))
             .flatMap(response -> {
                 if (finalValidationOptions.getValidateToken()) {
@@ -541,6 +543,7 @@ public final class AttestationAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<String> attestTpm(String request) {
         return attestTpmWithResponse(request)
+            .onErrorMap(Utilities::mapException)
             .flatMap(FluxUtil::toMono);
     }
 }
