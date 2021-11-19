@@ -17,6 +17,7 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.nio.ByteBuffer;
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -186,7 +187,7 @@ public final class Utility {
      * @return the corresponding <code>Date</code> object
      * @throws IllegalArgumentException If {@code dateString} doesn't match an ISO8601 pattern
      */
-    public static TimeAndFormat parseDate(String dateString) {
+    public static OffsetDateTime parseDate(String dateString) {
         String pattern = MAX_PRECISION_PATTERN;
         switch (dateString.length()) {
             case 28: // "yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'"-> [2012-01-04T23:21:59.1234567Z] length = 28
@@ -215,8 +216,7 @@ public final class Utility {
         }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern, Locale.ROOT);
-        return new TimeAndFormat(LocalDateTime.parse(dateString, formatter).atZone(ZoneOffset.UTC).toOffsetDateTime(),
-            formatter);
+        return LocalDateTime.parse(dateString, formatter).atZone(ZoneOffset.UTC).toOffsetDateTime();
     }
 
     /**
