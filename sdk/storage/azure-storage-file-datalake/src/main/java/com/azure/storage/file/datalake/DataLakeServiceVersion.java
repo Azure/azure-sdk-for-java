@@ -40,6 +40,6 @@ public enum DataLakeServiceVersion implements ServiceVersion {
      * @return the latest {@link DataLakeServiceVersion}
      */
     public static DataLakeServiceVersion getLatest() {
-        return V2020_12_06;
+        return V2021_02_12;
     }
 }
