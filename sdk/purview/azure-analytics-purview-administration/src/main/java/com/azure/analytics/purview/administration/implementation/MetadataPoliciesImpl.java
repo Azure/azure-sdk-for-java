@@ -501,14 +501,13 @@ public final class MetadataPoliciesImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return list of Metadata Policies.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listAll(RequestOptions requestOptions, Context context) {
-        return new PagedIterable<>(listAllAsync(requestOptions, context));
+    public PagedIterable<BinaryData> listAll(RequestOptions requestOptions) {
+        return new PagedIterable<>(listAllAsync(requestOptions));
     }
 
     /**
@@ -888,14 +887,13 @@ public final class MetadataPoliciesImpl {
      *
      * @param policyId Unique policy id.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> updateWithResponse(String policyId, RequestOptions requestOptions, Context context) {
-        return updateWithResponseAsync(policyId, requestOptions, context).block();
+    public Response<BinaryData> updateWithResponse(String policyId, RequestOptions requestOptions) {
+        return updateWithResponseAsync(policyId, requestOptions).block();
     }
 
     /**
@@ -1122,14 +1120,13 @@ public final class MetadataPoliciesImpl {
      *
      * @param policyId Id of an existing policy that needs to be fetched.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return a metadata policy.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(String policyId, RequestOptions requestOptions, Context context) {
-        return getWithResponseAsync(policyId, requestOptions, context).block();
+    public Response<BinaryData> getWithResponse(String policyId, RequestOptions requestOptions) {
+        return getWithResponseAsync(policyId, requestOptions).block();
     }
 
     /**

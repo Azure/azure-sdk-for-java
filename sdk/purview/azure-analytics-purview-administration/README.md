@@ -75,7 +75,7 @@ AccountsClient client = new PurviewAccountClientBuilder()
     .endpoint(System.getenv("ACCOUNT_ENDPOINT"))
     .credential(new DefaultAzureCredentialBuilder().build())
     .buildAccountsClient();
-BinaryData response = client.getAccountPropertiesWithResponse(null, null).getValue();
+BinaryData response = client.getAccountPropertiesWithResponse(null).getValue();
 ```
 
 ## Troubleshooting

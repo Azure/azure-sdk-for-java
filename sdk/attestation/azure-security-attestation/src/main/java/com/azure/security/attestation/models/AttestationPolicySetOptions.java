@@ -9,7 +9,7 @@ import com.azure.core.util.Context;
  * <p>
  * AttestationPolicySetOptions represent the parameters sent to the
  * {@link com.azure.security.attestation.AttestationAdministrationClient#getAttestationPolicy(AttestationType)}
- * or {@link com.azure.security.attestation.AttestationAdministrationClient#getAttestationPolicyWithResponse(AttestationType, Context)} API.
+ * or {@link com.azure.security.attestation.AttestationAdministrationClient#getAttestationPolicyWithResponse(AttestationType, AttestationTokenValidationOptions, Context)} API.
  * </p><p>
  * Each {@link AttestationPolicySetOptions} object expresses the options to verify the response
  * from the attestation service.

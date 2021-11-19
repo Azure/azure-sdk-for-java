@@ -41,6 +41,9 @@
     <javaModulesSurefireArgLine>
       --add-opens com.azure.data.schemaregistry/com.azure.data.schemaregistry=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+    <codesnippet.skip>false</codesnippet.skip>
+    <javadocDoclet></javadocDoclet>
+    <javadocDocletOptions></javadocDocletOptions>
   </properties>
 
   <dependencies>
