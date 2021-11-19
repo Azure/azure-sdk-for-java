@@ -196,7 +196,7 @@ public class EventHubsMessageChannelBinder extends
         if (this.eventHubsTemplate == null) {
             DefaultEventHubsNamespaceProducerFactory factory = new DefaultEventHubsNamespaceProducerFactory(
                 this.namespaceProperties, getProducerPropertiesSupplier());
-            factory.addListener((name) -> {
+            factory.addListener((name, producerAsyncClient) -> {
                 DefaultInstrumentation instrumentation = new DefaultInstrumentation(name, PRODUCER);
                 instrumentation.markUp();
                 instrumentationManager.addHealthInstrumentation(instrumentation.getId(), instrumentation);
@@ -210,7 +210,7 @@ public class EventHubsMessageChannelBinder extends
         if (this.processorContainer == null) {
             DefaultEventHubsNamespaceProcessorFactory factory = new DefaultEventHubsNamespaceProcessorFactory(
                 this.checkpointStore, this.namespaceProperties, getProcessorPropertiesSupplier());
-            factory.addListener((name, consumerGroup) -> {
+            factory.addListener((name, consumerGroup, processorClient) -> {
                 String instrumentationName = name + "/" + consumerGroup;
                 Instrumentation instrumentation = new EventHusProcessorInstrumentation(instrumentationName, CONSUMER, Duration.ofMinutes(2));
                 instrumentation.markUp();

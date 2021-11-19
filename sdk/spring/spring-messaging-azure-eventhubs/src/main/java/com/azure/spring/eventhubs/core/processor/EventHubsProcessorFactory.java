@@ -26,7 +26,7 @@ public interface EventHubsProcessorFactory {
      */
     interface Listener {
 
-        processorAdded(String eventHub, String consumerGroup, EventProcessorClient client);
+        void processorAdded(String eventHub, String consumerGroup, EventProcessorClient client);
 
         default void processorRemoved(String eventHub, String consumerGroup, EventProcessorClient client) {
         }
