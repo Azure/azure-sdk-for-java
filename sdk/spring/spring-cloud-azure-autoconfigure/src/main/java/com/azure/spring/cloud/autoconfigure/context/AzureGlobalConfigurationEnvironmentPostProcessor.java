@@ -71,8 +71,6 @@ public class AzureGlobalConfigurationEnvironmentPostProcessor implements Environ
 
         authorityHost(PROPERTY_AZURE_AUTHORITY_HOST, "profile.environment.active-directory-endpoint"),
 
-        // TODO (xiada): PROPERTY_AZURE_LOG_LEVEL, how to set this to env?
-
         maxRetry(PROPERTY_AZURE_REQUEST_RETRY_COUNT, "retry.max-attempts"),
 
         httpLogLevel(PROPERTY_AZURE_HTTP_LOG_DETAIL_LEVEL, "client.http.logging.level"),

@@ -50,17 +50,36 @@ import java.util.Objects;
  *
  * <p><strong>Code Samples</strong></p>
  *
- * {@codesnippet com.azure.messaging.webpubsub.webpubsubclientbuilder.connectionstring.async}
+ * <!-- src_embed com.azure.messaging.webpubsub.webpubsubclientbuilder.connectionstring.async -->
+ * <pre>
+ * WebPubSubServiceAsyncClient client = new WebPubSubServiceClientBuilder&#40;&#41;
+ *     .connectionString&#40;&quot;&lt;Insert connection string from Azure Portal&gt;&quot;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.webpubsub.webpubsubclientbuilder.connectionstring.async -->
  *
  * <p>This demonstrates using the connection string provided by the Azure Portal. Another approach is to use the
  * combination of credential and endpoint details, as shown below:</p>
  *
- * {@codesnippet com.azure.messaging.webpubsub.webpubsubclientbuilder.credential.endpoint.async}
+ * <!-- src_embed com.azure.messaging.webpubsub.webpubsubclientbuilder.credential.endpoint.async -->
+ * <pre>
+ * WebPubSubServiceAsyncClient client = new WebPubSubServiceClientBuilder&#40;&#41;
+ *     .credential&#40;new AzureKeyCredential&#40;&quot;&lt;Insert key from Azure Portal&gt;&quot;&#41;&#41;
+ *     .endpoint&#40;&quot;&lt;Insert endpoint from Azure Portal&gt;&quot;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.webpubsub.webpubsubclientbuilder.credential.endpoint.async -->
  *
  * <p>Of course, synchronous clients may also be instantiated, by calling {@link #buildClient() buildClient} rather than
  * {@link #buildAsyncClient() buildAsyncClient}.</p>
  *
- * {@codesnippet com.azure.messaging.webpubsub.webpubsubclientbuilder.connectionstring.sync}
+ * <!-- src_embed com.azure.messaging.webpubsub.webpubsubclientbuilder.connectionstring.sync -->
+ * <pre>
+ * WebPubSubServiceClient client = new WebPubSubServiceClientBuilder&#40;&#41;
+ *     .connectionString&#40;&quot;&lt;Insert connection string from Azure Portal&gt;&quot;&#41;
+ *     .buildClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.webpubsub.webpubsubclientbuilder.connectionstring.sync -->
  *
  * @see WebPubSubServiceAsyncClient
  * @see WebPubSubServiceClient

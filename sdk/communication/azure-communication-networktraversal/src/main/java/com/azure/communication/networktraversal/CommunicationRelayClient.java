@@ -4,6 +4,7 @@
 package com.azure.communication.networktraversal;
 
 import com.azure.communication.networktraversal.models.CommunicationRelayConfiguration;
+import com.azure.communication.networktraversal.models.RouteType;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
@@ -26,7 +27,17 @@ public final class CommunicationRelayClient {
     }
 
     /**
-     * Creates a new CommunicationRelayConfiguration.
+     * Gets a Relay Configuration.
+     *
+     * @return The obtained Communication Relay Configuration
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CommunicationRelayConfiguration getRelayConfiguration() {
+        return client.getRelayConfiguration().block();
+    }
+
+    /**
+     * Gets a Relay Configuration for a CommunicationUserIdentifier.
      *
      * @param communicationUser The CommunicationUserIdentifier for whom to issue a token
      * @return The obtained Communication Relay Configuration
@@ -38,41 +49,41 @@ public final class CommunicationRelayClient {
     }
 
     /**
-     * Creates a new CommunicationRelayConfiguration.
+     * Gets a Relay Configuration given a RouteType.
      *
+     * @param routeType The specified RouteType for the relay request
      * @return The obtained Communication Relay Configuration
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CommunicationRelayConfiguration getRelayConfiguration() {
-        return client.getRelayConfiguration().block();
+    public CommunicationRelayConfiguration getRelayConfiguration(RouteType routeType) {
+        return client.getRelayConfiguration(routeType).block();
 
     }
 
     /**
-     * Creates a new CommunicationRelayConfiguration with response.
+     * Gets a Relay Configuration for a CommunicationUserIdentifier given a RouteType.
      *
      * @param communicationUser The CommunicationUserIdentifier for whom to issue a token
-     * @param context A {@link Context} representing the request context.
+     * @param routeType The specified RouteType for the relay request
      * @return The obtained Communication Relay Configuration
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CommunicationRelayConfiguration> getRelayConfigurationWithResponse(CommunicationUserIdentifier communicationUser, Context context) {
-        Response<CommunicationRelayConfiguration> response =
-            client.getRelayConfigurationWithResponse(communicationUser, context).block();
-
-        return response;
+    public CommunicationRelayConfiguration getRelayConfiguration(CommunicationUserIdentifier communicationUser, RouteType routeType) {
+        return client.getRelayConfiguration(communicationUser, routeType).block();
     }
 
     /**
-     * Creates a new CommunicationRelayConfiguration with response.
+     * Gets a Relay Configuration with response.
      *
+     * @param communicationUser The CommunicationUserIdentifier for whom to issue a token
+     * @param routeType The specified RouteType for the relay request
      * @param context A {@link Context} representing the request context.
      * @return The obtained Communication Relay Configuration
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CommunicationRelayConfiguration> getRelayConfigurationWithResponse(Context context) {
+    public Response<CommunicationRelayConfiguration> getRelayConfigurationWithResponse(CommunicationUserIdentifier communicationUser, RouteType routeType, Context context) {
         Response<CommunicationRelayConfiguration> response =
-            client.getRelayConfigurationWithResponse(null, context).block();
+            client.getRelayConfigurationWithResponse(communicationUser, routeType, context).block();
 
         return response;
     }

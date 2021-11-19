@@ -235,7 +235,7 @@ public final class DataSourcesImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> upsertWithResponseAsync(
+    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
             String dataSourceName, RequestOptions requestOptions) {
         return FluxUtil.withContext(
                 context ->
@@ -388,7 +388,7 @@ public final class DataSourcesImpl {
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> upsertWithResponseAsync(
+    public Mono<Response<BinaryData>> createOrUpdateWithResponseAsync(
             String dataSourceName, RequestOptions requestOptions, Context context) {
         return service.createOrUpdate(
                 this.client.getEndpoint(),
@@ -533,15 +533,13 @@ public final class DataSourcesImpl {
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> upsertWithResponse(
-            String dataSourceName, RequestOptions requestOptions, Context context) {
-        return upsertWithResponseAsync(dataSourceName, requestOptions, context).block();
+    public Response<BinaryData> createOrUpdateWithResponse(String dataSourceName, RequestOptions requestOptions) {
+        return createOrUpdateWithResponseAsync(dataSourceName, requestOptions).block();
     }
 
     /**
@@ -798,14 +796,13 @@ public final class DataSourcesImpl {
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return a data source.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> getWithResponse(String dataSourceName, RequestOptions requestOptions, Context context) {
-        return getWithResponseAsync(dataSourceName, requestOptions, context).block();
+    public Response<BinaryData> getWithResponse(String dataSourceName, RequestOptions requestOptions) {
+        return getWithResponseAsync(dataSourceName, requestOptions).block();
     }
 
     /**
@@ -1062,15 +1059,13 @@ public final class DataSourcesImpl {
      *
      * @param dataSourceName The dataSourceName parameter.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> deleteWithResponse(
-            String dataSourceName, RequestOptions requestOptions, Context context) {
-        return deleteWithResponseAsync(dataSourceName, requestOptions, context).block();
+    public Response<BinaryData> deleteWithResponse(String dataSourceName, RequestOptions requestOptions) {
+        return deleteWithResponseAsync(dataSourceName, requestOptions).block();
     }
 
     /**
@@ -1537,14 +1532,13 @@ public final class DataSourcesImpl {
      * }</pre>
      *
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
-     * @param context The context to associate with this operation.
      * @throws HttpResponseException thrown if status code is 400 or above, if throwOnError in requestOptions is not
      *     false.
      * @return the response.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<BinaryData> listAll(RequestOptions requestOptions, Context context) {
-        return new PagedIterable<>(listAllAsync(requestOptions, context));
+    public PagedIterable<BinaryData> listAll(RequestOptions requestOptions) {
+        return new PagedIterable<>(listAllAsync(requestOptions));
     }
 
     /**

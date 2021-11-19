@@ -2,13 +2,9 @@
 
 ## 1.0.0-beta.3 (Unreleased)
 
-### Features Added
-
 ### Breaking Changes
 
-### Bugs Fixed
-
-### Other Changes
+- Merged the `Context` parameter into the `RequestOptions` parameter in methods of clients.
 
 ## 1.0.0-beta.2 (2021-10-15)
 

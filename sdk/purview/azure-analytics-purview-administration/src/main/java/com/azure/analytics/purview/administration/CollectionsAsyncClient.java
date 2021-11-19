@@ -5,6 +5,7 @@
 package com.azure.analytics.purview.administration;
 
 import com.azure.analytics.purview.administration.implementation.CollectionsImpl;
+import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
@@ -18,13 +19,14 @@ import reactor.core.publisher.Mono;
 /** Initializes a new instance of the asynchronous PurviewAccountClient type. */
 @ServiceClient(builder = PurviewAccountClientBuilder.class, isAsync = true)
 public final class CollectionsAsyncClient {
-    private final CollectionsImpl serviceClient;
+    @Generated private final CollectionsImpl serviceClient;
 
     /**
      * Initializes an instance of Collections client.
      *
      * @param serviceClient the service client implementation.
      */
+    @Generated
     CollectionsAsyncClient(CollectionsImpl serviceClient) {
         this.serviceClient = serviceClient;
     }
@@ -69,6 +71,7 @@ public final class CollectionsAsyncClient {
      *     false.
      * @return a collection.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getCollectionWithResponse(String collectionName, RequestOptions requestOptions) {
         return this.serviceClient.getCollectionWithResponseAsync(collectionName, requestOptions);
@@ -138,10 +141,11 @@ public final class CollectionsAsyncClient {
      *     false.
      * @return collection resource.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> upsertCollectionWithResponse(
+    public Mono<Response<BinaryData>> createOrUpdateCollectionWithResponse(
             String collectionName, BinaryData collection, RequestOptions requestOptions) {
-        return this.serviceClient.upsertCollectionWithResponseAsync(collectionName, collection, requestOptions);
+        return this.serviceClient.createOrUpdateCollectionWithResponseAsync(collectionName, collection, requestOptions);
     }
 
     /**
@@ -161,6 +165,7 @@ public final class CollectionsAsyncClient {
      *     false.
      * @return the completion.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> deleteCollectionWithResponse(String collectionName, RequestOptions requestOptions) {
         return this.serviceClient.deleteCollectionWithResponseAsync(collectionName, requestOptions);
@@ -212,6 +217,7 @@ public final class CollectionsAsyncClient {
      *     false.
      * @return paged list of collections.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listCollections(RequestOptions requestOptions) {
         return this.serviceClient.listCollectionsAsync(requestOptions);
@@ -250,6 +256,7 @@ public final class CollectionsAsyncClient {
      *     false.
      * @return paged list of collections.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<BinaryData> listChildCollectionNames(String collectionName, RequestOptions requestOptions) {
         return this.serviceClient.listChildCollectionNamesAsync(collectionName, requestOptions);
@@ -285,6 +292,7 @@ public final class CollectionsAsyncClient {
      *     false.
      * @return the parent name and parent friendly name chains that represent the collection path.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getCollectionPathWithResponse(
             String collectionName, RequestOptions requestOptions) {

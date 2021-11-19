@@ -16,7 +16,7 @@ class ChangeFeedOffsetSpec extends UnitSpec {
     // scalastyle:off multiple.string.literals
     String.format(
       "{" +
-        "\"id\":\"com.azure.cosmos.spark.changeFeed.offset.v1\"," +
+        "\"id\":\"spark.cosmos.changeFeed.offset.v1\"," +
         "\"state\":\"%s\"" +
         "}",
       changeFeedState)
@@ -32,7 +32,7 @@ class ChangeFeedOffsetSpec extends UnitSpec {
     // scalastyle:off multiple.string.literals
     String.format(
       "{" +
-        "\"id\":\"com.azure.cosmos.spark.changeFeed.offset.v1\"," +
+        "\"id\":\"spark.cosmos.changeFeed.offset.v1\"," +
         "\"state\":\"%s\"," +
         "\"partitions\":[%s]" +
         "}",
@@ -45,10 +45,19 @@ class ChangeFeedOffsetSpec extends UnitSpec {
   private[this] def getOffsetJsonWithUnnecessaryWhitespaces(changeFeedState: String) = {
     String.format(
       "{" +
-        "\"id\": \"com.azure.cosmos.spark.changeFeed.offset.v1\", " +
+        "\"id\": \"spark.cosmos.changeFeed.offset.v1\", " +
         "\"state\": \"%s\"" +
         "}",
       changeFeedState)
+  }
+
+  //scalastyle:off multiple.string.literals
+  it should " have expected Offset identifier even after shading" in {
+    // Using the replace hack here to make sure shading wouldn't also
+    // mess around with the expected identifier
+    val expectedIdentifier = "something:spark.cosmos.changeFeed.offset.v1"
+      .replace("something:", "")
+    ChangeFeedOffset.V1Identifier shouldEqual expectedIdentifier
   }
 
   //scalastyle:off multiple.string.literals
@@ -100,8 +109,8 @@ class ChangeFeedOffsetSpec extends UnitSpec {
   it should " complain on valid but incompatible json for different offset" in {
     val changeFeedState = UUID.randomUUID().toString
     val offsetJson = getOffsetJson(changeFeedState).replace(
-      "com.azure.cosmos.spark.changeFeed.offset.v1",
-      "com.azure.cosmos.spark.changeFeed.offset.v356"
+      "spark.cosmos.changeFeed.offset.v1",
+      "spark.cosmos.changeFeed.offset.v356"
     )
 
     try {

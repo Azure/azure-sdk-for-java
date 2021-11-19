@@ -7,8 +7,10 @@ import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.storage.queue.properties.AzureStorageQueueProperties;
 import com.azure.spring.cloud.resourcemanager.connectionstring.StorageQueueArmConnectionStringProvider;
+import com.azure.storage.queue.QueueServiceClientBuilder;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
+import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ApplicationContextRunner;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -35,5 +37,16 @@ public class AzureStorageQueueResourceManagerAutoConfigurationTest {
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .withPropertyValues(AzureStorageQueueProperties.PREFIX + ".account-name=test-account")
             .run(context -> assertThat(context).hasSingleBean(StorageQueueArmConnectionStringProvider.class));
+    }
+
+    @Test
+    void shouldConfigureWithoutStorageQueueClientBuilderClass() {
+        this.contextRunner
+            .withClassLoader(new FilteredClassLoader(QueueServiceClientBuilder.class))
+            .withBean(AzureResourceManager.class, () -> mock(AzureResourceManager.class))
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureStorageQueueResourceManagerAutoConfiguration.class);
+                assertThat(context).hasSingleBean(StorageQueueResourceMetadata.class);
+            });
     }
 }

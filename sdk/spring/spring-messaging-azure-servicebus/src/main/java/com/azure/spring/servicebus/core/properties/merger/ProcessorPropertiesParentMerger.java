@@ -3,8 +3,8 @@
 
 package com.azure.spring.servicebus.core.properties.merger;
 
-import com.azure.spring.core.properties.AzurePropertiesUtils;
-import com.azure.spring.core.properties.PropertyMapper;
+import com.azure.spring.core.properties.util.AzurePropertiesUtils;
+import com.azure.spring.core.properties.util.PropertyMapper;
 import com.azure.spring.service.core.ParentMerger;
 import com.azure.spring.servicebus.core.properties.NamespaceProperties;
 import com.azure.spring.servicebus.core.properties.ProcessorProperties;
@@ -46,7 +46,7 @@ public class ProcessorPropertiesParentMerger implements ParentMerger<ProcessorPr
         propertyMapper.from(child.getMaxConcurrentSessions()).to(properties::setMaxConcurrentSessions);
         propertyMapper.from(child.getMaxConcurrentCalls()).to(properties::setMaxConcurrentCalls);
 
-        propertyMapper.from(child.getSessionAware()).to(properties::setSessionAware);
+        propertyMapper.from(child.getSessionEnabled()).to(properties::setSessionAware);
         propertyMapper.from(child.getAutoComplete()).to(properties::setAutoComplete);
         propertyMapper.from(child.getPrefetchCount()).to(properties::setPrefetchCount);
         propertyMapper.from(child.getSubQueue()).to(properties::setSubQueue);

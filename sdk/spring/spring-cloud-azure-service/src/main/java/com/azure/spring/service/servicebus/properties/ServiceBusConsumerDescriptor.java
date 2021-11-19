@@ -13,7 +13,7 @@ import java.time.Duration;
  */
 public interface ServiceBusConsumerDescriptor extends ServiceBusCommonDescriptor {
 
-    Boolean getSessionAware();
+    Boolean getSessionEnabled();
 
     Boolean getAutoComplete();
 

@@ -13,7 +13,7 @@ import com.azure.spring.core.credential.descriptor.AuthenticationDescriptor;
 import com.azure.spring.core.credential.descriptor.SasAuthenticationDescriptor;
 import com.azure.spring.core.credential.descriptor.TokenAuthenticationDescriptor;
 import com.azure.spring.core.properties.AzureProperties;
-import com.azure.spring.core.properties.PropertyMapper;
+import com.azure.spring.core.properties.util.PropertyMapper;
 import com.azure.spring.service.storage.common.AbstractAzureStorageClientBuilderFactory;
 import com.azure.spring.service.storage.common.credential.StorageSharedKeyAuthenticationDescriptor;
 import com.azure.storage.blob.BlobServiceClientBuilder;

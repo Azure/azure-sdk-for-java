@@ -7,22 +7,27 @@ import com.azure.core.credential.TokenCredential;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.core.factory.AbstractAzureServiceClientBuilderFactory;
-import com.azure.spring.core.factory.AzureCredentialBuilderFactory;
+import com.azure.spring.core.factory.credential.AbstractAzureCredentialBuilderFactory;
+import com.azure.spring.core.factory.credential.DefaultAzureCredentialBuilderFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
+import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+
+import java.util.concurrent.ThreadPoolExecutor;
 
 import static com.azure.spring.cloud.autoconfigure.context.AzureContextUtils.DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME;
 
 /**
  * Auto-configuration for Azure Spring default token credential.
  */
-@Configuration
+@Configuration(proxyBeanMethods = false)
 public class AzureDefaultTokenCredentialAutoConfiguration {
 
     private final AzureGlobalProperties azureGlobalProperties;
@@ -30,17 +35,22 @@ public class AzureDefaultTokenCredentialAutoConfiguration {
     public AzureDefaultTokenCredentialAutoConfiguration(AzureGlobalProperties azureGlobalProperties) {
         this.azureGlobalProperties = azureGlobalProperties;
     }
-
-    @Bean(name = DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME)
     @ConditionalOnMissingBean(name = DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME)
+    @Bean(name = DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME)
     @Order
-    public TokenCredential azureTokenCredential(AzureCredentialBuilderFactory<DefaultAzureCredentialBuilder> factory) {
+    public TokenCredential tokenCredential(AbstractAzureCredentialBuilderFactory<DefaultAzureCredentialBuilder> factory) {
         return factory.build().build();
     }
 
     @Bean
-    public AzureCredentialBuilderFactory<DefaultAzureCredentialBuilder> defaultAzureCredentialBuilderFactory() {
-        return new AzureCredentialBuilderFactory<>(azureGlobalProperties, new DefaultAzureCredentialBuilder());
+    @ConditionalOnMissingBean
+    public AbstractAzureCredentialBuilderFactory<DefaultAzureCredentialBuilder> azureCredentialBuilderFactory(
+        ObjectProvider<ThreadPoolTaskExecutor> threadPoolTaskExecutors) {
+        ThreadPoolExecutor threadPoolExecutor = null;
+        if (threadPoolTaskExecutors.getIfAvailable() != null) {
+            threadPoolExecutor = threadPoolTaskExecutors.getObject().getThreadPoolExecutor();
+        }
+        return new DefaultAzureCredentialBuilderFactory(azureGlobalProperties, threadPoolExecutor);
     }
 
     @Bean
@@ -55,13 +65,14 @@ public class AzureDefaultTokenCredentialAutoConfiguration {
         @SuppressWarnings("rawtypes")
         @Override
         public Object postProcessAfterInitialization(Object bean, String beanName) throws BeansException {
-            if (bean instanceof AzureCredentialBuilderFactory) {
+            if (bean instanceof AbstractAzureCredentialBuilderFactory) {
                 return bean;
             }
             if (bean instanceof AbstractAzureServiceClientBuilderFactory
                 && beanFactory.containsBean(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME)) {
 
-                ((AbstractAzureServiceClientBuilderFactory) bean).setDefaultTokenCredential((TokenCredential) beanFactory.getBean(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME));
+                ((AbstractAzureServiceClientBuilderFactory) bean).setDefaultTokenCredential(
+                    (TokenCredential) beanFactory.getBean(DEFAULT_TOKEN_CREDENTIAL_BEAN_NAME));
             }
             return bean;
         }
@@ -71,5 +82,4 @@ public class AzureDefaultTokenCredentialAutoConfiguration {
             this.beanFactory = beanFactory;
         }
     }
-    
 }

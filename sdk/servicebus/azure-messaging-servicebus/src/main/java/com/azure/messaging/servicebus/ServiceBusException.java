@@ -21,6 +21,10 @@ import java.util.function.Consumer;
 public final class ServiceBusException extends AzureException {
     private final transient ServiceBusErrorSource errorSource;
     private final transient ServiceBusFailureReason reason;
+
+    /**
+     * Whether the exception is transient.
+     */
     private final boolean isTransient;
 
     /**
@@ -52,7 +56,7 @@ public final class ServiceBusException extends AzureException {
     }
 
     /**
-     * Gets whether or not the exception is a transient error or not.
+     * Gets whether the exception is a transient error.
      *
      * @return {@code true} when user can retry the operation that generated the exception without additional
      *      intervention; false otherwise.

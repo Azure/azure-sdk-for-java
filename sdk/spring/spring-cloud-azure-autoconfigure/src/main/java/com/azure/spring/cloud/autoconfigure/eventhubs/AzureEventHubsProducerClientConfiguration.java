@@ -67,7 +67,7 @@ class AzureEventHubsProducerClientConfiguration {
 
             builderFactory.setConnectionStringProvider(new StaticConnectionStringProvider<>(AzureServiceType.EVENT_HUBS,
                                                                                             this.producerProperties.getConnectionString()));
-            builderFactory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_EVENT_HUB);
+            builderFactory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_EVENT_HUBS);
             return builderFactory;
         }
 

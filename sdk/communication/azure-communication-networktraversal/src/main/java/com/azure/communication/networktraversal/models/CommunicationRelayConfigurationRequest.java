@@ -16,6 +16,13 @@ public final class CommunicationRelayConfigurationRequest {
     @JsonProperty(value = "id")
     private String id;
 
+    /*
+     * The routing methodology to where the ICE server will be located from the
+     * client.
+     */
+    @JsonProperty(value = "routeType")
+    private RouteType routeType;
+
     /**
      * Get the id property: An existing ACS identity.
      *
@@ -33,6 +40,26 @@ public final class CommunicationRelayConfigurationRequest {
      */
     public CommunicationRelayConfigurationRequest setId(String id) {
         this.id = id;
+        return this;
+    }
+
+    /**
+     * Get the routeType property: The routing methodology to where the ICE server will be located from the client.
+     *
+     * @return the routeType value.
+     */
+    public RouteType getRouteType() {
+        return this.routeType;
+    }
+
+    /**
+     * Set the routeType property: The routing methodology to where the ICE server will be located from the client.
+     *
+     * @param routeType the routeType value to set.
+     * @return the CommunicationRelayConfigurationRequest object itself.
+     */
+    public CommunicationRelayConfigurationRequest setRouteType(RouteType routeType) {
+        this.routeType = routeType;
         return this;
     }
 }

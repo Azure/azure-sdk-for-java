@@ -6,6 +6,8 @@ package com.azure.spring.core.converter;
 import com.azure.core.amqp.ProxyAuthenticationType;
 import com.azure.core.amqp.ProxyOptions;
 import com.azure.spring.core.aware.ProxyAware;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.util.StringUtils;
 
@@ -17,11 +19,13 @@ import java.net.Proxy;
  */
 public final class AzureAmqpProxyOptionsConverter implements Converter<ProxyAware.Proxy, ProxyOptions> {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AzureAmqpProxyOptionsConverter.class);
     public static final AzureAmqpProxyOptionsConverter AMQP_PROXY_CONVERTER = new AzureAmqpProxyOptionsConverter();
 
     @Override
     public ProxyOptions convert(ProxyAware.Proxy proxy) {
-        if (!StringUtils.hasText(proxy.getHostname())) {
+        if (!StringUtils.hasText(proxy.getHostname()) || proxy.getPort() == null) {
+            LOGGER.debug("Proxy hostname or port is not set.");
             return null;
         }
         ProxyAuthenticationType authenticationType;

@@ -214,13 +214,17 @@ class AADAuthenticationPropertiesTest {
     @Test
     void applicationTypeWithResourceServer() {
         resourceServerContextRunner()
+            .withPropertyValues("spring.cloud.azure.active-directory.enabled=true")
             .run(context -> {
                 AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
                 assertEquals(properties.getApplicationType(), AADApplicationType.RESOURCE_SERVER);
             });
 
         resourceServerContextRunner()
-            .withPropertyValues("spring.cloud.azure.active-directory.application-type=resource_server")
+            .withPropertyValues(
+                "spring.cloud.azure.active-directory.enabled=true",
+                "spring.cloud.azure.active-directory.application-type=resource_server"
+            )
             .run(context -> {
                 AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
                 assertEquals(properties.getApplicationType(), AADApplicationType.RESOURCE_SERVER);
@@ -243,7 +247,9 @@ class AADAuthenticationPropertiesTest {
             });
 
         resourceServerWithOboContextRunner()
-            .withPropertyValues("spring.cloud.azure.active-directory.application-type=resource_server_with_obo")
+            .withPropertyValues(
+                "spring.cloud.azure.active-directory.application-type=resource_server_with_obo"
+            )
             .run(context -> {
                 AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
                 assertEquals(properties.getApplicationType(), AADApplicationType.RESOURCE_SERVER_WITH_OBO);
@@ -253,7 +259,9 @@ class AADAuthenticationPropertiesTest {
     @Test
     void applicationTypeWithWebApplicationAndResourceServer() {
         resourceServerWithOboContextRunner()
-            .withPropertyValues("spring.cloud.azure.active-directory.application-type=web_application_and_resource_server")
+            .withPropertyValues(
+                "spring.cloud.azure.active-directory.application-type=web_application_and_resource_server"
+            )
             .run(context -> {
                 AADAuthenticationProperties properties = context.getBean(AADAuthenticationProperties.class);
                 assertEquals(properties.getApplicationType(), AADApplicationType.WEB_APPLICATION_AND_RESOURCE_SERVER);
@@ -263,7 +271,10 @@ class AADAuthenticationPropertiesTest {
     @Test
     void testInvalidApplicationType() {
         resourceServerContextRunner()
-            .withPropertyValues("spring.cloud.azure.active-directory.application-type=web_application")
+            .withPropertyValues(
+                "spring.cloud.azure.active-directory.enabled=true",
+                "spring.cloud.azure.active-directory.application-type=web_application"
+            )
             .run(context -> {
                 assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class));
             });

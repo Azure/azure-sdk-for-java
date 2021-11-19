@@ -11,7 +11,7 @@ import com.azure.spring.cloud.autoconfigure.condition.ConditionalOnMissingProper
 import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.core.AzureSpringIdentifier;
 import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
-import com.azure.spring.core.properties.PropertyMapper;
+import com.azure.spring.core.properties.util.PropertyMapper;
 import com.azure.spring.core.service.AzureServiceType;
 import com.azure.spring.service.eventhubs.factory.EventHubClientBuilderFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -85,7 +85,7 @@ class AzureEventHubsConsumerClientConfiguration {
 
             builderFactory.setConnectionStringProvider(new StaticConnectionStringProvider<>(AzureServiceType.EVENT_HUBS,
                                                                                             this.consumerProperties.getConnectionString()));
-            builderFactory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_EVENT_HUB);
+            builderFactory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_EVENT_HUBS);
             return builderFactory;
         }
 

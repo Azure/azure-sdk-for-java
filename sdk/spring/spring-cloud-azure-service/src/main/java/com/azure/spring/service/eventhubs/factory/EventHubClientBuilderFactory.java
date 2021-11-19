@@ -16,7 +16,7 @@ import com.azure.spring.core.credential.descriptor.SasAuthenticationDescriptor;
 import com.azure.spring.core.credential.descriptor.TokenAuthenticationDescriptor;
 import com.azure.spring.core.factory.AbstractAzureAmqpClientBuilderFactory;
 import com.azure.spring.core.properties.AzureProperties;
-import com.azure.spring.core.properties.PropertyMapper;
+import com.azure.spring.core.properties.util.PropertyMapper;
 import com.azure.spring.service.eventhubs.properties.EventHubsCommonDescriptor;
 import com.azure.spring.service.eventhubs.properties.EventHubsConsumerDescriptor;
 import com.azure.spring.service.eventhubs.properties.EventHubsNamespaceDescriptor;
@@ -71,7 +71,6 @@ public class EventHubClientBuilderFactory extends AbstractAzureAmqpClientBuilder
 
     @Override
     protected BiConsumer<EventHubClientBuilder, String> consumeConnectionString() {
-        // TODO (xiada) defines whether the connection-string contains event-hub-name
         return (builder, connectionString) -> builder.connectionString(connectionString, this.eventHubsProperties.getEventHubName());
     }
 

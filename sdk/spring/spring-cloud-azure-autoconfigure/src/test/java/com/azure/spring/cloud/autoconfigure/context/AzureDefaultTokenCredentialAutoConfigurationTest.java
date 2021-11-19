@@ -6,7 +6,7 @@ package com.azure.spring.cloud.autoconfigure.context;
 import com.azure.core.credential.TokenCredential;
 import com.azure.identity.DefaultAzureCredential;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
-import com.azure.spring.core.factory.AzureCredentialBuilderFactory;
+import com.azure.spring.core.factory.credential.AbstractAzureCredentialBuilderFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
@@ -27,7 +27,7 @@ class AzureDefaultTokenCredentialAutoConfigurationTest {
         contextRunner
             .withBean(AzureGlobalProperties.class, AzureGlobalProperties::new)
             .run(context -> {
-                assertThat(context).hasSingleBean(AzureCredentialBuilderFactory.class);
+                assertThat(context).hasSingleBean(AbstractAzureCredentialBuilderFactory.class);
                 assertThat(context).hasSingleBean(TokenCredential.class);
 
                 final TokenCredential credential = context.getBean(TokenCredential.class);

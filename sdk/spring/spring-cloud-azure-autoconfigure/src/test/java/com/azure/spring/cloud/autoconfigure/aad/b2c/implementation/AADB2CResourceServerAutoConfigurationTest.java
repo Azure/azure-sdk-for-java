@@ -18,7 +18,6 @@ import org.springframework.boot.test.context.FilteredClassLoader;
 import org.springframework.boot.test.context.runner.ContextConsumer;
 import org.springframework.boot.test.context.runner.WebApplicationContextRunner;
 import org.springframework.context.ApplicationContext;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.oauth2.client.web.OAuth2LoginAuthenticationFilter;
 import org.springframework.security.oauth2.jwt.JwtDecoder;
 import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
@@ -52,6 +51,7 @@ class AADB2CResourceServerAutoConfigurationTest extends AbstractAADB2COAuth2Clie
 
     private String[] getB2CResourceServerProperties() {
         return new String[] {
+            "spring.cloud.azure.active-directory.b2c.enabled=true",
             String.format("%s=%s", AADB2CConstants.BASE_URI, AADB2CConstants.TEST_BASE_URI),
             String.format("%s=%s", AADB2CConstants.TENANT_ID, AADB2CConstants.TEST_TENANT_ID),
             String.format("%s=%s", AADB2CConstants.CLIENT_ID, AADB2CConstants.TEST_CLIENT_ID),
@@ -134,7 +134,6 @@ class AADB2CResourceServerAutoConfigurationTest extends AbstractAADB2COAuth2Clie
             getDefaultContextRunner()
                 .withPropertyValues(getAuthorizationClientPropertyValues())
                 .run(c -> {
-                    Assertions.assertTrue(c.getResource(AAD_B2C_ENABLE_CONFIG_FILE_NAME).exists());
                     verify(clientRegistrationCondition, atLeastOnce()).getMatchOutcome(any(), any());
                 });
         }
@@ -148,13 +147,11 @@ class AADB2CResourceServerAutoConfigurationTest extends AbstractAADB2COAuth2Clie
             beanUtils.when(() -> BeanUtils.instantiateClass(AADB2CConditions.ClientRegistrationCondition.class))
                      .thenReturn(clientRegistrationCondition);
             new WebApplicationContextRunner()
-                .withClassLoader(new FilteredClassLoader(new ClassPathResource(AAD_B2C_ENABLE_CONFIG_FILE_NAME)))
                 .withConfiguration(AutoConfigurations.of(WebOAuth2ClientApp.class,
                     AADB2CResourceServerAutoConfiguration.class))
                 .withPropertyValues(getB2CResourceServerProperties())
                 .withPropertyValues(getAuthorizationClientPropertyValues())
                 .run(c -> {
-                    Assertions.assertFalse(c.getResource(AAD_B2C_ENABLE_CONFIG_FILE_NAME).exists());
                     verify(clientRegistrationCondition, never()).getMatchOutcome(any(), any());
                 });
         }

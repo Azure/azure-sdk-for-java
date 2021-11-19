@@ -23,7 +23,7 @@ public class ConsumerProperties extends CommonProperties implements ServiceBusCo
     private Duration maxAutoLockRenewDuration = Duration.ofMinutes(5);
 
     @Override
-    public Boolean getSessionAware() {
+    public Boolean getSessionEnabled() {
         return sessionAware;
     }
 

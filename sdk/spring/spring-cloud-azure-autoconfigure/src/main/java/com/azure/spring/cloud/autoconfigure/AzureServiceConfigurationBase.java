@@ -8,7 +8,7 @@ import com.azure.spring.core.aware.ClientAware;
 import com.azure.spring.core.aware.ProxyAware;
 import com.azure.spring.core.aware.RetryAware;
 import com.azure.spring.core.properties.AzureProperties;
-import com.azure.spring.core.properties.AzurePropertiesUtils;
+import com.azure.spring.core.properties.util.AzurePropertiesUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;

@@ -40,8 +40,8 @@ public class EventHubsTemplate implements SendOperation, BatchSendOperation {
     public <T> Mono<Void> sendAsync(String destination, Collection<Message<T>> messages,
                                     PartitionSupplier partitionSupplier) {
         List<EventData> eventData = messages.stream()
-                                            .map(m -> messageConverter.fromMessage(m, EventData.class))
-                                            .collect(Collectors.toList());
+            .map(m -> messageConverter.fromMessage(m, EventData.class))
+            .collect(Collectors.toList());
         return doSend(destination, eventData, partitionSupplier);
     }
 

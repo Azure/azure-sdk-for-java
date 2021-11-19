@@ -8,7 +8,7 @@ import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.autoconfigure.servicebus.properties.AzureServiceBusProperties;
 import com.azure.spring.cloud.resourcemanager.connectionstring.ServiceBusArmConnectionStringProvider;
-import com.azure.spring.servicebus.provisioning.ServiceBusProvisioner;
+import com.azure.spring.cloud.resourcemanager.provisioner.servicebus.ServiceBusProvisioner;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
@@ -37,8 +37,11 @@ class AzureServiceBusResourceManagerAutoConfigurationTest {
     void testServiceBusResourceManagerWithoutServiceBusClientBuilderClass() {
         this.contextRunner
             .withClassLoader(new FilteredClassLoader(ServiceBusClientBuilder.class))
+            .withBean(AzureResourceManager.class, () -> mock(AzureResourceManager.class))
             .run(context -> {
-                assertThat(context).doesNotHaveBean(ServiceBusProvisioner.class);
+                assertThat(context).hasSingleBean(AzureServiceBusResourceManagerAutoConfiguration.class);
+                assertThat(context).hasSingleBean(ServiceBusResourceMetadata.class);
+                assertThat(context).hasSingleBean(ServiceBusProvisioner.class);
             });
     }
 

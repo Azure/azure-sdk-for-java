@@ -5,7 +5,7 @@ package com.azure.spring.cloud.autoconfigure.servicebus.properties;
 
 import com.azure.messaging.servicebus.models.ServiceBusReceiveMode;
 import com.azure.messaging.servicebus.models.SubQueue;
-import com.azure.spring.core.properties.AzurePropertiesUtils;
+import com.azure.spring.core.properties.util.AzurePropertiesUtils;
 import com.azure.spring.service.servicebus.properties.ServiceBusConsumerDescriptor;
 import com.azure.spring.service.servicebus.properties.ServiceBusNamespaceDescriptor;
 import com.azure.spring.service.servicebus.properties.ServiceBusProcessorDescriptor;
@@ -87,7 +87,7 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties i
         propertyMapper.from(this.consumer.getEntityType()).to(properties::setEntityType);
         propertyMapper.from(this.consumer.getEntityName()).to(properties::setEntityName);
 
-        propertyMapper.from(this.consumer.getSessionAware()).to(properties::setSessionAware);
+        propertyMapper.from(this.consumer.getSessionEnabled()).to(properties::setSessionEnabled);
         propertyMapper.from(this.consumer.getAutoComplete()).to(properties::setAutoComplete);
         propertyMapper.from(this.consumer.getPrefetchCount()).to(properties::setPrefetchCount);
         propertyMapper.from(this.consumer.getSubQueue()).to(properties::setSubQueue);
@@ -117,7 +117,7 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties i
         propertyMapper.from(this.processor.getEntityType()).to(properties::setEntityType);
         propertyMapper.from(this.processor.getEntityName()).to(properties::setEntityName);
 
-        propertyMapper.from(this.processor.getSessionAware()).to(properties::setSessionAware);
+        propertyMapper.from(this.processor.getSessionEnabled()).to(properties::setSessionEnabled);
         propertyMapper.from(this.processor.getAutoComplete()).to(properties::setAutoComplete);
         propertyMapper.from(this.processor.getPrefetchCount()).to(properties::setPrefetchCount);
         propertyMapper.from(this.processor.getSubQueue()).to(properties::setSubQueue);
@@ -142,8 +142,7 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties i
      */
     public static class Consumer extends AzureServiceBusCommonProperties implements ServiceBusConsumerDescriptor {
 
-        // TODO (xiada): name for session
-        private Boolean sessionAware;
+        private Boolean sessionEnabled;
         private Boolean autoComplete;
         private Integer prefetchCount;
         private SubQueue subQueue;
@@ -152,12 +151,12 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties i
         private Duration maxAutoLockRenewDuration;
 
         @Override
-        public Boolean getSessionAware() {
-            return sessionAware;
+        public Boolean getSessionEnabled() {
+            return sessionEnabled;
         }
 
-        public void setSessionAware(Boolean sessionAware) {
-            this.sessionAware = sessionAware;
+        public void setSessionEnabled(Boolean sessionEnabled) {
+            this.sessionEnabled = sessionEnabled;
         }
 
         @Override
@@ -239,21 +238,4 @@ public class AzureServiceBusProperties extends AzureServiceBusCommonProperties i
         }
     }
 
-    // TODO (xiada) we removed these properties, and not mark them as deprecated, should we mention them in the migration docs?
-//    public AmqpRetryOptions getRetryOptions() {
-//        return retryOptions;
-//    }
-//
-//    public void setRetryOptions(AmqpRetryOptions retryOptions) {
-//        this.retryOptions = retryOptions;
-//    }
-//
-//    @DeprecatedConfigurationProperty(reason = "Use ", replacement = "")
-//    public AmqpTransportType getTransportType() {
-//        return transportType;
-//    }
-//
-//    public void setTransportType(AmqpTransportType transportType) {
-//        this.transportType = transportType;
-//    }
 }

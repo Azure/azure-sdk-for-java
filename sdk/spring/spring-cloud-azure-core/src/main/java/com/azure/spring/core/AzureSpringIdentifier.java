@@ -35,7 +35,7 @@ public class AzureSpringIdentifier {
     private static final Logger LOGGER = LoggerFactory.getLogger(AzureSpringIdentifier.class);
     public static final String VERSION = getVersion();
     public static final String AZURE_SPRING_APP_CONFIG = "az-sp-cfg/" + VERSION;
-    public static final String AZURE_SPRING_EVENT_HUB = "az-sp-eh/" + VERSION;
+    public static final String AZURE_SPRING_EVENT_HUBS = "az-sp-eh/" + VERSION;
     public static final String AZURE_SPRING_KEY_VAULT = "az-sp-kv/" + VERSION;
     public static final String AZURE_SPRING_SERVICE_BUS = "az-sp-bus/" + VERSION;
     public static final String AZURE_SPRING_STORAGE_BLOB = "az-sp-sb/" + VERSION;
@@ -43,6 +43,8 @@ public class AzureSpringIdentifier {
     public static final String AZURE_SPRING_COSMOS = "az-sp-cos/" + VERSION;
     public static final String AZURE_SPRING_STORAGE_QUEUE = "az-sp-sq/" + VERSION;
     public static final String AZURE_SPRING_INTEGRATION_STORAGE_QUEUE = "az-si-sq/" + VERSION;
+    public static final String AZURE_SPRING_INTEGRATION_SERVICE_BUS = "az-si-sb/" + VERSION;
+    public static final String AZURE_SPRING_INTEGRATION_EVENT_HUBS = "az-si-eh/" + VERSION;
 
     /**
      * AZURE_SPRING_AAD does not contain VERSION, because AAD server support 2 headers: 1. x-client-SKU; 2.

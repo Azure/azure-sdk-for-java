@@ -8,7 +8,7 @@ import com.azure.resourcemanager.AzureResourceManager;
 import com.azure.spring.cloud.autoconfigure.eventhubs.properties.AzureEventHubsProperties;
 import com.azure.spring.cloud.autoconfigure.properties.AzureGlobalProperties;
 import com.azure.spring.cloud.resourcemanager.connectionstring.EventHubsArmConnectionStringProvider;
-import com.azure.spring.eventhubs.provisioning.EventHubsProvisioner;
+import com.azure.spring.cloud.resourcemanager.provisioner.eventhubs.EventHubsProvisioner;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.autoconfigure.AutoConfigurations;
 import org.springframework.boot.test.context.FilteredClassLoader;
@@ -31,6 +31,7 @@ class AzureEventHubsResourceManagerAutoConfigurationTest {
         this.contextRunner
             .withPropertyValues("spring.cloud.azure.eventhubs.enabled=false")
             .run(context -> {
+                assertThat(context).doesNotHaveBean(AzureEventHubsResourceManagerAutoConfiguration.class);
                 assertThat(context).doesNotHaveBean(EventHubsArmConnectionStringProvider.class);
                 assertThat(context).doesNotHaveBean(EventHubsProvisioner.class);
             });
@@ -40,6 +41,19 @@ class AzureEventHubsResourceManagerAutoConfigurationTest {
     void testEventHubResourceManagerWithoutEventHubClientBuilderClass() {
         this.contextRunner
             .withClassLoader(new FilteredClassLoader(EventHubClientBuilder.class))
+            .withBean(AzureResourceManager.class, () -> mock(AzureResourceManager.class))
+            .run(context -> {
+                assertThat(context).hasSingleBean(AzureEventHubsResourceManagerAutoConfiguration.class);
+                assertThat(context).hasSingleBean(EventHubsResourceMetadata.class);
+                assertThat(context).hasSingleBean(EventHubsProvisioner.class);
+                assertThat(context).doesNotHaveBean(EventHubsArmConnectionStringProvider.class);
+            });
+    }
+
+    @Test
+    void testEventHubResourceManagerWithoutResourceManagerClass() {
+        this.contextRunner
+            .withClassLoader(new FilteredClassLoader(AzureResourceManager.class))
             .run(context -> {
                 assertThat(context).doesNotHaveBean(EventHubsArmConnectionStringProvider.class);
                 assertThat(context).doesNotHaveBean(EventHubsProvisioner.class);

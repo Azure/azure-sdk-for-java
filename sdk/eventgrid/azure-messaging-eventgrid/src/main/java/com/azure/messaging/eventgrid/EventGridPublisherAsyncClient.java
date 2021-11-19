@@ -47,22 +47,104 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
  * Use {@link EventGridPublisherClientBuilder} to create an instance of this client.
  *
  * <p><strong>Create EventGridPublisherAsyncClient for CloudEvent Samples</strong></p>
- * {@codesnippet com.azure.messaging.eventgrid.EventGridPublisherAsyncClient#CreateCloudEventClient}
+ * <!-- src_embed com.azure.messaging.eventgrid.EventGridPublisherAsyncClient#CreateCloudEventClient -->
+ * <pre>
+ * &#47;&#47; Create a client to send events of CloudEvent schema &#40;com.azure.core.models.CloudEvent&#41;
+ * EventGridPublisherAsyncClient&lt;CloudEvent&gt; cloudEventPublisherClient = new EventGridPublisherClientBuilder&#40;&#41;
+ *     .endpoint&#40;System.getenv&#40;&quot;AZURE_EVENTGRID_CLOUDEVENT_ENDPOINT&quot;&#41;&#41;  &#47;&#47; make sure it accepts CloudEvent
+ *     .credential&#40;new AzureKeyCredential&#40;System.getenv&#40;&quot;AZURE_EVENTGRID_CLOUDEVENT_KEY&quot;&#41;&#41;&#41;
+ *     .buildCloudEventPublisherAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.eventgrid.EventGridPublisherAsyncClient#CreateCloudEventClient -->
  *
  * <p><strong>Send CloudEvent Samples</strong></p>
- * {@codesnippet com.azure.messaging.eventgrid.EventGridPublisherAsyncClient#SendCloudEvent}
+ * <!-- src_embed com.azure.messaging.eventgrid.EventGridPublisherAsyncClient#SendCloudEvent -->
+ * <pre>
+ * &#47;&#47; Create a com.azure.models.CloudEvent.
+ * User user = new User&#40;&quot;Stephen&quot;, &quot;James&quot;&#41;;
+ * CloudEvent cloudEventDataObject = new CloudEvent&#40;&quot;&#47;cloudevents&#47;example&#47;source&quot;, &quot;Example.EventType&quot;,
+ *     BinaryData.fromObject&#40;user&#41;, CloudEventDataFormat.JSON, &quot;application&#47;json&quot;&#41;;
+ *
+ * &#47;&#47; Send a single CloudEvent
+ * cloudEventPublisherClient.sendEvent&#40;cloudEventDataObject&#41;.block&#40;&#41;;
+ *
+ * &#47;&#47; Send a list of CloudEvents to the EventGrid service altogether.
+ * &#47;&#47; This has better performance than sending one by one.
+ * cloudEventPublisherClient.sendEvents&#40;Arrays.asList&#40;
+ *     cloudEventDataObject
+ *     &#47;&#47; add more CloudEvents objects
+ * &#41;&#41;.block&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.eventgrid.EventGridPublisherAsyncClient#SendCloudEvent -->
  *
  * <p><strong>Create EventGridPublisherAsyncClient for EventGridEvent Samples</strong></p>
- * {@codesnippet com.azure.messaging.eventgrid.EventGridPublisherAsyncClient#CreateEventGridEventClient}
+ * <!-- src_embed com.azure.messaging.eventgrid.EventGridPublisherAsyncClient#CreateEventGridEventClient -->
+ * <pre>
+ * &#47;&#47; Create a client to send events of EventGridEvent schema
+ * EventGridPublisherAsyncClient&lt;EventGridEvent&gt; eventGridEventPublisherClient = new EventGridPublisherClientBuilder&#40;&#41;
+ *     .endpoint&#40;System.getenv&#40;&quot;AZURE_EVENTGRID_EVENT_ENDPOINT&quot;&#41;&#41;  &#47;&#47; make sure it accepts EventGridEvent
+ *     .credential&#40;new AzureKeyCredential&#40;System.getenv&#40;&quot;AZURE_EVENTGRID_EVENT_KEY&quot;&#41;&#41;&#41;
+ *     .buildEventGridEventPublisherAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.eventgrid.EventGridPublisherAsyncClient#CreateEventGridEventClient -->
  *
  * <p><strong>Send EventGridEvent Samples</strong></p>
- * {@codesnippet com.azure.messaging.eventgrid.EventGridPublisherAsyncClient#SendEventGridEvent}
+ * <!-- src_embed com.azure.messaging.eventgrid.EventGridPublisherAsyncClient#SendEventGridEvent -->
+ * <pre>
+ * &#47;&#47; Create an EventGridEvent
+ * User user = new User&#40;&quot;John&quot;, &quot;James&quot;&#41;;
+ * EventGridEvent eventGridEvent = new EventGridEvent&#40;&quot;&#47;EventGridEvents&#47;example&#47;source&quot;,
+ *     &quot;Example.EventType&quot;, BinaryData.fromObject&#40;user&#41;, &quot;0.1&quot;&#41;;
+ *
+ * &#47;&#47; Send a single EventGridEvent
+ * eventGridEventPublisherClient.sendEvent&#40;eventGridEvent&#41;.block&#40;&#41;;
+ *
+ * &#47;&#47; Send a list of EventGridEvents to the EventGrid service altogether.
+ * &#47;&#47; This has better performance than sending one by one.
+ * eventGridEventPublisherClient.sendEvents&#40;Arrays.asList&#40;
+ *     eventGridEvent
+ *     &#47;&#47; add more EventGridEvents objects
+ * &#41;&#41;.block&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.eventgrid.EventGridPublisherAsyncClient#SendEventGridEvent -->
  *
  * <p><strong>Create EventGridPublisherAsyncClient for Custom Event Schema Samples</strong></p>
- * {@codesnippet com.azure.messaging.eventgrid.EventGridPublisherAsyncClient#CreateCustomEventClient}
+ * <!-- src_embed com.azure.messaging.eventgrid.EventGridPublisherAsyncClient#CreateCustomEventClient -->
+ * <pre>
+ * &#47;&#47; Create a client to send events of custom event
+ * EventGridPublisherAsyncClient&lt;BinaryData&gt; customEventPublisherClient = new EventGridPublisherClientBuilder&#40;&#41;
+ *     .endpoint&#40;System.getenv&#40;&quot;AZURE_CUSTOM_EVENT_ENDPOINT&quot;&#41;&#41;  &#47;&#47; make sure it accepts custom events
+ *     .credential&#40;new AzureKeyCredential&#40;System.getenv&#40;&quot;AZURE_CUSTOM_EVENT_KEY&quot;&#41;&#41;&#41;
+ *     .buildCustomEventPublisherAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.eventgrid.EventGridPublisherAsyncClient#CreateCustomEventClient -->
  *
  * <p><strong>Send Custom Event Schema Samples</strong></p>
- * {@codesnippet com.azure.messaging.eventgrid.EventGridPublisherAsyncClient#SendCustomEvent}
+ * <!-- src_embed com.azure.messaging.eventgrid.EventGridPublisherAsyncClient#SendCustomEvent -->
+ * <pre>
+ * &#47;&#47; Create an custom event object &#40;both POJO and Map work&#41;
+ * Map&lt;String, Object&gt; customEvent = new HashMap&lt;String, Object&gt;&#40;&#41; &#123;
+ *     &#123;
+ *         put&#40;&quot;id&quot;, UUID.randomUUID&#40;&#41;.toString&#40;&#41;&#41;;
+ *         put&#40;&quot;subject&quot;, &quot;Test&quot;&#41;;
+ *         put&#40;&quot;foo&quot;, &quot;bar&quot;&#41;;
+ *         put&#40;&quot;type&quot;, &quot;Microsoft.MockPublisher.TestEvent&quot;&#41;;
+ *         put&#40;&quot;data&quot;, 100.0&#41;;
+ *         put&#40;&quot;dataVersion&quot;, &quot;0.1&quot;&#41;;
+ *     &#125;
+ * &#125;;
+ *
+ * &#47;&#47; Send a single custom event
+ * customEventPublisherClient.sendEvent&#40;BinaryData.fromObject&#40;customEvent&#41;&#41;.block&#40;&#41;;
+ *
+ * &#47;&#47; Send a list of EventGridEvents to the EventGrid service altogether.
+ * &#47;&#47; This has better performance than sending one by one.
+ * customEventPublisherClient.sendEvents&#40;Arrays.asList&#40;
+ *     BinaryData.fromObject&#40;customEvent&#41;
+ *     &#47;&#47; add more custom events in BinaryData
+ * &#41;&#41;.block&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.messaging.eventgrid.EventGridPublisherAsyncClient#SendCustomEvent -->
  *
  * @see EventGridEvent
  * @see com.azure.core.models.CloudEvent

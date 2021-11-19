@@ -35,7 +35,10 @@ class AADOAuth2ClientConfigurationTest {
     @Test
     void testWithRequiredPropertiesSet() {
         oauthClientAndResourceServerRunner()
-            .withPropertyValues("spring.cloud.azure.active-directory.client-id=fake-client-id")
+            .withPropertyValues(
+                "spring.cloud.azure.active-directory.enabled=true",
+                "spring.cloud.azure.active-directory.client-id=fake-client-id"
+            )
             .run(context -> {
                 assertThat(context).hasSingleBean(AADAuthenticationProperties.class);
                 assertThat(context).hasSingleBean(ClientRegistrationRepository.class);
@@ -46,6 +49,9 @@ class AADOAuth2ClientConfigurationTest {
     @Test
     void testWebApplication() {
         webApplicationContextRunner()
+            .withPropertyValues(
+                "spring.cloud.azure.active-directory.enabled=true"
+            )
             .run(context -> {
                 assertThat(context).hasSingleBean(AADAuthenticationProperties.class);
                 assertThat(context).hasSingleBean(ClientRegistrationRepository.class);
@@ -62,8 +68,10 @@ class AADOAuth2ClientConfigurationTest {
     @Test
     void testResourceServerWithOboOnlyGraphClient() {
         resourceServerWithOboContextRunner()
-            .withPropertyValues("spring.cloud.azure.active-directory.authorization-clients.graph.scopes="
-                + "https://graph.microsoft.com/User.Read")
+            .withPropertyValues(
+                "spring.cloud.azure.active-directory.enabled=true",
+                "spring.cloud.azure.active-directory.authorization-clients.graph.on-demand = true",
+                "spring.cloud.azure.active-directory.authorization-clients.graph.scopes=https://graph.microsoft.com/User.Read")
             .run(context -> {
                 final AADClientRegistrationRepository oboRepo = context.getBean(
                     AADClientRegistrationRepository.class);
@@ -83,8 +91,10 @@ class AADOAuth2ClientConfigurationTest {
     @Test
     void testResourceServerWithOboInvalidGrantType1() {
         resourceServerWithOboContextRunner()
-            .withPropertyValues("spring.cloud.azure.active-directory.authorization-clients.graph.authorization-grant-type="
-                + "authorization_code")
+            .withPropertyValues(
+                "spring.cloud.azure.active-directory.authorization-clients.graph.authorization-grant-type=authorization_code",
+                "spring.cloud.azure.active-directory.enabled=true"
+            )
             .run(context ->
                 assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class))
             );
@@ -93,9 +103,11 @@ class AADOAuth2ClientConfigurationTest {
     @Test
     void testResourceServerWithOboInvalidGrantType2() {
         resourceServerWithOboContextRunner()
-            .withPropertyValues("spring.cloud.azure.active-directory.authorization-clients.graph.authorization-grant-type="
-                + "on_behalf_of")
-            .withPropertyValues("spring.cloud.azure.active-directory.authorization-clients.graph.on-demand = true")
+            .withPropertyValues(
+                "spring.cloud.azure.active-directory.enabled=true",
+                "spring.cloud.azure.active-directory.authorization-clients.graph.authorization-grant-type=on_behalf_of",
+                "spring.cloud.azure.active-directory.authorization-clients.graph.on-demand = true"
+            )
             .run(context ->
                 assertThrows(IllegalStateException.class, () -> context.getBean(AADAuthenticationProperties.class))
             );
@@ -104,10 +116,11 @@ class AADOAuth2ClientConfigurationTest {
     @Test
     void testResourceServerWithOboExistCustomAndGraphClient() {
         resourceServerWithOboContextRunner()
-            .withPropertyValues("spring.cloud.azure.active-directory.authorization-clients.graph.scopes="
-                + "https://graph.microsoft.com/User.Read")
-            .withPropertyValues("spring.cloud.azure.active-directory.authorization-clients.custom.scopes="
-                + "api://52261059-e515-488e-84fd-a09a3f372814/File.Read")
+            .withPropertyValues(
+                "spring.cloud.azure.active-directory.enabled=true",
+                "spring.cloud.azure.active-directory.authorization-clients.graph.scopes=https://graph.microsoft.com/User.Read",
+                "spring.cloud.azure.active-directory.authorization-clients.custom.scopes=api://52261059-e515-488e-84fd-a09a3f372814/File.Read"
+            )
             .run(context -> {
                 final AADClientRegistrationRepository oboRepo = context.getBean(
                     AADClientRegistrationRepository.class);

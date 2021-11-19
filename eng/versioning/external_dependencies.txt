@@ -18,7 +18,7 @@ com.fasterxml.jackson.module:jackson-module-parameter-names;2.12.5
 com.github.spotbugs:spotbugs;4.2.2
 com.github.spotbugs:spotbugs-annotations;4.2.2
 com.github.spotbugs:spotbugs-maven-plugin;4.2.2
-com.google.code.gson:gson;2.8.8
+com.google.code.gson:gson;2.8.9
 com.google.guava:guava;30.1.1-jre
 com.h3xstream.findsecbugs:findsecbugs-plugin;1.9.0
 com.microsoft.azure:azure-annotations;1.7.0
@@ -158,7 +158,6 @@ pl.pragmatists:JUnitParams;1.1.1
 ## Test dependency versions
 org.objenesis:objenesis;3.1
 cglib:cglib-nodep;3.2.7
-com.alibaba:fastjson;1.2.61
 com.github.cverges.expect4j:expect4j;1.6
 com.github.docker-java:docker-java;3.2.1
 com.github.tomakehurst:wiremock-standalone;2.24.1
