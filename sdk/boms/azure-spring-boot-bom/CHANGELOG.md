@@ -1,5 +1,11 @@
 # Release History
 
+## 3.10.2 (2021-11-19)
+This release is compatible with Spring Boot 2.5.0 - 2.5.4.
+
+### Bugs Fixed
+Fix bug: the Spring Cloud Azure related dependencies in `azure-spring-boot-bom:3.10.1` are not released. 
+
 ## 3.10.1 (2021-11-18)
 This release is compatible with Spring Boot 2.5.0 - 2.5.4.
 
