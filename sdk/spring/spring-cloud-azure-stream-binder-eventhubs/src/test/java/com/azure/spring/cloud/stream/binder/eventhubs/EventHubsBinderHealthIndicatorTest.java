@@ -96,7 +96,7 @@ public class EventHubsBinderHealthIndicatorTest {
         EventHubsBindingProperties bindingProperties = new EventHubsBindingProperties();
         bindingProperties.setProducer(eventHubsProducerProperties);
 
-        extendedBindingProperties.setBindings(new HashMap<>() {
+        extendedBindingProperties.setBindings(new HashMap<String, EventHubsBindingProperties>() {
             {
                 put(PRODUCER_NAME, bindingProperties);
             }
@@ -113,7 +113,7 @@ public class EventHubsBinderHealthIndicatorTest {
         EventHubsBindingProperties bindingProperties = new EventHubsBindingProperties();
         bindingProperties.setConsumer(eventHubsConsumerProperties);
 
-        extendedBindingProperties.setBindings(new HashMap<>() {
+        extendedBindingProperties.setBindings(new HashMap<String, EventHubsBindingProperties>() {
             {
                 put(CONSUMER_NAME, bindingProperties);
             }
