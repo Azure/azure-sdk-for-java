@@ -141,6 +141,13 @@ Some unnecessary dependencies were included in the legacy artifacts, which we ha
 Azure 4.0 libraries. Please make sure add the removed dependencies manually to your project to prevent unintentionally
 crash.
 
+
+### spring-cloud-azure-starter-servicebus-jms
+
+| Removed dependencies                                    | Description                                                  |
+| ------------------------------------------------------- | ------------------------------------------------------------ |
+| N/A                                                     |                                                              |
+
 ### spring-cloud-azure-starter
 
 | Removed dependencies                                    | Description                                                  |
@@ -180,6 +187,9 @@ configurations can be divided into five categories:
 For a full list of common configurations, check this list **[placeholder]**.
 
 ### Each SDK configurations
+
+#### spring-cloud-azure-starter-servicebus-jms
+as the same,nothing changed
 
 #### azure-spring-cloud-starter-eventhubs
 #### azure-spring-integration-eventhubs
