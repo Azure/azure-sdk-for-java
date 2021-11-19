@@ -70,7 +70,6 @@ class AzureEventHubsProducerClientConfiguration {
             final EventHubClientBuilderFactory factory = new EventHubClientBuilderFactory(this.producerProperties);
 
             factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_EVENT_HUBS);
-            connectionStringProviders.ifAvailable(factory::setConnectionStringProvider);
             connectionStringProviders.orderedStream().findFirst().ifPresent(factory::setConnectionStringProvider);
             customizers.orderedStream().forEach(factory::addBuilderCustomizer);
             return factory;
