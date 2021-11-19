@@ -47,20 +47,16 @@ public final class DefaultEventHubsNamespaceProducerFactory implements EventHubs
     }
 
     private EventHubProducerAsyncClient doCreateProducer(String eventHub, @Nullable ProducerProperties properties) {
-        if (this.clients.containsKey(eventHub)) {
-            return this.clients.get(eventHub);
-        }
+        return clients.computeIfAbsent(eventHub, entityName -> {
+            ProducerProperties producerProperties = parentMerger.mergeParent(properties, this.namespaceProperties);
+            producerProperties.setEventHubName(entityName);
+            EventHubClientBuilderFactory factory = new EventHubClientBuilderFactory(producerProperties);
+            factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_EVENT_HUBS);
+            EventHubProducerAsyncClient producerClient = factory.build().buildAsyncProducerClient();
+            this.listeners.forEach(l -> l.producerAdded(entityName, producerClient));
 
-        ProducerProperties producerProperties = parentMerger.mergeParent(properties, this.namespaceProperties);
-        producerProperties.setEventHubName(eventHub);
-        EventHubClientBuilderFactory factory = new EventHubClientBuilderFactory(producerProperties);
-        factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_EVENT_HUBS);
-        EventHubProducerAsyncClient producerClient = factory.build().buildAsyncProducerClient();
-
-        this.listeners.forEach(l -> l.producerAdded(eventHub));
-
-        this.clients.put(eventHub, producerClient);
-        return producerClient;
+            return producerClient;
+        });
     }
 
     @Override
@@ -75,7 +71,11 @@ public final class DefaultEventHubsNamespaceProducerFactory implements EventHubs
 
     @Override
     public void destroy() {
-        this.clients.values().forEach(EventHubProducerAsyncClient::close);
+        this.clients.forEach((name, client) -> {
+            this.listeners.forEach(l -> l.producerRemoved(name, client));
+            client.close();
+        });
         this.clients.clear();
+        this.listeners.clear();
     }
 }

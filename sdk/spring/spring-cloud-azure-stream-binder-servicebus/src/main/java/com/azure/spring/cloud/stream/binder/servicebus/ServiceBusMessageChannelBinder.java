@@ -228,7 +228,7 @@ public class ServiceBusMessageChannelBinder extends
             DefaultServiceBusNamespaceProducerFactory factory = new DefaultServiceBusNamespaceProducerFactory(
                 this.namespaceProperties, getProducerPropertiesSupplier());
 
-            factory.addListener((name) -> {
+            factory.addListener((name, client) -> {
                 DefaultInstrumentation instrumentation = new DefaultInstrumentation(name, PRODUCER);
                 instrumentation.markUp();
                 instrumentationManager.addHealthInstrumentation(instrumentation.getId(), instrumentation);
@@ -243,7 +243,7 @@ public class ServiceBusMessageChannelBinder extends
             DefaultServiceBusNamespaceProcessorFactory factory = new DefaultServiceBusNamespaceProcessorFactory(
                 this.namespaceProperties, getProcessorPropertiesSupplier());
 
-            factory.addListener((name, subscription) -> {
+            factory.addListener((name, subscription, client) -> {
                 String instrumentationName = name + "/" + subscription == null ? "" : subscription;
                 Instrumentation instrumentation = new ServiceBusProcessorInstrumentation(instrumentationName, CONSUMER, Duration.ofMinutes(2));
                 instrumentation.markUp();

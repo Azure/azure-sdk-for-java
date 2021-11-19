@@ -25,7 +25,7 @@ class DefaultEventHubsNamespaceProducerFactoryTest {
         producerAddedTimes = 0;
         this.producerFactory.addListener(new EventHubsProducerFactory.Listener() {
             @Override
-            public void producerAdded(String name) {
+            public void producerAdded(String name, EventHubProducerAsyncClient client) {
                 producerAddedTimes++;
             }
         });

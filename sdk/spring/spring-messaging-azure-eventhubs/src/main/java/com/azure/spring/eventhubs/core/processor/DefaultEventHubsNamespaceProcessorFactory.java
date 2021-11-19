@@ -75,33 +75,34 @@ public class DefaultEventHubsNamespaceProcessorFactory implements EventHubsProce
 
     @Override
     public void destroy() {
-        this.processorClientMap.values().forEach(EventProcessorClient::stop);
+        this.processorClientMap.forEach((t, client) -> {
+            listeners.forEach(l -> l.processorRemoved(t.getT1(), t.getT2(), client));
+            client.stop();
+        });
         this.processorClientMap.clear();
+        this.listeners.clear();
     }
 
     private EventProcessorClient doCreateProcessor(@NonNull String eventHub, @NonNull String consumerGroup,
                                                    @NonNull EventProcessingListener listener,
                                                    @Nullable ProcessorProperties properties) {
         Tuple2<String, String> key = Tuples.of(eventHub, consumerGroup);
-        if (this.processorClientMap.containsKey(key)) {
-            return this.processorClientMap.get(key);
-        }
+        return processorClientMap.computeIfAbsent(key, k -> {
 
-        ProcessorProperties processorProperties = propertiesMerger.mergeParent(properties, this.namespaceProperties);
-        processorProperties.setEventHubName(eventHub);
-        processorProperties.setConsumerGroup(consumerGroup);
+            ProcessorProperties processorProperties = propertiesMerger.mergeParent(properties, this.namespaceProperties);
+            processorProperties.setEventHubName(k.getT1());
+            processorProperties.setConsumerGroup(k.getT2());
 
-        EventProcessorClientBuilderFactory factory =
-            new EventProcessorClientBuilderFactory(processorProperties, this.checkpointStore, listener);
-        factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_EVENT_HUBS);
-        EventProcessorClient client = factory.build().buildEventProcessorClient();
-        LOGGER.info("EventProcessor created for event hub '{}' with consumer group '{}'", eventHub, consumerGroup);
+            EventProcessorClientBuilderFactory factory =
+                new EventProcessorClientBuilderFactory(processorProperties, this.checkpointStore, listener);
+            factory.setSpringIdentifier(AzureSpringIdentifier.AZURE_SPRING_INTEGRATION_EVENT_HUBS);
+            EventProcessorClient client = factory.build().buildEventProcessorClient();
+            LOGGER.info("EventProcessor created for event hub '{}' with consumer group '{}'", k.getT1(), k.getT2());
 
-        this.listeners.forEach(l -> l.processorAdded(eventHub, consumerGroup));
+            this.listeners.forEach(l -> l.processorAdded(k.getT1(), k.getT2(), client));
 
-        this.processorClientMap.put(key, client);
-
-        return client;
+            return client;
+        });
     }
 
     @Override

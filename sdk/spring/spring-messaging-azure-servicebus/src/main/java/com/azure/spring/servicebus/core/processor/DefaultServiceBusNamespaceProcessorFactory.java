@@ -53,10 +53,10 @@ public class DefaultServiceBusNamespaceProcessorFactory implements ServiceBusPro
         this.propertiesSupplier = supplier == null ? key -> null : supplier;
     }
 
-    private <K, V> void close(Map<Tuple2<String, String>, V> map, Consumer<V> close) {
+    private void close(Map<Tuple2<String, String>, ServiceBusProcessorClient> map, Consumer<ServiceBusProcessorClient> close) {
         map.forEach((t, p) -> {
             try {
-                listeners.forEach(l -> l.processorRemoved(t.getT1(), t.getT2()));
+                listeners.forEach(l -> l.processorRemoved(t.getT1(), t.getT2(), p));
                 close.accept(p);
             } catch (Exception ex) {
                 LOGGER.warn("Failed to clean service bus queue client factory", ex);
@@ -92,12 +92,12 @@ public class DefaultServiceBusNamespaceProcessorFactory implements ServiceBusPro
 
         return processorMap.computeIfAbsent(key, k -> {
             ProcessorProperties processorProperties = propertiesMerger.mergeParent(properties, this.namespaceProperties);
-            processorProperties.setEntityName(name);
-            if (INVALID_SUBSCRIPTION.equals(subscription)) {
+            processorProperties.setEntityName(k.getT1());
+            if (INVALID_SUBSCRIPTION.equals(k.getT2())) {
                 processorProperties.setEntityType(ServiceBusEntityType.QUEUE);
             } else {
                 processorProperties.setEntityType(ServiceBusEntityType.TOPIC);
-                processorProperties.setSubscriptionName(subscription);
+                processorProperties.setSubscriptionName(k.getT2());
             }
 
             ServiceBusProcessorClient client;
@@ -114,8 +114,8 @@ public class DefaultServiceBusNamespaceProcessorFactory implements ServiceBusPro
                 client = factory.build().buildProcessorClient();
             }
 
-            this.listeners.forEach(l -> l.processorAdded(name, INVALID_SUBSCRIPTION.equals(subscription) ? null
-                : subscription));
+            this.listeners.forEach(l -> l.processorAdded(k.getT1(), INVALID_SUBSCRIPTION.equals(k.getT2()) ? null
+                : k.getT2(), client));
             return client;
         });
     }
