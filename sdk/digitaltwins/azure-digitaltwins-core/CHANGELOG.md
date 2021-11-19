@@ -1,6 +1,6 @@
 # Release History
 
-## 1.1.4 (2021-11-18)
+## 1.1.4 (2021-11-19)
 
 ### Other Changes
 #### Dependency updates
