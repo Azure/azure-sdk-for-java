@@ -142,7 +142,7 @@ class AzureServiceBusProcessorClientConfigurationTest {
                 "spring.cloud.azure.servicebus.processor.entity-name=test-topic",
                 "spring.cloud.azure.servicebus.processor.subscription-name=test-sub",
                 "spring.cloud.azure.servicebus.processor.entity-type=topic",
-                "spring.cloud.azure.servicebus.processor.session-aware=true"
+                "spring.cloud.azure.servicebus.processor.session-enabled=true"
             )
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .withBean(MessageProcessingListener.class, TestMessageProcessingListener::new)
@@ -166,7 +166,7 @@ class AzureServiceBusProcessorClientConfigurationTest {
                 "spring.cloud.azure.servicebus.processor.entity-name=test-queue",
                 "spring.cloud.azure.servicebus.processor.entity-type=queue",
                 "spring.cloud.azure.servicebus.processor.connection-string=" + String.format(CONNECTION_STRING, "test-namespace"),
-                "spring.cloud.azure.servicebus.processor.session-aware=true"
+                "spring.cloud.azure.servicebus.processor.session-enabled=true"
             )
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .withBean(MessageProcessingListener.class, TestMessageProcessingListener::new)
