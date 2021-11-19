@@ -12,6 +12,7 @@ import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsExtend
 import com.azure.spring.cloud.stream.binder.eventhubs.properties.EventHubsProducerProperties;
 import com.azure.spring.cloud.stream.binder.eventhubs.provisioning.EventHubsChannelProvisioner;
 import com.azure.spring.eventhubs.core.EventHubsProcessorContainer;
+import com.azure.spring.eventhubs.core.EventHubsTemplate;
 import com.azure.spring.eventhubs.core.producer.DefaultEventHubsNamespaceProducerFactory;
 import com.azure.spring.integration.eventhubs.inbound.EventHubsInboundChannelAdapter;
 import com.azure.spring.integration.instrumentation.InstrumentationManager;
@@ -129,9 +130,10 @@ public class EventHubsBinderHealthIndicatorTest {
         prepareProducerProperties();
         when(producerDestination.getName()).thenReturn(PRODUCER_NAME);
         binder.createProducerMessageHandler(producerDestination, producerProperties, errorChannel);
+        EventHubsTemplate eventHubsTemplate =
+            (EventHubsTemplate) ReflectionTestUtils.getField(binder, "eventHubsTemplate");
         DefaultEventHubsNamespaceProducerFactory producerFactory =
-            (DefaultEventHubsNamespaceProducerFactory) ReflectionTestUtils.getField(binder.getEventHubTemplate(),
-                "producerFactory");
+            (DefaultEventHubsNamespaceProducerFactory) ReflectionTestUtils.getField(eventHubsTemplate, "producerFactory");
         producerFactory.createProducer(PRODUCER_NAME);
         final Health health = healthIndicator.health();
         assertThat(health.getStatus()).isEqualTo(Status.UP);

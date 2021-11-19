@@ -16,6 +16,7 @@ import com.azure.spring.service.servicebus.processor.RecordMessageProcessingList
 import com.azure.spring.service.servicebus.processor.consumer.ErrorContextConsumer;
 import com.azure.spring.service.servicebus.properties.ServiceBusEntityType;
 import com.azure.spring.servicebus.core.ServiceBusProcessorContainer;
+import com.azure.spring.servicebus.core.ServiceBusTemplate;
 import com.azure.spring.servicebus.core.producer.DefaultServiceBusNamespaceProducerFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -92,8 +93,10 @@ public class ServiceBusBinderHealthIndicatorTest {
         prepareProducerProperties();
         when(producerDestination.getName()).thenReturn(ENTITY_NAME);
         binder.createProducerMessageHandler(producerDestination, producerProperties, errorChannel);
+        ServiceBusTemplate serviceBusTemplate = (ServiceBusTemplate) ReflectionTestUtils.getField(binder,
+                "serviceBusTemplate");
         DefaultServiceBusNamespaceProducerFactory producerFactory =
-            (DefaultServiceBusNamespaceProducerFactory) ReflectionTestUtils.getField(binder.getServiceBusTemplate(),
+            (DefaultServiceBusNamespaceProducerFactory) ReflectionTestUtils.getField(serviceBusTemplate,
                 "producerFactory");
         producerFactory.createProducer(ENTITY_NAME);
         final Health health = serviceBusHealthIndicator.health();

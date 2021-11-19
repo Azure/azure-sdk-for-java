@@ -192,7 +192,7 @@ public class EventHubsMessageChannelBinder extends
         };
     }
 
-    protected EventHubsTemplate getEventHubTemplate() {
+    private EventHubsTemplate getEventHubTemplate() {
         if (this.eventHubsTemplate == null) {
             DefaultEventHubsNamespaceProducerFactory factory = new DefaultEventHubsNamespaceProducerFactory(
                 this.namespaceProperties, getProducerPropertiesSupplier());
