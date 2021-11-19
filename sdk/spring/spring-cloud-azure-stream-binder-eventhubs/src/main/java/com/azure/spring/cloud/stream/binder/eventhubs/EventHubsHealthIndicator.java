@@ -3,63 +3,39 @@
 
 package com.azure.spring.cloud.stream.binder.eventhubs;
 
-import com.azure.messaging.eventhubs.EventHubProducerAsyncClient;
-import com.azure.spring.eventhubs.core.producer.EventHubsProducerFactory;
+import com.azure.spring.integration.instrumentation.Instrumentation;
+import com.azure.spring.integration.instrumentation.InstrumentationManager;
+import org.springframework.boot.actuate.health.AbstractHealthIndicator;
 import org.springframework.boot.actuate.health.Health;
-import org.springframework.boot.actuate.health.HealthIndicator;
-
-import java.time.Duration;
-import java.util.Optional;
 
 /**
  * Health indicator for Event Hubs.
  */
-public class EventHubsHealthIndicator implements HealthIndicator {
+public class EventHubsHealthIndicator extends AbstractHealthIndicator {
 
-    private static final int DEFAULT_TIMEOUT = 30;
+    private final InstrumentationManager instrumentationManager;
 
-    private final EventHubsMessageChannelBinder binder;
-
-    private final EventHubsProducerFactory producerFactory;
-
-    private EventHubProducerAsyncClient producerAsyncClient;
-
-    private int timeout = DEFAULT_TIMEOUT;
-
-    public EventHubsHealthIndicator(EventHubsMessageChannelBinder binder, EventHubsProducerFactory producerFactory) {
-        this.binder = binder;
-        this.producerFactory = producerFactory;
-    }
-
-    private synchronized void initProducerClient() {
-        if (this.producerAsyncClient == null) {
-            final Optional<String> eventHubName = binder.getEventHubsInUse().keySet().stream().findFirst();
-            eventHubName.ifPresent(n -> this.producerAsyncClient = producerFactory.createProducer(n));
-        }
+    public EventHubsHealthIndicator(EventHubsMessageChannelBinder binder) {
+        super("Event hubs health check failed");
+        this.instrumentationManager = binder.getInstrumentationManager();
     }
 
     @Override
-    public Health health() {
-        if (binder.getEventHubsInUse().isEmpty()) {
-            return Health.unknown().withDetail("No bindings found",
-                "EventHubs binder may not be bound to destinations on the broker").build();
+    protected void doHealthCheck(Health.Builder builder) {
+        if (instrumentationManager == null || instrumentationManager.getHealthInstrumentations().isEmpty()) {
+            builder.unknown();
+            return;
         }
-
-        try {
-            initProducerClient();
-            synchronized (this.producerAsyncClient) {
-                return producerAsyncClient.getEventHubProperties()
-                                          .map(p -> Health.up().build())
-                                          .block(Duration.ofSeconds(timeout));
-            }
-        } catch (Exception e) {
-            return Health.down(e)
-                         .withDetail("Failed to retrieve event hub information", "")
-                         .build();
+        if (instrumentationManager.getHealthInstrumentations().stream()
+            .allMatch(Instrumentation::isUp)) {
+            builder.up();
+            return;
         }
-    }
-
-    public void setTimeout(int timeout) {
-        this.timeout = timeout;
+        builder.down();
+        instrumentationManager.getHealthInstrumentations().stream()
+            .filter(instrumentation -> instrumentation.isDown())
+            .forEach(instrumentation -> builder
+                .withDetail(instrumentation.getId(),
+                    instrumentation.getException()));
     }
 }
