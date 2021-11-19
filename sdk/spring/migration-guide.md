@@ -181,21 +181,24 @@ For a full list of common configurations, check this list **[placeholder]**.
 
 ### Each SDK configurations
 
-#### spring-cloud-azure-starter-integration-eventhubs(old: azure-spring-cloud-starter-eventhubs)
-- For single bind connection string and checkpoint account settings:
-  > ( ***This part is shared for all eventhub connection and checkpoint settings!***)
-  
-`Notes`: prefix changed from
+#### spring-cloud-azure-starter-integration-eventhubs  
+    (legacy: azure-spring-cloud-starter-eventhubs)
+- As per prefix of `spring.cloud.azure.`  
+
+prefix changed from
 `spring.cloud.azure.eventhub.`
 to
 `spring.cloud.azure.eventhubs.`
+
+Changes for the child entries for this prefix, please refer the following tables: 
 
 |  Legacy | Modern Spring Cloud Azure 4.0
  |:---|:---
 |`checkpoint-storage-account`|`processor.checkpoint-store.account-name`
 |`checkpoint-access-key`|`processor.checkpoint-store.account-key`
 |`checkpoint-container`|`processor.checkpoint-store.container-name`
-for example(single binding), you should change from:
+
+For example, change from:
 ```yaml
 spring:
   cloud:
@@ -220,31 +223,24 @@ spring:
             account-key: [checkpoint-access-key]
 ```
 
-#### spring-cloud-azure-stream-binder-eventhubs(old: azure-spring-cloud-stream-binder-eventhubs)
-- For single bind connection string and checkpoint account settings:
-  [As per above](#azure-spring-cloud-starter-eventhubs)
+#### spring-cloud-azure-stream-binder-eventhubs
+    (legacy: azure-spring-cloud-stream-binder-eventhubs)
+- As per prefix of `spring.cloud.azure.`  
+  [please refer the above section](#azure-spring-cloud-starter-eventhubs)
 
-As per multiple bindings, also update `eventhub` to `eventhubs` in environment section just like the above:
-You should change from:  
+- As per prefix of `spring.cloud.stream.binders.<eventhub-name>.environment.spring.cloud.azure`:  
+prefix change from:  
 `spring.cloud.stream.binders.<eventhub-name>.environment.spring.cloud.azure.eventhub`  
 to:  
 `spring.cloud.stream.binders.<eventhub-name>.environment.spring.cloud.azure.eventhubs`
 
-- For batch consume settings:
-
-   `Note`: the prefix `spring.cloud.stream.bindings.<binding-name>.consumer.` is omitted for simplicity.
-
-|  Legacy | Modern Spring Cloud Azure 4.0
- |:---|:---
-|`batch-mode`|`batch.mode`
-
-- For additional consumer batch settings and checkpoint settings
-
-`Notes`: prefix changed from
+- As per prefix of `spring.cloud.stream.eventhub`:  
+    prefix changed from
     `spring.cloud.stream.eventhub.bindings.<binding-name>.`
     to
     `spring.cloud.stream.eventhubs.bindings.<binding-name>.`
-    
+
+Changes for the child entries for this prefix, please refer the following tables:    
 
 |  Legacy | Modern Spring Cloud Azure 4.0
 |:---|:---
@@ -289,10 +285,13 @@ spring:
 
 ## API breaking changes
 
-### some common changes in `import` section for `azure-spring-cloud-starter-eventhubs` and `azure-spring-cloud-stream-binder-eventhubs`
-You should check and update the dependencies. (IDE's `auto-completion tool` is recommended.)
+### Checkpointing Operation Related Changes
 
-| original dependency name                                  | new dependency name                                                  |
+related artifacts:  
+`spring-cloud-azure-starter-integration-eventhubs(old: azure-spring-cloud-starter-eventhubs)`   
+`spring-cloud-azure-stream-binder-eventhubs(old: azure-spring-cloud-stream-binder-eventhubs)`
+
+| legacy API name                                  | new dependency name                                                  |
 | ------------------------------------------------------- | ------------------------------------------------------------ |
 | com.azure.spring.integration.core.EventHubsHeaders | com.azure.spring.eventhubs.support.EventHubsHeaders |
 | com.azure.spring.integration.core.api.reactor.Checkpointer | com.azure.spring.messaging.checkpoint.Checkpointer |
