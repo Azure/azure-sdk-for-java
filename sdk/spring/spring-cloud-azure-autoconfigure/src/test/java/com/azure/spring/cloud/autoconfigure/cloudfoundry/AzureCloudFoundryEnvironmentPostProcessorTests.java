@@ -40,10 +40,12 @@ class AzureCloudFoundryEnvironmentPostProcessorTests {
         this.contextRunner
             .withSystemProperties("VCAP_SERVICES=" + vcapFileContents)
             .run(context -> {
-                assertServiceBus(context);
-                assertStorage(context);
+                assertThat(context).hasSingleBean(AzureProperties.class);
+                AzureProperties azureProperties = context.getBean(AzureProperties.class);
+                assertServiceBus(azureProperties.getServicebus());
+                assertStorage(azureProperties.getStorage().getBlob());
+                assertEventhub(azureProperties.getEventhubs());
                 assertRedis(context);
-                assertEventhub(context);
             });
     }
 
@@ -54,14 +56,12 @@ class AzureCloudFoundryEnvironmentPostProcessorTests {
         assertThat(redisProperties.getPort()).isEqualTo(6379);
     }
 
-    private void assertStorage(AssertableApplicationContext context) {
-        AzureStorageBlobProperties storageProperties = context.getBean(AzureStorageBlobProperties.class);
+    private void assertStorage(AzureStorageBlobProperties storageProperties) {
         assertThat(storageProperties.getAccountName()).isEqualTo("fake");
         assertThat(storageProperties.getAccountKey()).isEqualTo("fakekey==");
     }
 
-    private void assertEventhub(AssertableApplicationContext context) {
-        AzureEventHubsProperties eventHubProperties = context.getBean(AzureEventHubsProperties.class);
+    private void assertEventhub(AzureEventHubsProperties eventHubProperties) {
         assertThat(eventHubProperties.getProcessor().getCheckpointStore().getAccountName()).isEqualTo("fake");
         assertThat(eventHubProperties.getProcessor().getCheckpointStore().getAccountKey()).isEqualTo("fakekey==");
         assertThat(eventHubProperties.getConnectionString()).isEqualTo(
@@ -69,8 +69,7 @@ class AzureCloudFoundryEnvironmentPostProcessorTests {
                 + "SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=fakelongstring=");
     }
 
-    private void assertServiceBus(AssertableApplicationContext context) {
-        AzureServiceBusProperties serviceBusProperties = context.getBean(AzureServiceBusProperties.class);
+    private void assertServiceBus(AzureServiceBusProperties serviceBusProperties) {
         assertThat(serviceBusProperties.getConnectionString()).isEqualTo(
             "Endpoint=sb://fake.servicebus.windows.net/;"
                 + "SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=fakekey=");
@@ -80,22 +79,36 @@ class AzureCloudFoundryEnvironmentPostProcessorTests {
     @Configuration
     static class AzureCfEnvPPTestConfiguration {
 
-        @ConfigurationProperties(prefix = AzureServiceBusProperties.PREFIX)
         @Bean
-        AzureServiceBusProperties azureServiceBusProperties() {
-            return new AzureServiceBusProperties();
+        AzureProperties azureProperties() {
+            return new AzureProperties();
+        }
+    }
+
+    @ConfigurationProperties(prefix = "spring.cloud.azure")
+    static class AzureProperties {
+        private final AzureServiceBusProperties servicebus = new AzureServiceBusProperties();
+        private final AzureEventHubsProperties eventhubs = new AzureEventHubsProperties();
+        private final Storage storage = new Storage();
+
+        static class Storage {
+            private final AzureStorageBlobProperties blob = new AzureStorageBlobProperties();
+
+            public AzureStorageBlobProperties getBlob() {
+                return blob;
+            }
         }
 
-        @ConfigurationProperties(prefix = AzureEventHubsProperties.PREFIX)
-        @Bean
-        AzureEventHubsProperties azureEventHubsProperties() {
-            return new AzureEventHubsProperties();
+        public AzureServiceBusProperties getServicebus() {
+            return servicebus;
         }
 
-        @ConfigurationProperties(prefix = AzureStorageBlobProperties.PREFIX)
-        @Bean
-        AzureStorageBlobProperties azureStorageBlobProperties() {
-            return new AzureStorageBlobProperties();
+        public AzureEventHubsProperties getEventhubs() {
+            return eventhubs;
+        }
+
+        public Storage getStorage() {
+            return storage;
         }
     }
 }

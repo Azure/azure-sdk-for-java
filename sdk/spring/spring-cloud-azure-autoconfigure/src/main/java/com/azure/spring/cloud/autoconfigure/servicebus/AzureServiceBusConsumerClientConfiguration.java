@@ -34,7 +34,7 @@ import org.springframework.util.StringUtils;
 class AzureServiceBusConsumerClientConfiguration {
 
     @Configuration(proxyBeanMethods = false)
-    @ConditionalOnProperty(value = "spring.cloud.azure.servicebus.consumer.session-aware", havingValue = "false",
+    @ConditionalOnProperty(value = "spring.cloud.azure.servicebus.consumer.session-enabled", havingValue = "false",
         matchIfMissing = true)
     @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.servicebus", name = { "entity-type", "consumer.entity-type" })
     static class NoneSessionConsumerClientConfiguration {
@@ -80,7 +80,7 @@ class AzureServiceBusConsumerClientConfiguration {
     }
 
     @Configuration(proxyBeanMethods = false)
-    @ConditionalOnProperty(value = "spring.cloud.azure.servicebus.consumer.session-aware", havingValue = "true")
+    @ConditionalOnProperty(value = "spring.cloud.azure.servicebus.consumer.session-enabled", havingValue = "true")
     @ConditionalOnAnyProperty(prefix = "spring.cloud.azure.servicebus", name = { "entity-type", "consumer.entity-type" })
     static class SessionConsumerClientConfiguration {
 

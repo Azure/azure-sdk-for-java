@@ -140,7 +140,7 @@ class AzureServiceBusConsumerClientConfigurationTest {
             .withPropertyValues(
                 "spring.cloud.azure.servicebus.entity-name=test-queue",
                 "spring.cloud.azure.servicebus.entity-type=queue",
-                "spring.cloud.azure.servicebus.consumer.session-aware=true"
+                "spring.cloud.azure.servicebus.consumer.session-enabled=true"
             )
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .withBean(ServiceBusClientBuilder.class, () -> serviceBusClientBuilder)
@@ -160,7 +160,7 @@ class AzureServiceBusConsumerClientConfigurationTest {
                 "spring.cloud.azure.servicebus.consumer.entity-name=test-queue",
                 "spring.cloud.azure.servicebus.consumer.entity-type=queue",
                 "spring.cloud.azure.servicebus.consumer.connection-string=" + String.format(CONNECTION_STRING, "test-namespace"),
-                "spring.cloud.azure.servicebus.consumer.session-aware=true"
+                "spring.cloud.azure.servicebus.consumer.session-enabled=true"
             )
             .withUserConfiguration(AzureServiceBusPropertiesTestConfiguration.class)
             .run(context -> {
