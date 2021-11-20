@@ -423,7 +423,8 @@ public class CosmosTracerTest extends TestSuiteBase {
 
         Mockito.doAnswer(tracerProviderCapture).when(tracerProvider).startSpan(ArgumentMatchers.any(),
             ArgumentMatchers.any(),
-            ArgumentMatchers.any(), ArgumentMatchers.any());
+            ArgumentMatchers.any(),
+            ArgumentMatchers.any());
         Mockito.doAnswer(addEventCapture).when(tracerProvider).addEvent(ArgumentMatchers.any(),
             ArgumentMatchers.any(),
             ArgumentMatchers.any(),
@@ -675,7 +676,7 @@ public class CosmosTracerTest extends TestSuiteBase {
     }
 
     private class TracerProviderCapture implements Answer<Context> {
-        private Context result = null;
+        private Context result = Context.NONE;
 
         public Context getResult() {
             return result;
