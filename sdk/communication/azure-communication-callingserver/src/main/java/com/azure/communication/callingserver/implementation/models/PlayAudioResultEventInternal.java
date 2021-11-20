@@ -14,8 +14,8 @@ public final class PlayAudioResultEventInternal {
     /*
      * The result details.
      */
-    @JsonProperty(value = "resultInfo")
-    private CallingOperationResultDetailsInternal resultInfo;
+    @JsonProperty(value = "resultDetails")
+    private CallingOperationResultDetailsInternal resultDetails;
 
     /*
      * The operation context.
@@ -30,22 +30,22 @@ public final class PlayAudioResultEventInternal {
     private CallingOperationStatus status;
 
     /**
-     * Get the resultInfo property: The result details.
+     * Get the resultDetails property: The result details.
      *
-     * @return the resultInfo value.
+     * @return the resultDetails value.
      */
-    public CallingOperationResultDetailsInternal getResultInfo() {
-        return this.resultInfo;
+    public CallingOperationResultDetailsInternal getResultDetails() {
+        return this.resultDetails;
     }
 
     /**
-     * Set the resultInfo property: The result details.
+     * Set the resultDetails property: The result details.
      *
-     * @param resultInfo the resultInfo value to set.
+     * @param resultDetails the resultDetails value to set.
      * @return the PlayAudioResultEventInternal object itself.
      */
-    public PlayAudioResultEventInternal setResultInfo(CallingOperationResultDetailsInternal resultInfo) {
-        this.resultInfo = resultInfo;
+    public PlayAudioResultEventInternal setResultDetails(CallingOperationResultDetailsInternal resultDetails) {
+        this.resultDetails = resultDetails;
         return this;
     }
 

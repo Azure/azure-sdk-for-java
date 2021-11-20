@@ -18,7 +18,6 @@ import java.nio.file.StandardOpenOption;
 import java.security.InvalidParameterException;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -193,9 +192,6 @@ public final class CallingServerAsyncClient {
         List<CommunicationIdentifier> targets,
         CreateCallOptions createCallOptions) {
         try {
-            Objects.requireNonNull(source, "'source' cannot be null.");
-            Objects.requireNonNull(targets, "'targets' cannot be null.");
-            Objects.requireNonNull(createCallOptions, "'createCallOptions' cannot be null.");
             CreateCallRequest request = CallConnectionRequestConverter.convert(source, targets, createCallOptions);
             return callConnectionInternal.createCallAsync(request)
                 .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
@@ -211,9 +207,6 @@ public final class CallingServerAsyncClient {
         CreateCallOptions createCallOptions,
         Context context) {
         try {
-            Objects.requireNonNull(source, "'source' cannot be null.");
-            Objects.requireNonNull(targets, "'targets' cannot be null.");
-            Objects.requireNonNull(createCallOptions, "'CreateCallOptions' cannot be null.");
             CreateCallRequest request = CallConnectionRequestConverter.convert(source, targets, createCallOptions);
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
@@ -283,8 +276,6 @@ public final class CallingServerAsyncClient {
         CommunicationIdentifier source,
         JoinCallOptions joinCallOptions) {
         try {
-            Objects.requireNonNull(source, "'source' cannot be null.");
-            Objects.requireNonNull(joinCallOptions, "'joinCallOptions' cannot be null.");
             return serverCallInternal
                 .joinCallAsync(JoinCallRequestConverter.convert(callLocator, source, joinCallOptions))
                 .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
@@ -302,9 +293,6 @@ public final class CallingServerAsyncClient {
         JoinCallOptions joinCallOptions,
         Context context) {
         try {
-            Objects.requireNonNull(source, "'source' cannot be null.");
-            Objects.requireNonNull(joinCallOptions, "'joinCallOptions' cannot be null.");
-
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return serverCallInternal
@@ -373,7 +361,6 @@ public final class CallingServerAsyncClient {
         String incomingCallContext,
         AnswerCallOptions answerCallOptions) {
         try {
-            Objects.requireNonNull(incomingCallContext, "'incomingCallContext' cannot be null.");
             return serverCallInternal
                 .answerCallAsync(AnswerCallRequestConverter.convert(incomingCallContext, answerCallOptions))
                 .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
@@ -390,8 +377,6 @@ public final class CallingServerAsyncClient {
         AnswerCallOptions answerCallOptions,
         Context context) {
         try {
-            Objects.requireNonNull(incomingCallContext, "'incomingCallContext' cannot be null.");
-
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return serverCallInternal
@@ -416,12 +401,10 @@ public final class CallingServerAsyncClient {
      * @return CallConnection object.
      */
     public CallConnectionAsync getCallConnection(String callConnectionId) {
-        Objects.requireNonNull(callConnectionId, "'callConnectionId' cannot be null.");
         return new CallConnectionAsync(callConnectionId, callConnectionInternal);
     }
 
     CallConnection getCallConnectionInternal(String callConnectionId) {
-        Objects.requireNonNull(callConnectionId, "'callConnectionId' cannot be null.");
         return new CallConnection(new CallConnectionAsync(callConnectionId, callConnectionInternal));
     }
 
@@ -498,8 +481,6 @@ public final class CallingServerAsyncClient {
         String operationContext,
         Context context) {
         try {
-            Objects.requireNonNull(participant, "'participant' cannot be null.");
-
             AddParticipantWithCallLocatorRequest requestWithCallLocator = new AddParticipantWithCallLocatorRequest()
                 .setCallLocator(CallLocatorConverter.convert(callLocator))
                 .setParticipant(CommunicationIdentifierConverter.convert(participant))
@@ -588,14 +569,13 @@ public final class CallingServerAsyncClient {
      * @return Response for a successful get participant request.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<List<CallParticipant>> getParticipant(CallLocator callLocator, CommunicationIdentifier participant) {
+    public Mono<CallParticipant> getParticipant(CallLocator callLocator, CommunicationIdentifier participant) {
         try {
             GetParticipantWithCallLocatorRequest requestWithCallLocator = getGetParticipantWithCallLocatorRequest(callLocator, participant);
 
             return serverCallInternal.getParticipantAsync(requestWithCallLocator)
                 .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
-                .flatMap(result -> Mono.just(
-                    result.stream().map(CallParticipantConverter::convert).collect(Collectors.toList())));
+                .flatMap(result -> Mono.just(CallParticipantConverter.convert(result)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -619,11 +599,11 @@ public final class CallingServerAsyncClient {
      * @return Response for a successful get participant request.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<Response<List<CallParticipant>>> getParticipantWithResponse(CallLocator callLocator, CommunicationIdentifier participant) {
+    public Mono<Response<CallParticipant>> getParticipantWithResponse(CallLocator callLocator, CommunicationIdentifier participant) {
         return getParticipantWithResponse(callLocator, participant, Context.NONE);
     }
 
-    Mono<Response<List<CallParticipant>>> getParticipantWithResponse(CallLocator callLocator, CommunicationIdentifier participant, Context context) {
+    Mono<Response<CallParticipant>> getParticipantWithResponse(CallLocator callLocator, CommunicationIdentifier participant, Context context) {
         try {
             GetParticipantWithCallLocatorRequest requestWithCallLocator = getGetParticipantWithCallLocatorRequest(callLocator, participant);
 
@@ -632,12 +612,7 @@ public final class CallingServerAsyncClient {
                 return serverCallInternal.getParticipantWithResponseAsync(requestWithCallLocator, contextValue)
                     .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
                     .map(response ->
-                        new SimpleResponse<>(response,
-                            response.getValue()
-                            .stream()
-                            .map(CallParticipantConverter::convert)
-                            .collect(Collectors.toList()
-                        )
+                        new SimpleResponse<>(response, CallParticipantConverter.convert(response.getValue())
                     )
                 );
             });
@@ -718,7 +693,6 @@ public final class CallingServerAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<StartCallRecordingResult> startRecording(CallLocator callLocator, URI recordingStateCallbackUri) {
         try {
-            Objects.requireNonNull(recordingStateCallbackUri, "'recordingStateCallbackUri' cannot be null.");
             if (!Boolean.TRUE.equals(recordingStateCallbackUri.isAbsolute())) {
                 throw logger.logExceptionAsError(new InvalidParameterException("'recordingStateCallbackUri' has to be an absolute Uri"));
             }
@@ -760,7 +734,6 @@ public final class CallingServerAsyncClient {
         StartRecordingOptions startRecordingOptions,
         Context context) {
         try {
-            Objects.requireNonNull(recordingStateCallbackUri, "'recordingStateCallbackUri' cannot be null.");
             if (!Boolean.TRUE.equals(recordingStateCallbackUri.isAbsolute())) {
                 throw logger.logExceptionAsError(new InvalidParameterException("'recordingStateCallbackUri' has to be an absolute Uri"));
             }
@@ -1065,7 +1038,6 @@ public final class CallingServerAsyncClient {
         OutputStream destinationStream,
         HttpRange httpRange,
         Context context) {
-
         return contentDownloader.downloadToStreamWithResponse(sourceEndpoint, destinationStream, httpRange, context);
     }
 
@@ -1075,9 +1047,6 @@ public final class CallingServerAsyncClient {
         ParallelDownloadOptions parallelDownloadOptions,
         boolean overwrite,
         Context context) {
-        Objects.requireNonNull(sourceEndpoint, "'sourceEndpoint' cannot be null");
-        Objects.requireNonNull(destinationPath, "'destinationPath' cannot be null");
-
         Set<OpenOption> openOptions = new HashSet<>();
 
         if (overwrite) {
@@ -1131,9 +1100,6 @@ public final class CallingServerAsyncClient {
 
     Mono<PlayAudioResult> playAudioInternal(CallLocator callLocator, URI audioFileUri, PlayAudioOptions playAudioOptions, Context context) {
         try {
-            Objects.requireNonNull(callLocator, "'callLocator' cannot be null.");
-            Objects.requireNonNull(audioFileUri, "'audioFileUri' cannot be null.");
-
             PlayAudioWithCallLocatorRequest requestWithCallLocator = getPlayAudioWithCallLocatorRequest(callLocator, audioFileUri,
                     playAudioOptions);
 
@@ -1171,9 +1137,6 @@ public final class CallingServerAsyncClient {
         PlayAudioOptions playAudioOptions,
         Context context) {
         try {
-            Objects.requireNonNull(callLocator, "'callLocator' cannot be null.");
-            Objects.requireNonNull(audioFileUri, "'audioFileUri' cannot be null.");
-
             PlayAudioWithCallLocatorRequest requestWithCallLocator = getPlayAudioWithCallLocatorRequest(callLocator, audioFileUri,
                     playAudioOptions);
 
@@ -1193,7 +1156,6 @@ public final class CallingServerAsyncClient {
 
     private PlayAudioWithCallLocatorRequest getPlayAudioWithCallLocatorRequest(CallLocator callLocator, URI audioFileUri,
                                                                                PlayAudioOptions playAudioOptions) {
-
         PlayAudioWithCallLocatorRequest requestWithCallLocator = new PlayAudioWithCallLocatorRequest()
             .setCallLocator(CallLocatorConverter.convert(callLocator))
             .setAudioFileUri(audioFileUri.toString());
@@ -1261,9 +1223,6 @@ public final class CallingServerAsyncClient {
         String mediaOperationId,
         Context context) {
         try {
-            Objects.requireNonNull(callLocator, "'callLocator' cannot be null.");
-            Objects.requireNonNull(mediaOperationId, "'mediaOperationId' cannot be null.");
-
             CancelMediaOperationWithCallLocatorRequest requestWithCallLocator = new CancelMediaOperationWithCallLocatorRequest()
                 .setCallLocator(CallLocatorConverter.convert(callLocator))
                 .setMediaOperationId(mediaOperationId);
@@ -1324,7 +1283,6 @@ public final class CallingServerAsyncClient {
         String mediaOperationId,
         Context context) {
         try {
-
             CancelParticipantMediaOperationWithCallLocatorRequest requestWithCallLocator = new CancelParticipantMediaOperationWithCallLocatorRequest()
                 .setCallLocator(CallLocatorConverter.convert(callLocator))
                 .setIdentifier(CommunicationIdentifierConverter.convert(participant))
@@ -1363,10 +1321,6 @@ public final class CallingServerAsyncClient {
     Mono<PlayAudioResult> playAudioToParticipantInternal(CallLocator callLocator, CommunicationIdentifier participant, URI audioFileUri,
             PlayAudioOptions playAudioOptions, Context context) {
         try {
-            Objects.requireNonNull(callLocator, "'callLocator' cannot be null.");
-            Objects.requireNonNull(participant, "'participant' cannot be null.");
-            Objects.requireNonNull(audioFileUri, "'audioFileUri' cannot be null.");
-
             PlayAudioToParticipantWithCallLocatorRequest requestWithCallLocator = new PlayAudioToParticipantWithCallLocatorRequest()
                 .setCallLocator(CallLocatorConverter.convert(callLocator))
                 .setIdentifier(CommunicationIdentifierConverter.convert(participant))
@@ -1417,10 +1371,6 @@ public final class CallingServerAsyncClient {
         PlayAudioOptions playAudioOptions,
         Context context) {
         try {
-            Objects.requireNonNull(callLocator, "'callLocator' cannot be null.");
-            Objects.requireNonNull(participant, "'participant' cannot be null.");
-            Objects.requireNonNull(audioFileUri, "'audioFileUri' cannot be null.");
-
             PlayAudioToParticipantWithCallLocatorRequest requestWithCallLocator = new PlayAudioToParticipantWithCallLocatorRequest()
                 .setCallLocator(CallLocatorConverter.convert(callLocator))
                 .setIdentifier(CommunicationIdentifierConverter.convert(participant))
@@ -1452,18 +1402,16 @@ public final class CallingServerAsyncClient {
      * Redirect the call.
      *
      * @param incomingCallContext the incomingCallContext value to set.
-     * @param targets the targets value to set.
-     * @param callbackUri the callbackUrl value to set.
-     * @param timeoutInSeconds the timeout value to set.
+     * @param target the target value to set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> redirectCall(String incomingCallContext, List<CommunicationIdentifier> targets, URI callbackUri, Integer timeoutInSeconds) {
+    public Mono<Void> redirectCall(String incomingCallContext, CommunicationIdentifier target) {
         try {
-            RedirectCallRequest request = getRedirectCallRequest(incomingCallContext, targets, callbackUri, timeoutInSeconds);
+            RedirectCallRequest request = getRedirectCallRequest(incomingCallContext, target);
 
             return serverCallInternal.redirectCallAsync(request)
             .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
@@ -1472,18 +1420,10 @@ public final class CallingServerAsyncClient {
         }
     }
 
-    private RedirectCallRequest getRedirectCallRequest(String incomingCallContext, List<CommunicationIdentifier> targets,
-            URI callbackUri, Integer timeoutInSeconds) {
-        Objects.requireNonNull(incomingCallContext, "'redirectCallRequest' cannot be null.");
-        Objects.requireNonNull(targets, "'targets' cannot be null.");
+    private RedirectCallRequest getRedirectCallRequest(String incomingCallContext, CommunicationIdentifier target) {
         RedirectCallRequest request = new RedirectCallRequest()
-            .setCallbackUri(callbackUri.toString())
             .setIncomingCallContext(incomingCallContext)
-            .setTimeoutInSeconds(timeoutInSeconds)
-            .setTargets(targets
-                .stream()
-                .map(CommunicationIdentifierConverter::convert)
-                .collect(Collectors.toList()));
+            .setTarget(CommunicationIdentifierConverter.convert(target));
         return request;
     }
 
@@ -1491,22 +1431,20 @@ public final class CallingServerAsyncClient {
      * Redirect the call.
      *
      * @param incomingCallContext the incomingCallContext value to set.
-     * @param targets the targets value to set.
-     * @param callbackUri the callbackUrl value to set.
-     * @param timeoutInSeconds the timeout value to set.
+     * @param target the target value to set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> redirectCallWithResponse(String incomingCallContext, List<CommunicationIdentifier> targets, URI callbackUri, Integer timeoutInSeconds) {
-        return redirectCallWithResponseInternal(incomingCallContext, targets, callbackUri, timeoutInSeconds, Context.NONE);
+    public Mono<Response<Void>> redirectCallWithResponse(String incomingCallContext, CommunicationIdentifier target) {
+        return redirectCallWithResponseInternal(incomingCallContext, target, Context.NONE);
     }
 
-    Mono<Response<Void>> redirectCallWithResponseInternal(String incomingCallContext, List<CommunicationIdentifier> targets, URI callbackUri, Integer timeoutInSeconds, Context context) {
+    Mono<Response<Void>> redirectCallWithResponseInternal(String incomingCallContext, CommunicationIdentifier target, Context context) {
         try {
-            RedirectCallRequest request = getRedirectCallRequest(incomingCallContext, targets, callbackUri, timeoutInSeconds);
+            RedirectCallRequest request = getRedirectCallRequest(incomingCallContext, target);
             return serverCallInternal.redirectCallWithResponseAsync(request, context)
             .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
         } catch (RuntimeException ex) {
@@ -1518,7 +1456,6 @@ public final class CallingServerAsyncClient {
      * Reject the call.
      *
      * @param incomingCallContext the incomingCallContext value to set.
-     * @param callbackUri the callbackUrl value to set.
      * @param rejectReason the call reject reason value to set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1526,9 +1463,9 @@ public final class CallingServerAsyncClient {
      * @return the completion.
     */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> rejectCall(String incomingCallContext, URI callbackUri, CallRejectReason rejectReason) {
+    public Mono<Void> rejectCall(String incomingCallContext, CallRejectReason rejectReason) {
         try {
-            RejectCallRequest request = getRejectCallRequest(incomingCallContext, callbackUri, rejectReason);
+            RejectCallRequest request = getRejectCallRequest(incomingCallContext, rejectReason);
 
             return serverCallInternal.rejectCallAsync(request)
             .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
@@ -1537,10 +1474,8 @@ public final class CallingServerAsyncClient {
         }
     }
 
-    private RejectCallRequest getRejectCallRequest(String incomingCallContext, URI callbackUri, CallRejectReason rejectReason) {
-        Objects.requireNonNull(incomingCallContext, "'redirectCallRequest' cannot be null.");
+    private RejectCallRequest getRejectCallRequest(String incomingCallContext, CallRejectReason rejectReason) {
         RejectCallRequest request = new RejectCallRequest()
-            .setCallbackUri(callbackUri.toString())
             .setIncomingCallContext(incomingCallContext)
             .setCallRejectReason(rejectReason);
         return request;
@@ -1550,7 +1485,6 @@ public final class CallingServerAsyncClient {
      * Reject the call.
      *
      * @param incomingCallContext the incomingCallContext value to set.
-     * @param callbackUri the callbackUrl value to set.
      * @param rejectReason the call reject reason value to set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1558,13 +1492,13 @@ public final class CallingServerAsyncClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> rejectCallWithResponse(String incomingCallContext, URI callbackUri, CallRejectReason rejectReason) {
-        return rejectCallWithResponseInternal(incomingCallContext, callbackUri, rejectReason, Context.NONE);
+    public Mono<Response<Void>> rejectCallWithResponse(String incomingCallContext, CallRejectReason rejectReason) {
+        return rejectCallWithResponseInternal(incomingCallContext, rejectReason, Context.NONE);
     }
 
-    Mono<Response<Void>> rejectCallWithResponseInternal(String incomingCallContext, URI callbackUri, CallRejectReason rejectReason, Context context) {
+    Mono<Response<Void>> rejectCallWithResponseInternal(String incomingCallContext, CallRejectReason rejectReason, Context context) {
         try {
-            RejectCallRequest request = getRejectCallRequest(incomingCallContext, callbackUri, rejectReason);
+            RejectCallRequest request = getRejectCallRequest(incomingCallContext, rejectReason);
             return serverCallInternal.rejectCallWithResponseAsync(request, context)
             .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
         } catch (RuntimeException ex) {

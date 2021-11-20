@@ -23,6 +23,6 @@ public final class PlayAudioResultConverter {
             playAudioResultInternal.getOperationId(),
             playAudioResultInternal.getStatus(),
             playAudioResultInternal.getOperationContext(),
-            ResultInfoConverter.convert(playAudioResultInternal.getResultInfo()));
+            ResultDetailsConverter.convert(playAudioResultInternal.getResultDetails()));
     }
 }

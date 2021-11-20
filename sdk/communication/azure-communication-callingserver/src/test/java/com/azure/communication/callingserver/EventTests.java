@@ -68,7 +68,7 @@ public class EventTests {
             new AddParticipantResultEventInternal()
                 .setOperationContext(operationContext)
                 .setStatus(CallingOperationStatus.COMPLETED)
-                .setResultInfo(new CallingOperationResultDetailsInternal().setCode(100).setSubcode(200).setMessage(message));
+                .setResultDetails(new CallingOperationResultDetailsInternal().setCode(100).setSubcode(200).setMessage(message));
 
         BinaryData binaryData = getBinaryData(internalEvent);
         AddParticipantResultEvent event =
@@ -77,10 +77,10 @@ public class EventTests {
         assertNotNull(event);
         assertEquals(event.getOperationContext(), operationContext);
         assertEquals(event.getStatus(), CallingOperationStatus.COMPLETED);
-        assertNotNull(event.getResultInfo());
-        assertEquals(event.getResultInfo().getCode(), 100);
-        assertEquals(event.getResultInfo().getSubcode(), 200);
-        assertEquals(event.getResultInfo().getMessage(), message);
+        assertNotNull(event.getResultDetails());
+        assertEquals(event.getResultDetails().getCode(), 100);
+        assertEquals(event.getResultDetails().getSubcode(), 200);
+        assertEquals(event.getResultDetails().getMessage(), message);
     }
 
     @Test
@@ -91,7 +91,7 @@ public class EventTests {
             new TransferCallResultEventInternal()
                 .setOperationContext(operationContext)
                 .setStatus(CallingOperationStatus.COMPLETED)
-                .setResultInfo(new CallingOperationResultDetailsInternal().setCode(100).setSubcode(200).setMessage(message));
+                .setResultDetails(new CallingOperationResultDetailsInternal().setCode(100).setSubcode(200).setMessage(message));
 
         BinaryData binaryData = getBinaryData(internalEvent);
         TransferCallResultEvent event =
@@ -100,10 +100,10 @@ public class EventTests {
         assertNotNull(event);
         assertEquals(event.getOperationContext(), operationContext);
         assertEquals(event.getStatus(), CallingOperationStatus.COMPLETED);
-        assertNotNull(event.getResultInfo());
-        assertEquals(event.getResultInfo().getCode(), 100);
-        assertEquals(event.getResultInfo().getSubcode(), 200);
-        assertEquals(event.getResultInfo().getMessage(), message);
+        assertNotNull(event.getResultDetails());
+        assertEquals(event.getResultDetails().getCode(), 100);
+        assertEquals(event.getResultDetails().getSubcode(), 200);
+        assertEquals(event.getResultDetails().getMessage(), message);
     }
 
     @Test
@@ -136,7 +136,7 @@ public class EventTests {
             new PlayAudioResultEventInternal()
                 .setOperationContext(operationContext)
                 .setStatus(CallingOperationStatus.COMPLETED)
-                .setResultInfo(new CallingOperationResultDetailsInternal().setCode(100).setSubcode(200).setMessage(message));
+                .setResultDetails(new CallingOperationResultDetailsInternal().setCode(100).setSubcode(200).setMessage(message));
 
         BinaryData binaryData = getBinaryData(internalEvent);
         PlayAudioResultEvent event =
@@ -145,10 +145,10 @@ public class EventTests {
         assertNotNull(event);
         assertEquals(event.getOperationContext(), operationContext);
         assertEquals(event.getStatus(), CallingOperationStatus.COMPLETED);
-        assertNotNull(event.getResultInfo());
-        assertEquals(event.getResultInfo().getCode(), 100);
-        assertEquals(event.getResultInfo().getSubcode(), 200);
-        assertEquals(event.getResultInfo().getMessage(), message);
+        assertNotNull(event.getResultDetails());
+        assertEquals(event.getResultDetails().getCode(), 100);
+        assertEquals(event.getResultDetails().getSubcode(), 200);
+        assertEquals(event.getResultDetails().getMessage(), message);
     }
 
     @Test

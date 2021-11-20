@@ -188,8 +188,7 @@ public class CallConnectionAsyncUnitTests {
         AddParticipantResult addParticipantResult = callConnectionAsync.addParticipant(
             user,
             "alternateCallerId",
-            OPERATION_CONTEXT,
-            CALLBACK_URI
+            OPERATION_CONTEXT
         ).block();
         assertEquals(user.getId(), addParticipantResult.getParticipantId());
     }
@@ -206,8 +205,7 @@ public class CallConnectionAsyncUnitTests {
         Response<AddParticipantResult> addParticipantResultResponse = callConnectionAsync.addParticipantWithResponse(
             user,
             "alternateCallerId",
-            OPERATION_CONTEXT,
-            CALLBACK_URI
+            OPERATION_CONTEXT
         ).block();
         assertEquals(202, addParticipantResultResponse.getStatusCode());
         AddParticipantResult addParticipantResult = addParticipantResultResponse.getValue();
@@ -362,12 +360,11 @@ public class CallConnectionAsyncUnitTests {
                 new SimpleEntry<String, Integer>(generateGetParticipantResult(), 200)
             )));
 
-        List<CallParticipant> getParticipantResult = callConnectionAsync.getParticipant(COMMUNICATION_USER).block();
+        CallParticipant getParticipantResult = callConnectionAsync.getParticipant(COMMUNICATION_USER).block();
 
-        assertEquals(1, getParticipantResult.size());
-        assertEquals(NEW_PARTICIPANT_ID, getParticipantResult.get(0).getParticipantId());
-        assertEquals(COMMUNICATION_USER, getParticipantResult.get(0).getIdentifier());
-        assertEquals(true, getParticipantResult.get(0).isMuted());
+        assertEquals(NEW_PARTICIPANT_ID, getParticipantResult.getParticipantId());
+        assertEquals(COMMUNICATION_USER, getParticipantResult.getIdentifier());
+        assertEquals(true, getParticipantResult.isMuted());
     }
 
     @Test
@@ -378,16 +375,15 @@ public class CallConnectionAsyncUnitTests {
                 new SimpleEntry<String, Integer>(generateGetParticipantResult(), 200)
             )));
 
-        Response<List<CallParticipant>> getParticipantResultResponse = callConnectionAsync.getParticipantWithResponse(
+        Response<CallParticipant> getParticipantResultResponse = callConnectionAsync.getParticipantWithResponse(
             COMMUNICATION_USER
         ).block();
 
         assertEquals(200, getParticipantResultResponse.getStatusCode());
-        List<CallParticipant> getParticipantResult = getParticipantResultResponse.getValue();
-        assertEquals(1, getParticipantResult.size());
-        assertEquals(NEW_PARTICIPANT_ID, getParticipantResult.get(0).getParticipantId());
-        assertEquals(COMMUNICATION_USER, getParticipantResult.get(0).getIdentifier());
-        assertEquals(true, getParticipantResult.get(0).isMuted());
+        CallParticipant getParticipantResult = getParticipantResultResponse.getValue();
+        assertEquals(NEW_PARTICIPANT_ID, getParticipantResult.getParticipantId());
+        assertEquals(COMMUNICATION_USER, getParticipantResult.getIdentifier());
+        assertEquals(true, getParticipantResult.isMuted());
     }
 
     @Test

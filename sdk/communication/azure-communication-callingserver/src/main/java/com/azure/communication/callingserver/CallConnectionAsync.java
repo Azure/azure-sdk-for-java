@@ -8,7 +8,6 @@ import static com.azure.core.util.FluxUtil.withContext;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 import com.azure.communication.callingserver.implementation.CallConnectionsImpl;
@@ -97,14 +96,12 @@ public final class CallConnectionAsync {
 
     Mono<PlayAudioResult> playAudioInternal(URI audioFileUri, PlayAudioOptions playAudioOptions) {
         try {
-            Objects.requireNonNull(audioFileUri, "'audioFileUri' cannot be null.");
             PlayAudioRequest request = new PlayAudioRequest().setAudioFileUri(audioFileUri.toString());
             if (playAudioOptions != null) {
                 request
                     .setLoop(playAudioOptions.isLoop())
                     .setOperationContext(playAudioOptions.getOperationContext())
-                    .setAudioFileId(playAudioOptions.getAudioFileId())
-                    .setCallbackUri(playAudioOptions.getCallbackUri().toString());
+                    .setAudioFileId(playAudioOptions.getAudioFileId());
             }
             return playAudioInternal(request);
         } catch (RuntimeException ex) {
@@ -145,14 +142,12 @@ public final class CallConnectionAsync {
         PlayAudioOptions playAudioOptions,
         Context context) {
         try {
-            Objects.requireNonNull(audioFileUri, "'audioFileUri' cannot be null.");
             PlayAudioRequest request = new PlayAudioRequest().setAudioFileUri(audioFileUri.toString());
             if (playAudioOptions != null) {
                 request
                     .setLoop(playAudioOptions.isLoop())
                     .setOperationContext(playAudioOptions.getOperationContext())
-                    .setAudioFileId(playAudioOptions.getAudioFileId())
-                    .setCallbackUri(playAudioOptions.getCallbackUri().toString());
+                    .setAudioFileId(playAudioOptions.getAudioFileId());
             }
             return playAudioWithResponseInternal(request, context);
         } catch (RuntimeException ex) {
@@ -312,7 +307,6 @@ public final class CallConnectionAsync {
      * @param alternateCallerId The phone number to use when adding a phone number participant.
      * @param operationContext The value to identify context of the operation. This is used to co-relate other
      *                         communications related to this operation
-     * @param callbackUri callBackUri to get notifications.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful add participant request.
@@ -321,13 +315,12 @@ public final class CallConnectionAsync {
     public Mono<AddParticipantResult> addParticipant(
         CommunicationIdentifier participant,
         String alternateCallerId,
-        String operationContext,
-        URI callbackUri) {
+        String operationContext) {
         try {
             AddParticipantRequest request = getAddParticipantRequest(participant,
                 alternateCallerId,
-                operationContext,
-                callbackUri);
+                operationContext
+                );
             return callConnectionInternal.addParticipantAsync(callConnectionId, request)
                 .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
                 .flatMap(result -> Mono.just(new AddParticipantResult(result.getParticipantId())));
@@ -343,7 +336,6 @@ public final class CallConnectionAsync {
      * @param alternateCallerId The phone number to use when adding a phone number participant.
      * @param operationContext The value to identify context of the operation. This is used to co-relate other
      *                         communications related to this operation
-     * @param callbackUri callBackUri to get notifications.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful add participant request.
@@ -352,22 +344,19 @@ public final class CallConnectionAsync {
     public Mono<Response<AddParticipantResult>> addParticipantWithResponse(
         CommunicationIdentifier participant,
         String alternateCallerId,
-        String operationContext,
-        URI callbackUri) {
-        return addParticipantWithResponse(participant, alternateCallerId, operationContext, callbackUri, Context.NONE);
+        String operationContext) {
+        return addParticipantWithResponse(participant, alternateCallerId, operationContext, Context.NONE);
     }
 
     Mono<Response<AddParticipantResult>> addParticipantWithResponse(
         CommunicationIdentifier participant,
         String alternateCallerId,
         String operationContext,
-        URI callbackUri,
         Context context) {
         try {
             AddParticipantRequest request = getAddParticipantRequest(participant,
                 alternateCallerId,
-                operationContext,
-                callbackUri);
+                operationContext);
             return withContext(contextValue -> {
                 contextValue = context == null ? contextValue : context;
                 return callConnectionInternal
@@ -585,13 +574,12 @@ public final class CallConnectionAsync {
      * @return Response for a successful get participant request.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<List<CallParticipant>> getParticipant(CommunicationIdentifier participant) {
+    public Mono<CallParticipant> getParticipant(CommunicationIdentifier participant) {
         try {
             GetParticipantRequest request = new GetParticipantRequest().setIdentifier(CommunicationIdentifierConverter.convert(participant));
             return callConnectionInternal.getParticipantAsync(callConnectionId, request)
                 .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
-                .flatMap(result -> Mono.just(
-                    result.stream().map(CallParticipantConverter::convert).collect(Collectors.toList())));
+                .flatMap(result -> Mono.just(CallParticipantConverter.convert(result)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -606,11 +594,11 @@ public final class CallConnectionAsync {
      * @return Response for a successful get participant request.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<Response<List<CallParticipant>>> getParticipantWithResponse(CommunicationIdentifier participant) {
+    public Mono<Response<CallParticipant>> getParticipantWithResponse(CommunicationIdentifier participant) {
         return getParticipantWithResponse(participant, Context.NONE);
     }
 
-    Mono<Response<List<CallParticipant>>> getParticipantWithResponse(CommunicationIdentifier participant, Context context) {
+    Mono<Response<CallParticipant>> getParticipantWithResponse(CommunicationIdentifier participant, Context context) {
         try {
             GetParticipantRequest request = new GetParticipantRequest().setIdentifier(CommunicationIdentifierConverter.convert(participant));
             return withContext(contextValue -> {
@@ -619,13 +607,7 @@ public final class CallConnectionAsync {
                     .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
                     .map(response ->
                         new SimpleResponse<>(response,
-                            response.getValue()
-                            .stream()
-                            .map(CallParticipantConverter::convert)
-                            .collect(Collectors.toList()
-                        )
-                    )
-                );
+                            CallParticipantConverter.convert(response.getValue())));
             });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
@@ -697,9 +679,6 @@ public final class CallConnectionAsync {
     Mono<PlayAudioResult> playAudioToParticipantInternal(CommunicationIdentifier participant, URI audioFileUri,
             PlayAudioOptions playAudioOptions, Context context) {
         try {
-            Objects.requireNonNull(participant, "'participant' cannot be null.");
-            Objects.requireNonNull(audioFileUri, "'audioFileUri' cannot be null.");
-
             PlayAudioToParticipantRequest playAudioToParticipantRequest = new PlayAudioToParticipantRequest()
                 .setAudioFileUri(audioFileUri.toString())
                 .setIdentifier(CommunicationIdentifierConverter.convert(participant));
@@ -707,8 +686,7 @@ public final class CallConnectionAsync {
                 playAudioToParticipantRequest
                     .setLoop(playAudioOptions.isLoop())
                     .setOperationContext(playAudioOptions.getOperationContext())
-                    .setAudioFileId(playAudioOptions.getAudioFileId())
-                    .setCallbackUri(playAudioOptions.getCallbackUri().toString());
+                    .setAudioFileId(playAudioOptions.getAudioFileId());
             }
 
             return callConnectionInternal.participantPlayAudioAsync(callConnectionId, playAudioToParticipantRequest, context)
@@ -742,9 +720,6 @@ public final class CallConnectionAsync {
     Mono<Response<PlayAudioResult>> playAudioToParticipantWithResponseInternal(CommunicationIdentifier participant, URI audioFileUri,
             PlayAudioOptions playAudioOptions, Context context) {
         try {
-            Objects.requireNonNull(participant, "'participant' cannot be null.");
-            Objects.requireNonNull(audioFileUri, "'audioFileUri' cannot be null.");
-
             PlayAudioToParticipantRequest playAudioToParticipantRequest = new PlayAudioToParticipantRequest()
                 .setAudioFileUri(audioFileUri.toString())
                 .setIdentifier(CommunicationIdentifierConverter.convert(participant));
@@ -752,8 +727,7 @@ public final class CallConnectionAsync {
                 playAudioToParticipantRequest
                     .setLoop(playAudioOptions.isLoop())
                     .setOperationContext(playAudioOptions.getOperationContext())
-                    .setAudioFileId(playAudioOptions.getAudioFileId())
-                    .setCallbackUri(playAudioOptions.getCallbackUri().toString());
+                    .setAudioFileId(playAudioOptions.getAudioFileId());
             }
 
             return withContext(contextValue -> {
@@ -1034,7 +1008,6 @@ public final class CallConnectionAsync {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resumeParticipantMeetingAudioWithResponse(
         CommunicationIdentifier participant) {
-        Objects.requireNonNull(participant, "'participant' cannot be null.");
         return resumeParticipantMeetingAudioWithResponseInternal(participant, Context.NONE);
     }
 
@@ -1156,7 +1129,6 @@ public final class CallConnectionAsync {
 
     Mono<Response<Void>> updateAudioRoutingGroupWithResponseInternal(String audioRoutingGroupId, List<CommunicationIdentifier> targets, Context context) {
         try {
-            Objects.requireNonNull(audioRoutingGroupId, "'audioRoutingGroupId' cannot be null.");
             UpdateAudioRoutingGroupRequest request = getUpdateAudioRoutingGroupRequest(audioRoutingGroupId, targets);
             return callConnectionInternal.updateAudioRoutingGroupWithResponseAsync(callConnectionId, audioRoutingGroupId, request, context)
             .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
@@ -1254,8 +1226,6 @@ public final class CallConnectionAsync {
 
     Mono<Response<Void>> deleteAudioRoutingGroupWithResponseInternal(String audioRoutingGroupId, Context context) {
         try {
-            Objects.requireNonNull(audioRoutingGroupId, "'audioRoutingGroupId' cannot be null.");
-
             return callConnectionInternal.deleteAudioRoutingGroupWithResponseAsync(callConnectionId, audioRoutingGroupId, context)
             .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
         } catch (RuntimeException ex) {
@@ -1266,18 +1236,15 @@ public final class CallConnectionAsync {
     private AddParticipantRequest getAddParticipantRequest(
         CommunicationIdentifier participant,
         String alternateCallerId,
-        String operationContext,
-        URI callbackUri) {
+        String operationContext) {
         AddParticipantRequest request = new AddParticipantRequest()
             .setParticipant(CommunicationIdentifierConverter.convert(participant))
             .setAlternateCallerId(PhoneNumberIdentifierConverter.convert(alternateCallerId))
-            .setOperationContext(operationContext)
-            .setCallbackUri(callbackUri.toString());
+            .setOperationContext(operationContext);
         return request;
     }
 
     private AudioRoutingGroupRequest getAudioRoutingGroupRequest(AudioRoutingMode audioRoutingMode, List<CommunicationIdentifier> targets) {
-        Objects.requireNonNull(targets, "'targets' cannot be null.");
         AudioRoutingGroupRequest request = new AudioRoutingGroupRequest()
             .setAudioRoutingMode(audioRoutingMode)
             .setTargets(targets
@@ -1288,7 +1255,6 @@ public final class CallConnectionAsync {
     }
 
     private UpdateAudioRoutingGroupRequest getUpdateAudioRoutingGroupRequest(String audioRoutingGroupId, List<CommunicationIdentifier> targets) {
-        Objects.requireNonNull(targets, "'targets' cannot be null.");
         UpdateAudioRoutingGroupRequest request = new UpdateAudioRoutingGroupRequest()
             .setTargets(targets
                 .stream()

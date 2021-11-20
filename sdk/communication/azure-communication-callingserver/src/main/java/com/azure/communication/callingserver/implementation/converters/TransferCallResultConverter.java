@@ -23,6 +23,6 @@ public final class TransferCallResultConverter {
             transferCallResultInternal.getOperationId(),
             transferCallResultInternal.getStatus(),
             transferCallResultInternal.getOperationContext(),
-            ResultInfoConverter.convert(transferCallResultInternal.getResultInfo()));
+            ResultDetailsConverter.convert(transferCallResultInternal.getResultDetails()));
     }
 }

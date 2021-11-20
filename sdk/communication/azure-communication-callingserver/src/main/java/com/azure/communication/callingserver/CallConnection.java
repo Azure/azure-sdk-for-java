@@ -161,7 +161,6 @@ public final class CallConnection {
      * @param alternateCallerId Phone number to use when adding a phone number participant.
      * @param operationContext Value to identify context of the operation. This is used to co-relate other
      *                         communications related to this operation
-     * @param callbackUri callBackUri to get notifications.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return Response for a successful add participant request.
@@ -170,9 +169,8 @@ public final class CallConnection {
     public AddParticipantResult addParticipant(
         CommunicationIdentifier participant,
         String alternateCallerId,
-        String operationContext,
-        URI callbackUri) {
-        return callConnectionAsync.addParticipant(participant, alternateCallerId, operationContext, callbackUri).block();
+        String operationContext) {
+        return callConnectionAsync.addParticipant(participant, alternateCallerId, operationContext).block();
     }
 
     /**
@@ -182,7 +180,6 @@ public final class CallConnection {
      * @param alternateCallerId Phone number to use when adding a phone number participant.
      * @param operationContext Value to identify context of the operation. This is used to co-relate other
      *                         communications related to this operation
-     * @param callbackUri callBackUri to get notifications.
      * @param context {@link Context} representing the request context.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -193,10 +190,9 @@ public final class CallConnection {
         CommunicationIdentifier participant,
         String alternateCallerId,
         String operationContext,
-        URI callbackUri,
         Context context) {
         return callConnectionAsync
-            .addParticipantWithResponse(participant, alternateCallerId, operationContext, callbackUri, context).block();
+            .addParticipantWithResponse(participant, alternateCallerId, operationContext, context).block();
     }
 
     /**
@@ -315,7 +311,7 @@ public final class CallConnection {
      * @return Response for a successful get participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<CallParticipant> getParticipant(CommunicationIdentifier participant) {
+    public CallParticipant getParticipant(CommunicationIdentifier participant) {
         return callConnectionAsync.getParticipant(participant).block();
     }
 
@@ -329,7 +325,7 @@ public final class CallConnection {
      * @return Response for a successful get participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<CallParticipant>> getParticipantWithResponse(CommunicationIdentifier participant, Context context) {
+    public Response<CallParticipant> getParticipantWithResponse(CommunicationIdentifier participant, Context context) {
         return callConnectionAsync.getParticipantWithResponse(participant, context).block();
     }
 

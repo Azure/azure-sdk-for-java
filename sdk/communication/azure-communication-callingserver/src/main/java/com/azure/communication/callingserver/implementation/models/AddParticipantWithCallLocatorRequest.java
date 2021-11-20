@@ -17,6 +17,12 @@ public final class AddParticipantWithCallLocatorRequest {
     private CallLocatorModel callLocator;
 
     /*
+     * The callback URI.
+     */
+    @JsonProperty(value = "callbackUri")
+    private String callbackUri;
+
+    /*
      * The alternate identity of source participant.
      */
     @JsonProperty(value = "alternateCallerId")
@@ -33,12 +39,6 @@ public final class AddParticipantWithCallLocatorRequest {
      */
     @JsonProperty(value = "operationContext")
     private String operationContext;
-
-    /*
-     * The callback URI.
-     */
-    @JsonProperty(value = "callbackUri")
-    private String callbackUri;
 
     /**
      * Get the callLocator property: The call locator.
@@ -57,6 +57,26 @@ public final class AddParticipantWithCallLocatorRequest {
      */
     public AddParticipantWithCallLocatorRequest setCallLocator(CallLocatorModel callLocator) {
         this.callLocator = callLocator;
+        return this;
+    }
+
+    /**
+     * Get the callbackUri property: The callback URI.
+     *
+     * @return the callbackUri value.
+     */
+    public String getCallbackUri() {
+        return this.callbackUri;
+    }
+
+    /**
+     * Set the callbackUri property: The callback URI.
+     *
+     * @param callbackUri the callbackUri value to set.
+     * @return the AddParticipantWithCallLocatorRequest object itself.
+     */
+    public AddParticipantWithCallLocatorRequest setCallbackUri(String callbackUri) {
+        this.callbackUri = callbackUri;
         return this;
     }
 
@@ -117,26 +137,6 @@ public final class AddParticipantWithCallLocatorRequest {
      */
     public AddParticipantWithCallLocatorRequest setOperationContext(String operationContext) {
         this.operationContext = operationContext;
-        return this;
-    }
-
-    /**
-     * Get the callbackUri property: The callback URI.
-     *
-     * @return the callbackUri value.
-     */
-    public String getCallbackUri() {
-        return this.callbackUri;
-    }
-
-    /**
-     * Set the callbackUri property: The callback URI.
-     *
-     * @param callbackUri the callbackUri value to set.
-     * @return the AddParticipantWithCallLocatorRequest object itself.
-     */
-    public AddParticipantWithCallLocatorRequest setCallbackUri(String callbackUri) {
-        this.callbackUri = callbackUri;
         return this;
     }
 }

@@ -108,7 +108,7 @@ public final class ServerCallsImpl {
         @Post("/calling/participants:get")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<List<CallParticipantInternal>>> getParticipant(
+        Mono<Response<CallParticipantInternal>> getParticipant(
                 @HostParam("endpoint") String endpoint,
                 @QueryParam("api-version") String apiVersion,
                 @BodyParam("application/json")
@@ -613,7 +613,7 @@ public final class ServerCallsImpl {
      * @return participant from the call using identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<CallParticipantInternal>>> getParticipantWithResponseAsync(
+    public Mono<Response<CallParticipantInternal>> getParticipantWithResponseAsync(
             GetParticipantWithCallLocatorRequest getParticipantWithCallLocatorRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -637,7 +637,7 @@ public final class ServerCallsImpl {
      * @return participant from the call using identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<CallParticipantInternal>>> getParticipantWithResponseAsync(
+    public Mono<Response<CallParticipantInternal>> getParticipantWithResponseAsync(
             GetParticipantWithCallLocatorRequest getParticipantWithCallLocatorRequest, Context context) {
         final String accept = "application/json";
         return service.getParticipant(
@@ -658,11 +658,11 @@ public final class ServerCallsImpl {
      * @return participant from the call using identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<CallParticipantInternal>> getParticipantAsync(
+    public Mono<CallParticipantInternal> getParticipantAsync(
             GetParticipantWithCallLocatorRequest getParticipantWithCallLocatorRequest) {
         return getParticipantWithResponseAsync(getParticipantWithCallLocatorRequest)
                 .flatMap(
-                        (Response<List<CallParticipantInternal>> res) -> {
+                        (Response<CallParticipantInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -682,11 +682,11 @@ public final class ServerCallsImpl {
      * @return participant from the call using identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<CallParticipantInternal>> getParticipantAsync(
+    public Mono<CallParticipantInternal> getParticipantAsync(
             GetParticipantWithCallLocatorRequest getParticipantWithCallLocatorRequest, Context context) {
         return getParticipantWithResponseAsync(getParticipantWithCallLocatorRequest, context)
                 .flatMap(
-                        (Response<List<CallParticipantInternal>> res) -> {
+                        (Response<CallParticipantInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -705,7 +705,7 @@ public final class ServerCallsImpl {
      * @return participant from the call using identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<CallParticipantInternal> getParticipant(
+    public CallParticipantInternal getParticipant(
             GetParticipantWithCallLocatorRequest getParticipantWithCallLocatorRequest) {
         return getParticipantAsync(getParticipantWithCallLocatorRequest).block();
     }
@@ -721,7 +721,7 @@ public final class ServerCallsImpl {
      * @return participant from the call using identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<CallParticipantInternal>> getParticipantWithResponse(
+    public Response<CallParticipantInternal> getParticipantWithResponse(
             GetParticipantWithCallLocatorRequest getParticipantWithCallLocatorRequest, Context context) {
         return getParticipantWithResponseAsync(getParticipantWithCallLocatorRequest, context).block();
     }

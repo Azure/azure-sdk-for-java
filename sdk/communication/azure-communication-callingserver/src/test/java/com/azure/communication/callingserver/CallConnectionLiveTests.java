@@ -155,7 +155,7 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
             // Add User
             String operationContext = UUID.randomUUID().toString();
             CommunicationUserIdentifier addUser = new CommunicationUserIdentifier("8:acs:" + AZURE_TENANT_ID + "_" + "0000000d-4093-ebc3-d6d4-4448220005fd");
-            AddParticipantResult addParticipantResult = callConnection.addParticipant(addUser, null, operationContext, URI.create(CALLBACK_URI));
+            AddParticipantResult addParticipantResult = callConnection.addParticipant(addUser, null, operationContext);
             assert addParticipantResult != null;
             // Remove User
             callConnection.removeParticipant(addUser);
@@ -206,7 +206,6 @@ public class CallConnectionLiveTests extends CallingServerTestBase {
                     addUser,
                     null,
                     operationContext,
-                    URI.create(CALLBACK_URI),
                     Context.NONE);
             CallingServerTestUtils.validateAddParticipantResponse(addParticipantResponse);
 

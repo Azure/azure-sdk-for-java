@@ -24,9 +24,9 @@ public final class TransferCallResult {
     private final String operationContext;
 
     /*
-     * The result info for the operation.
+     * The result details for the operation.
      */
-    private final CallingOperationResultDetails resultInfo;
+    private final CallingOperationResultDetails resultDetails;
 
     /**
      * Get the operationId property: The operation id.
@@ -56,12 +56,12 @@ public final class TransferCallResult {
     }
 
     /**
-     * Get the resultInfo property: The result info for the operation.
+     * Get the resultDetails property: The result info for the operation.
      *
-     * @return the resultInfo value.
+     * @return the resultDetails value.
      */
-    public CallingOperationResultDetails getResultInfo() {
-        return this.resultInfo;
+    public CallingOperationResultDetails getResultDetails() {
+        return this.resultDetails;
     }
 
     /**
@@ -70,12 +70,12 @@ public final class TransferCallResult {
      * @param operationId the operationId value.
      * @param status the status value.
      * @param operationContext the operationContext value.
-     * @param resultInfo the resultInfo value.
+     * @param resultDetails the resultDetails value.
      */
-    public TransferCallResult(String operationId, CallingOperationStatus status, String operationContext, CallingOperationResultDetails resultInfo) {
+    public TransferCallResult(String operationId, CallingOperationStatus status, String operationContext, CallingOperationResultDetails resultDetails) {
         this.operationId = operationId;
         this.status = status;
         this.operationContext = operationContext;
-        this.resultInfo = resultInfo;
+        this.resultDetails = resultDetails;
     }
 }
