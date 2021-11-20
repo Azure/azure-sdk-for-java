@@ -158,6 +158,20 @@ public final class CallingServerClient {
      * Answer a call
      *
      * @param incomingCallContext The incoming call context.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return CallConnection for a successful answer request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public CallConnection answerCall(
+        String incomingCallContext) {
+        return callingServerAsyncClient.answerInternal(incomingCallContext).block();
+    }
+
+    /**
+     * Answer a call
+     *
+     * @param incomingCallContext The incoming call context.
      * @param answerCallOptions to answer Call.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
