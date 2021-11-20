@@ -590,7 +590,7 @@
       "description": "The constant used to define the order of the key vaults you are delivering (comma delimited, e.g 'my-vault, my-vault-2').",
       "deprecation": {
         "level": "error",
-        "reason": "Deprecate to move all Key Vault Property Source related under 'spring.cloud.azure.cosmos' prefix. Use spring.cloud.azure.keyvault.secret.property-sources' instead."
+        "reason": "Deprecate to move all Key Vault Property Source related under 'spring.cloud.azure.keyvault.secret' prefix. Use spring.cloud.azure.keyvault.secret.property-sources' instead."
       }
     },
     {
@@ -598,7 +598,7 @@
       "type": "java.lang.Long",
       "deprecation": {
         "level": "error",
-        "reason": "Deprecate to move all Key Vault Property Source related under 'spring.cloud.azure.cosmos' prefix. Use spring.cloud.azure.keyvault.secret.property-sources' instead."
+        "reason": "Deprecate to move all Key Vault Property Source related under 'spring.cloud.azure.keyvault.secret' prefix. Use spring.cloud.azure.keyvault.secret.property-sources' instead."
       }
     },
     {
@@ -606,7 +606,7 @@
       "type": "java.util.List<java.lang.String>",
       "deprecation": {
         "level": "error",
-        "reason": "Deprecate to move all Key Vault Property Source related under 'spring.cloud.azure.cosmos' prefix. Use spring.cloud.azure.keyvault.secret.property-sources' instead."
+        "reason": "Deprecate to move all Key Vault Property Source related under 'spring.cloud.azure.keyvault.secret' prefix. Use spring.cloud.azure.keyvault.secret.property-sources' instead."
       }
     },
     {
