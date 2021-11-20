@@ -417,7 +417,7 @@
     {
       "name": "azure.activedirectory.user-group.enable-full-list",
       "type": "java.lang.Boolean",
-      "description": "enableFullList is used to control whether to list all group id, default is false",
+      "description": "The enableFullList is used to control whether to list all group id, default is false.",
       "defaultValue": false,
       "deprecation": {
         "level": "error",
@@ -428,7 +428,7 @@
     {
       "name": "azure.activedirectory.user-name-attribute",
       "type": "java.lang.String",
-      "description": "Decide which claim to be principal's name..",
+      "description": "Decide which claim to be principal's name.",
       "deprecation": {
         "level": "error",
         "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud for Azure libraries.",
@@ -442,8 +442,7 @@
       "defaultValue": true,
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
-        "replacement": ""
+        "reason": "Deprecate the telemetry endpoint and use HTTP header User Agent instead."
       }
     },
     {
@@ -452,28 +451,28 @@
       "description": "Represents the connection mode to be used by the client in the Azure Cosmos DB database service.",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
-        "replacement": ""
+        "reason": "Deprecate to move all Cosmos DB related under 'spring.cloud.azure.cosmos' prefix.",
+        "replacement": "spring.cloud.azure.cosmos.connection-mode"
       }
     },
     {
       "name": "azure.cosmos.consistency-level",
       "type": "com.azure.cosmos.ConsistencyLevel",
-      "description": "Document DB consistency level.",
+      "description": "Cosmos DB consistency level.",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
-        "replacement": ""
+        "reason": "Deprecate to move all Cosmos DB related under 'spring.cloud.azure.cosmos' prefix.",
+        "replacement": "spring.cloud.azure.cosmos.consistency-level"
       }
     },
     {
       "name": "azure.cosmos.database",
       "type": "java.lang.String",
-      "description": "Document DB database name.",
+      "description": "Cosmos DB database name.",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
-        "replacement": ""
+        "reason": "Deprecate to move all Cosmos DB related under 'spring.cloud.azure.cosmos' prefix.",
+        "replacement": "spring.cloud.azure.cosmos.database"
       }
     },
     {
@@ -482,29 +481,28 @@
       "description": "Document DB key.",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
-        "replacement": ""
+        "reason": "Deprecate to move all Cosmos DB related under 'spring.cloud.azure.cosmos' prefix.",
+        "replacement": "spring.cloud.azure.cosmos.key"
       }
     },
     {
       "name": "azure.cosmos.populate-query-metrics",
       "type": "java.lang.Boolean",
-      "description": "Populate Diagnostics Strings and Query metrics",
+      "description": "Populate Diagnostics Strings and Query metrics.",
       "defaultValue": false,
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
-        "replacement": ""
+        "reason": "Deprecate to move all Cosmos DB related under 'spring.cloud.azure.cosmos' prefix.",
+        "replacement": "spring.cloud.azure.cosmos.populate-query-metrics"
       }
     },
     {
       "name": "azure.cosmos.response-diagnostics-processor",
       "type": "com.azure.spring.data.cosmos.core.ResponseDiagnosticsProcessor",
-      "description": "Response Diagnostics processor Default implementation is to log the response diagnostics string",
+      "description": "Response Diagnostics processor Default implementation is to log the response diagnostics string.",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
-        "replacement": ""
+        "reason": "Deprecate for it's not a property."
       }
     },
     {
@@ -513,8 +511,8 @@
       "description": "Document DB URI.",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
-        "replacement": ""
+        "reason": "Deprecate to move all Cosmos DB related under 'spring.cloud.azure.cosmos' prefix.",
+        "replacement": "spring.cloud.azure.cosmos.endpoint"
       }
     },
     {
@@ -524,8 +522,7 @@
       "defaultValue": true,
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
-        "replacement": ""
+        "reason": "Remove validation on the uri."
       }
     },
     {
@@ -533,8 +530,7 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
-        "replacement": ""
+        "reason": "Deprecate the telemetry endpoint and use HTTP header User Agent instead.",
       }
     },
     {
@@ -643,8 +639,8 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
-        "replacement": ""
+        "reason": "Deprecate to move all Storage Blob related under 'spring.cloud.azure.storage.blob' prefix.",
+        "replacement": "spring.cloud.azure.storage.blob.account-key"
       }
     },
     {
@@ -652,8 +648,8 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
-        "replacement": ""
+        "reason": "Deprecate to move all Storage Blob related under 'spring.cloud.azure.storage.blob' prefix.",
+        "replacement": "spring.cloud.azure.storage.blob.account-name"
       }
     },
     {
@@ -661,8 +657,8 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
-        "replacement": ""
+        "reason": "Deprecate to move all Storage Blob related under 'spring.cloud.azure.storage.blob' prefix.",
+        "replacement": "spring.cloud.azure.storage.blob.endpoint"
       }
     },
     {
@@ -670,7 +666,7 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
+        "reason": "Deprecate to move all Storage File Share related under 'spring.cloud.azure.storage.fileshare' prefix.",
         "replacement": "spring.cloud.azure.storage.fileshare.endpoint"
       }
     },
@@ -680,7 +676,7 @@
       "defaultValue": false,
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason"
+        "reason": "Deprecate the ability to auto create resources."
       }
     },
     {
@@ -688,7 +684,7 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
+        "reason": "Deprecate to move all credential under 'spring.cloud.azure.credential' prefix.",
         "replacement": "spring.cloud.azure.credential.client-id"
       }
     },
@@ -697,7 +693,7 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
+        "reason": "Deprecate to move all credential under 'spring.cloud.azure.credential' prefix.",
         "replacement": "spring.cloud.azure.credential.client-secret"
       }
     },
@@ -706,7 +702,7 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
+        "reason": "Deprecate to move all Azure environment related under 'spring.cloud.azure.profile' prefix.",
         "replacement": "spring.cloud.azure.profile.cloud"
       }
     },
@@ -761,7 +757,7 @@
       "defaultValue": false,
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason"
+        "reason": "Deprecate to move all credential under 'spring.cloud.azure.credential' prefix. Please specify spring.cloud.azure.credential.managed-identity-clientId instead."
       }
     },
     {
@@ -769,7 +765,7 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason"
+        "reason": "Deprecate to move all resource related under 'spring.cloud.azure.<azure-service>.resource' prefix."
       }
     },
     {
@@ -777,7 +773,7 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason"
+        "reason": "Deprecate to move all resource related under 'spring.cloud.azure.<azure-service>.resource' prefix."
       }
     },
     {
@@ -803,7 +799,7 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
+        "reason": "Deprecate to move all Storage Blob related under 'spring.cloud.azure.storage.blob' prefix.",
         "replacement": "spring.cloud.azure.storage.blob.account-key"
       }
     },
@@ -812,7 +808,7 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
+        "reason": "Deprecate to move all Storage Blob related under 'spring.cloud.azure.storage.blob' prefix.",
         "replacement": "spring.cloud.azure.storage.blob.account-name"
       }
     },
@@ -821,7 +817,7 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
+        "reason": "Deprecate to move all resource related under 'spring.cloud.azure.<azure-service>.resource' prefix.",
         "replacement": "spring.cloud.azure.storage.blob.resource.resource-group"
       }
     },
@@ -830,7 +826,7 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
+        "reason": "Deprecate to move all Azure environment related under 'spring.cloud.azure.profile' prefix.",
         "replacement": "spring.cloud.azure.profile.subscription-id"
       }
     },
@@ -839,7 +835,7 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
+        "reason": "Deprecate to move all Azure environment related under 'spring.cloud.azure.profile' prefix.",
         "replacement": "spring.cloud.azure.profile.tenant-id"
       }
     },
