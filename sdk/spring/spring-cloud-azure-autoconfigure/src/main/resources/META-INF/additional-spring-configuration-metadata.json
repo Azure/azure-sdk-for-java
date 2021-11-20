@@ -50,7 +50,6 @@
     },
     {
       "name": "azure.activedirectory.authorization-clients",
-      "type": "java.util.Map<java.lang.String,com.azure.spring.aad.webapp.AuthorizationClientProperties>",
       "deprecation": {
         "level": "error",
         "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud for Azure libraries.",
@@ -64,8 +63,7 @@
       "defaultValue": true,
       "deprecation": {
         "level": "error",
-        "reason": "Deprecate the telemetry endpoint and use HTTP header User Agent instead.",
-        "replacement": ""
+        "reason": "Deprecate the telemetry endpoint and use HTTP header User Agent instead."
       }
     },
     {
@@ -89,8 +87,7 @@
     },
     {
       "name": "azure.activedirectory.b2c.authorization-clients",
-      "type": "java.util.Map<java.lang.String,com.azure.spring.autoconfigure.b2c.AuthorizationClientProperties>",
-      "description": "Specify client configuration",
+      "description": "Specify client configuration.",
       "deprecation": {
         "level": "error",
         "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud for Azure libraries.",
@@ -194,7 +191,7 @@
       "description": "The name of the b2c tenant. @deprecated It's recommended to use 'baseUri' instead.",
       "deprecation": {
         "level": "error",
-        "reason": "Configuration updated to baseUri",
+        "reason": "Configuration updated to baseUri.",
         "replacement": "spring.cloud.azure.active-directory.b2c.base-uri"
       }
     },
@@ -220,7 +217,7 @@
     {
       "name": "azure.activedirectory.b2c.user-name-attribute-name",
       "type": "java.lang.String",
-      "description": "User name attribute name",
+      "description": "User name attribute name.",
       "deprecation": {
         "level": "error",
         "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud for Azure libraries.",
@@ -239,7 +236,7 @@
     {
       "name": "azure.activedirectory.client-id",
       "type": "java.lang.String",
-      "description": "Registered application ID in Azure AD. Must be configured when OAuth2 authentication is done in front end",
+      "description": "Registered application ID in Azure AD. Must be configured when OAuth2 authentication is done in front end.",
       "deprecation": {
         "level": "error",
         "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud for Azure libraries.",
@@ -249,7 +246,7 @@
     {
       "name": "azure.activedirectory.client-secret",
       "type": "java.lang.String",
-      "description": "API Access Key of the registered application. Must be configured when OAuth2 authentication is done in front end",
+      "description": "API Access Key of the registered application. Must be configured when OAuth2 authentication is done in front end.",
       "deprecation": {
         "level": "error",
         "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud for Azure libraries.",
@@ -348,7 +345,7 @@
     {
       "name": "azure.activedirectory.resource-server.claim-to-authority-prefix-map",
       "type": "java.util.Map<java.lang.String,java.lang.String>",
-      "description": "<pre> Configure which claim will be used to build GrantedAuthority, and prefix of the GrantedAuthority's string value. Default value is: \"scp\" -> \"SCOPE_\", \"roles\" -> \"APPROLE_\". Example: If use the default value, and the access_token's \"scp\" scope value is \"testValue\", then GrantedAuthority with \"SCOPE_testValue\" will be created.. <\/pre> @see org.springframework.security.core.GrantedAuthority",
+      "description": "<pre> Configure which claim will be used to build GrantedAuthority, and prefix of the GrantedAuthority's string value. Default value is: \"scp\" -> \"SCOPE_\", \"roles\" -> \"APPROLE_\". Example: If use the default value, and the access_token's \"scp\" scope value is \"testValue\", then GrantedAuthority with \"SCOPE_testValue\" will be created.. <\/pre> @see org.springframework.security.core.GrantedAuthority.",
       "deprecation": {
         "level": "error",
         "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud for Azure libraries.",
@@ -358,7 +355,7 @@
     {
       "name": "azure.activedirectory.resource-server.principal-claim-name",
       "type": "java.lang.String",
-      "description": "<pre> Configure which claim in access token be returned in AuthenticatedPrincipal#getName. Default value is \"sub\". Example: If use the default value, and the access_token's \"sub\" scope value is \"testValue\", then AuthenticatedPrincipal#getName will return \"testValue\". <\/pre> @see org.springframework.security.core.AuthenticatedPrincipal#getName",
+      "description": "<pre> Configure which claim in access token be returned in AuthenticatedPrincipal#getName. Default value is \"sub\". Example: If use the default value, and the access_token's \"sub\" scope value is \"testValue\", then AuthenticatedPrincipal#getName will return \"testValue\". <\/pre> @see org.springframework.security.core.AuthenticatedPrincipal#getName.",
       "deprecation": {
         "level": "error",
         "reason": "Use uniform property format(spring.cloud.azure.*) in all Spring Cloud for Azure libraries.",
@@ -422,7 +419,7 @@
       "deprecation": {
         "level": "error",
         "reason": "enable-full-list is not easy to understand.",
-        "replacement": "spring.cloud.azure.active-directory.allowed-group-ids=all"
+        "replacement": "spring.cloud.azure.active-directory.user-group.enable-full-list"
       }
     },
     {
@@ -530,7 +527,7 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "Deprecate the telemetry endpoint and use HTTP header User Agent instead.",
+        "reason": "Deprecate the telemetry endpoint and use HTTP header User Agent instead."
       }
     },
     {
@@ -539,8 +536,7 @@
       "description": "Defines the constant for the property that enables\/disables case sensitive keys.",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
-        "replacement": ""
+        "reason": "Deprecate to move all Key Vault Property Source related under 'spring.cloud.azure.cosmos' prefix. Use spring.cloud.azure.keyvault.secret.property-sources' instead."
       }
     },
     {
@@ -548,8 +544,8 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
-        "replacement": ""
+        "reason": "Deprecate to move all Key Vault Secret credential related under 'spring.cloud.azure.keyvault.secret.credential' prefix.",
+        "replacement": "spring.cloud.azure.keyvault.secret.credential.client-certificate-password"
       }
     },
     {
@@ -557,8 +553,8 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
-        "replacement": ""
+        "reason": "Deprecate to move all Key Vault Secret credential related under 'spring.cloud.azure.keyvault.secret.credential' prefix.",
+        "replacement": "spring.cloud.azure.keyvault.secret.credential.client-certificate-path"
       }
     },
     {
@@ -566,8 +562,8 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
-        "replacement": ""
+        "reason": "Deprecate to move all Key Vault Secret credential related under 'spring.cloud.azure.keyvault.secret.credential' prefix.",
+        "replacement": "spring.cloud.azure.keyvault.secret.credential.client-id"
       }
     },
     {
@@ -575,8 +571,8 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
-        "replacement": ""
+        "reason": "Deprecate to move all Key Vault Secret credential related under 'spring.cloud.azure.keyvault.secret.credential' prefix.",
+        "replacement": "spring.cloud.azure.keyvault.secret.credential.client-secret"
       }
     },
     {
@@ -584,8 +580,8 @@
       "type": "java.lang.Boolean",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
-        "replacement": ""
+        "reason": "Deprecate to move all Key Vault Secret related under 'spring.cloud.azure.keyvault.secret' prefix.",
+        "replacement": "spring.cloud.azure.keyvault.secret.enabled"
       }
     },
     {
@@ -594,8 +590,7 @@
       "description": "The constant used to define the order of the key vaults you are delivering (comma delimited, e.g 'my-vault, my-vault-2').",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
-        "replacement": ""
+        "reason": "Deprecate to move all Key Vault Property Source related under 'spring.cloud.azure.cosmos' prefix. Use spring.cloud.azure.keyvault.secret.property-sources' instead."
       }
     },
     {
@@ -603,8 +598,7 @@
       "type": "java.lang.Long",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
-        "replacement": ""
+        "reason": "Deprecate to move all Key Vault Property Source related under 'spring.cloud.azure.cosmos' prefix. Use spring.cloud.azure.keyvault.secret.property-sources' instead."
       }
     },
     {
@@ -612,8 +606,7 @@
       "type": "java.util.List<java.lang.String>",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
-        "replacement": ""
+        "reason": "Deprecate to move all Key Vault Property Source related under 'spring.cloud.azure.cosmos' prefix. Use spring.cloud.azure.keyvault.secret.property-sources' instead."
       }
     },
     {
@@ -621,8 +614,8 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
-        "replacement": ""
+        "reason": "Deprecate to move all Key Vault Secret Azure environment related under 'spring.cloud.azure.keyvault.secret.profile' prefix.",
+        "replacement": "spring.cloud.azure.keyvault.secret.profile.tenant-id"
       }
     },
     {
@@ -630,8 +623,8 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
-        "replacement": ""
+        "reason": "Deprecate to move all Key Vault Secret related under 'spring.cloud.azure.keyvault.secret' prefix.",
+        "replacement": "spring.cloud.azure.keyvault.secret.endpoint"
       }
     },
     {
@@ -782,7 +775,7 @@
       "deprecation": {
         "level": "error",
         "reason": "Deprecate to keep consistent with the unified configuration options.",
-        "replacement": "spring.cloud.azure.servicebus.retry.maxAttempts"
+        "replacement": "spring.cloud.azure.servicebus.retry.max-attempts"
       }
     },
     {
@@ -800,7 +793,7 @@
       "deprecation": {
         "level": "error",
         "reason": "Deprecate to keep consistent with the unified configuration options.",
-        "replacement": "spring.cloud.azure.servicebus.retry.backoff.maxDelay"
+        "replacement": "spring.cloud.azure.servicebus.retry.backoff.max-delay"
       }
     },
     {
@@ -893,19 +886,17 @@
     },
     {
       "name": "spring.cloud.stream.servicebus.queue.bindings",
-      "type": "java.util.Map<java.lang.String,com.azure.spring.servicebus.stream.binder.properties.ServiceBusBindingProperties>",
       "deprecation": {
         "level": "error",
-        "reason": "'servicebus-queue' binder is dropped and 'servicebus' binder is provided instead with the ability of interacting with both queue and topic.",
+        "reason": "The 'servicebus-queue' binder is dropped and 'servicebus' binder is provided instead with the ability of interacting with both queue and topic.",
         "replacement": "spring.cloud.stream.servicebus.bindings"
       }
     },
     {
       "name": "spring.cloud.stream.servicebus.topic.bindings",
-      "type": "java.util.Map<java.lang.String,com.azure.spring.servicebus.stream.binder.properties.ServiceBusBindingProperties>",
       "deprecation": {
         "level": "error",
-        "reason": "'servicebus-queue' binder is dropped and 'servicebus' binder is provided instead with the ability of interacting with both queue and topic.",
+        "reason": "The 'servicebus-queue' binder is dropped and 'servicebus' binder is provided instead with the ability of interacting with both queue and topic.",
         "replacement": "spring.cloud.stream.servicebus.bindings"
       }
     }
