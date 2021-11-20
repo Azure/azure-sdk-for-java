@@ -777,12 +777,47 @@
       }
     },
     {
-      "name": "spring.cloud.azure.servicebus.retry-options",
-      "type": "java.lang.String",
+      "name": "spring.cloud.azure.servicebus.retry-options.maxRetries",
+      "type": "java.lang.Integer",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
-        "replacement": "spring.cloud.azure.servicebus.retry.max-attempts"
+        "reason": "Deprecate to keep consistent with the unified configuration options.",
+        "replacement": "spring.cloud.azure.servicebus.retry.maxAttempts"
+      }
+    },
+    {
+      "name": "spring.cloud.azure.servicebus.retry-options.delay",
+      "type": "java.time.Duration",
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate to keep consistent with the unified configuration options.",
+        "replacement": "spring.cloud.azure.servicebus.retry.backoff.delay"
+      }
+    },
+    {
+      "name": "spring.cloud.azure.servicebus.retry-options.maxDelay",
+      "type": "java.time.Duration",
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate to keep consistent with the unified configuration options.",
+        "replacement": "spring.cloud.azure.servicebus.retry.backoff.maxDelay"
+      }
+    },
+    {
+      "name": "spring.cloud.azure.servicebus.retry-options.tryTimeout",
+      "type": "java.time.Duration",
+      "deprecation": {
+        "level": "error",
+        "reason": "Deprecate to keep consistent with the unified configuration options.",
+        "replacement": "spring.cloud.azure.servicebus.retry.timeout"
+      }
+    },
+    {
+      "name": "spring.cloud.azure.servicebus.retry-options.retryMode",
+      "type": "com.azure.core.amqp.AmqpRetryMode",
+      "deprecation": {
+        "level": "error",
+        "reason": "This property will be configured automatically according to format(spring.cloud.azure.servicebus.retry.backoff.multiplier)."
       }
     },
     {
@@ -790,7 +825,7 @@
       "type": "com.azure.core.amqp.AmqpTransportType",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
+        "reason": "Deprecate to keep consistent with the unified configuration options.",
         "replacement": "spring.cloud.azure.servicebus.client.transport-type"
       }
     },
@@ -861,8 +896,8 @@
       "type": "java.util.Map<java.lang.String,com.azure.spring.servicebus.stream.binder.properties.ServiceBusBindingProperties>",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
-        "replacement": "spring.cloud.stream.service.bindings"
+        "reason": "'servicebus-queue' binder is dropped and 'servicebus' binder is provided instead with the ability of interacting with both queue and topic.",
+        "replacement": "spring.cloud.stream.servicebus.bindings"
       }
     },
     {
@@ -870,8 +905,8 @@
       "type": "java.util.Map<java.lang.String,com.azure.spring.servicebus.stream.binder.properties.ServiceBusBindingProperties>",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
-        "replacement": ""
+        "reason": "'servicebus-queue' binder is dropped and 'servicebus' binder is provided instead with the ability of interacting with both queue and topic.",
+        "replacement": "spring.cloud.stream.servicebus.bindings"
       }
     }
   ]
