@@ -55,8 +55,8 @@ public class AzureBlobCheckpointStoreConfiguration {
     }
 
     @Bean
-    @ConditionalOnMissingBean
-    public BlobCheckpointStoreContainerInitializer blobCheckpointStoreContainerInitializer() {
+    @ConditionalOnProperty(value = "spring.cloud.azure.eventhubs.processor.checkpoint-store.create-container-if-not-exists", havingValue = "true")
+    public BlobCheckpointStoreContainerInitializer blobCheckpointStoreContainerCreationInitializer() {
         return containerAsyncClient -> {
             if (Boolean.FALSE.equals(containerAsyncClient.exists().block(Duration.ofSeconds(3)))) {
                 LOGGER.debug("The checkpoint store container [{}] doesn't exist, will create the blob container now.",

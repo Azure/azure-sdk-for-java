@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static com.azure.spring.cloud.autoconfigure.aad.implementation.properties.AADResourceServerProperties.DEFAULT_CLAIM_TO_AUTHORITY_PREFIX_MAP;
+import static com.azure.spring.cloud.autoconfigure.aad.properties.AADResourceServerProperties.DEFAULT_CLAIM_TO_AUTHORITY_PREFIX_MAP;
 
 /**
  * Extracts the {@link GrantedAuthority}s from scope attributes typically found in a {@link Jwt}.

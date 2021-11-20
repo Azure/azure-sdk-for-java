@@ -13,6 +13,7 @@ import com.azure.spring.integration.instrumentation.DefaultInstrumentation;
 import com.azure.spring.integration.instrumentation.DefaultInstrumentationManager;
 import com.azure.spring.integration.instrumentation.Instrumentation;
 import com.azure.spring.integration.instrumentation.InstrumentationManager;
+import com.azure.spring.integration.instrumentation.InstrumentationSendCallback;
 import com.azure.spring.integration.servicebus.inbound.ServiceBusInboundChannelAdapter;
 import com.azure.spring.integration.servicebus.inbound.health.ServiceBusProcessorInstrumentation;
 import com.azure.spring.messaging.PropertiesSupplier;
@@ -45,7 +46,6 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.MessageHandler;
 import org.springframework.messaging.support.ErrorMessage;
 import org.springframework.util.Assert;
-import org.springframework.util.concurrent.ListenableFutureCallback;
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
@@ -223,12 +223,12 @@ public class ServiceBusMessageChannelBinder extends
         return new CheckpointConfig(properties.getExtension().getCheckpointMode());
     }
 
-    public ServiceBusTemplate getServiceBusTemplate() {
+    private ServiceBusTemplate getServiceBusTemplate() {
         if (this.serviceBusTemplate == null) {
             DefaultServiceBusNamespaceProducerFactory factory = new DefaultServiceBusNamespaceProducerFactory(
                 this.namespaceProperties, getProducerPropertiesSupplier());
 
-            factory.addListener((name) -> {
+            factory.addListener((name, client) -> {
                 DefaultInstrumentation instrumentation = new DefaultInstrumentation(name, PRODUCER);
                 instrumentation.markUp();
                 instrumentationManager.addHealthInstrumentation(instrumentation.getId(), instrumentation);
@@ -243,7 +243,7 @@ public class ServiceBusMessageChannelBinder extends
             DefaultServiceBusNamespaceProcessorFactory factory = new DefaultServiceBusNamespaceProcessorFactory(
                 this.namespaceProperties, getProcessorPropertiesSupplier());
 
-            factory.addListener((name, subscription) -> {
+            factory.addListener((name, subscription, client) -> {
                 String instrumentationName = name + "/" + subscription == null ? "" : subscription;
                 Instrumentation instrumentation = new ServiceBusProcessorInstrumentation(instrumentationName, CONSUMER, Duration.ofMinutes(2));
                 instrumentation.markUp();
@@ -294,27 +294,5 @@ public class ServiceBusMessageChannelBinder extends
 
     public InstrumentationManager getInstrumentationManager() {
         return instrumentationManager;
-    }
-
-    private static class InstrumentationSendCallback implements ListenableFutureCallback<Void> {
-
-        private final InstrumentationManager instrumentationManager;
-
-        private final String instrumentationId;
-
-        InstrumentationSendCallback(String instrumentationId, InstrumentationManager instrumentationManager) {
-            this.instrumentationId = instrumentationId;
-            this.instrumentationManager = instrumentationManager;
-        }
-
-        @Override
-        public void onFailure(Throwable ex) {
-            this.instrumentationManager.getHealthInstrumentation(instrumentationId).markDown(ex);
-        }
-
-        @Override
-        public void onSuccess(Void result) {
-            this.instrumentationManager.getHealthInstrumentation(instrumentationId).markUp();
-        }
     }
 }

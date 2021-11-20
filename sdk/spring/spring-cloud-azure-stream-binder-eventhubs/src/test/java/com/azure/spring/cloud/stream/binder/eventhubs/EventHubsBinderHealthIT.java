@@ -44,7 +44,7 @@ public class EventHubsBinderHealthIT {
 
             final String response = restTemplate.getForObject(
                 "http://localhost:" + app.port() + "/actuator/health/binders", String.class);
-            assertEquals("{\"status\":\"UP\",\"components\":{\"eventhub\":{\"status\":\"UP\"}}}", response);
+            assertEquals("{\"status\":\"UP\",\"components\":{\"eventhubs\":{\"status\":\"UP\"}}}", response);
 
             LOGGER.info("response = {}", response);
         }
