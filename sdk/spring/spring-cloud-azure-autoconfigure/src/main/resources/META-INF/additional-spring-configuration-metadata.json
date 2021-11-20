@@ -715,7 +715,7 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "To keep in accordance with Azure Event Hubs service name and use the new prefix of 'spring.cloud.azure.eventhubs.processor'",
+        "reason": "To keep in accordance with Azure Event Hubs service name and use the new prefix of 'spring.cloud.azure.eventhubs.processor'.",
         "replacement": "spring.cloud.azure.eventhubs.processor.checkpoint-store.account-key"
       }
     },
@@ -724,7 +724,7 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "To keep in accordance with Azure Event Hubs service name and use the new prefix of 'spring.cloud.azure.eventhubs.processor'",
+        "reason": "To keep in accordance with Azure Event Hubs service name and use the new prefix of 'spring.cloud.azure.eventhubs.processor'.",
         "replacement": "spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name"
       }
     },
@@ -733,7 +733,7 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "To keep in accordance with Azure Event Hubs service name and use the new prefix of 'spring.cloud.azure.eventhubs.processor'",
+        "reason": "To keep in accordance with Azure Event Hubs service name and use the new prefix of 'spring.cloud.azure.eventhubs.processor'.",
         "replacement": "spring.cloud.azure.eventhubs.processor.checkpoint-store.account-name"
       }
     },
@@ -742,7 +742,7 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "To keep in accordance with Azure Event Hubs service name",
+        "reason": "To keep in accordance with Azure Event Hubs service name.",
         "replacement": "spring.cloud.azure.eventhubs.connection-string"
       }
     },
@@ -751,7 +751,7 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "To keep in accordance with Azure Event Hubs service name",
+        "reason": "To keep in accordance with Azure Event Hubs service name.",
         "replacement": "spring.cloud.azure.eventhubs.namespace"
       }
     },
@@ -856,7 +856,7 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "Deprecate to use the unified style with the prefix of 'spring.cloud.azure.eventhubs.processor'",
+        "reason": "Deprecate to use the unified style with the prefix of 'spring.cloud.azure.eventhubs.processor'.",
         "replacement": "spring.cloud.azure.eventhubs.processor.checkpoint-store.account-name"
       }
     },
