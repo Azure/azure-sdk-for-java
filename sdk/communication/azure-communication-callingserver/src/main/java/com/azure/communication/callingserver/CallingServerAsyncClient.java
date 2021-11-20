@@ -314,6 +314,20 @@ public final class CallingServerAsyncClient {
      * Answer a Call
      *
      * @param incomingCallContext The incoming call context.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful answer request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<CallConnectionAsync> answerCall(
+        String incomingCallContext) {
+        return answerCall(incomingCallContext, null);
+    }
+
+    /**
+     * Answer a Call
+     *
+     * @param incomingCallContext The incoming call context.
      * @param answerCallOptions Answer call options.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -331,6 +345,20 @@ public final class CallingServerAsyncClient {
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
+    }
+
+    /**
+     * Answer a Call
+     *
+     * @param incomingCallContext The incoming call context.
+     * @throws CallingServerErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return Response for a successful answer request.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Mono<Response<CallConnectionAsync>> answerCallWithResponse(
+        String incomingCallContext) {
+        return answerCallWithResponse(incomingCallContext, null);
     }
 
     /**
