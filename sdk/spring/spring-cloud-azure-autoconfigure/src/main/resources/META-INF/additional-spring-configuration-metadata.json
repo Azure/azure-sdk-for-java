@@ -715,7 +715,7 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
+        "reason": "To keep in accordance with Azure Event Hubs service name",
         "replacement": "spring.cloud.azure.eventhubs.processor.checkpoint-store.account-key"
       }
     },
@@ -724,7 +724,7 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
+        "reason": "To keep in accordance with Azure Event Hubs service name",
         "replacement": "spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name"
       }
     },
@@ -733,7 +733,7 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
+        "reason": "To keep in accordance with Azure Event Hubs service name",
         "replacement": "spring.cloud.azure.eventhubs.processor.checkpoint-store.account-name"
       }
     },
@@ -742,7 +742,7 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
+        "reason": "To keep in accordance with Azure Event Hubs service name",
         "replacement": "spring.cloud.azure.eventhubs.connection-string"
       }
     },
@@ -751,7 +751,7 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
+        "reason": "To keep in accordance with Azure Event Hubs service name",
         "replacement": "spring.cloud.azure.eventhubs.namespace"
       }
     },
@@ -845,11 +845,10 @@
     },
     {
       "name": "spring.cloud.stream.eventhub.bindings",
-      "type": "java.util.Map<java.lang.String,com.azure.spring.eventhub.stream.binder.properties.EventHubBindingProperties>",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
-        "replacement": ""
+        "reason": "To keep in accordance with Azure Event Hubs service name, legacy is not supported",
+        "replacement": "spring.cloud.stream.eventhubs.bindings"
       }
     },
     {
@@ -857,8 +856,8 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
-        "replacement": ""
+        "reason": "Not support in the current version.",
+        "replacement": "spring.cloud.azure.eventhubs.processor.checkpoint-store.account-name"
       }
     },
     {
