@@ -46,12 +46,6 @@ public final class PlayAudioToParticipantRequest {
     @JsonProperty(value = "audioFileId")
     private String audioFileId;
 
-    /*
-     * The callback Uri to receive PlayAudio status notifications.
-     */
-    @JsonProperty(value = "callbackUri")
-    private String callbackUri;
-
     /**
      * Get the identifier property: The identifier of the participant to play audio to.
      *
@@ -153,26 +147,6 @@ public final class PlayAudioToParticipantRequest {
      */
     public PlayAudioToParticipantRequest setAudioFileId(String audioFileId) {
         this.audioFileId = audioFileId;
-        return this;
-    }
-
-    /**
-     * Get the callbackUri property: The callback Uri to receive PlayAudio status notifications.
-     *
-     * @return the callbackUri value.
-     */
-    public String getCallbackUri() {
-        return this.callbackUri;
-    }
-
-    /**
-     * Set the callbackUri property: The callback Uri to receive PlayAudio status notifications.
-     *
-     * @param callbackUri the callbackUri value to set.
-     * @return the PlayAudioToParticipantRequest object itself.
-     */
-    public PlayAudioToParticipantRequest setCallbackUri(String callbackUri) {
-        this.callbackUri = callbackUri;
         return this;
     }
 }

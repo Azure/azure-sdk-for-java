@@ -11,16 +11,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class PlayAudioToParticipantWithCallLocatorRequest {
     /*
+     * The identifier of the participant to play audio to.
+     */
+    @JsonProperty(value = "identifier", required = true)
+    private CommunicationIdentifierModel identifier;
+
+    /*
      * The call locator.
      */
     @JsonProperty(value = "callLocator", required = true)
     private CallLocatorModel callLocator;
 
     /*
-     * The identifier of the participant to play audio to.
+     * The callback Uri to receive PlayAudio status notifications.
      */
-    @JsonProperty(value = "identifier", required = true)
-    private CommunicationIdentifierModel identifier;
+    @JsonProperty(value = "callbackUri")
+    private String callbackUri;
 
     /*
      * The media resource uri of the play audio request.
@@ -52,11 +58,25 @@ public final class PlayAudioToParticipantWithCallLocatorRequest {
     @JsonProperty(value = "audioFileId")
     private String audioFileId;
 
-    /*
-     * The callback Uri to receive PlayAudio status notifications.
+    /**
+     * Get the identifier property: The identifier of the participant to play audio to.
+     *
+     * @return the identifier value.
      */
-    @JsonProperty(value = "callbackUri")
-    private String callbackUri;
+    public CommunicationIdentifierModel getIdentifier() {
+        return this.identifier;
+    }
+
+    /**
+     * Set the identifier property: The identifier of the participant to play audio to.
+     *
+     * @param identifier the identifier value to set.
+     * @return the PlayAudioToParticipantWithCallLocatorRequest object itself.
+     */
+    public PlayAudioToParticipantWithCallLocatorRequest setIdentifier(CommunicationIdentifierModel identifier) {
+        this.identifier = identifier;
+        return this;
+    }
 
     /**
      * Get the callLocator property: The call locator.
@@ -79,22 +99,22 @@ public final class PlayAudioToParticipantWithCallLocatorRequest {
     }
 
     /**
-     * Get the identifier property: The identifier of the participant to play audio to.
+     * Get the callbackUri property: The callback Uri to receive PlayAudio status notifications.
      *
-     * @return the identifier value.
+     * @return the callbackUri value.
      */
-    public CommunicationIdentifierModel getIdentifier() {
-        return this.identifier;
+    public String getCallbackUri() {
+        return this.callbackUri;
     }
 
     /**
-     * Set the identifier property: The identifier of the participant to play audio to.
+     * Set the callbackUri property: The callback Uri to receive PlayAudio status notifications.
      *
-     * @param identifier the identifier value to set.
+     * @param callbackUri the callbackUri value to set.
      * @return the PlayAudioToParticipantWithCallLocatorRequest object itself.
      */
-    public PlayAudioToParticipantWithCallLocatorRequest setIdentifier(CommunicationIdentifierModel identifier) {
-        this.identifier = identifier;
+    public PlayAudioToParticipantWithCallLocatorRequest setCallbackUri(String callbackUri) {
+        this.callbackUri = callbackUri;
         return this;
     }
 
@@ -179,26 +199,6 @@ public final class PlayAudioToParticipantWithCallLocatorRequest {
      */
     public PlayAudioToParticipantWithCallLocatorRequest setAudioFileId(String audioFileId) {
         this.audioFileId = audioFileId;
-        return this;
-    }
-
-    /**
-     * Get the callbackUri property: The callback Uri to receive PlayAudio status notifications.
-     *
-     * @return the callbackUri value.
-     */
-    public String getCallbackUri() {
-        return this.callbackUri;
-    }
-
-    /**
-     * Set the callbackUri property: The callback Uri to receive PlayAudio status notifications.
-     *
-     * @param callbackUri the callbackUri value to set.
-     * @return the PlayAudioToParticipantWithCallLocatorRequest object itself.
-     */
-    public PlayAudioToParticipantWithCallLocatorRequest setCallbackUri(String callbackUri) {
-        this.callbackUri = callbackUri;
         return this;
     }
 }

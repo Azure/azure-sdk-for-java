@@ -107,7 +107,7 @@ CallConnection callConnection = callingServerClient.createCallConnection(source,
 ```java readme-sample-addParticipant
 CommunicationIdentifier thirdCallee = new CommunicationUserIdentifier("<acs-user-identity-3>");
 String callbackUri = "<callback-uri-for-notification>";
-callConnection.addParticipant(thirdCallee, "ACS User 3", "<string-for-tracing-responses>", URI.create(callbackUri));
+callConnection.addParticipant(thirdCallee, "ACS User 3", "<string-for-tracing-responses>");
 ```
 
 #### Hangup a Call:

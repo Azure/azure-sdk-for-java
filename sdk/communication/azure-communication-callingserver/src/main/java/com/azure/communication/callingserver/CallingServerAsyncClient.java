@@ -588,14 +588,13 @@ public final class CallingServerAsyncClient {
      * @return Response for a successful get participant request.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<List<CallParticipant>> getParticipant(CallLocator callLocator, CommunicationIdentifier participant) {
+    public Mono<CallParticipant> getParticipant(CallLocator callLocator, CommunicationIdentifier participant) {
         try {
             GetParticipantWithCallLocatorRequest requestWithCallLocator = getGetParticipantWithCallLocatorRequest(callLocator, participant);
 
             return serverCallInternal.getParticipantAsync(requestWithCallLocator)
                 .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
-                .flatMap(result -> Mono.just(
-                    result.stream().map(CallParticipantConverter::convert).collect(Collectors.toList())));
+                .flatMap(result -> Mono.just(CallParticipantConverter.convert(result)));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -619,11 +618,11 @@ public final class CallingServerAsyncClient {
      * @return Response for a successful get participant request.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public Mono<Response<List<CallParticipant>>> getParticipantWithResponse(CallLocator callLocator, CommunicationIdentifier participant) {
+    public Mono<Response<CallParticipant>> getParticipantWithResponse(CallLocator callLocator, CommunicationIdentifier participant) {
         return getParticipantWithResponse(callLocator, participant, Context.NONE);
     }
 
-    Mono<Response<List<CallParticipant>>> getParticipantWithResponse(CallLocator callLocator, CommunicationIdentifier participant, Context context) {
+    Mono<Response<CallParticipant>> getParticipantWithResponse(CallLocator callLocator, CommunicationIdentifier participant, Context context) {
         try {
             GetParticipantWithCallLocatorRequest requestWithCallLocator = getGetParticipantWithCallLocatorRequest(callLocator, participant);
 
@@ -632,12 +631,7 @@ public final class CallingServerAsyncClient {
                 return serverCallInternal.getParticipantWithResponseAsync(requestWithCallLocator, contextValue)
                     .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException)
                     .map(response ->
-                        new SimpleResponse<>(response,
-                            response.getValue()
-                            .stream()
-                            .map(CallParticipantConverter::convert)
-                            .collect(Collectors.toList()
-                        )
+                        new SimpleResponse<>(response, CallParticipantConverter.convert(response.getValue())
                     )
                 );
             });
@@ -1452,18 +1446,16 @@ public final class CallingServerAsyncClient {
      * Redirect the call.
      *
      * @param incomingCallContext the incomingCallContext value to set.
-     * @param targets the targets value to set.
-     * @param callbackUri the callbackUrl value to set.
-     * @param timeoutInSeconds the timeout value to set.
+     * @param target the target value to set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> redirectCall(String incomingCallContext, List<CommunicationIdentifier> targets, URI callbackUri, Integer timeoutInSeconds) {
+    public Mono<Void> redirectCall(String incomingCallContext, CommunicationIdentifier target) {
         try {
-            RedirectCallRequest request = getRedirectCallRequest(incomingCallContext, targets, callbackUri, timeoutInSeconds);
+            RedirectCallRequest request = getRedirectCallRequest(incomingCallContext, target);
 
             return serverCallInternal.redirectCallAsync(request)
             .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
@@ -1472,18 +1464,12 @@ public final class CallingServerAsyncClient {
         }
     }
 
-    private RedirectCallRequest getRedirectCallRequest(String incomingCallContext, List<CommunicationIdentifier> targets,
-            URI callbackUri, Integer timeoutInSeconds) {
+    private RedirectCallRequest getRedirectCallRequest(String incomingCallContext, CommunicationIdentifier target) {
         Objects.requireNonNull(incomingCallContext, "'redirectCallRequest' cannot be null.");
-        Objects.requireNonNull(targets, "'targets' cannot be null.");
+        Objects.requireNonNull(target, "'target' cannot be null.");
         RedirectCallRequest request = new RedirectCallRequest()
-            .setCallbackUri(callbackUri.toString())
             .setIncomingCallContext(incomingCallContext)
-            .setTimeoutInSeconds(timeoutInSeconds)
-            .setTargets(targets
-                .stream()
-                .map(CommunicationIdentifierConverter::convert)
-                .collect(Collectors.toList()));
+            .setTarget(CommunicationIdentifierConverter.convert(target));
         return request;
     }
 
@@ -1491,22 +1477,20 @@ public final class CallingServerAsyncClient {
      * Redirect the call.
      *
      * @param incomingCallContext the incomingCallContext value to set.
-     * @param targets the targets value to set.
-     * @param callbackUri the callbackUrl value to set.
-     * @param timeoutInSeconds the timeout value to set.
+     * @param target the target value to set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> redirectCallWithResponse(String incomingCallContext, List<CommunicationIdentifier> targets, URI callbackUri, Integer timeoutInSeconds) {
-        return redirectCallWithResponseInternal(incomingCallContext, targets, callbackUri, timeoutInSeconds, Context.NONE);
+    public Mono<Response<Void>> redirectCallWithResponse(String incomingCallContext, CommunicationIdentifier target) {
+        return redirectCallWithResponseInternal(incomingCallContext, target, Context.NONE);
     }
 
-    Mono<Response<Void>> redirectCallWithResponseInternal(String incomingCallContext, List<CommunicationIdentifier> targets, URI callbackUri, Integer timeoutInSeconds, Context context) {
+    Mono<Response<Void>> redirectCallWithResponseInternal(String incomingCallContext, CommunicationIdentifier target, Context context) {
         try {
-            RedirectCallRequest request = getRedirectCallRequest(incomingCallContext, targets, callbackUri, timeoutInSeconds);
+            RedirectCallRequest request = getRedirectCallRequest(incomingCallContext, target);
             return serverCallInternal.redirectCallWithResponseAsync(request, context)
             .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
         } catch (RuntimeException ex) {
@@ -1518,7 +1502,6 @@ public final class CallingServerAsyncClient {
      * Reject the call.
      *
      * @param incomingCallContext the incomingCallContext value to set.
-     * @param callbackUri the callbackUrl value to set.
      * @param rejectReason the call reject reason value to set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1526,9 +1509,9 @@ public final class CallingServerAsyncClient {
      * @return the completion.
     */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> rejectCall(String incomingCallContext, URI callbackUri, CallRejectReason rejectReason) {
+    public Mono<Void> rejectCall(String incomingCallContext, CallRejectReason rejectReason) {
         try {
-            RejectCallRequest request = getRejectCallRequest(incomingCallContext, callbackUri, rejectReason);
+            RejectCallRequest request = getRejectCallRequest(incomingCallContext, rejectReason);
 
             return serverCallInternal.rejectCallAsync(request)
             .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
@@ -1537,10 +1520,9 @@ public final class CallingServerAsyncClient {
         }
     }
 
-    private RejectCallRequest getRejectCallRequest(String incomingCallContext, URI callbackUri, CallRejectReason rejectReason) {
+    private RejectCallRequest getRejectCallRequest(String incomingCallContext, CallRejectReason rejectReason) {
         Objects.requireNonNull(incomingCallContext, "'redirectCallRequest' cannot be null.");
         RejectCallRequest request = new RejectCallRequest()
-            .setCallbackUri(callbackUri.toString())
             .setIncomingCallContext(incomingCallContext)
             .setCallRejectReason(rejectReason);
         return request;
@@ -1550,7 +1532,6 @@ public final class CallingServerAsyncClient {
      * Reject the call.
      *
      * @param incomingCallContext the incomingCallContext value to set.
-     * @param callbackUri the callbackUrl value to set.
      * @param rejectReason the call reject reason value to set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
@@ -1558,13 +1539,13 @@ public final class CallingServerAsyncClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> rejectCallWithResponse(String incomingCallContext, URI callbackUri, CallRejectReason rejectReason) {
-        return rejectCallWithResponseInternal(incomingCallContext, callbackUri, rejectReason, Context.NONE);
+    public Mono<Response<Void>> rejectCallWithResponse(String incomingCallContext, CallRejectReason rejectReason) {
+        return rejectCallWithResponseInternal(incomingCallContext, rejectReason, Context.NONE);
     }
 
-    Mono<Response<Void>> rejectCallWithResponseInternal(String incomingCallContext, URI callbackUri, CallRejectReason rejectReason, Context context) {
+    Mono<Response<Void>> rejectCallWithResponseInternal(String incomingCallContext, CallRejectReason rejectReason, Context context) {
         try {
-            RejectCallRequest request = getRejectCallRequest(incomingCallContext, callbackUri, rejectReason);
+            RejectCallRequest request = getRejectCallRequest(incomingCallContext, rejectReason);
             return serverCallInternal.rejectCallWithResponseAsync(request, context)
             .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
         } catch (RuntimeException ex) {

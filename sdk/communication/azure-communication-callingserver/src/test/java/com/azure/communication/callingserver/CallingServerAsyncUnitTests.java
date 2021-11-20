@@ -227,15 +227,14 @@ public class CallingServerAsyncUnitTests {
             ))
         );
 
-        List<CallParticipant> getParticipantResult = callingServerAsyncClient.getParticipant(
+        CallParticipant getParticipantResult = callingServerAsyncClient.getParticipant(
             SERVERCALL_LOCATOR,
             COMMUNICATION_USER
         ).block();
 
-        assertEquals(1, getParticipantResult.size());
-        assertEquals(NEW_PARTICIPANT_ID, getParticipantResult.get(0).getParticipantId());
-        assertEquals(COMMUNICATION_USER, getParticipantResult.get(0).getIdentifier());
-        assertEquals(true, getParticipantResult.get(0).isMuted());
+        assertEquals(NEW_PARTICIPANT_ID, getParticipantResult.getParticipantId());
+        assertEquals(COMMUNICATION_USER, getParticipantResult.getIdentifier());
+        assertEquals(true, getParticipantResult.isMuted());
     }
 
     @Test
@@ -248,17 +247,16 @@ public class CallingServerAsyncUnitTests {
             ))
         );
 
-        Response<List<CallParticipant>> getParticipantResultResponse = callingServerAsyncClient.getParticipantWithResponse(
+        Response<CallParticipant> getParticipantResultResponse = callingServerAsyncClient.getParticipantWithResponse(
             SERVERCALL_LOCATOR,
             COMMUNICATION_USER
         ).block();
 
         assertEquals(200, getParticipantResultResponse.getStatusCode());
-        List<CallParticipant> getParticipantResult = getParticipantResultResponse.getValue();
-        assertEquals(1, getParticipantResult.size());
-        assertEquals(NEW_PARTICIPANT_ID, getParticipantResult.get(0).getParticipantId());
-        assertEquals(COMMUNICATION_USER, getParticipantResult.get(0).getIdentifier());
-        assertEquals(true, getParticipantResult.get(0).isMuted());
+        CallParticipant getParticipantResult = getParticipantResultResponse.getValue();
+        assertEquals(NEW_PARTICIPANT_ID, getParticipantResult.getParticipantId());
+        assertEquals(COMMUNICATION_USER, getParticipantResult.getIdentifier());
+        assertEquals(true, getParticipantResult.isMuted());
     }
 
     @Test
@@ -477,9 +475,7 @@ public class CallingServerAsyncUnitTests {
 
         callingServerAsyncClient.redirectCall(
             INCOMING_CALL_CONTEXT,
-            Arrays.asList(COMMUNICATION_USER),
-            URI.create("audioFileUri"),
-            TIMEOUT
+            COMMUNICATION_USER
         ).block();
     }
 
@@ -493,9 +489,7 @@ public class CallingServerAsyncUnitTests {
 
         Response<Void> redirectCallResponse = callingServerAsyncClient.redirectCallWithResponse(
             INCOMING_CALL_CONTEXT,
-            Arrays.asList(COMMUNICATION_USER),
-            URI.create("audioFileUri"),
-            TIMEOUT
+            COMMUNICATION_USER
         ).block();
 
         assertEquals(202, redirectCallResponse.getStatusCode());
@@ -511,7 +505,6 @@ public class CallingServerAsyncUnitTests {
 
         callingServerAsyncClient.rejectCall(
             INCOMING_CALL_CONTEXT,
-            URI.create("audioFileUri"),
             CallRejectReason.BUSY
         ).block();
     }
@@ -526,7 +519,6 @@ public class CallingServerAsyncUnitTests {
 
         Response<Void> rejectCallResponse = callingServerAsyncClient.rejectCallWithResponse(
             INCOMING_CALL_CONTEXT,
-            URI.create("audioFileUri"),
             CallRejectReason.BUSY
         ).block();
 

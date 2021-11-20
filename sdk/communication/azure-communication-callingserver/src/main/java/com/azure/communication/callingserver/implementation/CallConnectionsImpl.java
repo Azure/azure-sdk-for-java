@@ -237,7 +237,7 @@ public final class CallConnectionsImpl {
         @Post("/calling/callConnections/{callConnectionId}/participants:get")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CommunicationErrorResponseException.class)
-        Mono<Response<List<CallParticipantInternal>>> getParticipant(
+        Mono<Response<CallParticipantInternal>> getParticipant(
                 @HostParam("endpoint") String endpoint,
                 @PathParam("callConnectionId") String callConnectionId,
                 @QueryParam("api-version") String apiVersion,
@@ -2070,7 +2070,7 @@ public final class CallConnectionsImpl {
      * @return participant from the call using identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<CallParticipantInternal>>> getParticipantWithResponseAsync(
+    public Mono<Response<CallParticipantInternal>> getParticipantWithResponseAsync(
             String callConnectionId, GetParticipantRequest getParticipantRequest) {
         final String accept = "application/json";
         return FluxUtil.withContext(
@@ -2096,7 +2096,7 @@ public final class CallConnectionsImpl {
      * @return participant from the call using identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<List<CallParticipantInternal>>> getParticipantWithResponseAsync(
+    public Mono<Response<CallParticipantInternal>> getParticipantWithResponseAsync(
             String callConnectionId, GetParticipantRequest getParticipantRequest, Context context) {
         final String accept = "application/json";
         return service.getParticipant(
@@ -2119,11 +2119,11 @@ public final class CallConnectionsImpl {
      * @return participant from the call using identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<CallParticipantInternal>> getParticipantAsync(
+    public Mono<CallParticipantInternal> getParticipantAsync(
             String callConnectionId, GetParticipantRequest getParticipantRequest) {
         return getParticipantWithResponseAsync(callConnectionId, getParticipantRequest)
                 .flatMap(
-                        (Response<List<CallParticipantInternal>> res) -> {
+                        (Response<CallParticipantInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -2144,11 +2144,11 @@ public final class CallConnectionsImpl {
      * @return participant from the call using identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<List<CallParticipantInternal>> getParticipantAsync(
+    public Mono<CallParticipantInternal> getParticipantAsync(
             String callConnectionId, GetParticipantRequest getParticipantRequest, Context context) {
         return getParticipantWithResponseAsync(callConnectionId, getParticipantRequest, context)
                 .flatMap(
-                        (Response<List<CallParticipantInternal>> res) -> {
+                        (Response<CallParticipantInternal> res) -> {
                             if (res.getValue() != null) {
                                 return Mono.just(res.getValue());
                             } else {
@@ -2168,7 +2168,7 @@ public final class CallConnectionsImpl {
      * @return participant from the call using identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<CallParticipantInternal> getParticipant(
+    public CallParticipantInternal getParticipant(
             String callConnectionId, GetParticipantRequest getParticipantRequest) {
         return getParticipantAsync(callConnectionId, getParticipantRequest).block();
     }
@@ -2185,7 +2185,7 @@ public final class CallConnectionsImpl {
      * @return participant from the call using identifier.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<CallParticipantInternal>> getParticipantWithResponse(
+    public Response<CallParticipantInternal> getParticipantWithResponse(
             String callConnectionId, GetParticipantRequest getParticipantRequest, Context context) {
         return getParticipantWithResponseAsync(callConnectionId, getParticipantRequest, context).block();
     }

@@ -99,7 +99,7 @@ public class ReadmeSamples {
         // BEGIN: readme-sample-addParticipant
         CommunicationIdentifier thirdCallee = new CommunicationUserIdentifier("<acs-user-identity-3>");
         String callbackUri = "<callback-uri-for-notification>";
-        callConnection.addParticipant(thirdCallee, "ACS User 3", "<string-for-tracing-responses>", URI.create(callbackUri));
+        callConnection.addParticipant(thirdCallee, "ACS User 3", "<string-for-tracing-responses>");
         // END: readme-sample-addParticipant
     }
 

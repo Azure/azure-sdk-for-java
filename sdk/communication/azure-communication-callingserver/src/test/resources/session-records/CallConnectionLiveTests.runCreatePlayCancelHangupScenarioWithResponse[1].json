@@ -35,7 +35,7 @@
       "X-Azure-Ref" : "0tNZwYQAAAACg7oVRLfNhR4kepVaZ73SaV1NURURHRTA4MTYAOWZjN2I1MTktYThjYy00Zjg5LTkzNWUtYzkxNDhhZTA5ZTgx",
       "StatusCode" : "202",
       "X-Microsoft-Skype-Chain-ID" : "f5f53191-7308-4bea-b7d6-14f34277fecb",
-      "Body" : "{\"operationId\":\"99460293-eba8-4a5a-88c5-c6db172cd898\",\"status\":\"running\",\"operationContext\":\"b0532558-98a2-4b10-8f80-489c552f2210\",\"resultInfo\":{\"code\":500,\"subcode\":9999,\"message\":\"FileValidationFailed\"}}",
+      "Body" : "{\"operationId\":\"99460293-eba8-4a5a-88c5-c6db172cd898\",\"status\":\"running\",\"operationContext\":\"b0532558-98a2-4b10-8f80-489c552f2210\",\"resultDetails\":{\"code\":500,\"subcode\":9999,\"message\":\"FileValidationFailed\"}}",
       "x-ms-client-request-id" : "af36e9e5-bfca-4449-aba5-79e45b19e8d8",
       "Date" : "Thu, 21 Oct 2021 02:55:49 GMT",
       "Content-Type" : "application/json; charset=utf-8"

@@ -285,7 +285,7 @@ public final class CallingServerClient {
      * @return Response for a successful get participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public List<CallParticipant> getParticipant(CallLocator callLocator, CommunicationIdentifier participant) {
+    public CallParticipant getParticipant(CallLocator callLocator, CommunicationIdentifier participant) {
         return callingServerAsyncClient.getParticipant(callLocator, participant).block();
     }
 
@@ -300,7 +300,7 @@ public final class CallingServerClient {
      * @return Response for a successful get participant request.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<List<CallParticipant>> getParticipantWithResponse(CallLocator callLocator, CommunicationIdentifier participant, Context context) {
+    public Response<CallParticipant> getParticipantWithResponse(CallLocator callLocator, CommunicationIdentifier participant, Context context) {
         return callingServerAsyncClient.getParticipantWithResponse(callLocator, participant, context).block();
     }
 
@@ -700,25 +700,21 @@ public final class CallingServerClient {
      * Redirect the call.
      *
      * @param incomingCallContext the incomingCallContext value to set.
-     * @param targets the targets value to set.
-     * @param callbackUri the callbackUrl value to set.
-     * @param timeout the timeout value to set.
+     * @param target the target value to set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void redirectCall(String incomingCallContext, List<CommunicationIdentifier> targets, URI callbackUri, Integer timeout) {
-        redirectCallWithResponse(incomingCallContext, targets, callbackUri, timeout, Context.NONE);
+    public void redirectCall(String incomingCallContext, CommunicationIdentifier target) {
+        redirectCallWithResponse(incomingCallContext, target, Context.NONE);
     }
 
     /**
      * Redirect the call.
      *
      * @param incomingCallContext the incomingCallContext value to set.
-     * @param targets the targets value to set.
-     * @param callbackUri the callbackUrl value to set.
-     * @param timeout the timeout value to set.
+     * @param target the target value to set.
      * @param context A {@link Context} representing the request context.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
@@ -726,30 +722,28 @@ public final class CallingServerClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> redirectCallWithResponse(String incomingCallContext, List<CommunicationIdentifier> targets, URI callbackUri, Integer timeout, Context context) {
-        return callingServerAsyncClient.redirectCallWithResponseInternal(incomingCallContext, targets, callbackUri, timeout, context).block();
+    public Response<Void> redirectCallWithResponse(String incomingCallContext, CommunicationIdentifier target, Context context) {
+        return callingServerAsyncClient.redirectCallWithResponseInternal(incomingCallContext, target, context).block();
     }
 
     /**
      * Redirect the call.
      *
      * @param incomingCallContext the incomingCallContext value to set.
-     * @param callbackUri the callbackUrl value to set.
      * @param callRejectReason the call reject reason value to set.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CallingServerErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void rejectCall(String incomingCallContext, URI callbackUri, CallRejectReason callRejectReason) {
-        rejectCallWithResponse(incomingCallContext, callbackUri, callRejectReason, Context.NONE);
+    public void rejectCall(String incomingCallContext, CallRejectReason callRejectReason) {
+        rejectCallWithResponse(incomingCallContext, callRejectReason, Context.NONE);
     }
 
     /**
      * Redirect the call.
      *
      * @param incomingCallContext the incomingCallContext value to set.
-     * @param callbackUri the callbackUrl value to set.
      * @param callRejectReason the call reject reason value to set.
      * @param context A {@link Context} representing the request context.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -758,8 +752,8 @@ public final class CallingServerClient {
      * @return the completion.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> rejectCallWithResponse(String incomingCallContext, URI callbackUri, CallRejectReason callRejectReason, Context context) {
-        return callingServerAsyncClient.rejectCallWithResponseInternal(incomingCallContext, callbackUri, callRejectReason, context).block();
+    public Response<Void> rejectCallWithResponse(String incomingCallContext, CallRejectReason callRejectReason, Context context) {
+        return callingServerAsyncClient.rejectCallWithResponseInternal(incomingCallContext, callRejectReason, context).block();
     }
 
     /**

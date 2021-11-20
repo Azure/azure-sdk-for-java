@@ -244,15 +244,14 @@ public class CallingServerUnitTests {
             ))
         );
 
-        List<CallParticipant> getParticipantResult = callingServerClient.getParticipant(
+        CallParticipant getParticipantResult = callingServerClient.getParticipant(
             SERVERCALL_LOCATOR,
             COMMUNICATION_USER
         );
 
-        assertEquals(1, getParticipantResult.size());
-        assertEquals(NEW_PARTICIPANT_ID, getParticipantResult.get(0).getParticipantId());
-        assertEquals(COMMUNICATION_USER, getParticipantResult.get(0).getIdentifier());
-        assertEquals(true, getParticipantResult.get(0).isMuted());
+        assertEquals(NEW_PARTICIPANT_ID, getParticipantResult.getParticipantId());
+        assertEquals(COMMUNICATION_USER, getParticipantResult.getIdentifier());
+        assertEquals(true, getParticipantResult.isMuted());
     }
 
     @Test
@@ -265,18 +264,17 @@ public class CallingServerUnitTests {
             ))
         );
 
-        Response<List<CallParticipant>> getParticipantResultResponse = callingServerClient.getParticipantWithResponse(
+        Response<CallParticipant> getParticipantResultResponse = callingServerClient.getParticipantWithResponse(
             SERVERCALL_LOCATOR,
             COMMUNICATION_USER,
             Context.NONE
         );
 
         assertEquals(200, getParticipantResultResponse.getStatusCode());
-        List<CallParticipant> getParticipantResult = getParticipantResultResponse.getValue();
-        assertEquals(1, getParticipantResult.size());
-        assertEquals(NEW_PARTICIPANT_ID, getParticipantResult.get(0).getParticipantId());
-        assertEquals(COMMUNICATION_USER, getParticipantResult.get(0).getIdentifier());
-        assertEquals(true, getParticipantResult.get(0).isMuted());
+        CallParticipant getParticipantResult = getParticipantResultResponse.getValue();
+        assertEquals(NEW_PARTICIPANT_ID, getParticipantResult.getParticipantId());
+        assertEquals(COMMUNICATION_USER, getParticipantResult.getIdentifier());
+        assertEquals(true, getParticipantResult.isMuted());
     }
 
     @Test
@@ -504,9 +502,7 @@ public class CallingServerUnitTests {
 
         callingServerClient.redirectCall(
             INCOMING_CALL_CONTEXT,
-            Arrays.asList(COMMUNICATION_USER),
-            URI.create("audioFileUri"),
-            TIMEOUT
+            COMMUNICATION_USER
         );
     }
 
@@ -520,9 +516,7 @@ public class CallingServerUnitTests {
 
         Response<Void> redirectCallResponse = callingServerClient.redirectCallWithResponse(
             INCOMING_CALL_CONTEXT,
-            Arrays.asList(COMMUNICATION_USER),
-            URI.create("audioFileUri"),
-            TIMEOUT,
+            COMMUNICATION_USER,
             Context.NONE
         );
 
@@ -539,7 +533,6 @@ public class CallingServerUnitTests {
 
         callingServerClient.rejectCall(
             INCOMING_CALL_CONTEXT,
-            URI.create("audioFileUri"),
             CallRejectReason.BUSY
         );
     }
@@ -554,7 +547,6 @@ public class CallingServerUnitTests {
 
         Response<Void> rejectCallResponse = callingServerClient.rejectCallWithResponse(
             INCOMING_CALL_CONTEXT,
-            URI.create("audioFileUri"),
             CallRejectReason.BUSY,
             Context.NONE
         );

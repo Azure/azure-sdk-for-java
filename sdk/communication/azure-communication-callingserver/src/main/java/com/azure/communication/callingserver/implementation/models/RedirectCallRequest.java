@@ -6,7 +6,6 @@ package com.azure.communication.callingserver.implementation.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.util.List;
 
 /** The request payload for redirecting the call. */
 @Fluent
@@ -20,20 +19,8 @@ public final class RedirectCallRequest {
     /*
      * The target identity to redirect the call to.
      */
-    @JsonProperty(value = "targets", required = true)
-    private List<CommunicationIdentifierModel> targets;
-
-    /*
-     * The callback uri.
-     */
-    @JsonProperty(value = "callbackUri")
-    private String callbackUri;
-
-    /*
-     * The timeout for the redirect in seconds.
-     */
-    @JsonProperty(value = "timeoutInSeconds")
-    private Integer timeoutInSeconds;
+    @JsonProperty(value = "target", required = true)
+    private CommunicationIdentifierModel target;
 
     /**
      * Get the incomingCallContext property: The context associated with the call.
@@ -56,62 +43,22 @@ public final class RedirectCallRequest {
     }
 
     /**
-     * Get the targets property: The target identity to redirect the call to.
+     * Get the target property: The target identity to redirect the call to.
      *
-     * @return the targets value.
+     * @return the target value.
      */
-    public List<CommunicationIdentifierModel> getTargets() {
-        return this.targets;
+    public CommunicationIdentifierModel getTarget() {
+        return this.target;
     }
 
     /**
-     * Set the targets property: The target identity to redirect the call to.
+     * Set the target property: The target identity to redirect the call to.
      *
-     * @param targets the targets value to set.
+     * @param target the target value to set.
      * @return the RedirectCallRequest object itself.
      */
-    public RedirectCallRequest setTargets(List<CommunicationIdentifierModel> targets) {
-        this.targets = targets;
-        return this;
-    }
-
-    /**
-     * Get the callbackUri property: The callback uri.
-     *
-     * @return the callbackUri value.
-     */
-    public String getCallbackUri() {
-        return this.callbackUri;
-    }
-
-    /**
-     * Set the callbackUri property: The callback uri.
-     *
-     * @param callbackUri the callbackUri value to set.
-     * @return the RedirectCallRequest object itself.
-     */
-    public RedirectCallRequest setCallbackUri(String callbackUri) {
-        this.callbackUri = callbackUri;
-        return this;
-    }
-
-    /**
-     * Get the timeoutInSeconds property: The timeout for the redirect in seconds.
-     *
-     * @return the timeoutInSeconds value.
-     */
-    public Integer getTimeoutInSeconds() {
-        return this.timeoutInSeconds;
-    }
-
-    /**
-     * Set the timeoutInSeconds property: The timeout for the redirect in seconds.
-     *
-     * @param timeoutInSeconds the timeoutInSeconds value to set.
-     * @return the RedirectCallRequest object itself.
-     */
-    public RedirectCallRequest setTimeoutInSeconds(Integer timeoutInSeconds) {
-        this.timeoutInSeconds = timeoutInSeconds;
+    public RedirectCallRequest setTarget(CommunicationIdentifierModel target) {
+        this.target = target;
         return this;
     }
 }

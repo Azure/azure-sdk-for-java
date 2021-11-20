@@ -70,12 +70,10 @@ public class CallingServerResponseMocker {
     }
 
     public static String generateGetParticipantResult() {
-        List<CallParticipantInternal> result = new ArrayList<>();
-        CallParticipantInternal participant = new CallParticipantInternal()
+        CallParticipantInternal result = new CallParticipantInternal()
             .setParticipantId(NEW_PARTICIPANT_ID)
             .setIdentifier(CommunicationIdentifierConverter.convert(COMMUNICATION_USER))
             .setIsMuted(true);
-        result.add(participant);
 
         return serializeObject(result);
     }
@@ -124,7 +122,7 @@ public class CallingServerResponseMocker {
             .setOperationContext(OPERATION_CONTEXT)
             .setOperationId(OPERATION_ID)
             .setStatus(CallingOperationStatus.COMPLETED)
-            .setResultInfo(new CallingOperationResultDetailsInternal().setCode(202).setSubcode(0).setMessage("message"));
+            .setResultDetails(new CallingOperationResultDetailsInternal().setCode(202).setSubcode(0).setMessage("message"));
 
         return serializeObject(result);
     }
@@ -148,7 +146,7 @@ public class CallingServerResponseMocker {
             .setOperationContext(OPERATION_CONTEXT)
             .setOperationId(OPERATION_ID)
             .setStatus(CallingOperationStatus.COMPLETED)
-            .setResultInfo(new CallingOperationResultDetailsInternal().setCode(202).setSubcode(0).setMessage("message"));
+            .setResultDetails(new CallingOperationResultDetailsInternal().setCode(202).setSubcode(0).setMessage("message"));
 
         return serializeObject(result);
     }

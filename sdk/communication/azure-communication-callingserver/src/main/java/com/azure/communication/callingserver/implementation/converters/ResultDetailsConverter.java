@@ -9,7 +9,7 @@ import com.azure.communication.callingserver.models.CallingOperationResultDetail
 /**
  * A converter between {@link CallingOperationResultDetailsInternal} and {@link CallingOperationResultDetails}.
  */
-public final class ResultInfoConverter {
+public final class ResultDetailsConverter {
 
     /**
      * Maps from {@link CallingOperationResultDetailsInternal} to {@link CallingOperationResultDetails}.
