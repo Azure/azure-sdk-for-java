@@ -192,7 +192,7 @@ private class ChangeFeedMicroBatchStream
    * to this method.
    */
   // TODO @fabianm mark this override when switching to Spark 3.2.0
-  def reportLatestOffset(): Offset = {
+  override def reportLatestOffset(): Offset = {
     this.latestOffsetSnapshot.orNull
   }
 

@@ -3,7 +3,6 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.spark.diagnostics.SimpleDiagnosticsSlf4jLogger
-import com.nimbusds.jose.util.StandardCharset
 
 import java.io.{BufferedReader, File, FileOutputStream, FileReader}
 import java.nio.charset.StandardCharsets
