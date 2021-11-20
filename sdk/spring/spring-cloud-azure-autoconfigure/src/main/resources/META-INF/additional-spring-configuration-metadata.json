@@ -715,7 +715,7 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "To keep in accordance with Azure Event Hubs service name",
+        "reason": "To keep in accordance with Azure Event Hubs service name and use the new prefix of 'spring.cloud.azure.eventhubs.processor'",
         "replacement": "spring.cloud.azure.eventhubs.processor.checkpoint-store.account-key"
       }
     },
@@ -724,7 +724,7 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "To keep in accordance with Azure Event Hubs service name",
+        "reason": "To keep in accordance with Azure Event Hubs service name and use the new prefix of 'spring.cloud.azure.eventhubs.processor'",
         "replacement": "spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name"
       }
     },
@@ -733,7 +733,7 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "To keep in accordance with Azure Event Hubs service name",
+        "reason": "To keep in accordance with Azure Event Hubs service name and use the new prefix of 'spring.cloud.azure.eventhubs.processor'",
         "replacement": "spring.cloud.azure.eventhubs.processor.checkpoint-store.account-name"
       }
     },
@@ -847,7 +847,7 @@
       "name": "spring.cloud.stream.eventhub.bindings",
       "deprecation": {
         "level": "error",
-        "reason": "To keep in accordance with Azure Event Hubs service name, legacy is not supported",
+        "reason": "To keep in accordance with Azure Event Hubs service name, legacy is deprecated.",
         "replacement": "spring.cloud.stream.eventhubs.bindings"
       }
     },
@@ -856,7 +856,7 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "Not support in the current version.",
+        "reason": "Deprecate to use the unified style with the prefix of 'spring.cloud.azure.eventhubs.processor'",
         "replacement": "spring.cloud.azure.eventhubs.processor.checkpoint-store.account-name"
       }
     },
