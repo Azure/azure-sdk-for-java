@@ -267,7 +267,6 @@ begin {
         "azure-scheduler",
         "azure-sdks",
         "azure-search",
-        "azure-security-attestation",
         "azure-security-center",
         "azure-sentinel",
         "azure-service-bus",
