@@ -8,7 +8,6 @@ import static com.azure.core.util.FluxUtil.withContext;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
 
 import com.azure.communication.callingserver.implementation.CallConnectionsImpl;
@@ -97,7 +96,6 @@ public final class CallConnectionAsync {
 
     Mono<PlayAudioResult> playAudioInternal(URI audioFileUri, PlayAudioOptions playAudioOptions) {
         try {
-            Objects.requireNonNull(audioFileUri, "'audioFileUri' cannot be null.");
             PlayAudioRequest request = new PlayAudioRequest().setAudioFileUri(audioFileUri.toString());
             if (playAudioOptions != null) {
                 request
@@ -144,7 +142,6 @@ public final class CallConnectionAsync {
         PlayAudioOptions playAudioOptions,
         Context context) {
         try {
-            Objects.requireNonNull(audioFileUri, "'audioFileUri' cannot be null.");
             PlayAudioRequest request = new PlayAudioRequest().setAudioFileUri(audioFileUri.toString());
             if (playAudioOptions != null) {
                 request
@@ -682,9 +679,6 @@ public final class CallConnectionAsync {
     Mono<PlayAudioResult> playAudioToParticipantInternal(CommunicationIdentifier participant, URI audioFileUri,
             PlayAudioOptions playAudioOptions, Context context) {
         try {
-            Objects.requireNonNull(participant, "'participant' cannot be null.");
-            Objects.requireNonNull(audioFileUri, "'audioFileUri' cannot be null.");
-
             PlayAudioToParticipantRequest playAudioToParticipantRequest = new PlayAudioToParticipantRequest()
                 .setAudioFileUri(audioFileUri.toString())
                 .setIdentifier(CommunicationIdentifierConverter.convert(participant));
@@ -726,9 +720,6 @@ public final class CallConnectionAsync {
     Mono<Response<PlayAudioResult>> playAudioToParticipantWithResponseInternal(CommunicationIdentifier participant, URI audioFileUri,
             PlayAudioOptions playAudioOptions, Context context) {
         try {
-            Objects.requireNonNull(participant, "'participant' cannot be null.");
-            Objects.requireNonNull(audioFileUri, "'audioFileUri' cannot be null.");
-
             PlayAudioToParticipantRequest playAudioToParticipantRequest = new PlayAudioToParticipantRequest()
                 .setAudioFileUri(audioFileUri.toString())
                 .setIdentifier(CommunicationIdentifierConverter.convert(participant));
@@ -1017,7 +1008,6 @@ public final class CallConnectionAsync {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> resumeParticipantMeetingAudioWithResponse(
         CommunicationIdentifier participant) {
-        Objects.requireNonNull(participant, "'participant' cannot be null.");
         return resumeParticipantMeetingAudioWithResponseInternal(participant, Context.NONE);
     }
 
@@ -1139,7 +1129,6 @@ public final class CallConnectionAsync {
 
     Mono<Response<Void>> updateAudioRoutingGroupWithResponseInternal(String audioRoutingGroupId, List<CommunicationIdentifier> targets, Context context) {
         try {
-            Objects.requireNonNull(audioRoutingGroupId, "'audioRoutingGroupId' cannot be null.");
             UpdateAudioRoutingGroupRequest request = getUpdateAudioRoutingGroupRequest(audioRoutingGroupId, targets);
             return callConnectionInternal.updateAudioRoutingGroupWithResponseAsync(callConnectionId, audioRoutingGroupId, request, context)
             .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
@@ -1237,8 +1226,6 @@ public final class CallConnectionAsync {
 
     Mono<Response<Void>> deleteAudioRoutingGroupWithResponseInternal(String audioRoutingGroupId, Context context) {
         try {
-            Objects.requireNonNull(audioRoutingGroupId, "'audioRoutingGroupId' cannot be null.");
-
             return callConnectionInternal.deleteAudioRoutingGroupWithResponseAsync(callConnectionId, audioRoutingGroupId, context)
             .onErrorMap(CommunicationErrorResponseException.class, CallingServerErrorConverter::translateException);
         } catch (RuntimeException ex) {
@@ -1258,7 +1245,6 @@ public final class CallConnectionAsync {
     }
 
     private AudioRoutingGroupRequest getAudioRoutingGroupRequest(AudioRoutingMode audioRoutingMode, List<CommunicationIdentifier> targets) {
-        Objects.requireNonNull(targets, "'targets' cannot be null.");
         AudioRoutingGroupRequest request = new AudioRoutingGroupRequest()
             .setAudioRoutingMode(audioRoutingMode)
             .setTargets(targets
@@ -1269,7 +1255,6 @@ public final class CallConnectionAsync {
     }
 
     private UpdateAudioRoutingGroupRequest getUpdateAudioRoutingGroupRequest(String audioRoutingGroupId, List<CommunicationIdentifier> targets) {
-        Objects.requireNonNull(targets, "'targets' cannot be null.");
         UpdateAudioRoutingGroupRequest request = new UpdateAudioRoutingGroupRequest()
             .setTargets(targets
                 .stream()
