@@ -715,7 +715,7 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
+        "reason": "to keep in accordance with Azure Event Hubs service name",
         "replacement": "spring.cloud.azure.eventhubs.processor.checkpoint-store.account-key"
       }
     },
@@ -724,7 +724,7 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
+        "reason": "to keep in accordance with Azure Event Hubs service name",
         "replacement": "spring.cloud.azure.eventhubs.processor.checkpoint-store.container-name"
       }
     },
@@ -733,7 +733,7 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
+        "reason": "to keep in accordance with Azure Event Hubs service name",
         "replacement": "spring.cloud.azure.eventhubs.processor.checkpoint-store.account-name"
       }
     },
@@ -742,7 +742,7 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
+        "reason": "to keep in accordance with Azure Event Hubs service name",
         "replacement": "spring.cloud.azure.eventhubs.connection-string"
       }
     },
@@ -751,7 +751,7 @@
       "type": "java.lang.String",
       "deprecation": {
         "level": "error",
-        "reason": "Todo: add deprecation reason",
+        "reason": "to keep in accordance with Azure Event Hubs service name",
         "replacement": "spring.cloud.azure.eventhubs.namespace"
       }
     },
