@@ -85,7 +85,7 @@ public final class CosmosDiagnostics {
      * @return set of regions contacted for this request
      */
     @Beta(value = Beta.SinceVersion.V4_9_0, warningText = Beta.PREVIEW_SUBJECT_TO_CHANGE_WARNING)
-    @Deprecated(since = "4.22.0", forRemoval = true)
+    @Deprecated
     public Set<URI> getRegionsContacted() {
         if (this.feedResponseDiagnostics != null) {
             return null;
