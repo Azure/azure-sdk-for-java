@@ -16,7 +16,13 @@ import com.azure.spring.eventhubs.core.properties.NamespaceProperties;
 import com.azure.spring.eventhubs.core.properties.ProcessorProperties;
 import com.azure.spring.eventhubs.core.properties.ProducerProperties;
 import com.azure.spring.integration.eventhubs.inbound.EventHubsInboundChannelAdapter;
+import com.azure.spring.integration.eventhubs.inbound.health.EventHusProcessorInstrumentation;
 import com.azure.spring.integration.handler.DefaultMessageHandler;
+import com.azure.spring.integration.instrumentation.DefaultInstrumentation;
+import com.azure.spring.integration.instrumentation.DefaultInstrumentationManager;
+import com.azure.spring.integration.instrumentation.Instrumentation;
+import com.azure.spring.integration.instrumentation.InstrumentationManager;
+import com.azure.spring.integration.instrumentation.InstrumentationSendCallback;
 import com.azure.spring.messaging.ListenerMode;
 import com.azure.spring.messaging.PropertiesSupplier;
 import org.slf4j.Logger;
@@ -41,9 +47,13 @@ import org.springframework.util.StringUtils;
 import reactor.util.function.Tuple2;
 import reactor.util.function.Tuples;
 
+import java.time.Duration;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
+
+import static com.azure.spring.integration.instrumentation.Instrumentation.Type.CONSUMER;
+import static com.azure.spring.integration.instrumentation.Instrumentation.Type.PRODUCER;
 
 /**
  *
@@ -62,13 +72,12 @@ public class EventHubsMessageChannelBinder extends
     private EventHubsTemplate eventHubsTemplate;
     private CheckpointStore checkpointStore;
     private EventHubsProcessorContainer processorContainer;
+    private final InstrumentationManager instrumentationManager = new DefaultInstrumentationManager();
     private EventHubsExtendedBindingProperties bindingProperties = new EventHubsExtendedBindingProperties();
     private final Map<String, ExtendedProducerProperties<EventHubsProducerProperties>>
         extendedProducerPropertiesMap = new ConcurrentHashMap<>();
     private final Map<Tuple2<String, String>, ExtendedConsumerProperties<EventHubsConsumerProperties>>
         extendedConsumerPropertiesMap = new ConcurrentHashMap<>();
-
-    private final Map<String, EventHubInformation> eventHubsInUse = new ConcurrentHashMap<>();
 
     public EventHubsMessageChannelBinder(String[] headersToEmbed, EventHubsChannelProvisioner provisioningProvider) {
         super(headersToEmbed, provisioningProvider);
@@ -82,14 +91,15 @@ public class EventHubsMessageChannelBinder extends
         extendedProducerPropertiesMap.put(destination.getName(), producerProperties);
         Assert.notNull(getEventHubTemplate(), "eventHubsTemplate can't be null when create a producer");
 
-        eventHubsInUse.put(destination.getName(), new EventHubInformation(null));
-
         DefaultMessageHandler handler = new DefaultMessageHandler(destination.getName(), this.eventHubsTemplate);
 
         handler.setBeanFactory(getBeanFactory());
         handler.setSync(producerProperties.getExtension().isSync());
         handler.setSendTimeout(producerProperties.getExtension().getSendTimeout());
         handler.setSendFailureChannel(errorChannel);
+
+        String instrumentationId = Instrumentation.buildId(PRODUCER, destination.getName());
+        handler.setSendCallback(new InstrumentationSendCallback(instrumentationId, instrumentationManager));
 
         if (producerProperties.isPartitioned()) {
             handler.setPartitionIdExpression(
@@ -106,8 +116,6 @@ public class EventHubsMessageChannelBinder extends
         extendedConsumerPropertiesMap.put(Tuples.of(destination.getName(), group), properties);
         Assert.notNull(getProcessorContainer(), "eventProcessorsContainer can't be null when create a consumer");
 
-        eventHubsInUse.put(destination.getName(), new EventHubInformation(group));
-
         boolean anonymous = !StringUtils.hasText(group);
         if (anonymous) {
             group = "anonymous." + UUID.randomUUID();
@@ -122,7 +130,9 @@ public class EventHubsMessageChannelBinder extends
                 destination.getName(), group, properties.getExtension().getCheckpoint());
         }
         inboundAdapter.setBeanFactory(getBeanFactory());
-
+        String instrumentationId = Instrumentation.buildId(CONSUMER, destination.getName() + "/" +  group);
+        inboundAdapter.setInstrumentationManager(instrumentationManager);
+        inboundAdapter.setInstrumentationId(instrumentationId);
         ErrorInfrastructure errorInfrastructure = registerErrorInfrastructure(destination, group, properties);
         inboundAdapter.setErrorChannel(errorInfrastructure.getErrorChannel());
 
@@ -151,23 +161,6 @@ public class EventHubsMessageChannelBinder extends
 
     public void setBindingProperties(EventHubsExtendedBindingProperties bindingProperties) {
         this.bindingProperties = bindingProperties;
-    }
-
-    Map<String, EventHubInformation> getEventHubsInUse() {
-        return eventHubsInUse;
-    }
-
-    static class EventHubInformation {
-
-        private final String consumerGroup;
-
-        EventHubInformation(String consumerGroup) {
-            this.consumerGroup = consumerGroup;
-        }
-
-        public String getConsumerGroup() {
-            return consumerGroup;
-        }
     }
 
     private PropertiesSupplier<String, ProducerProperties> getProducerPropertiesSupplier() {
@@ -201,14 +194,29 @@ public class EventHubsMessageChannelBinder extends
 
     private EventHubsTemplate getEventHubTemplate() {
         if (this.eventHubsTemplate == null) {
-            this.eventHubsTemplate = new EventHubsTemplate(new DefaultEventHubsNamespaceProducerFactory(this.namespaceProperties, getProducerPropertiesSupplier()));
+            DefaultEventHubsNamespaceProducerFactory factory = new DefaultEventHubsNamespaceProducerFactory(
+                this.namespaceProperties, getProducerPropertiesSupplier());
+            factory.addListener((name, producerAsyncClient) -> {
+                DefaultInstrumentation instrumentation = new DefaultInstrumentation(name, PRODUCER);
+                instrumentation.markUp();
+                instrumentationManager.addHealthInstrumentation(instrumentation.getId(), instrumentation);
+            });
+            this.eventHubsTemplate = new EventHubsTemplate(factory);
         }
         return this.eventHubsTemplate;
     }
 
     private EventHubsProcessorContainer getProcessorContainer() {
         if (this.processorContainer == null) {
-            this.processorContainer = new EventHubsProcessorContainer(new DefaultEventHubsNamespaceProcessorFactory(this.checkpointStore, this.namespaceProperties, getProcessorPropertiesSupplier()));
+            DefaultEventHubsNamespaceProcessorFactory factory = new DefaultEventHubsNamespaceProcessorFactory(
+                this.checkpointStore, this.namespaceProperties, getProcessorPropertiesSupplier());
+            factory.addListener((name, consumerGroup, processorClient) -> {
+                String instrumentationName = name + "/" + consumerGroup;
+                Instrumentation instrumentation = new EventHusProcessorInstrumentation(instrumentationName, CONSUMER, Duration.ofMinutes(2));
+                instrumentation.markUp();
+                instrumentationManager.addHealthInstrumentation(instrumentation.getId(), instrumentation);
+            });
+            this.processorContainer = new EventHubsProcessorContainer(factory);
         }
         return this.processorContainer;
     }
@@ -219,5 +227,9 @@ public class EventHubsMessageChannelBinder extends
 
     public void setCheckpointStore(CheckpointStore checkpointStore) {
         this.checkpointStore = checkpointStore;
+    }
+
+    public InstrumentationManager getInstrumentationManager() {
+        return instrumentationManager;
     }
 }

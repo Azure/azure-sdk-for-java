@@ -25,9 +25,7 @@ public interface EventHubsProducerFactory {
      */
     interface Listener {
 
-        default void producerAdded(String name, EventHubProducerAsyncClient client) {
-
-        }
+        void producerAdded(String name, EventHubProducerAsyncClient client);
 
         default void producerRemoved(String name, EventHubProducerAsyncClient client) {
         }
