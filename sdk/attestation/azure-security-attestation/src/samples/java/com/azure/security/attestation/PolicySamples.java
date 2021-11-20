@@ -44,11 +44,8 @@ public class PolicySamples {
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
 
-        // BEGIN: readme-sample-getCurrentPolicyAsync
         client.getAttestationPolicy(AttestationType.OPEN_ENCLAVE)
                 .subscribe(policy -> System.out.printf("Current policy for OpenEnclave is: %s\n", policy));
-        // END: readme-sample-getCurrentPolicyAsync
-
     }
 
     public static void setCurrentPolicy() {
@@ -78,12 +75,10 @@ public class PolicySamples {
             .buildAsyncClient();
 
         System.out.println("Setting an async policy");
-        // BEGIN: readme-sample-set-unsigned-policy-async
         // Set the listed policy on an attestation instance. Please note that this particular policy will deny all
         // attestation requests and should not be used in production.
         client.setAttestationPolicy(AttestationType.OPEN_ENCLAVE, "version=1.0; authorizationrules{=> deny();}; issuancerules{};")
                 .subscribe(result -> System.out.printf("Async policy set for OpenEnclave result: %s\n", result.getPolicyResolution()));
-        // END: readme-sample-set-unsigned-policy-async
     }
 
     public static void setSignedPolicy() {
@@ -122,14 +117,12 @@ public class PolicySamples {
 
 
         System.out.println("Setting an async policy");
-        // BEGIN: readme-sample-set-signed-policy-async
         // Set the listed policy on an attestation instance. Please note that this particular policy will deny all
         // attestation requests and should not be used in production.
         client.setAttestationPolicy(AttestationType.OPEN_ENCLAVE, new AttestationPolicySetOptions()
                 .setAttestationPolicy("version=1.0; authorizationrules{=> permit();}; issuancerules{};")
                 .setAttestationSigner(new AttestationSigningKey(certificate, privateKey)))
             .subscribe(result -> System.out.printf("Async policy set for OpenEnclave result: %s\n", result.getPolicyResolution()));
-        // END: readme-sample-set-signed-policy-async
     }
 
 
@@ -152,20 +145,16 @@ public class PolicySamples {
 
     public static void resetCurrentPolicyAsync() {
         String endpoint = System.getenv("ATTESTATION_AAD_URL");
-        //BEGIN: readme-sample-create-async-admin-client
         AttestationAdministrationClientBuilder attestationBuilder = new AttestationAdministrationClientBuilder();
         // Note that the "policy" calls require authentication.
         AttestationAdministrationAsyncClient client = attestationBuilder
             .endpoint(endpoint)
             .credential(new DefaultAzureCredentialBuilder().build())
             .buildAsyncClient();
-        //END: readme-sample-create-async-admin-client
 
-        // BEGIN: readme-sample-resetCurrentPolicyAsync
         client.resetAttestationPolicy(AttestationType.OPEN_ENCLAVE)
                 .subscribe(result -> System.out.printf("Policy Reset for OpenEnclave result: %s\n", result.getPolicyResolution()));
 
-        // END: readme-sample-resetCurrentPolicyAsync
     }
 
 

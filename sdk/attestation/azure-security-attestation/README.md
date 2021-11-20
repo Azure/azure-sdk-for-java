@@ -89,14 +89,14 @@ clients to add, remove or enumerate the policy management certificates.
 ## Examples
 
 * [Instantiate a synchronous attestation client](#create-a-synchronous-attestation-client)
-* [Instantiate an asynchronous attestation client](#create-an-asynchronous-attestation-client)
 * [Retrieve token validation certificates](#retrieve-token-certificates)
 * [Attest an SGX enclave](#attest-an-sgx-enclave)
 * [Instantiate a synchronous administrative client](#create-a-synchronous-administrative-client)
-* [Instantiate an asynchronous administrative client](#create-an-asynchronous-administrative-client)
 * [Get attestation policy](#retrieve-current-attestation-policy-for-openenclave)
 * [Set unsigned attestation policy](#set-unsigned-attestation-policy-aad-clients-only)
 * [Set signed attestation policy](#set-signed-attestation-policy)
+* [List policy management certificates](#list-attestation-signing-certificates)
+* [Add policy management certificate](#add-attestation-signing-certificate)
 
 ### Create a synchronous attestation client
 The `AttestationClientBuilder` class is used to create instances of the attestation client:
@@ -107,15 +107,6 @@ AttestationClientBuilder attestationBuilder = new AttestationClientBuilder();
 AttestationClient client = attestationBuilder
     .endpoint(endpoint)
     .buildClient();
-```
-
-### Create an asynchronous attestation client
-```java readme-sample-create-asynchronous-client
-AttestationClientBuilder attestationBuilder = new AttestationClientBuilder();
-// Note that the "attest" calls do not require authentication.
-AttestationAsyncClient client = attestationBuilder
-    .endpoint(endpoint)
-    .buildAsyncClient();
 ```
 
 ### Retrieve Token Certificates
@@ -161,7 +152,7 @@ System.out.printf("Runtime Data Length: %d\n", result.getEnclaveHeldData().getLe
 ```
 
 ### Create a synchronous administrative client
-
+All administrative clients are authenticated. 
 ```java readme-sample-create-admin-client
 AttestationAdministrationClientBuilder attestationBuilder = new AttestationAdministrationClientBuilder();
 // Note that the "policy" calls require authentication.
@@ -171,27 +162,13 @@ AttestationAdministrationClient client = attestationBuilder
     .buildClient();
 ```
 
-### Create an asynchronous administrative client
-```java readme-sample-create-async-admin-client
-AttestationAdministrationClientBuilder attestationBuilder = new AttestationAdministrationClientBuilder();
-// Note that the "policy" calls require authentication.
-AttestationAdministrationAsyncClient client = attestationBuilder
-    .endpoint(endpoint)
-    .credential(new DefaultAzureCredentialBuilder().build())
-    .buildAsyncClient();
-```
-
 ### Retrieve current attestation policy for OpenEnclave
 Use the `getAttestationPolicy` API to retrieve the current attestation policy for a given TEE.
 ```java readme-sample-getCurrentPolicy
 String currentPolicy = client.getAttestationPolicy(AttestationType.OPEN_ENCLAVE);
 System.out.printf("Current policy for OpenEnclave is: %s\n", currentPolicy);
 ```
-or:
-```java readme-sample-getCurrentPolicyAsync
-client.getAttestationPolicy(AttestationType.OPEN_ENCLAVE)
-        .subscribe(policy -> System.out.printf("Current policy for OpenEnclave is: %s\n", policy));
-```
+
 ### Set unsigned attestation policy (AAD clients only)
 When an attestation instance is in AAD mode, the caller can use a convenience method to set an unsigned attestation
 policy on the instance.
@@ -201,13 +178,6 @@ policy on the instance.
 // attestation requests and should not be used in production.
 PolicyResult policyResult = client.setAttestationPolicy(AttestationType.OPEN_ENCLAVE, "version=1.0; authorizationrules{=> deny();}; issuancerules{};");
 System.out.printf("Policy set for OpenEnclave result: %s\n", policyResult.getPolicyResolution());
-```
-or
-```java readme-sample-set-unsigned-policy-async
-// Set the listed policy on an attestation instance. Please note that this particular policy will deny all
-// attestation requests and should not be used in production.
-client.setAttestationPolicy(AttestationType.OPEN_ENCLAVE, "version=1.0; authorizationrules{=> deny();}; issuancerules{};")
-        .subscribe(result -> System.out.printf("Async policy set for OpenEnclave result: %s\n", result.getPolicyResolution()));
 ```
 
 ### Set signed attestation policy
@@ -222,15 +192,56 @@ PolicyResult policyResult = client.setAttestationPolicy(AttestationType.SGX_ENCL
 System.out.printf("Policy set for Sgx result: %s\n", policyResult.getPolicyResolution());
 ```
 
-or
+### List attestation signing certificates
+When an attestation instance is in `Isolated` mode, the policy APIs need additional proof of authorization. This proof is 
+provided via the `AttestationSigningKey` parameter passed into the set and reset policy APIs.
 
-```java readme-sample-set-signed-policy-async
-// Set the listed policy on an attestation instance. Please note that this particular policy will deny all
-// attestation requests and should not be used in production.
-client.setAttestationPolicy(AttestationType.OPEN_ENCLAVE, new AttestationPolicySetOptions()
-        .setAttestationPolicy("version=1.0; authorizationrules{=> permit();}; issuancerules{};")
-        .setAttestationSigner(new AttestationSigningKey(certificate, privateKey)))
-    .subscribe(result -> System.out.printf("Async policy set for OpenEnclave result: %s\n", result.getPolicyResolution()));
+Each `Isolated` mode instance has a set of certificates, which determine whether a caller has the authority to set an
+attestation policy. When an attestation policy is set, the client presents a signed "token" to the service which is signed
+by the key in the `AttestationSigningKey`. The signed token, including the certificate in the `AttestationSigningKey` is 
+sent to the attestation service, which verifies that the token was signed with the private key corresponding to the 
+public key in the token. The set or reset policy operation will only succeed if the certificate in the token is one of 
+the policy management tokens. This interaction ensures that the client is in possession of the private key associated with
+one of the policy management certificates and is thus authorized to perform the operation.
+
+```java readme-sample-listPolicyCertificates
+List<AttestationSigner> signers = client.listPolicyManagementCertificates();
+System.out.printf("Instance %s contains %d signers.\n", endpoint, signers.size());
+for (AttestationSigner signer : signers) {
+    System.out.printf("Certificate Subject: %s", signer.getCertificates().get(0).getSubjectDN().toString());
+}
+```
+
+### Add attestation signing certificate
+Adds a new certificate to the set of policy management certificates. The request to add the policy management certificate 
+must be signed with the private key associated with one of the existing policy management certificates (this ensures that
+the caller is authorized to update the set of policy certificates).
+
+Note: Adding the same certificate twice is not considered an error - if the certificate is already present, the addition is
+ignored (this possibly surprising behavior is there because retries could cause the addition to be executed multiple times)
+
+```java readme-sample-addPolicyManagementCertificate
+System.out.printf("Adding new certificate %s\n", certificateToAdd.getSubjectDN().toString());
+PolicyCertificatesModificationResult modificationResult = client.addPolicyManagementCertificate(
+    new PolicyManagementCertificateOptions(certificateToAdd, new AttestationSigningKey(isolatedCertificate, isolatedKey)));
+System.out.printf("Updated policy certificate, certificate add result: %s\n", modificationResult.getCertificateResolution());
+System.out.printf("Added certificate thumbprint: %s\n", modificationResult.getCertificateThumbprint());
+```
+
+### Remove attestation signing certificate
+Removes a certificate from the set of policy management certificates. The request to remove the policy management certificate
+must be signed with the private key associated with one of the existing policy management certificates (this ensures that
+the caller is authorized to update the set of policy certificates).
+
+Note: Removing a non-existent certificate is not considered an error - if the certificate is not present, the removal is 
+ignored (this possibly surprising behavior is there because retries could cause the removal to be executed multiple times)
+
+```java readme-sample-removePolicyManagementCertificate
+System.out.printf("Removing existing certificate %s\n", certificateToRemove.getSubjectDN().toString());
+PolicyCertificatesModificationResult modificationResult = client.removePolicyManagementCertificate(
+    new PolicyManagementCertificateOptions(certificateToRemove, new AttestationSigningKey(isolatedCertificate, isolatedKey)));
+System.out.printf("Updated policy certificate, certificate remove result: %s\n", modificationResult.getCertificateResolution());
+System.out.printf("Removed certificate thumbprint: %s\n", modificationResult.getCertificateThumbprint());
 ```
 
 

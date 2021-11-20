@@ -3,7 +3,9 @@
 
 package com.azure.security.attestation;
 
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.rest.Response;
+import com.azure.core.models.ResponseError;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.JacksonAdapter;
@@ -18,6 +20,10 @@ import java.io.IOException;
 import java.time.Duration;
 import java.util.LinkedHashMap;
 
+/**
+ * The AttestationSamples class contains samples demonstrating how to use the attestation SDK to attest evidence
+ * created by an enclave.
+ */
 public class AttestationSamples {
 
     /**
@@ -163,7 +169,7 @@ public class AttestationSamples {
 
                 try {
                     String serializedObject = serializer.serialize(runtimeClaims.get(key), SerializerEncoding.JSON);
-                    System.out.printf("%s", serializedObject);
+                    System.out.printf("%s\n", serializedObject);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -193,8 +199,17 @@ public class AttestationSamples {
                 .setRunTimeData(
                     new AttestationData(decodedRuntimeData, AttestationDataInterpretation.BINARY))
                 .setDraftPolicyForAttestation("version=1.0; authorizationrules{=> deny();}; issuancerules{};"));
-        } catch (RuntimeException e) {
-            e.printStackTrace();
+        } catch (HttpResponseException e) {
+            if (e.getValue() instanceof ResponseError) {
+                ResponseError response = (ResponseError) e.getValue();
+                if (!response.getCode().equals("PolicyEvaluationError")) {
+                    e.printStackTrace();
+
+                }
+                System.out.println("Received expected policy evaluation error.");
+            } else {
+                e.printStackTrace();
+            }
         }
     }
     /**

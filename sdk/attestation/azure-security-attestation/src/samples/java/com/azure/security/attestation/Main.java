@@ -23,6 +23,9 @@ public class Main {
         // Policy samples.
         PolicySamples.executeSamples();
 
+        // Policy Management Certificates.
+        PolicyManagementCertificatesSamples.executeSamples();
+
         System.exit(0);
     }
 }
