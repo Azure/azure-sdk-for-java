@@ -88,13 +88,58 @@ into the attestation service instance because they use [DefaultAzureCredential](
 
 This directory contains functional samples for the attestation service SDK.
 
-## Sample Layout
+## Samples descriptions
 The samples are roughly grouped into four source files, by functionality:
  - AttestationSamples - demonstrate the "attestation" family of APIs.
  - PolicySamples - demonstrate the "policy" family of APIs, including setting, getting and resetting attestation policies.
  - PolicyManagementCertificateSamples - demonstrates the "policy certificates" family of APIs.
  - ReadmeSamples - these are samples which show functions which are not specific to the above families.
 
+## Additional Information
+
+### Attestation Policy
+
+An attestation policy is a document which defines authorization and claim generation
+rules for attestation operations.
+
+The following is an example of an attestation policy document for an SGX enclave:
+
+```text
+version= 1.0;
+authorizationrules
+{
+    [ type=="x-ms-sgx-is-debuggable", value==false ] &&
+    [ type=="x-ms-sgx-product-id", value==<product-id> ] &&
+    [ type=="x-ms-sgx-svn", value>= 0 ] &&
+    [ type=="x-ms-sgx-mrsigner", value=="<mrsigner>"]
+        => permit();
+};
+issuancerules {
+    c:[type=="x-ms-sgx-mrsigner"] => issue(type="<custom-name>", value=c.value);
+};
+```
+
+There are two sections to the document: `authorizationrules` and `issuancerules`.
+`authorizationrules` are rules which control whether or not an attestation token
+should be issued. `issuancerules` are rules which cause claims to be issued in an
+attestation token.
+
+In the example, the attestation service will issue an attestation token if an only if
+the SGX enclave is configured as follows:
+
+* Not-Debuggable
+* Enclave product ID: `<product-id>`.
+* Enclave SVN: `<svn value>` greater or equal to zero.
+* Enclave signer: matches `<mrsigner>`.
+
+Assuming a token is issued, this policy will cause a claim named `<custom-name>`
+to be issued with a value which matches the `x-ms-sgx-mrsigner` claim.
+
+For more information on authoring attestation policy documents, see: [Authoring an attestation policy](https://docs.microsoft.com/azure/attestation/author-sign-policy)
+
+## Next Steps
+
+For more information about the Microsoft Azure Attestation service, please see our [documentation page](https://docs.microsoft.com/azure/attestation/) .
 
 
 <!-- LINKS -->
