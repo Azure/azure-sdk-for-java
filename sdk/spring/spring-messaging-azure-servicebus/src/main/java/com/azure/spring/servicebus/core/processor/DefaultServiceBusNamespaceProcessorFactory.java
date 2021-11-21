@@ -92,6 +92,7 @@ public class DefaultServiceBusNamespaceProcessorFactory implements ServiceBusPro
 
         return processorMap.computeIfAbsent(key, k -> {
             ProcessorProperties processorProperties = propertiesMerger.mergeParent(properties, this.namespaceProperties);
+            processorProperties.setAutoComplete(false);
             processorProperties.setEntityName(k.getT1());
             if (INVALID_SUBSCRIPTION.equals(k.getT2())) {
                 processorProperties.setEntityType(ServiceBusEntityType.QUEUE);
