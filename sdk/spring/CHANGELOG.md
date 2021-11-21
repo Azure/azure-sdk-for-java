@@ -20,6 +20,18 @@ Please refer to [Spring-Cloud-Azure-Migration-Guide-for-4.0] to learn how to mig
 ### Features Added
 - Provide the ability of interacting with both queue and topic.
 
+
+## spring-integration-azure-eventhubs
+### Breaking Changes
+- Change artifact id from `azure-spring-integration-eventhubs` to 
+  `spring-integration-azure-eventhubs`.
+- Annotation of `@AzureMessageListeners`, `@AzureMessageListener` and `@EnableAzureMessaging` are dropped.
+- Drop `EventHubOperation`, and move its `subscribe` API to class of `EventHubsProcessorContainer`.
+- Rename `EventHubsInboundChannelAdapter` as `EventHubsInboundChannelAdapter` to keep consistent with the service of 
+  Azure
+  Event Hubs, and change constructor signature as well.
+* Change `CheckpointConfig` instantiation style to simple constructor instead of build style.
+
 ## spring-cloud-azure-starter-integration-servicebus
 ### Breaking Changes
 - Change artifact id from `azure-spring-cloud-starter-servicebus` to `spring-cloud-azure-starter-integration-servicebus`.
