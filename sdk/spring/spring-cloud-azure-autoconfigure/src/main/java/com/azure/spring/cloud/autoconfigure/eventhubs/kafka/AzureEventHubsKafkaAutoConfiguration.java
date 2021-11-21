@@ -6,16 +6,21 @@ package com.azure.spring.cloud.autoconfigure.eventhubs.kafka;
 import com.azure.spring.cloud.autoconfigure.eventhubs.AzureEventHubsAutoConfiguration;
 import com.azure.spring.cloud.autoconfigure.resourcemanager.AzureEventHubsResourceManagerAutoConfiguration;
 import com.azure.spring.core.connectionstring.ConnectionStringProvider;
+import com.azure.spring.core.connectionstring.StaticConnectionStringProvider;
 import com.azure.spring.core.connectionstring.implementation.EventHubsConnectionString;
 import com.azure.spring.core.service.AzureServiceType;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.AutoConfigureAfter;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.core.env.Environment;
 import org.springframework.kafka.core.KafkaTemplate;
 
 import java.util.ArrayList;
@@ -32,7 +37,24 @@ import java.util.Collections;
 @AutoConfigureAfter({ AzureEventHubsAutoConfiguration.class, AzureEventHubsResourceManagerAutoConfiguration.class })
 public class AzureEventHubsKafkaAutoConfiguration {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(AzureEventHubsKafkaAutoConfiguration.class);
     private static final String SASL_CONFIG_VALUE = "org.apache.kafka.common.security.plain.PlainLoginModule required username=\"$ConnectionString\" password=\"%s\";%s";
+
+    @Bean
+    @ConditionalOnProperty("spring.cloud.azure.eventhubs.connection-string")
+    @ConditionalOnMissingBean(value = AzureServiceType.EventHubs.class, parameterizedContainer = ConnectionStringProvider.class)
+    public StaticConnectionStringProvider<AzureServiceType.EventHubs> eventHubsKafkaConnectionString(Environment environment) {
+        String connectionString = environment.getProperty("spring.cloud.azure.eventhubs.connection-string");
+
+        try {
+            new EventHubsConnectionString(connectionString);
+        } catch (Exception e) {
+            LOGGER.error("A valid Event Hubs connection string must be provided");
+            throw e;
+        }
+
+        return new StaticConnectionStringProvider<>(AzureServiceType.EVENT_HUBS, connectionString);
+    }
 
     @Primary
     @Bean
