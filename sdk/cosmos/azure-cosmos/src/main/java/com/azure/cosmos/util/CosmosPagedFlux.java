@@ -170,7 +170,7 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
             return publisher;
         }
 
-        return tracerProvider.runUnderCurrentSpan(publisher);
+        return tracerProvider.runUnderSpanInContext(publisher);
     }
 
     private Flux<FeedResponse<T>> byPage(CosmosPagedFluxOptions pagedFluxOptions, Context context) {
@@ -250,12 +250,11 @@ public final class CosmosPagedFlux<T> extends ContinuablePagedFlux<String, T, Fe
             }});
 
         if (isTracerEnabled(pagedFluxOptions)) {
-            return result.contextWrite(ctx -> TracerProvider.setContextInReactor(
+            return result.contextWrite(TracerProvider.setContextInReactor(
                 pagedFluxOptions.getTracerProvider().startSpan(pagedFluxOptions.getTracerSpanName(),
                     pagedFluxOptions.getDatabaseId(),
                     pagedFluxOptions.getServiceEndpoint(),
-                    context),
-                ctx));
+                    context)));
         }
 
         return result;

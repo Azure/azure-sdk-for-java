@@ -3,6 +3,7 @@
 package com.azure.cosmos;
 
 import com.azure.core.util.Context;
+import com.azure.core.util.tracing.StartSpanOptions;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.cosmos.implementation.ClientSideRequestStatistics;
 import com.azure.cosmos.implementation.FeedResponseDiagnostics;
@@ -483,7 +484,10 @@ public class CosmosTracerTest extends TestSuiteBase {
 
     private Tracer getMockTracer() {
         Tracer mockTracer = Mockito.mock(Tracer.class);
-        Mockito.when(mockTracer.start(ArgumentMatchers.any(String.class), ArgumentMatchers.any(Context.class))).thenReturn(Context.NONE);
+        Mockito.when(mockTracer.start(ArgumentMatchers.any(String.class),
+            ArgumentMatchers.any(StartSpanOptions.class),
+            ArgumentMatchers.any(Context.class)))
+        .thenReturn(Context.NONE);
         return mockTracer;
     }
 

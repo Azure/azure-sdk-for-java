@@ -94,11 +94,10 @@ public class TracerProvider {
      * Stores {@link Context} in Reactor {@link reactor.util.context.Context}.
      *
      * @param traceContext {@link Context} context with trace context to store.
-     * @param reactorContext {@link reactor.util.context.Context} Reactor context to store trace context in.
-     * @return {@link reactor.util.context.Context} Updated Reactor context with trace context.
+     * @return {@link reactor.util.context.Context} Reactor context with trace context.
      */
-    public static reactor.util.context.Context setContextInReactor(Context traceContext, reactor.util.context.Context reactorContext) {
-        return reactorContext.put(REACTOR_TRACING_CONTEXT_KEY, traceContext);
+    public static reactor.util.context.Context setContextInReactor(Context traceContext) {
+        return reactor.util.context.Context.of(REACTOR_TRACING_CONTEXT_KEY, traceContext);
     }
 
     /**
@@ -235,14 +234,15 @@ public class TracerProvider {
     }
 
     /**
-     * Runs given {@code Flux<T>} publisher in the scope of given trace context (passed in {@link Context}.
+     * Runs given {@code Flux<T>} publisher in the scope of trace context passed in using
+     * {@link TracerProvider#setContextInReactor(Context, reactor.util.context.Context)} in {@code contextWrite}
      * Populates active trace context on Reactor's hot path. Reactor's instrumentation for OpenTelemetry
      * (or other hypothetical solution) will take care of the cold path.
      *
      * @param publisher publisher to run.
      * @return wrapped publisher.
      */
-    public <T> Flux<T> runUnderCurrentSpan(Flux<T> publisher) {
+    public <T> Flux<T> runUnderSpanInContext(Flux<T> publisher) {
         return propagatingFlux
             .flatMap(ignored -> publisher);
     }
@@ -302,8 +302,8 @@ public class TracerProvider {
                     default:
                         break;
                 }})
-            .contextWrite(ctx -> ctx.put(REACTOR_TRACING_CONTEXT_KEY, this.startSpan(spanName, databaseId, endpoint,
-                    context)));
+            .contextWrite(setContextInReactor(this.startSpan(spanName, databaseId, endpoint,
+                context)));
     }
 
     private <T> Mono<T> publisherWithClientTelemetry(Mono<T> resultPublisher,
