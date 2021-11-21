@@ -891,7 +891,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withoutPrimaryPublicIPAddress()
             .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
             .withAdminUsername("Foo12")
-            .withAdminPassword("abc!@#F0orL")
+            .withAdminPassword(password())
             .create();
         // Get
         VirtualMachine virtualMachine = computeManager.virtualMachines().getByResourceGroup(rgName, vmName);
@@ -913,6 +913,32 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         // check if nic exists after force delete vm
         NetworkInterface nic = networkManager.networkInterfaces().getById(nicId);
         Assertions.assertNotNull(nic);
+    }
+
+    @Test
+    public void canHibernateVirtualMachine() {
+        // Create
+        VirtualMachine vm = computeManager.virtualMachines()
+            .define(vmName)
+            .withRegion("eastus2euap")
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withoutPrimaryPublicIPAddress()
+            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
+            .withAdminUsername("Foo12")
+            .withAdminPassword(password())
+            .enableHibernation()
+            .create();
+
+        vm.deallocate(true);
+        vm.start();
+
+        vm.update()
+            .disableHibernation()
+            .apply();
+
+        Assertions.assertThrows(ManagementException.class, () -> vm.deallocateAsync(true));
     }
 
     private CreatablesInfo prepareCreatableVirtualMachines(

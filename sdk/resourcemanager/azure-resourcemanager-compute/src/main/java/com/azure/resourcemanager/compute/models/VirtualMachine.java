@@ -45,6 +45,21 @@ public interface VirtualMachine
      */
     Mono<Void> deallocateAsync();
 
+    /**
+     * Shuts down the virtual machine and releases the compute resources.
+     *
+     * @param hibernate hibernate the virtual machine
+     */
+    void deallocate(boolean hibernate);
+
+    /**
+     * Shuts down the virtual machine and releases the compute resources asynchronously.
+     *
+     * @param hibernate hibernate the virtual machine
+     * @return a representation of the deferred computation of this call
+     */
+    Mono<Void> deallocateAsync(boolean hibernate);
+
     /** Generalizes the virtual machine. */
     void generalize();
 
@@ -1676,6 +1691,16 @@ public interface VirtualMachine
             WithUnmanagedCreate withOSDiskVhdLocation(String containerName, String vhdName);
         }
 
+        /** The stage of the VM definition allowing to specify additional capacities. */
+        interface WithAdditionalCapacities {
+            /**
+             * Enables hibernation feature.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate enableHibernation();
+        }
+
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
          * but also allows for any other optional settings to be specified.
@@ -1695,7 +1720,8 @@ public interface VirtualMachine
                 DefinitionStages.WithBillingProfile,
                 DefinitionStages.WithSystemAssignedManagedServiceIdentity,
                 DefinitionStages.WithUserAssignedManagedServiceIdentity,
-                DefinitionStages.WithLicenseType {
+                DefinitionStages.WithLicenseType,
+                DefinitionStages.WithAdditionalCapacities {
 
             /**
              * Begins creating the virtual machine resource.
@@ -2145,6 +2171,23 @@ public interface VirtualMachine
              */
             Update withLicenseType(String licenseType);
         }
+
+        /** The stage of the VM update allowing to specify additional capacities. */
+        interface WithAdditionalCapacities {
+            /**
+             * Enables hibernation feature.
+             *
+             * @return the next stage of the update
+             */
+            Update enableHibernation();
+
+            /**
+             * Disables hibernation feature.
+             *
+             * @return the next stage of the update
+             */
+            Update disableHibernation();
+        }
     }
 
     /** The template for an update operation, containing all the settings that can be modified. */
@@ -2160,7 +2203,8 @@ public interface VirtualMachine
             UpdateStages.WithBillingProfile,
             UpdateStages.WithSystemAssignedManagedServiceIdentity,
             UpdateStages.WithUserAssignedManagedServiceIdentity,
-            UpdateStages.WithLicenseType {
+            UpdateStages.WithLicenseType,
+            UpdateStages.WithAdditionalCapacities {
         /**
          * Specifies the encryption settings for the OS Disk.
          *

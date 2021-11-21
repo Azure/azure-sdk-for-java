@@ -4,6 +4,7 @@
 
 ### Features Added
 
+- Supported hibernation for `VirtualMachine`.
 - Supported `withPlan()` for `VirtualMachineScaleSet` during create.
 - Supported `getNetworkInterfaceByInstanceIdAsync()` in `VirtualMachineScaleSet`.
 - Supported `getNetworkInterfaceAsync()` in `VirtualMachineScaleSetVM`.
