@@ -13,15 +13,73 @@ Please refer to [Spring-Cloud-Azure-Migration-Guide-for-4.0] to learn how to mig
 
 ## spring-cloud-azure-stream-binder-servicebus
 ### Breaking Changes
-- Combine libraries of `azure-spring-cloud-stream-binder-servicebus-queue` and `azure-spring-cloud-stream-binder-servicebus-topic` to `spring-cloud-azure-stream-binder-servicebus` 
+- Combine libraries of `azure-spring-cloud-stream-binder-servicebus-queue` and `azure-spring-cloud-stream-binder-servicebus-topic` to `spring-cloud-azure-stream-binder-servicebus` with new binder type as `servicebus`. 
+- When using the binder to send messages, one of the following two attributes must be provided:
+  - spring.cloud.stream.servicebus.bindings.{channel-name}.producer.entity-type
+  - spring.cloud.azure.servicebus.producer.entity-type
+### Features Added
+- Provide the ability of interacting with both queue and topic.
+
+## spring-cloud-azure-starter-integration-servicebus
+### Breaking Changes
+- Change artifact id from `azure-spring-cloud-starter-servicebus` to `spring-cloud-azure-starter-integration-servicebus`.
+- Annotation of `@AzureMessageListeners`, `@AzureMessageListener` and `@EnableAzureMessaging` are dropped.
+- Combine the original `ServiceBusQueueTemplate#sendAsync` and `ServiceBusTopicTemplate#sendAsync` as `ServiceBusTemplate#sendAsync` and drop classes of `ServiceBusQueueTemplate` and `ServiceBusTopicTemplate`.
+- Drop `RxJava` and `CompletableFuture` support of ServiceBusTemplate and support `Reactor` instead.
+- Drop interface of `ServiceBusQueueOperation` and `ServiceBusTopicOperation`.
+- Drop API of `ServiceBusQueueOperation#abandon` and `ServiceBusQueueOperation#deadletter`.
+- Combine the original `ServiceBusQueueTemplate#subscribe` and `ServiceBusTopicTemplate#subscribe` as `ServiceBusProcessorClient#subscribe`.
+- Deprecate the interface of `SubscribeOperation`.
+- Add new API of `setDefaultEntityType` for ServiceBusTemplate, the default entity type of a ServiceBusTemplate is required when no bean of `PropertiesSupplier<String, ProducerProperties>` is provided for the `ProducerProperties#entityType`.
+- Drop class of `ServiceBusQueueInboundChannelAdapter` and `ServiceBusTopicInboundChannelAdapter` and combine them as `ServiceBusInboundChannelAdapter`.
+- Class of `DefaultMessageHandler` is moved from `com.azure.spring.integration.core` to package `com.azure.spring.integration.handler`
+### Features Added
+- Provide the ability to connect to multiple Azure Service Bus entities in different namespaces.
+
+## spring-integration-azure-servicebus
+### Breaking Changes
+- Change artifact id from `azure-spring-integration-servicebus` to `spring-integration-azure-servicebus`.
+- Combine the original `ServiceBusQueueTemplate#sendAsync` and `ServiceBusTopicTemplate#sendAsync` as `ServiceBusTemplate#sendAsync` and drop classes of `ServiceBusQueueTemplate` and `ServiceBusTopicTemplate`.
+- Drop `RxJava` and `CompletableFuture` support of ServiceBusTemplate and support `Reactor` instead.
+- Drop interface of `ServiceBusQueueOperation` and `ServiceBusTopicOperation`.
+- Drop API of `ServiceBusQueueOperation#abandon` and `ServiceBusQueueOperation#deadletter`.
+- Combine the original `ServiceBusQueueTemplate#subscribe` and `ServiceBusTopicTemplate#subscribe` as `ServiceBusProcessorClient#subscribe`.
+- Deprecate the interface of `SubscribeOperation`.
+- Add new API of `setDefaultEntityType` for ServiceBusTemplate, the default entity type of a ServiceBusTemplate is required when no bean of `PropertiesSupplier<String, ProducerProperties>` is provided for the `ProducerProperties#entityType`.
+- Drop class of `ServiceBusQueueInboundChannelAdapter` and `ServiceBusTopicInboundChannelAdapter` and combine them as `ServiceBusInboundChannelAdapter`.
+- Class of `DefaultMessageHandler` is moved from `com.azure.spring.integration.core` to package `com.azure.spring.integration.handler`
+### Features Added
+- Provide the ability to connect to multiple Azure Service Bus entities in different namespaces.
+
+## spring-messaging-azure
+### Breaking Changes
+- Annotation of `@AzureMessageListeners`, `@AzureMessageListener` and `@EnableAzureMessaging` are dropped.
+- Change artifact id from `azure-spring-cloud-messaging` to `spring-messaging-azure`.
+
+## spring-cloud-azure-starter-servicebus-jms
+### Breaking Changes
+- Change artifact id from `azure-spring-boot-starter-servicebus-jms` to `spring-cloud-azure-starter-servicebus-jms`.
+
+## spring-integration-azure-storage-queue
+### Breaking Changes
+- Change artifact id from `azure-spring-integration-storage-queue` to `spring-integration-azure-storage-queue`.
+- Class of `DefaultMessageHandler` is moved from `com.azure.spring.integration.core` to package `com.azure.spring.integration.handler`.
+- Class of `StorageQueueMessageSource` is moved from `com.azure.spring.integration.core` to package `com.azure.spring.integration.storage.queue.inbound.StorageQueueMessageSource`.
+- Class of `StorageQueueOperation` is moved from `com.azure.spring.integration.storage.queue.StorageQueueOperation` to package `com.azure.spring.storage.queue.core.StorageQueueOperation`.
+- Class of `StorageQueueTemplate` is moved from `com.azure.spring.integration.storage.queue.StorageQueueTemplate` to package `com.azure.spring.storage.queue.core.StorageQueueTemplate`.
+
+## spring-cloud-azure-starter-integration-storage-queue
+### Breaking Changes
+- Change artifact id from `azure-spring-cloud-starter-storage-queue` to `spring-cloud-azure-starter-integration-storage-queue`.
+- Class of `DefaultMessageHandler` is moved from `com.azure.spring.integration.core` to package `com.azure.spring.integration.handler`.
+- Class of `StorageQueueMessageSource` is moved from `com.azure.spring.integration.storage.queue.inbound` to package `com.azure.spring.integration.storage.queue.inbound.StorageQueueMessageSource`.
+- Class of `StorageQueueOperation` is moved from `com.azure.spring.integration.storage.queue.StorageQueueOperation` to package `com.azure.spring.storage.queue.core.StorageQueueOperation`.
+- Class of `StorageQueueTemplate` is moved from `com.azure.spring.integration.storage.queue.StorageQueueTemplate` to package `com.azure.spring.storage.queue.core.StorageQueueTemplate`.
+
 
 ## spring-cloud-azure-trace-sleuth
 ### Features Added
 - Support http pipeline policy implemented by Spring Cloud Sleuth API. ([#24192])
-
-## spring-messaging-azure
-### Breaking Changes
-- Move module _azure-spring-cloud-messaging_ to module _spring-messaging-azure_.
 
 
 
