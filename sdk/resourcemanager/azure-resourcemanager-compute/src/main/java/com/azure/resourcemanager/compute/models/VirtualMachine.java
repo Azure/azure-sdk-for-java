@@ -379,6 +379,11 @@ public interface VirtualMachine
     /** @return the billing related details of a low priority virtual machine */
     BillingProfile billingProfile();
 
+    /**
+     * @return true if hibernation feature is enabled on the virtual machine.
+     */
+    boolean isHibernationEnabled();
+
     // Setters
     //
 

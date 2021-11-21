@@ -1779,6 +1779,12 @@ class VirtualMachineImpl
     }
 
     @Override
+    public boolean isHibernationEnabled() {
+        return this.innerModel().additionalCapabilities() != null
+            && ResourceManagerUtils.toPrimitiveBoolean(this.innerModel().additionalCapabilities().hibernationEnabled());
+    }
+
+    @Override
     public VirtualMachinePriorityTypes priority() {
         return this.innerModel().priority();
     }

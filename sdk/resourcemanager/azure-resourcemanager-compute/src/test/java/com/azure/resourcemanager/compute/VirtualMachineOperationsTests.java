@@ -917,7 +917,9 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
 
     @Test
     public void canHibernateVirtualMachine() {
-        // Create
+        // preview feature
+
+        // create
         VirtualMachine vm = computeManager.virtualMachines()
             .define(vmName)
             .withRegion("eastus2euap")
@@ -925,19 +927,30 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
             .withNewPrimaryNetwork("10.0.0.0/28")
             .withPrimaryPrivateIPAddressDynamic()
             .withoutPrimaryPublicIPAddress()
-            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
-            .withAdminUsername("Foo12")
-            .withAdminPassword(password())
+            .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_18_04_LTS)
+            .withRootUsername("Foo12")
+            .withSsh(sshPublicKey())
+//            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2012_R2_DATACENTER)
+//            .withAdminUsername("Foo12")
+//            .withAdminPassword(password())
+            .withSize(VirtualMachineSizeTypes.STANDARD_D2S_V3)
             .enableHibernation()
             .create();
 
+        Assertions.assertTrue(vm.isHibernationEnabled());
+
+        // deallocate with hibernate
         vm.deallocate(true);
         vm.start();
 
+        // update to disable
         vm.update()
             .disableHibernation()
             .apply();
 
+        Assertions.assertFalse(vm.isHibernationEnabled());
+
+        // deallocate with hibernate fails as feature not enabled
         Assertions.assertThrows(ManagementException.class, () -> vm.deallocateAsync(true));
     }
 
