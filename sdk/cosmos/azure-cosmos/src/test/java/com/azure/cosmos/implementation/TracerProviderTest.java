@@ -4,6 +4,8 @@ import com.azure.core.util.Context;
 import com.azure.core.util.tracing.SpanKind;
 import com.azure.core.util.tracing.StartSpanOptions;
 import com.azure.core.util.tracing.Tracer;
+import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.implementation.changefeed.exceptions.PartitionNotFoundException;
 import com.azure.cosmos.models.CosmosResponse;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -16,6 +18,7 @@ import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
@@ -23,6 +26,7 @@ import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.testng.Assert.assertThrows;
 
 public class TracerProviderTest {
     @Test(groups = { "unit" })
@@ -34,7 +38,6 @@ public class TracerProviderTest {
         Context context = new Context("foo", "bar");
 
         ArgumentCaptor<StartSpanOptions> optionsCaptor = ArgumentCaptor.forClass(StartSpanOptions.class);
-
         TracerProvider provider = new TracerProvider(tracerMock);
         provider.startSpan(methodName, instance, endpoint, context);
         verify(tracerMock, times(1)).start(eq(methodName), optionsCaptor.capture(), eq(context));
@@ -104,9 +107,34 @@ public class TracerProviderTest {
             }),
             Context.NONE, "methodName", "instance", "endpoint").block();
 
-        verify(tracerMock, times(1)).start(anyString(), any(StartSpanOptions.class), any(Context.class));
+        ArgumentCaptor<StartSpanOptions> optionsCaptor = ArgumentCaptor.forClass(StartSpanOptions.class);
+        verify(tracerMock, times(1)).start(anyString(), optionsCaptor.capture(), any(Context.class));
         verify(tracerMock, times(1)).makeSpanCurrent(eq(sdkContext));
         verify(tracerMock, times(1)).end(eq(412), any(), eq(sdkContext));
+        assertThat(closed.get()).isTrue();
+    }
+
+    @Test(groups = { "unit" })
+    public void traceMonoPublisherException() {
+        Tracer tracerMock = Mockito.mock(Tracer.class);
+
+        CosmosResponse<?> response = Mockito.mock(CosmosResponse.class);
+        TracerProvider provider = new TracerProvider(tracerMock);
+        AtomicBoolean closed = new AtomicBoolean(false);
+        when(tracerMock.start(anyString(), any(StartSpanOptions.class), any(Context.class))).thenReturn(Context.NONE);
+        when(tracerMock.makeSpanCurrent(any())).thenReturn(() -> closed.set(true));
+        when(response.getStatusCode()).thenReturn(412);
+
+        Exception ex = new BadRequestException("foo");
+
+        assertThrows(
+            CosmosException.class,
+            () -> provider.traceEnabledCosmosResponsePublisher(Mono.error(ex),
+            Context.NONE, "methodName", "instance", "endpoint").block());
+
+        verify(tracerMock, times(1)).start(anyString(), any(StartSpanOptions.class), any(Context.class));
+        verify(tracerMock, times(1)).makeSpanCurrent(any());
+        verify(tracerMock, times(1)).end(eq(400), eq(ex), any());
         assertThat(closed.get()).isTrue();
     }
 

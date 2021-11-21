@@ -503,17 +503,19 @@ public class CosmosTracerTest extends TestSuiteBase {
 
         ArgumentCaptor<StartSpanOptions> optionsCaptor = ArgumentCaptor.forClass(StartSpanOptions.class);
         Mockito.verify(mockTracer, Mockito.times(numberOfTimesCalledWithinTest))
-            .start(Mockito.eq(methodName), optionsCaptor.capture(), Mockito.eq(Context.NONE));
+            .start(Mockito.any(), optionsCaptor.capture(), Mockito.any());
 
-        Map<String, Object> startAttributes = optionsCaptor.getValue().getAttributes();
-        if (databaseName != null) {
-            assertThat(startAttributes.get(TracerProvider.DB_INSTANCE)).isEqualTo(databaseName);
+        for(StartSpanOptions opts : optionsCaptor.getAllValues()) {
+            Map<String, Object> startAttributes = opts.getAttributes();
+            if (databaseName != null) {
+                assertThat(startAttributes.get(TracerProvider.DB_INSTANCE)).isEqualTo(databaseName);
+            }
+
+            assertThat(startAttributes.get(TracerProvider.DB_TYPE)).isEqualTo(TracerProvider.DB_TYPE_VALUE);
+            assertThat(startAttributes.get(TracerProvider.DB_URL)).isEqualTo(TestConfigurations.HOST);
+            assertThat(startAttributes.get(TracerProvider.DB_STATEMENT)).isEqualTo(methodName);
+            assertThat(startAttributes.get(Tracer.AZ_TRACING_NAMESPACE_KEY)).isEqualTo(TracerProvider.RESOURCE_PROVIDER_NAME);
         }
-
-        assertThat(startAttributes.get(TracerProvider.DB_TYPE)).isEqualTo(TracerProvider.DB_TYPE_VALUE);
-        assertThat(startAttributes.get(TracerProvider.DB_URL)).isEqualTo(TestConfigurations.HOST);
-        assertThat(startAttributes.get(TracerProvider.DB_STATEMENT)).isEqualTo(methodName);
-
         //verifying diagnostics as events
         verifyTracerDiagnostics(tracerProvider, cosmosDiagnostics, eventAttributesMap);
     }
