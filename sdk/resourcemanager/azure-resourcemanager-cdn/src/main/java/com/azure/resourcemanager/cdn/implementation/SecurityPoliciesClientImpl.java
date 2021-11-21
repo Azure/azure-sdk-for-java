@@ -654,7 +654,7 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
                 this.client.getHttpPipeline(),
                 SecurityPolicyInner.class,
                 SecurityPolicyInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -999,7 +999,7 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
                 this.client.getHttpPipeline(),
                 SecurityPolicyInner.class,
                 SecurityPolicyInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1319,7 +1319,7 @@ public final class SecurityPoliciesClientImpl implements SecurityPoliciesClient 
             deleteWithResponseAsync(resourceGroupName, profileName, securityPolicyName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**

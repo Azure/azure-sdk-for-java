@@ -517,7 +517,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
                 this.client.getHttpPipeline(),
                 CustomDomainResourceInner.class,
                 CustomDomainResourceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -890,7 +890,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
             deleteWithResponseAsync(resourceGroupName, serviceName, appName, domainName);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -1204,7 +1204,7 @@ public final class CustomDomainsClientImpl implements CustomDomainsClient {
                 this.client.getHttpPipeline(),
                 CustomDomainResourceInner.class,
                 CustomDomainResourceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**

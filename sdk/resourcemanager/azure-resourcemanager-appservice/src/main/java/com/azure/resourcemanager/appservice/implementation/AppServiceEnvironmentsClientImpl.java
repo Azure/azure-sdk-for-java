@@ -1590,7 +1590,7 @@ public final class AppServiceEnvironmentsClientImpl
                 this.client.getHttpPipeline(),
                 AppServiceEnvironmentResourceInner.class,
                 AppServiceEnvironmentResourceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -1863,7 +1863,7 @@ public final class AppServiceEnvironmentsClientImpl
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, name, forceDelete);
         return this
             .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, Context.NONE);
+            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
     }
 
     /**
@@ -2600,7 +2600,7 @@ public final class AppServiceEnvironmentsClientImpl
                                     this.client.getHttpPipeline(),
                                     WebAppCollection.class,
                                     WebAppCollection.class,
-                                    Context.NONE)
+                                    this.client.getContext())
                                 .last()
                                 .flatMap(this.client::getLroFinalResultOrError));
                 })
@@ -4053,7 +4053,7 @@ public final class AppServiceEnvironmentsClientImpl
                 this.client.getHttpPipeline(),
                 WorkerPoolResourceInner.class,
                 WorkerPoolResourceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
@@ -5960,7 +5960,7 @@ public final class AppServiceEnvironmentsClientImpl
                     this.client.getHttpPipeline(),
                     RemotePrivateEndpointConnectionArmResourceInner.class,
                     RemotePrivateEndpointConnectionArmResourceInner.class,
-                    Context.NONE);
+                    this.client.getContext());
     }
 
     /**
@@ -6282,7 +6282,7 @@ public final class AppServiceEnvironmentsClientImpl
         return this
             .client
             .<Object, Object>getLroResult(
-                mono, this.client.getHttpPipeline(), Object.class, Object.class, Context.NONE);
+                mono, this.client.getHttpPipeline(), Object.class, Object.class, this.client.getContext());
     }
 
     /**
@@ -6765,7 +6765,7 @@ public final class AppServiceEnvironmentsClientImpl
                                     this.client.getHttpPipeline(),
                                     WebAppCollection.class,
                                     WebAppCollection.class,
-                                    Context.NONE)
+                                    this.client.getContext())
                                 .last()
                                 .flatMap(this.client::getLroFinalResultOrError));
                 })
@@ -7354,7 +7354,7 @@ public final class AppServiceEnvironmentsClientImpl
                                     this.client.getHttpPipeline(),
                                     WebAppCollection.class,
                                     WebAppCollection.class,
-                                    Context.NONE)
+                                    this.client.getContext())
                                 .last()
                                 .flatMap(this.client::getLroFinalResultOrError));
                 })
@@ -8208,7 +8208,7 @@ public final class AppServiceEnvironmentsClientImpl
                 this.client.getHttpPipeline(),
                 WorkerPoolResourceInner.class,
                 WorkerPoolResourceInner.class,
-                Context.NONE);
+                this.client.getContext());
     }
 
     /**
